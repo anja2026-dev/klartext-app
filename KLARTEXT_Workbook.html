@@ -1181,8 +1181,8 @@ document.addEventListener('DOMContentLoaded', loadAll);
     <div class="wb-kapitel-header" onclick="toggleKapitel(this)">
       <div class="wb-kapitel-nr">NEU</div>
       <div>
-        <div class="wb-kapitel-titel">Sexueller Missbrauch · Seh- und Hörbehinderung</div>
-        <div class="wb-kapitel-sub">M2-35 bis M2-41 · Neue Karten</div>
+        <div class="wb-kapitel-titel">Sexueller Missbrauch · Seh- und Hörbehinderung · ADHS &amp; Übergang</div>
+        <div class="wb-kapitel-sub">M2-35 bis M2-42 · Neue Karten</div>
       </div>
       <span class="wb-chevron">▼</span>
     </div>
@@ -1215,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', loadAll);
       <div class="wb-frage-block">
         <div class="wb-frage-nr">M2-38/39</div>
         <div>
-          <div class="wb-frage-text">Sehbehinderung: Stell dir vor du begleitest ab morgen ein blinde Kind. Was änderst du in deiner Kommunikation, deiner Raumgestaltung, deinem Tempo?</div>
+          <div class="wb-frage-text">Sehbehinderung: Stell dir vor du begleitest ab morgen ein blindes Kind. Was änderst du in deiner Kommunikation, deiner Raumgestaltung, deinem Tempo?</div>
           <textarea class="wb-antwort" id="wb-m238" placeholder="Deine Reflexion…" oninput="autoSave('wb-m238',this.value)"></textarea>
         </div>
       </div>
@@ -1229,10 +1229,176 @@ document.addEventListener('DOMContentLoaded', loadAll);
       </div>
 
       <div class="wb-frage-block">
+        <div class="wb-frage-nr">M2-42</div>
+        <div>
+          <div class="wb-frage-text">ADHS &amp; Ausbildungsreife: Welches ADHS-typische Verhalten hast du schon mal als „Faulheit" oder „Unwilligkeit" erlebt — und was weißt du jetzt darüber?</div>
+          <textarea class="wb-antwort" id="wb-m242" placeholder="Deine Reflexion…" oninput="autoSave('wb-m242',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">M5-13</div>
+        <div>
+          <div class="wb-frage-text">Übergang begleiten: Welches der 6 Werkzeuge aus M5-13 würdest du sofort einsetzen — und warum genau dieses?</div>
+          <textarea class="wb-antwort" id="wb-m513" placeholder="Deine Reflexion…" oninput="autoSave('wb-m513',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
         <div class="wb-frage-nr">Systemisch</div>
         <div>
-          <div class="wb-frage-text">Was verbindet alle drei Themen (Missbrauch, Sehbehinderung, Gehörlosigkeit) aus systemischer Sicht? Was ist der gemeinsame Kern?</div>
+          <div class="wb-frage-text">Was verbindet alle Themen dieses Kapitels (Missbrauch, Sehbehinderung, Gehörlosigkeit, ADHS &amp; Übergang) aus systemischer Sicht? Was ist der gemeinsame Kern?</div>
           <textarea class="wb-antwort" id="wb-sys-neu" placeholder="Deine Reflexion…" oninput="autoSave('wb-sys-neu',this.value)"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       DANIELS 12-WOCHEN-KONZEPT
+       ═══════════════════════════════════════════════ -->
+  <div class="wb-kapitel" id="wb-12wochen">
+    <div class="wb-kapitel-header" onclick="toggleKapitel(this)" style="background:linear-gradient(135deg,#185fa5,#0e3d6e);">
+      <div class="wb-kapitel-nr" style="color:rgba(255,255,255,.65);">ÜBERGANG</div>
+      <div>
+        <div class="wb-kapitel-titel">12-Wochen-Begleitkonzept · ADHS &amp; Berufsvorbereitung</div>
+        <div class="wb-kapitel-sub">Entwickelt von Daniel · KLARTEXT-Tester · Ergänzung zu M2-42 &amp; M5-13</div>
+      </div>
+      <span class="wb-chevron">▼</span>
+    </div>
+    <div class="wb-kapitel-body">
+
+      <div style="background:#e8f1fb;border-left:3px solid #185fa5;border-radius:0 8px 8px 0;padding:.85rem 1rem;margin-bottom:1.25rem;font-size:.85rem;color:#1e3a5f;line-height:1.6;">
+        <strong>Über dieses Konzept:</strong> Dieses 12-Wochen-Programm wurde von Daniel, INGRA und KLARTEXT-Tester, entwickelt. Es begleitet Jugendliche mit ADHS Schritt für Schritt vom Schulalltag in die Berufswelt — mit wöchentlichen Zielen, konkreten Methoden und Reflexionsfragen. <em>Wichtig: Nur bei Grün oder Gelb starten. Bei Orange die Woche verschieben, nicht überspringen.</em>
+      </div>
+
+      <!-- Woche 1 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 1 · Eigenverantwortung</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Wochenziele formulieren, Verantwortung für Aufgaben übernehmen.</div>
+          <div class="aufgabe-hinweis">Methoden: Kommunikationstraining, Zielgespräch, Wochenplanung · Wochenziel: Mindestens ein eigenes Ziel benennen und verfolgen.</div>
+          <textarea class="wb-antwort" id="wb-12w-01" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-01',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 2 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 2 · Zuverlässigkeit</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Absprachen einhalten und Aufgaben vollständig erledigen.</div>
+          <div class="aufgabe-hinweis">Methoden: Checklisten, Routinen, Kommunikationsübungen · Wochenziel: Alle vereinbarten Aufgaben erledigen.</div>
+          <textarea class="wb-antwort" id="wb-12w-02" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-02',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 3 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 3 · Selbstorganisation</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Schulische und private Aufgaben strukturieren.</div>
+          <div class="aufgabe-hinweis">Methoden: Schulplaner, Kalender, Aufgabenzerlegung · Wochenziel: Schulplaner an 5 Tagen nutzen.</div>
+          <textarea class="wb-antwort" id="wb-12w-03" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-03',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 4 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 4 · Konzentration</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Arbeitsverhalten verbessern.</div>
+          <div class="aufgabe-hinweis">Methoden: Arbeitsphasen, Zwischenziele, Aufgaben in kleine Schritte · Wochenziel: Zwei Arbeitsaufträge erfolgreich abschließen.</div>
+          <textarea class="wb-antwort" id="wb-12w-04" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-04',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 5 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 5 · Teamfähigkeit</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Zusammenarbeit trainieren.</div>
+          <div class="aufgabe-hinweis">Methoden: Gruppenarbeit, Kommunikationstraining, Verantwortung in der Gruppe · Wochenziel: Aktiv an einem Gruppenprojekt mitarbeiten.</div>
+          <textarea class="wb-antwort" id="wb-12w-05" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-05',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 6 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 6 · Soziale Teilhabe</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Kontakte pflegen und ausbauen.</div>
+          <div class="aufgabe-hinweis">Methoden: Gesprächsübungen, Freizeitplanung · Wochenziel: Mindestens einen Kontakt aktiv pflegen. <em>Teilerfolg: Kontakt versucht, auch wenn kein Treffen zustande kam.</em></div>
+          <textarea class="wb-antwort" id="wb-12w-06" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-06',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 7 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 7 · Belastbarkeit</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Durchhaltevermögen stärken.</div>
+          <div class="aufgabe-hinweis">Methoden: Reflexionsgespräche, positive Verstärkung · Wochenziel: Eine schwierige Aufgabe abschließen. <em>Teilerfolg: Länger drangeblieben als sonst.</em></div>
+          <textarea class="wb-antwort" id="wb-12w-07" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-07',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 8 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 8 · Ausbildungsreife</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Berufsinteressen erkunden.</div>
+          <div class="aufgabe-hinweis">Methoden: Berufsfelderkundung, Stärkenanalyse · Wochenziel: Einen Beruf und seine Anforderungen vorstellen. → Verbindung: M2-42 &amp; M5-13</div>
+          <textarea class="wb-antwort" id="wb-12w-08" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-08',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 9 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 9 · Bewerbungskompetenz</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Vorstellungsgespräche trainieren.</div>
+          <div class="aufgabe-hinweis">Methoden: Rollenspiele, Kommunikationstraining · Wochenziel: Sichere Selbstvorstellung. → Werkzeug 5 aus M5-13 nutzen: Selbstbeschreibung üben.</div>
+          <textarea class="wb-antwort" id="wb-12w-09" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-09',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 10 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 10 · Zukunftsorientierung</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Eigene Perspektiven entwickeln.</div>
+          <div class="aufgabe-hinweis">Methoden: SMART-Ziele, Zukunftsgespräche · Wochenziel: Ein Zukunftsziel schriftlich festhalten.</div>
+          <textarea class="wb-antwort" id="wb-12w-10" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-10',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 11 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 11 · Selbstständigkeit</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Hilfen schrittweise reduzieren.</div>
+          <div class="aufgabe-hinweis">Methoden: Eigenständige Planung und Umsetzung · Wochenziel: Mehrere Aufgaben selbst organisieren — ohne Erinnerung.</div>
+          <textarea class="wb-antwort" id="wb-12w-11" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-11',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Woche 12 -->
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Woche 12 · Abschluss &amp; Auswertung</div>
+        <div>
+          <div class="wb-frage-text">Ziel: Fortschritte sichern und reflektieren.</div>
+          <div class="aufgabe-hinweis">Methoden: Abschlussgespräch, Zielauswertung · Wochenziel: Neue langfristige Ziele formulieren.</div>
+          <textarea class="wb-antwort" id="wb-12w-12" placeholder="Beobachtungen, Reflexion, Zielerreichung…" oninput="autoSave('wb-12w-12',this.value)"></textarea>
+        </div>
+      </div>
+
+      <!-- Gesamtreflexion -->
+      <div class="wb-frage-block" style="border-left:3px solid #185fa5;">
+        <div class="wb-frage-nr" style="color:#185fa5;">Gesamtreflexion nach 12 Wochen</div>
+        <div>
+          <div class="wb-frage-text">Was hat sich verändert — beim Kind, bei dir, in der Zusammenarbeit? Was nimmst du für deine nächste Begleitung mit?</div>
+          <textarea class="wb-antwort lg" id="wb-12w-gesamt" placeholder="Deine Gesamtreflexion…" oninput="autoSave('wb-12w-gesamt',this.value)"></textarea>
         </div>
       </div>
 

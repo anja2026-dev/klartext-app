@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Workbook</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',Arial,sans-serif;background:#F5F0E8;color:#2D2D2D;line-height:1.75;}
+.page{max-width:860px;margin:0 auto;background:white;}
+
+/* HEADER */
+.kt-header{background:#1B3A4B;height:118px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid #6EC6A0;position:sticky;top:0;z-index:200;box-shadow:0 4px 18px rgba(0,0,0,.18);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:40px;height:40px;background:#1B3A4B;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 6px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.7rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.kt-logo-text .sub{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:2px;}
+.brainy-circle{width:68px;height:68px;background:#fff;border:3px solid #6EC6A0;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.brainy-circle img{width:82%;height:auto;}
+
+/* COVER */
+.cover{background:#1B3A4B;padding:48px clamp(1rem,4vw,2rem);text-align:center;}
+
+/* PROGRESS */
+.progress-bar-outer{background:rgba(255,255,255,.15);border-radius:6px;height:8px;margin:8px 0 4px;}
+.progress-bar-inner{height:8px;border-radius:6px;background:#6EC6A0;transition:width .4s;}
+
+/* MODULE SECTION */
+.modul-section{margin-bottom:0;}
+.modul-header{padding:20px clamp(1rem,4vw,2rem);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;cursor:pointer;user-select:none;}
+.modul-header:hover{filter:brightness(1.08);}
+.modul-header-left{display:flex;align-items:center;gap:14px;}
+.modul-badge{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.65);}
+.modul-name{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.3rem);font-weight:700;color:white;line-height:1.1;}
+.modul-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+.modul-chevron{font-size:20px;color:rgba(255,255,255,.6);transition:transform .2s;flex-shrink:0;}
+.modul-chevron.open{transform:rotate(180deg);}
+.modul-body{display:none;padding:28px clamp(1rem,4vw,2rem) 32px;}
+.modul-body.open{display:block;}
+
+/* AUFGABEN */
+.aufgabe{background:#FAFAF8;border-radius:10px;padding:20px 22px;margin-bottom:16px;border:1px solid #E8E4DC;}
+.aufgabe-nr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.aufgabe-frage{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#1B3A4B;margin-bottom:8px;line-height:1.4;}
+.aufgabe-hinweis{font-size:12px;color:#7A7060;font-style:italic;margin-bottom:12px;line-height:1.6;}
+textarea{font-family:'DM Sans',sans-serif;font-size:13px;color:#2D2D2D;background:white;border:1.5px solid #DDD8CE;border-radius:8px;padding:12px 14px;resize:vertical;width:100%;min-height:90px;outline:none;line-height:1.7;transition:border-color .15s;}
+textarea:focus{border-color:#1B3A4B;}
+textarea.sm{min-height:60px;}
+textarea.lg{min-height:130px;}
+
+/* CHECKBOXEN */
+.check-gruppe{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:white;border-radius:7px;border:1.5px solid #DDD8CE;cursor:pointer;transition:border-color .15s;}
+.check-item:hover{border-color:#1B3A4B;}
+.check-item.checked{border-color:#6EC6A0;background:#f0faf5;}
+.check-item input[type=checkbox]{width:17px;height:17px;flex-shrink:0;margin-top:1px;cursor:pointer;accent-color:#1B3A4B;}
+.check-label{font-size:12.5px;color:#4A4A4A;line-height:1.6;}
+
+/* SKALA */
+.skala{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.skala-btn{flex:1;min-width:36px;height:36px;border-radius:7px;border:1.5px solid #DDD8CE;background:white;font-size:13px;font-weight:700;color:#7A7060;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.skala-btn:hover{border-color:#1B3A4B;color:#1B3A4B;}
+.skala-btn.selected{border-color:#6EC6A0;background:#6EC6A0;color:white;}
+.skala-label{display:flex;justify-content:space-between;font-size:11px;color:#7A7060;margin-top:4px;}
+
+/* AMPEL */
+.ampel-gruppe{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.ampel-btn{flex:1;min-width:80px;padding:8px 10px;border-radius:8px;border:2px solid;font-size:12px;font-weight:700;cursor:pointer;text-align:center;transition:all .15s;background:white;}
+.ampel-btn.selected{color:white;}
+.ampel-gruen{border-color:#4CAF50;color:#2E7D32;}
+.ampel-gruen.selected{background:#4CAF50;}
+.ampel-gelb{border-color:#FFC107;color:#b7860a;}
+.ampel-gelb.selected{background:#FFC107;}
+.ampel-orange{border-color:#FF9800;color:#E65100;}
+.ampel-orange.selected{background:#FF9800;}
+.ampel-grau{border-color:#9C27B0;color:#6A1B9A;}
+.ampel-grau.selected{background:#9C27B0;}
+
+/* FORTSCHRITT PRO MODUL */
+.modul-progress{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 14px;background:#F5F0E8;border-radius:8px;}
+.modul-progress-lbl{font-size:11px;color:#7A7060;white-space:nowrap;}
+.modul-progress-bar{flex:1;background:#DDD8CE;border-radius:4px;height:6px;}
+.modul-progress-fill{height:6px;border-radius:4px;background:#6EC6A0;transition:width .4s;}
+.modul-progress-pct{font-size:11px;font-weight:700;color:#1B3A4B;white-space:nowrap;}
+
+/* SPEICHER-STATUS */
+.save-status{font-size:11px;color:#6EC6A0;margin-top:6px;height:16px;transition:opacity .3s;}
+
+/* GESAMT-FORTSCHRITT */
+.gesamt-progress{padding:20px clamp(1rem,4vw,2rem);background:#1B3A4B;}
+.gp-titel{font-size:13px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:10px;}
+.gp-module{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.gp-dot{border-radius:6px;padding:6px 4px;text-align:center;}
+.gp-dot-label{font-size:9px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:3px;}
+.gp-dot-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.2);}
+.gp-dot-fill{height:4px;border-radius:2px;background:#6EC6A0;transition:width .4s;}
+
+/* ABSCHLUSS */
+.abschluss-box{background:#1B3A4B;border-radius:12px;padding:28px;margin:28px 0;display:flex;align-items:center;gap:20px;}
+
+/* TRENNLINIE */
+.modul-divider{height:2px;background:#F0EDE8;}
+
+@media print{body{background:white;}.page{max-width:none;}.kt-header{position:relative;}.modul-body{display:block!important;}}
+@media(max-width:600px){.kt-header{height:100px;}.brainy-circle{width:52px;height:52px;}.gp-module{grid-template-columns:repeat(5,1fr);}}
+
+/* ── Workbook Spezial-Kapitel ───────────────────────── */
+.wb-kapitel { margin-bottom: 2rem; }
+.wb-kapitel-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .85rem 1rem;
+  background: #3B8A68;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #3B8A68;
+}
+.wb-kapitel-nr {
+  font-size: .65rem;
+  font-weight: 700;
+  color: #2D2D2D;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  background: #fff;
+  padding: .2rem .5rem;
+  border-radius: 4px;
+}
+.wb-kapitel-titel {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: .9rem;
+}
+.wb-kapitel-sub { font-size: .75rem; color: rgba(255,255,255,.65); }
+.wb-frage-block {
+  background: #fff;
+  border: 1.5px solid #E0D8CC;
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin-bottom: .85rem;
+  display: flex;
+  gap: .85rem;
+}
+.wb-frage-nr {
+  font-size: .72rem;
+  font-weight: 700;
+  color: #3B8A68;
+  background: #EEF7F2;
+  border-radius: 6px;
+  padding: .2rem .5rem;
+  flex-shrink: 0;
+  height: fit-content;
+  margin-top: .1rem;
+}
+.wb-frage-text {
+  font-size: .85rem;
+  color: #2D2D3A;
+  line-height: 1.75;
+  margin-bottom: .6rem;
+}
+.wb-antwort {
+  width: 100%;
+  border: 1px solid #D8D0C8;
+  border-radius: 6px;
+  padding: .5rem .75rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: .82rem;
+  color: #2D2D3A;
+  background: #FDFBF8;
+  resize: none;
+  height: 70px;
+  line-height: 1.6;
+  outline: none;
+}
+.wb-antwort:focus { border-color: #3B8A68; }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+        <span class="sub">Mentoring-System</span>
+      </div>
+    </a>
+  </div>
+  <div class="brainy-circle"><img src="brainy.png" alt="Brainy"></div>
+</header>
+
+<!-- COVER -->
+<div class="cover">
+  <img src="brainy.png" style="width:90px;margin-bottom:16px;" alt="Brainy">
+  <div style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:white;margin-bottom:8px;">KLARTEXT Workbook</div>
+  <div style="font-size:.75rem;color:#6EC6A0;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;">Reflexion · Transfer · Selbstcheck</div>
+  <div style="font-size:.8rem;color:rgba(255,255,255,.5);">10 Module · Deine Antworten bleiben während dieser Sitzung erhalten</div>
+</div>
+
+<!-- GESAMT-FORTSCHRITT -->
+<div class="gesamt-progress">
+  <div class="gp-titel">Dein Fortschritt</div>
+  <div class="gp-module" id="gp-module"></div>
+</div>
+
+<!-- INTRO -->
+<div style="padding:28px clamp(1rem,4vw,2rem) 24px;">
+  <div style="display:flex;align-items:flex-start;gap:18px;padding:20px;background:#faf7f3;border-radius:12px;border-left:4px solid #1B3A4B;">
+    <img src="brainy.png" style="width:64px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#1B3A4B;margin-bottom:8px;">Wie du dieses Workbook nutzt</div>
+      <p style="font-size:13px;color:#4A4A4A;line-height:1.75;margin-bottom:8px;">Jedes Modul hat 4–6 Aufgaben: Reflexionsfragen, Praxis-Transfer und Selbstchecks. Deine Antworten werden automatisch in deinem Browser gespeichert — du kannst jederzeit weitermachen.</p>
+      <p style="font-size:13px;color:#4A4A4A;line-height:1.75;margin:0;">Tipp für die Dokumentation: Drucke die ausgefüllten Seiten mit Strg+P (Windows) oder Cmd+P (Mac) — alle Module werden ausgedruckt. Bearbeite das Workbook parallel zum Lernhandbuch — nicht alles auf einmal. Ein Modul pro Woche ist ein guter Rhythmus.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODUL 0 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#1B3A4B;" onclick="toggleModul('m0')">
+  <div class="modul-header-left">
+    <img src="brainy-m0.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 0</div>
+      <div class="modul-name">Systemelemente</div>
+      <div class="modul-sub">Das Fundament — 9 Elemente im Überblick</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m0-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m0-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m0-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#1B3A4B;">Aufgabe 1 · Selbstreflexion</div>
+    <div class="aufgabe-frage">Welches der 9 Systemelemente klingt für dich am stärksten? Und welches macht dir noch Sorgen?</div>
+    <div class="aufgabe-hinweis">Barometer · kLAR · Joker · Brainy · Feuerwehr · Rollen · Humor · Abgrenzung · System</div>
+    <textarea id="m0-a1" class="lg" placeholder="Stärkstes Element: … weil …&#10;Macht mir noch Sorgen: … weil …" oninput="save('m0-a1');updateProgress('m0')"></textarea>
+    <div class="save-status" id="save-m0-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#1B3A4B;">Aufgabe 2 · Barometer kennenlernen</div>
+    <div class="aufgabe-frage">Welche Barometer-Farbe zeigt das Kind das du begleitest am häufigsten? Was sind die typischen Frühwarnsignale?</div>
+    <div class="aufgabe-hinweis">Denke an konkrete Beobachtungen aus dem Schulalltag.</div>
+    <textarea id="m0-a2" class="lg" placeholder="Häufigste Farbe: …&#10;Frühwarnsignale die ich erkenne: …&#10;Was dann hilft: …" oninput="save('m0-a2');updateProgress('m0')"></textarea>
+    <div class="save-status" id="save-m0-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#1B3A4B;">Aufgabe 3 · kLAR üben</div>
+    <div class="aufgabe-frage">Beschreibe eine konkrete Situation aus deinem Alltag — und wie du kLAR einsetzen würdest.</div>
+    <div class="aufgabe-hinweis">k = Kontakt & Körperliche Sicherheit · L = Leise & Langsam · A = Anerkennung & Atmen · R = Reizreduktion & Rückzug</div>
+    <textarea id="m0-a3" class="lg" placeholder="Situation: …&#10;k — was ich tue: …&#10;L — was ich tue: …&#10;A — was ich sage: …&#10;R — was ich verändere: …" oninput="save('m0-a3');updateProgress('m0')"></textarea>
+    <div class="save-status" id="save-m0-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#1B3A4B;">Aufgabe 4 · Mein Joker</div>
+    <div class="aufgabe-frage">Entwickle deinen persönlichen Joker für das Kind das du begleitest. Was würde bei diesem Kind ein Muster durchbrechen?</div>
+    <div class="aufgabe-hinweis">Der Joker ist wirksam wenn er selten, unerwartet und authentisch ist.</div>
+    <textarea id="m0-a4" placeholder="Mein Joker-Idee: …&#10;Warum ich glaube dass das bei diesem Kind funktioniert: …" oninput="save('m0-a4');updateProgress('m0')"></textarea>
+    <div class="save-status" id="save-m0-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#1B3A4B;">Aufgabe 5 · Selbstcheck Systemelemente</div>
+    <div class="aufgabe-frage">Was davon hast du bereits in deiner Praxis?</div>
+    <div class="check-gruppe" id="m0-checks">
+      <label class="check-item" onclick="toggleCheck(this,'m0-c1');updateProgress('m0')"><input type="checkbox" id="m0-c1"><span class="check-label">Ich nutze das Barometer täglich und kenne die Frühwarnsignale des Kindes</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m0-c2');updateProgress('m0')"><input type="checkbox" id="m0-c2"><span class="check-label">Ich kenne kLAR und kann es in Stresssituationen abrufen</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m0-c3');updateProgress('m0')"><input type="checkbox" id="m0-c3"><span class="check-label">Ich habe einen persönlichen Joker für das Kind</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m0-c4');updateProgress('m0')"><input type="checkbox" id="m0-c4"><span class="check-label">Ich kenne alle 7 Feuerwehrkarten und was sie auslöst</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m0-c5');updateProgress('m0')"><input type="checkbox" id="m0-c5"><span class="check-label">Ich habe klare Rollengrenzen und kann diese benennen</span></label>
+    </div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 0 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m0-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m0-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 1 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#2E5E8A;" onclick="toggleModul('m1')">
+  <div class="modul-header-left">
+    <img src="brainy-m1.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 1</div>
+      <div class="modul-name">Recht & Rolle</div>
+      <div class="modul-sub">Rechtliche Grundlagen · Aufgaben · Grenzen</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m1-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m1-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m1-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#2E5E8A;">Aufgabe 1 · Mein Auftrag</div>
+    <div class="aufgabe-frage">Was steht in deinem Hilfeplan? Formuliere deinen Auftrag in eigenen Worten — so dass du ihn jemandem in 2 Sätzen erklären kannst.</div>
+    <textarea id="m1-a1" placeholder="Mein Auftrag ist: …&#10;Was ich konkret tue: …&#10;Was nicht zu meinem Auftrag gehört: …" oninput="save('m1-a1');updateProgress('m1')"></textarea>
+    <div class="save-status" id="save-m1-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#2E5E8A;">Aufgabe 2 · Nicht-Aufgaben erkennen</div>
+    <div class="aufgabe-frage">Welche Aufgaben werden dir in der Praxis übertragen die eigentlich nicht zu deiner Rolle gehören? Wie reagierst du darauf?</div>
+    <div class="aufgabe-hinweis">Sei ehrlich — ohne Selbstkritik. Rollenentgrenzung passiert fast allen.</div>
+    <textarea id="m1-a2" class="lg" placeholder="Das passiert mir: …&#10;So reagiere ich bisher: …&#10;Was ich stattdessen tun könnte: …" oninput="save('m1-a2');updateProgress('m1')"></textarea>
+    <div class="save-status" id="save-m1-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#2E5E8A;">Aufgabe 3 · Schweigepflicht konkret</div>
+    <div class="aufgabe-frage">Gab es eine Situation wo du unsicher warst ob du etwas weitergeben darf oder nicht? Wie hast du entschieden?</div>
+    <textarea id="m1-a3" placeholder="Die Situation: …&#10;Meine Entscheidung: …&#10;Was ich heute anders wissen/tun würde: …" oninput="save('m1-a3');updateProgress('m1')"></textarea>
+    <div class="save-status" id="save-m1-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#2E5E8A;">Aufgabe 4 · Zusammenarbeit einschätzen</div>
+    <div class="aufgabe-frage">Wie ist deine Zusammenarbeit mit Lehrkraft, TK und Eltern gerade? Wo läuft es gut — wo gibt es Reibung?</div>
+    <textarea id="m1-a4" class="lg" placeholder="Lehrkraft: …&#10;TK: …&#10;Eltern: …&#10;Was ich verbessern möchte: …" oninput="save('m1-a4');updateProgress('m1')"></textarea>
+    <div class="save-status" id="save-m1-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#2E5E8A;">Aufgabe 5 · Selbstcheck Recht & Rolle</div>
+    <div class="aufgabe-frage">Was hast du bereits sicher im Griff?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m1-c1');updateProgress('m1')"><input type="checkbox" id="m1-c1"><span class="check-label">Ich kenne meinen Hilfeplan und kann meinen Auftrag klar benennen</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m1-c2');updateProgress('m1')"><input type="checkbox" id="m1-c2"><span class="check-label">Ich kann Nicht-Aufgaben klar ablehnen ohne Entschuldigung</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m1-c3');updateProgress('m1')"><input type="checkbox" id="m1-c3"><span class="check-label">Ich kenne meinen Meldeweg und die Telefonnummer der TK</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m1-c4');updateProgress('m1')"><input type="checkbox" id="m1-c4"><span class="check-label">Ich dokumentiere täglich und zeitnah</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m1-c5');updateProgress('m1')"><input type="checkbox" id="m1-c5"><span class="check-label">Ich nutze keine privaten Geräte für Kinderdaten</span></label>
+    </div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 1 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m1-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m1-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 2 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#3B8A68;" onclick="toggleModul('m2')">
+  <div class="modul-header-left">
+    <img src="brainy-m2.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 2</div>
+      <div class="modul-name">Kinder verstehen</div>
+      <div class="modul-sub">Entwicklung · Neurobiologie · Beobachtung</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m2-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m2-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m2-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#3B8A68;">Aufgabe 1 · Das Kind verstehen</div>
+    <div class="aufgabe-frage">Welcher Stressmodus ist bei dem Kind das du begleitest am häufigsten? Was löst ihn typischerweise aus?</div>
+    <div class="aufgabe-hinweis">Fight · Flight · Freeze · Fawn — oder eine Kombination?</div>
+    <div class="ampel-gruppe">
+      <button class="ampel-btn" style="border-color:#E53935;color:#C62828;" onclick="selectAmpel(this,'m2-modus','fight');updateProgress('m2')" id="m2-modus-fight">Fight</button>
+      <button class="ampel-btn" style="border-color:#FF9800;color:#E65100;" onclick="selectAmpel(this,'m2-modus','flight');updateProgress('m2')" id="m2-modus-flight">Flight</button>
+      <button class="ampel-btn" style="border-color:#1E88E5;color:#1565C0;" onclick="selectAmpel(this,'m2-modus','freeze');updateProgress('m2')" id="m2-modus-freeze">Freeze</button>
+      <button class="ampel-btn" style="border-color:#43A047;color:#2E7D32;" onclick="selectAmpel(this,'m2-modus','fawn');updateProgress('m2')" id="m2-modus-fawn">Fawn</button>
+    </div>
+    <textarea id="m2-a1" placeholder="Typische Auslöser: …&#10;Wie ich das erkenne: …&#10;Was dann hilft: …" oninput="save('m2-a1');updateProgress('m2')" style="margin-top:10px;"></textarea>
+    <div class="save-status" id="save-m2-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#3B8A68;">Aufgabe 2 · Bindungsverhalten beobachten</div>
+    <div class="aufgabe-frage">Wie verhält sich das Kind dir gegenüber in der Beziehung? Welchen Bindungsstil erkennst du?</div>
+    <div class="aufgabe-hinweis">Sicher · Unsicher-vermeidend · Unsicher-ambivalent · Desorganisiert</div>
+    <textarea id="m2-a2" class="lg" placeholder="Was ich beobachte: …&#10;Was das für meine Begleitung bedeutet: …&#10;Was dem Kind besonders hilft: …" oninput="save('m2-a2');updateProgress('m2')"></textarea>
+    <div class="save-status" id="save-m2-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#3B8A68;">Aufgabe 3 · Frühwarnsignale kennen</div>
+    <div class="aufgabe-frage">Beschreibe das persönliche Frühwarnsystem dieses Kindes — was zeigt es wenn das Barometer von Grün zu Gelb wechselt?</div>
+    <textarea id="m2-a3" class="lg" placeholder="Körperliche Signale: …&#10;Verhaltensveränderungen: …&#10;Typische Situationen die Gelb auslösen: …" oninput="save('m2-a3');updateProgress('m2')"></textarea>
+    <div class="save-status" id="save-m2-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#3B8A68;">Aufgabe 4 · Stärken sehen</div>
+    <div class="aufgabe-frage">Was sind die Stärken dieses Kindes? Was kann es gut — was macht es gerne?</div>
+    <div class="aufgabe-hinweis">Stärken-Fokus ist kein Schönreden — es ist professionelle Haltung.</div>
+    <textarea id="m2-a4" placeholder="Stärken die ich erkenne: …&#10;Interessen des Kindes: …&#10;Wie ich diese Stärken in der Begleitung nutze: …" oninput="save('m2-a4');updateProgress('m2')"></textarea>
+    <div class="save-status" id="save-m2-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#3B8A68;">Aufgabe 5 · Selbstcheck Kinder verstehen</div>
+    <div class="aufgabe-frage">Was hast du bereits verinnerlicht?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m2-c1');updateProgress('m2')"><input type="checkbox" id="m2-c1"><span class="check-label">Ich kenne den Stressmodus des Kindes und reagiere darauf angemessen</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m2-c2');updateProgress('m2')"><input type="checkbox" id="m2-c2"><span class="check-label">Ich sehe Verhalten als Information — nicht als persönlichen Angriff</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m2-c3');updateProgress('m2')"><input type="checkbox" id="m2-c3"><span class="check-label">Ich kenne die persönlichen Frühwarnsignale dieses Kindes</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m2-c4');updateProgress('m2')"><input type="checkbox" id="m2-c4"><span class="check-label">Ich handle in der Gelb-Phase — nicht erst in der Grau-Phase</span></label>
+    </div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 2 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m2-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m2-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 3 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#B07D2A;" onclick="toggleModul('m3')">
+  <div class="modul-header-left">
+    <img src="brainy-m3.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 3</div>
+      <div class="modul-name">Werkzeugkasten</div>
+      <div class="modul-sub">40 Praxiswerkzeuge · Dein persönliches Repertoire</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m3-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m3-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m3-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B07D2A;">Aufgabe 1 · Meine Top-5-Werkzeuge</div>
+    <div class="aufgabe-frage">Welche 5 Werkzeuge aus dem Werkzeugkasten nutzt du am häufigsten — oder möchtest du öfter nutzen?</div>
+    <textarea id="m3-a1" class="lg" placeholder="1. …  weil …&#10;2. …  weil …&#10;3. …  weil …&#10;4. …  weil …&#10;5. …  weil …" oninput="save('m3-a1');updateProgress('m3')"></textarea>
+    <div class="save-status" id="save-m3-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B07D2A;">Aufgabe 2 · Atem-Anker ausprobieren</div>
+    <div class="aufgabe-frage">Hast du den Atem-Anker (4-7-8) selbst ausprobiert? Beschreibe deine Erfahrung — und wie du ihn mit dem Kind einführen würdest.</div>
+    <textarea id="m3-a2" placeholder="Meine Erfahrung: …&#10;So würde ich es mit dem Kind einführen: …" oninput="save('m3-a2');updateProgress('m3')"></textarea>
+    <div class="save-status" id="save-m3-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B07D2A;">Aufgabe 3 · Rituale gestalten</div>
+    <div class="aufgabe-frage">Beschreibe das Ankomm-Ritual das du mit dem Kind nutzt oder aufbauen möchtest. Was soll es konkret enthalten?</div>
+    <textarea id="m3-a3" class="lg" placeholder="Schritt 1: …&#10;Schritt 2: …&#10;Schritt 3: …&#10;Warum dieser Ablauf für dieses Kind passt: …" oninput="save('m3-a3');updateProgress('m3')"></textarea>
+    <div class="save-status" id="save-m3-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B07D2A;">Aufgabe 4 · Transfer in die Praxis</div>
+    <div class="aufgabe-frage">Welches Werkzeug willst du in den nächsten 2 Wochen neu einführen? Was brauchst du dafür?</div>
+    <textarea id="m3-a4" placeholder="Werkzeug: …&#10;Wann ich es einsetzen will: …&#10;Was ich dafür vorbereiten muss: …" oninput="save('m3-a4');updateProgress('m3')"></textarea>
+    <div class="save-status" id="save-m3-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B07D2A;">Aufgabe 5 · Selbstcheck Werkzeugkasten</div>
+    <div class="aufgabe-frage">Was hast du bereits im Einsatz?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m3-c1');updateProgress('m3')"><input type="checkbox" id="m3-c1"><span class="check-label">Ich nutze das Barometer täglich als Einstieg</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m3-c2');updateProgress('m3')"><input type="checkbox" id="m3-c2"><span class="check-label">Ich habe mindestens 2 Atemübungen die ich kenne und einsetzen kann</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m3-c3');updateProgress('m3')"><input type="checkbox" id="m3-c3"><span class="check-label">Das Kind hat ein Ankomm-Ritual</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m3-c4');updateProgress('m3')"><input type="checkbox" id="m3-c4"><span class="check-label">Ich habe ein Geheimzeichen mit dem Kind vereinbart</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m3-c5');updateProgress('m3')"><input type="checkbox" id="m3-c5"><span class="check-label">Ich kenne mindestens 3 Körper-Werkzeuge für Hyperaktivität</span></label>
+    </div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 3 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m3-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m3-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 4 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#5D3A7A;" onclick="toggleModul('m4')">
+  <div class="modul-header-left">
+    <img src="brainy-m4.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 4</div>
+      <div class="modul-name">Kommunikation</div>
+      <div class="modul-sub">Sprechen · Zuhören · Feedback · Konflikte</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m4-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m4-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m4-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#5D3A7A;">Aufgabe 1 · Ich-Botschaft üben</div>
+    <div class="aufgabe-frage">Formuliere eine schwierige Situation aus deinem Alltag als Ich-Botschaft um. Was hast du bisher gesagt — was wäre die Ich-Botschaft?</div>
+    <div class="aufgabe-hinweis">Schema: Ich sehe/höre/merke [Beobachtung] — und ich fühle [Gefühl] — weil [Bedürfnis]</div>
+    <textarea id="m4-a1" class="lg" placeholder="Situation: …&#10;Was ich bisher sagte: …&#10;Die Ich-Botschaft wäre: …" oninput="save('m4-a1');updateProgress('m4')"></textarea>
+    <div class="save-status" id="save-m4-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#5D3A7A;">Aufgabe 2 · Deeskalierende Sprache</div>
+    <div class="aufgabe-frage">Welche Sätze sagst du in Stresssituationen die eher eskalieren als deeskalieren? Wie könntest du sie ersetzen?</div>
+    <textarea id="m4-a2" class="lg" placeholder="Was ich bisher sage: …&#10;Die deeskalierende Alternative wäre: …&#10;Was ich noch üben muss: …" oninput="save('m4-a2');updateProgress('m4')"></textarea>
+    <div class="save-status" id="save-m4-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#5D3A7A;">Aufgabe 3 · Feedback geben</div>
+    <div class="aufgabe-frage">Formuliere ein spezifisches Prozesslob für das Kind das du begleitest — für etwas das es diese Woche gut gemacht hat.</div>
+    <div class="aufgabe-hinweis">Konkrete Beobachtung + Wirkung benennen — kein „toll gemacht!"</div>
+    <textarea id="m4-a3" placeholder="Das Lob: …" oninput="save('m4-a3');updateProgress('m4')"></textarea>
+    <div class="save-status" id="save-m4-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#5D3A7A;">Aufgabe 4 · Schwieriges Gespräch vorbereiten</div>
+    <div class="aufgabe-frage">Gibt es ein Gespräch das du führen müsstest aber vermeidest? Bereite es hier vor.</div>
+    <textarea id="m4-a4" class="lg" placeholder="Das Gespräch mit: …&#10;Was ich sagen will: …&#10;Meine Ich-Botschaft: …&#10;Meine Grenze wenn nötig: …" oninput="save('m4-a4');updateProgress('m4')"></textarea>
+    <div class="save-status" id="save-m4-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#5D3A7A;">Aufgabe 5 · Einschätzung: Meine Kommunikation</div>
+    <div class="aufgabe-frage">Wie schätzt du deine Kommunikation aktuell ein?</div>
+    <div style="margin-top:8px;">
+      <div style="font-size:12px;color:#7A7060;margin-bottom:6px;">Mit dem Kind</div>
+      <div class="skala" id="skala-m4-kind">
+        <button class="skala-btn" onclick="selectSkala(this,'m4-kind',1);updateProgress('m4')">1</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-kind',2);updateProgress('m4')">2</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-kind',3);updateProgress('m4')">3</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-kind',4);updateProgress('m4')">4</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-kind',5);updateProgress('m4')">5</button>
+      </div>
+      <div class="skala-label"><span>muss ich üben</span><span>läuft gut</span></div>
+    </div>
+    <div style="margin-top:12px;">
+      <div style="font-size:12px;color:#7A7060;margin-bottom:6px;">Mit der Lehrkraft</div>
+      <div class="skala" id="skala-m4-lk">
+        <button class="skala-btn" onclick="selectSkala(this,'m4-lk',1);updateProgress('m4')">1</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-lk',2);updateProgress('m4')">2</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-lk',3);updateProgress('m4')">3</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-lk',4);updateProgress('m4')">4</button>
+        <button class="skala-btn" onclick="selectSkala(this,'m4-lk',5);updateProgress('m4')">5</button>
+      </div>
+      <div class="skala-label"><span>muss ich üben</span><span>läuft gut</span></div>
+    </div>
+    <textarea id="m4-a5" class="sm" placeholder="Was ich konkret verbessern möchte: …" oninput="save('m4-a5');updateProgress('m4')" style="margin-top:10px;"></textarea>
+    <div class="save-status" id="save-m4-a5"></div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 4 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m4-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m4-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 5 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#B7500A;" onclick="toggleModul('m5')">
+  <div class="modul-header-left">
+    <img src="brainy-m5.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 5</div>
+      <div class="modul-name">Dokumentation</div>
+      <div class="modul-sub">Tagesdoku · Berichte · Datenschutz</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m5-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m5-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m5-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B7500A;">Aufgabe 1 · Tagesdoku schreiben</div>
+    <div class="aufgabe-frage">Schreibe eine Muster-Tagesdokumentation für einen typischen Tag mit dem Kind das du begleitest.</div>
+    <div class="aufgabe-hinweis">Barometer-Verlauf · besondere Ereignisse · Interventionen · Soziales</div>
+    <textarea id="m5-a1" class="lg" placeholder="08:15 Barometer: … Kind kam …&#10;10:30 … Barometer: …&#10;12:15 Pause: …&#10;Abschluss-Barometer: …" oninput="save('m5-a1');updateProgress('m5')"></textarea>
+    <div class="save-status" id="save-m5-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B7500A;">Aufgabe 2 · Beobachtung vs. Interpretation</div>
+    <div class="aufgabe-frage">Formuliere drei Aussagen über das Kind um — von Interpretation zu Beobachtung.</div>
+    <textarea id="m5-a2" class="lg" placeholder="Interpretation: 'Das Kind ist aggressiv' → Beobachtung: …&#10;Interpretation: 'Das Kind will nicht' → Beobachtung: …&#10;Interpretation: 'Das Kind manipuliert' → Beobachtung: …" oninput="save('m5-a2');updateProgress('m5')"></textarea>
+    <div class="save-status" id="save-m5-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B7500A;">Aufgabe 3 · Mein Datenschutz-Check</div>
+    <div class="aufgabe-frage">Wie sicher ist deine Dokumentationspraxis gerade wirklich?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m5-c1');updateProgress('m5')"><input type="checkbox" id="m5-c1"><span class="check-label">Ich dokumentiere ausschließlich auf genehmigten Träger-Systemen</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m5-c2');updateProgress('m5')"><input type="checkbox" id="m5-c2"><span class="check-label">Ich nutze kein WhatsApp oder private Messenger für Kinderdaten</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m5-c3');updateProgress('m5')"><input type="checkbox" id="m5-c3"><span class="check-label">Meine schriftlichen Unterlagen liegen sicher verwahrt</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m5-c4');updateProgress('m5')"><input type="checkbox" id="m5-c4"><span class="check-label">Ich kenne die Aufbewahrungsfristen beim Träger</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m5-c5');updateProgress('m5')"><input type="checkbox" id="m5-c5"><span class="check-label">Ich dokumentiere zeitnah — nicht erst am nächsten Tag</span></label>
+    </div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#B7500A;">Aufgabe 4 · Ein SMART-Ziel formulieren</div>
+    <div class="aufgabe-frage">Formuliere ein SMART-Ziel für das Kind das du begleitest — für die nächsten 4 Wochen.</div>
+    <div class="aufgabe-hinweis">Spezifisch · Messbar · Attraktiv · Realistisch · Terminiert</div>
+    <textarea id="m5-a4" class="lg" placeholder="Bis [Datum]: Das Kind [konkrete Handlung] in [Anzahl] von [Anzahl] Situationen …&#10;Erkennbar daran: …&#10;Verantwortlich: …" oninput="save('m5-a4');updateProgress('m5')"></textarea>
+    <div class="save-status" id="save-m5-a4"></div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 5 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m5-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m5-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 6 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#D81B60;" onclick="toggleModul('m6')">
+  <div class="modul-header-left">
+    <img src="brainy-m6.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 6</div>
+      <div class="modul-name">Krise & Mobbing</div>
+      <div class="modul-sub">Erkennen · Handeln · Cybermobbing</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m6-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m6-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m6-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#D81B60;">Aufgabe 1 · Konflikt oder Mobbing?</div>
+    <div class="aufgabe-frage">Beschreibe eine soziale Situation die du beobachtet hast — und entscheide: Konflikt oder Mobbing? Begründe anhand der 3 Merkmale.</div>
+    <div class="aufgabe-hinweis">Wiederholung · Machtungleichgewicht · Absicht</div>
+    <textarea id="m6-a1" class="lg" placeholder="Die Situation: …&#10;Wiederholung? …&#10;Machtungleichgewicht? …&#10;Absicht? …&#10;Mein Urteil: Konflikt / Mobbing — weil …" oninput="save('m6-a1');updateProgress('m6')"></textarea>
+    <div class="save-status" id="save-m6-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#D81B60;">Aufgabe 2 · Mein Handlungsablauf</div>
+    <div class="aufgabe-frage">Beschreibe in eigenen Worten was du tust wenn du Mobbing beobachtest — Schritt für Schritt.</div>
+    <textarea id="m6-a2" class="lg" placeholder="1. …&#10;2. …&#10;3. …&#10;4. …&#10;Was ich auf keinen Fall tue: …" oninput="save('m6-a2');updateProgress('m6')"></textarea>
+    <div class="save-status" id="save-m6-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#D81B60;">Aufgabe 3 · Das Kind stabilisieren</div>
+    <div class="aufgabe-frage">Was würdest du zu dem Kind sagen wenn du weißt dass es gemobbt wird? Formuliere 3 konkrete Sätze.</div>
+    <textarea id="m6-a3" placeholder="1. …&#10;2. …&#10;3. …" oninput="save('m6-a3');updateProgress('m6')"></textarea>
+    <div class="save-status" id="save-m6-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#D81B60;">Aufgabe 4 · Selbstcheck Modul 6</div>
+    <div class="aufgabe-frage">Was hast du bereits sicher?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m6-c1');updateProgress('m6')"><input type="checkbox" id="m6-c1"><span class="check-label">Ich kann Mobbing von Konflikt unterscheiden</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m6-c2');updateProgress('m6')"><input type="checkbox" id="m6-c2"><span class="check-label">Ich kenne meinen Handlungsablauf bei Mobbing-Verdacht</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m6-c3');updateProgress('m6')"><input type="checkbox" id="m6-c3"><span class="check-label">Ich weiß dass ich bei Mobbing nicht selbst interveniere sondern melde</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m6-c4');updateProgress('m6')"><input type="checkbox" id="m6-c4"><span class="check-label">Bei Cybermobbing: Screenshots sichern, nicht löschen, sofort TK</span></label>
+    </div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#D81B60;">Aufgabe 5 · Brainy-Geschichtenkarten nutzen</div>
+    <div class="aufgabe-frage">Die 30 Brainy-Geschichtenkarten (Sets A, B, C) helfen, Mobbing-Themen kindgerecht zu besprechen. Mit welchem Kind könntest du welches Set einsetzen — und warum?</div>
+    <div class="aufgabe-hinweis">Set A: Brainy erlebt Mobbing · Set B: Brainy hilft anderen · Set C: Brainy übt Strategien</div>
+    <textarea id="m6-a5" class="lg" placeholder="Kind / Situation: …&#10;Passendes Set: …&#10;Warum: …" oninput="save('m6-a5');updateProgress('m6')"></textarea>
+    <div class="save-status" id="save-m6-a5"></div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 6 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m6-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m6-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 7 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#8B4A38;" onclick="toggleModul('m7')">
+  <div class="modul-header-left">
+    <img src="brainy-m7.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 7</div>
+      <div class="modul-name">Praxissituationen</div>
+      <div class="modul-sub">Was tue ich wenn …? · 20 Handlungskarten</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m7-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m7-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m7-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#8B4A38;">Aufgabe 1 · Meine schwierigste Situation</div>
+    <div class="aufgabe-frage">Welche Situation im Schulalltag ist für dich am herausforderndsten? Beschreibe sie — und wie du bisher reagierst.</div>
+    <textarea id="m7-a1" class="lg" placeholder="Die Situation: …&#10;Was ich bisher tue: …&#10;Was laut Lernhandbuch hilfreich wäre: …" oninput="save('m7-a1');updateProgress('m7')"></textarea>
+    <div class="save-status" id="save-m7-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#8B4A38;">Aufgabe 2 · Wutanfall — mein Drehbuch</div>
+    <div class="aufgabe-frage">Schreibe dein persönliches Drehbuch für den nächsten Wutanfall. Was tust du — Schritt für Schritt?</div>
+    <div class="aufgabe-hinweis">Körperlich sicher → Leise & Langsam → Akzeptanz → Raum schaffen → Warten → erst dann Gespräch</div>
+    <textarea id="m7-a2" class="lg" placeholder="Sobald ich merke dass es eskaliert: …&#10;Schritt 1: …&#10;Schritt 2: …&#10;Schritt 3: …&#10;Nach der Situation: …" oninput="save('m7-a2');updateProgress('m7')"></textarea>
+    <div class="save-status" id="save-m7-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#8B4A38;">Aufgabe 3 · Arbeitsverweigerung konkret</div>
+    <div class="aufgabe-frage">Das Kind verweigert die Aufgabe. Was ist dein Kleinstschritt-Einstieg für dieses konkrete Kind?</div>
+    <textarea id="m7-a3" placeholder="Mein Kleinstschritt-Einstieg für dieses Kind: …&#10;Und wenn das nicht klappt: …" oninput="save('m7-a3');updateProgress('m7')"></textarea>
+    <div class="save-status" id="save-m7-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#8B4A38;">Aufgabe 4 · Professionell bleiben</div>
+    <div class="aufgabe-frage">In welchen Situationen fällt es dir schwer professionell zu bleiben? Was hilft dir dabei?</div>
+    <textarea id="m7-a4" placeholder="Schwer fällt mir: …&#10;Was mir dabei hilft: …&#10;Was ich mir für diese Momente vornehme: …" oninput="save('m7-a4');updateProgress('m7')"></textarea>
+    <div class="save-status" id="save-m7-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#8B4A38;">Aufgabe 5 · Selbstcheck Praxissituationen</div>
+    <div class="aufgabe-frage">Was hast du bereits sicher im Griff?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m7-c1');updateProgress('m7')"><input type="checkbox" id="m7-c1"><span class="check-label">Ich kenne die 4 Stressmodi und erkenne sie beim Kind</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m7-c2');updateProgress('m7')"><input type="checkbox" id="m7-c2"><span class="check-label">Bei Wutanfällen: ich bleibe ruhig und erkläre nicht in der Emotion</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m7-c3');updateProgress('m7')"><input type="checkbox" id="m7-c3"><span class="check-label">Übergänge kündige ich immer an und begleite sie</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m7-c4');updateProgress('m7')"><input type="checkbox" id="m7-c4"><span class="check-label">Ich handle in der Gelb-Phase — nicht erst wenn es brennt</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m7-c5');updateProgress('m7')"><input type="checkbox" id="m7-c5"><span class="check-label">Nach jeder Eskalation: TK informieren und dokumentieren</span></label>
+    </div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 7 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m7-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m7-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL 8 ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#6B3F6B;" onclick="toggleModul('m8')">
+  <div class="modul-header-left">
+    <img src="brainy-m8.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul 8</div>
+      <div class="modul-name">Selbstfürsorge</div>
+      <div class="modul-sub">Stressbewältigung · Grenzen · Team</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="m8-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="m8-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="m8-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 1 · Mein Stresssignal</div>
+    <div class="aufgabe-frage">Was ist dein persönliches erstes Stresssignal? Körper, Gedanken oder Verhalten — was kommt zuerst?</div>
+    <textarea id="m8-a1" placeholder="Mein erstes Stresssignal ist: …&#10;Es tritt typischerweise auf wenn: …&#10;Was ich dann tue: …" oninput="save('m8-a1');updateProgress('m8')"></textarea>
+    <div class="save-status" id="save-m8-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 2 · Meine Sofort-Strategie</div>
+    <div class="aufgabe-frage">Welche der 5 Sofort-Strategien passt am besten zu dir? Beschreibe wie du sie im Schulalltag konkret einsetzt.</div>
+    <div class="aufgabe-hinweis">4-7-8 Atmung · Füße spüren · Kaltes Wasser · 5-4-3-2-1 Grounding · Schultern loslassen</div>
+    <textarea id="m8-a2" placeholder="Meine Strategie: …&#10;Wann ich sie einsetze: …&#10;Wie ich sie unauffällig nutze: …" oninput="save('m8-a2');updateProgress('m8')"></textarea>
+    <div class="save-status" id="save-m8-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 3 · Meine Grenzen</div>
+    <div class="aufgabe-frage">Wo hast du gerade Schwierigkeiten Grenzen zu setzen? Formuliere einen konkreten Satz den du beim nächsten Mal sagen wirst.</div>
+    <textarea id="m8-a3" placeholder="Die Situation wo ich Grenzen schwer setze: …&#10;Der Satz den ich sagen werde: …" oninput="save('m8-a3');updateProgress('m8')"></textarea>
+    <div class="save-status" id="save-m8-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 4 · Mein Selbstfürsorge-Plan</div>
+    <div class="aufgabe-frage">Welche drei konkreten Selbstfürsorge-Maßnahmen wirst du ab dieser Woche regelmäßig umsetzen?</div>
+    <div class="aufgabe-hinweis">Klein und realistisch — was du wirklich tust, nicht was du theoretisch tun solltest.</div>
+    <textarea id="m8-a4" class="lg" placeholder="1. [Was] — [Wann] — [Wie oft]: …&#10;2. [Was] — [Wann] — [Wie oft]: …&#10;3. [Was] — [Wann] — [Wie oft]: …" oninput="save('m8-a4');updateProgress('m8')"></textarea>
+    <div class="save-status" id="save-m8-a4"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 5 · Aktueller Zustand — ehrliche Einschätzung</div>
+    <div class="aufgabe-frage">Wie geht es dir gerade — auf dem Barometer für dich selbst?</div>
+    <div class="ampel-gruppe">
+      <button class="ampel-btn ampel-gruen" onclick="selectAmpel(this,'m8-baro','gruen');updateProgress('m8')" id="m8-baro-gruen">Grün — gut reguliert</button>
+      <button class="ampel-btn ampel-gelb" onclick="selectAmpel(this,'m8-baro','gelb');updateProgress('m8')" id="m8-baro-gelb">Gelb — unter Druck</button>
+      <button class="ampel-btn ampel-orange" onclick="selectAmpel(this,'m8-baro','orange');updateProgress('m8')" id="m8-baro-orange">Orange — erschöpft</button>
+      <button class="ampel-btn ampel-grau" onclick="selectAmpel(this,'m8-baro','grau');updateProgress('m8')" id="m8-baro-grau">Grau — brauche Unterstützung</button>
+    </div>
+    <textarea id="m8-a5" class="sm" placeholder="Was ich gerade brauche: …" oninput="save('m8-a5');updateProgress('m8')" style="margin-top:10px;"></textarea>
+    <div class="save-status" id="save-m8-a5"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 6 · Selbstcheck Selbstfürsorge</div>
+    <div class="aufgabe-frage">Was davon ist bei dir bereits regelmäßig?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'m8-c1');updateProgress('m8')"><input type="checkbox" id="m8-c1"><span class="check-label">Ich nehme echte Pausen — keine Scheinpausen mit Gedankenkreisen</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m8-c2');updateProgress('m8')"><input type="checkbox" id="m8-c2"><span class="check-label">Ich habe ein Feierabend-Ritual das Dienst und Freizeit trennt</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m8-c3');updateProgress('m8')"><input type="checkbox" id="m8-c3"><span class="check-label">Ich habe meine private Handynummer nicht weitergegeben</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m8-c4');updateProgress('m8')"><input type="checkbox" id="m8-c4"><span class="check-label">Ich nutze Supervision oder kollegialen Austausch regelmäßig</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'m8-c5');updateProgress('m8')"><input type="checkbox" id="m8-c5"><span class="check-label">Ich spreche belastende Situationen an — schlucke sie nicht</span></label>
+    </div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#6B3F6B;">Aufgabe 7 · Meine Soforthilfe-Werkzeuge</div>
+    <div class="aufgabe-frage">Die Karten M8-13 bis M8-19 bieten kurze Sofort-Übungen (3-Minuten-Pause, Lachyoga, Humor-Notfallkoffer, Schildkröten-Technik). Welche davon hast du ausprobiert — und welche passt am besten zu dir?</div>
+    <div class="aufgabe-hinweis">Probier mindestens zwei Übungen aus den neuen Karten aus, bevor du diese Aufgabe beantwortest.</div>
+    <textarea id="m8-a7" class="lg" placeholder="Ausprobiert: …&#10;Am besten passt zu mir: …&#10;Wann ich das künftig einsetze: …" oninput="save('m8-a7');updateProgress('m8')"></textarea>
+    <div class="save-status" id="save-m8-a7"></div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul 8 abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="m8-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="m8-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MODUL HUMOR ========== -->
+<div class="modul-divider"></div>
+<div class="modul-section">
+<div class="modul-header" style="background:#C47A00;" onclick="toggleModul('mh')">
+  <div class="modul-header-left">
+    <img src="brainy-mh.png" style="width:48px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div class="modul-badge">Modul Humor</div>
+      <div class="modul-name">Humor & Leichtigkeit</div>
+      <div class="modul-sub">Wann er verbindet — wann er schadet</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div id="mh-progress-display" style="font-size:12px;font-weight:700;color:rgba(255,255,255,.6);">0%</div>
+    <div class="modul-chevron" id="mh-chevron">▼</div>
+  </div>
+</div>
+<div class="modul-body" id="mh-body">
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#C47A00;">Aufgabe 1 · Mein Humor-Stil</div>
+    <div class="aufgabe-frage">Wie würdest du deinen natürlichen Humor-Stil beschreiben? Was kommt bei dir authentisch raus?</div>
+    <textarea id="mh-a1" placeholder="Mein Humor-Stil: …&#10;Was bei mir natürlich ist: …&#10;Was eher nicht zu mir passt: …" oninput="save('mh-a1');updateProgress('mh')"></textarea>
+    <div class="save-status" id="save-mh-a1"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#C47A00;">Aufgabe 2 · Barometer-Check für Humor</div>
+    <div class="aufgabe-frage">Beschreibe eine Situation wo du Humor eingesetzt hast und es gut funktioniert hat — und eine wo es nicht gepasst hat.</div>
+    <textarea id="mh-a2" class="lg" placeholder="Gut funktioniert (Barometer war …): …&#10;Nicht gepasst (Barometer war …): …&#10;Was ich daraus lerne: …" oninput="save('mh-a2');updateProgress('mh')"></textarea>
+    <div class="save-status" id="save-mh-a2"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#C47A00;">Aufgabe 3 · Meine Mikro-Intervention</div>
+    <div class="aufgabe-frage">Entwickle eine persönliche Humor-Mikro-Intervention für das Kind das du begleitest — klein, authentisch, für Grün/Gelb.</div>
+    <div class="aufgabe-hinweis">Absurde Übertreibung · gemeinsamer Fehler · Brainy-Geheimnis · Namensänderung · stilles Augenzwinkern</div>
+    <textarea id="mh-a3" placeholder="Meine Mikro-Intervention: …&#10;Wann ich sie einsetze: …" oninput="save('mh-a3');updateProgress('mh')"></textarea>
+    <div class="save-status" id="save-mh-a3"></div>
+  </div>
+
+  <div class="aufgabe">
+    <div class="aufgabe-nr" style="color:#C47A00;">Aufgabe 4 · Selbstcheck Humor</div>
+    <div class="aufgabe-frage">Was hast du verinnerlicht?</div>
+    <div class="check-gruppe">
+      <label class="check-item" onclick="toggleCheck(this,'mh-c1');updateProgress('mh')"><input type="checkbox" id="mh-c1"><span class="check-label">Ich lache mit dem Kind — niemals über das Kind</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'mh-c2');updateProgress('mh')"><input type="checkbox" id="mh-c2"><span class="check-label">Barometer Orange/Rot/Grau: kein Humor</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'mh-c3');updateProgress('mh')"><input type="checkbox" id="mh-c3"><span class="check-label">Kein Humor über Aussehen, Familie, Diagnose, Herkunft</span></label>
+      <label class="check-item" onclick="toggleCheck(this,'mh-c4');updateProgress('mh')"><input type="checkbox" id="mh-c4"><span class="check-label">Ich kenne die Humor-Notbremse und setze sie ein wenn nötig</span></label>
+    </div>
+  </div>
+
+  <div class="modul-progress">
+    <div class="modul-progress-lbl">Modul Humor abgeschlossen:</div>
+    <div class="modul-progress-bar"><div class="modul-progress-fill" id="mh-fill" style="width:0%"></div></div>
+    <div class="modul-progress-pct" id="mh-pct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ABSCHLUSS -->
+<div style="padding:28px clamp(1rem,4vw,2rem);">
+  <div class="abschluss-box">
+    <img src="brainy.png" style="width:80px;flex-shrink:0;" alt="Brainy">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:white;margin-bottom:8px;">Das Workbook ist ein Werkzeug — kein Prüfung.</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:6px;">Keine Antwort ist falsch. Jede ehrliche Antwort ist wertvoll. Und: Du musst es nicht in einer Sitzung durcharbeiten. Nimm dir Zeit — ein Modul pro Woche ist ein guter Rhythmus.</p>
+      <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin:0;">Klar. Warm. Menschlich.</p>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:12px;">© 2026 Anja Jolk | KLARTEXT-Mentoring · Alle Rechte vorbehalten</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// In-Memory Store (funktioniert zuverlässig bei file://)
+const wbStore = {
+  _data: {},
+  set: function(key, value) { try { this._data[key] = value; } catch(e) {} return value; },
+  get: function(key) { return this._data.hasOwnProperty(key) ? this._data[key] : null; }
+};
+
+const MODULES = ['m0','m1','m2','m3','m4','m5','m6','m7','m8','mh'];
+const COLORS = {m0:'#1B3A4B',m1:'#2E5E8A',m2:'#3B8A68',m3:'#B07D2A',m4:'#5D3A7A',m5:'#B7500A',m6:'#D81B60',m7:'#8B4A38',m8:'#6B3F6B',mh:'#C47A00'};
+
+// Toggle module
+function toggleModul(id) {
+  const body = document.getElementById(id+'-body');
+  const chev = document.getElementById(id+'-chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+// Eingaben speichern (In-Memory)
+function save(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  try {
+    wbStore.set('wb_'+id, el.value);
+    const status = document.getElementById('save-'+id);
+    if (status) {
+      status.textContent = '✓ gespeichert';
+      status.style.opacity = '1';
+      setTimeout(() => { status.style.opacity = '0'; }, 2000);
+    }
+  } catch(e) {}
+}
+
+// Toggle checkbox style
+function toggleCheck(label, id) {
+  const cb = document.getElementById(id);
+  if (!cb) return;
+  const newVal = !cb.checked;
+  cb.checked = newVal;
+  label.classList.toggle('checked', newVal);
+  try { wbStore.set('wb_'+id, newVal ? '1' : '0'); } catch(e) {}
+}
+
+// Select ampel button
+function selectAmpel(btn, group, value) {
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(b => {
+    if (b.tagName === 'BUTTON') b.classList.remove('selected');
+  });
+  btn.classList.add('selected');
+  try { wbStore.set('wb_ampel_'+group, value); } catch(e) {}
+}
+
+// Select skala button
+function selectSkala(btn, group, value) {
+  const container = document.getElementById('skala-'+group);
+  if (container) container.querySelectorAll('.skala-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  try { wbStore.set('wb_skala_'+group, value); } catch(e) {}
+}
+
+// Calculate module progress
+function updateProgress(mod) {
+  const body = document.getElementById(mod+'-body');
+  if (!body) return;
+  const textareas = body.querySelectorAll('textarea');
+  const checkboxes = body.querySelectorAll('input[type=checkbox]');
+  const ampelBtns = body.querySelectorAll('.ampel-btn.selected');
+  const skalaBtns = body.querySelectorAll('.skala-btn.selected');
+  
+  let filled = 0, total = 0;
+  textareas.forEach(t => { total++; if (t.value.trim().length > 10) filled++; });
+  checkboxes.forEach(c => { total += 0.3; if (c.checked) filled += 0.3; });
+  if (body.querySelectorAll('.ampel-btn').length > 0) { total++; if (ampelBtns.length > 0) filled++; }
+  if (body.querySelectorAll('.skala-btn').length > 0) { total += 0.5; if (skalaBtns.length > 0) filled += 0.5; }
+  
+  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  const fill = document.getElementById(mod+'-fill');
+  const pctEl = document.getElementById(mod+'-pct');
+  const display = document.getElementById(mod+'-progress-display');
+  const col = COLORS[mod] || '#1B3A4B';
+  
+  if (fill) { fill.style.width = pct+'%'; fill.style.background = col; }
+  if (pctEl) pctEl.textContent = pct+'%';
+  if (display) display.textContent = pct+'%';
+  
+  updateGesamtProgress();
+}
+
+function updateGesamtProgress() {
+  const container = document.getElementById('gp-module');
+  if (!container) return;
+  container.innerHTML = '';
+  const names = {m0:'M0',m1:'M1',m2:'M2',m3:'M3',m4:'M4',m5:'M5',m6:'M6',m7:'M7',m8:'M8',mh:'MH'};
+  MODULES.forEach(mod => {
+    const fillEl = document.getElementById(mod+'-fill');
+    const pct = fillEl ? parseInt(fillEl.style.width) || 0 : 0;
+    const col = COLORS[mod];
+    container.innerHTML += `<div class="gp-dot">
+      <div class="gp-dot-label">${names[mod]}</div>
+      <div class="gp-dot-bar"><div class="gp-dot-fill" style="width:${pct}%;background:${col};"></div></div>
+      <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;">${pct}%</div>
+    </div>`;
+  });
+}
+
+// Gespeicherte Werte beim Start laden
+function loadAll() {
+  // Textareas
+  document.querySelectorAll('textarea[id]').forEach(el => {
+    try {
+      const val = wbStore.get('wb_'+el.id);
+      if (val !== null) el.value = val;
+    } catch(e) {}
+  });
+  // Checkboxes
+  document.querySelectorAll('input[type=checkbox][id]').forEach(cb => {
+    try {
+      const val = wbStore.get('wb_'+cb.id);
+      if (val === '1') {
+        cb.checked = true;
+        cb.closest('.check-item').classList.add('checked');
+      }
+    } catch(e) {}
+  });
+  // Ampel buttons
+  try {
+    const ampelGroups = ['m2-modus','m8-baro'];
+    ampelGroups.forEach(group => {
+      const val = wbStore.get('wb_ampel_'+group);
+      if (val) {
+        const btn = document.getElementById(group+'-'+val);
+        if (btn) btn.classList.add('selected');
+      }
+    });
+  } catch(e) {}
+  // Skala buttons
+  try {
+    ['m4-kind','m4-lk'].forEach(group => {
+      const val = wbStore.get('wb_skala_'+group);
+      if (val) {
+        const container = document.getElementById('skala-'+group);
+        if (container) {
+          const btns = container.querySelectorAll('.skala-btn');
+          btns.forEach(b => { if (b.textContent === val) b.classList.add('selected'); });
+        }
+      }
+    });
+  } catch(e) {}
+  // Update all progress bars
+  MODULES.forEach(mod => updateProgress(mod));
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', loadAll);
+</script>
+
+
+  <!-- WORKBOOK M2-31 bis M2-34 -->
+  <div class="wb-kapitel" id="wb-spezial">
+    <div class="wb-kapitel-header">
+      <div class="wb-kapitel-nr">Spezial</div>
+      <div class="wb-kapitel-info">
+        <div class="wb-kapitel-titel">Bindung · Pflegekinder · Hochkonflikt · Essstörungen</div>
+        <div class="wb-kapitel-sub">Reflexion zu M2-31 bis M2-34</div>
+      </div>
+    </div>
+
+    <div class="wb-frage-block">
+      <div class="wb-frage-nr">S1</div>
+      <div class="wb-frage-text">Beschreibe ein Kind das du begleitest (oder dir vorstellst) das Bindungslogik zeigt — extreme Nähe, extreme Distanz oder Kontrollverhalten. Was steckt deiner Meinung nach dahinter?</div>
+      <textarea class="wb-antwort" placeholder="Deine Reflexion …"></textarea>
+    </div>
+
+    <div class="wb-frage-block">
+      <div class="wb-frage-nr">S2</div>
+      <div class="wb-frage-text">Pflegekinder haben oft 10–20 Erwachsene die "zuständig" sind. Was bedeutet das für deine Rolle als INGRA? Wie kannst du Stabilität anbieten ohne das System zu überfordern?</div>
+      <textarea class="wb-antwort" placeholder="Deine Reflexion …"></textarea>
+    </div>
+
+    <div class="wb-frage-block">
+      <div class="wb-frage-nr">S3</div>
+      <div class="wb-frage-text">Stell dir vor ein Elternteil konfrontiert dich aggressiv und behauptet du hättest etwas gesagt was du nicht gesagt hast. Was sagst du — Wort für Wort? Schreibe deinen Satz auf.</div>
+      <textarea class="wb-antwort" placeholder="Dein konkreter Satz …"></textarea>
+    </div>
+
+    <div class="wb-frage-block">
+      <div class="wb-frage-nr">S4</div>
+      <div class="wb-frage-text">Wo ist für dich persönlich die Grenze zwischen professioneller Distanz und echter menschlicher Wärme? Wie hältst du beides in Balance?</div>
+      <textarea class="wb-antwort" placeholder="Deine Reflexion …"></textarea>
+    </div>
+
+    <div class="wb-frage-block">
+      <div class="wb-frage-nr">S5</div>
+      <div class="wb-frage-text">Du beobachtest ein Mädchen das seit Wochen kaum isst, friert und Pausen meidet. Was dokumentierst du — schreibe einen konkreten Beispieleintrag. Was tust du als nächstes?</div>
+      <textarea class="wb-antwort" placeholder="Dokumentation und nächste Schritte …"></textarea>
+    </div>
+
+    <div class="wb-frage-block">
+      <div class="wb-frage-nr">S6</div>
+      <div class="wb-frage-text">Was nimmst du aus den Spezialkarten M2-31 bis M2-34 für deinen Alltag mit? Was überrascht dich? Was bestätigt etwas das du schon wusstest?</div>
+      <textarea class="wb-antwort" placeholder="Deine Erkenntnisse …"></textarea>
+    </div>
+  
+  <!-- WORKBOOK: Neue Karten M2-35 bis M2-41 -->
+  <div class="wb-kapitel" id="wb-neu">
+    <div class="wb-kapitel-header" onclick="toggleKapitel(this)">
+      <div class="wb-kapitel-nr">NEU</div>
+      <div>
+        <div class="wb-kapitel-titel">Sexueller Missbrauch · Seh- und Hörbehinderung</div>
+        <div class="wb-kapitel-sub">M2-35 bis M2-41 · Neue Karten</div>
+      </div>
+      <span class="wb-chevron">▼</span>
+    </div>
+    <div class="wb-kapitel-body">
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">M2-35</div>
+        <div>
+          <div class="wb-frage-text">Sexueller Missbrauch — Erkennen: Welche 3 Warnsignale haben dich am meisten überrascht? Warum?</div>
+          <textarea class="wb-antwort" id="wb-m235" placeholder="Deine Reflexion…" oninput="autoSave('wb-m235',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">M2-36</div>
+        <div>
+          <div class="wb-frage-text">Meldekette: Beschreibe in deinen eigenen Worten was du tust wenn ein Kind sich dir anvertraut — Schritt für Schritt.</div>
+          <textarea class="wb-antwort" id="wb-m236" placeholder="Deine Reflexion…" oninput="autoSave('wb-m236',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">M2-37</div>
+        <div>
+          <div class="wb-frage-text">Eigener Schutz: Was konkret tust du damit du selbst nie in eine Situation kommst die Missverständnisse erzeugt?</div>
+          <textarea class="wb-antwort" id="wb-m237" placeholder="Deine Reflexion…" oninput="autoSave('wb-m237',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">M2-38/39</div>
+        <div>
+          <div class="wb-frage-text">Sehbehinderung: Stell dir vor du begleitest ab morgen ein blinde Kind. Was änderst du in deiner Kommunikation, deiner Raumgestaltung, deinem Tempo?</div>
+          <textarea class="wb-antwort" id="wb-m238" placeholder="Deine Reflexion…" oninput="autoSave('wb-m238',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">M2-40/41</div>
+        <div>
+          <div class="wb-frage-text">Gehörlosigkeit: Was ist für dich die größte Herausforderung in der Kommunikation mit einem gehörlosen Kind — und wie gehst du damit um?</div>
+          <textarea class="wb-antwort" id="wb-m240" placeholder="Deine Reflexion…" oninput="autoSave('wb-m240',this.value)"></textarea>
+        </div>
+      </div>
+
+      <div class="wb-frage-block">
+        <div class="wb-frage-nr">Systemisch</div>
+        <div>
+          <div class="wb-frage-text">Was verbindet alle drei Themen (Missbrauch, Sehbehinderung, Gehörlosigkeit) aus systemischer Sicht? Was ist der gemeinsame Kern?</div>
+          <textarea class="wb-antwort" id="wb-sys-neu" placeholder="Deine Reflexion…" oninput="autoSave('wb-sys-neu',this.value)"></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div><!-- /page -->
+
+</body>
+</html>

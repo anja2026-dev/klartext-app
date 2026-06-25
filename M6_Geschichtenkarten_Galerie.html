@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Brainy-Geschichtenkarten — Mobbing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.hero{background:var(--navy);border-radius:14px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+.hero img{width:56px;height:56px;object-fit:contain;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.2rem;color:#fff;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);margin-top:.2rem;}
+.set-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.set-tab{padding:.5rem 1.1rem;border-radius:20px;font-size:.8rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--muted);}
+.set-tab.aktiv-a{background:#C62828;color:#fff;border-color:#C62828;}
+.set-tab.aktiv-b{background:#1565C0;color:#fff;border-color:#1565C0;}
+.set-tab.aktiv-c{background:#2E7D47;color:#fff;border-color:#2E7D47;}
+.karten-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
+.geschichte-karte{background:var(--surface);border-radius:12px;padding:1.1rem 1.25rem;box-shadow:0 1px 8px rgba(0,0,0,.06);}
+.gk-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
+.gk-id{display:inline-block;color:#fff;font-size:.65rem;font-weight:800;padding:.15rem .55rem;border-radius:10px;}
+.gk-brainy{width:48px;height:48px;object-fit:contain;}
+.gk-titel{font-family:"Playfair Display",serif;font-size:.98rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
+.gk-situation{font-size:.82rem;color:#3A3A4A;line-height:1.55;margin-bottom:.65rem;}
+.gk-fragen-titel{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem;}
+.gk-fragen{list-style:none;margin-bottom:.65rem;}
+.gk-fragen li{font-size:.78rem;color:var(--muted);padding:.15rem 0 .15rem 1rem;position:relative;}
+.gk-fragen li::before{content:"→";position:absolute;left:0;}
+.gk-impuls{border:1.5px solid;border-radius:8px;padding:.55rem .75rem;font-size:.76rem;color:#2D2D2D;line-height:1.5;}
+.hidden{display:none;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo">KLARTEXT <span>Brainy-Geschichtenkarten</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <img src="brainy.png" alt="Brainy">
+  <div>
+    <div class="hero-titel">Brainy-Geschichtenkarten — Mobbing</div>
+    <div class="hero-sub">30 Karten in 3 Sets · Zum gemeinsamen Anschauen und Besprechen mit dem Kind</div>
+  </div>
+</div>
+
+<div class="set-tabs">
+  <div class="set-tab aktiv-a" id="tab-a" onclick="zeigeSet('A')">🔴 Set A · Brainy erlebt Mobbing</div>
+  <div class="set-tab" id="tab-b" onclick="zeigeSet('B')">🔵 Set B · Brainy hilft anderen</div>
+  <div class="set-tab" id="tab-c" onclick="zeigeSet('C')">🟢 Set C · Brainy lernt Strategien</div>
+</div>
+
+<div class="karten-grid" id="set-a">
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A1</span><img src="brainy-grau.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird ausgelacht</div>
+        <div class="gk-situation">Brainy erzählt etwas, zwei Kinder lachen. Brainy wird klein und grau.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was fühlt Brainy?</li><li>Warum tut das weh?</li><li>Was könnte Brainy helfen?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sagen: Hör bitte auf. Das verletzt mich.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A2</span><img src="brainy-grau.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird ausgeschlossen</div>
+        <div class="gk-situation">Eine Gruppe spielt. Brainy steht daneben. Niemand reagiert.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum fühlt sich Brainy allein?</li><li>Was könnte Brainy Mut machen?</li><li>Was würdest du tun?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte fragen: Kann ich mitmachen?</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A3</span><img src="brainy-rot.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy bekommt gemeine Nachrichten</div>
+        <div class="gk-situation">Auf dem Tablet steht: Du bist dumm.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was macht das mit Brainy?</li><li>Was sollte Brainy NICHT tun?</li><li>Wer kann helfen?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sagen: Ich zeige das einem Erwachsenen.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A4</span><img src="brainy-rot.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird geschubst</div>
+        <div class="gk-situation">Brainy stolpert, ein Kind lacht.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist das nicht okay?</li><li>Was braucht Brainy?</li><li>Was wäre sicher?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte weggehen und Hilfe holen.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A5</span><img src="brainy-rot.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird bedroht</div>
+        <div class="gk-situation">Ein Kind sagt: Wenn du was sagst, passiert was.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum macht das Angst?</li><li>Was braucht Brainy?</li><li>Wer kann schützen?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sofort zu einer erwachsenen Person gehen.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A6</span><img src="brainy-grau.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird nachgeäfft</div>
+        <div class="gk-situation">Brainy spricht, ein Kind imitiert ihn spöttisch.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was fühlt Brainy?</li><li>Warum ist das unfair?</li><li>Was wäre ein guter Schritt?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sagen: Ich möchte so nicht behandelt werden.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A7</span><img src="brainy-grau.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird ignoriert</div>
+        <div class="gk-situation">Brainy spricht, niemand reagiert.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum tut Ignorieren weh?</li><li>Was könnte Brainy helfen?</li><li>Was würdest du Brainy raten?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sagen: Ich möchte gehört werden.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A8</span><img src="brainy-grau.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy wird beschämt</div>
+        <div class="gk-situation">Brainy macht einen Fehler, andere lachen.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was fühlt Brainy?</li><li>Was hilft bei Scham?</li><li>Was wäre freundlich?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sagen: Bitte hör auf. Das ist mir unangenehm.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A9</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy sieht, wie jemand anderes gemobbt wird</div>
+        <div class="gk-situation">Ein Kind wird ausgelacht. Brainy schaut unsicher.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was fühlt Brainy?</li><li>Was wäre mutig?</li><li>Wie kann Brainy helfen?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte jemanden holen, der helfen kann.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #C62828;">
+        <div class="gk-head"><span class="gk-id" style="background:#C62828;">A10</span><img src="brainy-grau.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy traut sich nicht, etwas zu sagen</div>
+        <div class="gk-situation">Brainy wurde verletzt, schweigt aber.</div>
+        <div class="gk-fragen-titel" style="color:#C62828;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum schweigt Brainy?</li><li>Was könnte Mut machen?</li><li>Wem könnte Brainy vertrauen?</li></ul>
+        <div class="gk-impuls" style="background:#FFEBEE;border-color:#C62828;"><b>Impuls:</b> Brainy könnte sagen: Ich brauche jemanden, der mir zuhört.</div>
+      </div></div>
+<div class="karten-grid hidden" id="set-b">
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B1</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy sagt Stopp</div>
+        <div class="gk-situation">Brainy sieht, wie ein Kind ausgelacht wird. Er stellt sich daneben und sagt ruhig: Stopp. Das ist nicht okay.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was fühlt Brainy in diesem Moment?</li><li>Warum ist Stopp sagen mutig?</li><li>Was könnte danach passieren?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Ich möchte, dass du aufhörst.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B2</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy holt Hilfe</div>
+        <div class="gk-situation">Brainy sieht, dass ein Kind geschubst wird. Er geht sofort zu einer Lehrkraft und sagt: Ich brauche Hilfe.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist Hilfe holen wichtig?</li><li>Wen kann Brainy ansprechen?</li><li>Was ist daran mutig?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Komm bitte mit, ich brauche Unterstützung.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B3</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy tröstet jemanden</div>
+        <div class="gk-situation">Ein Kind sitzt traurig auf der Bank. Brainy setzt sich daneben und sagt: Ich bin da.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum hilft es, nicht allein zu sein?</li><li>Was könnte Brainy noch tun?</li><li>Was hilft dir, wenn du traurig bist?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Du bist nicht allein.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B4</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy stärkt einen Verteidiger</div>
+        <div class="gk-situation">Ein anderes Kind sagt Hör auf!. Brainy nickt und stellt sich dazu.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist es leichter, wenn man nicht allein ist?</li><li>Was macht Brainy hier richtig?</li><li>Wie fühlt sich das Opfer jetzt?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Ich bin bei dir.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B5</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy meldet etwas sicher</div>
+        <div class="gk-situation">Brainy sieht eine gemeine Nachricht. Er zeigt sie einer erwachsenen Person, ohne sie weiterzuleiten.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist Weiterleiten falsch?</li><li>Was ist sichere Meldung?</li><li>Wen kann Brainy informieren?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Ich möchte das melden, weil es unfair ist.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B6</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy begleitet jemanden</div>
+        <div class="gk-situation">Ein Kind hat Angst, in die Pause zu gehen. Brainy sagt: Ich gehe mit dir.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum hilft Begleitung?</li><li>Was könnte Brainy beachten?</li><li>Was wäre ein guter nächster Schritt?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Wir gehen zusammen.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B7</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy zeigt Mut</div>
+        <div class="gk-situation">Brainy sieht eine ungerechte Situation und sagt: Das fühlt sich nicht richtig an.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist das mutig?</li><li>Was könnte Brainy danach tun?</li><li>Was hilft, wenn man unsicher ist?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Ich möchte, dass wir fair bleiben.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B8</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy schützt jemanden</div>
+        <div class="gk-situation">Ein Kind wird bedroht. Brainy stellt sich daneben und sagt: Ich bleibe bei dir.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum hilft Nähe?</li><li>Was darf Brainy NICHT tun?</li><li>Wer kann zusätzlich helfen?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Ich bleibe hier, bis Hilfe kommt.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B9</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy erklärt, warum etwas weh tut</div>
+        <div class="gk-situation">Brainy sagt zu einem Kind: Wenn du so redest, tut mir das weh.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist das wichtig?</li><li>Wie fühlt sich das Opfer?</li><li>Was könnte danach passieren?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Ich möchte freundlich behandelt werden.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #1565C0;">
+        <div class="gk-head"><span class="gk-id" style="background:#1565C0;">B10</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy zeigt Grenzen</div>
+        <div class="gk-situation">Brainy sagt klar: Ich möchte nicht, dass du mich so behandelst.</div>
+        <div class="gk-fragen-titel" style="color:#1565C0;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum sind Grenzen wichtig?</li><li>Wie fühlt sich Brainy danach?</li><li>Was wäre ein guter nächster Schritt?</li></ul>
+        <div class="gk-impuls" style="background:#EAF1F8;border-color:#1565C0;"><b>Impuls:</b> Brainy könnte sagen: Stopp. Das möchte ich nicht.</div>
+      </div></div>
+<div class="karten-grid hidden" id="set-c">
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C1</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Ich-Botschaften</div>
+        <div class="gk-situation">Brainy sagt: Ich fühle mich schlecht, wenn du mich auslachst.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum helfen Ich-Botschaften?</li><li>Wie klingt das freundlich?</li><li>Was könnte Brainy noch sagen?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich brauche, dass du aufhörst.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C2</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Grenzen setzen</div>
+        <div class="gk-situation">Brainy sagt: Nein, ich möchte das nicht.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist Nein sagen schwer?</li><li>Was hilft dabei?</li><li>Wie kann Brainy ruhig bleiben?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich entscheide das für mich.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C3</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Weggehen</div>
+        <div class="gk-situation">Brainy merkt, dass eine Situation kippt. Er dreht sich um und geht.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist Weggehen klug?</li><li>Was schützt Brainy dadurch?</li><li>Wohin könnte er gehen?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich gehe jetzt weg.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C4</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Hilfe holen</div>
+        <div class="gk-situation">Brainy sagt: Ich brauche Unterstützung.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Wen kann Brainy ansprechen?</li><li>Warum ist das kein Petzen?</li><li>Was passiert danach?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Kannst du mir helfen?</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C5</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt digitale Sicherheit</div>
+        <div class="gk-situation">Brainy bekommt eine gemeine Nachricht und macht sofort einen Screenshot.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist das wichtig?</li><li>Was darf Brainy NICHT tun?</li><li>Wen informiert Brainy?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich sichere das und hole Hilfe.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C6</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Selbstschutz</div>
+        <div class="gk-situation">Brainy merkt, dass er Angst bekommt. Er geht zu einem sicheren Ort.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Was ist ein sicherer Ort?</li><li>Was hilft Brainy, ruhig zu werden?</li><li>Wen könnte er informieren?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich brauche kurz Sicherheit.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C7</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Mut</div>
+        <div class="gk-situation">Brainy hebt die Hand und sagt: Ich möchte etwas sagen.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist das mutig?</li><li>Was könnte Brainy sagen?</li><li>Was hilft bei Unsicherheit?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich probiere es.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C8</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Teamarbeit</div>
+        <div class="gk-situation">Brainy sagt zu einem anderen Kind: Lass uns zusammenhalten.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum hilft Teamarbeit?</li><li>Was stärkt eine Gruppe?</li><li>Was könnte Brainy tun?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Wir schaffen das gemeinsam.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C9</span><img src="brainy-gruen.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Ruhe</div>
+        <div class="gk-situation">Brainy atmet tief ein, bevor er reagiert.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum hilft Atmen?</li><li>Was passiert im Körper?</li><li>Was könnte Brainy danach tun?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich brauche kurz Ruhe.</div>
+      </div>
+      <div class="geschichte-karte" style="border-top:4px solid #2E7D47;">
+        <div class="gk-head"><span class="gk-id" style="background:#2E7D47;">C10</span><img src="brainy-gelb.png" alt="Brainy" class="gk-brainy"></div>
+        <div class="gk-titel">Brainy übt Nein sagen</div>
+        <div class="gk-situation">Brainy sagt klar: Nein, ich mache da nicht mit.</div>
+        <div class="gk-fragen-titel" style="color:#2E7D47;">Fragen zum Gespräch</div>
+        <ul class="gk-fragen"><li>Warum ist das wichtig?</li><li>Was schützt Brainy dadurch?</li><li>Was könnte danach passieren?</li></ul>
+        <div class="gk-impuls" style="background:#EAF5EE;border-color:#2E7D47;"><b>Impuls:</b> Brainy könnte sagen: Ich entscheide das selbst.</div>
+      </div></div>
+
+<div style="background:#fff;border-radius:12px;padding:1rem 1.25rem;margin-top:1.5rem;font-size:.8rem;color:var(--muted);">
+  💡 <b>Tipp für INGRA:</b> Diese Karten gibt es auch als Druckvorlage zum Ausschneiden — ideal für die Pinnwand oder als Kärtchen-Set: <a href="M6_DL_Geschichtenkarten_Druckset.html" style="color:var(--navy);font-weight:700;">→ Zur Druckversion</a>
+</div>
+
+</div>
+
+<script>
+function zeigeSet(set) {
+  document.querySelectorAll('.karten-grid').forEach(g => g.classList.add('hidden'));
+  document.getElementById('set-' + set.toLowerCase()).classList.remove('hidden');
+  document.querySelectorAll('.set-tab').forEach(t => t.className = 'set-tab');
+  document.getElementById('tab-' + set.toLowerCase()).classList.add('aktiv-' + set.toLowerCase());
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Desktop-Zugang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+:root{--navy:#1B3A4B;--accent:#6EC6A0;--paper:#F5F0E8;--white:#fff;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",system-ui,sans-serif;background:var(--navy);
+     display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+.box{background:var(--paper);border-radius:16px;padding:2.5rem 2rem;
+     max-width:400px;width:100%;text-align:center;
+     box-shadow:0 8px 40px rgba(0,0,0,.3);}
+.logo-mark{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1.5rem;}
+.logo-k{width:32px;height:32px;background:var(--navy);border-radius:6px;
+         display:flex;align-items:center;justify-content:center;
+         color:#fff;font-weight:700;font-size:1rem;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:var(--navy);}
+h1{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--navy);margin-bottom:.5rem;}
+p{font-size:.88rem;color:#6B7280;line-height:1.6;margin-bottom:1.5rem;}
+.btn{display:block;width:100%;padding:.9rem;border:none;border-radius:10px;
+     font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none;
+     transition:opacity .15s;margin-bottom:.6rem;}
+.btn-admin{background:var(--navy);color:#fff;}
+.btn-admin:hover{opacity:.88;}
+.btn-trainer{background:#B07D2A;color:#fff;}
+.btn-trainer:hover{opacity:.88;}
+.hint{font-size:.72rem;color:#aaa;margin-top:1rem;line-height:1.5;}
+.divider{border:none;border-top:1px solid #DDD8CE;margin:1rem 0;}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo-mark">
+    <div class="logo-k">K</div>
+    <div class="logo-text">KLARTEXT</div>
+  </div>
+  <h1>Desktop-Zugang</h1>
+  <p>Direktzugang ohne Passwort — nur für lokale Nutzung auf Ihrem Gerät.</p>
+  
+  <button class="btn btn-admin" onclick="loginAs('admin')">
+    🔑 Admin-Zugang (vollständig)
+  </button>
+  <button class="btn btn-trainer" onclick="loginAs('trainer')">
+    👩‍🏫 Trainer-Zugang
+  </button>
+  
+  <div class="divider"></div>
+  
+  <a href="KLARTEXT_Lehrerkurs.html" class="btn" 
+     style="background:#1565C0;color:#fff;" onclick="loginAs('lk');return false;" 
+     id="btn-lk">🏫 Lehrkraft-Bereich</a>
+  <a href="KLARTEXT_Elternkurs.html" class="btn" 
+     style="background:#AD1457;color:#fff;" onclick="loginAs('eltern');return false;"
+     id="btn-eltern">👨‍👩‍👧 Eltern-Bereich</a>
+  
+  <div class="hint">
+    ⚠️ Diese Seite ist nur für die lokale Desktop-Nutzung gedacht.<br>
+    Nicht öffentlich verlinken oder veröffentlichen.
+  </div>
+</div>
+
+<script>
+function loginAs(role) {
+  try {
+    sessionStorage.setItem("klartext_login", "true");
+    sessionStorage.setItem("klartext_role", role);
+    
+    var ziele = {
+      admin:   "DASHBOARD.html",
+      trainer: "DASHBOARD.html",
+      ingra:   "DASHBOARD.html",
+      tk:      "DASHBOARD.html",
+      lk:      "KLARTEXT_Lehrerkurs.html",
+      eltern:  "KLARTEXT_Elternkurs.html"
+    };
+    window.location.href = ziele[role] || "DASHBOARD.html";
+  } catch(e) {
+    alert("Fehler: " + e.message);
+  }
+}
+</script>
+</body>
+</html>

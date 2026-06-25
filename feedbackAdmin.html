@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Feedback Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;
+  --gruen:#2E7D32;--rot:#C62828;
+}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+
+/* ── HEADER ── */
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+
+/* ── LAYOUT ── */
+.shell{max-width:900px;margin:0 auto;padding:1.5rem 1rem 5rem;}
+
+/* ── STATISTIK ── */
+.stat-box{background:var(--navy);color:rgba(255,255,255,.85);border-radius:12px;padding:.8rem 1.1rem;font-size:.82rem;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+.stat-box strong{font-size:1rem;color:#fff;}
+
+/* ── FILTER ── */
+.filter-block{background:var(--surface);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1.25rem;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.filter-block-titel{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.filter-zeile{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:.5rem;}
+.filter-zeile:last-child{margin-bottom:0;}
+.filter-btn{padding:.3rem .7rem;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--navy);color:var(--navy);}
+.filter-btn.aktiv{background:var(--navy);border-color:var(--navy);color:#fff;}
+.filter-btn.aktiv-rot{background:var(--rot);border-color:var(--rot);color:#fff;}
+.filter-input{border:1.5px solid var(--border);border-radius:8px;padding:.3rem .65rem;font-family:"DM Sans",sans-serif;font-size:.78rem;background:#FAFAFA;}
+.filter-input:focus{outline:none;border-color:var(--navy);}
+.filter-reset{padding:.3rem .7rem;border:none;background:none;font-family:"DM Sans",sans-serif;font-size:.75rem;color:var(--muted);cursor:pointer;text-decoration:underline;margin-left:.25rem;}
+.filter-reset:hover{color:var(--rot);}
+
+/* ── LISTE-KOPF ── */
+.liste-kopf{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;}
+.liste-zaehler{font-size:.8rem;color:var(--muted);}
+
+/* ── EINTRÄGE ── */
+.fb-lade{text-align:center;padding:2.5rem;color:var(--muted);font-size:.84rem;}
+.fb-leer{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.84rem;background:var(--surface);border-radius:12px;}
+.fb-zeile{display:flex;align-items:flex-start;gap:.85rem;background:var(--surface);border-radius:12px;padding:.85rem 1rem;margin-bottom:.55rem;box-shadow:0 1px 5px rgba(0,0,0,.04);transition:transform .1s;}
+.fb-zeile:hover{transform:translateX(2px);}
+.fb-neu{border-left:4px solid var(--acc);}
+.fb-gelesen{border-left:4px solid var(--border);opacity:.85;}
+.fb-zeile-sterne{font-size:1.05rem;flex-shrink:0;line-height:1.6;}
+.fb-zeile-info{flex:1;min-width:0;}
+.fb-zeile-meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.3rem;}
+.fb-chip{font-size:.62rem;font-weight:700;padding:.12rem .45rem;border-radius:8px;text-transform:uppercase;letter-spacing:.04em;}
+.fb-chip-rolle{background:#EAF0F4;color:#1B3A4B;}
+.fb-chip-typ{background:#EAF7EF;color:#1B5E2E;}
+.fb-chip-test{background:#FBF4E8;color:#7A4A00;}
+.fb-chip-neu{background:var(--acc);color:#1B3A4B;}
+.fb-zeile-datum{font-size:.7rem;color:var(--muted);margin-bottom:.25rem;}
+.fb-zeile-vorschau{font-size:.8rem;color:#3A3A4A;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:480px;}
+.fb-detail-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:.35rem .7rem;font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:700;color:var(--navy);cursor:pointer;flex-shrink:0;white-space:nowrap;transition:all .15s;}
+.fb-detail-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* ── OVERLAY / DETAIL ── */
+.fb-overlay{position:fixed;inset:0;background:rgba(27,58,75,.75);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;}
+.fb-overlay.aktiv{display:flex;}
+.fb-detail-karte{background:var(--surface);border-radius:16px;padding:1.75rem;max-width:680px;width:100%;position:relative;margin:auto;}
+.fb-detail-schliessen{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);line-height:1;}
+.fb-detail-schliessen:hover{color:var(--rot);}
+.fb-detail-kopf{margin-bottom:1.1rem;padding-bottom:.85rem;border-bottom:1px solid var(--border);}
+.fb-detail-sterne{font-size:1.3rem;margin-bottom:.4rem;}
+.fb-detail-badges{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.35rem;}
+.fb-detail-datum{font-size:.75rem;color:var(--muted);}
+.fb-detail-sektion{margin-bottom:1rem;}
+.fb-detail-sektion-titel{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+.fb-detail-text{font-size:.84rem;line-height:1.65;color:#2D2D2D;background:var(--paper);border-radius:8px;padding:.75rem .9rem;white-space:pre-wrap;word-break:break-word;}
+.fb-rohdaten-tabelle{width:100%;border-collapse:collapse;font-size:.78rem;}
+.fb-roh-label{padding:.35rem .5rem .35rem 0;font-weight:700;color:var(--navy);vertical-align:top;width:38%;border-bottom:1px solid #F0EDE5;}
+.fb-roh-wert{padding:.35rem 0;color:#2D2D2D;border-bottom:1px solid #F0EDE5;vertical-align:top;}
+.fb-detail-aktionen{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.1rem;padding-top:.85rem;border-top:1px solid var(--border);}
+.fb-aktion-btn{padding:.45rem .9rem;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--navy);transition:all .15s;}
+.fb-aktion-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.fb-aktion-loeschen{color:var(--rot);border-color:#FFCDD2;}
+.fb-aktion-loeschen:hover{background:var(--rot);color:#fff;border-color:var(--rot);}
+</style>
+
+<!-- Nur Admin und Trainer -->
+<script>(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){window.location.href='KLARTEXT_Login.html';return;}
+    var r=sessionStorage.getItem('klartext_role')||'';
+    if(r!=='admin'&&r!=='trainer'){window.location.href='DASHBOARD.html';}
+  }catch(e){}
+})();</script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="feedbackAdmin.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Feedback Admin</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <!-- STATISTIK -->
+  <div class="stat-box">
+    <span id="fb-statistik">Lade …</span>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-block">
+    <div class="filter-block-titel">Filter</div>
+
+    <div class="filter-zeile">
+      <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:48px;">Rolle</span>
+      <button class="filter-btn aktiv" data-filter="rolle" data-wert="" onclick="filterAendern('rolle','')">Alle</button>
+      <button class="filter-btn" data-filter="rolle" data-wert="ingra_" onclick="filterAendern('rolle','ingra_')">INGRA</button>
+      <button class="filter-btn" data-filter="rolle" data-wert="ingra-beta" onclick="filterAendern('rolle','ingra-beta')">Beta</button>
+      <button class="filter-btn" data-filter="rolle" data-wert="tk" onclick="filterAendern('rolle','tk')">TK</button>
+      <button class="filter-btn" data-filter="rolle" data-wert="anonym" onclick="filterAendern('rolle','anonym')">Anonym</button>
+    </div>
+
+    <div class="filter-zeile">
+      <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:48px;">Typ</span>
+      <button class="filter-btn aktiv" data-filter="typ" data-wert="" onclick="filterAendern('typ','')">Alle</button>
+      <button class="filter-btn" data-filter="typ" data-wert="testbogen" onclick="filterAendern('typ','testbogen')">Testbogen</button>
+      <button class="filter-btn" data-filter="typ" data-wert="allgemein" onclick="filterAendern('typ','allgemein')">Allgemeines Feedback</button>
+    </div>
+
+    <div class="filter-zeile">
+      <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:48px;">Sterne</span>
+      <button class="filter-btn aktiv" data-filter="sterne" data-wert="0" onclick="filterAendern('sterne',0)">Alle</button>
+      <button class="filter-btn" data-filter="sterne" data-wert="5" onclick="filterAendern('sterne',5)">★★★★★</button>
+      <button class="filter-btn" data-filter="sterne" data-wert="4" onclick="filterAendern('sterne',4)">★★★★</button>
+      <button class="filter-btn" data-filter="sterne" data-wert="3" onclick="filterAendern('sterne',3)">★★★</button>
+      <button class="filter-btn" data-filter="sterne" data-wert="2" onclick="filterAendern('sterne',2)">★★</button>
+      <button class="filter-btn" data-filter="sterne" data-wert="1" onclick="filterAendern('sterne',1)">★</button>
+    </div>
+
+    <div class="filter-zeile">
+      <span style="font-size:.72rem;font-weight:700;color:var(--muted);min-width:48px;">Datum</span>
+      <span style="font-size:.75rem;color:var(--muted);">Von</span>
+      <input class="filter-input" type="date" id="f-von" onchange="filterZeitraum()">
+      <span style="font-size:.75rem;color:var(--muted);">Bis</span>
+      <input class="filter-input" type="date" id="f-bis" onchange="filterZeitraum()">
+      <button class="filter-reset" onclick="filterZuruecksetzen()">↺ Zurücksetzen</button>
+    </div>
+  </div>
+
+  <!-- LISTE -->
+  <div class="liste-kopf">
+    <span style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--navy);">📋 Eingegangene Feedbacks</span>
+    <span class="liste-zaehler" id="fb-zaehler">…</span>
+  </div>
+
+  <div class="fb-lade" id="fb-lade">Lade Einträge …</div>
+  <div id="fb-liste"></div>
+
+</div>
+
+<!-- DETAIL-OVERLAY -->
+<div class="fb-overlay" id="fb-overlay">
+  <div class="fb-detail-karte">
+    <button class="fb-detail-schliessen" onclick="schliesseDetail()">✕</button>
+    <div id="fb-detail-panel"></div>
+  </div>
+</div>
+
+</body>
+</html>

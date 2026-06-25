@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – M1-01 · Rechts-Notizblatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+/* ── Modul 1 · Stahlblau ── */
+:root {
+  --m3:        #2E5E8A;
+  --m3-dark:   #1A3D5C;
+  --m3-light:  #EAF1F8;
+  --m3-border: #9BBBD8;
+}
+main { max-width: 680px; margin: 0 auto; padding: clamp(1.5rem,4vw,2.5rem) clamp(.75rem,3vw,1.25rem) 5rem; }
+.back-to-top { display: block; margin: 2.5rem auto 0; text-align: center; font-size: 1.1rem; text-decoration: none; color: var(--kt-muted); }
+.back-to-top:hover { opacity: .7; }
+.formular { background: var(--kt-surface); border-radius: var(--r-lg); border: 1px solid var(--kt-border); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 1.5rem; }
+.formular-stripe  { height: 4px; background: var(--m3); }
+.formular-header  { background: var(--m3); color: #fff; padding: 1.2rem 1.5rem 1rem; }
+.fh-meta { font-size: .65rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; opacity: .75; margin-bottom: .2rem; }
+.fh-meta + h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(1.2rem,3vw,1.45rem); line-height: 1.2; }
+.fh-linie { width: 32px; height: 3px; background: var(--kt-accent); border-radius: 2px; margin-top: .6rem; }
+.formular-body { padding: clamp(1rem,3vw,1.5rem); }
+.abs { margin-bottom: 1.2rem; }
+.abs:last-child { margin-bottom: 0; }
+.abs-titel { font-size: .63rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--m3); margin-bottom: .5rem; padding-bottom: .3rem; border-bottom: 1px solid color-mix(in srgb, var(--m3) 20%, var(--kt-border)); }
+.feld { display: flex; flex-direction: column; gap: 4px; margin-bottom: .75rem; }
+.feld:last-child { margin-bottom: 0; }
+.feld label { font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--kt-muted); }
+input[type=text], input[type=date] { font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--kt-ink); background: var(--kt-surface); border: 1.5px solid var(--kt-border); border-radius: var(--r-sm); padding: .45rem .7rem; outline: none; width: 100%; transition: border-color .15s; }
+input[type=text]:focus, input[type=date]:focus { border-color: var(--m3); }
+textarea { font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--kt-ink); background: var(--kt-surface); border: 1.5px solid var(--kt-border); border-radius: var(--r-md); padding: .55rem .75rem; resize: vertical; width: 100%; min-height: 72px; outline: none; line-height: 1.65; transition: border-color .15s; }
+textarea:focus { border-color: var(--m3); }
+textarea.sm { min-height: 52px; }
+.check-reihe { display: flex; flex-wrap: wrap; gap: .35rem .9rem; margin-top: .25rem; }
+.check-reihe label { font-size: .88rem; color: var(--kt-ink); display: flex; align-items: center; gap: 5px; cursor: pointer; }
+input[type=checkbox] { accent-color: var(--m3); width: 15px; height: 15px; cursor: pointer; flex-shrink: 0; }
+.hinweis { font-size: .8rem; color: var(--kt-muted); font-style: italic; border-left: 3px solid var(--kt-accent); padding-left: .6rem; margin-bottom: .65rem; line-height: 1.6; }
+.formular-footer { background: var(--kt-paper); border-top: 1.5px solid var(--kt-border); padding: .55rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .3rem; }
+.ff-l { font-size: .68rem; color: var(--kt-muted); }
+.ff-r { font-family: 'Playfair Display', serif; font-weight: 700; font-size: .78rem; color: var(--kt-muted); }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurück">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT – Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+
+<div class="kt-context" aria-hidden="true">KLARTEXT · Modul 1 · Recht &amp; Rolle</div>
+
+<main>
+<div id="top"></div>
+<article class="formular" aria-labelledby="fh-main">
+  <div class="formular-stripe"></div>
+  <div class="formular-header">
+    <div class="fh-meta">Modul 1 · Recht &amp; Rolle</div>
+    <h1 id="fh-main">Rechts-Notizblatt</h1>
+    <div class="fh-linie"></div>
+  </div>
+  <div class="formular-body">
+    <div class="hinweis">Für eigene Notizen zu rechtlichen Fragen – kein Ersatz für Rechtsberatung.</div>
+    <div class="abs">
+      <div class="abs-titel">Thema / Frage</div>
+      <div class="feld"><label>Was ist meine Frage?</label><textarea class="sm" name="frage" placeholder="z. B. Darf ich Fotos vom Kind machen?"></textarea></div>
+      <div class="feld"><label>Quelle / Antwort</label><textarea class="sm" name="antwort" placeholder="Was habe ich herausgefunden?"></textarea></div>
+    </div>
+    <div class="abs">
+      <div class="abs-titel">Meine Zuständigkeiten</div>
+      <div class="check-reihe"><label><input type="checkbox"> Ich bin zuständig für: Begleitung des Kindes im Unterricht</label></div>
+      <div class="check-reihe"><label><input type="checkbox"> Ich bin zuständig für: Sicherheit des Kindes</label></div>
+      <div class="check-reihe"><label><input type="checkbox"> Ich bin NICHT zuständig für: pädagogische Entscheidungen</label></div>
+      <div class="check-reihe"><label><input type="checkbox"> Ich bin NICHT zuständig für: Diagnosen oder Therapieentscheidungen</label></div>
+      <div class="check-reihe"><label><input type="checkbox"> Ich bin NICHT zuständig für: Elterngespräche ohne Absprache</label></div>
+    </div>
+    <div class="abs">
+      <div class="abs-titel">Wichtige Kontakte (Rechtsberatung / Leitung)</div>
+      <div class="feld"><label>Ansprechperson Leitung</label><input type="text" name="leitung"></div>
+      <div class="feld"><label>Ansprechperson Träger</label><input type="text" name="traeger"></div>
+      <div class="feld"><label>Weiteres</label><input type="text" name="weiteres"></div>
+    </div>
+    <div class="abs">
+      <div class="abs-titel">Offene Rechtsfragen</div>
+      <textarea name="offen" placeholder="Was muss ich noch klären?"></textarea>
+    </div>
+  </div>
+  <div class="formular-footer">
+    <span class="ff-l">M1-01 · Rechts-Notizblatt · persönlich</span>
+    <span class="ff-r">KLARTEXT</span>
+  </div>
+</article>
+<a href="#top" class="back-to-top">⬆️ Nach oben</a>
+</main>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

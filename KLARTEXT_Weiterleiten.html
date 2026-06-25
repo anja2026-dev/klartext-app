@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Weiterleiten</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:640px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+
+.hero{background:var(--navy);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff;margin-bottom:.4rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.5;}
+
+.form-karte{background:var(--surface);border-radius:14px;padding:1.5rem;box-shadow:0 1px 8px rgba(0,0,0,.05);}
+.feld{margin-bottom:1.4rem;}
+.feld-label{display:block;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
+.feld-label .pflicht{color:#C62828;margin-left:.15rem;}
+
+select, textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:.7rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;line-height:1.5;background:#FAFAFA;}
+textarea{resize:vertical;min-height:90px;}
+select:focus, textarea:focus{outline:none;border-color:var(--navy);}
+
+.btn-senden{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.9rem;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:.5rem;}
+.btn-senden:disabled{background:var(--border);cursor:not-allowed;}
+
+.fehler-box{background:#FFEBEE;border-left:4px solid #C62828;border-radius:8px;padding:.7rem 1rem;font-size:.8rem;color:#8B1A1A;margin-bottom:1rem;display:none;}
+.fehler-box.zeigen{display:block;}
+
+.erfolg-overlay{position:fixed;inset:0;background:rgba(27,58,75,.85);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;}
+.erfolg-overlay.zeigen{display:flex;}
+.erfolg-karte{background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:380px;text-align:center;}
+.erfolg-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.erfolg-titel{font-family:"Playfair Display",serif;font-size:1.2rem;color:var(--navy);margin-bottom:.5rem;}
+.erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
+.erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin:0 .3rem;}
+.erfolg-btn.sekundaer{background:transparent;color:var(--navy);border:1.5px solid var(--navy);}
+.erfolg-btn.link-btn{background:var(--gold);width:100%;margin:.5rem 0 0;}
+.link-bestaetigung{font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.5rem;opacity:0;transition:opacity .25s;}
+.link-bestaetigung.zeigen{opacity:1;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Weiterleiten</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="hero">
+    <div class="hero-titel">Information weiterleiten</div>
+    <div class="hero-sub">Übergaben, Barometer-Hinweise oder sonstige Informationen an die Teamkoordination senden.</div>
+  </div>
+
+  <div class="form-karte">
+    <div class="fehler-box" id="fehler-box"></div>
+
+    <form id="forward-form">
+      <div class="feld">
+        <label class="feld-label" for="child-select">Kind<span class="pflicht">*</span></label>
+        <select id="child-select" required>
+          <option value="">Bitte wählen …</option>
+        </select>
+      </div>
+
+      <div class="feld">
+        <label class="feld-label" for="type-select">Art der Information<span class="pflicht">*</span></label>
+        <select id="type-select" required>
+          <option value="">Bitte wählen …</option>
+          <option value="Übergabe">Übergabe</option>
+          <option value="Barometer">Barometer</option>
+          <option value="Hinweis">Hinweis</option>
+        </select>
+      </div>
+
+      <div class="feld">
+        <label class="feld-label" for="text-feld">Text<span class="pflicht">*</span></label>
+        <textarea id="text-feld" placeholder="Was möchten Sie weitergeben? …" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-senden" id="btn-senden">Weiterleiten an Teamkoordination</button>
+    </form>
+  </div>
+
+</div>
+
+<div class="erfolg-overlay" id="erfolg-overlay">
+  <div class="erfolg-karte">
+    <div class="erfolg-icon">✅</div>
+    <div class="erfolg-titel">Weiterleitung erfolgreich</div>
+    <div class="erfolg-text">Die Information wurde an die Teamkoordination gesendet.</div>
+    <button class="erfolg-btn link-btn" id="btn-link-kopieren" onclick="leselinkKopieren()">🔗 Leselink kopieren</button>
+    <div class="link-bestaetigung" id="link-bestaetigung">Link kopiert!</div>
+    <div style="margin-top:1rem;">
+      <button class="erfolg-btn sekundaer" onclick="neueWeiterleitung()">Weitere senden</button>
+      <button class="erfolg-btn" onclick="window.location.href='DASHBOARD.html'">Zum Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Kinder-Dropdown dynamisch aus /children befüllen
+db.ref('children').once('value').then(function(snapshot) {
+  const kinder = snapshot.val() || {};
+  const select = document.getElementById('child-select');
+  Object.keys(kinder).forEach(function(childId) {
+    const kind = kinder[childId];
+    if (kind.active === false) return; // inaktive Kinder nicht anzeigen
+    const option = document.createElement('option');
+    option.value = childId;
+    option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+    select.appendChild(option);
+  });
+}).catch(function(error) {
+  const fehlerBox = document.getElementById('fehler-box');
+  fehlerBox.textContent = 'Kinderliste konnte nicht geladen werden: ' + error.message;
+  fehlerBox.classList.add('zeigen');
+});
+
+// Speichert die forwardId der zuletzt gesendeten Weiterleitung, für den Leselink-Button
+let letzteForwardId = null;
+
+function neueWeiterleitung() {
+  document.getElementById('erfolg-overlay').classList.remove('zeigen');
+  document.getElementById('forward-form').reset();
+  document.getElementById('btn-senden').disabled = false;
+  document.getElementById('btn-senden').textContent = 'Weiterleiten an Teamkoordination';
+  document.getElementById('link-bestaetigung').classList.remove('zeigen');
+  letzteForwardId = null;
+}
+
+function leselinkKopieren() {
+  if (!letzteForwardId) return;
+  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + letzteForwardId;
+
+  navigator.clipboard.writeText(leseLink).then(function() {
+    const bestaetigung = document.getElementById('link-bestaetigung');
+    bestaetigung.classList.add('zeigen');
+    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
+  }).catch(function() {
+    // Fallback falls Clipboard-API nicht verfügbar ist
+    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
+  });
+}
+
+document.getElementById('forward-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const fehlerBox = document.getElementById('fehler-box');
+  fehlerBox.classList.remove('zeigen');
+
+  const childId = document.getElementById('child-select').value;
+  const type = document.getElementById('type-select').value;
+  const text = document.getElementById('text-feld').value.trim();
+
+  if (!childId || !type || !text) {
+    fehlerBox.textContent = 'Bitte alle Felder ausfüllen.';
+    fehlerBox.classList.add('zeigen');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    return;
+  }
+
+  const btnSenden = document.getElementById('btn-senden');
+  btnSenden.disabled = true;
+  btnSenden.textContent = 'Wird gesendet …';
+
+  // Aktuelle Rolle aus sessionStorage — bestimmt fromRole
+  const fromRole = sessionStorage.getItem('klartext_role') || 'ingra';
+  // Platzhalter-ID bis das Login auf echte Firebase-User umgestellt ist
+  const fromUser = fromRole + '-demo';
+
+  const forwardDaten = {
+    fromUser: fromUser,
+    fromRole: fromRole,
+    targetRole: 'tk',
+    childId: childId,
+    type: type,
+    text: text
+  };
+
+  sendForward(forwardDaten)
+    .then(function(ref) {
+      // push() liefert eine Referenz, deren .key die generierte forwardId ist
+      letzteForwardId = ref.key;
+      document.getElementById('erfolg-overlay').classList.add('zeigen');
+    })
+    .catch(function(error) {
+      fehlerBox.textContent = 'Beim Senden ist ein Fehler aufgetreten: ' + error.message;
+      fehlerBox.classList.add('zeigen');
+      btnSenden.disabled = false;
+      btnSenden.textContent = 'Weiterleiten an Teamkoordination';
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+});
+</script>
+</body>
+</html>

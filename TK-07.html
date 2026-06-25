@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Migrantische Eltern — alle Perspektiven</title>
+<style>
+  :root {
+    --navy:     #1a2e44;
+    --lk:       #4f7b95;
+    --m4:       #7b5ea7;   /* M4 Kommunikation — Purple */
+    --m4-light: rgba(123,94,167,.10);
+    --tk:       #1d9e75;   /* TK Grün */
+    --tk-light: rgba(29,158,117,.10);
+    --el:       #c8860a;   /* EL Gold */
+    --el-light: rgba(200,134,10,.10);
+    --paper:    #F5F0E8;
+    --white:    #ffffff;
+    --accent:   #6EC6A0;
+    --text:     #2a2a2a;
+    --muted:    #6b7280;
+    --border:   #d6cfc4;
+    --red:      #c62828;
+    --red-bg:   #fdeaea;
+    --orange:   #e65100;
+    --orange-bg:#fff3e0;
+    --green:    #2e7d32;
+    --green-bg: #e8f5e9;
+    --radius:   14px;
+    --shadow:   0 4px 24px rgba(26,46,68,.18);
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:#e8e2d8; font-family:'DM Sans',system-ui,sans-serif;
+    font-size:15px; display:flex; flex-direction:column;
+    align-items:center; padding:32px 16px 80px; gap:20px;
+  }
+
+  /* Trennlabel zwischen Karten */
+  .karten-label {
+    width:420px; max-width:100%;
+    font-size:10px; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted);
+    text-align:center; padding:4px 0;
+  }
+
+  /* ── Card ── */
+  .card { width:420px; max-width:100%; background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+
+  /* ── Header ── */
+  .card-header { padding:20px 22px 18px; position:relative; overflow:hidden; }
+  .card-header::before { content:''; position:absolute; top:0; left:0; border-style:solid; border-width:48px 48px 0 0; border-color:var(--navy) transparent transparent transparent; opacity:.55; }
+  .card-header::after  { content:''; position:absolute; bottom:0; right:0; border-style:solid; border-width:0 0 38px 145px; border-color:transparent transparent var(--navy) transparent; opacity:.45; }
+  .card-header.m4  { background:var(--m4); }
+  .card-header.lk  { background:var(--lk); }
+  .card-header.tk  { background:var(--tk); }
+  .card-header.el  { background:var(--el); }
+  .header-inner { position:relative; z-index:1; }
+  .series-badge { display:inline-block; background:rgba(255,255,255,.18); color:#fff; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:2px 8px; border-radius:4px; margin-bottom:8px; }
+  .card-title { font-family:'Playfair Display',Georgia,serif; font-size:19px; font-weight:700; color:#fff; line-height:1.25; margin-bottom:4px; }
+  .card-subtitle { font-size:11.5px; color:rgba(255,255,255,.78); font-weight:500; letter-spacing:.02em; }
+  .brainy { position:absolute; bottom:-28px; right:-4px; opacity:.42; font-size:58px; line-height:1; pointer-events:none; }
+
+  /* ── Body ── */
+  .card-body { padding:18px 20px 12px; }
+  .intro { font-size:12.5px; color:var(--muted); line-height:1.55; padding-left:10px; margin-bottom:16px; font-style:italic; }
+  .intro.m4 { border-left:3px solid var(--m4); }
+  .intro.lk { border-left:3px solid var(--lk); }
+  .intro.tk { border-left:3px solid var(--tk); }
+  .intro.el { border-left:3px solid var(--el); }
+
+  .section-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; margin-top:14px; }
+  .section-label.m4 { color:var(--m4); }
+  .section-label.lk { color:var(--lk); }
+  .section-label.tk { color:var(--tk); }
+  .section-label.el { color:var(--el); }
+
+  /* Checklist */
+  .checklist { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .checklist li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text); line-height:1.45; cursor:pointer; user-select:none; }
+  .box { flex-shrink:0; width:18px; height:18px; border-radius:4px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; color:transparent; transition:all .15s; margin-top:1px; }
+  .checklist li.checked .box { color:#fff; }
+  .checklist li.checked > span { text-decoration:line-through; color:var(--muted); }
+  .m4 .box, .card.m4card .box { border-color:var(--border); }
+  .card.m4card .checklist li.checked .box { background:var(--m4); border-color:var(--m4); }
+  .card.lkcard .checklist li.checked .box { background:var(--lk); border-color:var(--lk); }
+  .card.tkcard .checklist li.checked .box { background:var(--tk); border-color:var(--tk); }
+  .card.elcard .checklist li.checked .box { background:var(--el); border-color:var(--el); }
+
+  /* Zweispaltig */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; }
+  .col-block { border-radius:8px; padding:9px 11px; }
+  .col-block.green { background:var(--green-bg); border:1px solid #a5d6a7; }
+  .col-block.red-c  { background:var(--red-bg);   border:1px solid #ef9a9a; }
+  .col-block.orange-c { background:var(--orange-bg); border:1px solid #ffcc80; }
+  .col-block.blue-c { background:#e3f0ff; border:1px solid #90caf9; }
+  .col-title { font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:5px; }
+  .col-block.green .col-title   { color:var(--green); }
+  .col-block.red-c .col-title   { color:var(--red); }
+  .col-block.orange-c .col-title{ color:var(--orange); }
+  .col-block.blue-c .col-title  { color:#1565c0; }
+  .col-block ul { list-style:none; }
+  .col-block li { font-size:11.5px; line-height:1.5; display:flex; gap:5px; margin-bottom:3px; }
+  .col-block.green li::before   { content:"✓"; color:var(--green); font-weight:700; flex-shrink:0; }
+  .col-block.red-c li::before   { content:"✗"; color:var(--red);   font-weight:700; flex-shrink:0; }
+  .col-block.orange-c li::before{ content:"→"; color:var(--orange); font-weight:700; flex-shrink:0; }
+  .col-block.blue-c li::before  { content:"•"; color:#1565c0; font-weight:700; flex-shrink:0; }
+
+  /* Kultur-Chips */
+  .kultur-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; }
+  .kultur-chip { background:var(--white); border:1.5px solid var(--border); border-radius:10px; padding:10px 12px; }
+  .kultur-icon { font-size:18px; margin-bottom:4px; }
+  .kultur-name { font-size:11px; font-weight:700; color:var(--navy); margin-bottom:3px; }
+  .kultur-text { font-size:11px; color:var(--text); line-height:1.45; }
+  .kultur-text em { color:var(--muted); font-size:10.5px; font-style:italic; display:block; margin-top:2px; }
+
+  /* Stufenplan */
+  .step-list { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+  .step-item { display:flex; gap:10px; align-items:flex-start; border-radius:8px; padding:9px 11px; }
+  .step-item.m4bg { background:var(--m4-light); }
+  .step-item.lkbg { background:rgba(79,123,149,.08); }
+  .step-item.tkbg { background:var(--tk-light); }
+  .step-item.elbg { background:var(--el-light); }
+  .step-num { flex-shrink:0; width:22px; height:22px; border-radius:4px; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+  .step-num.m4 { background:var(--m4); }
+  .step-num.lk { background:var(--lk); }
+  .step-num.tk { background:var(--tk); }
+  .step-num.el { background:var(--el); }
+  .step-text { font-size:12.5px; color:var(--text); line-height:1.4; }
+  .step-text em { color:var(--muted); font-size:11px; display:block; margin-top:2px; }
+
+  /* Satz-Vorlagen */
+  .satz-box { background:var(--white); border-radius:8px; padding:9px 12px; margin-bottom:6px; font-size:12px; color:var(--text); line-height:1.55; border:1.5px solid var(--border); font-style:italic; }
+  .satz-label { font-size:9.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:2px; display:block; font-style:normal; }
+
+  /* Info-Boxen */
+  .tip-box { border-radius:8px; padding:10px 12px; font-size:12px; color:var(--text); line-height:1.5; margin-top:14px; }
+  .tip-box.m4 { background:var(--m4-light); }
+  .tip-box.lk { background:rgba(79,123,149,.10); }
+  .tip-box.tk { background:var(--tk-light); }
+  .tip-box.el { background:var(--el-light); }
+  .tip-box strong { font-size:10px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .tip-box.m4 strong { color:var(--m4); }
+  .tip-box.lk strong { color:var(--lk); }
+  .tip-box.tk strong { color:var(--tk); }
+  .tip-box.el strong { color:var(--el); }
+  .warn-box { background:var(--orange-bg); border-left:3px solid #ff9800; border-radius:0 8px 8px 0; padding:10px 12px; font-size:12px; color:var(--text); line-height:1.5; margin-top:14px; }
+  .warn-box strong { color:var(--orange); font-size:10px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+
+  /* Mehrsprachig-Box (EL-07) */
+  .lang-box { background:var(--navy); border-radius:10px; padding:14px 16px; margin-top:12px; }
+  .lang-title { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .lang-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .lang-item { background:rgba(255,255,255,.08); border-radius:6px; padding:8px 10px; }
+  .lang-name { font-size:9.5px; font-weight:700; color:rgba(255,255,255,.55); letter-spacing:.06em; text-transform:uppercase; margin-bottom:3px; }
+  .lang-text { font-size:12px; color:#fff; line-height:1.4; }
+
+  /* Notizfeld */
+  .note-field { border:1.5px dashed var(--border); border-radius:8px; padding:10px 12px; font-size:12px; color:var(--muted); min-height:48px; margin-top:12px; outline:none; font-family:inherit; line-height:1.5; resize:none; width:100%; background:transparent; }
+  .note-field:focus { color:var(--text); }
+
+  /* Barometer */
+  .divider { border:none; border-top:1px solid var(--border); margin:14px 0; }
+  .barometer-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .barometer { display:flex; gap:6px; }
+  .barometer input[type=radio] { display:none; }
+  .barometer label { flex:1; height:22px; border-radius:5px; cursor:pointer; opacity:.3; border:2px solid transparent; transition:opacity .15s,transform .1s; }
+  .barometer input[type=radio]:checked + label { opacity:1; transform:scaleY(1.12); border-color:var(--navy); }
+  .baro-1{background:#4caf50} .baro-2{background:#8bc34a} .baro-3{background:#ffc107} .baro-4{background:#ff9800} .baro-5{background:#f44336}
+  .baro-legend { display:flex; justify-content:space-between; font-size:9.5px; color:var(--muted); margin-top:4px; }
+
+  /* Footer */
+  .card-footer { background:var(--navy); padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
+  .card-id { font-size:10px; font-weight:700; letter-spacing:.14em; color:rgba(255,255,255,.55); text-transform:uppercase; }
+  .btn-icon { background:rgba(255,255,255,.1); border:none; border-radius:6px; color:rgba(255,255,255,.75); font-size:13px; padding:4px 8px; cursor:pointer; }
+
+  @media print { body{background:white;padding:0;gap:40px;} .card{box-shadow:none;page-break-inside:avoid;} .btn-icon,.karten-label{display:none;} }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+(function(){
+  try{
+    var login=sessionStorage.getItem('klartext_login');
+    var role=sessionStorage.getItem('klartext_role')||'';
+    if(login!=='true'){window.location.href='KLARTEXT_Login.html';return;}
+    if(!['admin','trainer'].includes(role))window.location.href='KLARTEXT_Login.html';
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B"></head>
+<body>
+
+
+<!-- ════════════════════════════════════════════════════
+     M4-16: INGRA — Elterngespräche mit migrantischen Familien
+     ════════════════════════════════════════════════════ -->
+<div class="karten-label">M4-Serie · Für INGRA-Fachkräfte</div>
+
+<div class="card m4card">
+  <div class="card-header m4">
+    <div class="header-inner">
+      <div class="series-badge">M4 · Kommunikation</div>
+      <div class="card-title">Elterngespräche mit<br>migrantischen Familien</div>
+      <div class="card-subtitle">Sprachbarriere · Vertrauen · Kulturelle Sensibilität</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+
+  <div class="card-body">
+    <p class="intro m4">Bis zu 75 % der begleiteten Kinder kommen aus Familien mit Migrationsgeschichte. Elterngespräche gelingen, wenn ich Barrieren kenne — und aktiv Brücken baue statt auf Anpassung zu warten.</p>
+
+    <div class="section-label m4">Häufige Barrieren verstehen — nicht bewerten</div>
+    <div class="kultur-grid">
+      <div class="kultur-chip">
+        <div class="kultur-icon">🗣</div>
+        <div class="kultur-name">Sprachbarriere</div>
+        <div class="kultur-text">Deutsch nicht ausreichend, Fachbegriffe unbekannt.<em>→ Einfache Sprache, Bilder, Übersetzungshilfe</em></div>
+      </div>
+      <div class="kultur-chip">
+        <div class="kultur-icon">🏛</div>
+        <div class="kultur-name">Behördenangst</div>
+        <div class="kultur-text">Misstrauen gegenüber Institutionen, teils durch Heimaterfahrungen.<em>→ Transparenz, keine Koalition mit Schule</em></div>
+      </div>
+      <div class="kultur-chip">
+        <div class="kultur-icon">👨‍👩‍👧</div>
+        <div class="kultur-name">Kollektiv-Entscheid</div>
+        <div class="kultur-text">Entscheidungen treffen Großfamilien, nicht Einzelpersonen.<em>→ Geduld, keine Sofort-Entscheidung verlangen</em></div>
+      </div>
+      <div class="kultur-chip">
+        <div class="kultur-icon">🤫</div>
+        <div class="kultur-name">Scham & Tabu</div>
+        <div class="kultur-text">Behinderung/Förderbedarf als Familiengeheimnis oder Versagen.<em>→ Würdevoll, diskret, ohne Stigmatisierung</em></div>
+      </div>
+      <div class="kultur-chip">
+        <div class="kultur-icon">👩‍💼</div>
+        <div class="kultur-name">Autoritätsgefälle</div>
+        <div class="kultur-text">Schule/Fachkräfte gelten als unantastbare Autorität — Widerspruch fällt schwer.<em>→ Aktiv Meinung einladen</em></div>
+      </div>
+      <div class="kultur-chip">
+        <div class="kultur-icon">📋</div>
+        <div class="kultur-name">Anderes Schulverständnis</div>
+        <div class="kultur-text">Elternbeteiligung im Heimatland nicht üblich oder anders geregelt.<em>→ Erwartungen erklären, nicht voraussetzen</em></div>
+      </div>
+    </div>
+
+    <div class="section-label m4">Gespräch vorbereiten</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Brauchen wir eine <strong>Dolmetscherin?</strong> — Professionell ist besser als Kind oder Geschwister (Rollentausch!)</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Unterlagen in <strong>Einfacher Sprache</strong> vorbereiten — kurze Sätze, keine Abkürzungen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Ort und Zeit: <strong>neutral</strong>, kein Lehrerzimmer — Schule ist Machtort für viele Eltern</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Meinen Auftrag klar machen: <strong>Ich bin für das Kind da, nicht gegen die Familie</strong></span></li>
+    </ul>
+
+    <div class="section-label m4">Im Gespräch — was hilft</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Langsam sprechen</strong>, keine Ironie, keine Redewendungen — und Verständnis aktiv prüfen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Positives zuerst — dann Herausforderungen. <strong>Nie mit Problem beginnen.</strong></span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Schweigen aushalten — in vielen Kulturen ist Pause kein Zeichen von Unverständnis</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Eltern aktiv einladen: <strong>„Was wünschen Sie sich von mir?"</strong> — Partizipation herstellen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Nie Kind als Dolmetscher nutzen — das überfordert und belastet das Kind</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Vereinbarungen schriftlich festhalten und <strong>zur Kontrolle vorlesen lassen</strong></span></li>
+    </ul>
+
+    <div class="section-label m4">Formulierungsvorlagen</div>
+    <div class="satz-box">
+      <span class="satz-label">Einstieg</span>
+      „Ich begleite Ihr Kind jeden Tag — und ich möchte, dass wir gut zusammenarbeiten. Dafür möchte ich Sie besser kennenlernen."
+    </div>
+    <div class="satz-box">
+      <span class="satz-label">Bei Sprachbarriere</span>
+      „Ich spreche langsam. Wenn Sie etwas nicht verstehen — bitte sagen Sie es. Das ist kein Problem."
+    </div>
+    <div class="satz-box">
+      <span class="satz-label">Bei Scham / Zurückhaltung</span>
+      „Viele Eltern fragen sich, was Schulbegleitung bedeutet. Das ist normal. Ich erkläre es Ihnen gern."
+    </div>
+
+    <div class="tip-box m4">
+      <strong>Forschungshinweis</strong>
+      Migrantische Eltern erleben Schule oft als fremden, mächtigen Raum — besonders Mütter ohne eigene Schulerfahrung in Deutschland (Diehm & Radtke, 1999; Gogolin, 2008). Die INGRA kann Brückenperson sein — wenn sie sich nicht als verlängerter Arm der Schule positioniert.
+    </div>
+
+    <div class="warn-box">
+      <strong>Häufiger Fehler</strong>
+      Kulturelle Unterschiede als Defizit rahmen. „Die Eltern wollen nicht mitwirken" ist oft falsch — sie wissen nicht wie, oder trauen sich nicht. Der Unterschied ist entscheidend.
+    </div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher fühle ich mich in diesen Gesprächen?</div>
+    <div class="barometer">
+      <input type="radio" name="bm4" id="bm4-1"><label for="bm4-1" class="baro-1"></label>
+      <input type="radio" name="bm4" id="bm4-2"><label for="bm4-2" class="baro-2"></label>
+      <input type="radio" name="bm4" id="bm4-3"><label for="bm4-3" class="baro-3"></label>
+      <input type="radio" name="bm4" id="bm4-4"><label for="bm4-4" class="baro-4"></label>
+      <input type="radio" name="bm4" id="bm4-5"><label for="bm4-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer">
+    <div class="card-id">M4-16 · KLARTEXT · M4 Kommunikation</div>
+    <button class="btn-icon" onclick="window.print()">🖨</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     LK-15: Lehrkraft — Elterngespräche mit migrantischen Familien
+     ════════════════════════════════════════════════════ -->
+<div class="karten-label">LK-Serie · Für Lehrkräfte</div>
+
+<div class="card lkcard">
+  <div class="card-header lk">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">Elterngespräche mit<br>migrantischen Familien</div>
+      <div class="card-subtitle">Erwartungen klären · Dolmetscher · Kulturell sensibel</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+
+  <div class="card-body">
+    <p class="intro lk">Migrantische Eltern kommen mit anderen Erfahrungen von Schule — nicht mit weniger Interesse an ihrem Kind. Wer das weiß, führt bessere Gespräche.</p>
+
+    <div class="section-label lk">Häufige Missverständnisse — und was dahintersteckt</div>
+    <div class="two-col">
+      <div class="col-block red-c">
+        <div class="col-title">Was ich wahrnehme …</div>
+        <ul>
+          <li>Eltern kommen nicht zu Terminen</li>
+          <li>Schweigen im Gespräch</li>
+          <li>Keine Hausaufgaben-Unterstützung</li>
+          <li>Ablehnung von Förderangeboten</li>
+          <li>Vater spricht, Mutter schweigt</li>
+        </ul>
+      </div>
+      <div class="col-block orange-c">
+        <div class="col-title">… und was es bedeuten kann</div>
+        <ul>
+          <li>Schicht, Sprache, kein Vertrauen</li>
+          <li>Respekt, Unsicherheit, Angst</li>
+          <li>Eigene Sprachbarriere, Müdigkeit</li>
+          <li>Scham, Tabu, Unkenntnis</li>
+          <li>Kulturelle Rollenverteilung</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-label lk">Dolmetscher — wann und wie</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Bei wichtigen Gesprächen (Förderplan, Übergang, Konflikt): <strong>professionelle Dolmetscherin bestellen</strong> — nicht das Kind, nicht Geschwister</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Schulsozialdienst kennt oft <strong>lokale Dolmetscherangebote</strong> — einmalig recherchieren, Liste anlegen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Für kurze Infos: <strong>DeepL / Google Translate</strong> als Überbrückung — aber: Fachbegriffe immer prüfen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Dolmetscher ist <strong>neutral</strong> — er übersetzt, gibt keine eigene Bewertung</span></li>
+    </ul>
+
+    <div class="section-label lk">Gespräch kultursensibel führen</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Begrüßungszeit</strong> einplanen — kurzer Smalltalk ist in vielen Kulturen Voraussetzung für Vertrauen, kein Zeitverlust</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Augenkontakt nicht erzwingen — kann in manchen Kulturen Respektlosigkeit bedeuten</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Kritik immer <strong>sachbezogen und privat</strong> — öffentliche Kritik verletzt Würde und verhindert Kooperation</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Bei Schweigen: <strong>offen einladen</strong> statt Stille mit eigenen Worten füllen: „Was denken Sie dazu?"</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Sofortentscheidungen nicht verlangen — Familienberatung kann nötig sein</span></li>
+    </ul>
+
+    <div class="section-label lk">INGRA einbeziehen</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Die INGRA kennt die Familie oft besser als ich — <strong>vor dem Gespräch kurz abstimmen</strong></span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Rollen im Gespräch klären: Wer spricht wann? Wer dokumentiert?</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Keine Koalition Lehrkraft + INGRA gegen Eltern — <strong>gemeinsame Haltung: für das Kind</strong></span></li>
+    </ul>
+
+    <div class="tip-box lk">
+      <strong>Rechtlicher Rahmen</strong>
+      Eltern haben das Recht auf verständliche Information — unabhängig von Sprachkenntnissen. Schulen sind verpflichtet, für Verständigung zu sorgen (KMK-Empfehlungen zur interkulturellen Bildung).
+    </div>
+
+    <div class="tip-box lk">
+      <strong>Forschungshinweis</strong>
+      Gogolin (2008) zeigt: Schule kommuniziert in einem „monolingualem Habitus" — als ob Einsprachigkeit die Norm sei. Das schließt migrantische Eltern systematisch aus. Gegenmaßnahme: bewusste mehrsprachige und einfachsprachige Kommunikation.
+    </div>
+
+    <textarea class="note-field" placeholder="Notizen zum Gespräch · Dolmetscher-Kontakte · Besonderheiten der Familie …"></textarea>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher fühle ich mich in diesen Gesprächen?</div>
+    <div class="barometer">
+      <input type="radio" name="blk" id="blk-1"><label for="blk-1" class="baro-1"></label>
+      <input type="radio" name="blk" id="blk-2"><label for="blk-2" class="baro-2"></label>
+      <input type="radio" name="blk" id="blk-3"><label for="blk-3" class="baro-3"></label>
+      <input type="radio" name="blk" id="blk-4"><label for="blk-4" class="baro-4"></label>
+      <input type="radio" name="blk" id="blk-5"><label for="blk-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer">
+    <div class="card-id">LK-15 · KLARTEXT</div>
+    <button class="btn-icon" onclick="window.print()">🖨</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     TK-07: Träger/Koordination — kultursensible Begleitung organisieren
+     ════════════════════════════════════════════════════ -->
+<div class="karten-label">TK-Serie · Für Teamkoordination & Träger</div>
+
+<div class="card tkcard">
+  <div class="card-header tk">
+    <div class="header-inner">
+      <div class="series-badge">TK-Serie · Teamkoordination</div>
+      <div class="card-title">Kultursensible Begleitung<br>organisieren</div>
+      <div class="card-subtitle">Personal · Dolmetscher · Diversität im Team</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+
+  <div class="card-body">
+    <p class="intro tk">Wenn 75 % der Familien Migrationsgeschichte haben, ist das kein Randthema — es ist strukturelle Realität. Kultursensible Begleitung braucht organisatorische Voraussetzungen, keine Einzelinitiative.</p>
+
+    <div class="section-label tk">Beim Matching: INGRA und Familie zusammenbringen</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Sprachkompetenz der INGRA dokumentieren — welche Sprachen, auf welchem Niveau?</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Bei Bedarf: INGRA mit Sprachkenntnissen <strong>gezielt einsetzen</strong> — ist kein Diskriminierungsmerkmal, sondern Qualitätsmerkmal</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Kultureller Hintergrund kann Match-Kriterium sein — <strong>nur wenn Eltern das wünschen</strong>, nie als Automatismus</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Offenheit für kulturelle Hintergründe im Einstellungsgespräch aktiv ansprechen</span></li>
+    </ul>
+
+    <div class="section-label tk">Dolmetscherversorgung organisieren</div>
+    <div class="step-list">
+      <div class="step-item tkbg">
+        <div class="step-num tk">1</div>
+        <div class="step-text"><strong>Bedarfserhebung:</strong> Welche Sprachen kommen in meinem Bestand vor? (Arabisch, Türkisch, Russisch, Dari, Tigrinya …)<em>Jährlich aktualisieren.</em></div>
+      </div>
+      <div class="step-item tkbg">
+        <div class="step-num tk">2</div>
+        <div class="step-text"><strong>Dolmetscherpool aufbauen:</strong> Kontakte zu Migrantenorganisationen, Ehrenamtlichen, Sprachmittlerdiensten.<em>Kommunale Sprachmittlerdienste oft kostenlos oder günstig.</em></div>
+      </div>
+      <div class="step-item tkbg">
+        <div class="step-num tk">3</div>
+        <div class="step-text"><strong>Klarregel für INGRA:</strong> Kinder und Geschwister übersetzen nicht. Schriftlich festhalten.<em>Rollentausch gefährdet Kinderschutz und Beziehung.</em></div>
+      </div>
+      <div class="step-item tkbg">
+        <div class="step-num tk">4</div>
+        <div class="step-text"><strong>Digitale Tools:</strong> DeepL, einfache Sprachkarten, Bildwörterbücher — als Kurzüberbrückung für INGRA verfügbar machen.<em>Kein Ersatz für professionelle Dolmetschung bei wichtigen Gesprächen.</em></div>
+      </div>
+    </div>
+
+    <div class="section-label tk">Team qualifizieren</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Interkulturelle Kompetenz als <strong>Pflichtthema in der INGRA-Einarbeitung</strong> — nicht als optionales Extra</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Fallbesprechungen: Kulturellen Kontext systematisch mitdenken — <strong>Checkliste: Welche kulturellen Faktoren spielen hier eine Rolle?</strong></span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>INGRA mit Migrationshintergrund im Team: <strong>Erfahrung wertschätzen</strong>, nicht instrumentalisieren</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Supervision und Reflexionsraum für kulturelle Reibungspunkte bereitstellen</span></li>
+    </ul>
+
+    <div class="section-label tk">Rechtliche Klarheit schaffen</div>
+    <div class="two-col">
+      <div class="col-block green">
+        <div class="col-title">INGRA darf</div>
+        <ul>
+          <li>Informationen einfachsprachig weitergeben</li>
+          <li>Dolmetscher anfragen und begleiten</li>
+          <li>Kulturellen Kontext in Berichte einbringen</li>
+          <li>Eltern an Beratungsstellen verweisen</li>
+        </ul>
+      </div>
+      <div class="col-block red-c">
+        <div class="col-title">INGRA darf nicht</div>
+        <ul>
+          <li>Als alleinige Dolmetscherin auftreten</li>
+          <li>Rechtliche Beratung geben</li>
+          <li>Aufenthaltsstatus weitergeben</li>
+          <li>Behördengänge eigenständig begleiten</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box tk">
+      <strong>Forschungshinweis</strong>
+      Mecheril (2004) beschreibt „Migrationsandere" als strukturell benachteiligte Gruppe im deutschen Bildungssystem. Träger können durch kultursensible Begleitung aktiv Benachteiligung verringern — das ist ein Qualitätsmerkmal gegenüber Kostenträgern.
+    </div>
+
+    <textarea class="note-field" placeholder="Sprachen im Team · Dolmetscher-Kontakte · offene Aufgaben …"></textarea>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie gut ist unser Team für kulturelle Vielfalt aufgestellt?</div>
+    <div class="barometer">
+      <input type="radio" name="btk" id="btk-1"><label for="btk-1" class="baro-1"></label>
+      <input type="radio" name="btk" id="btk-2"><label for="btk-2" class="baro-2"></label>
+      <input type="radio" name="btk" id="btk-3"><label for="btk-3" class="baro-3"></label>
+      <input type="radio" name="btk" id="btk-4"><label for="btk-4" class="baro-4"></label>
+      <input type="radio" name="btk" id="btk-5"><label for="btk-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr gut</span><span>Kaum vorbereitet</span></div>
+  </div>
+  <div class="card-footer">
+    <div class="card-id">TK-07 · KLARTEXT · Teamkoordination</div>
+    <button class="btn-icon" onclick="window.print()">🖨</button>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     EL-07: Für Eltern — Was ist meine INGRA? (Einfache Sprache + mehrsprachig)
+     ════════════════════════════════════════════════════ -->
+<div class="karten-label">EL-Serie · Für Eltern — Einfache Sprache</div>
+
+<div class="card elcard">
+  <div class="card-header el">
+    <div class="header-inner">
+      <div class="series-badge">EL-Serie · Für Eltern</div>
+      <div class="card-title">Meine INGRA und ich —<br>Fragen und Antworten</div>
+      <div class="card-subtitle">In einfacher Sprache · Mit Übersetzungshilfen</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+
+  <div class="card-body">
+    <p class="intro el">Diese Karte ist für Eltern, die noch nicht alles über Schulbegleitung wissen. Hier finden Sie Antworten auf wichtige Fragen — in einfacher Sprache.</p>
+
+    <div class="section-label el">Wichtige Fragen — kurze Antworten</div>
+    <div class="step-list">
+      <div class="step-item elbg">
+        <div class="step-num el">?</div>
+        <div class="step-text"><strong>Was macht die INGRA?</strong><em>Die INGRA begleitet Ihr Kind in der Schule. Sie hilft Ihrem Kind, dem Unterricht zu folgen. Sie ist kein Lehrer. Sie unterrichtet nicht.</em></div>
+      </div>
+      <div class="step-item elbg">
+        <div class="step-num el">?</div>
+        <div class="step-text"><strong>Wer hat die INGRA geschickt?</strong><em>Das Jugendamt oder das Sozialamt hat zugestimmt. Eine Organisation (Träger) hat die INGRA angestellt. Die Schule hat die INGRA nicht angestellt.</em></div>
+      </div>
+      <div class="step-item elbg">
+        <div class="step-num el">?</div>
+        <div class="step-text"><strong>Darf die INGRA über mein Kind sprechen?</strong><em>Die INGRA spricht mit dem Lehrer und dem Träger über Ihr Kind. Das ist erlaubt und wichtig. Die INGRA spricht nicht mit allen Menschen über Ihr Kind.</em></div>
+      </div>
+      <div class="step-item elbg">
+        <div class="step-num el">?</div>
+        <div class="step-text"><strong>Was darf ich die INGRA fragen?</strong><em>Sie dürfen immer fragen: Wie war der Tag? Was hat mein Kind gemacht? Haben Sie etwas beobachtet? Die INGRA antwortet ehrlich.</em></div>
+      </div>
+      <div class="step-item elbg">
+        <div class="step-num el">?</div>
+        <div class="step-text"><strong>Was kann ich tun, wenn ich unzufrieden bin?</strong><em>Sprechen Sie zuerst mit der INGRA. Wenn das nicht hilft — sprechen Sie mit dem Träger. Sie haben das Recht, Fragen zu stellen.</em></div>
+      </div>
+    </div>
+
+    <div class="section-label el">Das wünsche ich mir von Ihnen als Eltern</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Erzählen Sie mir, was Ihr Kind zu Hause beschäftigt — ich kann dann besser helfen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Informieren Sie mich über besondere Tage — z.B. schlechter Schlaf, Streit, Aufregung</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Fragen Sie mich — ich bin für Sie erreichbar</span></li>
+    </ul>
+
+    <!-- Mehrsprachiger Abschnitt -->
+    <div class="lang-box" style="margin-top:16px;">
+      <div class="lang-title">Wichtige Sätze in anderen Sprachen · Wichtige Sätze</div>
+      <div class="lang-grid">
+        <div class="lang-item">
+          <div class="lang-name">Arabisch · عربي</div>
+          <div class="lang-text">أنا مساعد طفلك في المدرسة.<br><small style="opacity:.6">Ich begleite Ihr Kind in der Schule.</small></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Türkisch · Türkçe</div>
+          <div class="lang-text">Ben çocuğunuza okulda yardım ediyorum.<br><small style="opacity:.6">Ich begleite Ihr Kind in der Schule.</small></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Russisch · Русский</div>
+          <div class="lang-text">Я сопровождаю вашего ребёнка в школе.<br><small style="opacity:.6">Ich begleite Ihr Kind in der Schule.</small></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Dari · دری</div>
+          <div class="lang-text">من فرزند شما را در مکتب همراهی می‌کنم.<br><small style="opacity:.6">Ich begleite Ihr Kind in der Schule.</small></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Polnisch · Polski</div>
+          <div class="lang-text">Towarzyszę Pana/Pani dziecku w szkole.<br><small style="opacity:.6">Ich begleite Ihr Kind in der Schule.</small></div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">Rumänisch · Română</div>
+          <div class="lang-text">Eu însoțesc copilul dvs. la școală.<br><small style="opacity:.6">Ich begleite Ihr Kind in der Schule.</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box el" style="margin-top:14px;">
+      <strong>Für die INGRA: Hinweis zur Weitergabe</strong>
+      Diese Karte kann direkt an Eltern mit Migrationsgeschichte übergeben werden — beim Erstgespräch, beim Übergang, oder wenn Eltern unsicher wirken. Sie ersetzt kein Gespräch, aber sie gibt Eltern Sprache und Sicherheit.
+    </div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie gut fühlen sich Eltern bei uns informiert? (Selbsteinschätzung INGRA)</div>
+    <div class="barometer">
+      <input type="radio" name="bel" id="bel-1"><label for="bel-1" class="baro-1"></label>
+      <input type="radio" name="bel" id="bel-2"><label for="bel-2" class="baro-2"></label>
+      <input type="radio" name="bel" id="bel-3"><label for="bel-3" class="baro-3"></label>
+      <input type="radio" name="bel" id="bel-4"><label for="bel-4" class="baro-4"></label>
+      <input type="radio" name="bel" id="bel-5"><label for="bel-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr gut</span><span>Kaum</span></div>
+  </div>
+  <div class="card-footer">
+    <div class="card-id">EL-07 · KLARTEXT · Elternkarte</div>
+    <button class="btn-icon" onclick="window.print()">🖨</button>
+  </div>
+</div>
+
+<script>
+  function toggle(li) { li.classList.toggle('checked'); }
+</script>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

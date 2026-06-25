@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Notizblock-Vordrucke · KLARTEXT-Mentoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#E8E4DC;padding:1.5rem 1rem 3rem;}
+.controls{display:flex;gap:.6rem;justify-content:center;margin-bottom:1.25rem;flex-wrap:wrap;}
+.ctrl{padding:.5rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;}
+.ctrl-a4{background:#1B3A4B;color:#fff;}
+.ctrl-a5{background:#C47A00;color:#fff;}
+.ctrl-back{background:#fff;color:#1B3A4B;border:1.5px solid #1B3A4B;}
+.info{max-width:700px;margin:0 auto 1.5rem;background:#fff;border-radius:10px;padding:.85rem 1.25rem;font-size:.8rem;color:#444;text-align:center;}
+
+/* A4-Format */
+.format-a4 .seite{width:210mm;min-height:297mm;margin:0 auto 20px;background:#fff;padding:15mm;box-shadow:0 4px 20px rgba(0,0,0,.15);}
+/* A5-Format */
+.format-a5 .seite{width:148mm;min-height:210mm;margin:0 auto 20px;background:#fff;padding:10mm;box-shadow:0 4px 20px rgba(0,0,0,.15);}
+
+.kopf{display:flex;align-items:center;gap:.75rem;border-bottom:2px solid #1B3A4B;padding-bottom:8mm;margin-bottom:8mm;}
+.kopf img{width:40px;height:40px;object-fit:contain;}
+.kopf-titel{font-family:"Playfair Display",serif;font-size:16pt;font-weight:700;color:#1B3A4B;}
+.kopf-sub{font-size:8pt;color:#888;}
+
+.sprechblase{background:#F5F0E8;border-radius:10px;padding:6mm 8mm;margin-bottom:8mm;display:flex;align-items:center;gap:5mm;}
+.sprechblase img{width:30px;height:30px;object-fit:contain;flex-shrink:0;}
+.sprechblase p{font-size:9pt;font-style:italic;color:#1B3A4B;}
+
+.meta-zeile{display:flex;gap:8mm;margin-bottom:6mm;font-size:9pt;}
+.meta-feld{flex:1;border-bottom:1px solid #999;padding-bottom:1mm;}
+.meta-label{font-size:7pt;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;}
+
+.linien{flex:1;}
+.linie{border-bottom:1px solid #D8D0C0;height:8mm;}
+
+.footer{text-align:center;font-size:7pt;color:#aaa;margin-top:6mm;}
+
+@media print{
+  body{background:white;padding:0;}
+  .controls,.info{display:none!important;}
+  .seite{box-shadow:none;margin:0;page-break-after:always;}
+  .format-a4 .seite{width:100%;}
+  .format-a5 .seite{width:100%;}
+}
+.hidden{display:none;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<div class="controls">
+  <button class="ctrl ctrl-a4" onclick="zeigeFormat('a4')">📄 DIN A4</button>
+  <button class="ctrl ctrl-a5" onclick="zeigeFormat('a5')">📄 DIN A5</button>
+  <button class="ctrl ctrl-back" onclick="window.print()">🖨️ Drucken / PDF</button>
+  <a class="ctrl ctrl-back" href="KLARTEXT_Notizblock.html">← Zum digitalen Notizblock</a>
+</div>
+<div class="info">Vordrucke zum handschriftlichen Ausfüllen — jede Seite mit einem anderen Brainy-Spruch.</div>
+
+<div id="format-a4" class="format-a4">
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Du machst das richtig gut.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Kleine Notizen, große Wirkung.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Ein klarer Kopf fängt hier an.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Du musst nicht alles im Kopf behalten.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Manchmal hilft schon, es aufzuschreiben.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Du schaffst mehr, als du denkst.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Notiert ist halb erledigt.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Auch kleine Erfolge zählen.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+</div>
+
+<div id="format-a5" class="format-a5 hidden">
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Du machst das richtig gut.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Kleine Notizen, große Wirkung.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Ein klarer Kopf fängt hier an.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Du musst nicht alles im Kopf behalten.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Manchmal hilft schon, es aufzuschreiben.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Du schaffst mehr, als du denkst.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Notiert ist halb erledigt.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+  <div class="seite">
+    <div class="kopf">
+      <img src="brainy.png" alt="Brainy">
+      <div><div class="kopf-titel">Mein Notizblock</div><div class="kopf-sub">KLARTEXT-Mentoring</div></div>
+    </div>
+    <div class="sprechblase"><img src="brainy.png" alt=""><p>Auch kleine Erfolge zählen.</p></div>
+    <div class="meta-zeile">
+      <div class="meta-feld"><div class="meta-label">Datum</div></div>
+      <div class="meta-feld"><div class="meta-label">Thema</div></div>
+    </div>
+    <div class="linien">
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+      <div class="linie"></div>
+    </div>
+    <div class="footer">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  </div>
+</div>
+
+<script>
+function zeigeFormat(f) {
+  document.getElementById('format-a4').classList.toggle('hidden', f !== 'a4');
+  document.getElementById('format-a5').classList.toggle('hidden', f !== 'a5');
+}
+</script>
+</body>
+</html>

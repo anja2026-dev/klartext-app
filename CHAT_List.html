@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Nachrichten</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="chat.css">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="chat.js"></script>
+<style>
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
+/* CHAT-NAV (identisch zu CHAT_View) */
+.chat-appnav{background:#1B3A4B;height:52px;display:flex;align-items:center;padding:0 1rem;gap:.25rem;position:sticky;top:0;z-index:200;border-bottom:3px solid #6EC6A0;}
+.chat-appnav-logo{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:#fff;margin-right:.75rem;white-space:nowrap;}
+.chat-appnav-links{display:flex;gap:.1rem;flex:1;overflow-x:auto;scrollbar-width:none;}
+.chat-appnav-links::-webkit-scrollbar{display:none;}
+.nav-link{color:rgba(255,255,255,.65);text-decoration:none;font-size:.72rem;font-weight:600;padding:.35rem .55rem;border-radius:8px;white-space:nowrap;transition:all .15s;}
+.nav-link:hover,.nav-link.aktiv{background:rgba(255,255,255,.12);color:#fff;}
+/* Auf Desktop sofort zu CHAT_View weiterleiten (Zwei-Spalten ist dort) */
+@media(min-width:701px){body{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- GLOBALE HAUPTNAVIGATION -->
+<nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
+  <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
+  <a class="gnav-link" href="DASHBOARD.html">🏠 Dashboard</a>
+  <a class="gnav-link aktiv" href="CHAT_View.html">💬 Nachrichten</a>
+  <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
+  <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
+  <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
+  <a class="gnav-link" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
+</nav>
+
+<div class="chat-liste-shell" id="chat-liste"></div>
+<a class="chat-fab" href="CHAT_New.html" title="Neue Nachricht">＋</a>
+
+<script>
+// Desktop → sofort zur Zwei-Spalten-Ansicht in CHAT_View.html weiterleiten
+if (window.innerWidth > 700) {
+  window.location.replace('CHAT_View.html');
+}
+
+const kinderNamenCache = {};
+
+function renderChatListe(conversations) {
+  const wrap = document.getElementById('chat-liste');
+  const ids = Object.keys(conversations||{});
+  if (ids.length === 0) {
+    wrap.innerHTML = '<div class="chat-liste-leer">Noch keine Nachrichten.<br>Klicke auf „＋ Neu".</div>';
+    return;
+  }
+  ids.sort(function(a,b){return (conversations[b].lastTimestamp||0)-(conversations[a].lastTimestamp||0);});
+  wrap.innerHTML = ids.map(function(cid){
+    const conv = conversations[cid];
+    const name = chatKonversationsName(conv, kinderNamenCache);
+    const initiale = (name||'?').charAt(0).toUpperCase();
+    let avatarFarbe='#6A6878';
+    const user = chatAktuellerUser();
+    const andereId = Object.keys(conv.members||{}).find(function(id){return id!==user.id;});
+    if (andereId&&conv.memberRoles&&conv.memberRoles[andereId]) avatarFarbe=chatRollenfarbe(conv.memberRoles[andereId]);
+    const vorschau=(conv.lastMessage||'').substring(0,60)||'Noch keine Nachrichten';
+    return `<a class="chat-eintrag" href="CHAT_View.html?cid=${cid}">
+      <div class="chat-avatar" style="background:${avatarFarbe};">${initiale}</div>
+      <div class="chat-eintrag-inhalt">
+        <div class="chat-eintrag-kopf">
+          <span class="chat-eintrag-name">${name}</span>
+          <span class="chat-eintrag-zeit">${chatFormatZeitKurz(conv.lastTimestamp)}</span>
+        </div>
+        <div class="chat-eintrag-zeile2">
+          <span class="chat-eintrag-vorschau">${vorschau}</span>
+          <span class="chat-badge" id="badge-${cid}" style="display:none;"></span>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+
+  ids.forEach(function(cid){
+    chatZaehleUngelesen(cid,function(anzahl){
+      if(anzahl>0){const b=document.getElementById('badge-'+cid);if(b){b.textContent=anzahl;b.style.display='flex';}}
+    });
+  });
+}
+
+db.ref('children').once('value').then(function(snapshot){
+  const kinder=snapshot.val()||{};
+  Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
+  chatLadeConversations(renderChatListe);
+}).catch(function(){chatLadeConversations(renderChatListe);});
+</script>
+</body>
+</html>

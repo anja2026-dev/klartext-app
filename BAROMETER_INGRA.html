@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Barometer INGRA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#1B3A4B;--accent:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.58rem;color:var(--accent);letter-spacing:.14em;display:block;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--accent);border-radius:20px;color:var(--accent);font-size:.7rem;font-weight:700;text-decoration:none;}
+
+.shell{max-width:600px;margin:0 auto;padding:1.5rem 1rem 5rem;}
+
+/* KIND-NAME */
+.kind-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem;}
+.kind-label{font-size:.68rem;font-weight:700;color:var(--m);letter-spacing:.1em;text-transform:uppercase;flex-shrink:0;}
+.kind-input{flex:1;border:none;outline:none;font-family:"DM Sans",sans-serif;font-size:.9rem;color:var(--ink);background:transparent;}
+.kind-input::placeholder{color:var(--border);}
+
+/* BAROMETER */
+.baro-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1.25rem;box-shadow:0 4px 20px rgba(27,58,75,.08);}
+.baro-header{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.25rem 1.4rem;text-align:center;}
+.baro-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.25rem;}
+.baro-sub{font-size:.72rem;color:rgba(255,255,255,.5);}
+.baro-uhr{font-size:.68rem;color:var(--accent);margin-top:.25rem;}
+.baro-btns{padding:1.25rem 1rem;display:flex;flex-direction:column;gap:.6rem;}
+.baro-btn{display:flex;align-items:center;gap:1rem;padding:.85rem 1.1rem;border-radius:10px;border:2px solid transparent;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .2s;background:var(--paper);width:100%;text-align:left;}
+.baro-btn:hover{transform:translateX(4px);}
+.baro-btn.aktiv{border-color:currentColor;transform:translateX(6px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.baro-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15);}
+.baro-info{flex:1;}
+.baro-name{font-size:.9rem;font-weight:700;}
+.baro-desc{font-size:.72rem;color:var(--muted);margin-top:1px;}
+.baro-emoji{flex-shrink:0;}
+.baro-emoji img{width:40px;height:40px;object-fit:contain;}
+
+/* AKTUELL */
+.aktuell-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;display:none;}
+.aktuell-wrap.show{display:block;}
+.aktuell-label{font-size:.62rem;font-weight:700;color:var(--m);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}
+.aktuell-farbe{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.af-dot{width:36px;height:36px;border-radius:50%;}
+.af-name{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;}
+.af-zeit{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+.notiz-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.6rem .8rem;font-family:"DM Sans",sans-serif;font-size:.85rem;color:var(--ink);background:var(--paper);resize:none;outline:none;height:60px;line-height:1.5;}
+.notiz-input:focus{border-color:var(--m);}
+.speichern-btn{width:100%;margin-top:.6rem;padding:.7rem;background:var(--m);color:#fff;border:none;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .15s;}
+.speichern-btn:hover{opacity:.9;}
+
+/* WOCHENBILANZ */
+.bilanz-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1rem;}
+.bilanz-header{background:var(--paper);padding:.85rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.bilanz-titel{font-size:.82rem;font-weight:700;color:var(--m);}
+.bilanz-actions{display:flex;gap:.5rem;}
+.bilanz-btn{padding:.28rem .65rem;border-radius:6px;font-size:.68rem;font-weight:700;cursor:pointer;border:none;font-family:"DM Sans",sans-serif;transition:all .15s;}
+.bilanz-pdf{background:var(--m);color:#fff;}
+.bilanz-clear{background:var(--paper);color:var(--muted);border:1px solid var(--border);}
+.bilanz-leer{padding:1.5rem;text-align:center;font-size:.82rem;color:var(--muted);}
+.eintrag{display:flex;align-items:center;gap:.75rem;padding:.6rem 1.2rem;border-bottom:1px solid var(--border);}
+.eintrag:last-child{border-bottom:none;}
+.e-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.e-zeit{font-size:.72rem;color:var(--muted);flex-shrink:0;min-width:110px;}
+.e-name{font-size:.82rem;font-weight:600;flex:1;}
+.e-notiz{font-size:.72rem;color:var(--muted);margin-top:1px;}
+.e-del{background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--border);padding:.1rem;line-height:1;}
+.e-del:hover{color:#E53935;}
+
+/* STATISTIK */
+.stats-row{display:flex;gap:.5rem;padding:.75rem 1.2rem;flex-wrap:wrap;border-top:1px solid var(--border);background:var(--paper);}
+.stat-chip{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--ink);}
+.stat-dot{width:10px;height:10px;border-radius:50%;}
+.stat-n{font-weight:700;}
+
+@media print{
+  .header,.back-btn,.speichern-btn,.bilanz-actions,.e-del,div[style*="position:fixed"]{display:none!important;}
+  body{background:white;}
+  .baro-card,.bilanz-card,.aktuell-wrap{box-shadow:none;border:1.5px solid #ddd;}
+}
+
+.baro-slider-wrap{padding:1.5rem 1.25rem 1.75rem;text-align:center;}
+.baro-slider-brainy{width:110px;height:110px;margin:0 auto .75rem;border-radius:50%;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;transition:all .3s ease;}
+.baro-slider-brainy img{width:88px;height:88px;object-fit:contain;}
+.baro-slider-name{font-size:1.2rem;font-weight:800;margin-bottom:.2rem;transition:color .3s;}
+.baro-slider-desc{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;min-height:1.2em;}
+.slider-track-wrap{position:relative;padding:0 .5rem;}
+.baro-range{-webkit-appearance:none;appearance:none;width:100%;height:14px;border-radius:10px;background:linear-gradient(90deg,#2E7D47 0%,#C49A00 25%,#C45F1A 50%,#9B2626 75%,#757575 100%);outline:none;cursor:pointer;position:relative;z-index:2;margin:.5rem 0;}
+.baro-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:32px;height:32px;border-radius:50%;background:#fff;border:4px solid var(--kt);box-shadow:0 2px 10px rgba(0,0,0,.3);cursor:grab;}
+.baro-range::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.1);}
+.baro-range::-moz-range-thumb{width:32px;height:32px;border-radius:50%;background:#fff;border:4px solid var(--kt);box-shadow:0 2px 10px rgba(0,0,0,.3);cursor:grab;}
+.slider-marks{display:flex;justify-content:space-between;padding:0 4px;margin-top:.3rem;}
+.slider-marks .mark{font-size:1.1rem;cursor:pointer;opacity:.55;transition:opacity .2s,transform .2s;}
+.slider-marks .mark:hover{opacity:1;transform:scale(1.15);}
+
+.heute-hinweis{border-radius:12px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.85rem;font-weight:700;text-align:center;display:none;}
+.heute-hinweis.offen{background:#FFF3E0;color:#B7500A;border:1.5px solid #FFD699;display:block;}
+.heute-hinweis.erledigt{background:#EAF7EF;color:#2E7D47;border:1.5px solid #A8E0BC;display:block;}
+.wochenraster{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;margin-bottom:1rem;}
+.tag-zelle{background:var(--paper);border-radius:10px;padding:.6rem .3rem;text-align:center;min-height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;border:1.5px solid transparent;}
+.tag-zelle.heute{border-color:var(--m);}
+.tag-zelle.hat-eintrag{padding:.4rem .3rem;}
+.tag-name{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;}
+.tag-datum{font-size:.6rem;color:var(--muted);}
+.tag-brainy{width:30px;height:30px;object-fit:contain;}
+.tag-leer{width:30px;height:30px;border-radius:50%;border:2px dashed #D8D0C0;}
+.wochen-fazit{background:linear-gradient(135deg,var(--m,#1B3A4B),#2A5570);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;color:#fff;text-align:center;}
+.wochen-fazit-titel{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-bottom:.3rem;}
+.wochen-fazit-text{font-size:.95rem;font-weight:700;}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">Barometer</div><span class="logo-sub">INGRA</span></div>
+  </a>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <!-- BAROMETER -->
+  <div class="baro-card">
+    <div class="baro-header">
+      <div class="baro-titel">🌡️ Barometer</div>
+      <div class="baro-sub">Wie ist der aktuelle Zustand?</div>
+      <div class="baro-uhr" id="uhr"></div>
+    </div>
+    <div class="baro-slider-wrap">
+    <div class="baro-slider-brainy" id="slider-brainy">
+      <img src="brainy-gruen.png" alt="Brainy" id="slider-brainy-img">
+    </div>
+    <div class="baro-slider-name" id="slider-name" style="color:#2E7D47;">Grün</div>
+    <div class="baro-slider-desc" id="slider-desc">Bereit — alles gut, lernbereit</div>
+
+    <div class="slider-track-wrap">
+      <input type="range" min="0" max="4" value="0" step="1" id="baro-range" class="baro-range" oninput="sliderUpdate(this.value)">
+      <div class="slider-track-bg" id="slider-track-bg"></div>
+      <div class="slider-marks">
+        <span class="mark" onclick="setSliderValue(0)">🟢</span>
+        <span class="mark" onclick="setSliderValue(1)">🟡</span>
+        <span class="mark" onclick="setSliderValue(2)">🟠</span>
+        <span class="mark" onclick="setSliderValue(3)">🔴</span>
+        <span class="mark" onclick="setSliderValue(4)">⚪</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AKTUELL -->
+  <div class="aktuell-wrap" id="aktuell-wrap">
+    <div class="aktuell-label">Ausgewählt</div>
+    <div class="aktuell-farbe">
+      <div class="af-dot" id="af-dot"></div>
+      <div><div class="af-name" id="af-name"></div><div class="af-zeit" id="af-zeit"></div></div>
+    </div>
+    <textarea class="notiz-input" id="notiz" placeholder="Kurze Notiz (optional) — z.B. nach Pause, vor Test …"></textarea>
+    <button class="speichern-btn" onclick="speichereEintrag()">✓ Eintrag speichern</button>
+  </div>
+
+  <!-- HEUTE-HINWEIS -->
+  <div id="heute-hinweis" class="heute-hinweis"></div>
+
+  <!-- WOCHENRASTER -->
+  <div class="bilanz-card">
+    <div class="bilanz-header">
+      <span class="bilanz-titel">📊 Meine Woche</span>
+      <div class="bilanz-actions">
+        <button class="bilanz-btn bilanz-pdf" onclick="druckeBilanz()">🖨️ PDF</button>
+        <button class="bilanz-btn bilanz-clear" onclick="loescheAlle()">Löschen</button>
+      </div>
+    </div>
+    <div class="wochenraster" id="wochenraster"></div>
+    <div class="wochen-fazit" id="wochen-fazit" style="display:none;"></div>
+    <div class="stats-row" id="stats-row" style="display:none;"></div>
+  </div>
+
+  <!-- ALLE EINTRÄGE (Detail) -->
+  <div class="bilanz-card">
+    <div class="bilanz-header"><span class="bilanz-titel">📋 Alle Einträge dieser Woche</span></div>
+    <div id="bilanz-liste"><div class="bilanz-leer">Noch keine Einträge — wähle oben eine Farbe.</div></div>
+  </div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="BAROMETER_KIND.html" title="Kinder-Barometer" style="width:48px;height:48px;border-radius:50%;background:#3B8A68;border:2px solid #A3CEBB;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.2);font-size:1.3rem;">😊</a>
+  <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" 
+  title="Logout" style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);
+  border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;
+  text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.2);font-size:1rem;color:#fff;
+  -webkit-transform:translateZ(0);transform:translateZ(0);" title="Logout">⬅</a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);margin-top:.5rem;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+const FARBEN = {gruen:'#2E7D47',gelb:'#C49A00',orange:'#C45F1A',rot:'#9B2626',grau:'#757575'};
+var aktuelleWahl = null;
+
+function brainyBildIngra(emoji) {
+  const map = {'😊':'brainy-gruen.png','😐':'brainy-gelb.png','😟':'brainy-orange.png','😰':'brainy-rot.png','😶':'brainy-grau.png'};
+  return map[emoji] || 'brainy.png';
+}
+function uhrzeit(){
+  var n=new Date();
+  return n.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'})+' · '+n.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+function updateUhr(){document.getElementById('uhr').textContent=uhrzeit();}
+setInterval(updateUhr,10000);updateUhr();
+
+
+
+function waehle(id,color,name,desc,emoji){
+  aktuelleWahl={id,color,name,desc,emoji};
+  document.getElementById('af-dot').style.background=color;
+  document.getElementById('af-name').textContent=name+' '+emoji;
+  document.getElementById('af-name').style.color=color;
+  document.getElementById('af-zeit').textContent=uhrzeit();
+  document.getElementById('aktuell-wrap').classList.add('show');
+}
+const SLIDER_STUFEN = [
+  {id:'gruen', color:'#2E7D47', name:'Grün', desc:'Stabil — heute läuft es gut, ich bin handlungsfähig', emoji:'😊', bild:'brainy-gruen.png'},
+  {id:'gelb', color:'#C49A00', name:'Gelb', desc:'Aufmerksam — heute Anspannung spürbar, aber im Griff', emoji:'😐', bild:'brainy-gelb.png'},
+  {id:'orange', color:'#C45F1A', name:'Orange', desc:'Überfordert — heute anstrengend, Pause nötig', emoji:'😟', bild:'brainy-orange.png'},
+  {id:'rot', color:'#9B2626', name:'Rot', desc:'Alarmiert — heute eine echte Belastung', emoji:'😰', bild:'brainy-rot.png'},
+  {id:'grau', color:'#757575', name:'Grau', desc:'Erschöpft — heute sind die Reserven leer', emoji:'😶', bild:'brainy-grau.png'},
+];
+
+function sliderVorschau(idx) {
+  const stufe = SLIDER_STUFEN[idx];
+  document.getElementById('slider-brainy-img').src = stufe.bild;
+  document.getElementById('slider-name').textContent = stufe.name;
+  document.getElementById('slider-name').style.color = stufe.color;
+  document.getElementById('slider-desc').textContent = stufe.desc;
+  document.getElementById('slider-brainy').style.boxShadow = '0 4px 20px ' + stufe.color + '40';
+}
+
+function sliderUpdate(idx) {
+  sliderVorschau(idx);
+  const stufe = SLIDER_STUFEN[idx];
+  waehle(stufe.id, stufe.color, stufe.name, stufe.desc, stufe.emoji);
+}
+
+function setSliderValue(idx) {
+  document.getElementById('baro-range').value = idx;
+  sliderUpdate(idx);
+}
+
+document.addEventListener('DOMContentLoaded', () => { sliderVorschau(0); });
+
+
+function tagesSchluessel(d){
+  d=d||new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function speichereEintrag(){
+  if(!aktuelleWahl) return;
+  var notiz=document.getElementById('notiz').value.trim();
+  
+  var heuteKey=tagesSchluessel();
+  var eintrag={
+    id:Date.now(),
+    tag:heuteKey,
+    farbe:aktuelleWahl.id,
+    color:aktuelleWahl.color,
+    name:aktuelleWahl.name,
+    emoji:aktuelleWahl.emoji,
+    notiz:notiz,
+    zeit:new Date().toLocaleString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
+  };
+  var eintraege=ladeEintraege();
+  // Eintrag vom heutigen Tag ersetzen statt zu duplizieren
+  eintraege=eintraege.filter(e=>e.tag!==heuteKey);
+  eintraege.unshift(eintrag);
+  try{localStorage.setItem('baro_ingra_eintraege',JSON.stringify(eintraege));}catch(e){}
+  document.getElementById('notiz').value='';
+  renderBilanz();
+  var btn=document.querySelector('.speichern-btn');
+  btn.textContent='✓ Heute gespeichert!';btn.style.background='#2E7D47';
+  setTimeout(()=>{btn.textContent='✓ Eintrag speichern';btn.style.background='var(--m)';},1500);
+}
+
+function ladeEintraege(){
+  try{return JSON.parse(localStorage.getItem('baro_ingra_eintraege')||'[]');}catch(e){return [];}
+}
+
+function montagDieserWoche(){
+  var heute=new Date();
+  var diff=heute.getDay()===0?-6:1-heute.getDay(); // Montag als Wochenstart
+  var montag=new Date(heute);
+  montag.setDate(heute.getDate()+diff);
+  montag.setHours(0,0,0,0);
+  return montag;
+}
+
+function renderBilanz(){
+  var eintraege=ladeEintraege();
+  var liste=document.getElementById('bilanz-liste');
+  var stats=document.getElementById('stats-row');
+  var hinweis=document.getElementById('heute-hinweis');
+  var raster=document.getElementById('wochenraster');
+  var fazit=document.getElementById('wochen-fazit');
+
+  var heuteKey=tagesSchluessel();
+  var heuteEintrag=eintraege.find(e=>e.tag===heuteKey);
+
+  // "Heute"-Hinweis
+  if(heuteEintrag){
+    hinweis.className='heute-hinweis erledigt';
+    hinweis.textContent='✓ Heute schon eingetragen: '+heuteEintrag.name;
+  }else{
+    hinweis.className='heute-hinweis offen';
+    hinweis.textContent='📍 Heute noch kein Eintrag — wähle oben deinen Zustand für heute.';
+  }
+
+  // Wochenraster Mo–So
+  var tageNamen=['Mo','Di','Mi','Do','Fr'];
+  var montag=montagDieserWoche();
+  var wochenEintraege=[];
+  var rasterHtml='';
+  for(var i=0;i<5;i++){
+    var tag=new Date(montag);
+    tag.setDate(montag.getDate()+i);
+    var key=tagesSchluessel(tag);
+    var eintrag=eintraege.find(e=>e.tag===key);
+    var istHeute=key===heuteKey;
+    if(eintrag) wochenEintraege.push(eintrag);
+    rasterHtml+='<div class="tag-zelle '+(istHeute?'heute':'')+' '+(eintrag?'hat-eintrag':'')+'">'+
+      '<div class="tag-name">'+tageNamen[i]+'</div>'+
+      '<div class="tag-datum">'+tag.getDate()+'.'+(tag.getMonth()+1)+'.</div>'+
+      (eintrag?'<img src="'+brainyBildIngra(eintrag.emoji)+'" class="tag-brainy" alt="">':'<div class="tag-leer"></div>')+
+      '</div>';
+  }
+  raster.innerHTML=rasterHtml;
+
+  // Wochenfazit
+  if(wochenEintraege.length>0){
+    var counts={gruen:0,gelb:0,orange:0,rot:0,grau:0};
+    wochenEintraege.forEach(e=>{if(counts[e.farbe]!==undefined)counts[e.farbe]++;});
+    var max=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+    var namen={gruen:'überwiegend stabil',gelb:'überwiegend aufmerksam',orange:'überwiegend überfordert',rot:'überwiegend alarmiert',grau:'überwiegend erschöpft'};
+    fazit.style.display='block';
+    fazit.innerHTML='<div class="wochen-fazit-titel">Wochenfazit · '+wochenEintraege.length+' von 5 Tagen erfasst</div>'+
+      '<div class="wochen-fazit-text">Diese Woche warst du '+(namen[max[0]]||'')+'</div>';
+
+    stats.style.display='flex';
+    stats.innerHTML=Object.entries(counts).filter(([k,v])=>v>0).map(([k,v])=>
+      '<span class="stat-chip"><div class="stat-dot" style="background:'+FARBEN[k]+';"></div><span class="stat-n">'+v+'×</span> '+(k.charAt(0).toUpperCase()+k.slice(1))+'</span>').join('');
+  }else{
+    fazit.style.display='none';
+    stats.style.display='none';
+  }
+
+  // Detail-Liste (alle Einträge dieser Woche, neueste zuerst)
+  if(wochenEintraege.length===0){
+    liste.innerHTML='<div class="bilanz-leer">Noch keine Einträge diese Woche.</div>';
+  }else{
+    var sortiert=wochenEintraege.slice().sort((a,b)=>b.id-a.id);
+    liste.innerHTML=sortiert.map(e=>
+      '<div class="eintrag">'+
+        '<div class="e-dot" style="background:'+e.color+';"></div>'+
+        '<div style="flex:1;">'+
+          '<div style="display:flex;align-items:center;gap:.5rem;">'+
+            '<span class="e-name" style="color:'+e.color+';">'+e.name+' <img src="'+brainyBildIngra(e.emoji)+'" style="width:18px;height:18px;vertical-align:middle;object-fit:contain;"></span>'+
+            '<span class="e-zeit">'+e.zeit+'</span>'+
+          '</div>'+
+          (e.notiz?'<div class="e-notiz">'+e.notiz+'</div>':'')+
+        '</div>'+
+        '<button class="e-del" onclick="loescheEintrag('+e.id+')">✕</button>'+
+      '</div>').join('');
+  }
+}
+
+function loescheEintrag(id){
+  var e=ladeEintraege().filter(x=>x.id!==id);
+  try{localStorage.setItem('baro_ingra_eintraege',JSON.stringify(e));}catch(e){}
+  renderBilanz();
+}
+
+function loescheAlle(){
+  if(!confirm('Alle Einträge löschen?'))return;
+  try{localStorage.removeItem('baro_ingra_eintraege');}catch(e){}
+  renderBilanz();
+}
+
+function druckeBilanz(){
+  var eintraege=ladeEintraege();
+  
+  var sieben=Date.now()-7*24*60*60*1000;
+  var aktuell=eintraege.filter(e=>e.id>sieben);
+  var counts={gruen:0,gelb:0,orange:0,rot:0,grau:0};
+  aktuell.forEach(e=>{if(counts[e.farbe]!==undefined)counts[e.farbe]++;});
+  var rows=aktuell.map(e=>`<tr><td style="padding:.4rem .6rem;border-bottom:1px solid #eee;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${e.color};margin-right:.4rem;"></span>${e.name}</td><td style="padding:.4rem .6rem;border-bottom:1px solid #eee;color:#666;font-size:.8rem;">${e.zeit}</td><td style="padding:.4rem .6rem;border-bottom:1px solid #eee;font-size:.8rem;">${e.notiz||'—'}</td></tr>`).join('');
+  var w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Barometer Wochenbilanz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>body{font-family:"DM Sans",sans-serif;padding:2rem;max-width:700px;margin:0 auto;}
+  h1{font-family:"Playfair Display",serif;color:#1B3A4B;font-size:1.5rem;margin-bottom:.25rem;}
+  .sub{color:#7A7060;font-size:.8rem;margin-bottom:1.5rem;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:#1B3A4B;color:#fff;padding:.5rem .6rem;text-align:left;font-size:.78rem;}
+  .stats{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .stat{background:#f5f0e8;border-radius:6px;padding:.4rem .8rem;font-size:.8rem;}
+  @media print{body{padding:.5rem;}}</style></head><body>
+  <h1>🌡️ Mein Wochenrückblick</h1>
+  <div class="sub">Wochenrückblick · ${new Date().toLocaleDateString('de-DE')}</div>
+  <div class="stats">
+    ${Object.entries(counts).filter(([k,v])=>v>0).map(([k,v])=>`<div class="stat"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${FARBEN[k]};margin-right:.3rem;"></span>${v}× ${k.charAt(0).toUpperCase()+k.slice(1)}</div>`).join('')}
+  </div>
+  <table><tr><th>Farbe</th><th>Zeit</th><th>Notiz</th></tr>${rows}</table>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+}
+
+// Init
+window.addEventListener('DOMContentLoaded',()=>{
+  renderBilanz();
+});
+</script>
+</body>
+</html>

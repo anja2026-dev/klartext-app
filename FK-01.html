@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FK-01 · Akute Eskalation – KLARTEXT Feuerwehrkarte</title>
+<meta name="description" content="KLARTEXT Feuerwehrkarte FK-01: Akute Eskalation – Wutanfall und körperlicher Angriff. Sofortmaßnahmen für INGRA-Fachkräfte.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+/* ─── DESIGN-SYSTEM ───────────────────────────────────────────── */
+:root {
+  --kt-primary:  #1B3A4B;
+  --kt-accent:   #6EC6A0;
+  --kt-paper:    #F5F0E8;
+  --kt-ink:      #2D2D2D;
+  --kt-muted:    #7A7060;
+  --kt-surface:  #FFFFFF;
+  --kt-border:   #DDD8CE;
+
+  /* Feuerwehr-Farbe */
+  --fk:          #C62828;
+  --fk-dark:     #7f0000;
+  --fk-light:    #FDEAEA;
+  --fk-mid:      #FFCDD2;
+
+  /* Barometer */
+  --b-gruen:  #2E7D32;
+  --b-gelb:   #F9A825;
+  --b-orange: #E65100;
+  --b-rot:    #C62828;
+  --b-grau:   #616161;
+
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+  --shadow:    0 2px 10px rgba(27,58,75,0.09);
+  --shadow-md: 0 4px 20px rgba(27,58,75,0.13);
+  --font: 'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--kt-ink);
+  background: var(--kt-paper);
+}
+a { color: var(--kt-primary); }
+ul, ol { padding-left: 1.4rem; }
+li { margin-bottom: 0.35rem; }
+
+/* ─── HEADER ──────────────────────────────────────────────────── */
+.fk-header {
+  background: var(--fk);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(198,40,40,0.3);
+}
+.fk-header__logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.fk-header__logo span {
+  display: block;
+  font-family: var(--font);
+  font-size: 0.65rem;
+  font-weight: 400;
+  opacity: 0.8;
+  letter-spacing: 0.1em;
+}
+.fk-header__badge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 0.25rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+}
+.fk-header__akut {
+  display: inline-block;
+  background: #fff;
+  color: var(--fk);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* ─── NAV-LEISTE (FK-Navigation) ─────────────────────────────── */
+.fk-nav {
+  background: var(--fk-dark);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.fk-nav__inner {
+  display: flex;
+  gap: 0;
+  padding: 0 0.5rem;
+  min-width: max-content;
+}
+.fk-nav__inner a {
+  display: block;
+  padding: 0.5rem 0.85rem;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+  border-bottom: 2px solid transparent;
+}
+.fk-nav__inner a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+.fk-nav__inner a.aktiv { color: #fff; border-bottom-color: rgba(255,255,255,0.6); }
+
+/* ─── MODUL-RÜCKNAV ──────────────────────────────────────────── */
+.modul-nav {
+  background: #fff;
+  border-bottom: 1px solid var(--kt-border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.modul-nav__inner {
+  display: flex;
+  gap: 0;
+  padding: 0 0.5rem;
+  min-width: max-content;
+}
+.modul-nav__inner a {
+  display: block;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--kt-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+  border-bottom: 2px solid transparent;
+}
+.modul-nav__inner a:hover { color: var(--kt-primary); }
+
+/* ─── SEITEN-INTRO ───────────────────────────────────────────── */
+.seiten-intro {
+  max-width: 860px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.25rem;
+}
+.barometer-hinweis {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--fk-light);
+  border: 1.5px solid var(--fk-mid);
+  border-left: 4px solid var(--fk);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--fk-dark);
+}
+.barometer-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--b-rot);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px rgba(198,40,40,0.2);
+}
+
+/* ─── KARTENLISTE ────────────────────────────────────────────── */
+.kartenliste {
+  max-width: 860px;
+  margin: 1.25rem auto 3rem;
+  padding: 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ─── KARTE (BEM) ────────────────────────────────────────────── */
+.karte {
+  background: var(--kt-surface);
+  border: 1px solid var(--kt-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  scroll-margin-top: 120px;
+}
+.karte--feuerwehr {
+  border-left: 4px solid var(--fk);
+}
+
+.karte__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  gap: 0.25rem 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--fk-light) 0%, #fff 100%);
+  border-bottom: 1px solid var(--fk-mid);
+}
+.karte__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  grid-column: 1;
+  grid-row: 1;
+}
+.fk-tag {
+  display: inline-block;
+  background: var(--fk);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+}
+.akut-tag {
+  display: inline-block;
+  background: var(--fk-dark);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.12rem 0.5rem;
+  border-radius: 20px;
+}
+.karte-nr {
+  font-size: 0.78rem;
+  color: var(--kt-muted);
+  font-weight: 500;
+}
+.karte__titel {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--fk-dark);
+  line-height: 1.2;
+}
+.karte__icon {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  font-size: 2.2rem;
+  align-self: center;
+  opacity: 0.8;
+}
+.karte__sub {
+  grid-column: 1 / 3;
+  grid-row: 3;
+  font-size: 0.82rem;
+  color: var(--kt-muted);
+  font-style: italic;
+  margin-top: 0.2rem;
+}
+
+.karte__lead {
+  padding: 0.85rem 1.25rem 0;
+  font-size: 0.95rem;
+  color: var(--kt-muted);
+  line-height: 1.75;
+}
+.karte__lead strong { color: var(--kt-ink); }
+
+.karte__body {
+  padding: 0.85rem 1.25rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.karte__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 1.25rem;
+  background: var(--fk-light);
+  border-top: 1px solid var(--fk-mid);
+  font-size: 0.78rem;
+  color: var(--fk-dark);
+  font-weight: 500;
+}
+.karte__footer a {
+  color: var(--fk);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ─── ABSCHNITTE ─────────────────────────────────────────────── */
+.ab-titel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fk-dark);
+  margin-bottom: 0.5rem;
+}
+
+/* Sofortmaßnahmen-Schritte */
+.schritt {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--fk-light);
+  border-left: 3px solid var(--fk);
+  margin-bottom: 0.5rem;
+}
+.schritt-num {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--fk);
+  line-height: 1;
+  min-width: 1.6rem;
+  flex-shrink: 0;
+}
+.schritt-inhalt { font-size: 0.9rem; line-height: 1.55; }
+.schritt-inhalt strong { display: block; font-size: 0.95rem; margin-bottom: 0.15rem; color: var(--fk-dark); }
+
+/* Warnbox */
+.box {
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.box-rot  { background: var(--fk-light); border-left: 3px solid var(--fk); color: var(--fk-dark); }
+.box-info { background: #e8f4f8; border-left: 3px solid var(--kt-primary); }
+.box-warn { background: #fff3e0; border-left: 3px solid #E65100; }
+.box-gruen { background: #e8f5e9; border-left: 3px solid #2E7D32; }
+
+/* Signale-Grid */
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+.signal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  background: #f5f7fa;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+.signal-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--fk);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* Abgrenzungs-Tabelle */
+.abgrenzung {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--kt-border);
+  font-size: 0.85rem;
+}
+.abgrenzung-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.abgrenzung-row:not(:last-child) { border-bottom: 1px solid var(--kt-border); }
+.abgrenzung-cell {
+  padding: 0.55rem 0.85rem;
+  line-height: 1.5;
+}
+.abgrenzung-cell:first-child { border-right: 1px solid var(--kt-border); }
+.abgrenzung-head { background: var(--kt-paper); font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kt-muted); }
+.abgrenzung-ja { color: #2E7D32; font-weight: 600; }
+.abgrenzung-nein { color: var(--fk); font-weight: 600; }
+
+/* Meldewege */
+.meldeweg {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  background: #f5f7fa;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+.meldeweg-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+/* Back-to-top */
+.back-to-top {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--kt-muted);
+  text-decoration: none;
+}
+.back-to-top:hover { color: var(--kt-primary); }
+
+/* FK-Navigation Pfeile */
+.fk-nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 860px;
+  margin: 0 auto 2rem;
+  padding: 0 1.25rem;
+  gap: 1rem;
+}
+.fk-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1.5px solid var(--fk-mid);
+  color: var(--fk);
+  background: #fff;
+  transition: all 0.15s;
+}
+.fk-nav-btn:hover { background: var(--fk-light); border-color: var(--fk); }
+.fk-nav-btn--weiter {
+  background: var(--fk);
+  color: #fff;
+  border-color: var(--fk);
+}
+.fk-nav-btn--weiter:hover { background: var(--fk-dark); border-color: var(--fk-dark); color: #fff; }
+
+/* ─── SEITEN-FOOTER ──────────────────────────────────────────── */
+.seiten-footer {
+  background: var(--kt-primary);
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  padding: 1.5rem 1.25rem;
+  font-size: 0.8rem;
+  line-height: 1.9;
+}
+.seiten-footer a { color: rgba(255,255,255,0.7); text-decoration: underline; }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .karte__header { padding: 0.85rem 1rem; }
+  .karte__lead, .karte__body { padding-left: 1rem; padding-right: 1rem; }
+  .karte__footer { padding: 0.5rem 1rem; }
+  .karte__titel { font-size: 1.15rem; }
+  .signal-grid { grid-template-columns: 1fr; }
+  .abgrenzung-row { grid-template-columns: 1fr; }
+  .abgrenzung-cell:first-child { border-right: none; border-bottom: 1px solid var(--kt-border); }
+  .fk-nav-buttons { flex-direction: column; }
+  .fk-nav-btn { width: 100%; justify-content: center; }
+}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div id="top"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="fk-header" role="banner">
+  <a class="fk-header__logo" href="DASHBOARD.html" aria-label="KLARTEXT Akademie – Startseite">
+    KLARTEXT
+    <span>Klar. Warm. Menschlich.</span>
+  </a>
+  <div class="fk-header__badge">
+    <span class="fk-header__akut">AKUT</span>
+    Feuerwehrkarten
+  </div>
+</header>
+
+<!-- ═══ FK-NAVIGATION ═══ -->
+<nav class="fk-nav" aria-label="Feuerwehrkarten-Navigation">
+  <div class="fk-nav__inner">
+    <a href="FK-01.html" class="aktiv" aria-current="page">⚡ FK-01 · Eskalation</a>
+    <a href="FK-02.html">🔇 FK-02 · Shutdown</a>
+    <a href="FK-03.html">😰 FK-03 · Panik</a>
+    <a href="FK-04.html">⚠️ FK-04 · Fremdgef.</a>
+    <a href="FK-05.html">🩹 FK-05 · Selbstverletzung</a>
+    <a href="FK-06.html">🏃 FK-06 · Flucht</a>
+    <a href="FK-07.html">🌫️ FK-07 · Dissoziation</a>
+  </div>
+</nav>
+
+<!-- ═══ MODUL-RÜCKNAV ═══ -->
+<nav class="modul-nav" aria-label="Zurück zur Übersicht">
+  <div class="modul-nav__inner">
+    <a href="DASHBOARD.html">← Dashboard</a>
+    <a href="DASHBOARD.html">← Alle Module</a>
+    <a href="M0-00_Systemelemente.html">Systemkarte Feuerwehr</a>
+    <a href="M6-01_Mobbing_erkennen.html">Modul 6 · Krise &amp; Mobbing</a>
+  </div>
+</nav>
+
+<!-- ═══ SEITEN-INTRO ═══ -->
+<div class="seiten-intro">
+  <div class="barometer-hinweis" role="alert" aria-live="polite">
+    <span class="barometer-dot" aria-hidden="true"></span>
+    <span><strong>Barometer ROT &nbsp;—&nbsp;</strong> Diese Karte gilt ausschließlich bei akuter Krise. KLAR, Joker und Humor sind jetzt ausgesetzt.</span>
+  </div>
+</div>
+
+<!-- ═══ KARTENLISTE ═══ -->
+<main class="kartenliste" id="main-content" aria-label="Feuerwehrkarte FK-01">
+
+  <!-- ==================== KARTE: FK-01 ==================== -->
+  <article class="karte karte--feuerwehr" id="fk01" aria-labelledby="h-fk01">
+
+    <header class="karte__header">
+      <div class="karte__meta">
+        <span class="fk-tag">FK-01</span>
+        <span class="akut-tag">AKUT</span>
+        <span class="karte-nr">Feuerwehrkarte 1 von 7 · Barometer ROT</span>
+      </div>
+      <h1 class="karte__titel" id="h-fk01">Akute Eskalation</h1>
+      <div class="karte__icon" aria-hidden="true">⚡</div>
+      <p class="karte__sub">Wutanfall · Körperlicher Angriff · Kontrollverlust</p>
+    </header>
+
+    <p class="karte__lead">Das Kind ist in einem <strong>akuten Ausnahmezustand</strong>: schreiend, werfend, schlagend oder tretend. Das Nervensystem ist im Kampfmodus (Fight-Reaktion). Rationale Kommunikation ist momentan nicht möglich. INGRA handelt jetzt nach dieser Karte – nicht nach KLAR.</p>
+
+    <section class="karte__body">
+
+      <!-- SOFORTMASSNAHMEN -->
+      <div>
+        <div class="ab-titel">Sofortmaßnahmen – in dieser Reihenfolge</div>
+
+        <div class="schritt">
+          <span class="schritt-num">1</span>
+          <div class="schritt-inhalt">
+            <strong>Sicherheitsabstand herstellen</strong>
+            Mindestens zwei Armlängen Abstand zum Kind. Andere Kinder und Personen aus der Gefahrenzone herausführen. Körper seitwärts halten (kein Frontalkonfrontation).
+          </div>
+        </div>
+
+        <div class="schritt">
+          <span class="schritt-num">2</span>
+          <div class="schritt-inhalt">
+            <strong>Lehrkraft sofort einbeziehen</strong>
+            Handzeichen, Blickkontakt oder ruhiges Ansprechen: „Ich brauche jetzt Unterstützung." Lehrkraft übernimmt den Unterricht – INGRA bleibt beim Kind.
+          </div>
+        </div>
+
+        <div class="schritt">
+          <span class="schritt-num">3</span>
+          <div class="schritt-inhalt">
+            <strong>TK unverzüglich informieren</strong>
+            Sofortnachricht oder Anruf – parallel, nicht erst danach. Kein Warten auf Beruhigung. TK entscheidet, ob weitere Schritte nötig sind.
+          </div>
+        </div>
+
+        <div class="schritt">
+          <span class="schritt-num">4</span>
+          <div class="schritt-inhalt">
+            <strong>Ruhige Präsenz halten – in Sicherheitsdistanz</strong>
+            Stimme senken (nicht heben). Langsam sprechen. Keine Fragen, keine Erklärungen. Satz: <em>„Ich bin da. Ich gehe nicht weg. Du musst jetzt nichts sagen."</em>
+          </div>
+        </div>
+
+        <div class="schritt">
+          <span class="schritt-num">5</span>
+          <div class="schritt-inhalt">
+            <strong>Raum geben – keine Eskalation durch Einengen</strong>
+            Kind nicht festhalten, anfassen oder blockieren – außer bei unmittelbarer Selbst- oder Fremdgefährdung (dann → FK-04 / FK-05). Rückzugsraum ermöglichen, wenn vorhanden.
+          </div>
+        </div>
+
+        <div class="schritt">
+          <span class="schritt-num">6</span>
+          <div class="schritt-inhalt">
+            <strong>Warten bis Sturm nachlässt – dann begleiten</strong>
+            Wenn das Kind ruhiger wird: Angebot machen (Wasser, ruhige Ecke, Brainy). Keine sofortige Aufarbeitung. Erst Stabilisierung, dann Gespräch – ggf. später mit TK.
+          </div>
+        </div>
+      </div>
+
+      <!-- ERKENNUNGSSIGNALE -->
+      <div>
+        <div class="ab-titel">Erkennungssignale für diese Karte</div>
+        <div class="signal-grid">
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Schreien, Beschimpfen, Drohen</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Werfen von Gegenständen</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Schlagen, Treten, Kratzen</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Umwerfen von Möbeln</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Totaler Kontrollverlust, kein Stopp</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Keine Reaktion auf Ansprache</div>
+        </div>
+      </div>
+
+      <!-- ABGRENZUNG -->
+      <div>
+        <div class="ab-titel">Was jetzt gilt – und was nicht</div>
+        <div class="abgrenzung" role="table" aria-label="Abgrenzung: Was gilt bei FK-01">
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-head">Jetzt tun</div>
+            <div class="abgrenzung-cell abgrenzung-head">Jetzt nicht tun</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Sicherheitsdistanz halten</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Kind anfassen oder festhalten</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ TK sofort informieren</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Erklären oder verhandeln</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Ruhige Stimme, kurze Sätze</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Konsequenzen androhen</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Anderen Kindern Sicherheit geben</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Sofortige Aufarbeitung verlangen</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Rückzugsraum ermöglichen</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Humor oder Ablenkung einsetzen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NACH DER KRISE -->
+      <div>
+        <div class="ab-titel">Nach der Akutphase</div>
+        <div class="meldeweg">
+          <span class="meldeweg-icon">📋</span>
+          <div><strong>Dokumentation</strong> – sofort nach Beruhigung: Uhrzeit, Auslöser (soweit bekannt), Verlauf, Maßnahmen, Beteiligte</div>
+        </div>
+        <div class="meldeweg">
+          <span class="meldeweg-icon">📞</span>
+          <div><strong>TK-Nachbericht</strong> – Kurzbericht an TK, auch wenn Lage sich beruhigt hat</div>
+        </div>
+        <div class="meldeweg">
+          <span class="meldeweg-icon">👨‍👩‍👧</span>
+          <div><strong>Elterninformation</strong> – nur in Absprache mit TK und Lehrkraft; nicht eigenständig durch INGRA</div>
+        </div>
+        <div class="meldeweg">
+          <span class="meldeweg-icon">🧘</span>
+          <div><strong>Selbstfürsorge INGRA</strong> – kurze Pause, Debrief mit TK. Adrenalin braucht Zeit zum Abbauen – das ist normal.</div>
+        </div>
+      </div>
+
+      <!-- NEUROBIOLOGISCHER HINTERGRUND -->
+      <div class="box box-info" role="note">
+        <strong>🧠 Neurobiologischer Hintergrund:</strong> Akute Eskalation ist eine Fight-Reaktion des Nervensystems (Polyvagaltheorie, Porges 1994). Der präfrontale Kortex – zuständig für Sprache, Vernunft und Impulskontrolle – ist in diesem Zustand nicht zugänglich. Das Kind „will" nicht – es <em>kann</em> nicht anders. Ruhe und Distanz schützen alle Beteiligten und ermöglichen die Rückkehr zur Regulation.
+      </div>
+
+      <div class="box box-warn" role="note">
+        ⚠️ <strong>Körperlicher Angriff auf INGRA:</strong> Wenn das Kind INGRA körperlich angreift, gilt: Schutz der eigenen Person hat Vorrang. Wegbewegen, Tür nutzen, Lehrkraft herbeirufen. Kein Schuldgefühl – Selbstschutz ist professionell.
+      </div>
+
+      <div class="box box-gruen" role="note">
+        ✅ <strong>Wenn sich die Situation beruhigt hat:</strong> Barometer neu einschätzen. Bei Orange → KLAR wieder aufnehmen. Erst wenn das Kind stabil ist, kann ein kurzes Gespräch über das Erlebnis angeboten werden – niemals erzwingen.
+      </div>
+
+      <a href="#top" class="back-to-top">⬆ Nach oben</a>
+    </section>
+
+    <footer class="karte__footer">
+      <span>Feuerwehrkarte FK-01 · Barometer ROT</span>
+      <span>1 von 7 Feuerwehrkarten</span>
+    </footer>
+  </article>
+
+</main>
+
+<!-- ═══ FK-NAVIGATIONS-BUTTONS ═══ -->
+<div class="fk-nav-buttons">
+  <a href="DASHBOARD.html" class="fk-nav-btn">← Alle Karten</a>
+  <a href="FK-02.html" class="fk-nav-btn fk-nav-btn--weiter">FK-02 · Shutdown →</a>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="seiten-footer" role="contentinfo">
+  <p>KLARTEXT-Mentoring-System &nbsp;·&nbsp; Feuerwehrkarte FK-01 – Akute Eskalation</p>
+  <p><a href="DASHBOARD.html">← Alle Module</a> &nbsp;·&nbsp; <a href="DASHBOARD.html">Kartensystem-Übersicht</a> &nbsp;·&nbsp; © Anja Jolk · Schwerte</p>
+</footer>
+
+
+<!-- FABs -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#C62828;border:2px solid #FFCDD2;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(198,40,40,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFCDD2" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#C62828;border:2px solid #FFCDD2;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(198,40,40,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#FFCDD2" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

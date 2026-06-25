@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Fachbuch · Trainingsmodule</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:800px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.hero{background:var(--navy);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;text-align:center;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.65);}
+.fb-modul-karte{background:var(--surface);border-radius:12px;margin-bottom:.85rem;box-shadow:0 1px 6px rgba(0,0,0,.05);overflow:hidden;}
+.fb-modul-header{display:flex;align-items:center;gap:.75rem;padding:.9rem 1.1rem;cursor:pointer;user-select:none;}
+.fb-modul-nr{background:var(--gold);color:#fff;padding:.25rem .65rem;border-radius:14px;font-weight:700;font-size:.72rem;flex-shrink:0;}
+.fb-modul-titel{flex:1;font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:.95rem;}
+.fb-modul-chevron{color:var(--muted);font-size:.75rem;transition:transform .2s;}
+.fb-modul-chevron.offen{transform:rotate(180deg);}
+.fb-modul-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 1.1rem;}
+.fb-modul-body.offen{max-height:2000px;padding:0 1.1rem 1.1rem;}
+.fb-modul-intro{font-size:.84rem;color:#3A3A4A;line-height:1.65;margin-bottom:1rem;font-style:italic;}
+.fb-modul-abschnitt{margin-bottom:.85rem;}
+.fb-modul-abschnitt b{display:block;font-size:.7rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;}
+.fb-modul-abschnitt p{font-size:.83rem;line-height:1.6;color:#2D2D2D;}
+.fb-modul-abschnitt ul{list-style:none;}
+.fb-modul-abschnitt li{font-size:.82rem;color:#2D2D2D;padding:.2rem 0 .2rem 1.1rem;position:relative;line-height:1.5;}
+.fb-modul-abschnitt li::before{content:"→";position:absolute;left:0;color:var(--gold);font-weight:700;}
+.fb-reflexion{background:#F0E5F0;border-radius:8px;padding:.7rem .9rem;}
+.fb-reflexion b{color:#6B3F6B;}
+.fb-reflexion li::before{color:#6B3F6B;}
+.fb-transfer{background:#EAF7EF;border-radius:8px;padding:.7rem .9rem;}
+.fb-transfer b{color:#2E7D47;}
+.fb-brainy{display:flex;gap:.85rem;align-items:center;background:var(--surface);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
+.fb-brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+.fb-brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Fachbuch · Trainingsmodule</span></div>
+  <a class="back-btn" href="KLARTEXT_Fachbuch_Neu.html">← Zum Fachbuch</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">8 Trainingsmodule</div>
+  <div class="hero-sub">Zum Üben, Reflektieren und direkten Anwenden im Alltag</div>
+</div>
+
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(1)">
+        <span class="fb-modul-nr">TM 1</span>
+        <span class="fb-modul-titel">Kommunikation</span>
+        <span class="fb-modul-chevron" id="mchev-1">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-1">
+        <p class="fb-modul-intro">Kommunikation ist das wichtigste Werkzeug der Schulbegleitung. Sie entscheidet darüber, ob ein Kind sich sicher fühlt, ob Eltern Vertrauen entwickeln und ob Lehrkräfte die Zusammenarbeit als Unterstützung erleben.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>klare, kurze und konkrete Sprache nutzen</li><li>Sicherheit vermitteln</li><li>Grenzen kommunizieren</li><li>in Stresssituationen ruhig bleiben</li><li>Missverständnisse vermeiden</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Gute Kommunikation ist einfach, aber nicht leicht. Du brauchst Klarheit, Ruhe und eine wertschätzende Haltung. Kinder reagieren nicht auf lange Erklärungen, sondern auf klare Signale. Kommunikation ist immer Beziehungsgestaltung.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Sätze formulieren, die Orientierung geben: „Ich bin da.“ „Wir machen das zusammen.“</li><li>Grenzen klar formulieren: „Dazu darf ich nichts sagen.“ „Ich bleibe neutral.“</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Welche Sätze nutze ich zu oft?</li><li>Welche Sätze fehlen mir?</li><li>Wo rede ich zu viel — wo zu wenig?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Sätze mitnehmen, die sofort im Alltag angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(2)">
+        <span class="fb-modul-nr">TM 2</span>
+        <span class="fb-modul-titel">Krisenkompetenz</span>
+        <span class="fb-modul-chevron" id="mchev-2">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-2">
+        <p class="fb-modul-intro">Krisen gehören zum Schulalltag. Sie sind kein Zeichen von Scheitern, sondern ein Zeichen von Überforderung.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>Frühwarnsignale erkennen</li><li>ruhig bleiben</li><li>Sicherheit vermitteln</li><li>klare Schritte einleiten</li><li>nach der Krise stabilisieren</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Krisen verlaufen in Stufen: Anspannung, Überforderung, Krise, Nachphase. Jede Stufe braucht eine andere Reaktion. Krisenkompetenz bedeutet nicht, alles zu verhindern, sondern sicher zu begleiten.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Ton senken</li><li>klare Krisensätze üben</li><li>Atempause anleiten</li><li>Abstand sichern</li><li>Nachgespräche führen</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Welche Krisen lösen bei mir Stress aus?</li><li>Wo bleibe ich ruhig — wo verliere ich Klarheit?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Krisensätze mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(3)">
+        <span class="fb-modul-nr">TM 3</span>
+        <span class="fb-modul-titel">Struktur und Reizregulation</span>
+        <span class="fb-modul-chevron" id="mchev-3">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-3">
+        <p class="fb-modul-intro">Struktur ist einer der wichtigsten Schutzfaktoren im Schulalltag. Kinder brauchen Orientierung, klare Abläufe und vorhersehbare Schritte.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>Reize erkennen</li><li>Reizquellen reduzieren</li><li>Übergänge vorbereiten</li><li>visuelle Hilfen einsetzen</li><li>Routinen aufbauen</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Viele Kinder erleben den Schulalltag als überfordernd. Geräusche, Bewegungen, Stimmen und Aufgaben wirken gleichzeitig. Reizregulation bedeutet, Bedingungen zu schaffen, unter denen das Kind sich orientieren kann.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Eine „Reizlandkarte“ des Klassenraums erstellen</li><li>Übergänge ankündigen und visuelle Hilfen einsetzen</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Welche Situationen überfordern mein Kind?</li><li>Welche Reize kann ich reduzieren?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Strukturtechniken mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(4)">
+        <span class="fb-modul-nr">TM 4</span>
+        <span class="fb-modul-titel">Elternarbeit</span>
+        <span class="fb-modul-chevron" id="mchev-4">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-4">
+        <p class="fb-modul-intro">Elternarbeit ist wichtig, aber klar begrenzt. Professionell kommunizieren, ohne in private oder systemische Konflikte hineingezogen zu werden.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>neutral bleiben</li><li>Grenzen setzen</li><li>Fakten statt Bewertungen kommunizieren</li><li>emotionale Eltern begleiten</li><li>Gesprächswege einhalten</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Eltern sind Expertinnen und Experten für ihr Kind. Schulbegleitung ist Expertin für den Alltag. Gute Elternarbeit bedeutet Austausch, aber keine Vermischung von Rollen.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Grenzen formulieren</li><li>emotionale Gespräche führen</li><li>neutral bleiben</li><li>Weiterleitungen an Lehrkraft oder Einsatzleitung üben</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Wo werde ich zu privat?</li><li>Wo lasse ich mich hineinziehen?</li><li>Wo brauche ich klarere Grenzen?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Elternsätze mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(5)">
+        <span class="fb-modul-nr">TM 5</span>
+        <span class="fb-modul-titel">Rollenklärung</span>
+        <span class="fb-modul-chevron" id="mchev-5">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-5">
+        <p class="fb-modul-intro">Rollenklärung ist der Kern professioneller Schulbegleitung — was Schulbegleitung tut, und was nicht.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>Rolle klar benennen</li><li>Aufgaben abgrenzen</li><li>Übernahme vermeiden</li><li>Neutralität wahren</li><li>Verbrüderung erkennen</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Schulbegleitung ist keine Lehrkraft, keine Therapeutin, keine Freundin, keine Familienhilfe. Sie ist eine pädagogische Assistenz, die Teilhabe ermöglicht. Rollenunklarheit führt zu Überforderung, Konflikten und Grenzverlust.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Typische Aufgaben sortieren in „meine Aufgabe“, „nicht meine Aufgabe“ und „Graubereich“</li><li>Grenzen klar formulieren üben</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Wo übernehme ich zu viel?</li><li>Wo bin ich zu nah am Kind, an Eltern oder Lehrkräften?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Rollensätze mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(6)">
+        <span class="fb-modul-nr">TM 6</span>
+        <span class="fb-modul-titel">Dokumentation</span>
+        <span class="fb-modul-chevron" id="mchev-6">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-6">
+        <p class="fb-modul-intro">Dokumentation ist ein Schutzinstrument — kurz, klar und neutral.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>neutral formulieren</li><li>Bewertungen vermeiden</li><li>die KLARTEXT-Methode anwenden</li><li>rechtssicher dokumentieren</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Gute Dokumentation besteht aus Beobachtung, Handlung und Wirkung. Sie ist kurz, sachlich und frei von Bewertungen. Sie beschreibt, was sichtbar war — nicht, was gedacht wurde.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Sätze umschreiben: von Bewertung zu Beobachtung</li><li>von Interpretation zu Beschreibung</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Wo bewerte ich unbewusst?</li><li>Wo schreibe ich zu viel — wo zu wenig?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Dokumentationssätze mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(7)">
+        <span class="fb-modul-nr">TM 7</span>
+        <span class="fb-modul-titel">Kind-Karten einführen</span>
+        <span class="fb-modul-chevron" id="mchev-7">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-7">
+        <p class="fb-modul-intro">Karten sind Werkzeuge der Selbstregulation. Schulbegleitung führt sie so ein, dass Kinder sie akzeptieren und nutzen.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>Karten kindgerecht erklären</li><li>Widerstand begleiten</li><li>Karten in Krisen einsetzen</li><li>Karten in Übergängen nutzen</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Karten werden nicht „gegeben“, sondern eingeführt. Kinder brauchen Zeit, um sie zu verstehen und zu akzeptieren. Schulbegleitung erklärt ruhig, zeigt vor und übt gemeinsam.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Eine Karte in 30 Sekunden erklären üben</li><li>Widerstand begleiten, ohne Druck aufzubauen</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Welche Karte nutze ich zu selten?</li><li>Welche Karte versteht mein Kind gut?</li><li>Wo dränge ich zu sehr?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Kartensätze mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+<div class="fb-modul-karte">
+      <div class="fb-modul-header" onclick="toggleModul(8)">
+        <span class="fb-modul-nr">TM 8</span>
+        <span class="fb-modul-titel">Teamarbeit und professionelle Verankerung</span>
+        <span class="fb-modul-chevron" id="mchev-8">▼</span>
+      </div>
+      <div class="fb-modul-body" id="modul-8">
+        <p class="fb-modul-intro">Schulbegleitung arbeitet oft isoliert. Dieses Modul zeigt, wie sie sich selbst stabilisiert, Peer-Gruppen nutzt und professionelle Distanz wahrt.</p>
+        <div class="fb-modul-abschnitt"><b>🎯 Lernziele</b><ul><li>sich selbst stabilisieren</li><li>Austausch nutzen</li><li>Grenzen halten</li><li>Allianzen vermeiden</li><li>Selbstwert stärken</li></ul></div>
+        <div class="fb-modul-abschnitt"><b>📖 Inhalt</b><p>Teamarbeit bedeutet nicht, dass alle im selben Raum arbeiten. Sie bedeutet, dass Schulbegleitung nicht allein bleibt. Peer-Gruppen, Austausch und Reflexion schützen vor Überforderung und Grenzverlust.</p></div>
+        <div class="fb-modul-abschnitt"><b>✏️ Übungen</b><ul><li>Peer-Gespräche üben: eine Person erzählt, eine hört zu, eine stellt Fragen</li><li>Grenzen im Team formulieren</li></ul></div>
+        <div class="fb-modul-abschnitt fb-reflexion"><b>💭 Reflexion</b><ul><li>Wo fühle ich mich isoliert?</li><li>Wo suche ich zu viel Nähe?</li><li>Wo fühle ich mich überlegen oder klein?</li></ul></div>
+        <div class="fb-modul-abschnitt fb-transfer"><b>🚀 Transfer</b><p>Drei Teamsätze mitnehmen, die sofort angewendet werden können.</p></div>
+      </div>
+    </div>
+
+<div class="fb-brainy">
+  <img src="brainy.png" alt="Brainy">
+  <div><strong>Brainy erinnert:</strong> Du musst nicht alle Module auf einmal durcharbeiten — ein Modul pro Woche reicht völlig.</div>
+</div>
+
+</div>
+
+<script>
+function toggleModul(nr) {
+  const body = document.getElementById('modul-' + nr);
+  const chev = document.getElementById('mchev-' + nr);
+  body.classList.toggle('offen');
+  chev.classList.toggle('offen');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Glossar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --m:#1B3A4B; --accent:#6EC6A0; --paper:#F5F0E8;
+  --ink:#2D2D2D; --muted:#7A7060; --surface:#fff;
+  --border:#DDD8CE; --r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+
+/* HEADER */
+.kt-header{background:var(--m);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.6rem;color:var(--accent);letter-spacing:.14em;display:block;margin-top:1px;}
+.dash-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border:1.5px solid var(--accent);border-radius:20px;color:var(--accent);font-size:.7rem;font-weight:700;text-decoration:none;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2.5rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-label{font-size:.65rem;font-weight:700;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;margin-bottom:.6rem;}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto 1.2rem;}
+.hero-pills{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;}
+.hero-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.25rem .75rem;font-size:.7rem;color:rgba(255,255,255,.7);}
+.hero-pill b{color:var(--accent);}
+
+/* SHELL */
+.shell{max-width:860px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 6rem;}
+
+/* SUCHE */
+.search-wrap{position:relative;margin-bottom:1rem;}
+.search-wrap svg{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--muted);}
+#suche{width:100%;padding:.7rem 1rem .7rem 2.6rem;border:1.5px solid var(--border);border-radius:var(--r);font-family:"DM Sans",sans-serif;font-size:.9rem;background:var(--surface);outline:none;transition:border-color .15s;}
+#suche:focus{border-color:var(--m);}
+#suche::placeholder{color:var(--muted);}
+
+/* ALPHABET NAV */
+.alpha-nav{display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.alpha-btn{width:32px;height:32px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:.75rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.alpha-btn:hover{border-color:var(--m);color:var(--m);}
+.alpha-btn.aktiv{background:var(--m);border-color:var(--m);color:#fff;}
+.alpha-btn.leer{opacity:.3;cursor:default;}
+
+/* FILTER */
+.filter-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.filter-btn{padding:.28rem .65rem;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);color:var(--muted);font-family:"DM Sans",sans-serif;font-size:.72rem;font-weight:500;cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--m);color:var(--m);}
+.filter-btn.aktiv{background:var(--m);border-color:var(--m);color:#fff;font-weight:600;}
+
+/* BUCHSTABEN-GRUPPE */
+.buchstabe-gruppe{margin-bottom:1.5rem;}
+.buchstabe-gruppe.hidden{display:none;}
+.buchstabe-anker{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:700;color:var(--m);opacity:.2;margin-bottom:.5rem;line-height:1;}
+
+/* GLOSSAR-EINTRAG */
+.glossar-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:.55rem;transition:border-color .15s, box-shadow .15s;scroll-margin-top:90px;}
+.glossar-item:hover{border-color:var(--m);box-shadow:0 2px 12px rgba(27,58,75,.08);}
+.glossar-item.hidden{display:none;}
+.glossar-term{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);margin-bottom:.3rem;display:flex;align-items:center;gap:.6rem;}
+.glossar-term .klartext-badge{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.1rem .45rem;border-radius:4px;background:#EAF0F4;color:var(--m);border:1px solid #9BB5C4;font-family:"DM Sans",sans-serif;}
+.glossar-def{font-size:.88rem;color:var(--ink);line-height:1.75;margin-bottom:.5rem;}
+.glossar-def em{font-style:italic;color:var(--muted);}
+.glossar-def strong{color:var(--m);font-weight:500;}
+.glossar-tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.4rem;}
+.gtag{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.1rem .4rem;border-radius:4px;background:var(--paper);color:var(--muted);border:1px solid var(--border);}
+.glossar-quelle{font-size:.75rem;color:#aaa;font-style:italic;margin-top:.4rem;}
+.glossar-karte{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--m);text-decoration:none;border:1px solid var(--m-border,var(--border));border-radius:20px;padding:.15rem .5rem;margin-top:.4rem;transition:all .12s;}
+.glossar-karte:hover{background:var(--m);color:#fff;}
+
+.no-results{text-align:center;padding:3rem 1rem;color:var(--muted);display:none;}
+
+@media print{
+  .kt-header,.search-wrap,.alpha-nav,.filter-row,div[style*="position:fixed"]{display:none!important;}
+  .glossar-item{border:none;border-bottom:1px solid #ddd;border-radius:0;padding:.6rem 0;margin-bottom:0;}
+}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<header class="kt-header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT</div><span class="logo-sub">Glossar</span></div>
+  </a>
+      <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">👩 Über mich</a>
+    <a href="KLARTEXT_Glossar.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">🔤 Glossar</a>
+    <a class="dash-btn" href="DASHBOARD.html">
+    <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+    Dashboard
+  </a>
+</header>
+
+<div class="hero">
+  <div class="hero-label">KLARTEXT Mentoring-System</div>
+  <h1 class="hero-titel">Glossar der Fachbegriffe</h1>
+  <p class="hero-sub">Alle zentralen Begriffe des KLARTEXT-Systems — klar definiert, verständlich erklärt, mit Quellenangaben.</p>
+  <div class="hero-pills">
+    <div class="hero-pill"><b>64</b> Begriffe</div>
+    <div class="hero-pill"><b>A–Ü</b> alphabetisch</div>
+    <div class="hero-pill"><b>9</b> Kategorien</div>
+    <div class="hero-pill">Suche & Filter</div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- SUCHE -->
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+    <input type="search" id="suche" placeholder="Begriff suchen: z.B. Barometer, Trauma, kLAR, Joker …" autocomplete="off">
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <button class="filter-btn aktiv" data-filter="alle">Alle (64)</button>
+    <button class="filter-btn" data-filter="klartext">KLARTEXT-System</button>
+    <button class="filter-btn" data-filter="neurobiologie">Neurobiologie</button>
+    <button class="filter-btn" data-filter="paedagogik">Pädagogik</button>
+    <button class="filter-btn" data-filter="recht">Recht</button>
+    <button class="filter-btn" data-filter="krankheit">Krankheitsbilder</button>
+    <button class="filter-btn" data-filter="kommunikation">Kommunikation</button>
+    <button class="filter-btn" data-filter="selbstfuersorge">Selbstfürsorge</button>
+  </div>
+
+  <!-- ALPHABET NAV -->
+  <div class="alpha-nav" id="alpha-nav"></div>
+
+  <!-- EINTRÄGE -->
+  <div id="glossar-container">
+
+  <!-- A -->
+  <div class="buchstabe-gruppe" id="gruppe-A">
+    <div class="buchstabe-anker">A</div>
+
+    <div class="glossar-item" data-tags="krankheit neurodivergenz" data-buchstabe="A" id="adhs">
+      <div class="glossar-term">ADHS <span class="klartext-badge">Krankheitsbild</span></div>
+      <div class="glossar-def">Aufmerksamkeitsdefizit-Hyperaktivitätsstörung. Neurobiologisch bedingte Entwicklungsstörung mit den Kernsymptomen Unaufmerksamkeit, Impulsivität und (bei hyperaktivem Typ) motorische Überaktivität. Im Schulalltag zeigt sich ADHS oft als <strong>Kann gerade nicht anders</strong> — nicht als Unwilligkeit. Das Gehirn hat Schwierigkeiten mit Exekutivfunktionen: planen, beginnen, durchhalten, stoppen. Kinder mit ADHS brauchen Struktur, kurze Phasen, Bewegungspausen und klare Signale.</div>
+      <div class="glossar-quelle">Döpfner et al. (2019). ADHS. Hogrefe. · APA (2013). DSM-5.</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Neurodivergenz</span><span class="gtag">Kinder</span></div>
+      <a class="glossar-karte" href="M2-08_ADHS.html">→ M2-08 ADHS</a>
+    </div>
+
+    <div class="glossar-item" data-tags="kommunikation paedagogik" data-buchstabe="A">
+      <div class="glossar-term">Aktives Zuhören</div>
+      <div class="glossar-def">Kommunikationsform bei der die zuhörende Person nicht nur hört, sondern das Gehörte spiegelt, zusammenfasst und nachfragt. Ziel ist echtes Verstehen statt Antworten-Vorbereiten. <em>„Ich höre, dass du dich übergangen fühlst — stimmt das?"</em> Im Schulalltag: Kinder fühlen sich gesehen wenn INGRA aktiv zuhört statt sofort zu lösen.</div>
+      <div class="glossar-quelle">Gordon, T. (1970). Parent Effectiveness Training.</div>
+      <div class="glossar-tags"><span class="gtag">Kommunikation</span><span class="gtag">Beziehung</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik selbstfuersorge" data-buchstabe="A">
+      <div class="glossar-term">Allparteilichkeit</div>
+      <div class="glossar-def">Professionelle Haltung bei der alle Perspektiven — Kind, Eltern, Lehrkraft — ernst genommen werden, ohne eine Seite zu bevorzugen. <strong>Allparteilich sein bedeutet nicht: keine Meinung haben</strong>, sondern: die eigene Meinung im richtigen Rahmen halten. INGRA beobachtet und dokumentiert — urteilt nicht öffentlich.</div>
+      <div class="glossar-tags"><span class="gtag">Haltung</span><span class="gtag">Professionalität</span></div>
+      <a class="glossar-karte" href="M8-07_Neutralitaet_und_Allparteilichkeit.html">→ M8-07 Neutralität</a>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="A">
+      <div class="glossar-term">Amygdala</div>
+      <div class="glossar-def">Mandelförmige Gehirnstruktur im limbischen System, zuständig für die Bewertung emotionaler Reize — besonders Bedrohungen. Die Amygdala löst innerhalb von Millisekunden Stressreaktionen aus, <strong>bevor</strong> der Kortex (rationales Denken) die Situation analysiert hat. Im Alarm-Modus übernimmt die Amygdala — das Kind kann nicht mehr <em>vernünftig</em> denken.</div>
+      <div class="glossar-quelle">LeDoux, J. (1996). The Emotional Brain.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Stress</span><span class="gtag">Alarm</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="krankheit neurodivergenz" data-buchstabe="A">
+      <div class="glossar-term">Autismus-Spektrum-Störung (ASS) <span class="klartext-badge">Krankheitsbild</span></div>
+      <div class="glossar-def">Neurobiologisch bedingte Entwicklungsbesonderheit mit dem Kern: <strong>Anderer Wahrnehmungsstil</strong> — nicht weniger. Betroffene verarbeiten sensorische Reize, soziale Signale und Sprache anders. Stärken: Detailwahrnehmung, Systematik, Zuverlässigkeit in Routinen. Herausforderungen: sensorische Überreizung, implizite Sozialregeln, Übergänge, Ironie. Ironie und Humor werden häufig wörtlich gelesen.</div>
+      <div class="glossar-quelle">Milton, D.E.M. (2012). Disability &amp; Society. · APA (2013). DSM-5.</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Neurodivergenz</span></div>
+      <a class="glossar-karte" href="M2-09_Autismus.html">→ M2-09 Autismus</a>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="buchstabe-gruppe" id="gruppe-B">
+    <div class="buchstabe-anker">B</div>
+
+    <div class="glossar-item" data-tags="klartext paedagogik" data-buchstabe="B">
+      <div class="glossar-term">Barometer <span class="klartext-badge">KLARTEXT-System</span></div>
+      <div class="glossar-def">Zentrales Regulationsinstrument des KLARTEXT-Systems. Das Barometer macht den inneren Zustand sichtbar — ohne Worte. Fünf Farben: <strong>Grün</strong> (alles gut), <strong>Gelb</strong> (leicht angespannt), <strong>Orange</strong> (deutlich angespannt, Werkzeuge nötig), <strong>Rot</strong> (Krise, Feuerwehr), <strong>Grau</strong> (erschöpft, leer, kaum erreichbar). INGRA liest das Barometer und passt die Begleitung an — nicht umgekehrt.</div>
+      <div class="glossar-tags"><span class="gtag">KLARTEXT</span><span class="gtag">Regulation</span><span class="gtag">Emotion</span></div>
+      <a class="glossar-karte" href="M3-01.html">→ M3-01 Barometer</a>
+    </div>
+
+    <div class="glossar-item" data-tags="klartext paedagogik" data-buchstabe="B">
+      <div class="glossar-term">Brainy <span class="klartext-badge">KLARTEXT-System</span></div>
+      <div class="glossar-def">Maskottchen und pädagogisches Erklärmodell des KLARTEXT-Systems. Brainy ist ein meditierendes Gehirn mit Herz — und erklärt Kindern warum das Gehirn manchmal nicht mehr denken kann: <em>„Brainy sitzt gerade im Keller. Der Aufzug kommt wieder — wenn der Körper sicher ist."</em> Brainy erscheint auf jeder KLARTEXT-Karte und am Ende jeder Lerneinheit.</div>
+      <div class="glossar-tags"><span class="gtag">KLARTEXT</span><span class="gtag">Pädagogik</span><span class="gtag">Metapher</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="krankheit neurobiologie" data-buchstabe="B">
+      <div class="glossar-term">Bindungsstörung <span class="klartext-badge">Krankheitsbild</span></div>
+      <div class="glossar-def">Entsteht wenn frühe Bezugspersonen unzuverlässig, absent oder verletzend waren. Das Kind lernt: Nähe bringt Schmerz. Zwei Hauptformen: <strong>Gehemmt</strong> (Rückzug, Nähe ablehnen, niemandem vertrauen) und <strong>Enthemmt</strong> (wahllose Nähe, keine gesunde Vorsicht, Grenzen nicht vorhanden). Beziehungsaufbau dauert sehr lang — Rückschritte sind normal.</div>
+      <div class="glossar-quelle">Bowlby (1969). · Ainsworth et al. (1978).</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Bindung</span><span class="gtag">Trauma</span></div>
+      <a class="glossar-karte" href="M2-30_Bindungsstoerungen.html">→ M2-30 Bindungsstörungen</a>
+    </div>
+
+    <div class="glossar-item" data-tags="selbstfuersorge paedagogik" data-buchstabe="B">
+      <div class="glossar-term">Burnout</div>
+      <div class="glossar-def">Zustand chronischer Erschöpfung durch anhaltende Arbeitsüberlastung — besonders in helfenden Berufen. Drei Kerndimensionen nach Maslach: emotionale Erschöpfung, Depersonalisierung (innere Distanz zu Klienten), reduziertes Leistungsgefühl. Burnout entsteht schleichend — Frühwarnzeichen sind Stresssignale (→ Barometer). Prävention durch aktive Selbstfürsorge, Supervision und Grenzen.</div>
+      <div class="glossar-quelle">Maslach &amp; Leiter (2003). Burnout. Jossey-Bass.</div>
+      <div class="glossar-tags"><span class="gtag">Selbstfürsorge</span><span class="gtag">Helfende Berufe</span></div>
+      <a class="glossar-karte" href="M8-01_Warum_Selbstfuersorge_wichtig_ist.html">→ M8-01 Selbstfürsorge</a>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="buchstabe-gruppe" id="gruppe-C">
+    <div class="buchstabe-anker">C</div>
+
+    <div class="glossar-item" data-tags="neurobiologie paedagogik" data-buchstabe="C">
+      <div class="glossar-term">Co-Regulation</div>
+      <div class="glossar-def">Prozess bei dem eine regulierte Person (INGRA) hilft, eine dysregulierte Person (Kind) zur Ruhe zu bringen — durch ruhige Stimme, offene Körperhaltung, gleichmäßiges Atmen. Das Nervensystem des Kindes <em>synchronisiert</em> sich mit dem der Bezugsperson. Co-Regulation ist die Grundlage jeder Deeskalation und der Vorstufe zur Selbstregulation.</div>
+      <div class="glossar-quelle">Porges, S.W. (2011). The Polyvagal Theory.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Regulation</span><span class="gtag">Beziehung</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="selbstfuersorge" data-buchstabe="C">
+      <div class="glossar-term">Compassion Fatigue</div>
+      <div class="glossar-def">Spezifische Erschöpfungsform in helfenden Berufen durch anhaltende Empathie für leidende Menschen. Auch als <em>Mitgefühlserschöpfung</em> oder <em>sekundäre Traumatisierung</em> bezeichnet. Typische Zeichen: emotionale Taubheit, Zynismus, Rückzug, Schlafstörungen. Unterschied zu Burnout: entsteht durch das <em>Was</em> der Arbeit, nicht nur durch das <em>Wie viel</em>.</div>
+      <div class="glossar-quelle">Figley, C.R. (1995). Compassion Fatigue.</div>
+      <div class="glossar-tags"><span class="gtag">Selbstfürsorge</span><span class="gtag">Sekundärtrauma</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik recht" data-buchstabe="C">
+      <div class="glossar-term">Cybermobbing</div>
+      <div class="glossar-def">Mobbing über digitale Kanäle (Messenger, soziale Netzwerke, Gaming). Besonderheiten gegenüber klassischem Mobbing: kein Rückzugsraum (24/7 erreichbar), schnelle Verbreitung durch Weiterleitungen, Anonymität der Täter, Schwierigkeit Beweise zu sichern. Strafrechtlich relevant (§§ 185, 187, 241 StGB). INGRA sichert Beweise, informiert TK — ermittelt nicht selbst.</div>
+      <div class="glossar-quelle">BMBF (2022). Cybermobbing — Ursachen, Ausmaß und Folgen.</div>
+      <div class="glossar-tags"><span class="gtag">Mobbing</span><span class="gtag">Digital</span><span class="gtag">Recht</span></div>
+      <a class="glossar-karte" href="M6-03_Cybermobbing.html">→ M6-03 Cybermobbing</a>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="buchstabe-gruppe" id="gruppe-D">
+    <div class="buchstabe-anker">D</div>
+
+    <div class="glossar-item" data-tags="recht" data-buchstabe="D">
+      <div class="glossar-term">Datenschutz / DSGVO</div>
+      <div class="glossar-def">Die Datenschutz-Grundverordnung (DSGVO, 2018) regelt den Umgang mit personenbezogenen Daten in der EU. Im Schulbegleitungskontext: Alle Dokumente über ein Kind sind sensibel. Keine privaten Geräte zur Datenspeicherung, keine Namen in ungesicherten Nachrichten, Einwilligungen dokumentieren. Im Zweifel: TK fragen.</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">Datenschutz</span><span class="gtag">Dokumentation</span></div>
+      <a class="glossar-karte" href="M5-10_Datenschutz_in_der_Dokumentation.html">→ M5-10 Datenschutz</a>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik neurobiologie" data-buchstabe="D">
+      <div class="glossar-term">Deeskalation</div>
+      <div class="glossar-def">Gezielte Maßnahmen zur Reduzierung von Spannung, Erregung oder Konfliktpotenzial — <strong>bevor</strong> eine Situation eskaliert. Im KLARTEXT-System: kLAR ab Barometer Orange. Deeskalation beginnt mit der eigenen Regulation: Wer selbst angespannt ist, kann nicht deeskalieren. Grundprinzip: <em>Erst beruhigen, dann reden.</em></div>
+      <div class="glossar-tags"><span class="gtag">Pädagogik</span><span class="gtag">Neurobiologie</span><span class="gtag">Krise</span></div>
+      <a class="glossar-karte" href="M4-06_Deeskalierende_Sprache.html">→ M4-06 Deeskalierende Sprache</a>
+    </div>
+
+    <div class="glossar-item" data-tags="kommunikation" data-buchstabe="D">
+      <div class="glossar-term">Du-Botschaft</div>
+      <div class="glossar-def">Kommunikationsform die das Verhalten oder die Person des Gegenübers bewertet. <em>„Du hörst nie zu."</em> / <em>„Du machst das immer falsch."</em> Du-Botschaften erzeugen Abwehr und Rechtfertigung. Im Schulalltag: lösen bei Kindern häufig Scham oder Trotz aus statt Kooperation. Alternative: Ich-Botschaft.</div>
+      <div class="glossar-quelle">Gordon, T. (1970). Parent Effectiveness Training.</div>
+      <div class="glossar-tags"><span class="gtag">Kommunikation</span><span class="gtag">Konflikt</span></div>
+      <a class="glossar-karte" href="M4-02_Ich-Botschaften.html">→ M4-02 Ich-Botschaften</a>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie paedagogik" data-buchstabe="D">
+      <div class="glossar-term">Dysregulation</div>
+      <div class="glossar-def">Zustand in dem das Nervensystem aus dem Gleichgewicht geraten ist — das Kind kann Emotionen, Impulse oder Reaktionen nicht mehr steuern. Dysregulation ist <strong>keine Entscheidung</strong> des Kindes. Sie ist der Ausgangszustand für Stressreaktionen (Fight, Flight, Freeze, Fawn). Erste Aufgabe bei Dysregulation: Co-Regulation durch INGRA, nicht Pädagogik.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Regulation</span><span class="gtag">Krise</span></div>
+    </div>
+  </div>
+
+  <!-- E -->
+  <div class="buchstabe-gruppe" id="gruppe-E">
+    <div class="buchstabe-anker">E</div>
+
+    <div class="glossar-item" data-tags="recht paedagogik" data-buchstabe="E">
+      <div class="glossar-term">Eingliederungshilfe</div>
+      <div class="glossar-def">Leistung nach SGB IX (ab 2020), vorher SGB XII. Ermöglicht Menschen mit Behinderungen die Teilhabe am gesellschaftlichen Leben — dazu gehört die Schulbegleitung. Die Eingliederungshilfe wird beim zuständigen Kostenträger (Jugendamt oder Sozialamt) beantragt. INGRA ist im Rahmen der Eingliederungshilfe tätig und auf den Hilfeplan bezogen.</div>
+      <div class="glossar-quelle">SGB IX § 90 ff. · Wiesner (2022).</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">SGB IX</span><span class="gtag">Schulbegleitung</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="krankheit neurobiologie" data-buchstabe="E">
+      <div class="glossar-term">Epilepsie <span class="klartext-badge">Krankheitsbild</span></div>
+      <div class="glossar-def">Neurologische Erkrankung mit wiederholt auftretenden epileptischen Anfällen durch unkontrollierte elektrische Entladungen im Gehirn. Zwei Hauptformen im Schulalltag: <strong>Großer Anfall</strong> (tonisch-klonisch: Sturz, Verkrampfung, Zucken) und <strong>Absence</strong> (kurzes Einfrieren, leerer Blick). INGRA kennt den Notfallplan, bleibt ruhig, misst Zeit — Notruf ab 5 Minuten.</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Medizin</span><span class="gtag">Notfall</span></div>
+      <a class="glossar-karte" href="M2-26_Epilepsie.html">→ M2-26 Epilepsie</a>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik neurobiologie" data-buchstabe="E">
+      <div class="glossar-term">Eskalation</div>
+      <div class="glossar-def">Stufenweise Zunahme von Spannung, Lautstärke oder aggressivem Verhalten — oft entlang der Barometer-Farben (Gelb → Orange → Rot). Eskalation kann verhindert werden wenn INGRA früh — auf Gelb oder Orange — interveniert. Bei rotem Barometer: keine Pädagogik, Feuerwehrkarten, Sicherheit zuerst.</div>
+      <div class="glossar-tags"><span class="gtag">Krise</span><span class="gtag">Pädagogik</span></div>
+      <a class="glossar-karte" href="M7-17_Eskalation_im_Klassenzimmer.html">→ M7-17 Eskalation</a>
+    </div>
+  </div>
+
+  <!-- F -->
+  <div class="buchstabe-gruppe" id="gruppe-F">
+    <div class="buchstabe-anker">F</div>
+
+    <div class="glossar-item" data-tags="krankheit neurobiologie" data-buchstabe="F">
+      <div class="glossar-term">FASD <span class="klartext-badge">Krankheitsbild</span></div>
+      <div class="glossar-def">Fetal Alcohol Spectrum Disorder — Schädigungen durch Alkoholkonsum in der Schwangerschaft. FASD ist nicht heilbar aber gut begleitbar. Kernsymptome: eingeschränkte Impulskontrolle, Schwierigkeiten mit Ursache-Wirkungs-Denken, Gedächtnislücken, Sozialverhalten. Kinder mit FASD <strong>lernen nicht durch Konsequenzen</strong> wie andere Kinder — Struktur und Routine sind entscheidend.</div>
+      <div class="glossar-quelle">Streissguth et al. (2004). CDC.</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Neurobiologie</span></div>
+      <a class="glossar-karte" href="M2-24_FASD.html">→ M2-24 FASD</a>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="F">
+      <div class="glossar-term">Fawn</div>
+      <div class="glossar-def">Vierter Stressmodus (neben Fight, Flight, Freeze): <strong>Anpassen, um Gefahr zu vermeiden.</strong> Das Kind stimmt allem zu, wird kleiner, hat kaum eigene Wünsche. Fawn ist eine Schutzstrategie — besonders häufig bei Kindern mit Trauma- oder Bindungshintergrund. Im Schulalltag: Kind wirkt kooperativ und unauffällig — während es innen komplett überwältigt ist.</div>
+      <div class="glossar-quelle">Walker, P. (2013). Complex PTSD.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Stressmodi</span><span class="gtag">Trauma</span></div>
+      <a class="glossar-karte" href="M2-04_Fight-Flight-Freeze-Fawn.html">→ M2-04 Stressmodi</a>
+    </div>
+
+    <div class="glossar-item" data-tags="klartext paedagogik" data-buchstabe="F">
+      <div class="glossar-term">Feuerwehrkarte <span class="klartext-badge">KLARTEXT-System</span></div>
+      <div class="glossar-def">Spezialkarten für akute Krisensituationen (Barometer Rot). Sieben Feuerwehrkarten für: Eskalation, Shutdown, Panikattacke, Fremdgefährdung, Selbstverletzung, Weglaufen, Dissoziation. Jede Karte gibt klare Handlungsschritte — <strong>kein Nachdenken nötig.</strong> Erster Grundsatz: Sicherheit herstellen, dann TK informieren, dann dokumentieren.</div>
+      <div class="glossar-tags"><span class="gtag">KLARTEXT</span><span class="gtag">Krise</span><span class="gtag">Akut</span></div>
+      <a class="glossar-karte" href="FK-01.html">→ FK-01 Akute Eskalation</a>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="F">
+      <div class="glossar-term">Fight (Kämpfen)</div>
+      <div class="glossar-def">Erster Stressmodus: Das Nervensystem mobilisiert maximale Energie für den Angriff. Im Schulalltag: schlagen, treten, schreien, Dinge werfen, provozieren. Fight ist eine biologische Schutzreaktion — <strong>keine Entscheidung</strong>. INGRA reagiert mit: ruhig bleiben, Grenzen halten, nicht eskalieren, andere in Sicherheit bringen.</div>
+      <div class="glossar-quelle">Porges, S.W. (2011). Polyvagaltheorie.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Stressmodi</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="F">
+      <div class="glossar-term">Flashback</div>
+      <div class="glossar-def">Unwillkürliches Wiedererleben vergangener traumatischer Erfahrungen — als ob sie gerade jetzt passieren. Ausgelöst durch Trigger (Reize die an das Trauma erinnern). Das Kind ist im Flashback nicht in der Gegenwart. Reaktionen wie bei Barometer Rot oder Grau. INGRA reagiert mit Sicherheit, Orientierung, ruhiger Stimme: <em>„Du bist hier, du bist sicher."</em></div>
+      <div class="glossar-quelle">van der Kolk, B.A. (2014). The Body Keeps the Score.</div>
+      <div class="glossar-tags"><span class="gtag">Trauma</span><span class="gtag">Neurobiologie</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="F">
+      <div class="glossar-term">Flight (Fliehen)</div>
+      <div class="glossar-def">Zweiter Stressmodus: Das Nervensystem mobilisiert Energie für Flucht. Im Schulalltag: Raum verlassen, weglaufen, sich entziehen, vermeiden. Flight ist eine biologische Schutzreaktion. INGRA reagiert mit: sicheren Rückzugsort anbieten, nicht festhalten, Tür offen lassen, Sicherheit signalisieren.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Stressmodi</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="F">
+      <div class="glossar-term">Freeze (Einfrieren)</div>
+      <div class="glossar-def">Dritter Stressmodus: Das Nervensystem schaltet auf Totstellreflex — keine Reaktion, starrer Blick, Körper wie eingefroren. Häufig bei Kindern mit Trauma-Hintergrund. Freeze wirkt von außen wie Gleichgültigkeit oder Sturheit — ist aber maximaler Stress. INGRA reagiert mit: sanft nähern, keine Forderungen, einfach da sein, keine Fragen.</div>
+      <div class="glossar-quelle">Porges (2011). Levine (2010).</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Stressmodi</span><span class="gtag">Trauma</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="recht paedagogik" data-buchstabe="F">
+      <div class="glossar-term">Förderplan</div>
+      <div class="glossar-def">Verbindliches Dokument das Förderziele, Maßnahmen und Zuständigkeiten für ein Kind mit besonderem Förderbedarf festlegt. INGRA arbeitet <em>auf Grundlage</em> des Förderplans — erstellt ihn nicht. Wichtig: Alltagsbeobachtungen von INGRA fließen in die Weiterentwicklung des Förderplans ein. Bei Unpassendem: TK informieren.</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">Dokumentation</span><span class="gtag">Schulbegleitung</span></div>
+      <a class="glossar-karte" href="M5-07_Foerderplaene.html">→ M5-07 Förderpläne</a>
+    </div>
+  </div>
+
+  <!-- H -->
+  <div class="buchstabe-gruppe" id="gruppe-H">
+    <div class="buchstabe-anker">H</div>
+
+    <div class="glossar-item" data-tags="recht paedagogik" data-buchstabe="H">
+      <div class="glossar-term">Hilfeplan</div>
+      <div class="glossar-def">Rechtlich verbindliches Planungsinstrument nach § 36 SGB VIII. Wird gemeinsam mit dem Kind, den Eltern und dem Kostenträger erstellt. Enthält: Ausgangssituation, Ziele, Maßnahmen, Überprüfungszeitpunkte. Der Hilfeplan ist die Grundlage für die Schulbegleitungsleistung. INGRA orientiert sich am Hilfeplan und meldet Beobachtungen zur Weiterentwicklung an TK.</div>
+      <div class="glossar-quelle">SGB VIII § 36.</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">SGB VIII</span><span class="gtag">Schulbegleitung</span></div>
+    </div>
+  </div>
+
+  <!-- I -->
+  <div class="buchstabe-gruppe" id="gruppe-I">
+    <div class="buchstabe-anker">I</div>
+
+    <div class="glossar-item" data-tags="kommunikation" data-buchstabe="I">
+      <div class="glossar-term">Ich-Botschaft</div>
+      <div class="glossar-def">Kommunikationsform die über die eigene Wahrnehmung, das eigene Erleben oder eigene Bedürfnisse spricht — ohne das Verhalten des anderen zu bewerten. Formel: <em>„Ich fühle / merke / brauche … wenn … weil …"</em> Ich-Botschaften öffnen Gespräche, Du-Botschaften schließen sie. Im Schulalltag: gegenüber Kindern, Eltern und Lehrkräften gleichermaßen wirksam.</div>
+      <div class="glossar-quelle">Gordon, T. (1970). Parent Effectiveness Training.</div>
+      <div class="glossar-tags"><span class="gtag">Kommunikation</span><span class="gtag">Konflikt</span></div>
+      <a class="glossar-karte" href="M4-02_Ich-Botschaften.html">→ M4-02 Ich-Botschaften</a>
+    </div>
+
+    <div class="glossar-item" data-tags="klartext paedagogik" data-buchstabe="I">
+      <div class="glossar-term">INGRA</div>
+      <div class="glossar-def">Bezeichnung für die pädagogischen Fachkräfte des KLARTEXT-Systems (früher: Schulbegleiter:in). INGRA begleitet Kinder mit besonderem Förderbedarf im Schulalltag — auf Grundlage des Hilfeplans und im Rahmen der Eingliederungshilfe. Kernhaltung: klar in der Rolle, warm in der Beziehung, menschlich in der Haltung.</div>
+      <div class="glossar-tags"><span class="gtag">KLARTEXT</span><span class="gtag">Schulbegleitung</span><span class="gtag">Rolle</span></div>
+    </div>
+  </div>
+
+  <!-- J -->
+  <div class="buchstabe-gruppe" id="gruppe-J">
+    <div class="buchstabe-anker">J</div>
+
+    <div class="glossar-item" data-tags="klartext paedagogik" data-buchstabe="J">
+      <div class="glossar-term">Joker <span class="klartext-badge">KLARTEXT-System</span></div>
+      <div class="glossar-def">Individuelles Notfall-Signal das Kind und INGRA gemeinsam in ruhigen Momenten vereinbaren — eine Geste, ein Wort, eine Karte. Wenn das Kind den Joker einsetzt, reagiert INGRA <strong>sofort und bedingungslos</strong> — ohne Frage, ohne Kommentar. Der Joker gibt dem Kind Kontrolle zurück wenn Worte fehlen. Entscheidend: 100% Zuverlässigkeit der Reaktion.</div>
+      <div class="glossar-tags"><span class="gtag">KLARTEXT</span><span class="gtag">Signal</span><span class="gtag">Selbstwirksamkeit</span></div>
+      <a class="glossar-karte" href="M3-03.html">→ M3-03 Joker</a>
+    </div>
+  </div>
+
+  <!-- K -->
+  <div class="buchstabe-gruppe" id="gruppe-K">
+    <div class="buchstabe-anker">K</div>
+
+    <div class="glossar-item" data-tags="klartext paedagogik" data-buchstabe="K">
+      <div class="glossar-term">kLAR-Modell <span class="klartext-badge">KLARTEXT-System</span></div>
+      <div class="glossar-def">Viertstufiges Deeskalationsmodell des KLARTEXT-Systems. Immer in dieser Reihenfolge — k kommt zuerst:
+        <strong>k — Kontakt &amp; Körperliche Sicherheit:</strong> Sicheren Abstand herstellen, ruhige offene Haltung, Augenkontakt anbieten — ohne Worte.
+        <strong>L — Leise &amp; Langsam:</strong> Stimme senken, Sprechtempo reduzieren, lange Pausen.
+        <strong>A — Anerkennung &amp; Atmen:</strong> Zustand benennen ohne zu bewerten. Gemeinsam ruhiger werden.
+        <strong>R — Reizreduktion &amp; Rückzug:</strong> Reize wegnehmen, ruhigen Rückzugsort anbieten.
+        Greift ab Barometer Orange.</div>
+      <div class="glossar-tags"><span class="gtag">KLARTEXT</span><span class="gtag">Deeskalation</span><span class="gtag">Krise</span></div>
+      <a class="glossar-karte" href="M0-00_Systemelemente.html">→ M0-00 Systemelemente</a>
+    </div>
+  </div>
+
+  <!-- M -->
+  <div class="buchstabe-gruppe" id="gruppe-M">
+    <div class="buchstabe-anker">M</div>
+
+    <div class="glossar-item" data-tags="paedagogik" data-buchstabe="M">
+      <div class="glossar-term">Mobbing</div>
+      <div class="glossar-def">Systematische, wiederholte Schädigung einer Person durch eine andere oder eine Gruppe — mit Machtungleichgewicht. Drei Definitionskriterien nach Olweus: <strong>Wiederholung</strong> (nicht einmalig), <strong>Machtungleichgewicht</strong> (Opfer kann sich nicht schützen), <strong>Absicht</strong> (zielgerichtet). Mobbing ist ein Gruppenprozess — kein Zweier-Problem. INGRA beobachtet, dokumentiert und meldet an TK.</div>
+      <div class="glossar-quelle">Olweus, D. (1993). Bullying at School.</div>
+      <div class="glossar-tags"><span class="gtag">Mobbing</span><span class="gtag">Gruppe</span><span class="gtag">Schule</span></div>
+      <a class="glossar-karte" href="M6-01_Mobbing_erkennen.html">→ M6-01 Mobbing erkennen</a>
+    </div>
+  </div>
+
+  <!-- N -->
+  <div class="buchstabe-gruppe" id="gruppe-N">
+    <div class="buchstabe-anker">N</div>
+
+    <div class="glossar-item" data-tags="krankheit neurobiologie" data-buchstabe="N">
+      <div class="glossar-term">Neurodivergenz</div>
+      <div class="glossar-def">Oberbegriff für neurologische Entwicklungsbesonderheiten die vom statistischen Durchschnitt abweichen — darunter ADHS, Autismus-Spektrum, Legasthenie, Dyskalkulie, Tourette. <strong>Anders — nicht weniger.</strong> Neurodivergente Menschen haben häufig besondere Stärken in Detailwahrnehmung, Kreativität oder Systematik. Der Begriff entstammt der Neurodiversitätsbewegung und versteht diese Unterschiede als menschliche Variation.</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Neurobiologie</span><span class="gtag">Inklusion</span></div>
+      <a class="glossar-karte" href="M2-07_Neurodivergenz.html">→ M2-07 Neurodivergenz</a>
+    </div>
+  </div>
+
+  <!-- P -->
+  <div class="buchstabe-gruppe" id="gruppe-P">
+    <div class="buchstabe-anker">P</div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="P">
+      <div class="glossar-term">Parasympathikus</div>
+      <div class="glossar-def">Teil des vegetativen Nervensystems — zuständig für Entspannung, Regeneration und soziales Engagement. <em>„Rest and digest"</em>. Gegenspieler des Sympathikus. Im Entspannungszustand (Barometer Grün) ist der Parasympathikus dominant: Herzrate sinkt, Atmung vertieft sich, Gehirn kann lernen und denken. Bewusstes Atmen (besonders die Ausatmung) aktiviert den Parasympathikus.</div>
+      <div class="glossar-quelle">Porges, S.W. (2011). The Polyvagal Theory.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Regulation</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="P">
+      <div class="glossar-term">Polyvagaltheorie</div>
+      <div class="glossar-def">Neurobiologische Theorie von Stephen Porges (1994/2011) über die Rolle des Vagusnervs bei sozialen Verhaltensweisen, Emotionen und Stressreaktionen. Erklärt warum das Nervensystem zwischen drei Zuständen wechselt: soziales Engagement (Parasympathikus), Mobilisierung (Sympathikus: Fight/Flight) und Immobilisierung (dorsaler Vagus: Freeze). Grundlage für das Verständnis von Co-Regulation und Deeskalation.</div>
+      <div class="glossar-quelle">Porges, S.W. (1994/2011).</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Grundlagentheorie</span></div>
+    </div>
+  </div>
+
+  <!-- R -->
+  <div class="buchstabe-gruppe" id="gruppe-R">
+    <div class="buchstabe-anker">R</div>
+
+    <div class="glossar-item" data-tags="paedagogik selbstfuersorge" data-buchstabe="R">
+      <div class="glossar-term">Reflexion</div>
+      <div class="glossar-def">Bewusstes Nachdenken über das eigene Handeln, Erleben und die eigene Rolle — als Voraussetzung für professionelle Weiterentwicklung. Im KLARTEXT-System strukturiert durch tägliche Kurzreflexion (5 Minuten) und wöchentliche Vertiefung. Leitfragen: Was war gut? Was war schwierig? Habe ich aus meiner Rolle heraus gehandelt? Wie war mein eigener Zustand?</div>
+      <div class="glossar-tags"><span class="gtag">Pädagogik</span><span class="gtag">Selbstfürsorge</span><span class="gtag">Professionalität</span></div>
+      <a class="glossar-karte" href="M8-09_Selbstreflexion.html">→ M8-09 Selbstreflexion</a>
+    </div>
+  </div>
+
+  <!-- S -->
+  <div class="buchstabe-gruppe" id="gruppe-S">
+    <div class="buchstabe-anker">S</div>
+
+    <div class="glossar-item" data-tags="recht paedagogik" data-buchstabe="S">
+      <div class="glossar-term">Schulbegleitung / INGRA</div>
+      <div class="glossar-def">Pädagogische Fachkraft die Kinder mit besonderem Förderbedarf im Schulalltag begleitet — als Maßnahme der Eingliederungshilfe (SGB IX). Schulbegleitung ist <strong>keine Lehrkraft</strong>, kein Therapeut, kein Elternersatz. Sie begleitet, dokumentiert, schützt und kooperiert — im Rahmen des Hilfeplans und der Teamkoordination.</div>
+      <div class="glossar-quelle">Dworschak, W. (2012). Klinkhardt.</div>
+      <div class="glossar-tags"><span class="gtag">Schulbegleitung</span><span class="gtag">Recht</span><span class="gtag">Rolle</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="recht" data-buchstabe="S">
+      <div class="glossar-term">Schweigepflicht</div>
+      <div class="glossar-def">Rechtliche und berufsethische Pflicht zum Schutz personenbezogener Daten. INGRA unterliegt als Fachkraft der Schweigepflicht gegenüber unbeteiligten Dritten. Weitergabe von Informationen über ein Kind nur: an beteiligte Fachkräfte im Rahmen der Hilfeleistung, mit Einwilligung der Eltern, oder bei akuter Kindeswohlgefährdung (§ 8a SGB VIII). Im Zweifel: TK fragen.</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">Datenschutz</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie paedagogik" data-buchstabe="S">
+      <div class="glossar-term">Selbstregulation</div>
+      <div class="glossar-def">Fähigkeit eigene Emotionen, Impulse und Reaktionen zu steuern — ohne externe Unterstützung. Selbstregulation entwickelt sich über Jahre und ist abhängig von Co-Regulations-Erfahrungen. Im Schulalltag: Ziel ist nicht Kontrolle durch INGRA, sondern dass das Kind zunehmend eigene Regulationsstrategien entwickelt (Joker, Atemübungen, Rückzugsort kennen).</div>
+      <div class="glossar-quelle">Siegel, D.J. (1999). The Developing Mind.</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Entwicklung</span><span class="gtag">Ziel</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="krankheit" data-buchstabe="S">
+      <div class="glossar-term">Selektiver Mutismus <span class="klartext-badge">Krankheitsbild</span></div>
+      <div class="glossar-def">Angststörung bei der ein Kind in bestimmten Situationen (meist Schule) nicht spricht, obwohl es zuhause normal kommuniziert. Selektiver Mutismus ist <strong>keine Verweigerung</strong> — das Kind will sprechen, kann es aber nicht. Jeder Sprachdruck verschlimmert die Angst. Nonverbale Kommunikation gleichwertig behandeln, Vertrauen langsam aufbauen.</div>
+      <div class="glossar-quelle">Bergman et al. (2013). JCCP.</div>
+      <div class="glossar-tags"><span class="gtag">Krankheitsbild</span><span class="gtag">Angst</span><span class="gtag">Kommunikation</span></div>
+      <a class="glossar-karte" href="M2-27_Selektiver_Mutismus.html">→ M2-27 Selektiver Mutismus</a>
+    </div>
+
+    <div class="glossar-item" data-tags="selbstfuersorge paedagogik" data-buchstabe="S">
+      <div class="glossar-term">Sekundärtraumatisierung</div>
+      <div class="glossar-def">Traumatisierung durch das Zuhören oder Begleiten traumatisierter Menschen — ohne direktes Erleben des Traumas. Fachkräfte in der Arbeit mit belasteten Kindern sind gefährdet. Zeichen: Albträume über Kindersituationen, emotionale Taubheit, Rückzug, Vermeidung. Prävention durch Supervision, Teamaustausch und aktive Selbstfürsorge.</div>
+      <div class="glossar-quelle">Figley, C.R. (1995). Compassion Fatigue.</div>
+      <div class="glossar-tags"><span class="gtag">Selbstfürsorge</span><span class="gtag">Trauma</span><span class="gtag">Helfende Berufe</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="recht paedagogik" data-buchstabe="S">
+      <div class="glossar-term">SGB VIII</div>
+      <div class="glossar-def">Sozialgesetzbuch Achtes Buch — Kinder- und Jugendhilfe. Rechtsgrundlage für Hilfen zur Erziehung und Maßnahmen der Jugendwohlfahrt. Relevant für Schulbegleitung: § 35a (seelische Behinderung), § 36 (Hilfeplan), § 8a (Schutzauftrag bei Kindeswohlgefährdung). INGRA handelt im Rahmen des SGB VIII und ist dem Schutzauftrag verpflichtet.</div>
+      <div class="glossar-quelle">Wiesner (2022). SGB VIII Kommentar. Beck.</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">Jugendhilfe</span><span class="gtag">Grundlage</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="recht" data-buchstabe="S">
+      <div class="glossar-term">SGB IX</div>
+      <div class="glossar-def">Sozialgesetzbuch Neuntes Buch — Rehabilitation und Teilhabe von Menschen mit Behinderungen. Seit 2020 Rechtsgrundlage für die Eingliederungshilfe (vorher SGB XII). Schulbegleitung als Leistung zur Teilhabe an Bildung (§ 75 ff. SGB IX). Zuständig: je nach Bundesland Jugendamt oder Sozialamt.</div>
+      <div class="glossar-tags"><span class="gtag">Recht</span><span class="gtag">Eingliederungshilfe</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik selbstfuersorge" data-buchstabe="S">
+      <div class="glossar-term">Supervision</div>
+      <div class="glossar-def">Fachliche Begleitung von Fachkräften durch externe Fachpersonen — zur Reflexion, Qualitätssicherung und Burnout-Prävention. In helfenden Berufen professioneller Standard. INGRA sollte regelmäßig Supervision erhalten oder einfordern. Supervision schützt das Kind (bessere Begleitung) und INGRA (Entlastung, Entwicklung).</div>
+      <div class="glossar-tags"><span class="gtag">Selbstfürsorge</span><span class="gtag">Professionalität</span></div>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie" data-buchstabe="S">
+      <div class="glossar-term">Sympathikus</div>
+      <div class="glossar-def">Teil des vegetativen Nervensystems — zuständig für Aktivierung bei Stress und Gefahr. <em>„Fight or flight"</em>. Gegenspieler des Parasympathikus. Bei Bedrohung dominiert der Sympathikus: Herzrate steigt, Muskeln spannen sich, Gehirn fokussiert auf Überleben. Im Schulalltag entspricht Barometer Orange bis Rot einem sympathischen Zustand — Lernen ist kaum möglich.</div>
+      <div class="glossar-quelle">Porges, S.W. (2011).</div>
+      <div class="glossar-tags"><span class="gtag">Neurobiologie</span><span class="gtag">Stress</span></div>
+    </div>
+  </div>
+
+  <!-- T -->
+  <div class="buchstabe-gruppe" id="gruppe-T">
+    <div class="buchstabe-anker">T</div>
+
+    <div class="glossar-item" data-tags="paedagogik" data-buchstabe="T">
+      <div class="glossar-term">Tagesdokumentation</div>
+      <div class="glossar-def">Tägliche schriftliche Aufzeichnung relevanter Beobachtungen, Ereignisse und Interventionen. Rechtlich erforderlich und professioneller Standard. Inhalt: Barometer-Farbe, eingesetzte Werkzeuge, besondere Situationen — sachlich, ohne Bewertung, zeitnah. Was nicht hinein gehört: Vermutungen, Diagnosen, private Familieninformationen.</div>
+      <div class="glossar-tags"><span class="gtag">Dokumentation</span><span class="gtag">Recht</span></div>
+      <a class="glossar-karte" href="M5-01_Tagesdokumentation.html">→ M5-01 Tagesdokumentation</a>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik" data-buchstabe="T">
+      <div class="glossar-term">Täter-Opfer-Umkehr</div>
+      <div class="glossar-def">Dynamik bei Mobbing bei der das Opfer als Täter wahrgenommen wird — weil seine sichtbare Reaktion auf Provokation beobachtet wird, nicht die Provokation selbst. Erwachsene sehen den Ausbruch, nicht das System dahinter. INGRA beobachtet Muster über Zeit: Wer beginnt? Dokumentation ist entscheidend.</div>
+      <div class="glossar-quelle">Salmivalli et al. (1996). Aggressive Behavior.</div>
+      <div class="glossar-tags"><span class="gtag">Mobbing</span><span class="gtag">Dynamik</span></div>
+      <a class="glossar-karte" href="M6-05_Taetersicht_und_Opfer-Umkehr.html">→ M6-05 Täter-Opfer-Umkehr</a>
+    </div>
+
+    <div class="glossar-item" data-tags="paedagogik" data-buchstabe="T">
+      <div class="glossar-term">Token-System</div>
+      <div class="glossar-def">Motivationssystem bei dem Kinder Token (Punkte, Stempel, Kleber) für erwünschtes Verhalten sammeln und gegen vereinbarte Belohnungen eintauschen. Wirksam wenn: einfach gehalten, Kind wählt Belohnung mit, konsequent angewendet, kleine Schritte belohnt werden. Ausschleichen wenn Verhalten stabil ist.</div>
+      <div class="glossar-tags"><span class="gtag">Pädagogik</span><span class="gtag">Motivation</span></div>
+      <a class="glossar-karte" href="M3-33.html">→ M3-33 Token-Systeme</a>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie trauma" data-buchstabe="T">
+      <div class="glossar-term">Trauma</div>
+      <div class="glossar-def">Überwältigende Erfahrung die das Nervensystem übersteigt und nicht vollständig verarbeitet werden kann. Trauma verändert messbar Hirnstruktur und -funktion — besonders Amygdala und Hippocampus. Im Schulalltag: traumatisierte Kinder reagieren auf Trigger als wäre die Situation gerade jetzt real — nicht weil sie wollen, sondern weil ihr Nervensystem es tut.</div>
+      <div class="glossar-quelle">van der Kolk, B.A. (2014). The Body Keeps the Score.</div>
+      <div class="glossar-tags"><span class="gtag">Trauma</span><span class="gtag">Neurobiologie</span><span class="gtag">Grundlagenkonzept</span></div>
+      <a class="glossar-karte" href="M2-05_Trauma-Basics.html">→ M2-05 Trauma-Basics</a>
+    </div>
+
+    <div class="glossar-item" data-tags="neurobiologie trauma" data-buchstabe="T">
+      <div class="glossar-term">Trigger</div>
+      <div class="glossar-def">Reiz der eine traumatische Erinnerung oder eine starke emotionale Reaktion auslöst — oft ohne bewusste Verbindung zum ursprünglichen Erlebnis. Trigger können sein: Geräusche, Gerüche, Worte, Situationen, Körperpositionen. Im Schulalltag: Kind reagiert unverhältnismäßig auf scheinbar kleine Auslöser — weil der Trigger das Nervensystem in den Alarmzustand versetzt.</div>
+      <div class="glossar-tags"><span class="gtag">Trauma</span><span class="gtag">Neurobiologie</span></div>
+    </div>
+  </div>
+
+  <!-- U -->
+  <div class="buchstabe-gruppe" id="gruppe-U">
+    <div class="buchstabe-anker">Ü</div>
+
+    <div class="glossar-item" data-tags="paedagogik" data-buchstabe="U">
+      <div class="glossar-term">Übergabe / Übergabeprotokoll</div>
+      <div class="glossar-def">Strukturierte Weitergabe relevanter Informationen bei Schichtwechsel oder Vertretung. Übergaben sind kritische Momente — was nicht weitergegeben wird, geht verloren. Inhalt: aktuelles Barometer, Besonderheiten des Tages, offene Aufgaben, Vereinbarungen. Übergabeprotokolle schützen das Kind auch wenn INGRA nicht anwesend ist.</div>
+      <div class="glossar-tags"><span class="gtag">Dokumentation</span><span class="gtag">Pädagogik</span></div>
+      <a class="glossar-karte" href="M5-04_Übergabeprotokolle.html">→ M5-04 Übergabeprotokolle</a>
+    </div>
+  </div>
+
+  <!-- V -->
+  <div class="buchstabe-gruppe" id="gruppe-V">
+    <div class="buchstabe-anker">V</div>
+
+    <div class="glossar-item" data-tags="paedagogik" data-buchstabe="V">
+      <div class="glossar-term">Verstärkerplan</div>
+      <div class="glossar-def">Systematischer Plan zur gezielten Verstärkung erwünschten Verhaltens durch positive Konsequenzen. Grundsatz: Verstärkung wirkt am stärksten wenn sie <strong>sofort, konkret und ehrlich</strong> ist. Prozess loben (Mühe, Ausdauer) statt Ergebnis. Wichtig: Verstärker individuell wählen — was für ein Kind motivierend ist, ist für ein anderes irrelevant.</div>
+      <div class="glossar-tags"><span class="gtag">Pädagogik</span><span class="gtag">Motivation</span>
+      <!-- B — neue Einträge -->
+      <div class="glossar-eintrag" id="bindungstrauma">
+        <div class="g-buchstabe-marker">B</div>
+        <div class="g-term">Bindungstrauma</div>
+        <div class="g-definition">Bindungstrauma entsteht wenn Kinder keine sichere Bezugsperson hatten, Gewalt oder Vernachlässigung erlebt haben oder häufige Beziehungsabbrüche durchgemacht haben. Im Schulalltag zeigt es sich als extreme Nähe oder Distanz, Kontrollverhalten, Wutausbrüche und Lügen aus Angst — alles Überlebensstrategien, kein Trotz. (→ M2-31)</div>
+        <a class="g-link" href="M2-31_Bindungstrauma_Pflegekinder.html">→ M2-31</a>
+      </div>
+
+      <!-- E — neue Einträge -->
+      <div class="glossar-eintrag" id="esstoerung">
+        <div class="g-buchstabe-marker">E</div>
+        <div class="g-term">Essstörung (im Schulkontext)</div>
+        <div class="g-definition">Essstörungen sind komplexe psychische Erkrankungen — keine Phase, kein Trotz. INGRA stellt keine Diagnosen, erkennt aber Muster: eingeschränkte Nahrungsaufnahme, Essrituale, Rückzug in Pausen, Kreislaufprobleme, Perfektionismus. INGRA beobachtet, dokumentiert sachlich und gibt an LK und TK weiter. Nie Essen kommentieren oder kontrollieren. (→ M2-34)</div>
+        <a class="g-link" href="M2-34_Esstoerungen_Schulbegleitung.html">→ M2-34</a>
+      </div>
+
+      <!-- H — neue Einträge -->
+      <div class="glossar-eintrag" id="hochkonflikt">
+        <div class="g-buchstabe-marker">H</div>
+        <div class="g-term">Hochkonflikt-Eltern</div>
+        <div class="g-definition">Eltern die im Kontext der Schulbegleitung kontrollierend, aggressiv, manipulativ oder überfreundlich (vereinnahmend) auftreten. Nicht "böse" — sondern überlastet, misstrauisch oder emotional instabil. INGRA schützt sich durch professionelle Distanz: keine private Nummer, keine WhatsApp, kein Rechtfertigen, kein Partei ergreifen. Alle Vorfälle sofort an TK melden. (→ M2-33)</div>
+        <a class="g-link" href="M2-33_Hochkonflikt_Eltern.html">→ M2-33</a>
+      </div>
+
+      <!-- P — neue Einträge -->
+      <div class="glossar-eintrag" id="pflegekind">
+        <div class="g-buchstabe-marker">P</div>
+        <div class="g-term">Pflegekind / Pflegekinder</div>
+        <div class="g-definition">Kinder die in Pflegefamilien oder Heimen leben und oft in einem System aus 10–20 Erwachsenen (Herkunftsfamilie, Pflegefamilie, Jugendamt, Vormund, Schule, Therapeut:innen, Träger, INGRA) aufwachsen. INGRA ist häufig die stabilste Bezugsperson im Schulalltag. Pflegekinder tragen Bindungsabbrüche, Loyalitätskonflikte und Verlustängste — und sind überlebensklug. (→ M2-31, M2-32)</div>
+        <a class="g-link" href="M2-32_Pflegekinder_Jugendhilfe.html">→ M2-32</a>
+      </div>
+</div>
+    </div>
+  </div>
+
+  </div><!-- /glossar-container -->
+
+  <div class="no-results" id="no-results">
+    <p style="font-size:1.5rem;margin-bottom:.5rem;">🔍</p>
+    <p>Kein Begriff gefunden. Versuche einen anderen Suchbegriff.</p>
+  </div>
+
+</div>
+
+<!-- FABs -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+// ── Alphabet-Navigation aufbauen ──
+const buchstaben = ['A','B','C','D','E','F','H','I','J','K','M','N','P','R','S','T','U','V'];
+const alphaNav = document.getElementById('alpha-nav');
+'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(l => {
+  const btn = document.createElement('button');
+  btn.className = 'alpha-btn' + (buchstaben.includes(l) ? '' : ' leer');
+  btn.textContent = l === 'U' ? 'Ü' : l;
+  btn.dataset.buchstabe = l;
+  if (buchstaben.includes(l)) {
+    btn.addEventListener('click', () => {
+      const gruppe = document.getElementById('gruppe-' + l);
+      if (gruppe) gruppe.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+  alphaNav.appendChild(btn);
+});
+
+// ── Suche ──
+let aktiverFilter = 'alle';
+document.getElementById('suche').addEventListener('input', function() {
+  filterAlles(this.value.toLowerCase().trim(), aktiverFilter);
+});
+
+// ── Filter ──
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('aktiv'));
+    this.classList.add('aktiv');
+    aktiverFilter = this.dataset.filter;
+    filterAlles(document.getElementById('suche').value.toLowerCase().trim(), aktiverFilter);
+  });
+});
+
+function filterAlles(suche, filter) {
+  let gesamt = 0;
+  document.querySelectorAll('.buchstabe-gruppe').forEach(gruppe => {
+    let sichtbar = 0;
+    gruppe.querySelectorAll('.glossar-item').forEach(item => {
+      const tags = (item.dataset.tags || '').toLowerCase();
+      const text = item.textContent.toLowerCase();
+      const tagMatch = filter === 'alle' || tags.includes(filter);
+      const textMatch = !suche || text.includes(suche);
+      const show = tagMatch && textMatch;
+      item.classList.toggle('hidden', !show);
+      if (show) { sichtbar++; gesamt++; }
+    });
+    gruppe.classList.toggle('hidden', sichtbar === 0);
+  });
+  document.getElementById('no-results').style.display = gesamt === 0 ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
+    <div class="glossar-entry" data-buchstabe="C" id="ci">
+      <div class="glossar-term">Cochlea-Implantat (CI) <span class="klartext-badge">Hilfsmittel</span></div>
+      <div class="glossar-def">Operative Hörprothese, die elektrische Signale direkt an den Hörnerv sendet und so Klangerfahrungen ermöglicht. Ein CI ist kein normales Hören — Sprache klingt anders, Hintergrundgeräusche sind schwerer filterbar. Kinder mit CI brauchen weiterhin spezifische Unterstützung. <strong>Wichtig für INGRA:</strong> Das CI nie berühren, nicht in Wasser bringen, bei Ausfall ruhig bleiben und schriftlich kommunizieren.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="D" id="dgs">
+      <div class="glossar-term">DGS — Deutsche Gebärdensprache <span class="klartext-badge">Sprache</span></div>
+      <div class="glossar-def">Eigenständige visuelle Sprache mit eigener Grammatik, eigenem Satzbau und regionalen Dialekten. DGS ist <strong>nicht</strong> Deutsch mit Händen — sie ist eine vollwertige Sprache mit eigener Struktur. Für viele gehörlose Menschen ist DGS die Muttersprache, Deutsch die Fremdsprache. INGRA muss keine DGS können, aber: Respekt zeigen, nie die Gebärden imitieren, Dolmetscher direkt ansprechen wenn vorhanden.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="F" id="fm-anlage">
+      <div class="glossar-term">FM-Anlage <span class="klartext-badge">Hilfsmittel</span></div>
+      <div class="glossar-def">Drahtloses Übertragungssystem: Die Lehrperson oder INGRA spricht in ein Mikrofon, das Signal wird direkt ans Hörgerät des Kindes übertragen — ohne Umweg über den Raum. Das reduziert Hintergrundgeräusche erheblich. <strong>INGRA prüft:</strong> Ist die FM-Anlage vorhanden? Funktioniert sie? Wer ist für die Batterien zuständig?</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="G" id="gehoerlosigkeit">
+      <div class="glossar-term">Gehörlosigkeit <span class="klartext-badge">Sinnesbehinderung</span></div>
+      <div class="glossar-def">Fehlen des funktionellen Hörvermögens. Gehörlosigkeit ist <strong>keine Krankheit</strong>, sondern eine Sinneserfahrung mit eigener Sprache (DGS) und Kultur. Viele gehörlose Menschen identifizieren sich als Teil der Gehörlosengemeinschaft. <strong>Im Schulalltag:</strong> Immer von vorne ansprechen, Mundpartie sichtbar lassen, Lippenlesen ist nur ca. 30% zuverlässig — immer schriftliche Ergänzung anbieten.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="H" id="hoererschoepfung">
+      <div class="glossar-term">Hörerschöpfung <span class="klartext-badge">Belastung</span></div>
+      <div class="glossar-def">Tiefe Ermüdung durch anhaltende Hörkonzentration. Kinder mit Hörbehinderung müssen aktiv "zusammensetzen" was sie hören — das kostet ein Vielfaches der Energie die hörende Kinder aufwenden. Hörerschöpfung zeigt sich als Konzentrationsverlust, Gereiztheit, Rückzug — <strong>nicht als Unwilligkeit</strong>. Regelmäßige Pausen sind Pflicht, keine Option.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="K" id="kindeswohlgefaehrdung">
+      <div class="glossar-term">Kindeswohlgefährdung <span class="klartext-badge">Rechtsbegriff</span></div>
+      <div class="glossar-def">Situation in der das physische, psychische oder sexuelle Wohl eines Kindes ernsthaft bedroht ist. Löst den Schutzauftrag nach § 8a SGB VIII aus. <strong>Für INGRA:</strong> Wahrnehmen, dokumentieren, an TK melden — nicht selbst ermitteln oder einschätzen. Die TK entscheidet über weitere Schritte gemeinsam mit der Fachkraft für Kinderschutz.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="L" id="langstock">
+      <div class="glossar-term">Langstock <span class="klartext-badge">Hilfsmittel</span></div>
+      <div class="glossar-def">Taststock für blinde Menschen zur selbstständigen Orientierung im Raum. Der Langstock ist Arbeitsmittel und Teil der persönlichen Schutzzone — er darf <strong>niemals</strong> ohne Erlaubnis angefasst, weggenommen oder verstellt werden. <strong>INGRA:</strong> Nie den Weg des Stocks blockieren, Hindernisse ankündigen, Gegenstände immer an dieselbe Stelle zurücklegen.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="L" id="lippenlesen">
+      <div class="glossar-term">Lippenlesen <span class="klartext-badge">Kommunikation</span></div>
+      <div class="glossar-def">Verstehen von Lautsprache durch visuelle Wahrnehmung der Mundbewegungen. Lippenlesen ist nur zu etwa <strong>30% zuverlässig</strong> — viele Laute sehen identisch aus (z.B. p/b/m). Es ist hochgradig anstrengend und nie die einzige verlässliche Kommunikationsstrategie. <strong>INGRA:</strong> Immer zusätzlich schriftlich kommunizieren, Mundpartie nicht verdecken, nicht übertrieben artikulieren.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="M" id="msd">
+      <div class="glossar-term">MSD — Mobiler Sonderpädagogischer Dienst <span class="klartext-badge">Fachkraft</span></div>
+      <div class="glossar-def">Spezialisierte Fachkräfte die Kinder mit Behinderung in Regelschulen beraten und begleiten — ohne selbst dauerhaft im Unterricht zu sein. Für Kinder mit Seh- oder Hörbehinderung ist der MSD oft die wichtigste Fachinstanz. <strong>INGRA arbeitet mit MSD zusammen:</strong> Hinweise zur Kommunikation, Hilfsmittel, Unterrichtsgestaltung kommen vom MSD — INGRA setzt sie um.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="S" id="sehbehinderung">
+      <div class="glossar-term">Sehbehinderung <span class="klartext-badge">Sinnesbehinderung</span></div>
+      <div class="glossar-def">Stark eingeschränkte Sehschärfe die durch Hilfsmittel nicht vollständig korrigierbar ist. Viele Kinder mit Sehbehinderung sehen mehr als erwartet — <strong>nie unterschätzen, nie überschätzen</strong>. Seherschöpfung, Lichtempfindlichkeit und eingeschränkte räumliche Orientierung sind typisch. <strong>INGRA:</strong> Räumlich beschreiben statt zeigen, Gegenstände immer zurücklegen, ankündigen bevor man den Raum betritt.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="S" id="seherschoepfung">
+      <div class="glossar-term">Seherschöpfung <span class="klartext-badge">Belastung</span></div>
+      <div class="glossar-def">Tiefe Ermüdung nach intensiver Seharbeit. Kinder mit Sehbehinderung müssen aktiv kompensieren was das Auge nicht leistet — das kostet erheblich mehr Energie als bei voll sehenden Kindern. <strong>Im Unterricht:</strong> Nach intensiver Lese- oder Schreibarbeit Pausen einplanen, Bildschirmzeit begrenzen, auf Lichtverhältnisse achten.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="S" id="sex-missbrauch">
+      <div class="glossar-term">Sexueller Missbrauch <span class="klartext-badge">Kinderschutz</span></div>
+      <div class="glossar-def">Jede sexuelle Handlung an oder vor einem Kind unter 14 Jahren — strafbar nach § 176 StGB. Missbrauch geschieht überwiegend durch Vertrauenspersonen, nicht durch Fremde. <strong>Aufgabe von INGRA:</strong> Wahrnehmen, dokumentieren, an TK melden — nicht diagnostizieren, nicht das Kind direkt befragen, nicht Verschwiegenheit versprechen. Ruhig bleiben schützt das Kind.</div>
+    </div>
+    <div class="glossar-entry" data-buchstabe="S" id="schwerhoerig">
+      <div class="glossar-term">Schwerhörigkeit <span class="klartext-badge">Sinnesbehinderung</span></div>
+      <div class="glossar-def">Eingeschränktes Hörvermögen, das mit Hörgeräten teilweise kompensiert werden kann — von leicht bis hochgradig. Lärm, Hintergrundgeräusche und Distanz erschweren das Sprachverstehen erheblich. <strong>Wichtig:</strong> Hörgeräte verstärken ALLES — auch Stühlerücken und Lärm. Ruhige Umgebungen und FM-Anlage helfen enorm.</div>
+    </div>
+  

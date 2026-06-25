@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Downloads & Formulare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#1B3A4B;--accent:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:130px;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--accent);border-radius:20px;color:var(--accent);font-size:.7rem;font-weight:700;text-decoration:none;}
+.tab-nav{background:var(--surface);border-bottom:1.5px solid var(--border);padding:.6rem clamp(1rem,4vw,2rem);display:flex;gap:.4rem;flex-wrap:wrap;position:sticky;top:64px;z-index:90;overflow-x:auto;}
+.tab{padding:.3rem .75rem;border-radius:20px;font-size:.73rem;font-weight:600;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;text-decoration:none;white-space:nowrap;}
+.tab:hover{border-color:var(--m);color:var(--m);}
+.tab.ingra{} .tab.el{} .tab.lk{} .tab.tk{} .tab.kd{} .tab.am{}
+.tab.ingra.aktiv{background:#1B3A4B;border-color:#1B3A4B;color:#fff;}
+.tab.el.aktiv{background:#AD1457;border-color:#AD1457;color:#fff;}
+.tab.lk.aktiv{background:#1565C0;border-color:#1565C0;color:#fff;}
+.tab.tk.aktiv{background:#4A148C;border-color:#4A148C;color:#fff;}
+.tab.kd.aktiv{background:#3B8A68;border-color:#3B8A68;color:#fff;}
+.tab.am.aktiv{background:#C62828;border-color:#C62828;color:#fff;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2rem;margin-bottom:.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto;}
+.shell{max-width:900px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+.sek{margin-bottom:2.5rem;scroll-margin-top:135px;}
+.sek-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:10px;margin-bottom:.85rem;}
+.sek-emoji{font-size:1.4rem;}
+.sek-info{flex:1;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;}
+.sek-sub{font-size:.72rem;margin-top:1px;opacity:.7;}
+.dl-grid{display:flex;flex-direction:column;gap:.5rem;}
+.dl-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:.9rem;padding:.75rem 1rem;transition:all .15s;}
+.dl-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.dl-icon{font-size:1.3rem;flex-shrink:0;}
+.dl-info{flex:1;}
+.dl-name{font-size:.87rem;font-weight:600;margin-bottom:.15rem;}
+.dl-desc{font-size:.72rem;color:var(--muted);}
+.dl-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:6px;font-size:.75rem;font-weight:700;text-decoration:none;transition:all .15s;flex-shrink:0;color:#fff;}
+.dl-btn:hover{opacity:.85;}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT · Downloads</div></div>
+  </a>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<nav class="tab-nav">
+  <a class="tab ingra aktiv" href="#ingra">🟢 INGRA</a>
+  <a class="tab el" href="#el">❤️ Eltern</a>
+  <a class="tab lk" href="#lk">🏫 Lehrkraft</a>
+  <a class="tab tk" href="#tk">🗂️ Teamkoordination</a>
+  <a class="tab kd" href="#kd">🧒 Kinder</a>
+  <a class="tab am" href="#am">🛡️ Anti-Mobbing</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-icon">📥</div>
+  <h1 class="hero-titel">Downloads & Formulare</h1>
+  <p class="hero-sub">Alle Druckvorlagen, Formulare und Materialien — nach Zielgruppe sortiert. Öffnen · Ausfüllen · Als PDF drucken.</p>
+</div>
+
+<div class="shell">
+
+  <!-- INGRA -->
+  <div class="sek" id="ingra">
+    <div class="sek-header" style="background:#EAF0F4;">
+      <div class="sek-emoji">🟢</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#1B3A4B;">INGRA · Schulbegleitung</div><div class="sek-sub" style="color:#1B3A4B;">Dokumentationsformulare für den Schulalltag</div></div>
+    </div>
+    <div class="dl-grid">
+      <div class="dl-item">
+        <div class="dl-icon">📋</div>
+        <div class="dl-info"><div class="dl-name">Tagesdokumentation</div><div class="dl-desc">Tagesprotokoll · Barometer · Werkzeuge · Übergabe</div></div>
+        <a class="dl-btn" href="M5_DL_Tagesdokumentation.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🔖</div>
+        <div class="dl-info"><div class="dl-name">Lesezeichen für dich</div><div class="dl-desc">Zum Ausdrucken, Lochen, Faden dran — Brainy begleitet dich</div></div>
+        <a class="dl-btn" href="INGRA_Lesezeichen_Klartext.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">👆</div>
+        <div class="dl-info"><div class="dl-name">Lesefinger</div><div class="dl-desc">Zum Ausschneiden — über den Finger stülpen, Zeile für Zeile mitlesen</div></div>
+        <a class="dl-btn" href="Lesefinger-Klartext.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📊</div>
+        <div class="dl-info"><div class="dl-name">Wochenreflexion</div><div class="dl-desc">Barometer je Wochentag · Was gut war · Was schwierig war</div></div>
+        <a class="dl-btn" href="M5_DL_Wochenreflexion.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📈</div>
+        <div class="dl-info"><div class="dl-name">Monatsbericht</div><div class="dl-desc">Barometer-Bilanz · Entwicklung · Ziele · Hilfeplan-Empfehlung</div></div>
+        <a class="dl-btn" href="M5_DL_Monatsbericht.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🔄</div>
+        <div class="dl-info"><div class="dl-name">Übergabeprotokoll</div><div class="dl-desc">Von/An INGRA · Barometer · Was half · Unterschriften</div></div>
+        <a class="dl-btn" href="M5_DL_Uebergabeprotokoll.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">👁️</div>
+        <div class="dl-info"><div class="dl-name">Beobachtungsbogen</div><div class="dl-desc">Sachliche Beobachtung · nur Fakten · § 8a-Hinweis</div></div>
+        <a class="dl-btn" href="M5_DL_Beobachtungsbogen.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🎯</div>
+        <div class="dl-info"><div class="dl-name">Zielvereinbarung</div><div class="dl-desc">3 Ziele · Messkriterien · Zuständigkeiten · 3 Unterschriften</div></div>
+        <a class="dl-btn" href="M5_DL_Zielvereinbarung.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🗣️</div>
+        <div class="dl-info"><div class="dl-name">Gesprächsnotiz</div><div class="dl-desc">Eltern-, TK-, LK-Gespräch · Vereinbarungen · Nächster Termin</div></div>
+        <a class="dl-btn" href="M5_DL_Gespraechsnotiz.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+            <div class="dl-item">
+        <div class="dl-icon">🛡️</div>
+        <div class="dl-info"><div class="dl-name">SB-Schutzprotokoll (Hochkonflikt-Eltern)</div><div class="dl-desc">Vorfallsdokumentation · Art des Vorfalls · Reaktion · TK-Weitergabe · Unterschriften</div></div>
+        <a class="dl-btn" href="M2_DL_SB_Schutzprotokoll.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌿</div>
+        <div class="dl-info"><div class="dl-name">Essstörung — Beobachtungsbogen</div><div class="dl-desc">Sachliche Mustererkennung · Keine Diagnose · Körperlich · Essverhalten · Weitergabe an TK</div></div>
+        <a class="dl-btn" href="M2_DL_Esstoerung_Beobachtung.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌡️</div>
+        <div class="dl-info"><div class="dl-name">Barometer INGRA — interaktiv</div><div class="dl-desc">Täglicher Eintrag · Wochenbilanz · PDF-Export</div></div>
+        <a class="dl-btn" href="BAROMETER_INGRA.html" style="background:#6EC6A0;color:#1B3A4B;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🎯</div>
+        <div class="dl-info"><div class="dl-name">Selbstfürsorge-Bingo</div><div class="dl-desc">16 Felder zum Abhaken · Eine Woche lang</div></div>
+        <a class="dl-btn" href="M8-DL_Selbstfuersorge-Bingo.html" style="background:#6B3F6B;">🖨️ Öffnen</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELTERN -->
+  <div class="sek" id="el">
+    <div class="sek-header" style="background:#FCE4EC;">
+      <div class="sek-emoji">❤️</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#AD1457;">Eltern</div><div class="sek-sub" style="color:#AD1457;">Materialien für zuhause und den Austausch mit der Schule</div></div>
+    </div>
+    <div class="dl-grid">
+      <div class="dl-item">
+        <div class="dl-icon">🌡️</div>
+        <div class="dl-info"><div class="dl-name">Barometer-Poster</div><div class="dl-desc">Für zuhause ausdrucken · 5 Farben · kindgerecht</div></div>
+        <a class="dl-btn" href="EL_DL_Barometer_Poster.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">😊</div>
+        <div class="dl-info"><div class="dl-name">Kinder-Barometer — interaktiv</div><div class="dl-desc">Kind stellt selbst ein · Wochenbilanz · Drucken</div></div>
+        <a class="dl-btn" href="BAROMETER_KIND.html" style="background:#AD1457;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌅</div>
+        <div class="dl-info"><div class="dl-name">Morgenritual-Karte</div><div class="dl-desc">Tagesablauf planen · Abschiedsritual · Ausfüllbar</div></div>
+        <a class="dl-btn" href="EL_DL_Morgenritual.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📋</div>
+        <div class="dl-info"><div class="dl-name">Eltern-Wochennotiz</div><div class="dl-desc">Beobachtungen zuhause · Barometer · Fragen an Schule</div></div>
+        <a class="dl-btn" href="EL_DL_Wochennotiz.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📞</div>
+        <div class="dl-info"><div class="dl-name">Notfallkontakte</div><div class="dl-desc">Ausfüllbare Kontaktkarte · Schule · TK · Kostenträger</div></div>
+        <a class="dl-btn" href="EL-04.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEHRKRAFT -->
+  
+  <!-- KINDER -->
+  <div class="sek" id="kd">
+    <div class="sek-header" style="background:#E8F5EE;">
+      <div class="sek-emoji">🧒</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#3B8A68;">Kinder · Für das Kind direkt</div><div class="sek-sub" style="color:#3B8A68;">Interaktive Karten und alle Druckvorlagen</div></div>
+    </div>
+    <div class="dl-grid">
+      <div class="dl-item">
+        <div class="dl-icon">😊</div>
+        <div class="dl-info"><div class="dl-name">Barometer für Kinder — interaktiv</div><div class="dl-desc">Kind wählt selbst · Wochenbilanz · Konfetti · Drucken</div></div>
+        <a class="dl-btn" href="BAROMETER_KIND.html" style="background:#3B8A68;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🔖</div>
+        <div class="dl-info"><div class="dl-name">Lesezeichen für dich</div><div class="dl-desc">Zum Ausdrucken, Lochen, Faden dran — Brainy bewacht deine Seite</div></div>
+        <a class="dl-btn" href="KIND_Lesezeichen_Klartext.pdf" style="background:#3B8A68;" download>📄 PDF</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌡️</div>
+        <div class="dl-info"><div class="dl-name">Wie geht es mir? (KD-01)</div><div class="dl-desc">Interaktive Barometer-Karte für das Kind</div></div>
+        <a class="dl-btn" href="KD-01.html" style="background:#3B8A68;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🕵️</div>
+        <div class="dl-info"><div class="dl-name">Geheimschüler-Ausweis</div><div class="dl-desc">Druckvorlage · Ausschneiden · Laminieren</div></div>
+        <a class="dl-btn" href="KD-DL-01.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🃏</div>
+        <div class="dl-info"><div class="dl-name">Joker-Gutscheine</div><div class="dl-desc">Druckvorlage · Notfallsignal für das Kind</div></div>
+        <a class="dl-btn" href="KD-DL-02.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">⭐</div>
+        <div class="dl-info"><div class="dl-name">Sterntaler</div><div class="dl-desc">Druckvorlage · Lob und Erfolge sichtbar machen</div></div>
+        <a class="dl-btn" href="KD-DL-03.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🚽</div>
+        <div class="dl-info"><div class="dl-name">Klo-Kärtchen</div><div class="dl-desc">Druckvorlage · Pausenregelung für das Kind</div></div>
+        <a class="dl-btn" href="KD-02_Klokarten.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📿</div>
+        <div class="dl-info"><div class="dl-name">Lob-Armband</div><div class="dl-desc">Druckvorlage · Belohnung sichtbar tragen</div></div>
+        <a class="dl-btn" href="KD-04_Lobarmband.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">💛</div>
+        <div class="dl-info"><div class="dl-name">Lob-Kärtchen</div><div class="dl-desc">Druckvorlage · Wertschätzung konkret zeigen</div></div>
+        <a class="dl-btn" href="KD-05_Lobkaertchen.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🤸</div>
+        <div class="dl-info"><div class="dl-name">Mini-Fitness</div><div class="dl-desc">Druckvorlage · Bewegungspausen im Unterricht</div></div>
+        <a class="dl-btn" href="KD-06_MiniFitness.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🎮</div>
+        <div class="dl-info"><div class="dl-name">Himmel & Hölle</div><div class="dl-desc">Druckvorlage · Spielerische Übung</div></div>
+        <a class="dl-btn" href="KD-08_HimmelHoelle.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">💪</div>
+        <div class="dl-info"><div class="dl-name">Mutmach-Kärtchen</div><div class="dl-desc">Druckvorlage · Stärken und Mut zeigen</div></div>
+        <a class="dl-btn" href="KD-10_Mutmachkaertchen.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANTI-MOBBING -->
+  <div class="sek" id="am">
+    <div class="sek-header" style="background:#FFEBEE;">
+      <div class="sek-emoji">🛡️</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#C62828;">Anti-Mobbing</div><div class="sek-sub" style="color:#C62828;">Druckmaterialien für Klasse und Kind</div></div>
+    </div>
+    <div class="dl-grid">
+      <div class="dl-item">
+        <div class="dl-icon">🛑</div>
+        <div class="dl-info"><div class="dl-name">Stoppschild-Karte</div><div class="dl-desc">Karte A6 + Klassenposter A4 · Ausschneiden · Laminieren</div></div>
+        <a class="dl-btn" href="AM_DL_Stoppschild.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌟</div>
+        <div class="dl-info"><div class="dl-name">Meine Verbündeten</div><div class="dl-desc">Sonne GS + Netzwerk WF · Ausfüllbar</div></div>
+        <a class="dl-btn" href="AM_DL_Meine_Verbuendeten.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📋</div>
+        <div class="dl-info"><div class="dl-name">So melde ich Mobbing</div><div class="dl-desc">Schritte · Notfallnummer · Für das Kind</div></div>
+        <a class="dl-btn" href="AM_DL_So_melde_ich_Mobbing.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📜</div>
+        <div class="dl-info"><div class="dl-name">Klassenvertrag</div><div class="dl-desc">5 Regeln · Alle unterschreiben · A4 Druckvorlage</div></div>
+        <a class="dl-btn" href="AM_DL_Klassenvertrag.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+// Tab aktiv setzen beim Scrollen
+const seks = document.querySelectorAll('.sek');
+const tabs = document.querySelectorAll('.tab');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      tabs.forEach(t=>{t.classList.remove('aktiv');});
+      const aktiv=document.querySelector('.tab[href="#'+id+'"]');
+      if(aktiv)aktiv.classList.add('aktiv');
+    }
+  });
+},{rootMargin:'-135px 0px -60% 0px'});
+seks.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

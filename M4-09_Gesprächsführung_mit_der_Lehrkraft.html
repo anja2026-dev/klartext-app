@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – M4 · Karte 09 · Gesprächsführung mit der Lehrkraft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root {
+    --m3:        #5D3A7A;
+    --m3-dark:   #3A2150;
+    --m3-light:  #F3EEF9;
+    --m3-border: #C4A8E0;
+  }
+  .icon-card { background: #F3EEF9; }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurück">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT – Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT · Modul 4 · Kommunikation</div>
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">M-04</div>
+        <div class="karte-nr">Karte 09</div>
+        <h1 class="karte-titel" id="karte-titel">Gesprächsführung mit der Lehrkraft</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">📚</div>
+    </div>
+    <div class="karte-lead">Die Kommunikation mit der Lehrkraft ist professionell, respektvoll und auf das Wesentliche fokussiert – auch wenn Meinungen unterschiedlich sind.</div>
+    <div class="karte-body">
+      <div class="ab">
+        <div class="ab-titel">Grundsätze</div>
+        <ul>
+          <li>Gespräche vor oder nach dem Unterricht – nie währenddessen</li>
+          <li>Sachlich und konkret: Was hast du beobachtet? Was brauchst du?</li>
+          <li>Keine Bewertung pädagogischer Entscheidungen der Lehrkraft</li>
+          <li>Bei Unklarheiten direkt fragen – nicht kommentarlos handeln</li>
+          <li>Lob und positives Feedback auch an Lehrkräfte weitergeben</li>
+        </ul>
+      </div>
+      <div class="ab">
+        <div class="ab-titel">Wenn es Reibung gibt</div>
+        <p>Schwierige Situationen mit der Lehrkraft gehören in die TK – nicht in ein spontanes Flurgespräch. Kläre erst intern, dann gemeinsam.</p>
+      </div>
+      <div class="brainy-block">
+        <img src="brainy-m4.png" alt="Brainy">
+        <div class="brainy-block-text">
+          <strong>Brainy erinnert:</strong>
+          Professionalität zeigt sich am deutlichsten, wenn es schwierig wird.
+        </div>
+      </div>
+    </div>
+    
+<nav class="karte-nav"><a class="nav-prev" href="M4-08_Humor_in_der_Kommunikation.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 08</a><span class="spacer"></span><a class="nav-next" href="M4-10_Gesprächsführung_mit_Eltern.html">10 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
+<div class="karte-footer">
+      <span class="footer-links">Modul 4 · Karte 09 · → M1 · Zusammenarbeit Lehrkraft</span>
+      <span class="footer-nr">09 / 16</span>
+    </div>
+  </article>
+</main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

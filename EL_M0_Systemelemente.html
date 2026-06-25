@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT E-Learning · M0 · Systemelemente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ── */
+:root {
+  --m: #1B3A4B;
+  --m-dark: #0F2230;
+  --m-light: #EAF0F4;
+  --m-border: #9BB5C4;
+  --accent: #6EC6A0;
+  --paper: #F5F0E8;
+  --ink: #2D2D2D;
+  --muted: #7A7060;
+  --surface: #fff;
+  --r: 12px;
+  --shadow: 0 2px 14px rgba(27,58,75,.1);
+  --shadow-lg: 0 8px 32px rgba(27,58,75,.16);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink); line-height:1.65; min-height:100vh; }
+
+/* ── HEADER ── */
+.kt-header { background:var(--m); padding:0 clamp(1rem,4vw,2rem); height:72px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; border-bottom:3px solid var(--accent); }
+.header-logo { display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+.logo-mark { width:34px; height:34px; border:2px solid var(--accent); border-radius:6px; display:flex; align-items:center; justify-content:center; }
+.logo-mark span { font-family:'Playfair Display',serif; font-size:13px; font-weight:700; color:#fff; }
+.logo-text { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:#fff; letter-spacing:.04em; }
+.logo-sub { font-size:.65rem; color:var(--accent); letter-spacing:.12em; display:block; margin-top:1px; }
+.header-badge { background:var(--m-dark); border:1px solid var(--accent); border-radius:20px; padding:.25rem .8rem; font-size:.7rem; font-weight:700; color:var(--accent); letter-spacing:.08em; text-transform:uppercase; }
+
+/* ── FORTSCHRITTSLEISTE OBEN ── */
+.global-progress { background:var(--m-dark); padding:.6rem clamp(1rem,4vw,2rem); display:flex; align-items:center; gap:1rem; }
+.gp-label { font-size:.7rem; font-weight:700; color:rgba(255,255,255,.5); letter-spacing:.08em; text-transform:uppercase; flex-shrink:0; }
+.gp-bar { flex:1; height:6px; background:rgba(255,255,255,.12); border-radius:10px; overflow:hidden; }
+.gp-fill { height:100%; background:var(--accent); border-radius:10px; transition:width .6s cubic-bezier(.4,0,.2,1); }
+.gp-pct { font-size:.75rem; font-weight:700; color:var(--accent); min-width:2.5rem; text-align:right; }
+
+/* ── HERO / COVER ── */
+.hero { background:linear-gradient(135deg, var(--m) 0%, #2A5570 100%); padding:clamp(2rem,5vw,3.5rem) clamp(1rem,4vw,2rem); text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 30%, rgba(110,198,160,.12) 0%, transparent 60%); }
+.hero-modul { font-size:.7rem; font-weight:700; color:var(--accent); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.75rem; position:relative; }
+.hero-titel { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,4vw,2.4rem); font-weight:700; color:#fff; line-height:1.15; margin-bottom:.75rem; position:relative; }
+.hero-sub { font-size:.9rem; color:rgba(255,255,255,.6); max-width:520px; margin:0 auto 1.5rem; position:relative; }
+.hero-meta { display:flex; align-items:center; justify-content:center; gap:1.5rem; flex-wrap:wrap; position:relative; }
+.hero-pill { display:inline-flex; align-items:center; gap:.4rem; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:20px; padding:.3rem .8rem; font-size:.72rem; color:rgba(255,255,255,.7); font-weight:500; }
+.hero-pill span { color:var(--accent); }
+
+/* ── HAUPT-LAYOUT ── */
+.shell { max-width:820px; margin:0 auto; padding:2rem clamp(.75rem,3vw,2rem) 6rem; }
+
+/* ── LEKTION-KARTE ── */
+.lektion { background:var(--surface); border-radius:var(--r); border:1.5px solid #E8E2D8; box-shadow:var(--shadow); margin-bottom:1.5rem; overflow:hidden; transition:box-shadow .2s; }
+.lektion:has(.lektion-body.active) { box-shadow:var(--shadow-lg); border-color:var(--m-border); }
+
+.lektion-header { padding:1.1rem 1.4rem; display:flex; align-items:center; gap:1rem; cursor:pointer; user-select:none; }
+.lektion-num { width:36px; height:36px; border-radius:50%; background:var(--m-light); border:2px solid var(--m-border); display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; color:var(--m); flex-shrink:0; transition:all .2s; }
+.lektion.done .lektion-num { background:var(--accent); border-color:var(--accent); color:#fff; }
+.lektion-num svg { width:14px; height:14px; stroke:#fff; stroke-width:2.5; fill:none; }
+.lektion-info { flex:1; }
+.lektion-titel { font-family:'Playfair Display',serif; font-size:.95rem; font-weight:700; color:var(--m); line-height:1.3; }
+.lektion-sub { font-size:.72rem; color:var(--muted); margin-top:2px; }
+.lektion-status { font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.2rem .6rem; border-radius:20px; background:var(--m-light); color:var(--muted); flex-shrink:0; }
+.lektion.done .lektion-status { background:#E8F8F1; color:#2D6A4F; }
+.lektion-chevron { color:var(--muted); font-size:.7rem; transition:transform .25s; flex-shrink:0; }
+.lektion-header[aria-expanded="true"] .lektion-chevron { transform:rotate(180deg); }
+
+.lektion-body { display:none; border-top:1.5px solid #F0EDE8; }
+.lektion-body.active { display:block; }
+
+/* ── WISSENSBLOCK ── */
+.wissen-block { padding:1.4rem 1.4rem 1rem; }
+.block-label { font-size:.63rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--m); margin-bottom:.6rem; display:flex; align-items:center; gap:.4rem; }
+.block-label::before { content:''; width:18px; height:2px; background:var(--m); display:block; }
+.wissen-text { font-size:.9rem; color:var(--ink); line-height:1.75; }
+.karte-link { display:inline-flex; align-items:center; gap:.4rem; margin-top:.75rem; font-size:.78rem; font-weight:600; color:var(--m); text-decoration:none; border:1.5px solid var(--m-border); border-radius:20px; padding:.3rem .8rem; transition:all .15s; }
+.karte-link:hover { background:var(--m); color:#fff; border-color:var(--m); }
+.karte-link svg { width:12px; height:12px; }
+
+/* ── FALLBEISPIEL ── */
+.fall-block { margin:0 1.4rem; background:var(--paper); border-radius:8px; padding:1rem 1.2rem; border-left:3px solid var(--m); }
+.fall-szenario { font-size:.87rem; color:#4A4A4A; line-height:1.75; font-style:italic; }
+.fall-frage { font-size:.85rem; font-weight:600; color:var(--m); margin-top:.6rem; }
+
+/* ── ANTWORTEN ── */
+.antworten { padding:1rem 1.4rem; display:flex; flex-direction:column; gap:.5rem; }
+.antwort-btn { display:flex; align-items:flex-start; gap:.75rem; padding:.8rem 1rem; border:1.5px solid #E8E2D8; border-radius:8px; background:var(--surface); cursor:pointer; text-align:left; font-family:'DM Sans',sans-serif; font-size:.87rem; color:var(--ink); line-height:1.5; transition:all .15s; width:100%; }
+.antwort-btn:hover:not(:disabled) { border-color:var(--m-border); background:var(--m-light); }
+.antwort-btn:disabled { cursor:default; }
+.antwort-btn.richtig { background:#E8F8F1; border-color:#6EC6A0; color:#1A4A2E; }
+.antwort-btn.falsch { background:#FDF0F0; border-color:#E8A0A0; color:#7A1A1A; }
+.antwort-mark { width:22px; height:22px; border-radius:50%; border:2px solid #E0D8D0; display:flex; align-items:center; justify-content:center; font-size:.72rem; font-weight:700; flex-shrink:0; color:var(--muted); transition:all .15s; }
+.antwort-btn.richtig .antwort-mark { background:var(--accent); border-color:var(--accent); color:#fff; }
+.antwort-btn.falsch .antwort-mark { background:#E8A0A0; border-color:#E8A0A0; color:#fff; }
+
+/* ── FEEDBACK ── */
+.feedback { margin:0 1.4rem 1rem; border-radius:8px; padding:.9rem 1.1rem; display:none; font-size:.85rem; line-height:1.6; }
+.feedback.show { display:block; }
+.feedback.gut { background:#E8F8F1; border:1px solid #A8DFC0; color:#1A4A2E; }
+.feedback.schlecht { background:#FDF0F0; border:1px solid #E8A0A0; color:#7A1A1A; }
+.feedback strong { display:block; margin-bottom:.25rem; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; }
+
+/* ── REFLEXION ── */
+.reflexion-block { padding:.5rem 1.4rem 1.2rem; }
+.reflexion-label { font-size:.63rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; display:flex; align-items:center; gap:.4rem; }
+.reflexion-label::before { content:''; width:18px; height:2px; background:var(--muted); display:block; }
+.reflexion-frage { font-size:.87rem; color:var(--ink); margin-bottom:.6rem; line-height:1.6; }
+.reflexion-area { width:100%; min-height:80px; padding:.7rem .9rem; border:1.5px solid #E8E2D8; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:.87rem; color:var(--ink); background:var(--paper); resize:vertical; outline:none; transition:border-color .15s; line-height:1.65; }
+.reflexion-area:focus { border-color:var(--m); }
+.reflexion-area::placeholder { color:#B0A898; }
+
+/* ── WEITER-BUTTON ── */
+.weiter-wrap { padding:.5rem 1.4rem 1.4rem; }
+.weiter-btn { width:100%; padding:.85rem; background:var(--m); color:#fff; border:none; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:.87rem; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:all .2s; opacity:.4; pointer-events:none; }
+.weiter-btn.aktiv { opacity:1; pointer-events:auto; }
+.weiter-btn.aktiv:hover { background:var(--m-dark); transform:translateY(-1px); }
+.weiter-btn svg { width:16px; height:16px; }
+
+/* ── MODUL-FORTSCHRITT ── */
+.modul-progress { background:var(--surface); border:1.5px solid #E8E2D8; border-radius:var(--r); padding:1.2rem 1.4rem; margin-bottom:1.5rem; }
+.mp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.75rem; }
+.mp-titel { font-size:.78rem; font-weight:700; color:var(--m); text-transform:uppercase; letter-spacing:.08em; }
+.mp-pct { font-size:.78rem; font-weight:700; color:var(--accent); }
+.mp-bar { height:8px; background:#F0EDE8; border-radius:10px; overflow:hidden; }
+.mp-fill { height:100%; background:linear-gradient(90deg, var(--m) 0%, var(--accent) 100%); border-radius:10px; transition:width .8s cubic-bezier(.4,0,.2,1); }
+.mp-steps { display:flex; gap:.5rem; margin-top:.75rem; }
+.mp-step { flex:1; height:4px; border-radius:4px; background:#F0EDE8; transition:background .3s; }
+.mp-step.done { background:var(--accent); }
+.mp-step.active { background:var(--m); }
+
+/* ── ZERTIFIKAT SEKTION ── */
+.zert-section { background:var(--surface); border:1.5px solid #E8E2D8; border-radius:var(--r); padding:1.5rem; margin-top:1.5rem; text-align:center; display:none; }
+.zert-section.show { display:block; animation:fadeIn .5s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.zert-icon { font-size:2.5rem; margin-bottom:.75rem; }
+.zert-titel { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--m); margin-bottom:.4rem; }
+.zert-sub { font-size:.85rem; color:var(--muted); margin-bottom:1.25rem; }
+.zert-btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--m); color:#fff; padding:.75rem 1.5rem; border-radius:8px; font-size:.87rem; font-weight:600; text-decoration:none; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .2s; }
+.zert-btn:hover { background:var(--m-dark); }
+.zert-name-input { border:1.5px solid #E8E2D8; border-radius:8px; padding:.6rem 1rem; font-family:'DM Sans',sans-serif; font-size:.9rem; width:100%; max-width:300px; margin-bottom:1rem; outline:none; }
+.zert-name-input:focus { border-color:var(--m); }
+
+/* ── NAV PILLS ── */
+.nav-pills { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.25rem; }
+.nav-pill { font-size:.72rem; font-weight:600; padding:.3rem .75rem; border-radius:20px; border:1.5px solid #E8E2D8; color:var(--muted); text-decoration:none; transition:all .15s; cursor:pointer; background:var(--surface); }
+.nav-pill:hover { border-color:var(--m); color:var(--m); }
+.nav-pill.aktiv { background:var(--m); border-color:var(--m); color:#fff; }
+
+/* ── MOBILE ── */
+@media(max-width:600px) {
+  .hero-meta { gap:.75rem; }
+  .lektion-header { padding:.9rem 1rem; }
+  .wissen-block,.antworten,.reflexion-block,.weiter-wrap { padding-left:1rem; padding-right:1rem; }
+  .fall-block { margin:0 1rem; }
+  .feedback { margin:0 1rem 1rem; }
+}
+
+/* ── FABs ── */
+.fabs { position:fixed; bottom:1.25rem; right:1rem; display:flex; flex-direction:column; gap:.5rem; z-index:999; -webkit-transform:translateZ(0); transform:translateZ(0); }
+.fab { width:48px; height:48px; border-radius:50%; background:var(--m); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 4px 16px rgba(27,58,75,.35); transition:transform .15s; }
+.fab:hover { transform:scale(1.08); }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="kt-header">
+  <a class="header-logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div>
+      <div class="logo-text">KLARTEXT</div>
+      <span class="logo-sub">E-Learning</span>
+    </div>
+  </a>
+  <div class="header-badge">Modul 0</div>
+</header>
+
+<!-- GLOBAL PROGRESS -->
+<div class="global-progress">
+  <span class="gp-label">Fortschritt M0</span>
+  <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+  <span class="gp-pct" id="gp-pct">0%</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-modul">Modul 0 · E-Learning</div>
+  <h1 class="hero-titel">Systemelemente</h1>
+  <p class="hero-sub">Das Fundament des KLARTEXT-Systems — 3 Lerneinheiten, 9 Bausteine, ein Werkzeugkasten der wirklich funktioniert.</p>
+  <div class="hero-meta">
+    <div class="hero-pill">⏱ <span>ca. 15 Minuten</span></div>
+    <div class="hero-pill">📋 <span>3 Lerneinheiten</span></div>
+    <div class="hero-pill">🎯 <span>Fallbeispiele + Reflexion</span></div>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div class="shell">
+
+  <!-- NAV PILLS -->
+  <div class="nav-pills">
+    <span class="nav-pill aktiv" onclick="scrollToLektion(0)">LE 1 · Barometer</span>
+    <span class="nav-pill" id="np-1" onclick="scrollToLektion(1)">LE 2 · kLAR</span>
+    <span class="nav-pill" id="np-2" onclick="scrollToLektion(2)">LE 3 · Joker & Brainy</span>
+  </div>
+
+  <!-- MODUL FORTSCHRITT -->
+  <div class="modul-progress">
+    <div class="mp-header">
+      <span class="mp-titel">Modul 0 · Dein Fortschritt</span>
+      <span class="mp-pct" id="mp-pct">0 / 3 abgeschlossen</span>
+    </div>
+    <div class="mp-bar"><div class="mp-fill" id="mp-fill" style="width:0%"></div></div>
+    <div class="mp-steps">
+      <div class="mp-step active" id="step-0"></div>
+      <div class="mp-step" id="step-1"></div>
+      <div class="mp-step" id="step-2"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- LERNEINHEIT 1 — BAROMETER              -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="lektion" id="lektion-0">
+    <div class="lektion-header" onclick="toggleLektion(0)" aria-expanded="true">
+      <div class="lektion-num" id="num-0">1</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Das Barometer</div>
+        <div class="lektion-sub">Inneren Zustand sichtbar machen · Grün · Gelb · Orange · Rot · Grau</div>
+      </div>
+      <span class="lektion-status" id="status-0">Offen</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body active" id="body-0">
+
+      <!-- WISSEN -->
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Das Barometer macht den inneren Zustand eines Kindes sichtbar — ohne Worte. Es gibt fünf Farben: <strong>Grün</strong> (alles gut), <strong>Gelb</strong> (leicht angespannt), <strong>Orange</strong> (deutlich angespannt, Werkzeuge nötig), <strong>Rot</strong> (Krise, Feuerwehr), <strong>Grau</strong> (erschöpft, leer). INGRA liest das Barometer und passt die Begleitung an — nicht umgekehrt.</div>
+        <a class="karte-link" href="M3-01.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          Zur Karte M3-01 · Barometer
+        </a>
+      </div>
+
+      <!-- FALLBEISPIEL -->
+      <div class="fall-block" id="fall-0">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--m);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;"><span style="width:18px;height:2px;background:var(--m);display:block;"></span>Fallbeispiel</div>
+        <div class="fall-szenario">Leon (9 Jahre) kommt Montag morgens in die Klasse. Er setzt sich schweigend hin, schlägt sein Heft auf und starrt auf das Blatt — ohne zu schreiben. Als die Lehrkraft ihn anspricht, zuckt er nur mit den Schultern. Auf dem Barometer zeigt er: Grau.</div>
+        <div class="fall-frage">Was ist jetzt die richtige erste Reaktion von INGRA?</div>
+      </div>
+
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(0,'A','falsch')" id="a0-A">
+          <span class="antwort-mark">A</span>
+          Leon direkt fragen: „Was ist los mit dir heute?" — Kontakt aufbauen durch offene Kommunikation.
+        </button>
+        <button class="antwort-btn" onclick="antwort(0,'B','richtig')" id="a0-B">
+          <span class="antwort-mark">B</span>
+          Stille Präsenz — INGRA setzt sich in der Nähe, macht keine Anforderungen, beobachtet und wartet.
+        </button>
+        <button class="antwort-btn" onclick="antwort(0,'C','falsch')" id="a0-C">
+          <span class="antwort-mark">C</span>
+          Die Lehrkraft informieren und fragen ob Leon heute nach Hause geschickt werden soll.
+        </button>
+      </div>
+
+      <div class="feedback gut" id="fb-0-richtig">
+        <strong>✓ Richtig</strong>
+        Grau bedeutet: Das Kind ist erschöpft und kaum erreichbar. Anforderungen und Fragen erhöhen den Druck. Stille Präsenz — einfach da sein ohne zu fordern — ist die einzige wirksame Reaktion auf Grau. Werkzeuge und Gespräche kommen erst wenn das Barometer auf Gelb oder Grün steigt.
+      </div>
+      <div class="feedback schlecht" id="fb-0-falsch">
+        <strong>✗ Nicht ganz</strong>
+        Im Grau-Zustand ist das Gehirn erschöpft und kaum ansprechbar. Fragen und Anforderungen — auch gut gemeinte — erhöhen den Druck und machen es schwerer. Die richtige Reaktion ist: stille Präsenz, keine Anforderungen, abwarten bis das Barometer steigt.
+      </div>
+
+      <!-- REFLEXION -->
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Denke an ein Kind das du begleitest oder begleitet hast. Welche Barometer-Farbe zeigt es am häufigsten — und wie erkennst du das ohne Worte?</div>
+        <textarea class="reflexion-area" id="ref-0" placeholder="Deine Antwort hier …" oninput="checkWeiter(0)"></textarea>
+      </div>
+
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-0" onclick="lektionAbschliessen(0)">
+          Lerneinheit abschließen
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- LERNEINHEIT 2 — kLAR                   -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="lektion" id="lektion-1">
+    <div class="lektion-header" onclick="toggleLektion(1)" aria-expanded="false">
+      <div class="lektion-num" id="num-1">2</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Das kLAR-Modell</div>
+        <div class="lektion-sub">Kontakt · Leise & Langsam · Anerkennung & Atmen · Reizreduktion & Rückzug</div>
+      </div>
+      <span class="lektion-status" id="status-1">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-1">
+
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">kLAR ist das Deeskalationsmodell des KLARTEXT-Systems. Vier Schritte — immer in dieser Reihenfolge: <strong>k — Kontakt & Körperliche Sicherheit</strong> (Abstand, ruhige Haltung), <strong>L — Leise & Langsam</strong> (Stimme senken, Tempo reduzieren), <strong>A — Anerkennung & Atmen</strong> (Zustand benennen ohne zu bewerten, gemeinsam ruhiger werden), <strong>R — Reizreduktion & Rückzug</strong> (Reize wegnehmen, Rückzugsort anbieten). kLAR greift ab Barometer Orange — nicht erst bei Rot.</div>
+        <a class="karte-link" href="M0-00_Systemelemente.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          Zur Karte M0-00 · Systemelemente
+        </a>
+      </div>
+
+      <div class="fall-block" id="fall-1">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--m);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;"><span style="width:18px;height:2px;background:var(--m);display:block;"></span>Fallbeispiel</div>
+        <div class="fall-szenario">Mia (11) schlägt ihr Heft zu und ruft: „Das ist alles Müll!" Die Lehrkraft bittet sie ruhig zu sein, was Mia noch lauter macht. Barometer: Orange bis Rot. INGRA ist in der Nähe.</div>
+        <div class="fall-frage">INGRA beginnt mit kLAR. Was ist der richtige erste Schritt (k)?</div>
+      </div>
+
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(1,'A','falsch')" id="a1-A">
+          <span class="antwort-mark">A</span>
+          Mia ansprechen: „Ich verstehe dich — das ist frustrierend. Lass uns darüber reden."
+        </button>
+        <button class="antwort-btn" onclick="antwort(1,'B','falsch')" id="a1-B">
+          <span class="antwort-mark">B</span>
+          Ruhig und bestimmt sagen: „Mia, so geht das nicht. Bitte komm wieder runter."
+        </button>
+        <button class="antwort-btn" onclick="antwort(1,'C','richtig')" id="a1-C">
+          <span class="antwort-mark">C</span>
+          Körperlich in sicheren Abstand gehen, ruhige offene Haltung einnehmen, Augenkontakt anbieten — ohne zu sprechen.
+        </button>
+      </div>
+
+      <div class="feedback gut" id="fb-1-richtig">
+        <strong>✓ Richtig</strong>
+        k steht für Kontakt & Körperliche Sicherheit — nicht für Gespräch. Im Alarm-Modus verarbeitet das Gehirn Sprache schlechter als Körpersignale. Der erste Schritt ist körperliche Sicherheit herstellen: ruhige Haltung, sicherer Abstand, offene Geste. Worte kommen erst bei L — Leise & Langsam.
+      </div>
+      <div class="feedback schlecht" id="fb-1-falsch">
+        <strong>✗ Nicht ganz</strong>
+        Bei kLAR kommt k vor L. k bedeutet: körperliche Sicherheit und Kontakt herstellen — ohne Worte. Erst wenn die körperliche Präsenz stabilisiert, kommt L: leise und langsam sprechen. Wer mit Worten beginnt, überspringt k und verliert Wirkung.
+      </div>
+
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Wann hast du zuletzt bemerkt, dass du instinktiv mit Worten reagiert hast, obwohl der Körper des Kindes noch nicht bereit war zuzuhören? Was wäre der kLAR-Weg gewesen?</div>
+        <textarea class="reflexion-area" id="ref-1" placeholder="Deine Antwort hier …" oninput="checkWeiter(1)"></textarea>
+      </div>
+
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-1" onclick="lektionAbschliessen(1)">
+          Lerneinheit abschließen
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- LERNEINHEIT 3 — JOKER & BRAINY         -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="lektion" id="lektion-2">
+    <div class="lektion-header" onclick="toggleLektion(2)" aria-expanded="false">
+      <div class="lektion-num" id="num-2">3</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Joker & Brainy</div>
+        <div class="lektion-sub">Persönliches Notfall-Signal · Vom Alarm zurück ins Denken</div>
+      </div>
+      <span class="lektion-status" id="status-2">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-2">
+
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Der <strong>Joker</strong> ist ein individuelles Signal das Kind und INGRA gemeinsam in ruhigen Momenten vereinbaren — eine Geste, ein Wort, eine Karte. Wenn das Kind den Joker einsetzt, reagiert INGRA sofort ohne Frage oder Erklärung zu verlangen. <strong>Brainy</strong> erklärt dem Kind warum das Gehirn manchmal nicht mehr denken kann: Im Alarm ist Brainy im Keller — erst wenn der Körper sicher ist kommt er zurück. Beide Werkzeuge stärken die Selbstwirksamkeit des Kindes.</div>
+        <a class="karte-link" href="M3-01.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          Zur Karte M3-03 · Joker
+        </a>
+      </div>
+
+      <div class="fall-block" id="fall-2">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--m);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;"><span style="width:18px;height:2px;background:var(--m);display:block;"></span>Fallbeispiel</div>
+        <div class="fall-szenario">Tim (8) und INGRA haben vereinbart: Tim tippt zweimal mit dem Finger auf den Tisch wenn er Hilfe braucht ohne reden zu müssen. Heute in der Stillarbeitsphase tippt Tim — dann schaut er sofort weg und macht weiter als wäre nichts. Die Lehrkraft hat es nicht gesehen.</div>
+        <div class="fall-frage">Wie reagiert INGRA auf das Joker-Signal?</div>
+      </div>
+
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(2,'A','richtig')" id="a2-A">
+          <span class="antwort-mark">A</span>
+          Sofort und leise zu Tim gehen, ruhige Präsenz herstellen — ohne Fragen, ohne Kommentar. Tim entscheidet was als nächstes kommt.
+        </button>
+        <button class="antwort-btn" onclick="antwort(2,'B','falsch')" id="a2-B">
+          <span class="antwort-mark">B</span>
+          Kurz warten ob Tim nochmal tippt — vielleicht war es kein Signal sondern nur eine Geste.
+        </button>
+        <button class="antwort-btn" onclick="antwort(2,'C','falsch')" id="a2-C">
+          <span class="antwort-mark">C</span>
+          Zu Tim gehen und leise fragen: „Hast du gerade den Joker benutzt? Was brauchst du?"
+        </button>
+      </div>
+
+      <div class="feedback gut" id="fb-2-richtig">
+        <strong>✓ Richtig</strong>
+        Der Joker funktioniert nur wenn INGRA sofort und bedingungslos reagiert — ohne Zweifel, ohne Nachfrage. Das Kind hat in einem Moment Kontrolle ausgeübt in dem es sonst keine Kontrolle hat. Diese Reaktion muss 100% zuverlässig sein. Nur dann bleibt der Joker ein starkes Werkzeug.
+      </div>
+      <div class="feedback schlecht" id="fb-2-falsch">
+        <strong>✗ Nicht ganz</strong>
+        Der Joker verliert seine Kraft wenn INGRA zweifelt oder nachfragt. Das Signal wurde gesetzt — das ist genug. Sofortige, wortlose Reaktion ist der Kern des Jokers. Wenn INGRA nachfragt „War das ein Signal?" entwertet das genau das was den Joker stark macht: bedingungslose Zuverlässigkeit.
+      </div>
+
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Welches Joker-Signal würde zu deinem Kind passen — und in welchem ruhigen Moment könntest du es gemeinsam vereinbaren?</div>
+        <textarea class="reflexion-area" id="ref-2" placeholder="Deine Antwort hier …" oninput="checkWeiter(2)"></textarea>
+      </div>
+
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-2" onclick="lektionAbschliessen(2)">
+          Modul abschließen
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZERTIFIKAT SECTION -->
+  <div class="zert-section" id="zert-section">
+    <div class="zert-icon">🎓</div>
+    <div class="zert-titel">Modul 0 abgeschlossen!</div>
+    <div class="zert-sub">Du hast alle 3 Lerneinheiten bearbeitet und die Systemelemente von KLARTEXT verinnerlicht.</div>
+    <input class="zert-name-input" type="text" id="zert-name" placeholder="Dein Name für das Zertifikat …">
+    <br>
+    <button class="zert-btn" onclick="druckeZertifikat()">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+      Zertifikat drucken
+    </button>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- FABs -->
+<div class="fabs">
+  <a class="fab" href="DASHBOARD.html#search" title="Suche">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a class="fab" href="DASHBOARD.html" title="Dashboard">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+// ── In-Memory Store (file:// kompatibel) ──
+const store = { _d: {}, set(k,v){this._d[k]=v;sessionStorage.setItem('el_'+k,v);}, get(k){return sessionStorage.getItem('el_'+k)||this._d[k]||null;} };
+
+// ── State ──
+const TOTAL = 3;
+const done = [false, false, false];
+const answered = [false, false, false];
+
+// ── Lektion toggeln ──
+function toggleLektion(idx) {
+  const body = document.getElementById('body-'+idx);
+  const header = body.previousElementSibling;
+  const isActive = body.classList.contains('active');
+  body.classList.toggle('active', !isActive);
+  header.setAttribute('aria-expanded', !isActive);
+}
+
+// ── Antwort auswählen ──
+function antwort(lIdx, letter, typ) {
+  if (answered[lIdx]) return;
+  answered[lIdx] = true;
+  const letters = ['A','B','C'];
+  letters.forEach(l => {
+    const btn = document.getElementById('a'+lIdx+'-'+l);
+    btn.disabled = true;
+  });
+  const chosen = document.getElementById('a'+lIdx+'-'+letter);
+  chosen.classList.add(typ);
+  chosen.querySelector('.antwort-mark').textContent = typ === 'richtig' ? '✓' : '✗';
+  if (typ === 'richtig') {
+    document.getElementById('fb-'+lIdx+'-richtig').classList.add('show');
+  } else {
+    document.getElementById('fb-'+lIdx+'-falsch').classList.add('show');
+    // Richtige Antwort noch zeigen
+    letters.forEach(l => {
+      const btn = document.getElementById('a'+lIdx+'-'+l);
+      btn.onclick && btn.dispatchEvent; // noop
+    });
+  }
+  checkWeiter(lIdx);
+}
+
+// ── Weiter-Button aktivieren ──
+function checkWeiter(idx) {
+  const ref = document.getElementById('ref-'+idx);
+  const weiter = document.getElementById('weiter-'+idx);
+  if (answered[idx] && ref && ref.value.trim().length > 10) {
+    weiter.classList.add('aktiv');
+  }
+}
+
+// ── Lektion abschließen ──
+function lektionAbschliessen(idx) {
+  if (done[idx]) return;
+  done[idx] = true;
+  store.set('done-'+idx, '1');
+  // Optik
+  document.getElementById('lektion-'+idx).classList.add('done');
+  const numEl = document.getElementById('num-'+idx);
+  numEl.innerHTML = '<svg viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  document.getElementById('status-'+idx).textContent = 'Abgeschlossen ✓';
+  document.getElementById('step-'+idx).classList.replace('active','done');
+  // Nächste freischalten
+  if (idx + 1 < TOTAL) {
+    const next = document.getElementById('lektion-'+(idx+1));
+    const nextStatus = document.getElementById('status-'+(idx+1));
+    nextStatus.textContent = 'Offen';
+    document.getElementById('step-'+(idx+1)).classList.add('active');
+    document.getElementById('np-'+(idx+1))?.classList.add('aktiv');
+    // Nächste öffnen
+    setTimeout(() => {
+      const nextBody = document.getElementById('body-'+(idx+1));
+      nextBody.classList.add('active');
+      next.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 400);
+  }
+  updateProgress();
+  // Alle done?
+  if (done.every(Boolean)) {
+    setTimeout(() => {
+      document.getElementById('zert-section').classList.add('show');
+      document.getElementById('zert-section').scrollIntoView({behavior:'smooth'});
+    }, 600);
+  }
+}
+
+// ── Fortschritt aktualisieren ──
+function updateProgress() {
+  const count = done.filter(Boolean).length;
+  const pct = Math.round((count / TOTAL) * 100);
+  document.getElementById('gp-fill').style.width = pct + '%';
+  document.getElementById('gp-pct').textContent = pct + '%';
+  document.getElementById('mp-fill').style.width = pct + '%';
+  document.getElementById('mp-pct').textContent = count + ' / ' + TOTAL + ' abgeschlossen';
+}
+
+// ── Scroll zu Lektion ──
+function scrollToLektion(idx) {
+  document.getElementById('lektion-'+idx).scrollIntoView({behavior:'smooth'});
+}
+
+// ── Zertifikat drucken ──
+function druckeZertifikat() {
+  const name = document.getElementById('zert-name').value.trim() || 'INGRA-Schulbegleiter:in';
+  const datum = new Date().toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'});
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Zertifikat M0</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'DM Sans',sans-serif;background:#F5F0E8;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:2rem;}
+    .cert{background:white;max-width:640px;width:100%;border:3px solid #1B3A4B;border-radius:16px;padding:3rem;text-align:center;position:relative;}
+    .cert::before{content:'';position:absolute;inset:8px;border:1px solid #6EC6A08;border-radius:10px;pointer-events:none;}
+    .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#1B3A4B;letter-spacing:.06em;margin-bottom:.25rem;}
+    .sub{font-size:.75rem;color:#6EC6A0;letter-spacing:.2em;text-transform:uppercase;margin-bottom:2rem;}
+    .cert-label{font-size:.75rem;color:#7A7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}
+    .name{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#1B3A4B;margin-bottom:1rem;}
+    .text{font-size:.9rem;color:#4A4A4A;line-height:1.75;margin-bottom:1.5rem;}
+    .modul{background:#EAF0F4;border-radius:8px;padding:.75rem 1.5rem;display:inline-block;margin-bottom:1.5rem;}
+    .modul-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#1B3A4B;}
+    .datum{font-size:.8rem;color:#7A7060;margin-top:1.5rem;}
+    .accent{color:#6EC6A0;}
+    @media print{body{background:white;padding:0;}.cert{border:3px solid #1B3A4B;}}
+  </style></head><body>
+  <div class="cert">
+    <div class="logo">KLARTEXT</div>
+    <div class="sub">Mentoring-System · E-Learning</div>
+    <div class="cert-label">Zertifikat für</div>
+    <div class="name">${name}</div>
+    <div class="text">hat das E-Learning-Modul erfolgreich abgeschlossen und dabei alle Lerneinheiten bearbeitet, Fallbeispiele analysiert und Reflexionsfragen beantwortet.</div>
+    <div class="modul"><div style="font-size:.65rem;color:#7A7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem;">Abgeschlossenes Modul</div><div class="modul-name">Modul 0 · Systemelemente</div><div style="font-size:.8rem;color:#7A7060;margin-top:.25rem;">3 Lerneinheiten · Barometer · kLAR · Joker &amp; Brainy</div></div>
+    <div class="datum">Abgeschlossen am ${datum}</div>
+  </div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`);
+}
+
+// ── Init: gespeicherten Fortschritt laden ──
+window.addEventListener('DOMContentLoaded', () => {
+  for (let i = 0; i < TOTAL; i++) {
+    if (store.get('done-'+i) === '1') {
+      done[i] = true;
+      answered[i] = true;
+    }
+  }
+  // Erstes offenes Lektion bestimmen
+  let firstOpen = done.indexOf(false);
+  if (firstOpen === -1) firstOpen = TOTAL - 1;
+  updateProgress();
+});
+</script>
+</body>
+</html>

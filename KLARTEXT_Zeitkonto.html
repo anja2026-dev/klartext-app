@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Zeitkonto</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--green:#3B8A68;--gold:#C47A00;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+
+/* HEADER */
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;}
+.kt-logo span{color:var(--acc);font-size:.7rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;letter-spacing:.08em;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.75rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .7rem;}
+
+/* LAYOUT */
+.shell{max-width:720px;margin:0 auto;padding:1.25rem 1rem 4rem;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1.25rem;}
+.stat{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.75rem .5rem;text-align:center;}
+.stat.aktiv{border-color:var(--green);background:#EEF7F2;}
+.stat-val{font-size:1.5rem;font-weight:700;color:var(--navy);font-family:"Playfair Display",serif;}
+.stat-label{font-size:.65rem;color:var(--muted);margin-top:.2rem;text-transform:uppercase;letter-spacing:.08em;}
+
+/* WOCHE */
+.woche-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;}
+.woche-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;}
+.woche-titel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);}
+.woche-nav{display:flex;gap:.35rem;align-items:center;}
+.wnav-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:6px;width:30px;height:30px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
+.wnav-btn:hover{border-color:var(--navy);}
+.wnav-heute{font-size:.7rem;font-weight:700;padding:.2rem .6rem;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;background:var(--surface);}
+.wnav-heute:hover{border-color:var(--navy);}
+.woche-tage{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem;}
+.wtag{background:var(--paper);border-radius:6px;padding:.4rem .2rem;text-align:center;font-size:.62rem;min-height:52px;}
+.wtag-name{color:var(--muted);font-weight:600;margin-bottom:.2rem;}
+.wtag-datum{font-size:.65rem;color:var(--navy);}
+.wtag-h{font-size:.8rem;font-weight:700;color:var(--green);margin-top:.2rem;}
+.wtag.heute{background:#EEF7F2;border:1.5px solid var(--green);}
+.wtag.hat-eintraege{background:#F0F7FF;}
+
+/* FORMULAR */
+.form-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem;}
+.form-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+
+/* TYP-CHIPS */
+.typ-row{margin-bottom:.75rem;}
+.typ-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.typ-chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem;}
+.typ-chip{padding:.3rem .8rem;border-radius:20px;font-size:.75rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .15s;}
+.typ-chip:hover{opacity:.8;}
+.typ-chip.aktiv{color:#fff;font-weight:700;}
+
+/* INFO-BOX */
+.typ-info{display:none;border-radius:8px;padding:.7rem .9rem;margin-bottom:.75rem;border:1.5px solid;}
+.typ-info-badge{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;}
+.typ-info-text{font-size:.82rem;line-height:1.65;color:#2D2D2D;margin-bottom:.3rem;}
+.typ-info-bsp{font-size:.75rem;color:var(--muted);}
+.typ-info-hint{font-size:.73rem;color:#B07D2A;margin-top:.3rem;font-weight:600;}
+
+/* FELDER */
+.fr{display:grid;gap:.6rem;margin-bottom:.6rem;}
+.fr.s2{grid-template-columns:1fr 1fr;}
+.fr.s3{grid-template-columns:1fr 1fr 1fr;}
+.fg label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.3rem;}
+.fi{width:100%;padding:.5rem .75rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.88rem;color:#1A1A2E;background:#FAFAFA;outline:none;}
+.fi:focus{border-color:var(--navy);}
+.time-wrap{position:relative;display:flex;align-items:center;}
+.time-wrap .fi{padding-right:2rem;}
+.time-arrows{position:absolute;right:.3rem;display:flex;flex-direction:column;gap:1px;}
+.time-arrows button{background:none;border:none;cursor:pointer;font-size:.6rem;color:var(--muted);padding:0;line-height:1.2;}
+.time-arrows button:hover{color:var(--navy);}
+
+/* PREVIEW */
+.preview{background:#F0F7F4;border:1.5px solid var(--green);border-radius:8px;padding:.5rem .75rem;margin-bottom:.75rem;font-size:.8rem;color:var(--navy);display:none;}
+
+/* SPEICHERN-BTN */
+.sav-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:.6rem 1.4rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;width:100%;}
+.sav-btn:hover{background:#243F55;}
+
+/* EINTRÄGE */
+.liste-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.liste-titel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);display:flex;align-items:center;gap:.4rem;}
+.exp-btn{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.35rem .85rem;font-size:.75rem;font-weight:700;cursor:pointer;}
+
+.filter-row{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.75rem;}
+.f-btn{padding:.25rem .65rem;border-radius:20px;font-size:.72rem;font-weight:600;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .15s;}
+.f-btn:hover{border-color:var(--navy);color:var(--navy);}
+.f-btn.ak{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+.eintrag{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.75rem 1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.75rem;}
+.e-typ-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.e-body{flex:1;}
+.e-oben{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.2rem;}
+.e-datum{font-size:.8rem;font-weight:700;color:var(--navy);}
+.e-zeit{font-size:.75rem;color:var(--muted);}
+.e-typ-badge{font-size:.62rem;font-weight:700;padding:.1rem .45rem;border-radius:10px;color:#fff;}
+.e-kind{font-size:.75rem;color:var(--muted);}
+.e-notiz{font-size:.73rem;color:var(--muted);font-style:italic;margin-top:.15rem;}
+.e-stunden{font-weight:700;color:var(--green);font-size:.9rem;flex-shrink:0;}
+.del-btn{background:none;border:none;cursor:pointer;color:#ccc;font-size:1rem;padding:.2rem;flex-shrink:0;}
+.del-btn:hover{color:#C62828;}
+
+.leer{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem;}
+
+/* MONATSÜBERSICHT */
+.monat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1rem;margin-top:1rem;}
+.monat-titel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.75rem;}
+.monat-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.82rem;}
+.monat-row:last-child{border-bottom:none;font-weight:700;}
+.monat-typ{display:flex;align-items:center;gap:.5rem;}
+.monat-dot{width:8px;height:8px;border-radius:50%;}
+</style>
+<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo">KLARTEXT <span>Zeitkonto · Arbeitszeiterfassung</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<!-- STATS -->
+<div class="stats-grid">
+  <div class="stat aktiv"><div class="stat-val" id="st-woche">0h</div><div class="stat-label">Diese Woche</div></div>
+  <div class="stat"><div class="stat-val" id="st-monat">0h</div><div class="stat-label">Dieser Monat</div></div>
+  <div class="stat"><div class="stat-val" id="st-soll">0h</div><div class="stat-label">Soll/Monat</div></div>
+  <div class="stat"><div class="stat-val" id="st-saldo">±0h</div><div class="stat-label">Saldo</div></div>
+</div>
+
+<!-- WOCHE -->
+<div class="woche-card">
+  <div class="woche-head">
+    <div class="woche-titel">Diese Woche</div>
+    <div class="woche-nav">
+      <button class="wnav-btn" onclick="wocheNav(-1)">◀</button>
+      <button class="wnav-heute" onclick="wocheNav(0)">Heute</button>
+      <button class="wnav-btn" onclick="wocheNav(1)">▶</button>
+    </div>
+  </div>
+  <div class="woche-tage" id="woche-tage"></div>
+</div>
+
+<!-- FORMULAR -->
+<div class="form-card">
+  <div class="form-titel">⏱️ Eintrag erfassen</div>
+
+  <div class="typ-row">
+    <div class="typ-label">Art der Zeit</div>
+    <div class="typ-chips" id="typ-chips"></div>
+    <div class="typ-info" id="typ-info"></div>
+  </div>
+
+  <div class="fr s2">
+    <div class="fg"><label>Datum</label><input class="fi" type="date" id="e-datum"></div>
+    <div class="fg"><label>Kind / Schule</label><select class="fi" id="e-kind"><option value="">Kein Kind / Allgemein</option></select></div>
+  </div>
+  <div class="fr s3">
+    <div class="fg"><label>Von</label>
+      <div class="time-wrap">
+        <input class="fi" type="time" id="e-von" value="08:00">
+        <div class="time-arrows">
+          <button onclick="adjustTime('e-von',1)">▲</button>
+          <button onclick="adjustTime('e-von',-1)">▼</button>
+        </div>
+      </div>
+    </div>
+    <div class="fg"><label>Bis</label>
+      <div class="time-wrap">
+        <input class="fi" type="time" id="e-bis" value="13:00">
+        <div class="time-arrows">
+          <button onclick="adjustTime('e-bis',1)">▲</button>
+          <button onclick="adjustTime('e-bis',-1)">▼</button>
+        </div>
+      </div>
+    </div>
+    <div class="fg"><label>Pause (Min)</label><input class="fi" type="number" id="e-pause" value="0" min="0" max="120" step="5"></div>
+  </div>
+  <div class="fr">
+    <div class="fg"><label>Notiz (optional)</label><input class="fi" type="text" id="e-notiz" placeholder="Besonderheiten, Vertretung, Fahrtweg..."></div>
+  </div>
+
+  <div class="preview" id="preview"></div>
+
+  <button class="sav-btn" onclick="speichern()">+ Eintrag speichern</button>
+</div>
+
+<!-- EINTRÄGE -->
+<div class="form-card">
+  <div class="liste-head">
+    <div class="liste-titel">📋 Alle Einträge</div>
+    <button class="exp-btn" onclick="exportCSV()">📥 Export CSV</button>
+  </div>
+
+  <div class="filter-row">
+    <button class="f-btn ak" onclick="setFilter('alle',this)">Alle</button>
+    <button class="f-btn" onclick="setFilter('arbeit',this)">Arbeit</button>
+    <button class="f-btn" onclick="setFilter('wegzeit',this)">Wegzeit</button>
+    <button class="f-btn" onclick="setFilter('fortbildung',this)">Fortbildung</button>
+    <button class="f-btn" onclick="setFilter('vorbereitung',this)">Vorbereitung</button>
+    <button class="f-btn" onclick="setFilter('sonstiges',this)">Sonstiges</button>
+  </div>
+
+  <div id="eintraege-liste"></div>
+</div>
+
+<!-- MONATSÜBERSICHT -->
+<div class="monat-card">
+  <div class="monat-titel">📊 Monatsübersicht</div>
+  <div id="monat-liste"></div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+// ═══════════════════════════════════════
+// DATEN
+// ═══════════════════════════════════════
+// Etappe 6.1: Lookup für childId -> Kindname (für lesbare Anzeige statt roher ID)
+const zkKindNamen = {};
+
+const TYPEN = [
+  {
+    id: 'arbeit',
+    label: 'Arbeit',
+    farbe: '#2E5E8A',
+    kurz: 'Direkte Begleitzeit beim Kind',
+    erkl: 'Alle Zeiten in denen du aktiv bei deinem Kind bist: im Unterricht, in der Pause, beim Mittagessen, bei Förderangeboten. Das ist deine Kernarbeitszeit.',
+    beispiele: 'Unterrichtsbegleitung · Pausenbegleitung · Mittagsbetreuung',
+    hinweis: ''
+  },
+  {
+    id: 'wegzeit',
+    label: 'Wegzeit',
+    farbe: '#3B8A68',
+    kurz: 'Fahrt zwischen zwei Einsatzorten',
+    erkl: 'Fahrzeit zwischen zwei Einsatzorten am selben Tag. Nicht: der normale Weg von zu Hause zur Schule (= Privatweg).',
+    beispiele: 'Fahrt von Schule A zu Schule B · Fahrt zur Nachmittagsbetreuung',
+    hinweis: '⚠ Nur bei mehreren Einsatzorten. Heimweg nicht eintragen.'
+  },
+  {
+    id: 'fortbildung',
+    label: 'Fortbildung',
+    farbe: '#B07D2A',
+    kurz: 'Schulungen, Teamtage, Fachtagungen',
+    erkl: 'Vom Träger angeordnete oder genehmigte Fortbildungen. Vorab absprechen ob die Zeit als Arbeitszeit anerkannt wird.',
+    beispiele: 'Teamtag · Erste Hilfe · Fachtagung Inklusion · KLARTEXT-Schulung',
+    hinweis: '⚠ Vorab Genehmigung einholen — nicht alle Fortbildungen werden automatisch anerkannt.'
+  },
+  {
+    id: 'vorbereitung',
+    label: 'Vorbereitung',
+    farbe: '#5D3A7A',
+    kurz: 'Dokumentation, Berichte, Übergaben',
+    erkl: 'Zeiten für Berichte, Übergaben, Absprachen außerhalb der Begleitzeit. Ob das vergütet wird, ist trägerspezifisch.',
+    beispiele: 'Entwicklungsbericht · Elterngespräch · Übergabegespräch TK',
+    hinweis: '⚠ Abklären ob dein Träger Vorbereitungszeit im Nachweis akzeptiert.'
+  },
+  {
+    id: 'sonstiges',
+    label: 'Sonstiges',
+    farbe: '#757575',
+    kurz: 'Alles was nicht eindeutig zuzuordnen ist',
+    erkl: 'Für besondere Situationen wie Wartezeit bei Schulausfall, interne Besprechungen oder Vertretungen. Notiz-Feld nutzen.',
+    beispiele: 'Wartezeit bei Ausfall · interne Besprechung · Vertretung',
+    hinweis: ''
+  }
+];
+
+let aktTyp = 'arbeit';
+let aktFilter = 'alle';
+let wocheOffset = 0;
+
+// ═══════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════
+function ladeEintraege() {
+  try { return JSON.parse(localStorage.getItem('kt_eintraege') || '[]'); } catch(e) { return []; }
+}
+function speichereEintraege(arr) {
+  try { localStorage.setItem('kt_eintraege', JSON.stringify(arr)); } catch(e) {}
+}
+
+// ═══════════════════════════════════════
+// HILFSFUNKTIONEN
+// ═══════════════════════════════════════
+function calcH(von, bis, pause) {
+  if (!von || !bis) return 0;
+  const [vh,vm] = von.split(':').map(Number);
+  const [bh,bm] = bis.split(':').map(Number);
+  const min = (bh*60+bm) - (vh*60+vm) - (pause||0);
+  return Math.max(0, Math.round(min/6)/10);
+}
+
+function fmtH(h) {
+  if (!h) return '0h';
+  const std = Math.floor(h);
+  const min = Math.round((h - std) * 60);
+  return min > 0 ? `${std}h ${min}m` : `${std}h`;
+}
+
+function adjustTime(id, delta) {
+  const el = document.getElementById(id);
+  const parts = el.value.split(':');
+  let h = parseInt(parts[0]||8), m = parseInt(parts[1]||0);
+  m += delta * 15;
+  if (m >= 60) { m -= 60; h = (h+1) % 24; }
+  if (m < 0)   { m += 60; h = (h+23) % 24; }
+  el.value = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+  updatePreview();
+}
+
+function getTyp(id) { return TYPEN.find(t => t.id === id) || TYPEN[0]; }
+
+function heute() { return new Date().toISOString().split('T')[0]; }
+
+// ═══════════════════════════════════════
+// TYP-CHIPS + INFO-BOX
+// ═══════════════════════════════════════
+function renderTypChips() {
+  const chips = document.getElementById('typ-chips');
+  const info  = document.getElementById('typ-info');
+  
+  chips.innerHTML = TYPEN.map(t => `
+    <button class="typ-chip ${t.id === aktTyp ? 'aktiv' : ''}"
+      style="${t.id === aktTyp ? `background:${t.farbe};border-color:${t.farbe};` : ''}"
+      onclick="waehleTyp('${t.id}')">${t.label}
+    </button>`).join('');
+
+  // Info-Box für aktiven Typ anzeigen
+  const t = getTyp(aktTyp);
+  info.style.display = 'block';
+  info.style.borderColor = t.farbe;
+  info.style.background = t.farbe + '12';
+  info.innerHTML = `
+    <div class="typ-info-badge" style="color:${t.farbe};">${t.label} — ${t.kurz}</div>
+    <div class="typ-info-text">${t.erkl}</div>
+    <div class="typ-info-bsp"><b>Beispiele:</b> ${t.beispiele}</div>
+    ${t.hinweis ? `<div class="typ-info-hint">${t.hinweis}</div>` : ''}`;
+}
+
+function waehleTyp(id) {
+  aktTyp = id;
+  renderTypChips();
+  updatePreview();
+}
+
+// ═══════════════════════════════════════
+// PREVIEW
+// ═══════════════════════════════════════
+function updatePreview() {
+  const von   = document.getElementById('e-von').value;
+  const bis   = document.getElementById('e-bis').value;
+  const pause = parseInt(document.getElementById('e-pause').value) || 0;
+  const h     = calcH(von, bis, pause);
+  const prev  = document.getElementById('preview');
+  if (von && bis && h > 0) {
+    const t = getTyp(aktTyp);
+    prev.style.display = 'block';
+    prev.innerHTML = `✓ <b>${t.label}</b> · ${von}–${bis}${pause ? ` (−${pause}min Pause)` : ''} = <b style="color:${t.farbe}">${fmtH(h)}</b>`;
+  } else {
+    prev.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════
+// SPEICHERN
+// ═══════════════════════════════════════
+function speichern() {
+  const datum = document.getElementById('e-datum').value;
+  const von   = document.getElementById('e-von').value;
+  const bis   = document.getElementById('e-bis').value;
+  const pause = parseInt(document.getElementById('e-pause').value) || 0;
+  const h     = calcH(von, bis, pause);
+
+  if (!datum) { alert('Bitte Datum ausfüllen.'); return; }
+  if (!von || !bis) { alert('Bitte Von und Bis ausfüllen.'); return; }
+  if (h <= 0) { alert('Die Bis-Zeit muss nach der Von-Zeit liegen.'); return; }
+
+  const kindId = document.getElementById('e-kind').value;
+  const eintrag = {
+    id: Date.now(),
+    datum, von, bis, pause, stunden: h,
+    typ: aktTyp,
+    kind:  kindId, // ab Etappe 6.1: enthält die childId statt freiem Text
+    notiz: document.getElementById('e-notiz').value.trim()
+  };
+
+  const liste = ladeEintraege();
+  liste.unshift(eintrag);
+  speichereEintraege(liste);
+
+  // Zusätzlich nach Firebase schreiben + Weiterleitung an TK erzeugen (Etappe 6.1)
+  // localStorage bleibt unverändert für die bestehende Monats-/Jahresansicht
+  if (kindId) {
+    try {
+      db.ref('time_entry/' + kindId).push({
+        childId: kindId,
+        date: datum,
+        start: von,
+        end: bis,
+        pause: pause,
+        duration: h,
+        type: aktTyp,
+        note: eintrag.notiz,
+        timestamp: Date.now(),
+        createdBy: 'ingra',
+        role: 'ingra'
+      });
+
+      sendForward({
+        context: 'time_entry',
+        type: 'time_entry',
+        childId: kindId,
+        text: 'Arbeitszeit ' + von + '–' + bis + ' (' + h + 'h)'
+      }).then(function(ref) {
+        zkLetzteForwardId = ref.key;
+        document.getElementById('zk-erfolg-overlay').classList.add('zeigen');
+      }).catch(function(error) {
+        console.error('Weiterleitung fehlgeschlagen:', error);
+      });
+    } catch(e) {
+      console.error('Firebase-Speicherung fehlgeschlagen:', e);
+    }
+  }
+
+  // Reset
+  document.getElementById('e-datum').value = heute();
+  document.getElementById('e-kind').value  = '';
+  document.getElementById('e-notiz').value = '';
+  document.getElementById('preview').style.display = 'none';
+
+  renderAlles();
+}
+
+// ═══════════════════════════════════════
+// LÖSCHEN
+// ═══════════════════════════════════════
+function loeschen(id) {
+  if (!confirm('Diesen Eintrag löschen?')) return;
+  speichereEintraege(ladeEintraege().filter(e => e.id !== id));
+  renderAlles();
+}
+
+// ═══════════════════════════════════════
+// FILTER
+// ═══════════════════════════════════════
+function setFilter(f, btn) {
+  aktFilter = f;
+  document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('ak'));
+  btn.classList.add('ak');
+  renderListe();
+}
+
+// ═══════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════
+function renderStats() {
+  const alle = ladeEintraege();
+  const jetzt = new Date();
+
+  // Diese Woche (Mo–So)
+  const mo = new Date(jetzt);
+  mo.setDate(jetzt.getDate() - (jetzt.getDay()||7) + 1 + wocheOffset*7);
+  mo.setHours(0,0,0,0);
+  const so = new Date(mo); so.setDate(mo.getDate()+6);
+
+  const woche = alle.filter(e => {
+    const d = new Date(e.datum);
+    return d >= mo && d <= so;
+  }).reduce((s,e) => s + e.stunden, 0);
+
+  // Dieser Monat
+  const monat = alle.filter(e => {
+    const d = new Date(e.datum);
+    return d.getMonth() === jetzt.getMonth() && d.getFullYear() === jetzt.getFullYear();
+  }).reduce((s,e) => s + e.stunden, 0);
+
+  const soll = 25 * 4.33; // 25h/Woche * 4.33 Wochen
+  const saldo = monat - soll;
+
+  document.getElementById('st-woche').textContent  = fmtH(woche);
+  document.getElementById('st-monat').textContent  = fmtH(monat);
+  document.getElementById('st-soll').textContent   = fmtH(Math.round(soll*10)/10);
+  document.getElementById('st-saldo').textContent  = (saldo >= 0 ? '+' : '') + fmtH(Math.abs(Math.round(saldo*10)/10));
+}
+
+// ═══════════════════════════════════════
+// WOCHENANSICHT
+// ═══════════════════════════════════════
+function renderWoche() {
+  const alle = ladeEintraege();
+  const jetzt = new Date();
+  const mo = new Date(jetzt);
+  mo.setDate(jetzt.getDate() - (jetzt.getDay()||7) + 1 + wocheOffset*7);
+  mo.setHours(0,0,0,0);
+
+  const tage = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+  const heutStr = heute();
+
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(mo); d.setDate(mo.getDate()+i);
+    const ds = d.toISOString().split('T')[0];
+    const eintraege = alle.filter(e => e.datum === ds);
+    const h = eintraege.reduce((s,e) => s+e.stunden, 0);
+    const istHeute = ds === heutStr;
+    html += `<div class="wtag ${istHeute?'heute':''} ${eintraege.length?'hat-eintraege':''}">
+      <div class="wtag-name">${tage[i]}</div>
+      <div class="wtag-datum">${d.getDate()}.${d.getMonth()+1}</div>
+      ${h > 0 ? `<div class="wtag-h">${fmtH(h)}</div>` : ''}
+    </div>`;
+  }
+  document.getElementById('woche-tage').innerHTML = html;
+}
+
+function wocheNav(delta) {
+  if (delta === 0) { wocheOffset = 0; }
+  else { wocheOffset += delta; }
+  renderWoche();
+  renderStats();
+}
+
+// ═══════════════════════════════════════
+// EINTRÄGE-LISTE
+// ═══════════════════════════════════════
+function renderListe() {
+  const alle = ladeEintraege();
+  const gefiltert = aktFilter === 'alle' ? alle : alle.filter(e => e.typ === aktFilter);
+  const el = document.getElementById('eintraege-liste');
+
+  if (gefiltert.length === 0) {
+    const typLabel = TYPEN.find(t=>t.id===aktFilter)?.label || '';
+    el.innerHTML = `<div class="leer">${aktFilter === 'alle'
+      ? 'Noch keine Einträge. Erfasse deinen ersten Arbeitstag oben.'
+      : `Keine Einträge vom Typ „${typLabel}". Erfasse einen neuen Eintrag und wähle oben den Typ.`}</div>`;
+    return;
+  }
+
+  el.innerHTML = gefiltert.map(e => {
+    const t = getTyp(e.typ);
+    const d = new Date(e.datum+'T12:00:00');
+    const dStr = d.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+    return `<div class="eintrag">
+      <div class="e-typ-dot" style="background:${t.farbe};"></div>
+      <div class="e-body">
+        <div class="e-oben">
+          <span class="e-datum">${dStr}</span>
+          <span class="e-zeit">${e.von}–${e.bis}</span>
+          <span class="e-typ-badge" style="background:${t.farbe};">${t.label}</span>
+          ${e.kind ? `<span class="e-kind">${zkKindNamen[e.kind] || e.kind}</span>` : ''}
+        </div>
+        ${e.notiz ? `<div class="e-notiz">${e.notiz}</div>` : ''}
+      </div>
+      <div class="e-stunden">${fmtH(e.stunden)}</div>
+      <button class="del-btn" onclick="loeschen(${e.id})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// MONATSÜBERSICHT
+// ═══════════════════════════════════════
+function renderMonat() {
+  const alle = ladeEintraege();
+  const jetzt = new Date();
+  const monat = alle.filter(e => {
+    const d = new Date(e.datum);
+    return d.getMonth() === jetzt.getMonth() && d.getFullYear() === jetzt.getFullYear();
+  });
+
+  const summen = {};
+  TYPEN.forEach(t => summen[t.id] = 0);
+  monat.forEach(e => { if(summen[e.typ] !== undefined) summen[e.typ] += e.stunden; });
+  const gesamt = Object.values(summen).reduce((a,b)=>a+b,0);
+
+  const el = document.getElementById('monat-liste');
+  if (!gesamt) { el.innerHTML = '<div class="leer">Noch keine Einträge diesen Monat.</div>'; return; }
+
+  el.innerHTML = TYPEN.filter(t => summen[t.id] > 0).map(t => `
+    <div class="monat-row">
+      <div class="monat-typ">
+        <div class="monat-dot" style="background:${t.farbe};"></div>
+        <span>${t.label}</span>
+      </div>
+      <b>${fmtH(summen[t.id])}</b>
+    </div>`).join('') + `
+    <div class="monat-row">
+      <div class="monat-typ"><b>Gesamt</b></div>
+      <b>${fmtH(gesamt)}</b>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// CSV EXPORT
+// ═══════════════════════════════════════
+function exportCSV() {
+  const alle = ladeEintraege();
+  if (!alle.length) { alert('Keine Einträge zum Exportieren.'); return; }
+  const header = 'Datum;Typ;Von;Bis;Pause(Min);Stunden;Kind/Schule;Notiz';
+  const rows = alle.map(e =>
+    `${e.datum};${getTyp(e.typ).label};${e.von};${e.bis};${e.pause};${e.stunden};${e.kind||''};${e.notiz||''}`
+  );
+  const csv = '\uFEFF' + [header, ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Zeitkonto_${heute()}.csv`;
+  a.click();
+}
+
+// ═══════════════════════════════════════
+// RENDER ALLES
+// ═══════════════════════════════════════
+function renderAlles() {
+  renderStats();
+  renderWoche();
+  renderListe();
+  renderMonat();
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('e-datum').value = heute();
+  renderTypChips();
+  renderAlles();
+
+  // Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.1)
+  try {
+    db.ref('children').once('value').then(function(snapshot) {
+      const kinder = snapshot.val() || {};
+      const select = document.getElementById('e-kind');
+      Object.keys(kinder).forEach(function(childId) {
+        const kind = kinder[childId];
+        if (kind.active === false) return;
+        const option = document.createElement('option');
+        option.value = childId;
+        option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+        select.appendChild(option);
+        zkKindNamen[childId] = kind.name; // für lesbare Anzeige in der Liste
+      });
+      renderAlles(); // Liste neu zeichnen, damit Namen statt IDs angezeigt werden
+    });
+  } catch(e) {}
+
+  ['e-von','e-bis','e-pause'].forEach(id =>
+    document.getElementById(id).addEventListener('input', updatePreview)
+  );
+});
+</script>
+
+<!-- ERFOLGS-OVERLAY (Etappe 6.1) -->
+<style>
+.zk-erfolg-overlay{position:fixed;inset:0;background:rgba(27,58,75,.85);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;}
+.zk-erfolg-overlay.zeigen{display:flex;}
+.zk-erfolg-karte{background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:380px;text-align:center;}
+.zk-erfolg-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.zk-erfolg-titel{font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
+.zk-erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
+.zk-erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin:.25rem;}
+.zk-erfolg-btn.link-btn{background:#C47A00;width:100%;margin:.5rem 0 0;}
+.zk-link-bestaetigung{font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.5rem;opacity:0;transition:opacity .25s;}
+.zk-link-bestaetigung.zeigen{opacity:1;}
+</style>
+<div class="zk-erfolg-overlay" id="zk-erfolg-overlay">
+  <div class="zk-erfolg-karte">
+    <div class="zk-erfolg-icon">✅</div>
+    <div class="zk-erfolg-titel">Zeitkonto gespeichert</div>
+    <div class="zk-erfolg-text">Der Eintrag wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
+    <button class="zk-erfolg-btn link-btn" id="zk-btn-link-kopieren" onclick="zkLeselinkKopieren()">🔗 Leselink kopieren</button>
+    <div class="zk-link-bestaetigung" id="zk-link-bestaetigung">Link kopiert!</div>
+    <div style="margin-top:1rem;">
+      <button class="zk-erfolg-btn" onclick="document.getElementById('zk-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
+    </div>
+  </div>
+</div>
+<script>
+// Merkt sich die forwardId des zuletzt erzeugten Zeitkonto-Weiterleitungseintrags
+let zkLetzteForwardId = null;
+
+function zkLeselinkKopieren() {
+  if (!zkLetzteForwardId) return;
+  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + zkLetzteForwardId;
+
+  navigator.clipboard.writeText(leseLink).then(function() {
+    const bestaetigung = document.getElementById('zk-link-bestaetigung');
+    bestaetigung.classList.add('zeigen');
+    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
+  }).catch(function() {
+    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
+  });
+}
+</script>
+</body>
+</html>

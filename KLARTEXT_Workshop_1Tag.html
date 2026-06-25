@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Workshop 1 Tag</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:860px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:#1B3A4B;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:.75rem;}
+.hero-stats{display:flex;gap:.5rem;flex-wrap:wrap;}
+.h-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:.35rem .75rem;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600;}
+.tag-header{display:flex;align-items:center;gap:.75rem;margin:1.5rem 0 .75rem;}
+.tag-badge{padding:.3rem .8rem;border-radius:20px;font-size:.72rem;font-weight:700;color:#fff;}
+.tag-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;}
+.tag-sub{font-size:.75rem;color:#6A6878;}
+.block{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;padding:1rem 1.25rem;margin-bottom:.65rem;}
+.block-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.block-zeit{background:#1B3A4B;color:#fff;border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;white-space:nowrap;}
+.block-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#1B3A4B;}
+.block-sub{font-size:.75rem;color:#6A6878;}
+.block-body{font-size:.83rem;color:#3A3A4A;line-height:1.85;}
+.block-body ul{padding-left:1.1rem;margin:.3rem 0;}
+.block-body li{margin-bottom:.2rem;}
+.block-body strong{color:#1B3A4B;}
+.methode{display:inline-flex;align-items:center;gap:.25rem;background:#EAF0F4;border-radius:20px;padding:.18rem .55rem;font-size:.68rem;font-weight:700;color:#1B3A4B;margin:.15rem .1rem;}
+.material{display:inline-flex;align-items:center;gap:.25rem;background:#E8F5EE;border-radius:20px;padding:.18rem .55rem;font-size:.68rem;font-weight:700;color:#2E7D47;margin:.15rem .1rem;}
+.pause{background:#FBF4E8;border:1.5px dashed #C47A00;border-radius:10px;padding:.6rem 1rem;margin-bottom:.65rem;font-size:.8rem;color:#7A5318;font-weight:600;display:flex;align-items:center;gap:.5rem;}
+.trainer-box{background:#F3EDF3;border-left:3px solid #6B3F6B;border-radius:0 10px 10px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.8rem;color:#3A1A3A;line-height:1.75;}
+.ziel-box{background:#EAF5F0;border-left:3px solid #6EC6A0;border-radius:0 10px 10px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.82rem;color:#1A3A2A;line-height:1.75;}
+.abschluss{background:#1B3A4B;border-radius:12px;padding:1.25rem;margin-top:1.5rem;display:flex;align-items:center;gap:1rem;}
+.abschluss img{width:64px;flex-shrink:0;}
+.abschluss-text{color:#fff;}
+.abschluss-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;margin-bottom:.25rem;}
+.abschluss-sub{font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.7;}
+.mat-liste{background:#fff;border:1.5px solid #DDD8CE;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.mat-titel{font-size:.65rem;font-weight:700;color:#1B3A4B;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;}
+.mat-item{font-size:.8rem;color:#3A3A4A;padding:.3rem 0;border-bottom:1px solid #F0EBE3;display:flex;align-items:center;gap:.4rem;}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Workshop · 1 Tag</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+<div class="shell">
+
+  <div class="hero">
+    <div class="hero-titel">Einarbeitungs-Workshop · 1 Tag</div>
+    <div class="hero-sub">Kompakte Einführung in KLARTEXT — 6 Stunden · Für neue INGRAs · Präsenz oder hybrid</div>
+    <div class="hero-stats">
+      <span class="h-stat">⏱️ 6 Stunden</span>
+      <span class="h-stat">👥 4–12 Teilnehmende</span>
+      <span class="h-stat">📍 Präsenz oder hybrid</span>
+      <span class="h-stat">📋 Handout inklusive</span>
+    </div>
+  </div>
+
+  <!-- MATERIAL -->
+  <div class="mat-liste">
+    <div class="mat-titel">Vorbereitung & Material</div>
+    <div class="mat-grid">
+      <div class="mat-item">✅ Handout ausgedruckt (1×/Person)</div>
+      <div class="mat-item">✅ KLARTEXT-Link an alle vorab</div>
+      <div class="mat-item">✅ Zugangsdaten je Rolle</div>
+      <div class="mat-item">✅ Beamer/Screen für Demo</div>
+      <div class="mat-item">✅ Moderationskarten/Post-its</div>
+      <div class="mat-item">✅ Flipchart oder Whiteboard</div>
+      <div class="mat-item">✅ Stifte, Namensschilder</div>
+      <div class="mat-item">✅ Kaffee ☕</div>
+    </div>
+  </div>
+
+  <!-- TAG -->
+  <div class="tag-header">
+    <span class="tag-badge" style="background:#1B3A4B;">Tag 1</span>
+    <div>
+      <div class="tag-titel">Einarbeitungs-Workshop</div>
+      <div class="tag-sub">09:00 – 16:00 Uhr · mit Mittagspause</div>
+    </div>
+  </div>
+
+  <!-- BLOCK 1 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">09:00 – 09:30</span>
+      <div>
+        <div class="block-titel">Ankommen & Kennenlernen</div>
+        <div class="block-sub">Warm-up · Erwartungen · Überblick</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle kennen sich, alle wissen was heute passiert, Erwartungen sind sichtbar.</div>
+      <ul>
+        <li><strong>Begrüßung:</strong> Wer bin ich, was ist KLARTEXT, warum dieser Tag?</li>
+        <li><strong>Vorstellungsrunde:</strong> Name · Seit wann INGRA · Was ich mir erhoffe</li>
+        <li><strong>Tagesüberblick:</strong> Programm zeigen, Fragen sammeln</li>
+        <li><strong>Warm-up Frage:</strong> "Was war deine schwierigste Situation letzte Woche?"</li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">💬 Plenum</span>
+        <span class="methode">📝 Kartenabfrage</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK 2 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">09:30 – 10:30</span>
+      <div>
+        <div class="block-titel">Das KLARTEXT-System kennenlernen</div>
+        <div class="block-sub">Dashboard · Navigation · Erste Orientierung</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle können sich im System orientieren und die wichtigsten Bereiche finden.</div>
+      <ul>
+        <li><strong>Live-Demo:</strong> Login → Dashboard → Struktur erklären</li>
+        <li><strong>Goldener Banner:</strong> "Was tue ich jetzt?" — die wichtigste Funktion</li>
+        <li><strong>Barometer:</strong> INGRA + Kind — ausprobieren lassen</li>
+        <li><strong>Selbst erkunden:</strong> 15 Minuten frei navigieren — Was fällt auf?</li>
+        <li><strong>Blitzrunde:</strong> Eine Entdeckung pro Person</li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">💻 Live-Demo</span>
+        <span class="methode">🔍 Eigenexploration</span>
+        <span class="methode">⚡ Blitzrunde</span>
+        <span class="material">📱 Eigene Geräte</span>
+      </div>
+      <div class="trainer-box">Trainer-Tipp: Nicht alles erklären — Neugier wecken. Die INGRAs sollen selbst entdecken wollen.</div>
+    </div>
+  </div>
+
+  <!-- BLOCK 3 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">10:30 – 11:30</span>
+      <div>
+        <div class="block-titel">Meine Rolle — klar und mit Grenzen</div>
+        <div class="block-sub">M1 · Pflichtdreieck · Was bin ich — was bin ich nicht</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle kennen ihr Rollenprofil und können die 3 häufigsten Rollenfallen benennen.</div>
+      <ul>
+        <li><strong>Input:</strong> Rollenprofil INGRA — M1-01 gemeinsam anschauen</li>
+        <li><strong>Pflichtdreieck:</strong> Kind · Schule · Familie — wo stehe ich?</li>
+        <li><strong>Gruppenarbeit:</strong> "Was ist MEINE Aufgabe — was nicht?" — Karten sortieren</li>
+        <li><strong>Rollenfallen:</strong> Die 3 häufigsten — Therapeutin, beste Freundin, Hilfslehrerin</li>
+        <li><strong>Auswertung im Plenum</strong></li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">📖 Karte M1-01</span>
+        <span class="methode">🃏 Kartenspiel</span>
+        <span class="methode">💬 Plenum</span>
+        <span class="material">📋 Handout S.5</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pause">☕ Pause 11:30 – 11:45 Uhr</div>
+
+  <!-- BLOCK 4 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">11:45 – 12:30</span>
+      <div>
+        <div class="block-titel">Das Barometer — Regulation verstehen</div>
+        <div class="block-sub">5 Zustände · kLAR-Modell · Sofort-Hilfe</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle können die 5 Zustände benennen und das kLAR-Modell in einer Situation anwenden.</div>
+      <ul>
+        <li><strong>Input Barometer:</strong> 5 Farben — was bedeutet das konkret?</li>
+        <li><strong>Fallbeispiel:</strong> Kind kommt Montag morgens aggressiv — welcher Zustand?</li>
+        <li><strong>kLAR in der Gruppe:</strong> Schritt für Schritt durchspielen</li>
+        <li><strong>Eigene Situation:</strong> Jede:r denkt an eine konkrete Situation aus der Praxis</li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">🌡️ Barometer App</span>
+        <span class="methode">🎭 Rollenspiel</span>
+        <span class="material">📋 Handout S.3</span>
+      </div>
+      <div class="trainer-box">Trainer-Tipp: Das kLAR-Rollenspiel ist der Kern des Tages — hier genug Zeit lassen.</div>
+    </div>
+  </div>
+
+  <div class="pause">🍽️ Mittagspause 12:30 – 13:15 Uhr</div>
+
+  <!-- BLOCK 5 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">13:15 – 14:15</span>
+      <div>
+        <div class="block-titel">Schwierige Situationen meistern</div>
+        <div class="block-sub">M3 · 8 Situationen · Praxisfälle</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle kennen M3 "Was tue ich jetzt?" und können es im Unterricht nutzen.</div>
+      <ul>
+        <li><strong>M3 Dashboard live:</strong> Alle 8 Situationen anschauen</li>
+        <li><strong>Kleingruppen à 3:</strong> Je eine Situation zuordnen — was würdet ihr tun?</li>
+        <li><strong>Präsentation:</strong> 2 Minuten pro Gruppe</li>
+        <li><strong>Diskussion:</strong> Was ist realistisch — was nicht?</li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">👥 Kleingruppen</span>
+        <span class="methode">🎯 M3 App</span>
+        <span class="methode">💬 Diskussion</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCK 6 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">14:15 – 15:15</span>
+      <div>
+        <div class="block-titel">Mein KLARTEXT-Werkzeugkasten</div>
+        <div class="block-sub">Eigene Schwerpunkte · Lernpfad · Nächste Schritte</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Jede INGRA hat ihren persönlichen Lernplan für die nächsten 4 Wochen.</div>
+      <ul>
+        <li><strong>Lernpfad vorstellen:</strong> 8 Wochen Basis + 4 Wochen Erweiterung</li>
+        <li><strong>Eigenzeit:</strong> Eigenes Profil im Lernpfad anlegen — Woche 1 öffnen</li>
+        <li><strong>Schwerpunkte:</strong> Welche 3 Module sind für mein Kind am wichtigsten?</li>
+        <li><strong>Zeitkonto + Krankmeldung:</strong> kurz zeigen</li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">🗺️ Lernpfad App</span>
+        <span class="methode">📅 Planung</span>
+        <span class="material">📱 Eigene Geräte</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pause">☕ Pause 15:15 – 15:30 Uhr</div>
+
+  <!-- BLOCK 7 -->
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">15:30 – 16:00</span>
+      <div>
+        <div class="block-titel">Abschluss & Ausblick</div>
+        <div class="block-sub">Reflexion · Fragen · Nächste Schritte</div>
+      </div>
+    </div>
+    <div class="block-body">
+      <ul>
+        <li><strong>Blitzlichtrunde:</strong> Eine Erkenntnis + eine offene Frage pro Person</li>
+        <li><strong>Ausblick:</strong> Lernpfad, TK-Kontakt, wann nächstes Treffen?</li>
+        <li><strong>Feedback-Karte:</strong> Was war gut? Was fehlt noch?</li>
+        <li><strong>Verabschiedung</strong></li>
+      </ul>
+      <div style="margin-top:.5rem;">
+        <span class="methode">⚡ Blitzlicht</span>
+        <span class="methode">📝 Feedback-Karte</span>
+      </div>
+      <div class="trainer-box">Trainer-Tipp: Feedback-Karten einsammeln und für die Weiterentwicklung von KLARTEXT nutzen.</div>
+    </div>
+  </div>
+
+  <div class="abschluss">
+    <img src="brainy.png" alt="Brainy">
+    <div class="abschluss-text">
+      <div class="abschluss-titel">1 Tag. 1 System. 1 Anfang.</div>
+      <div class="abschluss-sub">Der Workshop gibt Orientierung — der Lernpfad gibt Tiefe. Beides zusammen macht professionelle Schulbegleitung.</div>
+    </div>
+  </div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD-M3.html" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;">🎯</a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

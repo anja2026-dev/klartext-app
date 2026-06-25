@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Mein Notizblock</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:680px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+
+.brainy-hero{background:var(--navy);border-radius:16px;padding:1.4rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.1rem;}
+.brainy-hero img{width:64px;height:64px;object-fit:contain;flex-shrink:0;}
+.sprechblase{background:#fff;border-radius:14px;padding:.75rem 1rem;position:relative;flex:1;}
+.sprechblase::before{content:'';position:absolute;left:-9px;top:50%;transform:translateY(-50%);border-width:8px 10px 8px 0;border-style:solid;border-color:transparent #fff transparent transparent;}
+.sprechblase p{font-size:.84rem;color:var(--navy);font-style:italic;line-height:1.5;}
+
+.toolbar{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+.toolbar-left{display:flex;gap:.5rem;flex-wrap:wrap;}
+.ctrl{padding:.5rem 1.1rem;border-radius:8px;font-size:.8rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;}
+.ctrl-new{background:var(--navy);color:#fff;}
+.ctrl-print{background:var(--gold);color:#fff;}
+.ctrl-blank{background:#fff;color:var(--navy);border:1.5px solid var(--navy);}
+
+.editor{background:var(--surface);border-radius:14px;padding:1.25rem;box-shadow:0 1px 8px rgba(0,0,0,.06);margin-bottom:1.5rem;display:none;}
+.editor.aktiv{display:block;}
+.editor-meta{display:flex;gap:.6rem;margin-bottom:.75rem;}
+.editor-meta input{flex:1;padding:.5rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.82rem;background:#FAFAFA;}
+.editor-text{width:100%;min-height:220px;border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1rem;font-family:"DM Sans",sans-serif;font-size:.88rem;line-height:1.8;background:#FFFEFA;resize:vertical;background-image:repeating-linear-gradient(transparent, transparent 31px, #E8E0D0 32px);}
+.editor-text:focus{outline:none;border-color:var(--acc);}
+.editor-actions{display:flex;gap:.5rem;margin-top:.75rem;}
+
+.liste-titel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;}
+.notiz-eintrag{background:var(--surface);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.6rem;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.ne-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.4rem;gap:.5rem;}
+.ne-thema{font-weight:700;color:var(--navy);font-size:.88rem;}
+.ne-datum{font-size:.68rem;color:var(--muted);white-space:nowrap;}
+.ne-text{font-size:.82rem;color:#3A3A4A;line-height:1.6;white-space:pre-wrap;margin-bottom:.5rem;}
+.ne-actions{display:flex;gap:.5rem;}
+.ne-btn{font-size:.68rem;font-weight:700;background:none;border:none;cursor:pointer;color:var(--muted);}
+.ne-btn:hover{color:var(--navy);}
+.ne-btn.del:hover{color:#C62828;}
+.leer-hinweis{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.82rem;background:#fff;border-radius:12px;}
+
+@media print{ body *{display:none!important;} }
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Mein Notizblock</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="brainy-hero">
+  <img src="brainy.png" alt="Brainy">
+  <div class="sprechblase">
+    <p id="brainy-spruch">Du machst das richtig gut — auch wenn heute mal nicht alles perfekt war.</p>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-left">
+    <button class="ctrl ctrl-new" onclick="neueNotiz()">＋ Neue Notiz</button>
+  </div>
+  <a class="ctrl ctrl-blank" href="KLARTEXT_Notizblock_Druck.html">🖨️ Leere Vordrucke (A4/A5)</a>
+</div>
+
+<div class="editor" id="editor">
+  <div class="editor-meta">
+    <input type="text" id="notiz-datum" placeholder="Datum">
+    <input type="text" id="notiz-thema" placeholder="Thema (optional)">
+  </div>
+  <textarea class="editor-text" id="notiz-text" placeholder="Schreib hier deine Gedanken, Beobachtungen oder To-dos auf …"></textarea>
+  <div class="editor-actions">
+    <button class="ctrl ctrl-new" onclick="speichern()">💾 Speichern</button>
+    <button class="ctrl ctrl-blank" onclick="abbrechen()">Abbrechen</button>
+  </div>
+</div>
+
+<div class="liste-titel">📋 Meine Notizen</div>
+<div id="notizen-liste"></div>
+
+</div>
+
+<script>
+const SPRUECHE = ['Du machst das richtig gut — auch wenn heute mal nicht alles perfekt war.', 'Kleine Notizen, große Wirkung. Schreib auf, was dir wichtig ist!', 'Ein guter Tag fängt mit einem klaren Kopf an — und der passt hier rein.', "Du musst nicht alles im Kopf behalten. Dafür gibt's mich!", 'Manchmal hilft schon, die Gedanken einfach mal aufzuschreiben.', 'Du schaffst mehr, als du denkst — auch an den anstrengenden Tagen.', "Notiert ist halb erledigt. Los geht's!", 'Auch kleine Erfolge verdienen einen Platz auf diesem Zettel.'];
+let bearbeiteId = null;
+
+function heute() {
+  return new Date().toLocaleDateString('de-DE', {weekday:'short', day:'2-digit', month:'2-digit', year:'numeric'});
+}
+
+function ladeNotizen() {
+  try { return JSON.parse(localStorage.getItem('kt_notizen_liste') || '[]'); } catch(e) { return []; }
+}
+
+function speichereListe(liste) {
+  try { localStorage.setItem('kt_notizen_liste', JSON.stringify(liste)); } catch(e) {}
+}
+
+function neuerSpruch() {
+  document.getElementById('brainy-spruch').textContent = SPRUECHE[Math.floor(Math.random() * SPRUECHE.length)];
+}
+
+function neueNotiz() {
+  bearbeiteId = null;
+  document.getElementById('notiz-datum').value = heute();
+  document.getElementById('notiz-thema').value = '';
+  document.getElementById('notiz-text').value = '';
+  document.getElementById('editor').classList.add('aktiv');
+  document.getElementById('notiz-text').focus();
+  neuerSpruch();
+  document.getElementById('editor').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function bearbeiten(id) {
+  const liste = ladeNotizen();
+  const n = liste.find(x => x.id === id);
+  if (!n) return;
+  bearbeiteId = id;
+  document.getElementById('notiz-datum').value = n.datum;
+  document.getElementById('notiz-thema').value = n.thema;
+  document.getElementById('notiz-text').value = n.text;
+  document.getElementById('editor').classList.add('aktiv');
+  document.getElementById('editor').scrollIntoView({behavior:'smooth'});
+}
+
+function speichern() {
+  const text = document.getElementById('notiz-text').value.trim();
+  if (!text) { alert('Bitte etwas schreiben.'); return; }
+  let liste = ladeNotizen();
+  const eintrag = {
+    id: bearbeiteId || Date.now(),
+    datum: document.getElementById('notiz-datum').value,
+    thema: document.getElementById('notiz-thema').value.trim(),
+    text: text
+  };
+  if (bearbeiteId) {
+    liste = liste.map(n => n.id === bearbeiteId ? eintrag : n);
+  } else {
+    liste.unshift(eintrag);
+  }
+  speichereListe(liste);
+  abbrechen();
+  renderListe();
+}
+
+function abbrechen() {
+  bearbeiteId = null;
+  document.getElementById('editor').classList.remove('aktiv');
+}
+
+function loeschen(id) {
+  if (!confirm('Diese Notiz löschen?')) return;
+  speichereListe(ladeNotizen().filter(n => n.id !== id));
+  renderListe();
+}
+
+function renderListe() {
+  const liste = ladeNotizen();
+  const el = document.getElementById('notizen-liste');
+  if (liste.length === 0) {
+    el.innerHTML = '<div class="leer-hinweis">Noch keine Notizen — klick oben auf „＋ Neue Notiz"</div>';
+    return;
+  }
+  el.innerHTML = liste.map(n => `
+    <div class="notiz-eintrag">
+      <div class="ne-head">
+        <span class="ne-thema">${n.thema || 'Ohne Thema'}</span>
+        <span class="ne-datum">${n.datum}</span>
+      </div>
+      <div class="ne-text">${n.text}</div>
+      <div class="ne-actions">
+        <button class="ne-btn" onclick="bearbeiten(${n.id})">✏️ Bearbeiten</button>
+        <button class="ne-btn del" onclick="loeschen(${n.id})">🗑️ Löschen</button>
+      </div>
+    </div>`).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('brainy-spruch').textContent = SPRUECHE[Math.floor(Math.random() * SPRUECHE.length)];
+  renderListe();
+});
+</script>
+</body>
+</html>

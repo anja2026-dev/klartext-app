@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Feedback Testphase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:760px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:#1B3A4B;border-radius:14px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.75;}
+.sektion{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#1B3A4B;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1.5px solid #DDD8CE;display:flex;align-items:center;gap:.5rem;}
+.frage{margin-bottom:1rem;}
+.frage label{font-size:.78rem;font-weight:700;color:#1B3A4B;display:block;margin-bottom:.35rem;}
+.frage-sub{font-size:.7rem;color:#6A6878;margin-bottom:.35rem;display:block;}
+textarea{width:100%;border:1.5px solid #DDD8CE;border-radius:8px;padding:.55rem .75rem;font-family:"DM Sans",sans-serif;font-size:.82rem;color:#1A1A2E;background:#FAFAFA;resize:none;outline:none;line-height:1.6;}
+textarea:focus{border-color:#1B3A4B;}
+input[type="text"]{width:100%;border:1.5px solid #DDD8CE;border-radius:8px;padding:.45rem .75rem;font-family:"DM Sans",sans-serif;font-size:.85rem;color:#1A1A2E;background:#FAFAFA;outline:none;}
+input[type="text"]:focus{border-color:#1B3A4B;}
+.sterne{display:flex;gap:.4rem;margin-bottom:.35rem;}
+.stern{font-size:1.6rem;cursor:pointer;color:#DDD8CE;transition:color .1s;}
+.stern.aktiv{color:#C47A00;}
+.radio-gruppe{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.35rem;}
+.radio-btn{padding:.3rem .8rem;border-radius:20px;border:1.5px solid #DDD8CE;background:#FAFAFA;font-size:.78rem;cursor:pointer;color:#3A3A4A;transition:all .1s;user-select:none;}
+.radio-btn.aktiv{background:#1B3A4B;border-color:#1B3A4B;color:#fff;}
+.speichern-btn{background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.55rem 1.25rem;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;display:block;margin-top:1.25rem;}
+.speichern-btn:hover{background:#2A4A5B;}
+.export-btn{background:#C47A00;color:#fff;border:none;border-radius:8px;padding:.55rem 1.25rem;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;display:inline-block;margin-top:.5rem;}
+.status{font-size:.75rem;color:#2E7D47;margin-top:.5rem;display:none;}
+</style>
+<!-- Firebase SDK für Speicherung unter /feedback -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Feedback · Testphase</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">Dein Feedback zur Testphase</div>
+  <div class="hero-sub">Deine ehrliche Rückmeldung hilft KLARTEXT besser zu werden — für dich und alle INGRAs nach dir. Kein richtig oder falsch, keine Bewertung. Einfach ehrlich.</div>
+</div>
+
+<!-- META -->
+<div class="sektion">
+  <div class="sek-titel">📋 Zur Person</div>
+  <div class="frage">
+    <label>Dein Name (optional)</label>
+    <input type="text" id="f-name" placeholder="Kann auch anonym bleiben">
+  </div>
+  <div class="frage">
+    <label>Wie lange bist du schon als Schulbegleitung tätig?</label>
+    <div class="radio-gruppe" id="rg-erfahrung">
+      <div class="radio-btn" onclick="selectRadio('rg-erfahrung',this)">Unter 1 Jahr</div>
+      <div class="radio-btn" onclick="selectRadio('rg-erfahrung',this)">1–3 Jahre</div>
+      <div class="radio-btn" onclick="selectRadio('rg-erfahrung',this)">3–5 Jahre</div>
+      <div class="radio-btn" onclick="selectRadio('rg-erfahrung',this)">Über 5 Jahre</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Wie technikaffin würdest du dich einschätzen?</label>
+    <div class="radio-gruppe" id="rg-tech">
+      <div class="radio-btn" onclick="selectRadio('rg-tech',this)">Eher wenig</div>
+      <div class="radio-btn" onclick="selectRadio('rg-tech',this)">Mittel</div>
+      <div class="radio-btn" onclick="selectRadio('rg-tech',this)">Gut</div>
+      <div class="radio-btn" onclick="selectRadio('rg-tech',this)">Sehr gut</div>
+    </div>
+  </div>
+</div>
+
+<!-- ERSTER EINDRUCK -->
+<div class="sektion">
+  <div class="sek-titel">👁️ Erster Eindruck</div>
+  <div class="frage">
+    <label>Wie war dein erster Eindruck als du KLARTEXT geöffnet hast?</label>
+    <textarea id="f-eindruck" rows="3" placeholder="Was fiel dir als erstes auf? Was hast du gedacht?"></textarea>
+  </div>
+  <div class="frage">
+    <label>Wie leicht war es dich zu orientieren?</label>
+    <div class="sterne" id="st-orientierung">
+      <span class="stern" onclick="setSterne('st-orientierung',1)">★</span>
+      <span class="stern" onclick="setSterne('st-orientierung',2)">★</span>
+      <span class="stern" onclick="setSterne('st-orientierung',3)">★</span>
+      <span class="stern" onclick="setSterne('st-orientierung',4)">★</span>
+      <span class="stern" onclick="setSterne('st-orientierung',5)">★</span>
+    </div>
+    <span style="font-size:.7rem;color:#6A6878;">1 = sehr schwer · 5 = sofort klar</span>
+  </div>
+</div>
+
+<!-- BAROMETER -->
+<div class="sektion">
+  <div class="sek-titel">🌡️ Das Barometer</div>
+  <div class="frage">
+    <label>Hast du das Barometer genutzt — für dich oder für ein Kind?</label>
+    <div class="radio-gruppe" id="rg-baro">
+      <div class="radio-btn" onclick="selectRadio('rg-baro',this)">Ja, für mich</div>
+      <div class="radio-btn" onclick="selectRadio('rg-baro',this)">Ja, für ein Kind</div>
+      <div class="radio-btn" onclick="selectRadio('rg-baro',this)">Beides</div>
+      <div class="radio-btn" onclick="selectRadio('rg-baro',this)">Noch nicht</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>War das Barometer hilfreich?</label>
+    <div class="sterne" id="st-baro">
+      <span class="stern" onclick="setSterne('st-baro',1)">★</span>
+      <span class="stern" onclick="setSterne('st-baro',2)">★</span>
+      <span class="stern" onclick="setSterne('st-baro',3)">★</span>
+      <span class="stern" onclick="setSterne('st-baro',4)">★</span>
+      <span class="stern" onclick="setSterne('st-baro',5)">★</span>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Was würdest du am Barometer ändern oder ergänzen?</label>
+    <textarea id="f-baro" rows="2" placeholder="Fehlende Zustände, andere Formulierungen, zu viel, zu wenig..."></textarea>
+  </div>
+</div>
+
+<!-- PRAXIS -->
+<div class="sektion">
+  <div class="sek-titel">💼 Im Schulalltag</div>
+  <div class="frage">
+    <label>Hast du KLARTEXT in einer echten Situation genutzt?</label>
+    <div class="radio-gruppe" id="rg-praxis">
+      <div class="radio-btn" onclick="selectRadio('rg-praxis',this)">Ja</div>
+      <div class="radio-btn" onclick="selectRadio('rg-praxis',this)">Noch nicht</div>
+      <div class="radio-btn" onclick="selectRadio('rg-praxis',this)">Wollte, aber hatte kein Handy dabei</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Wenn ja: Was war die Situation — und hat KLARTEXT geholfen?</label>
+    <textarea id="f-praxis" rows="3" placeholder="Kurz beschreiben — kein Name nötig..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Welche Karte oder Funktion hast du am häufigsten genutzt?</label>
+    <input type="text" id="f-genutzt" placeholder="z.B. Barometer · kLAR · Situationskarte · Zeitkonto...">
+  </div>
+</div>
+
+<!-- WAS FEHLT -->
+<div class="sektion">
+  <div class="sek-titel">🔍 Was fehlt — was stört</div>
+  <div class="frage">
+    <label>Was fehlt dir im System — was wäre wichtig und ist noch nicht da?</label>
+    <textarea id="f-fehlt" rows="3" placeholder="Karten, Funktionen, Themen, Situationen..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Was hat dich gestört oder verwirrt?</label>
+    <textarea id="f-stoert" rows="3" placeholder="Zu unübersichtlich? Zu viel Text? Etwas nicht gefunden?"></textarea>
+  </div>
+  <div class="frage">
+    <label>Würdest du KLARTEXT anderen INGRAs empfehlen?</label>
+    <div class="radio-gruppe" id="rg-empfehlung">
+      <div class="radio-btn" onclick="selectRadio('rg-empfehlung',this)">Ja, auf jeden Fall</div>
+      <div class="radio-btn" onclick="selectRadio('rg-empfehlung',this)">Eher ja</div>
+      <div class="radio-btn" onclick="selectRadio('rg-empfehlung',this)">Bin unsicher</div>
+      <div class="radio-btn" onclick="selectRadio('rg-empfehlung',this)">Eher nicht</div>
+    </div>
+  </div>
+</div>
+
+<!-- GESAMTBEWERTUNG -->
+<div class="sektion">
+  <div class="sek-titel">⭐ Gesamtbewertung</div>
+  <div class="frage">
+    <label>Wie bewertest du KLARTEXT insgesamt?</label>
+    <div class="sterne" id="st-gesamt">
+      <span class="stern" onclick="setSterne('st-gesamt',1)">★</span>
+      <span class="stern" onclick="setSterne('st-gesamt',2)">★</span>
+      <span class="stern" onclick="setSterne('st-gesamt',3)">★</span>
+      <span class="stern" onclick="setSterne('st-gesamt',4)">★</span>
+      <span class="stern" onclick="setSterne('st-gesamt',5)">★</span>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Dein wichtigster Satz — was nimmst du mit?</label>
+    <textarea id="f-fazit" rows="2" placeholder="Ein Gedanke, ein Satz, ein Bild..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Was soll Anja Jolk als erstes verbessern?</label>
+    <textarea id="f-prio" rows="2" placeholder="Das Wichtigste zuerst..."></textarea>
+  </div>
+</div>
+
+<button class="speichern-btn" id="fb-absenden-btn" onclick="absenden()">📤 Feedback absenden</button>
+<div class="status" id="status" style="display:none;"></div>
+
+</div>
+
+<script>
+function selectRadio(gruppeId, el) {
+  document.querySelectorAll('#'+gruppeId+' .radio-btn').forEach(b=>b.classList.remove('aktiv'));
+  el.classList.add('aktiv');
+  speichern();
+}
+
+function setSterne(gruppeId, n) {
+  var sterne = document.querySelectorAll('#'+gruppeId+' .stern');
+  sterne.forEach((s,i)=>s.classList.toggle('aktiv', i<n));
+  speichern();
+}
+
+function getSterne(gruppeId) {
+  return document.querySelectorAll('#'+gruppeId+' .stern.aktiv').length;
+}
+
+function getRadio(gruppeId) {
+  var aktiv = document.querySelector('#'+gruppeId+' .radio-btn.aktiv');
+  return aktiv ? aktiv.textContent : '';
+}
+
+function getData() {
+  return {
+    name: document.getElementById('f-name').value,
+    erfahrung: getRadio('rg-erfahrung'),
+    tech: getRadio('rg-tech'),
+    eindruck: document.getElementById('f-eindruck').value,
+    orientierung: getSterne('st-orientierung'),
+    baro_nutzung: getRadio('rg-baro'),
+    baro_bewertung: getSterne('st-baro'),
+    baro_anmerkung: document.getElementById('f-baro').value,
+    praxis: getRadio('rg-praxis'),
+    praxis_situation: document.getElementById('f-praxis').value,
+    genutzt: document.getElementById('f-genutzt').value,
+    fehlt: document.getElementById('f-fehlt').value,
+    stoert: document.getElementById('f-stoert').value,
+    empfehlung: getRadio('rg-empfehlung'),
+    gesamt: getSterne('st-gesamt'),
+    fazit: document.getElementById('f-fazit').value,
+    prio: document.getElementById('f-prio').value,
+    datum: new Date().toLocaleDateString('de-DE')
+  };
+}
+
+function absenden() {
+  var btn = document.getElementById('fb-absenden-btn');
+  var status = document.getElementById('status');
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Wird gesendet …'; }
+
+  try {
+    var daten = getData();
+    var eintrag = {
+      userId:       (function(){ try{ return sessionStorage.getItem('klartext_user_id')||'anonym'; }catch(e){ return 'anonym'; } })(),
+      quelle:       'KLARTEXT_Feedback_INGRA',
+      name:         daten.name || 'anonym',
+      rating:       daten.gesamt || 0,
+      textFeedback: [
+        daten.eindruck ? 'Eindruck: '   + daten.eindruck : '',
+        daten.fehlt    ? 'Fehlt: '      + daten.fehlt    : '',
+        daten.stoert   ? 'Stört: '      + daten.stoert   : '',
+        daten.fazit    ? 'Fazit: '      + daten.fazit    : ''
+      ].filter(Boolean).join('\n\n'),
+      rohdaten:     daten,
+      timestamp:    Date.now(),
+      deviceInfo:   (function(){ try{ return navigator.userAgent||''; }catch(e){ return ''; } })()
+    };
+
+    db.ref('feedback').push(eintrag)
+      .then(function() {
+        // Formular ausblenden, Bestätigung zeigen
+        var formular = document.querySelector('.container');
+        if (formular) formular.style.display = 'none';
+        if (status) {
+          status.style.cssText = 'display:block;background:#EAF7EF;border-left:4px solid #2E7D47;border-radius:10px;padding:1.5rem;text-align:center;font-size:.95rem;color:#1B5E2E;margin-top:1rem;';
+          status.innerHTML = '<div style="font-size:2rem;margin-bottom:.5rem;">🎉</div><strong>Danke für dein Feedback!</strong><br><span style="font-size:.82rem;color:#2E7D47;">Deine Rückmeldung wurde gespeichert.</span>';
+        }
+      })
+      .catch(function(err) {
+        if (btn) { btn.disabled = false; btn.textContent = '📤 Feedback absenden'; }
+        if (status) {
+          status.style.cssText = 'display:block;background:#FFEBEE;border-left:4px solid #C62828;border-radius:8px;padding:.75rem;font-size:.8rem;color:#8B1A1A;margin-top:.5rem;';
+          status.textContent = 'Fehler beim Senden: ' + err.message;
+        }
+      });
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = '📤 Feedback absenden'; }
+    if (status) {
+      status.style.cssText = 'display:block;color:#C62828;margin-top:.5rem;font-size:.8rem;';
+      status.textContent = 'Fehler: ' + e.message;
+    }
+  }
+}
+
+
+// Laden
+document.addEventListener('DOMContentLoaded', function() {
+  try {
+    var saved = JSON.parse(localStorage.getItem('kt_feedback_ingra') || '{}');
+    if(saved.name) document.getElementById('f-name').value = saved.name;
+    if(saved.eindruck) document.getElementById('f-eindruck').value = saved.eindruck;
+    if(saved.baro_anmerkung) document.getElementById('f-baro').value = saved.baro_anmerkung;
+    if(saved.praxis_situation) document.getElementById('f-praxis').value = saved.praxis_situation;
+    if(saved.genutzt) document.getElementById('f-genutzt').value = saved.genutzt;
+    if(saved.fehlt) document.getElementById('f-fehlt').value = saved.fehlt;
+    if(saved.stoert) document.getElementById('f-stoert').value = saved.stoert;
+    if(saved.fazit) document.getElementById('f-fazit').value = saved.fazit;
+    if(saved.prio) document.getElementById('f-prio').value = saved.prio;
+  } catch(e) {}
+});
+
+document.querySelectorAll('textarea, input').forEach(el => {
+  el.addEventListener('change', speichern);
+});
+</script>
+</body>
+</html>

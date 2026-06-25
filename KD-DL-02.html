@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KD-DL-02 · Joker-Gutscheine · KLARTEXT</title>
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root { --joker: #7b5ea7; }
+  .joker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+  .joker-ticket { border: 2px solid var(--joker); border-radius: 10px; padding: 10px; position: relative; background: #f9f7fc; overflow: hidden; }
+  .joker-ticket::before { content: 'JOKER'; position: absolute; top: 10px; right: -20px; background: var(--joker); color: white; transform: rotate(45deg); width: 80px; text-align: center; font-size: 0.6rem; font-weight: bold; }
+  .joker-title { color: var(--joker); font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
+  .joker-text { font-size: 0.75rem; line-height: 1.2; }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header no-print" style="background: var(--joker);">
+  <div class="kt-header-inner" style="display:flex;justify-content:space-between;align-items:center;">
+    <span style="color: white; font-weight: bold;">DOWNLOAD</span>
+    <span style="color: white; font-size: 0.8rem;">Kind-Formular KD-DL-02</span>
+    <a href="DASHBOARD.html" style="color:rgba(255,255,255,.8);font-size:.7rem;text-decoration:none;border:1px solid rgba(255,255,255,.4);padding:.2rem .6rem;border-radius:20px;">← Dashboard</a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<main>
+  <h2 style="text-align: center; font-size: 1rem; margin-top: 1rem;" class="no-print">Deine Joker zum Ausschneiden</h2>
+  <div class="joker-grid">
+    <div class="joker-ticket">
+      <div class="joker-title">5 Min. Auszeit</div>
+      <div class="joker-text">Einmal tief durchatmen oder kurz rausgehen.</div>
+    </div>
+    <div class="joker-ticket">
+      <div class="joker-title">Hilfe-Ruf</div>
+      <div class="joker-text">Ich brauche dich jetzt sofort an meinem Platz.</div>
+    </div>
+    <div class="joker-ticket">
+      <div class="joker-ticket-inner">
+        <div class="joker-title">Ruhe-Insel</div>
+        <div class="joker-text">Ich möchte 10 Minuten mit Kopfhörern arbeiten.</div>
+      </div>
+    </div>
+    <div class="joker-ticket">
+      <div class="joker-title">Wunsch-Joker</div>
+      <div class="joker-text">Hier darfst du dir selbst etwas aussuchen: ________</div>
+    </div>
+  </div>
+  <a href="javascript:window.print()" class="print-btn no-print" style="background: var(--joker);">🖨️ Gutscheine drucken</a>
+</main>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="KLARTEXT_Downloads.html#kd" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4FC3C7" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#4FC3C7"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

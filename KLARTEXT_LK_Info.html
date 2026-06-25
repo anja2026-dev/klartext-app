@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Informationen für Lehrkräfte</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--muted:#6A6878;
+  --lk:#1565C0;--lk-l:#EAF1F8;
+}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:680px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.hero{background:linear-gradient(135deg,var(--lk) 0%,#0D47A1 100%);border-radius:16px;padding:1.75rem 1.5rem;margin-bottom:1.5rem;text-align:center;}
+.hero img{width:56px;height:56px;object-fit:contain;margin-bottom:.75rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.35rem;color:#fff;margin-bottom:.4rem;}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.8);line-height:1.5;max-width:420px;margin:0 auto;}
+.lk-karte{display:flex;align-items:center;gap:.85rem;background:var(--surface);border-radius:12px;padding:1rem 1.2rem;margin-bottom:.65rem;text-decoration:none;color:inherit;box-shadow:0 1px 6px rgba(0,0,0,.05);transition:transform .15s;border-left:4px solid var(--lk);}
+.lk-karte:hover{transform:translateX(4px);}
+.lk-karte-nr{font-size:.65rem;font-weight:800;color:var(--lk);background:var(--lk-l);padding:.2rem .5rem;border-radius:10px;flex-shrink:0;min-width:32px;text-align:center;}
+.lk-karte-emoji{font-size:1.4rem;flex-shrink:0;}
+.lk-karte-text{flex:1;}
+.lk-karte-titel{font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:.95rem;}
+.lk-karte-sub{font-size:.74rem;color:var(--muted);margin-top:.15rem;}
+.lk-karte-pfeil{color:var(--lk);font-size:.9rem;flex-shrink:0;}
+.gruppe-label{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:1.25rem 0 .5rem .2rem;}
+.hinweis{background:var(--lk-l);border-left:3px solid var(--lk);border-radius:8px;padding:.75rem 1rem;font-size:.8rem;color:var(--navy);line-height:1.6;margin-bottom:1rem;}
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo">
+    <img src="brainy.png" alt="Brainy">
+    KLARTEXT <span>Für Lehrkräfte</span>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="hero">
+    <img src="brainy.png" alt="Brainy">
+    <div class="hero-titel">Für Lehrkräfte – zum Weitergeben</div>
+    <div class="hero-sub">16 Karten zur Zusammenarbeit mit INGRA im Schulalltag. Direkt teilbar, klar formuliert.</div>
+  </div>
+
+  <div class="hinweis">💡 Diese Karten können direkt an Lehrkräfte weitergegeben werden — als Link oder Screenshot. Kein Login nötig für den Lesebereich.</div>
+
+  <!-- GRUPPE 1: Zusammenarbeit -->
+  <div class="gruppe-label">Zusammenarbeit & Alltag</div>
+
+  <a class="lk-karte" href="LK-01.html">
+    <span class="lk-karte-nr">01</span>
+    <span class="lk-karte-emoji">🤝</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Zusammenarbeit mit INGRA</div>
+      <div class="lk-karte-sub">Rollen klären, gemeinsam wirken</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-02.html">
+    <span class="lk-karte-nr">02</span>
+    <span class="lk-karte-emoji">🌡️</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Das Barometer im Unterricht</div>
+      <div class="lk-karte-sub">Stimmungen erkennen, früh reagieren</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-03.html">
+    <span class="lk-karte-nr">03</span>
+    <span class="lk-karte-emoji">⚡</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Wenn das Kind eskaliert</div>
+      <div class="lk-karte-sub">Deeskalation im Unterricht</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-04.html">
+    <span class="lk-karte-nr">04</span>
+    <span class="lk-karte-emoji">👪</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Elterngespräche gemeinsam</div>
+      <div class="lk-karte-sub">LK & INGRA als Team in Gesprächen</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-05.html">
+    <span class="lk-karte-nr">05</span>
+    <span class="lk-karte-emoji">🏫</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Inklusion im Unterricht</div>
+      <div class="lk-karte-sub">Gemeinsam Teilhabe gestalten</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-06.html">
+    <span class="lk-karte-nr">06</span>
+    <span class="lk-karte-emoji">🗓️</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Schuljahresbeginn mit neuer INGRA</div>
+      <div class="lk-karte-sub">Eingewöhnung gemeinsam gestalten</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-07.html">
+    <span class="lk-karte-nr">07</span>
+    <span class="lk-karte-emoji">🔄</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Übergänge begleiten</div>
+      <div class="lk-karte-sub">Schulwechsel, neue Klasse, neue Situationen</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-08.html">
+    <span class="lk-karte-nr">08</span>
+    <span class="lk-karte-emoji">💬</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Wenn es zwischen uns nicht stimmt</div>
+      <div class="lk-karte-sub">Konflikte im Team konstruktiv lösen</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <!-- GRUPPE 2: Hintergrundwissen -->
+  <div class="gruppe-label">Hintergrundwissen</div>
+
+  <a class="lk-karte" href="LK-09.html">
+    <span class="lk-karte-nr">09</span>
+    <span class="lk-karte-emoji">🧠</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Häufige Diagnosen — was bedeutet das?</div>
+      <div class="lk-karte-sub">ADHS, Autismus, Angststörungen im Schulalltag</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-10.html">
+    <span class="lk-karte-nr">10</span>
+    <span class="lk-karte-emoji">⚖️</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Rechtliche Grundlagen in 5 Minuten</div>
+      <div class="lk-karte-sub">Was gilt, wer entscheidet, was ist Pflicht</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-11.html">
+    <span class="lk-karte-nr">11</span>
+    <span class="lk-karte-emoji">🛡️</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Sexuelle & häusliche Gewalt erkennen</div>
+      <div class="lk-karte-sub">Hinweise wahrnehmen, richtig handeln</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-12.html">
+    <span class="lk-karte-nr">12</span>
+    <span class="lk-karte-emoji">💙</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Trauma erkennen und damit umgehen</div>
+      <div class="lk-karte-sub">Traumasensibel im Schulalltag agieren</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <!-- GRUPPE 3: Sprache & Herkunft -->
+  <div class="gruppe-label">Sprache & Herkunft</div>
+
+  <a class="lk-karte" href="LK-13.html">
+    <span class="lk-karte-nr">13</span>
+    <span class="lk-karte-emoji">🗣️</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">DAZ & Einfache Sprache im Unterricht</div>
+      <div class="lk-karte-sub">Sprachsensibler Umgang mit DaZ-Kindern</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-14.html">
+    <span class="lk-karte-nr">14</span>
+    <span class="lk-karte-emoji">🌍</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Migration — Hintergründe verstehen & handeln</div>
+      <div class="lk-karte-sub">Kontext kennen, empathisch reagieren</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <a class="lk-karte" href="LK-15.html">
+    <span class="lk-karte-nr">15</span>
+    <span class="lk-karte-emoji">🤲</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Elterngespräche mit migrantischen Familien</div>
+      <div class="lk-karte-sub">Kultursensible Gesprächsführung</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+  <!-- GRUPPE 4: Methode -->
+  <div class="gruppe-label">Methode & Modell</div>
+
+  <a class="lk-karte" href="LK-16.html">
+    <span class="lk-karte-nr">16</span>
+    <span class="lk-karte-emoji">🔑</span>
+    <div class="lk-karte-text">
+      <div class="lk-karte-titel">Das kLAR-Modell verstehen</div>
+      <div class="lk-karte-sub">k=Kontakt · L=Leise · A=Anerkennung · R=Reizreduktion</div>
+    </div>
+    <span class="lk-karte-pfeil">›</span>
+  </a>
+
+</div>
+</body>
+</html>

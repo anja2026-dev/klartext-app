@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Himmel &amp; Hölle · KLARTEXT-Mentoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
+.nav{max-width:920px;margin:0 auto 10px;display:flex;gap:8px;}
+.nbtn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;background:white;border:1.5px solid #1a2e44;color:#1a2e44;text-decoration:none;}
+.dbtn{background:#c2185b;color:white;border:none;cursor:pointer;font-family:Arial;}
+@media print{.nav{display:none;}body{background:white;padding:0;}@page{margin:8mm;size:A4;}}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div class="nav">
+  <a href="KLARTEXT_Downloads.html#kd" class="nbtn">← Downloads</a>
+  <button onclick="window.print()" class="nbtn dbtn">🖨 Drucken / PDF</button>
+</div>
+<div style="max-width:920px;margin:0 auto;">
+
+  <!-- HEADER -->
+  <div style="background:#1a2e44;border-radius:12px;padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;gap:14px;">
+    <div style="width:36px;height:36px;border:2px solid #6EC6A0;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 6px;flex-shrink:0;">
+      <div style="font-family:Georgia,serif;font-size:13px;font-weight:900;color:#fff;line-height:1;">K</div>
+      <div style="display:flex;flex-direction:column;gap:2px;width:100%;"><span style="height:1.5px;border-radius:1px;background:#6EC6A0;"></span><span style="height:1.5px;border-radius:1px;background:#6EC6A0;"></span><span style="height:1.5px;border-radius:1px;background:#6EC6A0;"></span></div>
+    </div>
+    <img src="brainy.png" style="width:52px;height:52px;object-fit:contain;filter:none;" alt="">
+    <div>
+      <div style="font-size:20px;font-weight:900;color:white;">🎯 Himmel &amp; Hölle</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;">Blanko-Vorlage + Einmaleins-Beispiel + Bastelanleitung</div>
+    </div>
+    <div style="margin-left:auto;font-size:9px;color:rgba(255,255,255,0.4);text-align:right;">© 2026 Anja Jolk<br>KLARTEXT-Mentoring</div>
+  </div>
+
+  <div style="background:white;border-radius:10px;padding:18px;box-shadow:0 1px 8px rgba(0,0,0,0.08);">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start;">
+
+      <!-- BLANKO -->
+      <div>
+        <div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:10px;text-align:center;">📄 Blanko-Vorlage</div>
+        <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hintergrund-Dreiecke -->
+  <path d="M 0,0 L 140,0 L 70,70 Z" fill="#F0EDE8" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 0,0 L 0,140 L 70,70 Z" fill="#E8E5E0" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 140,0 L 280,0 L 210,70 Z" fill="#F0EDE8" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 280,0 L 280,140 L 210,70 Z" fill="#E8E5E0" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 0,140 L 70,210 L 0,280 Z" fill="#E8E5E0" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 0,280 L 140,280 L 70,210 Z" fill="#F0EDE8" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 280,140 L 210,210 L 280,280 Z" fill="#F0EDE8" stroke="#1a2e44" stroke-width="1.5"/>
+  <path d="M 140,280 L 280,280 L 210,210 Z" fill="#E8E5E0" stroke="#1a2e44" stroke-width="1.5"/>
+  <!-- Kreuz -->
+  <line x1="140" y1="0" x2="140" y2="280" stroke="#1a2e44" stroke-width="1.5"/>
+  <line x1="0" y1="140" x2="280" y2="140" stroke="#1a2e44" stroke-width="1.5"/>
+  <!-- Rahmen -->
+  <rect x="0" y="0" width="280" height="280" fill="none" stroke="#1a2e44" stroke-width="2"/>
+  <!-- Ecken-Kreise leer -->
+  <circle cx="70" cy="70" r="16" fill="white" stroke="#1a2e44" stroke-width="1.5"/>
+  <circle cx="210" cy="70" r="16" fill="white" stroke="#1a2e44" stroke-width="1.5"/>
+  <circle cx="70" cy="210" r="16" fill="white" stroke="#1a2e44" stroke-width="1.5"/>
+  <circle cx="210" cy="210" r="16" fill="white" stroke="#1a2e44" stroke-width="1.5"/>
+</svg>
+        <div style="font-size:10px;color:#888;text-align:center;margin-top:6px;">Eigene Inhalte eintragen</div>
+      </div>
+
+      <!-- EINMALEINS BEISPIEL -->
+      <div>
+        <div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:10px;text-align:center;">🔢 Beispiel: Kleines Einmaleins</div>
+        <svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Innen-Dreiecke mit Aufgaben -->
+  <path d="M 0,0 L 140,0 L 70,70 Z" fill="#1d9e7540" stroke="#1a2e44" stroke-width="1.5"/><text x="70" y="20" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">2 × 3</text><text x="70" y="34" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 6</text><path d="M 0,0 L 0,140 L 70,70 Z" fill="#185fa540" stroke="#1a2e44" stroke-width="1.5"/><text x="28" y="62" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">4 × 5</text><text x="28" y="76" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 20</text><path d="M 140,0 L 280,0 L 210,70 Z" fill="#c8860a40" stroke="#1a2e44" stroke-width="1.5"/><text x="210" y="20" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">3 × 7</text><text x="210" y="34" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 21</text><path d="M 280,0 L 280,140 L 210,70 Z" fill="#7b5ea740" stroke="#1a2e44" stroke-width="1.5"/><text x="252" y="62" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">6 × 8</text><text x="252" y="76" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 48</text><path d="M 0,140 L 70,210 L 0,280 Z" fill="#c8541a40" stroke="#1a2e44" stroke-width="1.5"/><text x="28" y="202" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">9 × 4</text><text x="28" y="216" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 36</text><path d="M 0,280 L 140,280 L 70,210 Z" fill="#c2185b40" stroke="#1a2e44" stroke-width="1.5"/><text x="70" y="244" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">7 × 6</text><text x="70" y="258" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 42</text><path d="M 280,140 L 210,210 L 280,280 Z" fill="#1d9e7540" stroke="#1a2e44" stroke-width="1.5"/><text x="252" y="202" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">8 × 3</text><text x="252" y="216" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 24</text><path d="M 140,280 L 280,280 L 210,210 Z" fill="#185fa540" stroke="#1a2e44" stroke-width="1.5"/><text x="210" y="244" text-anchor="middle" font-size="11" font-weight="800" fill="#1a2e44" font-family="Arial">5 × 9</text><text x="210" y="258" text-anchor="middle" font-size="10" fill="#666" font-family="Arial">= 45</text>
+  <!-- Mittelpunkt-Kreuz -->
+  <line x1="140" y1="0" x2="140" y2="280" stroke="#1a2e44" stroke-width="1.5"/>
+  <line x1="0" y1="140" x2="280" y2="140" stroke="#1a2e44" stroke-width="1.5"/>
+  <!-- Rahmen -->
+  <rect x="0" y="0" width="280" height="280" fill="none" stroke="#1a2e44" stroke-width="2"/>
+  <!-- Äußere Ecken farbig markieren (Außenansicht nach dem Falten) -->
+  <circle cx="70" cy="70" r="16" fill="#1d9e75" opacity="0.9"/>
+  <text x="70" y="75" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Arial">1</text>
+  <circle cx="210" cy="70" r="16" fill="#185fa5" opacity="0.9"/>
+  <text x="210" y="75" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Arial">2</text>
+  <circle cx="70" cy="210" r="16" fill="#c8860a" opacity="0.9"/>
+  <text x="70" y="215" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Arial">3</text>
+  <circle cx="210" cy="210" r="16" fill="#c2185b" opacity="0.9"/>
+  <text x="210" y="215" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Arial">4</text>
+</svg>
+        <div style="font-size:10px;color:#888;text-align:center;margin-top:6px;">Aufgabe + Lösung in jedem Dreieck</div>
+        <div style="background:#1d9e7510;border-radius:8px;padding:10px 12px;font-size:11px;color:#555;line-height:1.7;margin-top:8px;">
+  <strong style="color:#1a2e44;">So spielt man:</strong><br>
+  1. Eine Zahl (1–4) nennen → so oft auf- und zuklappen<br>
+  2. Nochmals eine Zahl nennen → Klappe öffnen<br>
+  3. Aufgabe vorlesen → Antwort raten → Klappe öffnen = Lösung!
+</div>
+      </div>
+
+      <!-- BASTELANLEITUNG -->
+      <div>
+        <div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:12px;">📋 Bastelanleitung</div>
+        <div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;">
+  <div style="width:26px;height:26px;border-radius:50%;background:#1d9e75;color:white;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+  <div><div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:2px;">Ausdrucken</div>
+  <div style="font-size:11px;color:#666;line-height:1.55;">A4-Seite ausdrucken. Das Quadrat ausschneiden.</div></div>
+</div><div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;">
+  <div style="width:26px;height:26px;border-radius:50%;background:#185fa5;color:white;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+  <div><div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:2px;">Falten — diagonal</div>
+  <div style="font-size:11px;color:#666;line-height:1.55;">Beide Diagonalen falten und wieder auffalten.</div></div>
+</div><div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;">
+  <div style="width:26px;height:26px;border-radius:50%;background:#c8860a;color:white;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+  <div><div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:2px;">Ecken zur Mitte</div>
+  <div style="font-size:11px;color:#666;line-height:1.55;">Alle 4 Ecken zur Mitte falten.</div></div>
+</div><div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;">
+  <div style="width:26px;height:26px;border-radius:50%;background:#7b5ea7;color:white;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+  <div><div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:2px;">Umdrehen & nochmal</div>
+  <div style="font-size:11px;color:#666;line-height:1.55;">Umdrehen — wieder alle 4 Ecken zur Mitte falten.</div></div>
+</div><div style="display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;">
+  <div style="width:26px;height:26px;border-radius:50%;background:#c8541a;color:white;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
+  <div><div style="font-size:12px;font-weight:800;color:#1a2e44;margin-bottom:2px;">Finger rein & spielen!</div>
+  <div style="font-size:11px;color:#666;line-height:1.55;">4 Finger unter die Klappen — aufklappen für die Aufgabe!</div></div>
+</div>
+        <div style="margin-top:14px;text-align:center;">
+          <img src="brainy.png" style="width:48px;height:48px;object-fit:contain;filter:hue-rotate(260deg) saturate(0.9);opacity:0.5;" alt="">
+        </div>
+        <div style="margin-top:8px;font-size:10px;color:#AAA;text-align:center;">
+          Auch möglich: Rechtschreibung, Wortschatz, Fragen zur Klasse…
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="KLARTEXT_Downloads.html#kd" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4FC3C7" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#4FC3C7"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body></html>

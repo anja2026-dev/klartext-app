@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Feedback</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+
+.shell{max-width:580px;margin:0 auto;padding:1.75rem 1rem 4rem;}
+.hero{background:var(--navy);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;color:#fff;margin-bottom:.35rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.5;}
+
+.fehler-box{background:#FFEBEE;border-left:4px solid #C62828;border-radius:8px;padding:.7rem 1rem;font-size:.8rem;color:#8B1A1A;margin-bottom:1rem;display:none;}
+
+.karte{background:var(--surface);border-radius:14px;padding:1.5rem;box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:1rem;}
+
+.feld{margin-bottom:1.4rem;}
+.feld-label{display:block;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
+.pflicht{color:#C62828;margin-left:.15rem;}
+.feld-hinweis{font-size:.7rem;color:var(--muted);margin-top:.25rem;}
+
+/* Sterne */
+.sterne{display:flex;gap:.5rem;margin-bottom:.3rem;}
+.stern{font-size:2rem;cursor:pointer;color:var(--border);transition:color .15s,transform .1s;background:none;border:none;padding:.1rem;line-height:1;}
+.stern.aktiv{color:var(--gold);}
+.stern:hover{transform:scale(1.1);}
+.sterne-hinweis{font-size:.72rem;color:var(--muted);}
+
+textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:.7rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;line-height:1.55;resize:vertical;min-height:100px;background:#FAFAFA;}
+textarea:focus{outline:none;border-color:var(--navy);}
+
+.btn-senden{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.9rem;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:background .15s;}
+.btn-senden:hover{background:#0F2230;}
+.btn-senden:disabled{background:var(--border);cursor:not-allowed;}
+
+/* Bestätigung */
+.bestaetigung{display:none;text-align:center;background:var(--surface);border-radius:16px;padding:2.5rem 1.75rem;box-shadow:0 1px 8px rgba(0,0,0,.05);}
+.best-icon{font-size:3rem;margin-bottom:.75rem;}
+.best-titel{font-family:"Playfair Display",serif;font-size:1.25rem;color:var(--navy);margin-bottom:.5rem;}
+.best-text{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:1.25rem;}
+.best-btn{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;border-radius:10px;padding:.65rem 1.5rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="feedback.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Feedback</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="hero">
+    <div class="hero-titel">Dein Feedback zählt</div>
+    <div class="hero-sub">Wie gefällt dir KLARTEXT? Deine Rückmeldung hilft, das System weiterzuentwickeln.</div>
+  </div>
+
+  <!-- FORMULAR -->
+  <div id="fb-formular">
+    <div class="fehler-box" id="fb-fehler"></div>
+
+    <div class="karte">
+      <div class="feld">
+        <span class="feld-label">Gesamtbewertung<span class="pflicht">*</span></span>
+        <div class="sterne" role="group" aria-label="Bewertung 1 bis 5 Sterne">
+          <button class="stern" id="stern-1" aria-label="1 Stern">★</button>
+          <button class="stern" id="stern-2" aria-label="2 Sterne">★</button>
+          <button class="stern" id="stern-3" aria-label="3 Sterne">★</button>
+          <button class="stern" id="stern-4" aria-label="4 Sterne">★</button>
+          <button class="stern" id="stern-5" aria-label="5 Sterne">★</button>
+        </div>
+        <div class="sterne-hinweis" id="sterne-hinweis">Noch keine Bewertung</div>
+      </div>
+
+      <div class="feld">
+        <label class="feld-label" for="fb-text">Was möchtest du mitteilen? <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
+        <textarea id="fb-text" placeholder="Was läuft gut? Was sollte besser werden? Was fehlt dir? …"></textarea>
+        <div class="feld-hinweis">Dein Feedback wird anonym gespeichert. Bitte keine personenbezogenen Daten anderer Personen eintragen.</div>
+      </div>
+
+      <button class="btn-senden" id="fb-btn">Feedback absenden</button>
+    </div>
+  </div>
+
+  <!-- BESTÄTIGUNG (nach erfolgreichem Absenden) -->
+  <div class="bestaetigung" id="fb-bestaetigung">
+    <div class="best-icon">🎉</div>
+    <div class="best-titel">Danke für dein Feedback!</div>
+    <div class="best-text">Deine Rückmeldung wurde gespeichert und hilft dabei, KLARTEXT für alle besser zu machen.</div>
+    <a class="best-btn" href="DASHBOARD.html">Zurück zum Dashboard</a>
+  </div>
+
+</div>
+</body>
+</html>

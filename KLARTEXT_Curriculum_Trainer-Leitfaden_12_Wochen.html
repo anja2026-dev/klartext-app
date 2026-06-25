@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Curriculum Trainer-Leitfaden · 15 Wochen</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',Arial,sans-serif;background:#F5F0E8;color:#2D2D2D;line-height:1.75;}
+.page{max-width:860px;margin:0 auto;background:white;}
+
+.kt-header{background:#1B3A4B;height:118px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid #6EC6A0;position:sticky;top:0;z-index:200;box-shadow:0 4px 18px rgba(0,0,0,.18);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:40px;height:40px;background:#1B3A4B;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 6px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.7rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.kt-logo-text .sub{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:2px;}
+.brainy-circle{width:68px;height:68px;background:#fff;border:3px solid #6EC6A0;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.brainy-circle img{width:82%;height:auto;}
+
+/* PHASE HEADER */
+.phase-header{padding:16px clamp(1rem,4vw,2rem);display:flex;align-items:center;gap:12px;}
+.phase-dot{width:10px;height:10px;border-radius:50%;}
+.phase-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#1B3A4B;}
+.phase-desc{font-size:11px;color:#7A7060;}
+
+/* PROGRESS */
+.progress-bar{background:#1B3A4B;padding:14px clamp(1rem,4vw,2rem);}
+.pb-title{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.pb-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;}
+.pb-cell{border-radius:4px;height:28px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(255,255,255,.4);cursor:pointer;transition:all .15s;}
+.pb-cell.done{background:#6EC6A0;color:#1B3A4B;}
+.pb-cell.active{background:rgba(255,255,255,.25);color:white;}
+
+/* WOCHE */
+.woche{border-bottom:2px solid #F0EDE8;}
+.woche-header{padding:16px clamp(1rem,4vw,2rem);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.woche-header:hover{background:#faf7f3;}
+.woche-nr-box{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:white;flex-shrink:0;}
+.woche-info{flex:1;margin-left:12px;}
+.woche-titel{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#1B3A4B;}
+.woche-sub{font-size:11px;color:#7A7060;margin-top:1px;}
+.woche-chevron{font-size:16px;color:#7A7060;transition:transform .2s;}
+.woche-chevron.open{transform:rotate(180deg);}
+.woche-body{display:none;padding:4px clamp(1rem,4vw,2rem) 24px;}
+.woche-body.open{display:block;}
+
+/* SEMINAR BLOCK */
+.seminar-block{background:#faf7f3;border-radius:10px;padding:16px 18px;margin-bottom:14px;border-left:3px solid #1B3A4B;}
+.sb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1B3A4B;margin-bottom:8px;}
+.sb-inhalt{font-size:12.5px;color:#4A4A4A;line-height:1.7;}
+.sb-inhalt li{margin-bottom:3px;}
+
+/* TRAINER TIPPS */
+.trainer-tipp{background:#fff;border-radius:9px;padding:13px 16px;margin-bottom:10px;border:1.5px solid #DDD8CE;}
+.tt-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#7A7060;margin-bottom:5px;}
+.tt-text{font-size:12.5px;color:#4A4A4A;line-height:1.65;}
+
+/* METHODEN */
+.methode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;}
+.methode-box{border-radius:8px;padding:11px 13px;border:1px solid #E0D8D0;}
+.mb-icon{font-size:16px;margin-bottom:4px;}
+.mb-name{font-size:12px;font-weight:700;color:#1B3A4B;margin-bottom:2px;}
+.mb-desc{font-size:11px;color:#7A7060;line-height:1.5;}
+
+/* AUFGABEN */
+.aufgabe-item{display:flex;gap:12px;align-items:flex-start;padding:11px 13px;background:white;border-radius:8px;border:1.5px solid #DDD8CE;cursor:pointer;margin-bottom:8px;transition:all .15s;}
+.aufgabe-item:hover{border-color:#1B3A4B;}
+.aufgabe-item.done{border-color:#6EC6A0;background:#f0faf5;}
+.aufgabe-check{width:20px;height:20px;border-radius:5px;border:2px solid #DDD8CE;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;}
+.aufgabe-item.done .aufgabe-check{border-color:#6EC6A0;background:#6EC6A0;}
+.aufgabe-check svg{display:none;}
+.aufgabe-item.done .aufgabe-check svg{display:block;}
+.aufgabe-titel{font-size:12.5px;font-weight:700;color:#1B3A4B;margin-bottom:1px;}
+.aufgabe-desc{font-size:11.5px;color:#7A7060;line-height:1.5;}
+
+/* ZEITPLAN */
+.zeitplan{border-radius:8px;overflow:hidden;margin:10px 0;border:1px solid #E0D8D0;}
+.zp-header{background:#1B3A4B;padding:8px 14px;font-size:10px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.4px;}
+.zp-row{display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid #F0EDE8;}
+.zp-row:last-child{border-bottom:none;}
+.zp-zeit{padding:9px 14px;font-size:11px;font-weight:700;color:#1B3A4B;background:#F5F0E8;border-right:1px solid #E0D8D0;}
+.zp-inhalt{padding:9px 14px;font-size:12px;color:#4A4A4A;line-height:1.5;}
+
+/* REFLEXION */
+textarea{font-family:'DM Sans',sans-serif;font-size:13px;color:#2D2D2D;background:white;border:1.5px solid #DDD8CE;border-radius:8px;padding:10px 13px;resize:vertical;width:100%;min-height:72px;outline:none;line-height:1.7;transition:border-color .15s;}
+textarea:focus{border-color:#1B3A4B;}
+.ref-label{font-size:11px;font-weight:700;color:#7A7060;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px;margin-top:14px;}
+.save-status{font-size:11px;color:#6EC6A0;margin-top:4px;height:16px;transition:opacity .3s;}
+
+/* WOCHE PROGRESS */
+.woche-progress{display:flex;align-items:center;gap:10px;padding:9px 13px;background:#F5F0E8;border-radius:8px;margin-top:12px;}
+.wp-label{font-size:11px;color:#7A7060;white-space:nowrap;}
+.wp-bar{flex:1;background:#DDD8CE;border-radius:4px;height:5px;}
+.wp-fill{height:5px;border-radius:4px;transition:width .4s;}
+.wp-pct{font-size:11px;font-weight:700;color:#1B3A4B;white-space:nowrap;}
+
+@media(max-width:600px){.methode-grid{grid-template-columns:1fr;}.pb-grid{grid-template-columns:repeat(6,1fr);}.kt-header{height:100px;}.brainy-circle{width:52px;height:52px;}}
+@media print{body{background:white;}.page{max-width:none;}.kt-header{position:relative;}.woche-body{display:block!important;}}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div class="page">
+
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+        <span class="sub">Mentoring-System</span>
+      </div>
+    </a>
+  </div>
+  <div class="brainy-circle"><img src="brainy.png" alt="Brainy"></div>
+</header>
+
+<div style="background:#1B3A4B;padding:40px clamp(1rem,4vw,2rem);display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+  <img src="brainy.png" style="width:90px;flex-shrink:0;" alt="Brainy">
+  <div>
+    <div style="font-size:10px;font-weight:700;color:#6EC6A0;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">KLARTEXT · Curriculum</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,2rem);font-weight:700;color:white;line-height:1.1;margin-bottom:8px;">Trainer-Leitfaden</div>
+    <div style="font-size:.8rem;color:rgba(255,255,255,.6);">15 Wochen · KLARTEXT-Seminare professionell vorbereiten und durchführen</div>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="pb-title">Fortschritt — 15 Wochen</div>
+  <div class="pb-grid" id="pb-grid"></div>
+</div>
+
+<div style="padding:24px clamp(1rem,4vw,2rem);">
+
+<!-- INTRO -->
+<div style="display:flex;gap:16px;padding:18px;background:#faf7f3;border-radius:10px;border-left:4px solid #1B3A4B;margin-bottom:24px;">
+  <img src="brainy.png" style="width:60px;flex-shrink:0;" alt="Brainy">
+  <div>
+    <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#1B3A4B;margin-bottom:6px;">Für wen ist dieser Leitfaden?</div>
+    <p style="font-size:12.5px;color:#4A4A4A;line-height:1.75;margin-bottom:6px;">Dieser Leitfaden richtet sich an Trainer:innen, Teamkoordinator:innen und Fachkräfte die KLARTEXT-Seminare für INGRAs, Schulbegleitungen oder pädagogische Fachkräfte durchführen. Er ist in 3 Phasen gegliedert: Vorbereitung (W1–3), Durchführung (W4–9) und Vertiefung (W10–12).</p>
+    <p style="font-size:12.5px;color:#4A4A4A;line-height:1.75;margin:0;">Voraussetzung: Eigene Kenntnis des KLARTEXT-Systems (INGRA-Lernplan abgeschlossen oder gleichwertige Erfahrung).</p>
+  </div>
+</div>
+
+<!-- PHASEN ÜBERSICHT -->
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:24px;">
+  <div style="background:#1B3A4B12;border-radius:9px;padding:13px 14px;border-left:3px solid #1B3A4B;">
+    <div style="font-size:10px;font-weight:700;color:#1B3A4B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Phase 1 · W1–3</div>
+    <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#1B3A4B;">Vorbereitung</div>
+    <div style="font-size:11px;color:#7A7060;margin-top:2px;">System vertiefen · Seminarkonzept · Materialien</div>
+  </div>
+  <div style="background:#2E5E8A12;border-radius:9px;padding:13px 14px;border-left:3px solid #2E5E8A;">
+    <div style="font-size:10px;font-weight:700;color:#2E5E8A;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Phase 2 · W4–9</div>
+    <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#1B3A4B;">Durchführung</div>
+    <div style="font-size:11px;color:#7A7060;margin-top:2px;">6 Seminarmodule · Methodik · Feedback</div>
+  </div>
+  <div style="background:#3B8A6812;border-radius:9px;padding:13px 14px;border-left:3px solid #3B8A68;">
+    <div style="font-size:10px;font-weight:700;color:#3B8A68;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Phase 3 · W10–12</div>
+    <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#1B3A4B;">Vertiefung</div>
+    <div style="font-size:11px;color:#7A7060;margin-top:2px;">Supervision · Qualitätssicherung · Weiterentwicklung</div>
+  </div>
+</div>
+
+<!-- ===== WOCHE 1 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t1')">
+  <div class="woche-nr-box" style="background:#1B3A4B;">1</div>
+  <div class="woche-info"><div class="woche-titel">System-Vertiefung I</div><div class="woche-sub">Phase 1 · M0–M2 als Trainer:in durchdringen</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t1-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t1-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t1-body">
+  <div class="seminar-block">
+    <div class="sb-label">Ziel dieser Woche</div>
+    <div class="sb-inhalt">Du kennst M0–M2 so tief dass du jede Frage von Teilnehmenden beantworten kannst — und weißt wo die häufigsten Verständnisschwierigkeiten liegen.</div>
+  </div>
+  <div class="aufgabe-item" id="t1-a1" onclick="toggleTask('t1-a1');updateW('t1')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Lernhandbuch M0–M2 als Trainer:in lesen</div><div class="aufgabe-desc">Nicht als Lernende — als Lehrende. Was ist komplex? Was braucht Erklärung? Was ist missverständlich?</div></div></div>
+  <div class="aufgabe-item" id="t1-a2" onclick="toggleTask('t1-a2');updateW('t1')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Häufige Fragen sammeln</div><div class="aufgabe-desc">5–10 Fragen notieren die Teilnehmende wahrscheinlich stellen werden. Antworten formulieren.</div></div></div>
+  <div class="aufgabe-item" id="t1-a3" onclick="toggleTask('t1-a3');updateW('t1')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">kLAR selbst trainieren</div><div class="aufgabe-desc">kLAR so verinnerlicht haben dass du es blind erklären und demonstrieren kannst — ohne Notizen.</div></div></div>
+  <div class="aufgabe-item" id="t1-a4" onclick="toggleTask('t1-a4');updateW('t1')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Stressmodi-Szenarien entwickeln</div><div class="aufgabe-desc">Je 1 konkretes Fallbeispiel für Fight, Flight, Freeze, Fawn — aus der Schulbegleitungs-Praxis.</div></div></div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t1-ref" placeholder="Was ist in M0–M2 am schwierigsten zu erklären? Wo brauche ich selbst noch mehr Tiefe?" oninput="saveR('t1-ref');updateW('t1')"></textarea>
+  <div class="save-status" id="save-t1-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 1:</div><div class="wp-bar"><div class="wp-fill" id="t1-fill" style="width:0%;background:#1B3A4B;"></div></div><div class="wp-pct" id="t1-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 2 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t2')">
+  <div class="woche-nr-box" style="background:#2E5E8A;">2</div>
+  <div class="woche-info"><div class="woche-titel">System-Vertiefung II</div><div class="woche-sub">Phase 1 · M3–M5 als Trainer:in durchdringen</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t2-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t2-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t2-body">
+  <div class="seminar-block">
+    <div class="sb-label">Ziel dieser Woche</div>
+    <div class="sb-inhalt">Du beherrschst den Werkzeugkasten so gut dass du alle 40 Werkzeuge kurz erklären kannst. Du kennst die häufigsten Dokumentationsfehler und kannst sie ansprechen.</div>
+  </div>
+  <div class="aufgabe-item" id="t2-a1" onclick="toggleTask('t2-a1');updateW('t2')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Werkzeugkasten M3 als Trainer:in lesen</div><div class="aufgabe-desc">Je Kategorie 2–3 Werkzeuge so tief kennen dass du sie demonstrieren kannst. INGRA-Barometer-Matrix auswendig.</div></div></div>
+  <div class="aufgabe-item" id="t2-a2" onclick="toggleTask('t2-a2');updateW('t2')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Atem-Anker demonstrieren können</div><div class="aufgabe-desc">Alle 5 Atemübungen selbst beherrschen und vor Gruppe durchführen können — inkl. Erklärung.</div></div></div>
+  <div class="aufgabe-item" id="t2-a3" onclick="toggleTask('t2-a3');updateW('t2')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Dokumentations-Do's & Don'ts verinnerlichen</div><div class="aufgabe-desc">10 typische Dokumentationsfehler aus der Praxis kennen und Gegenbeispiele formulieren.</div></div></div>
+  <div class="aufgabe-item" id="t2-a4" onclick="toggleTask('t2-a4');updateW('t2')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Muster-Tagesdoku erstellen</div><div class="aufgabe-desc">Eine vollständige Beispiel-Tagesdokumentation erstellen die im Seminar als Vorlage dient.</div></div></div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t2-ref" placeholder="Welches Werkzeug werde ich im Seminar am meisten demonstrieren? Was braucht die meiste Übungszeit?" oninput="saveR('t2-ref');updateW('t2')"></textarea>
+  <div class="save-status" id="save-t2-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 2:</div><div class="wp-bar"><div class="wp-fill" id="t2-fill" style="width:0%;background:#2E5E8A;"></div></div><div class="wp-pct" id="t2-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 3 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t3')">
+  <div class="woche-nr-box" style="background:#3B8A68;">3</div>
+  <div class="woche-info"><div class="woche-titel">Seminarkonzept & Materialien</div><div class="woche-sub">Phase 1 · Struktur planen · Unterlagen vorbereiten</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t3-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t3-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t3-body">
+  <div class="seminar-block">
+    <div class="sb-label">Seminarstruktur-Empfehlung</div>
+    <div class="sb-inhalt">
+      <ul>
+        <li><strong>Halbtag (4h):</strong> M0 + M1 — Einführung System & Rollenklarheit</li>
+        <li><strong>Ganztag (7h):</strong> M0–M3 — Fundament + Werkzeugkasten</li>
+        <li><strong>2 Tage:</strong> M0–M7 — Vollständiges Grundmodul</li>
+        <li><strong>3 Tage:</strong> Gesamtsystem inkl. Vertiefung, TK/LK-Karten und Praxistransfer</li>
+      </ul>
+    </div>
+  </div>
+  <div class="aufgabe-item" id="t3-a1" onclick="toggleTask('t3-a1');updateW('t3')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminarformat festlegen</div><div class="aufgabe-desc">Halbtag / Ganztag / 2 Tage / 3 Tage? Zielgruppe? Gruppengröße? Räumlichkeit klären.</div></div></div>
+  <div class="aufgabe-item" id="t3-a2" onclick="toggleTask('t3-a2');updateW('t3')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Zeitplan erstellen</div><div class="aufgabe-desc">Stunde-für-Stunde-Plan mit Pausen, Methoden und Materialien. Puffer einplanen.</div></div></div>
+  <div class="aufgabe-item" id="t3-a3" onclick="toggleTask('t3-a3');updateW('t3')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Teilnehmer-Unterlagen vorbereiten</div><div class="aufgabe-desc">Workbook drucken oder digital bereitstellen. Feuerwehrkarten. Barometer-Poster. Handouts.</div></div></div>
+  <div class="aufgabe-item" id="t3-a4" onclick="toggleTask('t3-a4');updateW('t3')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Fallbeispiel-Sammlung aufbauen</div><div class="aufgabe-desc">5–8 anonymisierte Fallbeispiele aus der Praxis für Gruppenübungen — inkl. Musterlösungen.</div></div></div>
+  <div class="aufgabe-item" id="t3-a5" onclick="toggleTask('t3-a5');updateW('t3')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Feedbackbogen erstellen</div><div class="aufgabe-desc">Evaluation für Teilnehmende: Was war wertvoll? Was fehlt? Was nimmst du mit?</div></div></div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t3-ref" placeholder="Was ist mein wichtigstes Seminar-Ziel? Was sollen Teilnehmende nach dem Seminar konkret anders machen?" oninput="saveR('t3-ref');updateW('t3')"></textarea>
+  <div class="save-status" id="save-t3-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 3:</div><div class="wp-bar"><div class="wp-fill" id="t3-fill" style="width:0%;background:#3B8A68;"></div></div><div class="wp-pct" id="t3-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 4 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t4')">
+  <div class="woche-nr-box" style="background:#B07D2A;">4</div>
+  <div class="woche-info"><div class="woche-titel">Seminar 1: Fundament</div><div class="woche-sub">Phase 2 · M0 + M1 · Systemelemente & Rollenklarheit</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t4-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t4-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t4-body">
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Seminar 1 (Halbtagsformat · 4 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Ankommen & Kennenlernen</strong> — Barometer-Einstieg: Wie geht es dir heute? Erwartungen sammeln (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:30</div><div class="zp-inhalt"><strong>Die 9 Systemelemente</strong> — Impuls-Vortrag mit Brainy. Gruppenarbeit: Welches Element ist für mich neu? (45 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:15</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:30</div><div class="zp-inhalt"><strong>Barometer live</strong> — Demo und Übung mit der Gruppe. Frühwarnsignale sammeln. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:00</div><div class="zp-inhalt"><strong>kLAR in der Praxis</strong> — Rollenspiel in Dreiergruppen. Fallbeispiel bearbeiten. (45 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:45</div><div class="zp-inhalt"><strong>Recht & Rolle</strong> — M1 Kernpunkte: Auftrag, Nicht-Aufgaben, Meldeweg. Fragen beantworten. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">12:15</div><div class="zp-inhalt"><strong>Transfer & Abschluss</strong> — Was nehme ich mit? Eine Sache die ich morgen anders mache. Feedback-Runde. (15 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Das Barometer-Einstiegsritual zu Beginn jedes Seminartags einsetzen — es zeigt sofort wer das System versteht und gibt dir als Trainer Orientierung über den Gruppenstand.</div>
+  </div>
+  <div class="methode-grid">
+    <div class="methode-box"><div class="mb-icon">🎭</div><div class="mb-name">Rollenspiel</div><div class="mb-desc">kLAR in Dreiergruppen: Trainer:in, INGRA, Kind. Wechseln.</div></div>
+    <div class="methode-box"><div class="mb-icon">🃏</div><div class="mb-name">Kartenmethode</div><div class="mb-desc">Systemelemente auf Karten — sortieren, clustern, diskutieren.</div></div>
+    <div class="methode-box"><div class="mb-icon">💬</div><div class="mb-name">Fishbowl</div><div class="mb-desc">Schwierige Rollensituationen in der Mitte besprechen, andere beobachten.</div></div>
+    <div class="methode-box"><div class="mb-icon">✏️</div><div class="mb-name">Workbook-Einstieg</div><div class="mb-desc">M0 Aufgabe 1 + 2 gemeinsam beginnen, zuhause fertig stellen.</div></div>
+  </div>
+  <div class="aufgabe-item" id="t4-a1" onclick="toggleTask('t4-a1');updateW('t4')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar 1 durchgeführt</div><div class="aufgabe-desc">Zeitplan eingehalten, alle Kernthemen behandelt, Fragen beantwortet.</div></div></div>
+  <div class="aufgabe-item" id="t4-a2" onclick="toggleTask('t4-a2');updateW('t4')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Feedbackbögen ausgewertet</div><div class="aufgabe-desc">Was hat gut funktioniert? Was anpassen für nächstes Mal?</div></div></div>
+  <div class="aufgabe-item" id="t4-a3" onclick="toggleTask('t4-a3');updateW('t4')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Nachbereitung dokumentiert</div><div class="aufgabe-desc">Seminarnotizen: Was haben Teilnehmende mitgenommen? Offene Fragen für nächste Session.</div></div></div>
+  <div class="ref-label">Seminar-Reflexion</div>
+  <textarea id="t4-ref" placeholder="Was lief gut? Was würde ich beim nächsten Mal anders machen? Welche Fragen haben mich überrascht?" oninput="saveR('t4-ref');updateW('t4')"></textarea>
+  <div class="save-status" id="save-t4-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 4:</div><div class="wp-bar"><div class="wp-fill" id="t4-fill" style="width:0%;background:#B07D2A;"></div></div><div class="wp-pct" id="t4-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 5 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t5')">
+  <div class="woche-nr-box" style="background:#3B8A68;">5</div>
+  <div class="woche-info"><div class="woche-titel">Seminar 2: Kinder verstehen</div><div class="woche-sub">Phase 2 · M2 · Neurobiologie · Stressmodi · Beobachtung</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t5-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t5-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t5-body">
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Seminar 2 (Halbtagsformat · 4 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Barometer-Einstieg</strong> + Rückblick W1. Was habe ich in der Zwischenzeit beobachtet? (20 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:20</div><div class="zp-inhalt"><strong>Neurobiologie kurz & klar</strong> — Amygdala, Stressreaktion, Lernen unmöglich bei Rot. Kein Fachjargon. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:50</div><div class="zp-inhalt"><strong>4 Stressmodi live</strong> — Je Modus: Fallbeispiel, Erkennungszeichen, INGRA-Reaktion. Kleingruppenarbeit. (50 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:40</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:55</div><div class="zp-inhalt"><strong>Frühwarnsignale kennen</strong> — Jede:r erstellt ein persönliches Frühwarnsignal-Profil für ihr Kind. (35 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:30</div><div class="zp-inhalt"><strong>Co-Regulation üben</strong> — Partnerübung: einer reguliert sich, der andere beobachtet was passiert. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">12:00</div><div class="zp-inhalt"><strong>Transfer</strong> — Eine konkrete Beobachtung die ich diese Woche machen werde. (30 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Die Neurobiologie nicht zu akademisch präsentieren — Teilnehmende wollen wissen was es für ihren Alltag bedeutet. „Das Gehirn im Stress kann nicht lernen" ist die wichtigste Botschaft. Alles andere ist Vertiefung.</div>
+  </div>
+  <div class="aufgabe-item" id="t5-a1" onclick="toggleTask('t5-a1');updateW('t5')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar 2 durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t5-a2" onclick="toggleTask('t5-a2');updateW('t5')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Fallbeispiele angepasst</div><div class="aufgabe-desc">Auf Basis von Seminar 1-Feedback die Fallbeispiele für Seminar 2 angepasst.</div></div></div>
+  <div class="aufgabe-item" id="t5-a3" onclick="toggleTask('t5-a3');updateW('t5')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Feedback ausgewertet und dokumentiert</div></div></div>
+  <div class="ref-label">Seminar-Reflexion</div>
+  <textarea id="t5-ref" placeholder="Wie hat die Gruppe die Neurobiologie aufgenommen? Was hat Fragen ausgelöst? Was vertiefen?" oninput="saveR('t5-ref');updateW('t5')"></textarea>
+  <div class="save-status" id="save-t5-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 5:</div><div class="wp-bar"><div class="wp-fill" id="t5-fill" style="width:0%;background:#3B8A68;"></div></div><div class="wp-pct" id="t5-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 6 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t6')">
+  <div class="woche-nr-box" style="background:#B07D2A;">6</div>
+  <div class="woche-info"><div class="woche-titel">Seminar 3: Werkzeugkasten</div><div class="woche-sub">Phase 2 · M3 · 40 Werkzeuge erlebbar machen</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t6-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t6-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t6-body">
+  <div class="seminar-block">
+    <div class="sb-label">Besonderheit dieses Seminars</div>
+    <div class="sb-inhalt">Seminar 3 ist das praxisintensivste — wenig Theorie, viel Erleben. Teilnehmende sollen mindestens 8 Werkzeuge selbst ausprobiert haben bevor sie das Seminar verlassen.</div>
+  </div>
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Seminar 3 (Ganztag · 6 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Barometer + Überblick 40 Werkzeuge</strong> — Kategorien vorstellen, jede:r 3 Favoriten wählen. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:30</div><div class="zp-inhalt"><strong>Regulation-Station</strong> — Alle 5 Atemübungen + 3 Körperwerkzeuge gemeinsam ausprobieren. (45 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:15</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:30</div><div class="zp-inhalt"><strong>Rituale entwickeln</strong> — Jede:r entwickelt ein Ankomm-Ritual für ihr Kind. Präsentation in Kleingruppen. (45 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:15</div><div class="zp-inhalt"><strong>Fokus-Werkzeuge</strong> — Finger-Anker, Lernbrille, Pomodoro live erleben. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:45</div><div class="zp-inhalt"><strong>Mittagspause</strong> (45 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">12:30</div><div class="zp-inhalt"><strong>Kommunikations-Werkzeuge</strong> — Geheimzeichen, Ich-Botschaften, Reparatur-Gespräch. Rollenspiele. (60 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">13:30</div><div class="zp-inhalt"><strong>Mein persönlicher Werkzeugkoffer</strong> — Jede:r wählt 5 Kern-Werkzeuge + Begründung. Austausch. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">14:00</div><div class="zp-inhalt"><strong>Transfer & Workbook</strong> — M3 Aufgaben 1–4 beginnen. Was setze ich diese Woche um? (30 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Körperwerkzeuge immer selbst mitmachen — nicht nur demonstrieren. Wenn Trainer:innen die Übungen ernst nehmen, tun es Teilnehmende auch. Lachen ist erlaubt und gewünscht.</div>
+  </div>
+  <div class="aufgabe-item" id="t6-a1" onclick="toggleTask('t6-a1');updateW('t6')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar 3 durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t6-a2" onclick="toggleTask('t6-a2');updateW('t6')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Alle Teilnehmenden haben mind. 8 Werkzeuge ausprobiert</div></div></div>
+  <div class="aufgabe-item" id="t6-a3" onclick="toggleTask('t6-a3');updateW('t6')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar-Dokumentation erstellt</div></div></div>
+  <div class="ref-label">Seminar-Reflexion</div>
+  <textarea id="t6-ref" placeholder="Welche Werkzeuge haben die Gruppe am meisten begeistert? Was hat Widerstand erzeugt?" oninput="saveR('t6-ref');updateW('t6')"></textarea>
+  <div class="save-status" id="save-t6-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 6:</div><div class="wp-bar"><div class="wp-fill" id="t6-fill" style="width:0%;background:#B07D2A;"></div></div><div class="wp-pct" id="t6-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 7 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t7')">
+  <div class="woche-nr-box" style="background:#5D3A7A;">7</div>
+  <div class="woche-info"><div class="woche-titel">Seminar 4: Kommunikation & Dokumentation</div><div class="woche-sub">Phase 2 · M4 + M5 · Sprechen · Schreiben · Schützen</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t7-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t7-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t7-body">
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Seminar 4 (Halbtagsformat · 4 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Einstieg</strong> — Eine schwierige Kommunikationssituation aus der Praxis sammeln. Anonymisiert auf Karten. (20 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:20</div><div class="zp-inhalt"><strong>Ich-Botschaften</strong> — Theorie (5 Min.) + Übung: Du-Botschaften umformulieren in Dreiergruppen. (40 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:00</div><div class="zp-inhalt"><strong>Deeskalierende Sprache</strong> — Was eskaliert, was deeskaliert. Live-Demo + Gruppenübung. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:30</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:45</div><div class="zp-inhalt"><strong>Dokumentation</strong> — Beobachtung vs. Interpretation: Übung mit echten Beispielen. Do's & Don'ts. (35 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:20</div><div class="zp-inhalt"><strong>SMART-Ziele</strong> — Gemeinsam ein SMART-Ziel für ein Fallbeispiel-Kind entwickeln. (25 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:45</div><div class="zp-inhalt"><strong>Transfer & Abschluss</strong> (15 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Dokumentations-Übung mit echten (anonymisierten) Texten aus der Praxis macht den Unterschied — abstrakte Beispiele werden schnell als „praxisfern" abgetan. Echte Fehler aus dem Alltag resonieren.</div>
+  </div>
+  <div class="aufgabe-item" id="t7-a1" onclick="toggleTask('t7-a1');updateW('t7')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar 4 durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t7-a2" onclick="toggleTask('t7-a2');updateW('t7')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Echtdokumentationen anonymisiert für nächste Seminarrunde gesammelt</div></div></div>
+  <div class="ref-label">Seminar-Reflexion</div>
+  <textarea id="t7-ref" placeholder="Wo gab es Widerstand bei Kommunikations-Übungen? Was hat bei Dokumentation besonders gezündet?" oninput="saveR('t7-ref');updateW('t7')"></textarea>
+  <div class="save-status" id="save-t7-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 7:</div><div class="wp-bar"><div class="wp-fill" id="t7-fill" style="width:0%;background:#5D3A7A;"></div></div><div class="wp-pct" id="t7-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 8 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t8')">
+  <div class="woche-nr-box" style="background:#D81B60;">8</div>
+  <div class="woche-info"><div class="woche-titel">Seminar 5: Krisen & Praxissituationen</div><div class="woche-sub">Phase 2 · M6 + M7 · Mobbing · Was tue ich wenn …?</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t8-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t8-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t8-body">
+  <div class="seminar-block">
+    <div class="sb-label">Besonderheit dieses Seminars</div>
+    <div class="sb-inhalt">Kein Humor in diesem Seminar — die Themen Mobbing und Krisen verdienen volle Aufmerksamkeit. Rollenspiele hier besonders sorgfältig debriefen — Situationen können emotional werden.</div>
+  </div>
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Seminar 5 (Halbtagsformat · 4 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Einstieg</strong> — Schwerste Situation der letzten Wochen auf Karten. Anonym. Trainer liest vor. (20 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:20</div><div class="zp-inhalt"><strong>Mobbing erkennen</strong> — 3 Merkmale. Konflikt vs. Mobbing: Fallbeispiele zuordnen. (40 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:00</div><div class="zp-inhalt"><strong>Handlungsablauf Mobbing</strong> — Schritt für Schritt. Was tue ich — was tue ich nicht. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:30</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:45</div><div class="zp-inhalt"><strong>Praxissituationen M7</strong> — 3 Szenarien in Kleingruppen: Wutanfall, Rückzug, Verweigerung. Drehbuch entwickeln. (50 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:35</div><div class="zp-inhalt"><strong>Feuerwehrkarten</strong> — Alle 7 FK gemeinsam durchgehen. Wann welche? (20 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:55</div><div class="zp-inhalt"><strong>Transfer</strong> — Persönliches Drehbuch für schwerste Situation. (25 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Nach intensiven Rollenspiel-Szenen immer aus der Rolle herausnehmen: „Verlasse jetzt die Rolle — du bist wieder [Name]." Dann Debrief: Wie war das? Was hast du gespürt? Erst dann Lernpunkte.</div>
+  </div>
+  <div class="aufgabe-item" id="t8-a1" onclick="toggleTask('t8-a1');updateW('t8')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar 5 durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t8-a2" onclick="toggleTask('t8-a2');updateW('t8')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Emotionale Sicherheit im Seminarraum gewährleistet</div><div class="aufgabe-desc">Alle Rollenspiele debrieft, niemand mit schwierigen Gefühlen allein gelassen.</div></div></div>
+  <div class="ref-label">Seminar-Reflexion</div>
+  <textarea id="t8-ref" placeholder="Wie war die emotionale Energie im Raum? Wie habe ich damit umgegangen? Was werde ich beim nächsten Mal anders machen?" oninput="saveR('t8-ref');updateW('t8')"></textarea>
+  <div class="save-status" id="save-t8-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 8:</div><div class="wp-bar"><div class="wp-fill" id="t8-fill" style="width:0%;background:#D81B60;"></div></div><div class="wp-pct" id="t8-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 9 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t9')">
+  <div class="woche-nr-box" style="background:#6B3F6B;">9</div>
+  <div class="woche-info"><div class="woche-titel">Seminar 6: Selbstfürsorge & Humor</div><div class="woche-sub">Phase 2 · M8 + MH · Für sich selbst · Leichtigkeit</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t9-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t9-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t9-body">
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Seminar 6 (Halbtagsformat · 4 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Barometer für mich selbst</strong> — Wie geht es mir wirklich? Ehrliche Runde im Kreis. (20 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:20</div><div class="zp-inhalt"><strong>Selbstfürsorge ist Pflicht</strong> — Compassion Fatigue kennenlernen. Eigene Stresssignale identifizieren. (35 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:55</div><div class="zp-inhalt"><strong>Sofort-Strategien erleben</strong> — Alle 5 Strategien gemeinsam ausprobieren. (25 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:20</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:35</div><div class="zp-inhalt"><strong>Humor-Barometer-Matrix</strong> — MH-07 gemeinsam durchgehen. Wann passt Humor? Fallbeispiele. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:05</div><div class="zp-inhalt"><strong>Mikro-Interventionen entwickeln</strong> — Jede:r entwickelt 2 eigene Humor-Interventionen. Vorstellen. (35 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:40</div><div class="zp-inhalt"><strong>Mein Selbstfürsorge-Plan</strong> — 3 konkrete Maßnahmen. Gegenseitig vorstellen und bekräftigen. (30 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Dieses Seminar ist bewusst leichter — nach 5 intensiven Einheiten braucht die Gruppe Luft. Humor darf sein und soll sein — aber immer als echtes Angebot, nicht als Pflicht. Wer nicht lachen mag, darf ernst bleiben.</div>
+  </div>
+  <div class="aufgabe-item" id="t9-a1" onclick="toggleTask('t9-a1');updateW('t9')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminar 6 durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t9-a2" onclick="toggleTask('t9-a2');updateW('t9')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Alle Teilnehmenden haben ihren Selbstfürsorge-Plan</div></div></div>
+  <div class="aufgabe-item" id="t9-a3" onclick="toggleTask('t9-a3');updateW('t9')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Gesamtfeedback Phase 2 eingeholt</div></div></div>
+  <div class="ref-label">Seminar-Reflexion</div>
+  <textarea id="t9-ref" placeholder="Wie war die Energie nach 6 Seminaren? Was hat die Gruppe als besonders wertvoll erlebt?" oninput="saveR('t9-ref');updateW('t9')"></textarea>
+  <div class="save-status" id="save-t9-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 9:</div><div class="wp-bar"><div class="wp-fill" id="t9-fill" style="width:0%;background:#6B3F6B;"></div></div><div class="wp-pct" id="t9-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 10 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t10')">
+  <div class="woche-nr-box" style="background:#1B3A4B;">10</div>
+  <div class="woche-info"><div class="woche-titel">Supervision & Praxisbegleitung</div><div class="woche-sub">Phase 3 · Transferunterstützung · Kollegiale Beratung</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t10-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t10-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t10-body">
+  <div class="seminar-block">
+    <div class="sb-label">Supervisions-Format (2 Stunden)</div>
+    <div class="sb-inhalt">
+      <ul>
+        <li>Teilnehmende berichten: Was habe ich umgesetzt? Was hat funktioniert?</li>
+        <li>Kollegiale Fallberatung: Ein Fall wird eingebracht und gemeinsam bearbeitet</li>
+        <li>Trainer:in als Moderator:in — nicht als Allwissende:r</li>
+        <li>Workbook-Stand: Wo stehen alle? Was ist noch offen?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="aufgabe-item" id="t10-a1" onclick="toggleTask('t10-a1');updateW('t10')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Supervisionssitzung durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t10-a2" onclick="toggleTask('t10-a2');updateW('t10')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Workbook-Stand erhoben</div><div class="aufgabe-desc">Wer hat welche Module abgeschlossen? Wer braucht Nachbegleitung?</div></div></div>
+  <div class="aufgabe-item" id="t10-a3" onclick="toggleTask('t10-a3');updateW('t10')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Individuelle Entwicklungsziele vereinbart</div><div class="aufgabe-desc">Was arbeitet jede:r bis Woche 12 konkret weiter?</div></div></div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t10-ref" placeholder="Was hat sich in der Praxis der Teilnehmenden verändert? Wo sehe ich noch Lücken?" oninput="saveR('t10-ref');updateW('t10')"></textarea>
+  <div class="save-status" id="save-t10-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 10:</div><div class="wp-bar"><div class="wp-fill" id="t10-fill" style="width:0%;background:#1B3A4B;"></div></div><div class="wp-pct" id="t10-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 11 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t11')">
+  <div class="woche-nr-box" style="background:#2E5E8A;">11</div>
+  <div class="woche-info"><div class="woche-titel">Qualitätssicherung & Weiterentwicklung</div><div class="woche-sub">Phase 3 · Evaluation · Seminarqualität sichern</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t11-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t11-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t11-body">
+  <div class="seminar-block">
+    <div class="sb-label">Qualitätssicherungs-Raster</div>
+    <div class="sb-inhalt">Gute Trainer:innen evaluieren sich systematisch. Diese 4 Fragen nach jedem Seminar:
+      <ul style="margin-top:6px;">
+        <li>Was haben Teilnehmende konkret gelernt — messbar?</li>
+        <li>Was hat mich selbst überrascht oder herausgefordert?</li>
+        <li>Was würde ich mit einer anderen Gruppe anders machen?</li>
+        <li>Welches Feedback war das wichtigste?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="aufgabe-item" id="t11-a1" onclick="toggleTask('t11-a1');updateW('t11')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Alle 6 Seminar-Reflexionen ausgewertet</div><div class="aufgabe-desc">Muster identifizieren: Was läuft immer gut? Was immer schwierig?</div></div></div>
+  <div class="aufgabe-item" id="t11-a2" onclick="toggleTask('t11-a2');updateW('t11')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Seminarkonzept überarbeitet</div><div class="aufgabe-desc">Auf Basis von Feedback und eigenen Reflexionen: Was wird beim nächsten Durchlauf geändert?</div></div></div>
+  <div class="aufgabe-item" id="t11-a3" onclick="toggleTask('t11-a3');updateW('t11')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Neue Fallbeispiele gesammelt</div><div class="aufgabe-desc">Aus diesem Durchlauf: 3–5 neue anonymisierte Fallbeispiele für nächste Runde.</div></div></div>
+  <div class="aufgabe-item" id="t11-a4" onclick="toggleTask('t11-a4');updateW('t11')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Eigene Trainer-Entwicklungsziele gesetzt</div><div class="aufgabe-desc">Was will ich als Trainer:in in den nächsten 6 Monaten verbessern?</div></div></div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t11-ref" placeholder="Was hat mich als Trainer:in in diesem Durchlauf am meisten entwickelt? Was ist meine nächste Wachstumsbaustelle?" oninput="saveR('t11-ref');updateW('t11')"></textarea>
+  <div class="save-status" id="save-t11-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 11:</div><div class="wp-bar"><div class="wp-fill" id="t11-fill" style="width:0%;background:#2E5E8A;"></div></div><div class="wp-pct" id="t11-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 12 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t12')">
+  <div class="woche-nr-box" style="background:#6EC6A0;color:#1B3A4B;">12</div>
+  <div class="woche-info"><div class="woche-titel">Abschluss & Zertifizierung</div><div class="woche-sub">Phase 3 · Abschlusstag · Zertifikat · Ausblick</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t12-pct" style="font-size:11px;font-weight:700;color:#7A7060;">0%</div><div class="woche-chevron" id="t12-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t12-body">
+  <div class="zeitplan">
+    <div class="zp-header">Zeitplan Abschlusstag (3 Stunden)</div>
+    <div class="zp-row"><div class="zp-zeit">09:00</div><div class="zp-inhalt"><strong>Rückblick 15 Wochen</strong> — Was hat sich verändert? Jede:r benennt 3 konkrete Veränderungen in der Praxis. (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">09:30</div><div class="zp-inhalt"><strong>Workbook-Abschluss</strong> — Offene Punkte besprechen. Gegenseitig vorstellen was man gelernt hat. (45 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:15</div><div class="zp-inhalt"><strong>Pause</strong> (15 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">10:30</div><div class="zp-inhalt"><strong>Ausblick & nächste Schritte</strong> — Was kommt nach diesem Kurs? Wie weiter lernen? (30 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:00</div><div class="zp-inhalt"><strong>Zertifikatsübergabe</strong> — Feierlicher Abschluss. Jede:r erhält ihr Zertifikat. Applaus. (20 Min.)</div></div>
+    <div class="zp-row"><div class="zp-zeit">11:20</div><div class="zp-inhalt"><strong>Abschlussrunde</strong> — Ein Satz: „Das nehme ich mit." (20 Min.)</div></div>
+  </div>
+  <div class="trainer-tipp">
+    <div class="tt-label">Trainer-Tipp</div>
+    <div class="tt-text">Den Abschlusstag bewusst feierlich gestalten — nicht als weiteres Lern-Seminar. Die Teilnehmenden haben 15 Wochen hart gearbeitet. Das verdient Würdigung. Brainy gehört auf den Tisch. Für die Dokumentation: Drucke die ausgefüllten Wochen mit Cmd+P.</div>
+  </div>
+  <div class="aufgabe-item" id="t12-a1" onclick="toggleTask('t12-a1');updateW('t12')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Abschlusstag durchgeführt</div></div></div>
+  <div class="aufgabe-item" id="t12-a2" onclick="toggleTask('t12-a2');updateW('t12')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Zertifikate übergeben</div></div></div>
+  <div class="aufgabe-item" id="t12-a3" onclick="toggleTask('t12-a3');updateW('t12')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Abschlussevaluation ausgewertet</div></div></div>
+  <div class="aufgabe-item" id="t12-a4" onclick="toggleTask('t12-a4');updateW('t12')"><div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="aufgabe-titel">Trainer-Selbstevaluation abgeschlossen</div><div class="aufgabe-desc">15 Wochen Reflexion zusammengefasst. Was nehme ich als Trainer:in mit?</div></div></div>
+  <div class="ref-label">Trainer-Abschlussreflexion</div>
+  <textarea id="t12-ref" style="min-height:110px;" placeholder="Was hat mich dieser Durchlauf als Trainer:in gelehrt? Was mache ich beim nächsten Mal anders? Was war der wertvollste Moment?" oninput="saveR('t12-ref');updateW('t12')"></textarea>
+  <div class="save-status" id="save-t12-ref"></div>
+  <div class="woche-progress"><div class="wp-label">Woche 12:</div><div class="wp-bar"><div class="wp-fill" id="t12-fill" style="width:0%;background:#6EC6A0;"></div></div><div class="wp-pct" id="t12-wpct">0%</div></div>
+</div>
+</div>
+
+<!-- ===== WOCHE 13 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t13')">
+  <div class="woche-nr-box" style="background:#6B3F6B;">13</div>
+  <div class="woche-info"><div class="woche-titel">Bindungstrauma &amp; Pflegekinder</div><div class="woche-sub">Phase 3 · M2-31 · M2-32 · Vertiefung</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t13-pct" style="font-size:11px;color:#7A7060;">0%</div><div class="woche-chevron" id="t13-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t13-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Trainer:innen können Bindungstrauma und Pflegekind-Dynamiken erkennen und INGRAs sicher begleiten.</div>
+  <div class="aufgabe" id="t13-a1" onclick="toggleTask('t13-a1');updateW('t13')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Theorie Bindungstrauma vermittelt</div><div class="aufgabe-desc">M2-31 als Grundlage — was INGRAs wissen müssen und was nicht ihre Aufgabe ist</div></div>
+  </div>
+  <div class="aufgabe" id="t13-a2" onclick="toggleTask('t13-a2');updateW('t13')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Fallbeispiele besprochen</div><div class="aufgabe-desc">Typische Situationen mit Pflegekindern — wie reagiert INGRA, wie nicht?</div></div>
+  </div>
+  <div class="aufgabe" id="t13-a3" onclick="toggleTask('t13-a3');updateW('t13')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Grenzen der Rolle geklärt</div><div class="aufgabe-desc">Was tut INGRA, was tut der Fachdienst? Klare Abgrenzung geübt</div></div>
+  </div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t13-ref" class="ref-area" placeholder="Was lief gut? Was würde ich nächstes Mal anders machen?" oninput="saveR('t13-ref');updateW('t13')"></textarea>
+  <button class="save-btn" onclick="saveR('t13-ref')">Speichern <span id="save-t13-ref" style="opacity:0;transition:opacity .5s;"></span></button>
+  <div class="wp-row"><div class="wp-label">Fortschritt Woche 13</div><div class="wp-bar"><div class="wp-fill" id="t13-fill" style="width:0%;background:#6B3F6B;"></div></div><div class="wp-pct" id="t13-wpct">0%</div></div>
+</div>
+</div>
+<!-- ===== WOCHE 14 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t14')">
+  <div class="woche-nr-box" style="background:#C62828;">14</div>
+  <div class="woche-info"><div class="woche-titel">Sexueller Missbrauch — Sicher lehren, sicher begleiten</div><div class="woche-sub">M2-35 · M2-36 · M2-37 · Kinderschutz · § 8a</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t14-pct" style="font-size:11px;color:#7A7060;">0%</div><div class="woche-chevron" id="t14-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t14-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Trainer:innen führen das Thema professionell und ohne Dramatisierung ein. INGRAs kennen Warnsignale, die Meldekette und ihren eigenen Schutz.</div>
+  <div class="aufgabe" id="t14-a1" onclick="toggleTask('t14-a1');updateW('t14')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Einstieg: Haltung vor Wissen</div><div class="aufgabe-desc">Warum dieses Thema INGRA betrifft — und warum die Rollenklarheit (wahrnehmen, melden, nicht ermitteln) schützend ist für alle</div></div>
+  </div>
+  <div class="aufgabe" id="t14-a2" onclick="toggleTask('t14-a2');updateW('t14')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-35 Warnsignale erarbeiten</div><div class="aufgabe-desc">Kleingruppe: Welche Signale habt ihr schon beobachtet? Wie dokumentiert man ohne zu interpretieren?</div></div>
+  </div>
+  <div class="aufgabe" id="t14-a3" onclick="toggleTask('t14-a3');updateW('t14')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-36 Meldekette durchspielen</div><div class="aufgabe-desc">Rollenspiel: Kind vertraut sich an — was sage ich, was schreibe ich, wen rufe ich wann an?</div></div>
+  </div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t14-ref" class="ref-area" placeholder="Was lief gut? Was würde ich nächstes Mal anders machen?" oninput="saveR('t14-ref');updateW('t14')"></textarea>
+  <button class="save-btn" onclick="saveR('t14-ref')">Speichern <span id="save-t14-ref" style="opacity:0;transition:opacity .5s;"></span></button>
+  <div class="wp-row"><div class="wp-label">Fortschritt Woche 14</div><div class="wp-bar"><div class="wp-fill" id="t14-fill" style="width:0%;background:#C62828;"></div></div><div class="wp-pct" id="t14-wpct">0%</div></div>
+</div>
+</div>
+<!-- ===== WOCHE 15 ===== -->
+<div class="woche">
+<div class="woche-header" onclick="toggleW('t15')">
+  <div class="woche-nr-box" style="background:#B07D2A;">15</div>
+  <div class="woche-info"><div class="woche-titel">Sehbehinderung, Gehörlosigkeit &amp; Kursabschluss</div><div class="woche-sub">M2-38 · M2-39 · M2-40 · M2-41 · Sinnesbehinderungen · Abschluss</div></div>
+  <div style="display:flex;align-items:center;gap:8px;"><div id="t15-pct" style="font-size:11px;color:#7A7060;">0%</div><div class="woche-chevron" id="t15-chev">▼</div></div>
+</div>
+<div class="woche-body" id="t15-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Trainer:innen schließen die neuen Sinnesbehinderungs-Karten praxisnah ab. INGRAs erleben Kommunikationsbarrieren am eigenen Körper und entwickeln konkrete Handlungsstrategien.</div>
+  <div class="aufgabe" id="t15-a1" onclick="toggleTask('t15-a1');updateW('t15')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-38/39 Sehbehinderung — Erfahrungsübung</div><div class="aufgabe-desc">Paarübung: Eine Person schließt die Augen, die andere beschreibt den Weg durchs Zimmer — räumlich, ohne zeigen. Dann Reflexion: Was war schwer?</div></div>
+  </div>
+  <div class="aufgabe" id="t15-a2" onclick="toggleTask('t15-a2');updateW('t15')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-40/41 Gehörlosigkeit — Kommunikation ohne Stimme</div><div class="aufgabe-desc">Übung: 5 Minuten kommunizieren ohne Sprechen. Dann: Was habe ich gebraucht? Was hat geholfen? Was war frustrierend?</div></div>
+  </div>
+  <div class="aufgabe" id="t15-a3" onclick="toggleTask('t15-a3');updateW('t15')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Kursabschluss — Reflexionsrunde &amp; Ausblick</div><div class="aufgabe-desc">Jede:r INGRA: Was nehme ich aus dem Kurs mit? Was ist meine größte Erkenntnis? Zertifikat, Dank, nächste Schritte</div></div>
+  </div>
+  <div class="ref-label">Trainer-Reflexion</div>
+  <textarea id="t15-ref" class="ref-area" placeholder="Was lief gut? Was würde ich nächstes Mal anders machen?" oninput="saveR('t15-ref');updateW('t15')"></textarea>
+  <button class="save-btn" onclick="saveR('t15-ref')">Speichern <span id="save-t15-ref" style="opacity:0;transition:opacity .5s;"></span></button>
+  <div class="wp-row"><div class="wp-label">Fortschritt Woche 15</div><div class="wp-bar"><div class="wp-fill" id="t15-fill" style="width:0%;background:#B07D2A;"></div></div><div class="wp-pct" id="t15-wpct">0%</div></div>
+</div>
+</div>
+
+15 Wochen — ein Kurs. Eine Gemeinschaft.</div>
+    <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:6px;">Gute Trainer:innen sind zuerst gute Lernende. Dieser Leitfaden wächst mit dir — je mehr Erfahrung du sammelst, desto besser werden deine Seminare.</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin:0;">Klar. Warm. Menschlich. — Das gilt für INGRAs. Und für Trainer:innen.</p>
+    <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:12px;">© 2026 Anja Jolk | KLARTEXT-Mentoring · Alle Rechte vorbehalten</div>
+  </div>
+</div>
+
+</div><!-- /padding -->
+</div><!-- /page -->
+
+<div style="background:#1B3A4B;border-radius:12px;padding:28px;margin:28px 0;display:flex;align-items:center;gap:20px;">
+  <img src="brainy.png" style="width:80px;flex-shrink:0;" alt="Brainy">
+  <div>
+    <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:white;margin-bottom:8px;">15 Wochen — ein Kurs. Eine Gemeinschaft.</div>
+    <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:6px;">Gute Trainer:innen sind zuerst gute Lernende. Dieser Leitfaden wächst mit dir — je mehr Erfahrung du sammelst, desto besser werden deine Seminare.</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin:0;">Klar. Warm. Menschlich. — Das gilt für INGRAs. Und für Trainer:innen.</p>
+    <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:12px;">© 2026 Anja Jolk | KLARTEXT-Mentoring · Alle Rechte vorbehalten</div>
+  </div>
+</div>
+
+</div><!-- /padding -->
+</div><!-- /page -->
+
+<script>
+
+// In-Memory Store (file://-kompatibel)
+const wbStore = {
+  _d: {},
+  set: function(k,v){ this._d[k]=v; },
+  get: function(k){ return this._d.hasOwnProperty(k)?this._d[k]:null; }
+};
+
+const WEEKS = ['t1','t2','t3','t4','t5','t6','t7','t8','t9','t10','t11','t12','t13','t14','t15','t13','t14','t15'];
+const TASKS={t1:4,t2:4,t3:5,t4:3,t5:3,t6:3,t7:2,t8:2,t9:3,t10:3,t11:4,t12:4,t13:3,t14:3,t15:3};
+const COLORS=['#1B3A4B','#2E5E8A','#3B8A68','#B07D2A','#3B8A68','#B07D2A','#5D3A7A','#D81B60','#6B3F6B','#1B3A4B','#2E5E8A','#6EC6A0','#6B3F6B','#C62828','#B07D2A'];
+
+function toggleW(id){
+  document.getElementById(id+'-body').classList.toggle('open');
+  document.getElementById(id+'-chev').classList.toggle('open');
+}
+function toggleTask(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('done');
+  wbStore.set('tr_'+id, el.classList.contains('done')?'1':'0');
+}
+function saveR(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  try{
+    wbStore.set('tr_'+id, el.value);
+    const s=document.getElementById('save-'+id);
+    if(s){s.textContent='✓ gespeichert';s.style.opacity='1';setTimeout(()=>s.style.opacity='0',2000);}
+  }catch(e){}
+}
+function updateW(wid){
+  const n=TASKS[wid]||4;
+  let done=0;
+  for(let i=1;i<=n;i++){const t=document.getElementById(wid+'-a'+i);if(t&&t.classList.contains('done'))done++;}
+  const ref=document.getElementById(wid+'-ref');
+  if(ref&&ref.value.trim().length>10)done+=0.5;
+  const total=n+0.5;
+  const pct=Math.round((done/total)*100);
+  const idx=WEEKS.indexOf(wid);
+  const col=COLORS[idx]||'#1B3A4B';
+  const fill=document.getElementById(wid+'-fill');
+  const pctEl=document.getElementById(wid+'-pct');
+  const wpct=document.getElementById(wid+'-wpct');
+  if(fill){fill.style.width=pct+'%';fill.style.background=col;}
+  if(pctEl)pctEl.textContent=pct+'%';
+  if(wpct)wpct.textContent=pct+'%';
+  updateGrid();
+}
+function updateGrid(){
+  const grid=document.getElementById('pb-grid');
+  if(!grid)return;
+  grid.innerHTML='';
+  WEEKS.forEach((wid,idx)=>{
+    const n=TASKS[wid]||4;
+    let done=0;
+    for(let i=1;i<=n;i++){const t=document.getElementById(wid+'-a'+i);if(t&&t.classList.contains('done'))done++;}
+    const pct=Math.round((done/n)*100);
+    const col=COLORS[idx];
+    grid.innerHTML+=`<div class="pb-cell ${pct===100?'done':pct>0?'active':''}" onclick="toggleW('${wid}')" style="${pct===100?'background:'+col+';color:white':''}">W${idx+1}</div>`;
+  });
+}
+function loadAll(){
+  WEEKS.forEach(wid=>{
+    const n=TASKS[wid]||4;
+    for(let i=1;i<=n;i++){
+      const v=wbStore.get('tr_'+wid+'-a'+i);if(v==='1'){const el=document.getElementById(wid+'-a'+i);if(el)el.classList.add('done');}
+    }
+    const v2=wbStore.get('tr_'+wid+'-ref');if(v2){const el=document.getElementById(wid+'-ref');if(el)el.value=v2;}
+    updateW(wid);
+  });
+}
+document.addEventListener('DOMContentLoaded',loadAll);
+</script>
+
+<!-- FABs -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html#search" title="Suche" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+
+</body>
+</html>

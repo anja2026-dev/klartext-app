@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – TK · Teamkoordination · Karte 07 · Kultursensible Begleitung organisieren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root {
+    --m3:        #4A148C;
+    --m3-dark:   #2A0A5A;
+    --m3-light:  #F3E5FF;
+    --m3-border: #CE93D8;
+  }
+  .icon-card { background: #F3E5FF; }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurück">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT – Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT &middot; TK · Teamkoordination</div>
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">TK · 07</div>
+        <div class="karte-nr">Karte 07</div>
+        <h1 class="karte-titel" id="karte-titel">Kultursensible Begleitung organisieren</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">🌍</div>
+    </div>
+    <div class="karte-lead">Wenn 75 % der Familien Migrationsgeschichte haben, ist das kein Randthema — es ist strukturelle Realität. Kultursensible Begleitung braucht organisatorische Voraussetzungen.</div>
+    <div class="karte-body">
+      <div class="ab">
+        <div class="ab-titel">Strukturelle Voraussetzungen schaffen</div>
+        <ul>
+          <li>Bedarfserhebung: Welche Sprachen kommen in meinem Bestand vor? (Jährlich aktualisieren)</li>
+          <li>Sprachkompetenzen der INGRA dokumentieren und bei Matching berücksichtigen</li>
+          <li>Kultureller Hintergrund kann Match-Kriterium sein — nur wenn Eltern das wünschen</li>
+          <li>Interkulturelle Kompetenz als Pflichtthema in der INGRA-Einarbeitung</li>
+        </ul>
+      </div>
+      <div class="ab">
+        <div class="ab-titel">Dolmetscherversorgung organisieren</div>
+        <ul>
+          <li>Dolmetscherpool aufbauen: Migrantenorganisationen, Sprachmittlerdienste, Ehrenamtliche</li>
+          <li>Kommunale Sprachmittlerdienste — oft kostenlos oder günstig</li>
+          <li>Klare Regel für alle INGRA: Kinder und Geschwister übersetzen nicht — schriftlich festhalten</li>
+          <li>Digitale Tools (DeepL, Bildkarten) als Überbrückung bereitstellen — kein Ersatz für Profis</li>
+        </ul>
+      </div>
+      <div class="ab">
+        <div class="ab-titel">Was INGRA darf — und nicht darf</div>
+        <div class="zwei-sp" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+          <div style="background:#E8F5E9;border-radius:8px;padding:9px 11px;">
+            <div style="font-size:.65rem;font-weight:700;color:#2e7d32;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">INGRA darf</div>
+            <ul style="list-style:none;font-size:.82rem;">
+              <li>✓ Informationen einfachsprachig weitergeben</li>
+              <li>✓ Dolmetscher anfragen und begleiten</li>
+              <li>✓ Kulturellen Kontext in Berichte einbringen</li>
+              <li>✓ Eltern an Beratungsstellen verweisen</li>
+            </ul>
+          </div>
+          <div style="background:#FDEAEA;border-radius:8px;padding:9px 11px;">
+            <div style="font-size:.65rem;font-weight:700;color:#C62828;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">INGRA darf nicht</div>
+            <ul style="list-style:none;font-size:.82rem;">
+              <li>✗ Als alleinige Dolmetscherin auftreten</li>
+              <li>✗ Rechtliche Beratung geben</li>
+              <li>✗ Aufenthaltsstatus weitergeben</li>
+              <li>✗ Behördengänge eigenständig begleiten</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="box box-gruen" role="note">
+        <div class="box-label">Qualitätsmerkmal</div>
+        Kultursensible Begleitung ist kein Goodwill — es ist ein messbares Qualitätsmerkmal gegenüber Kostenträgern und ein Argument bei Ausschreibungen.
+      </div>
+
+      <div class="ab"><div class="ab-titel">Schwierige Eltern — unabhängig vom kulturellen Hintergrund</div>
+      <p style="font-size:.85rem;color:var(--kt-muted);line-height:1.6;margin-bottom:.5rem;">Nicht jede schwierige Elternbeziehung hat kulturelle Ursachen. Häufige Muster und wie TK damit umgeht:</p>
+      <ul>
+      <li><b>Überfürsorgliche Eltern:</b> Wollen jeden Schritt kontrollieren — klare, aber wertschätzende Grenzen setzen, regelmäßige statt spontane Updates anbieten</li>
+      <li><b>Distanzierte Eltern:</b> Wenig Engagement, schwer erreichbar — Kontaktversuche dokumentieren, Gründe behutsam erfragen statt zu werten</li>
+      <li><b>Misstrauische Eltern:</b> Zweifeln an der Notwendigkeit der Begleitung — Transparenz über Beobachtungen schaffen, Erfolge sichtbar machen</li>
+      <li><b>Konfliktbereite Eltern:</b> Beschweren sich häufig, eskalieren schnell — sachlich bleiben, Gespräche protokollieren, TK früh einbinden</li></ul></div>
+
+      <div class="box box-rot" role="note"><div class="box-label">TK-Tipp</div>Bei wiederkehrenden Spannungen mit Eltern: nicht die INGRA allein lassen. Ein gemeinsames Gespräch mit TK signalisiert Rückhalt und entlastet.</div>
+
+      <div class="brainy-block">
+        <img src="brainy-tk.png" alt="Brainy">
+        <div class="brainy-block-text">
+          <strong>Brainy erinnert:</strong>
+          Mecheril (2004): Träger können durch kultursensible Begleitung aktiv Benachteiligung verringern. Das ist Haltung und Struktur — nicht Einzelinitiative.
+        </div>
+      </div>
+    </div>
+    <nav class="karte-nav"><a class="nav-prev" href="TK-06.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 06</a><span class="spacer"></span><a class="nav-next" href="TK-08_Rollenklaerung.html">08 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
+    <div class="karte-footer">
+      <span class="footer-links">TK · Teamkoordination · Karte 07 · → M4-16 · INGRA-Perspektive</span>
+      <span class="footer-nr">07 / 07</span>
+    </div>
+  </article>
+</main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);" aria-label="Suche">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);" aria-label="Dashboard">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<footer role="contentinfo">
+  <strong>KLARTEXT</strong> &middot; TK · Teamkoordination &middot; Karte 07 &middot; Kultursensible Begleitung organisieren
+  <span class="footer-copy">Alle Rechte vorbehalten &middot; KLARTEXT-Mentoring-System</span>
+</footer>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

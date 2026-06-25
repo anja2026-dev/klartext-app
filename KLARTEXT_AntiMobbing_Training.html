@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Anti-Mobbing-Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --am:#C62828;--am-d:#8B0000;--am-l:#FFEBEE;--am-b:#FFCDD2;
+  --gs:#1565C0;--gs-l:#E3F2FD;
+  --wf:#2E7D32;--wf-l:#E8F5E9;
+  --m:#1B3A4B;--accent:#6EC6A0;--paper:#FDF5F5;
+  --ink:#2D2D2D;--muted:#7A6060;--surface:#fff;--border:#EDD8D8;--r:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+
+.kt-header{background:var(--am-d);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--am-b);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border:2px solid var(--am-b);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.6rem;color:var(--am-b);letter-spacing:.14em;display:block;}
+.dash-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border:1.5px solid var(--am-b);border-radius:20px;color:var(--am-b);font-size:.7rem;font-weight:700;text-decoration:none;}
+
+.kurs-nav{background:var(--surface);border-bottom:1.5px solid var(--border);padding:.75rem clamp(1rem,4vw,2rem);position:sticky;top:72px;z-index:90;overflow-x:auto;}
+.kurs-nav-inner{display:flex;gap:.4rem;max-width:960px;margin:0 auto;min-width:max-content;}
+.nav-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .7rem;border-radius:20px;font-size:.72rem;font-weight:600;color:var(--muted);text-decoration:none;border:1.5px solid var(--border);transition:all .15s;white-space:nowrap;cursor:pointer;}
+.nav-chip:hover,.nav-chip.aktiv{background:var(--am);border-color:var(--am);color:#fff;}
+
+.hero{background:linear-gradient(135deg,var(--am-d) 0%,#C62828 100%);padding:clamp(2.5rem,6vw,4rem) clamp(1rem,4vw,2rem);text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(255,255,255,.06) 0%,transparent 60%);}
+.hero-icon{font-size:2.5rem;margin-bottom:.75rem;position:relative;}
+.hero-label{font-size:.68rem;font-weight:700;color:var(--am-b);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;position:relative;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:.6rem;position:relative;}
+.hero-sub{font-size:.92rem;color:rgba(255,255,255,.7);max-width:580px;margin:0 auto 1.5rem;position:relative;}
+.alter-switch{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.25rem;position:relative;}
+.alter-btn{padding:.4rem 1.2rem;border-radius:20px;font-size:.8rem;font-weight:700;border:2px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;background:transparent;}
+.alter-btn.aktiv{background:#fff;color:var(--am-d);border-color:#fff;}
+.hero-pills{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;position:relative;}
+.hero-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:.25rem .75rem;font-size:.72rem;color:rgba(255,255,255,.8);}
+
+.shell{max-width:880px;margin:0 auto;padding:2.5rem clamp(.75rem,3vw,2rem) 5rem;}
+
+/* MODUL */
+.modul{margin-bottom:2.5rem;scroll-margin-top:145px;}
+.modul-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2.5px solid var(--am);}
+.modul-nr{width:42px;height:42px;border-radius:50%;background:var(--am);color:#fff;font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.modul-emoji{font-size:1.4rem;}
+.modul-meta{flex:1;}
+.modul-titel{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:var(--am-d);}
+.modul-sub{font-size:.75rem;color:var(--muted);margin-top:2px;}
+
+/* ALTERS-TABS */
+.alter-tabs-wrap{display:flex;gap:.4rem;margin-bottom:1rem;}
+.alter-tab{padding:.28rem .7rem;border-radius:20px;font-size:.72rem;font-weight:700;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;}
+.alter-tab.gs.aktiv{background:var(--gs);border-color:var(--gs);color:#fff;}
+.alter-tab.wf.aktiv{background:var(--wf);border-color:var(--wf);color:#fff;}
+.alter-content{display:none;}
+.alter-content.aktiv{display:block;}
+
+/* CONTENT */
+.content-karte{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.3rem 1.4rem;margin-bottom:.85rem;box-shadow:0 2px 10px rgba(198,40,40,.06);}
+.content-karte h3{font-family:"Playfair Display",serif;font-size:.98rem;font-weight:700;color:var(--am-d);margin-bottom:.6rem;}
+.content-karte p{font-size:.9rem;color:var(--ink);line-height:1.82;margin-bottom:.6rem;}
+.content-karte p:last-child{margin-bottom:0;}
+.content-karte ul{padding-left:1.2rem;margin-bottom:.6rem;}
+.content-karte li{font-size:.9rem;color:var(--ink);line-height:1.8;margin-bottom:.2rem;}
+.content-karte strong{color:var(--am-d);font-weight:500;}
+
+/* GS/WF BADGE */
+.gs-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;background:var(--gs-l);color:var(--gs);border:1px solid #BBDEFB;margin-bottom:.5rem;}
+.wf-badge{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;background:var(--wf-l);color:var(--wf);border:1px solid #C8E6C9;margin-bottom:.5rem;}
+
+/* ÜBUNGEN */
+.uebung{background:linear-gradient(135deg,var(--am-l) 0%,#FFF0F0 100%);border:1.5px solid var(--am-b);border-radius:var(--r);padding:1.1rem 1.3rem;margin-bottom:.85rem;}
+.uebung-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;}
+.uebung-icon{font-size:1.2rem;}
+.uebung-titel{font-family:"Playfair Display",serif;font-size:.92rem;font-weight:700;color:var(--am-d);}
+.uebung-meta{font-size:.65rem;color:var(--muted);margin-left:auto;}
+.uebung p{font-size:.88rem;color:var(--ink);line-height:1.78;}
+.uebung ul{padding-left:1.1rem;margin-top:.4rem;}
+.uebung li{font-size:.88rem;color:var(--ink);line-height:1.75;margin-bottom:.15rem;}
+
+.tipp-box{background:#E8F5EE;border:1.5px solid #A8DFC0;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:.85rem;display:flex;gap:.75rem;}
+.tipp-icon{font-size:1.2rem;flex-shrink:0;}
+.tipp-text{font-size:.87rem;color:#1A4A2E;line-height:1.75;}
+.tipp-text strong{color:#1A4A2E;}
+
+.wichtig-box{background:#FFF8E1;border:1.5px solid #FFD54F;border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:.85rem;display:flex;gap:.75rem;}
+.wichtig-icon{font-size:1.2rem;flex-shrink:0;}
+.wichtig-text{font-size:.87rem;color:#5D4037;line-height:1.75;}
+
+.karte-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:.6rem;font-size:.78rem;font-weight:600;color:var(--am);text-decoration:none;border:1.5px solid var(--am);border-radius:20px;padding:.28rem .75rem;transition:all .15s;}
+.karte-link:hover{background:var(--am);color:#fff;}
+
+/* MATERIAL-LINKS */
+.material-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.65rem;margin-top:1rem;}
+.material-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;text-decoration:none;color:var(--ink);transition:all .15s;display:flex;align-items:center;gap:.65rem;}
+.material-item:hover{border-color:var(--am);box-shadow:0 2px 12px rgba(198,40,40,.12);}
+.material-icon{font-size:1.3rem;flex-shrink:0;}
+.material-name{font-size:.82rem;font-weight:600;color:var(--am-d);}
+.material-typ{font-size:.65rem;color:var(--muted);}
+
+@media(max-width:600px){.alter-switch{flex-direction:column;align-items:center;}}
+@media print{.kt-header,.kurs-nav,div[style*="position:fixed"]{display:none!important;}body{background:white;}}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<header class="kt-header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT</div><span class="logo-sub">Anti-Mobbing-Training</span></div>
+  </a>
+      <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">👩 Über mich</a>
+    <a href="KLARTEXT_Glossar.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">🔤 Glossar</a>
+    <a class="dash-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<nav class="kurs-nav">
+  <div class="kurs-nav-inner">
+    <span class="nav-chip" onclick="scrollTo('m1')">1 · Was ist Mobbing?</span>
+    <span class="nav-chip" onclick="scrollTo('m2')">2 · Ich bin nicht allein</span>
+    <span class="nav-chip" onclick="scrollTo('m3')">3 · Was ich tun kann</span>
+    <span class="nav-chip" onclick="scrollTo('m4')">4 · Digitale Welt</span>
+    <span class="nav-chip" onclick="scrollTo('m5')">5 · Unsere Klasse</span>
+    <span class="nav-chip" onclick="scrollTo('mat')">📥 Materialien</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-icon">🛡️</div>
+  <div class="hero-label">KLARTEXT Mentoring-System</div>
+  <h1 class="hero-titel">Anti-Mobbing-Training</h1>
+  <p class="hero-sub">Ein strukturiertes Training für Schulklassen — altersgerecht, aktivierend, präventiv. Wähle die Altersstufe um die passenden Übungen zu sehen.</p>
+  <div class="alter-switch">
+    <button class="alter-btn aktiv" id="gs-btn" onclick="setAlter('gs')">🏫 Grundschule (6–10 Jahre)</button>
+    <button class="alter-btn" id="wf-btn" onclick="setAlter('wf')">📚 Weiterführend (10–14 Jahre)</button>
+  </div>
+  <div class="hero-pills">
+    <div class="hero-pill">5 Module</div>
+    <div class="hero-pill">Zweistufig</div>
+    <div class="hero-pill">Druckmaterialien</div>
+    <div class="hero-pill">Praxisübungen</div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- MODUL 1: WAS IST MOBBING?              -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="modul" id="m1">
+    <div class="modul-header">
+      <div class="modul-nr">1</div>
+      <div class="modul-emoji">🔍</div>
+      <div class="modul-meta">
+        <div class="modul-titel">Was ist Mobbing?</div>
+        <div class="modul-sub">Definition · Abgrenzung · Erkennen</div>
+      </div>
+    </div>
+
+    <div class="alter-tabs-wrap">
+      <div class="alter-tab gs aktiv" onclick="tabSwitch(this,'m1')">🏫 Grundschule</div>
+      <div class="alter-tab wf" onclick="tabSwitch(this,'m1')">📚 Weiterführend</div>
+    </div>
+
+    <div class="alter-content gs aktiv" id="m1-gs">
+      <div class="gs-badge">Grundschule · 6–10 Jahre</div>
+      <div class="content-karte">
+        <h3>Was ist Mobbing? — Erklärung für Grundschulkinder</h3>
+        <p>Manchmal streiten sich Kinder. Das ist normal. Aber Mobbing ist etwas anderes: Es passiert <strong>immer wieder</strong>, immer <strong>dasselbe Kind</strong> wird geärgert — und es kann sich <strong>nicht allein dagegen wehren</strong>.</p>
+        <p>Drei Unterschiede die helfen zu verstehen:</p>
+        <ul>
+          <li><strong>Streit:</strong> Einmal, beide sind beteiligt, es hört auf</li>
+          <li><strong>Necken:</strong> Manchmal, aber es ist nicht gemein gemeint</li>
+          <li><strong>Mobbing:</strong> Immer wieder, immer dasselbe Kind, absichtlich gemein</li>
+        </ul>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">✏️</div>
+          <div class="uebung-titel">Übung: Streit oder Mobbing?</div>
+          <div class="uebung-meta">⏱ 10 Min · Gruppe</div>
+        </div>
+        <p>Karten mit Situationen vorlesen. Kinder sortieren: "Das ist ein Streit" oder "Das könnte Mobbing sein".</p>
+        <ul>
+          <li>Max und Tom streiten um einen Ball → Streit</li>
+          <li>Lena wird jeden Tag von derselben Gruppe ausgelacht → Mobbing</li>
+          <li>Anna und Sophie sind sauer aufeinander → Streit</li>
+          <li>Ben wird jeden Morgen aus der Gruppe rausgedrängt → Mobbing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alter-content wf" id="m1-wf">
+      <div class="wf-badge">Weiterführend · 10–14 Jahre</div>
+      <div class="content-karte">
+        <h3>Mobbing verstehen — die drei Kriterien</h3>
+        <p>Mobbing ist definiert durch drei Merkmale (Olweus, 1993): <strong>Wiederholung</strong> (kein einmaliges Ereignis), <strong>Machtungleichgewicht</strong> (die betroffene Person kann sich nicht schützen), <strong>Absicht</strong> (es ist gewollt).</p>
+        <p>Mobbing ist ein <strong>Gruppenprozess</strong> — nicht nur zwischen zwei Personen. Es gibt Täter, Mitläufer, Zuschauer, Außenstehende und Verteidiger. Die Dynamik der Gruppe entscheidet ob Mobbing anhält oder stoppt.</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">🎭</div>
+          <div class="uebung-titel">Übung: Die Rollen im Mobbing</div>
+          <div class="uebung-meta">⏱ 20 Min · Kleingruppen</div>
+        </div>
+        <p>Kleingruppen bekommen Rollenkarten (Täter, Mitläufer, Zuschauer, Verteidiger, Opfer). Sie entwickeln eine kurze Szene und diskutieren: Was hätte wer tun können?</p>
+        <ul>
+          <li>Wer hat die meiste Macht die Situation zu verändern?</li>
+          <li>Was hindert Zuschauer daran einzugreifen?</li>
+          <li>Was braucht jemand um zum Verteidiger zu werden?</li>
+        </ul>
+      </div>
+      <div class="tipp-box">
+        <div class="tipp-icon">💡</div>
+        <div class="tipp-text"><strong>Forschungsfakt:</strong> Wenn Zuschauer eingreifen stoppt Mobbing in über 57% der Fälle innerhalb von 10 Sekunden (Hawkins et al., 2001). Zuschauer haben die meiste Macht.</div>
+      </div>
+    </div>
+
+    <a class="karte-link" href="M6-01_Mobbing_erkennen.html">→ M6-01 Mobbing erkennen</a>
+    <a class="karte-link" href="M6-04_Mobbing_im_Klassenverband.html" style="margin-left:.5rem;">→ M6-04 Gruppenrollen</a>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- MODUL 2: ICH BIN NICHT ALLEIN          -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="modul" id="m2">
+    <div class="modul-header">
+      <div class="modul-nr">2</div>
+      <div class="modul-emoji">🤝</div>
+      <div class="modul-meta">
+        <div class="modul-titel">Ich bin nicht allein</div>
+        <div class="modul-sub">Vertrauen · Hilfe holen · Verbündete finden</div>
+      </div>
+    </div>
+
+    <div class="alter-tabs-wrap">
+      <div class="alter-tab gs aktiv" onclick="tabSwitch(this,'m2')">🏫 Grundschule</div>
+      <div class="alter-tab wf" onclick="tabSwitch(this,'m2')">📚 Weiterführend</div>
+    </div>
+
+    <div class="alter-content gs aktiv" id="m2-gs">
+      <div class="gs-badge">Grundschule · 6–10 Jahre</div>
+      <div class="content-karte">
+        <h3>Wen ich fragen kann</h3>
+        <p>Wenn jemand immer wieder gemein zu dir ist — das ist nicht deine Schuld. Und du musst das nicht alleine tragen. Es gibt Menschen die helfen können und wollen.</p>
+        <ul>
+          <li>🏠 Zuhause: Mama, Papa, Geschwister, Oma, Opa</li>
+          <li>🏫 In der Schule: Lehrerin, INGRA, Schulbegleiterin</li>
+          <li>👫 Freunde die ich vertraue</li>
+          <li>📞 Telefon: Nummer gegen Kummer 116 111 (kostenlos)</li>
+        </ul>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">🌟</div>
+          <div class="uebung-titel">Übung: Meine Verbündeten-Karte</div>
+          <div class="uebung-meta">⏱ 15 Min · Einzelarbeit</div>
+        </div>
+        <p>Jedes Kind malt eine Sonne und schreibt in die Strahlen: "Wer ist für mich da wenn es mir schlecht geht?" Kinder die möchten können teilen — niemand muss.</p>
+        <p style="margin-top:.5rem;"><a href="AM_DL_Meine_Verbuendeten.html" style="color:var(--am);font-weight:600;font-size:.82rem;">→ Druckvorlage: Meine Verbündeten</a></p>
+      </div>
+    </div>
+
+    <div class="alter-content wf" id="m2-wf">
+      <div class="wf-badge">Weiterführend · 10–14 Jahre</div>
+      <div class="content-karte">
+        <h3>Warum Schweigen schadet — und was Reden bewirkt</h3>
+        <p>Viele Betroffene schweigen weil sie Angst haben: Angst dass es schlimmer wird, dass niemand glaubt, dass sie als Petze gelten. Aber Schweigen schützt nicht — es lässt Mobbing wachsen.</p>
+        <p><strong>Was passiert wenn jemand redet:</strong> Erwachsene können handeln. Die Situation wird sichtbar. Das Opfer ist nicht mehr allein. Und meistens wird es besser — nicht schlimmer.</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">💬</div>
+          <div class="uebung-titel">Übung: Wie sage ich es?</div>
+          <div class="uebung-meta">⏱ 15 Min · Partnerarbeit</div>
+        </div>
+        <p>Zwei Szenarien in Partnerarbeit durchspielen: Wie erzähle ich einem Erwachsenen von Mobbing? Konkrete Sätze üben:</p>
+        <ul>
+          <li>"Ich muss dir etwas sagen das schon lange passiert..."</li>
+          <li>"Ich weiß nicht ob du mir glaubst, aber..."</li>
+          <li>"Ich brauche Hilfe. Ich weiß nicht mehr weiter."</li>
+        </ul>
+      </div>
+      <div class="wichtig-box">
+        <div class="wichtig-icon">📞</div>
+        <div class="wichtig-text"><strong>Telefon-Nummer gegen Kummer:</strong> 116 111 — kostenlos, anonym, täglich 14–20 Uhr. Für Kinder und Jugendliche. Online-Beratung auch unter www.nummergegenkummer.de</div>
+      </div>
+    </div>
+    <a class="karte-link" href="AM_DL_Meine_Verbuendeten.html">→ Druckvorlage Verbündete</a>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- MODUL 3: WAS ICH TUN KANN              -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="modul" id="m3">
+    <div class="modul-header">
+      <div class="modul-nr">3</div>
+      <div class="modul-emoji">💪</div>
+      <div class="modul-meta">
+        <div class="modul-titel">Was ich tun kann</div>
+        <div class="modul-sub">Als Betroffene:r · Als Zuschauer:in · Als Freund:in</div>
+      </div>
+    </div>
+
+    <div class="alter-tabs-wrap">
+      <div class="alter-tab gs aktiv" onclick="tabSwitch(this,'m3')">🏫 Grundschule</div>
+      <div class="alter-tab wf" onclick="tabSwitch(this,'m3')">📚 Weiterführend</div>
+    </div>
+
+    <div class="alter-content gs aktiv" id="m3-gs">
+      <div class="gs-badge">Grundschule · 6–10 Jahre</div>
+      <div class="content-karte">
+        <h3>Drei Dinge die JEDE:R tun kann</h3>
+        <ul>
+          <li><strong>Stopp sagen:</strong> Laut und deutlich "Stopp! Das ist nicht okay."</li>
+          <li><strong>Danebenstehen:</strong> Einfach neben das Opfer gehen — ohne Worte</li>
+          <li><strong>Melden:</strong> Einer Erwachsenen sagen was passiert ist — das ist kein Petzen</li>
+        </ul>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">🛑</div>
+          <div class="uebung-titel">Übung: Stopp üben</div>
+          <div class="uebung-meta">⏱ 10 Min · Plenum</div>
+        </div>
+        <p>Alle stehen auf. Auf ein Signal rufen alle gemeinsam laut "STOPP!" — dann üben Kinder in Paaren: Eine Person macht etwas Störendes, die andere sagt Stopp. Körperhaltung: aufrecht, Blickkontakt, ruhige Stimme.</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">📝</div>
+          <div class="uebung-titel">Übung: Meldekette ausfüllen</div>
+          <div class="uebung-meta">⏱ 10 Min · Einzelarbeit</div>
+        </div>
+        <p>Druckvorlage "So melde ich Mobbing" ausfüllen: Wem sage ich es? Was sage ich? Kinder kleben den Zettel in ihr Heft.</p>
+        <p style="margin-top:.5rem;"><a href="AM_DL_So_melde_ich_Mobbing.html" style="color:var(--am);font-weight:600;font-size:.82rem;">→ Druckvorlage: So melde ich Mobbing</a></p>
+      </div>
+    </div>
+
+    <div class="alter-content wf" id="m3-wf">
+      <div class="wf-badge">Weiterführend · 10–14 Jahre</div>
+      <div class="content-karte">
+        <h3>Was wirklich hilft — und was nicht</h3>
+        <ul>
+          <li><strong>Helfen:</strong> Neben die Person stellen, Blickkontakt brechen, ablenken, melden</li>
+          <li><strong>Nicht helfen:</strong> Zurückschlagen, öffentlich konfrontieren, allein lassen</li>
+          <li><strong>Als Betroffene:r:</strong> Dokumentieren, Beweise sichern, Vertrauensperson suchen</li>
+          <li><strong>Als Freund:in:</strong> Regelmäßig fragen, nicht reden erzwingen, einfach da sein</li>
+        </ul>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">🎯</div>
+          <div class="uebung-titel">Übung: Was würde ich tun?</div>
+          <div class="uebung-meta">⏱ 20 Min · Kleingruppen</div>
+        </div>
+        <p>Drei Szenarien auf Karten — Gruppen diskutieren: Was würde ich tun? Was hindert mich daran? Was bräuchte ich um zu handeln?</p>
+        <ul>
+          <li>Szenario A: Dein Mitschüler wird auf dem Schulweg verfolgt</li>
+          <li>Szenario B: Deine Freundin zeigt dir beleidigende WhatsApp-Nachrichten</li>
+          <li>Szenario C: Du siehst wie jemand in der Pause immer allein steht</li>
+        </ul>
+      </div>
+    </div>
+    <a class="karte-link" href="AM_DL_Stoppschild.html">→ Druckvorlage Stoppschild</a>
+    <a class="karte-link" href="AM_DL_So_melde_ich_Mobbing.html" style="margin-left:.5rem;">→ So melde ich Mobbing</a>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- MODUL 4: DIGITALE WELT                 -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="modul" id="m4">
+    <div class="modul-header">
+      <div class="modul-nr">4</div>
+      <div class="modul-emoji">📱</div>
+      <div class="modul-meta">
+        <div class="modul-titel">Mobbing in der digitalen Welt</div>
+        <div class="modul-sub">Cybermobbing · Beweise sichern · Melden</div>
+      </div>
+    </div>
+
+    <div class="alter-tabs-wrap">
+      <div class="alter-tab gs aktiv" onclick="tabSwitch(this,'m4')">🏫 Grundschule</div>
+      <div class="alter-tab wf" onclick="tabSwitch(this,'m4')">📚 Weiterführend</div>
+    </div>
+
+    <div class="alter-content gs aktiv" id="m4-gs">
+      <div class="gs-badge">Grundschule · 6–10 Jahre</div>
+      <div class="content-karte">
+        <h3>Was online passiert ist trotzdem real</h3>
+        <p>Manchmal schicken Kinder gemeine Nachrichten oder posten schlechte Fotos. Das fühlt sich genauso schlimm an wie Mobbing in der Schule — und ist genauso falsch.</p>
+        <p><strong>Was du tun kannst:</strong></p>
+        <ul>
+          <li>Nicht antworten — das macht es nicht schlimmer</li>
+          <li>Screenshot machen und einer Erwachsenen zeigen</li>
+          <li>Die Person blockieren</li>
+          <li>Sofort einer Erwachsenen sagen</li>
+        </ul>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">📸</div>
+          <div class="uebung-titel">Übung: Screenshot — was ist das?</div>
+          <div class="uebung-meta">⏱ 10 Min · Demo</div>
+        </div>
+        <p>Gemeinsam zeigen wie ein Screenshot gemacht wird (Tablet/Handy-Demo oder Tafel). Erklären warum das wichtig ist: Beweise verschwinden wenn man sie löscht oder wenn der andere sie löscht.</p>
+      </div>
+    </div>
+
+    <div class="alter-content wf" id="m4-wf">
+      <div class="wf-badge">Weiterführend · 10–14 Jahre</div>
+      <div class="content-karte">
+        <h3>Cybermobbing — Besonderheiten und Konsequenzen</h3>
+        <p>Cybermobbing hat Besonderheiten die es von klassischem Mobbing unterscheiden: <strong>Kein Rückzugsraum</strong> (24/7 erreichbar), <strong>schnelle Verbreitung</strong>, teilweise <strong>Anonymität</strong> der Täter, <strong>dauerhafte Spuren</strong> im Internet.</p>
+        <p><strong>Rechtliche Dimension:</strong> Beleidigende Nachrichten, Bedrohungen und das Verbreiten von Fotos ohne Einwilligung können strafbar sein (§§ 185, 201a, 238 StGB).</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">⚖️</div>
+          <div class="uebung-titel">Übung: Legal oder illegal?</div>
+          <div class="uebung-meta">⏱ 15 Min · Plenum</div>
+        </div>
+        <p>Situationskarten vorlesen — Gruppe entscheidet: peinlich aber legal? Oder möglicherweise illegal?</p>
+        <ul>
+          <li>Jemanden in einer Klassengruppe ignorieren → peinlich aber legal</li>
+          <li>Heimliches Foto in der Umkleide weiterleiten → möglicherweise strafbar</li>
+          <li>Beleidigungen per WhatsApp schicken → strafbar (§ 185 StGB)</li>
+          <li>Fake-Account mit fremdem Namen erstellen → strafbar</li>
+        </ul>
+      </div>
+      <div class="wichtig-box">
+        <div class="wichtig-icon">🔒</div>
+        <div class="wichtig-text"><strong>Beweise sichern bevor melden:</strong> Screenshot mit Datum, Absender und Plattform. Dann anzeigen — nicht selbst löschen. Eltern und Schule informieren.</div>
+      </div>
+    </div>
+    <a class="karte-link" href="M6-03_Cybermobbing.html">→ M6-03 Cybermobbing</a>
+    <a class="karte-link" href="M6-08_Digitale_Spuren_sichern.html" style="margin-left:.5rem;">→ M6-08 Spuren sichern</a>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- MODUL 5: UNSERE KLASSE STÄRKEN         -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="modul" id="m5">
+    <div class="modul-header">
+      <div class="modul-nr">5</div>
+      <div class="modul-emoji">🌈</div>
+      <div class="modul-meta">
+        <div class="modul-titel">Unsere Klasse stärken</div>
+        <div class="modul-sub">Klassenklima · Gemeinsame Regeln · Vertrag</div>
+      </div>
+    </div>
+
+    <div class="alter-tabs-wrap">
+      <div class="alter-tab gs aktiv" onclick="tabSwitch(this,'m5')">🏫 Grundschule</div>
+      <div class="alter-tab wf" onclick="tabSwitch(this,'m5')">📚 Weiterführend</div>
+    </div>
+
+    <div class="alter-content gs aktiv" id="m5-gs">
+      <div class="gs-badge">Grundschule · 6–10 Jahre</div>
+      <div class="content-karte">
+        <h3>Was macht eine gute Klasse aus?</h3>
+        <p>In einer guten Klasse fühlt sich jede:r sicher. Das passiert nicht von allein — das entscheiden alle zusammen. Gemeinsame Regeln helfen dabei.</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">📜</div>
+          <div class="uebung-titel">Übung: Unser Klassenvertrag</div>
+          <div class="uebung-meta">⏱ 20 Min · Plenum</div>
+        </div>
+        <p>Gemeinsam 3–5 Regeln entwickeln: "In unserer Klasse..." Alle unterschreiben. Vertrag aufhängen.</p>
+        <p style="margin-top:.5rem;"><a href="AM_DL_Klassenvertrag.html" style="color:var(--am);font-weight:600;font-size:.82rem;">→ Druckvorlage: Klassenvertrag</a></p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">🌟</div>
+          <div class="uebung-titel">Übung: Komplimente-Kreis</div>
+          <div class="uebung-meta">⏱ 15 Min · Plenum</div>
+        </div>
+        <p>Alle stehen im Kreis. Eine Person steht in der Mitte. Die anderen nennen reihum etwas das sie an dieser Person mögen. Jedes Kind kommt einmal in die Mitte.</p>
+      </div>
+    </div>
+
+    <div class="alter-content wf" id="m5-wf">
+      <div class="wf-badge">Weiterführend · 10–14 Jahre</div>
+      <div class="content-karte">
+        <h3>Klassenklima aktiv gestalten</h3>
+        <p>Das Klassenklima entsteht durch das Verhalten jeder einzelnen Person — jeden Tag. Drei Faktoren die Klima verbessern: <strong>Inklusion</strong> (alle gehören dazu), <strong>Respekt</strong> (auch für Verschiedenheit), <strong>Zivilcourage</strong> (eingreifen wenn etwas nicht stimmt).</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">📊</div>
+          <div class="uebung-titel">Übung: Klimabarometer</div>
+          <div class="uebung-meta">⏱ 15 Min · anonym</div>
+        </div>
+        <p>Anonyme Karten: Jede:r bewertet das aktuelle Klassenklima auf einer Skala 1–10 und nennt einen Aspekt der verbessert werden soll. Auswertung gemeinsam — ohne Schuldige zu benennen.</p>
+      </div>
+      <div class="uebung">
+        <div class="uebung-header">
+          <div class="uebung-icon">🤝</div>
+          <div class="uebung-titel">Übung: Klassenvertrag 2.0</div>
+          <div class="uebung-meta">⏱ 20 Min · Kleingruppen</div>
+        </div>
+        <p>Kleingruppen erarbeiten je eine Regel. Plenum diskutiert, einigt sich auf 5 Regeln, alle unterschreiben. Vertrag gilt für das Schuljahr.</p>
+        <p style="margin-top:.5rem;"><a href="AM_DL_Klassenvertrag.html" style="color:var(--am);font-weight:600;font-size:.82rem;">→ Druckvorlage: Klassenvertrag</a></p>
+      </div>
+    </div>
+    <a class="karte-link" href="M6-10_Prävention_im_Klassenzimmer.html">→ M6-10 Prävention</a>
+    <a class="karte-link" href="AM_DL_Klassenvertrag.html" style="margin-left:.5rem;">→ Klassenvertrag drucken</a>
+  </div>
+
+  <!-- MATERIALIEN -->
+  <div class="modul" id="mat">
+    <div class="modul-header">
+      <div class="modul-nr" style="font-size:.85rem;">📥</div>
+      <div class="modul-emoji">🗂️</div>
+      <div class="modul-meta">
+        <div class="modul-titel">Druckmaterialien</div>
+        <div class="modul-sub">Alle Vorlagen zum Ausdrucken und Einsetzen</div>
+      </div>
+    </div>
+    <div class="material-grid">
+      <a class="material-item" href="AM_DL_Stoppschild.html">
+        <div class="material-icon">🛑</div>
+        <div><div class="material-name">Stoppschild-Karte</div><div class="material-typ">Druckvorlage · A6</div></div>
+      </a>
+      <a class="material-item" href="AM_DL_Meine_Verbuendeten.html">
+        <div class="material-icon">🌟</div>
+        <div><div class="material-name">Meine Verbündeten</div><div class="material-typ">Druckvorlage · A5</div></div>
+      </a>
+      <a class="material-item" href="AM_DL_So_melde_ich_Mobbing.html">
+        <div class="material-icon">📋</div>
+        <div><div class="material-name">So melde ich Mobbing</div><div class="material-typ">Druckvorlage · A5</div></div>
+      </a>
+      <a class="material-item" href="AM_DL_Klassenvertrag.html">
+        <div class="material-icon">📜</div>
+        <div><div class="material-name">Klassenvertrag</div><div class="material-typ">Druckvorlage · A4</div></div>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+let alterAktuell = 'gs';
+
+function setAlter(alter) {
+  alterAktuell = alter;
+  document.getElementById('gs-btn').classList.toggle('aktiv', alter==='gs');
+  document.getElementById('wf-btn').classList.toggle('aktiv', alter==='wf');
+  document.querySelectorAll('.alter-content').forEach(el => {
+    el.classList.toggle('aktiv', el.classList.contains(alter));
+  });
+  document.querySelectorAll('.alter-tab').forEach(tab => {
+    tab.classList.toggle('aktiv', tab.classList.contains(alter));
+  });
+}
+
+function tabSwitch(tab, modul) {
+  const isGS = tab.classList.contains('gs');
+  const alter = isGS ? 'gs' : 'wf';
+  document.querySelectorAll('#'+modul+' .alter-tab').forEach(t => t.classList.remove('aktiv'));
+  tab.classList.add('aktiv');
+  document.getElementById(modul+'-gs').classList.toggle('aktiv', alter==='gs');
+  document.getElementById(modul+'-wf').classList.toggle('aktiv', alter==='wf');
+}
+
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Nav-Chips aktiv setzen
+const moduls = document.querySelectorAll('.modul');
+const chips = document.querySelectorAll('.nav-chip');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const id = e.target.id;
+      chips.forEach((c,i) => c.classList.toggle('aktiv', ['m1','m2','m3','m4','m5','mat'][i]===id));
+    }
+  });
+},{rootMargin:'-145px 0px -60% 0px'});
+moduls.forEach(m => obs.observe(m));
+</script>
+</body>
+</html>

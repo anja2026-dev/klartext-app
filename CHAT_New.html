@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Neue Nachricht</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="chat.css">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="chat.js"></script>
+<style>
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
+.chat-new-abschnitt-titel{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6A6878;margin:1.25rem 0 .6rem;}
+.chat-new-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.95rem;flex-shrink:0;}
+</style>
+</head>
+<body>
+<!-- GLOBALE HAUPTNAVIGATION -->
+<nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
+  <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
+  <a class="gnav-link" href="DASHBOARD.html">🏠 Dashboard</a>
+  <a class="gnav-link aktiv" href="CHAT_View.html">💬 Nachrichten</a>
+  <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
+  <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
+  <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
+  <a class="gnav-link" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
+</nav>
+<header class="chat-header">
+  <a class="chat-header-back" href="CHAT_List.html" title="Zurück">←</a>
+  <div class="chat-header-titel">＋ Neue Nachricht</div>
+</header>
+
+<div class="chat-new-shell">
+  <div class="chat-new-hinweis">Wähle eine Person, um eine neue Konversation zu starten. Falls bereits eine Konversation existiert, wird diese geöffnet statt eine neue zu erstellen.</div>
+
+  <div class="chat-new-abschnitt-titel">Direktnachricht</div>
+  <div id="partner-liste"></div>
+</div>
+
+<script>
+// Feste Liste möglicher Chatpartner — solange es keine echte /users-Verwaltung gibt,
+// nutzen wir die bekannten festen Demo-Identitäten aus dem Login-System.
+const CHAT_PARTNER = [
+  { id: 'ingra_1',   name: 'INGRA',              role: 'ingra' },
+  { id: 'ingra_anna',name: 'Anna',               role: 'ingra' },
+  { id: 'ingra_ben', name: 'Ben',                role: 'ingra' },
+  { id: 'ingra_clara',name: 'Clara',             role: 'ingra' },
+  { id: 'tk_1',      name: 'Teamkoordination',   role: 'tk' },
+  { id: 'lk_1',      name: 'Lehrkraft',          role: 'lk' },
+  { id: 'trainer_1', name: 'Trainer',            role: 'trainer' },
+  { id: 'admin_1',   name: 'Admin',              role: 'admin' }
+];
+
+const aktuellerUser = chatAktuellerUser();
+
+function partnerKarteHtml(partner) {
+  const farbe = chatRollenfarbe(partner.role);
+  const initiale = partner.name.charAt(0).toUpperCase();
+  return `<div class="chat-partner-karte" onclick="chatPartnerWaehlen('${partner.id}','${partner.name.replace(/'/g, "\\'")}','${partner.role}')">
+    <div class="chat-new-avatar" style="background:${farbe};">${initiale}</div>
+    <div>
+      <div class="chat-partner-name">${partner.name}</div>
+      <div class="chat-partner-rolle">${partner.role} · ${partner.id}</div>
+    </div>
+  </div>`;
+}
+
+// eigene Identität aus der Liste ausschließen — man kann sich nicht selbst anschreiben
+const liste = document.getElementById('partner-liste');
+const sichtbarePartner = CHAT_PARTNER.filter(function(p) { return p.id !== aktuellerUser.id; });
+
+if (sichtbarePartner.length === 0) {
+  liste.innerHTML = '<div class="chat-liste-leer">Keine weiteren Chatpartner verfügbar.</div>';
+} else {
+  liste.innerHTML = sichtbarePartner.map(partnerKarteHtml).join('');
+}
+
+function chatPartnerWaehlen(partnerId, partnerName, partnerRole) {
+  // Prüfen, ob bereits eine direct-Konversation mit dieser Person existiert
+  db.ref('conversations').once('value').then(function(snapshot) {
+    const alle = snapshot.val() || {};
+    let bestehendeId = null;
+
+    Object.keys(alle).forEach(function(cid) {
+      const conv = alle[cid];
+      if (conv.type === 'direct' && conv.members &&
+          conv.members[aktuellerUser.id] && conv.members[partnerId]) {
+        bestehendeId = cid;
+      }
+    });
+
+    if (bestehendeId) {
+      window.location.href = 'CHAT_View.html?cid=' + bestehendeId;
+    } else {
+      chatNeueConversation({ id: partnerId, name: partnerName, role: partnerRole }, 'direct')
+        .then(function(neueId) {
+          window.location.href = 'CHAT_View.html?cid=' + neueId;
+        });
+    }
+  });
+}
+</script>
+</body>
+</html>

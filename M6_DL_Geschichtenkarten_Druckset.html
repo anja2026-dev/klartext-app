@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Brainy-Geschichtenkarten Druckset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#E8E4DC;padding:1.5rem 1rem 3rem;}
+.controls{display:flex;gap:.6rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap;}
+.ctrl{padding:.5rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;}
+.ctrl-print{background:#1B3A4B;color:#fff;}
+.ctrl-back{background:#fff;color:#1B3A4B;border:1.5px solid #1B3A4B;}
+.info{max-width:700px;margin:0 auto 1.5rem;background:#fff;border-radius:10px;padding:1rem 1.25rem;font-size:.82rem;color:#444;text-align:center;display:flex;align-items:center;gap:.75rem;justify-content:center;}
+.info img{width:36px;height:36px;object-fit:contain;flex-shrink:0;}
+.print-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:5mm;}
+.print-karte{background:#fff;border:2px solid;border-radius:8px;overflow:hidden;page-break-inside:avoid;break-inside:avoid;}
+.pk-head{color:#fff;font-size:.78rem;font-weight:700;padding:.4rem .7rem;font-family:"Playfair Display",serif;display:flex;align-items:center;justify-content:space-between;gap:.4rem;}
+.pk-head span{background:rgba(255,255,255,.25);padding:.1rem .4rem;border-radius:5px;flex-shrink:0;}
+.pk-brainy{width:30px;height:30px;object-fit:contain;flex-shrink:0;}
+.pk-body{padding:.6rem .75rem;}
+.pk-situation{font-size:.72rem;color:#333;line-height:1.4;margin-bottom:.4rem;}
+.pk-fragen{list-style:none;font-size:.68rem;color:#666;margin-bottom:.4rem;}
+.pk-fragen li{padding:.05rem 0 .05rem .7rem;position:relative;}
+.pk-fragen li::before{content:"·";position:absolute;left:0;font-weight:700;}
+.pk-impuls{font-size:.68rem;font-style:italic;border-top:1px dashed;padding-top:.35rem;line-height:1.4;}
+@media print{
+  body{background:white;padding:0;}
+  .controls,.info{display:none!important;}
+  .print-grid{grid-template-columns:repeat(2,1fr);gap:3mm;}
+  @page{size:A4;margin:8mm;}
+}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<div class="controls">
+  <button class="ctrl ctrl-print" onclick="window.print()">🖨️ Als PDF drucken</button>
+  <a class="ctrl ctrl-back" href="M6_Geschichtenkarten_Galerie.html">← Zur digitalen Ansicht</a>
+  <a class="ctrl ctrl-back" href="DASHBOARD.html">← Dashboard</a>
+</div>
+
+<div class="info">
+  <img src="brainy.png" alt="Brainy">
+  <span>30 Geschichtenkarten zum Ausdrucken und Ausschneiden — entlang der Kartenränder schneiden, laminieren empfohlen für mehrfachen Gebrauch.</span>
+</div>
+
+<div class="print-grid">
+<div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A1</span> Brainy wird ausgelacht<img src="brainy-grau.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy erzählt etwas, zwei Kinder lachen. Brainy wird klein und grau.</p>
+        <ul class="pk-fragen"><li>Was fühlt Brainy?</li><li>Warum tut das weh?</li><li>Was könnte Brainy helfen?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sagen: Hör bitte auf. Das verletzt mich.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A2</span> Brainy wird ausgeschlossen<img src="brainy-grau.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Eine Gruppe spielt. Brainy steht daneben. Niemand reagiert.</p>
+        <ul class="pk-fragen"><li>Warum fühlt sich Brainy allein?</li><li>Was könnte Brainy Mut machen?</li><li>Was würdest du tun?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte fragen: Kann ich mitmachen?</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A3</span> Brainy bekommt gemeine Nachrichten<img src="brainy-rot.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Auf dem Tablet steht: Du bist dumm.</p>
+        <ul class="pk-fragen"><li>Was macht das mit Brainy?</li><li>Was sollte Brainy NICHT tun?</li><li>Wer kann helfen?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sagen: Ich zeige das einem Erwachsenen.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A4</span> Brainy wird geschubst<img src="brainy-rot.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy stolpert, ein Kind lacht.</p>
+        <ul class="pk-fragen"><li>Warum ist das nicht okay?</li><li>Was braucht Brainy?</li><li>Was wäre sicher?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte weggehen und Hilfe holen.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A5</span> Brainy wird bedroht<img src="brainy-rot.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Ein Kind sagt: Wenn du was sagst, passiert was.</p>
+        <ul class="pk-fragen"><li>Warum macht das Angst?</li><li>Was braucht Brainy?</li><li>Wer kann schützen?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sofort zu einer erwachsenen Person gehen.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A6</span> Brainy wird nachgeäfft<img src="brainy-grau.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy spricht, ein Kind imitiert ihn spöttisch.</p>
+        <ul class="pk-fragen"><li>Was fühlt Brainy?</li><li>Warum ist das unfair?</li><li>Was wäre ein guter Schritt?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sagen: Ich möchte so nicht behandelt werden.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A7</span> Brainy wird ignoriert<img src="brainy-grau.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy spricht, niemand reagiert.</p>
+        <ul class="pk-fragen"><li>Warum tut Ignorieren weh?</li><li>Was könnte Brainy helfen?</li><li>Was würdest du Brainy raten?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sagen: Ich möchte gehört werden.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A8</span> Brainy wird beschämt<img src="brainy-grau.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy macht einen Fehler, andere lachen.</p>
+        <ul class="pk-fragen"><li>Was fühlt Brainy?</li><li>Was hilft bei Scham?</li><li>Was wäre freundlich?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sagen: Bitte hör auf. Das ist mir unangenehm.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A9</span> Brainy sieht, wie jemand anderes gemobbt wird<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Ein Kind wird ausgelacht. Brainy schaut unsicher.</p>
+        <ul class="pk-fragen"><li>Was fühlt Brainy?</li><li>Was wäre mutig?</li><li>Wie kann Brainy helfen?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte jemanden holen, der helfen kann.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#C62828;">
+      <div class="pk-head" style="background:#C62828;"><span>A10</span> Brainy traut sich nicht, etwas zu sagen<img src="brainy-grau.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy wurde verletzt, schweigt aber.</p>
+        <ul class="pk-fragen"><li>Warum schweigt Brainy?</li><li>Was könnte Mut machen?</li><li>Wem könnte Brainy vertrauen?</li></ul>
+        <p class="pk-impuls" style="border-color:#C62828;color:#C62828;">Brainy könnte sagen: Ich brauche jemanden, der mir zuhört.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B1</span> Brainy sagt Stopp<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sieht, wie ein Kind ausgelacht wird. Er stellt sich daneben und sagt ruhig: Stopp. Das ist nicht okay.</p>
+        <ul class="pk-fragen"><li>Was fühlt Brainy in diesem Moment?</li><li>Warum ist Stopp sagen mutig?</li><li>Was könnte danach passieren?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Ich möchte, dass du aufhörst.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B2</span> Brainy holt Hilfe<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sieht, dass ein Kind geschubst wird. Er geht sofort zu einer Lehrkraft und sagt: Ich brauche Hilfe.</p>
+        <ul class="pk-fragen"><li>Warum ist Hilfe holen wichtig?</li><li>Wen kann Brainy ansprechen?</li><li>Was ist daran mutig?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Komm bitte mit, ich brauche Unterstützung.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B3</span> Brainy tröstet jemanden<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Ein Kind sitzt traurig auf der Bank. Brainy setzt sich daneben und sagt: Ich bin da.</p>
+        <ul class="pk-fragen"><li>Warum hilft es, nicht allein zu sein?</li><li>Was könnte Brainy noch tun?</li><li>Was hilft dir, wenn du traurig bist?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Du bist nicht allein.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B4</span> Brainy stärkt einen Verteidiger<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Ein anderes Kind sagt Hör auf!. Brainy nickt und stellt sich dazu.</p>
+        <ul class="pk-fragen"><li>Warum ist es leichter, wenn man nicht allein ist?</li><li>Was macht Brainy hier richtig?</li><li>Wie fühlt sich das Opfer jetzt?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Ich bin bei dir.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B5</span> Brainy meldet etwas sicher<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sieht eine gemeine Nachricht. Er zeigt sie einer erwachsenen Person, ohne sie weiterzuleiten.</p>
+        <ul class="pk-fragen"><li>Warum ist Weiterleiten falsch?</li><li>Was ist sichere Meldung?</li><li>Wen kann Brainy informieren?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Ich möchte das melden, weil es unfair ist.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B6</span> Brainy begleitet jemanden<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Ein Kind hat Angst, in die Pause zu gehen. Brainy sagt: Ich gehe mit dir.</p>
+        <ul class="pk-fragen"><li>Warum hilft Begleitung?</li><li>Was könnte Brainy beachten?</li><li>Was wäre ein guter nächster Schritt?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Wir gehen zusammen.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B7</span> Brainy zeigt Mut<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sieht eine ungerechte Situation und sagt: Das fühlt sich nicht richtig an.</p>
+        <ul class="pk-fragen"><li>Warum ist das mutig?</li><li>Was könnte Brainy danach tun?</li><li>Was hilft, wenn man unsicher ist?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Ich möchte, dass wir fair bleiben.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B8</span> Brainy schützt jemanden<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Ein Kind wird bedroht. Brainy stellt sich daneben und sagt: Ich bleibe bei dir.</p>
+        <ul class="pk-fragen"><li>Warum hilft Nähe?</li><li>Was darf Brainy NICHT tun?</li><li>Wer kann zusätzlich helfen?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Ich bleibe hier, bis Hilfe kommt.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B9</span> Brainy erklärt, warum etwas weh tut<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt zu einem Kind: Wenn du so redest, tut mir das weh.</p>
+        <ul class="pk-fragen"><li>Warum ist das wichtig?</li><li>Wie fühlt sich das Opfer?</li><li>Was könnte danach passieren?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Ich möchte freundlich behandelt werden.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#1565C0;">
+      <div class="pk-head" style="background:#1565C0;"><span>B10</span> Brainy zeigt Grenzen<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt klar: Ich möchte nicht, dass du mich so behandelst.</p>
+        <ul class="pk-fragen"><li>Warum sind Grenzen wichtig?</li><li>Wie fühlt sich Brainy danach?</li><li>Was wäre ein guter nächster Schritt?</li></ul>
+        <p class="pk-impuls" style="border-color:#1565C0;color:#1565C0;">Brainy könnte sagen: Stopp. Das möchte ich nicht.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C1</span> Brainy übt Ich-Botschaften<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt: Ich fühle mich schlecht, wenn du mich auslachst.</p>
+        <ul class="pk-fragen"><li>Warum helfen Ich-Botschaften?</li><li>Wie klingt das freundlich?</li><li>Was könnte Brainy noch sagen?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich brauche, dass du aufhörst.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C2</span> Brainy übt Grenzen setzen<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt: Nein, ich möchte das nicht.</p>
+        <ul class="pk-fragen"><li>Warum ist Nein sagen schwer?</li><li>Was hilft dabei?</li><li>Wie kann Brainy ruhig bleiben?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich entscheide das für mich.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C3</span> Brainy übt Weggehen<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy merkt, dass eine Situation kippt. Er dreht sich um und geht.</p>
+        <ul class="pk-fragen"><li>Warum ist Weggehen klug?</li><li>Was schützt Brainy dadurch?</li><li>Wohin könnte er gehen?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich gehe jetzt weg.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C4</span> Brainy übt Hilfe holen<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt: Ich brauche Unterstützung.</p>
+        <ul class="pk-fragen"><li>Wen kann Brainy ansprechen?</li><li>Warum ist das kein Petzen?</li><li>Was passiert danach?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Kannst du mir helfen?</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C5</span> Brainy übt digitale Sicherheit<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy bekommt eine gemeine Nachricht und macht sofort einen Screenshot.</p>
+        <ul class="pk-fragen"><li>Warum ist das wichtig?</li><li>Was darf Brainy NICHT tun?</li><li>Wen informiert Brainy?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich sichere das und hole Hilfe.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C6</span> Brainy übt Selbstschutz<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy merkt, dass er Angst bekommt. Er geht zu einem sicheren Ort.</p>
+        <ul class="pk-fragen"><li>Was ist ein sicherer Ort?</li><li>Was hilft Brainy, ruhig zu werden?</li><li>Wen könnte er informieren?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich brauche kurz Sicherheit.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C7</span> Brainy übt Mut<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy hebt die Hand und sagt: Ich möchte etwas sagen.</p>
+        <ul class="pk-fragen"><li>Warum ist das mutig?</li><li>Was könnte Brainy sagen?</li><li>Was hilft bei Unsicherheit?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich probiere es.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C8</span> Brainy übt Teamarbeit<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt zu einem anderen Kind: Lass uns zusammenhalten.</p>
+        <ul class="pk-fragen"><li>Warum hilft Teamarbeit?</li><li>Was stärkt eine Gruppe?</li><li>Was könnte Brainy tun?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Wir schaffen das gemeinsam.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C9</span> Brainy übt Ruhe<img src="brainy-gruen.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy atmet tief ein, bevor er reagiert.</p>
+        <ul class="pk-fragen"><li>Warum hilft Atmen?</li><li>Was passiert im Körper?</li><li>Was könnte Brainy danach tun?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich brauche kurz Ruhe.</p>
+      </div>
+    </div><div class="print-karte" style="border-color:#2E7D47;">
+      <div class="pk-head" style="background:#2E7D47;"><span>C10</span> Brainy übt Nein sagen<img src="brainy-gelb.png" alt="" class="pk-brainy"></div>
+      <div class="pk-body">
+        <p class="pk-situation">Brainy sagt klar: Nein, ich mache da nicht mit.</p>
+        <ul class="pk-fragen"><li>Warum ist das wichtig?</li><li>Was schützt Brainy dadurch?</li><li>Was könnte danach passieren?</li></ul>
+        <p class="pk-impuls" style="border-color:#2E7D47;color:#2E7D47;">Brainy könnte sagen: Ich entscheide das selbst.</p>
+      </div>
+    </div>
+</div>
+
+</body>
+</html>

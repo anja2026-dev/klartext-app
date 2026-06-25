@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Setup Demo-Kinder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.karte{background:#fff;border-radius:16px;padding:2rem;max-width:420px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.08);}
+.titel{font-family:"Playfair Display",serif;font-size:1.2rem;color:#1B3A4B;margin-bottom:.5rem;}
+.sub{font-size:.82rem;color:#6A6878;line-height:1.55;margin-bottom:1.5rem;}
+.liste{background:#F5F0E8;border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1.5rem;font-size:.82rem;line-height:1.7;}
+.liste b{color:#1B3A4B;}
+.btn{width:100%;background:#1B3A4B;color:#fff;border:none;border-radius:10px;padding:.85rem;font-family:"DM Sans",sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;}
+.btn:disabled{background:#ccc;cursor:not-allowed;}
+.status{margin-top:1rem;padding:.75rem 1rem;border-radius:8px;font-size:.8rem;line-height:1.5;display:none;}
+.status.erfolg{background:#EAF7EF;color:#1B5E2E;display:block;}
+.status.fehler{background:#FFEBEE;color:#8B1A1A;display:block;}
+.warnung{font-size:.7rem;color:#B7500A;margin-top:1rem;text-align:center;}
+</style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<div class="karte">
+  <div class="titel">Setup: Demo-Kinder anlegen</div>
+  <div class="sub">Dieser einmalige Schritt legt drei Test-Kinder in der Datenbank an, damit Weiterleitungsformulare und Inbox getestet werden können.</div>
+  <div class="liste">
+    <div><b>Anna</b> · Gruppe A</div>
+    <div><b>Ben</b> · Gruppe B</div>
+    <div><b>Clara</b> · Gruppe A</div>
+  </div>
+  <button class="btn" id="btn-setup" onclick="demoKinderAnlegen()">Demo-Kinder anlegen</button>
+  <div class="status" id="status"></div>
+  <div class="warnung">⚠️ Diese Seite ist nicht im Dashboard verlinkt und nur für den einmaligen Setup-Schritt gedacht.</div>
+</div>
+
+<script>
+function demoKinderAnlegen() {
+  const btn = document.getElementById('btn-setup');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+  btn.textContent = 'Wird angelegt …';
+  status.className = 'status';
+  status.textContent = '';
+
+  const kinder = {
+    child1: { name: "Anna", group: "Gruppe A", active: true },
+    child2: { name: "Ben", group: "Gruppe B", active: true },
+    child3: { name: "Clara", group: "Gruppe A", active: true }
+  };
+
+  db.ref('children').update(kinder)
+    .then(function() {
+      status.className = 'status erfolg';
+      status.textContent = '✓ Erfolgreich angelegt: Anna, Ben, Clara. Du kannst diese Seite jetzt schließen.';
+      btn.textContent = 'Erledigt';
+    })
+    .catch(function(error) {
+      status.className = 'status fehler';
+      status.textContent = 'Fehler: ' + error.message;
+      btn.disabled = false;
+      btn.textContent = 'Demo-Kinder anlegen';
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FK-02 · Shutdown – KLARTEXT Feuerwehrkarte</title>
+<meta name="description" content="KLARTEXT Feuerwehrkarte FK-02: Shutdown – Totaler Rückzug und Erstarren. Sofortmaßnahmen für INGRA-Fachkräfte.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+:root {
+  --kt-primary:#1B3A4B;--kt-accent:#6EC6A0;--kt-paper:#F5F0E8;--kt-ink:#2D2D2D;--kt-muted:#7A7060;--kt-surface:#FFFFFF;--kt-border:#DDD8CE;
+  --fk:#C62828;--fk-dark:#7f0000;--fk-light:#FDEAEA;--fk-mid:#FFCDD2;
+  --b-rot:#C62828;--radius-sm:6px;--radius-md:10px;--radius-lg:16px;--shadow:0 2px 10px rgba(27,58,75,0.09);--font:'DM Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);font-size:16px;line-height:1.6;color:var(--kt-ink);background:var(--kt-paper);}
+a{color:var(--kt-primary);}
+ul,ol{padding-left:1.4rem;}
+li{margin-bottom:0.35rem;}
+.fk-header{background:var(--fk);padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:0 4px 16px rgba(198,40,40,0.3);}
+.fk-header__logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;text-decoration:none;white-space:nowrap;}
+.fk-header__logo span{display:block;font-family:var(--font);font-size:0.65rem;font-weight:400;opacity:0.8;letter-spacing:0.1em;}
+.fk-header__badge{margin-left:auto;display:flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:0.25rem 0.85rem;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fff;white-space:nowrap;}
+.fk-header__akut{display:inline-block;background:#fff;color:var(--fk);font-size:0.65rem;font-weight:900;letter-spacing:0.12em;padding:0.15rem 0.5rem;border-radius:4px;}
+.fk-nav{background:var(--fk-dark);border-top:1px solid rgba(255,255,255,0.1);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fk-nav__inner{display:flex;gap:0;padding:0 0.5rem;min-width:max-content;}
+.fk-nav__inner a{display:block;padding:0.5rem 0.85rem;color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.8rem;white-space:nowrap;transition:color 0.15s,background 0.15s;border-bottom:2px solid transparent;}
+.fk-nav__inner a:hover{color:#fff;background:rgba(255,255,255,0.07);}
+.fk-nav__inner a.aktiv{color:#fff;border-bottom-color:rgba(255,255,255,0.6);}
+.modul-nav{background:#fff;border-bottom:1px solid var(--kt-border);overflow-x:auto;}
+.modul-nav__inner{display:flex;gap:0;padding:0 0.5rem;min-width:max-content;}
+.modul-nav__inner a{display:block;padding:0.5rem 0.85rem;font-size:0.78rem;font-weight:500;color:var(--kt-muted);text-decoration:none;white-space:nowrap;transition:color 0.15s;}
+.modul-nav__inner a:hover{color:var(--kt-primary);}
+.seiten-intro{max-width:860px;margin:1.5rem auto 0;padding:0 1.25rem;}
+.barometer-hinweis{display:flex;align-items:center;gap:0.75rem;background:var(--fk-light);border:1.5px solid var(--fk-mid);border-left:4px solid var(--fk);border-radius:var(--radius-md);padding:0.85rem 1rem;font-size:0.9rem;font-weight:500;color:var(--fk-dark);}
+.barometer-dot{width:20px;height:20px;border-radius:50%;background:var(--b-rot);flex-shrink:0;box-shadow:0 0 0 3px rgba(198,40,40,0.2);}
+.kartenliste{max-width:860px;margin:1.25rem auto 3rem;padding:0 1.25rem;display:flex;flex-direction:column;gap:1.25rem;}
+.karte{background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:120px;}
+.karte--feuerwehr{border-left:4px solid var(--fk);}
+.karte__header{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto auto;gap:0.25rem 0.75rem;padding:1rem 1.25rem;background:linear-gradient(135deg,var(--fk-light) 0%,#fff 100%);border-bottom:1px solid var(--fk-mid);}
+.karte__meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;grid-column:1;grid-row:1;}
+.fk-tag{display:inline-block;background:var(--fk);color:#fff;font-size:0.7rem;font-weight:800;letter-spacing:0.1em;padding:0.15rem 0.55rem;border-radius:4px;}
+.akut-tag{display:inline-block;background:var(--fk-dark);color:#fff;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0.12rem 0.5rem;border-radius:20px;}
+.karte-nr{font-size:0.78rem;color:var(--kt-muted);font-weight:500;}
+.karte__titel{grid-column:1;grid-row:2;font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:var(--fk-dark);line-height:1.2;}
+.karte__icon{grid-column:2;grid-row:1/3;font-size:2.2rem;align-self:center;opacity:0.8;}
+.karte__sub{grid-column:1/3;grid-row:3;font-size:0.82rem;color:var(--kt-muted);font-style:italic;margin-top:0.2rem;}
+.karte__lead{padding:0.85rem 1.25rem 0;font-size:0.95rem;color:var(--kt-muted);line-height:1.75;}
+.karte__lead strong{color:var(--kt-ink);}
+.karte__body{padding:0.85rem 1.25rem 1.1rem;display:flex;flex-direction:column;gap:1rem;}
+.karte__footer{display:flex;justify-content:space-between;align-items:center;padding:0.55rem 1.25rem;background:var(--fk-light);border-top:1px solid var(--fk-mid);font-size:0.78rem;color:var(--fk-dark);font-weight:500;}
+.ab-titel{font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--fk-dark);margin-bottom:0.5rem;}
+.schritt{display:flex;gap:0.85rem;align-items:flex-start;padding:0.65rem 0.85rem;border-radius:var(--radius-sm);background:var(--fk-light);border-left:3px solid var(--fk);margin-bottom:0.5rem;}
+.schritt-num{font-size:1.2rem;font-weight:900;color:var(--fk);line-height:1;min-width:1.6rem;flex-shrink:0;}
+.schritt-inhalt{font-size:0.9rem;line-height:1.55;}
+.schritt-inhalt strong{display:block;font-size:0.95rem;margin-bottom:0.15rem;color:var(--fk-dark);}
+.box{border-radius:var(--radius-sm);padding:0.75rem 1rem;font-size:0.88rem;line-height:1.6;}
+.box-rot{background:var(--fk-light);border-left:3px solid var(--fk);color:var(--fk-dark);}
+.box-info{background:#e8f4f8;border-left:3px solid var(--kt-primary);}
+.box-warn{background:#fff3e0;border-left:3px solid #E65100;}
+.box-gruen{background:#e8f5e9;border-left:3px solid #2E7D32;}
+.signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.5rem;}
+.signal-item{display:flex;align-items:flex-start;gap:0.5rem;padding:0.45rem 0.65rem;background:#f5f7fa;border-radius:var(--radius-sm);font-size:0.85rem;}
+.signal-dot{width:8px;height:8px;border-radius:50%;background:var(--fk);flex-shrink:0;margin-top:6px;}
+.abgrenzung{border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--kt-border);font-size:0.85rem;}
+.abgrenzung-row{display:grid;grid-template-columns:1fr 1fr;}
+.abgrenzung-row:not(:last-child){border-bottom:1px solid var(--kt-border);}
+.abgrenzung-cell{padding:0.55rem 0.85rem;line-height:1.5;}
+.abgrenzung-cell:first-child{border-right:1px solid var(--kt-border);}
+.abgrenzung-head{background:var(--kt-paper);font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--kt-muted);}
+.abgrenzung-ja{color:#2E7D32;font-weight:600;}
+.abgrenzung-nein{color:var(--fk);font-weight:600;}
+.meldeweg{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.75rem;background:#f5f7fa;border-radius:var(--radius-sm);font-size:0.85rem;margin-bottom:0.4rem;}
+.meldeweg-icon{font-size:1.1rem;flex-shrink:0;}
+.back-to-top{display:inline-block;margin-top:0.5rem;font-size:0.82rem;color:var(--kt-muted);text-decoration:none;}
+.back-to-top:hover{color:var(--kt-primary);}
+.fk-nav-buttons{display:flex;justify-content:space-between;align-items:center;max-width:860px;margin:0 auto 2rem;padding:0 1.25rem;gap:1rem;}
+.fk-nav-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.1rem;border-radius:var(--radius-md);font-size:0.85rem;font-weight:600;text-decoration:none;border:1.5px solid var(--fk-mid);color:var(--fk);background:#fff;transition:all 0.15s;}
+.fk-nav-btn:hover{background:var(--fk-light);border-color:var(--fk);}
+.fk-nav-btn--weiter{background:var(--fk);color:#fff;border-color:var(--fk);}
+.fk-nav-btn--weiter:hover{background:var(--fk-dark);border-color:var(--fk-dark);color:#fff;}
+.seiten-footer{background:var(--kt-primary);color:rgba(255,255,255,0.55);text-align:center;padding:1.5rem 1.25rem;font-size:0.8rem;line-height:1.9;}
+.seiten-footer a{color:rgba(255,255,255,0.7);text-decoration:underline;}
+@media(max-width:600px){.karte__header{padding:0.85rem 1rem;}.karte__lead,.karte__body{padding-left:1rem;padding-right:1rem;}.signal-grid{grid-template-columns:1fr;}.abgrenzung-row{grid-template-columns:1fr;}.abgrenzung-cell:first-child{border-right:none;border-bottom:1px solid var(--kt-border);}.fk-nav-buttons{flex-direction:column;}.fk-nav-btn{width:100%;justify-content:center;}}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div id="top"></div>
+<header class="fk-header" role="banner">
+  <a class="fk-header__logo" href="DASHBOARD.html" aria-label="KLARTEXT Akademie">KLARTEXT<span>Klar. Warm. Menschlich.</span></a>
+  <div class="fk-header__badge"><span class="fk-header__akut">AKUT</span> Feuerwehrkarten</div>
+</header>
+<nav class="fk-nav" aria-label="Feuerwehrkarten-Navigation">
+  <div class="fk-nav__inner">
+    <a href="FK-01.html">⚡ FK-01 · Eskalation</a>
+    <a href="FK-02.html" class="aktiv" aria-current="page">🔇 FK-02 · Shutdown</a>
+    <a href="FK-03.html">😰 FK-03 · Panik</a>
+    <a href="FK-04.html">⚠️ FK-04 · Fremdgef.</a>
+    <a href="FK-05.html">🩹 FK-05 · Selbstverletzung</a>
+    <a href="FK-06.html">🏃 FK-06 · Flucht</a>
+    <a href="FK-07.html">🌫️ FK-07 · Dissoziation</a>
+  </div>
+</nav>
+<nav class="modul-nav" aria-label="Zurück zur Übersicht">
+  <div class="modul-nav__inner">
+    <a href="DASHBOARD.html">← Dashboard</a>
+    <a href="DASHBOARD.html">← Alle Module</a>
+    <a href="M0-00_Systemelemente.html">Systemkarte Feuerwehr</a>
+    <a href="M6-01_Mobbing_erkennen.html">Modul 6 · Krise &amp; Mobbing</a>
+  </div>
+</nav>
+<div class="seiten-intro">
+  <div class="barometer-hinweis" role="alert">
+    <span class="barometer-dot" aria-hidden="true"></span>
+    <span><strong>Barometer ROT &nbsp;—&nbsp;</strong> Shutdown ist eine Freeze-Reaktion des Nervensystems. Das Kind ist nach innen gezogen – nicht absichtlich stumm.</span>
+  </div>
+</div>
+<main class="kartenliste" id="main-content" aria-label="Feuerwehrkarte FK-02">
+  <article class="karte karte--feuerwehr" id="fk02" aria-labelledby="h-fk02">
+    <header class="karte__header">
+      <div class="karte__meta">
+        <span class="fk-tag">FK-02</span>
+        <span class="akut-tag">AKUT</span>
+        <span class="karte-nr">Feuerwehrkarte 2 von 7 · Barometer ROT</span>
+      </div>
+      <h1 class="karte__titel" id="h-fk02">Shutdown</h1>
+      <div class="karte__icon" aria-hidden="true">🔇</div>
+      <p class="karte__sub">Totaler Rückzug · Erstarren · Freeze-Reaktion</p>
+    </header>
+    <p class="karte__lead">Das Kind ist <strong>nicht ansprechbar, völlig eingefroren oder in sich zurückgezogen</strong>: kein Blickkontakt, keine Reaktion auf Ansprache, Körper starr oder zusammengesunken. Dies ist eine Freeze-Reaktion des Nervensystems – kein Trotz, kein Wille. Das Kind „kann" nicht antworten.</p>
+    <section class="karte__body">
+      <div>
+        <div class="ab-titel">Sofortmaßnahmen – in dieser Reihenfolge</div>
+        <div class="schritt">
+          <span class="schritt-num">1</span>
+          <div class="schritt-inhalt">
+            <strong>Ruhe herstellen – Reize reduzieren</strong>
+            Lärm, Aufmerksamkeit anderer und Blicke auf das Kind minimieren. Lehrkraft diskret informieren. Klasse ggf. nach draußen schicken oder Kind in ruhigere Ecke begleiten.
+          </div>
+        </div>
+        <div class="schritt">
+          <span class="schritt-num">2</span>
+          <div class="schritt-inhalt">
+            <strong>Keine Anforderungen – keine Fragen</strong>
+            Kein „Was ist los?", kein „Komm schon", kein Berühren ohne Signal. Stattdessen: ruhig neben dem Kind bleiben, in respektvollem Abstand. Stimme tief und langsam.
+          </div>
+        </div>
+        <div class="schritt">
+          <span class="schritt-num">3</span>
+          <div class="schritt-inhalt">
+            <strong>TK informieren</strong>
+            Sofortnachricht. Kurz und sachlich: „[Name] im Shutdown. Ich bin dabei. Bitte Rückmeldung." TK entscheidet weiteres Vorgehen – auch ob Eltern informiert werden.
+          </div>
+        </div>
+        <div class="schritt">
+          <span class="schritt-num">4</span>
+          <div class="schritt-inhalt">
+            <strong>Anker anbieten – sanft und ohne Erwartung</strong>
+            Optional: warmes Getränk hinstellen (nicht geben), leises Summen, eigene ruhige Atmung hörbar machen. Nur wenn das Kind signalisiert, dass Kontakt okay ist: Hand auf den Tisch legen (nicht anfassen).
+          </div>
+        </div>
+        <div class="schritt">
+          <span class="schritt-num">5</span>
+          <div class="schritt-inhalt">
+            <strong>Warten – Geduld ist die Intervention</strong>
+            Shutdown löst sich von selbst, wenn Sicherheit spürbar ist. Keine Zeitvorgaben. Kein „Wir müssen jetzt aber…". Das Nervensystem kehrt zurück, wenn es bereit ist.
+          </div>
+        </div>
+        <div class="schritt">
+          <span class="schritt-num">6</span>
+          <div class="schritt-inhalt">
+            <strong>Erst nach Rückkehr: leichte Orientierung geben</strong>
+            Wenn das Kind Blickkontakt aufnimmt oder sich bewegt: kurze Orientierungssätze. „Du bist hier. Das ist die Schule. Ich bin [Name]. Du musst nichts." Dann abwarten.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ab-titel">Erkennungssignale für diese Karte</div>
+        <div class="signal-grid">
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Kein Blickkontakt, leerer Blick</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Keine Reaktion auf Ansprache</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Völlige Bewegungslosigkeit</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Zusammengekauert, in sich gezogen</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Flüstern oder völliges Schweigen</div>
+          <div class="signal-item"><span class="signal-dot" aria-hidden="true"></span>Plötzlicher Wechsel von Aktiv zu Still</div>
+        </div>
+      </div>
+      <div>
+        <div class="ab-titel">Was jetzt gilt – und was nicht</div>
+        <div class="abgrenzung">
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-head">Jetzt tun</div>
+            <div class="abgrenzung-cell abgrenzung-head">Jetzt nicht tun</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Reize minimieren, Ruhe schaffen</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Kind anfassen oder schütteln</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Ruhig, nah und still dabei bleiben</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Fragen stellen oder erklären</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ TK sofort informieren</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Auf Antwort bestehen</div>
+          </div>
+          <div class="abgrenzung-row">
+            <div class="abgrenzung-cell abgrenzung-ja">✓ Geduldig warten – Zeit geben</div>
+            <div class="abgrenzung-cell abgrenzung-nein">✗ Humor oder Ablenkung einsetzen</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ab-titel">Nach dem Shutdown</div>
+        <div class="meldeweg"><span class="meldeweg-icon">📋</span><div><strong>Dokumentation</strong> – Uhrzeit, Dauer, Auslöser (soweit erkennbar), wie sich das Kind erholt hat</div></div>
+        <div class="meldeweg"><span class="meldeweg-icon">📞</span><div><strong>TK-Nachbericht</strong> – auch wenn alles gut ausgegangen ist</div></div>
+        <div class="meldeweg"><span class="meldeweg-icon">🔍</span><div><strong>Muster beobachten</strong> – Häufiger Shutdown ist ein Signal für tiefere Belastung; mit TK besprechen</div></div>
+      </div>
+      <div class="box box-info" role="note">
+        <strong>🧠 Neurobiologischer Hintergrund:</strong> Der Shutdown ist eine Dorsal-Vagus-Reaktion (Freeze) gemäß der Polyvagaltheorie (Porges 1994). Das parasympathische System übernimmt im Extremstress – das Kind „fährt herunter" als Schutzreaktion. Sprechen, Erklären oder Anforderungen verschlimmern den Zustand. Sicherheit und Zeit sind die einzige Intervention.
+      </div>
+      <div class="box box-warn" role="note">
+        ⚠️ <strong>Abgrenzung zu Dissoziation:</strong> Wenn das Kind einen völlig leeren, abwesenden Blick hat, nicht auf den eigenen Namen reagiert oder den Körper wie von außen wahrzunehmen scheint → FK-07 · Dissoziation prüfen.
+      </div>
+      <div class="box box-gruen" role="note">
+        ✅ <strong>Rückkehr erkennen:</strong> Erste Zeichen: Augenbewegung, leichtes Schlucken, Veränderung der Körperhaltung. Dann: ruhig bleiben, kein Jubel, keine sofortige Aufarbeitung. „Gut, dass du wieder da bist."
+      </div>
+      <a href="#top" class="back-to-top">⬆ Nach oben</a>
+    </section>
+    <footer class="karte__footer">
+      <span>Feuerwehrkarte FK-02 · Barometer ROT</span>
+      <span>2 von 7 Feuerwehrkarten</span>
+    </footer>
+  </article>
+</main>
+<div class="fk-nav-buttons">
+  <a href="FK-01.html" class="fk-nav-btn">← FK-01 · Eskalation</a>
+  <a href="FK-03.html" class="fk-nav-btn fk-nav-btn--weiter">FK-03 · Panik →</a>
+</div>
+<footer class="seiten-footer" role="contentinfo">
+  <p>KLARTEXT-Mentoring-System &nbsp;·&nbsp; Feuerwehrkarte FK-02 – Shutdown</p>
+  <p><a href="DASHBOARD.html">← Alle Module</a> &nbsp;·&nbsp; <a href="DASHBOARD.html">Kartensystem-Übersicht</a> &nbsp;·&nbsp; © Anja Jolk · Schwerte</p>
+</footer>
+
+<!-- FABs -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#C62828;border:2px solid #FFCDD2;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(198,40,40,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FFCDD2" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#C62828;border:2px solid #FFCDD2;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(198,40,40,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#FFCDD2" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

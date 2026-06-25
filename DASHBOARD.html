@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – Dashboard · Alle Module</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B;--kt-accent:#6EC6A0;--kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;--kt-muted:#7A7060;--kt-surface:#FFFFFF;--kt-border:#DDD8CE;
+  --c-m0:#1B3A4B;--c-m0-l:#EAF0F4;--c-m1:#2E5E8A;--c-m1-l:#EAF1F8;
+  --c-m2:#3B8A68;--c-m2-l:#EEF7F2;--c-m3:#B07D2A;--c-m3-l:#FBF4E8;
+  --c-m4:#5D3A7A;--c-m4-l:#F3EEF9;--c-m5:#B7500A;--c-m5-l:#FBF0EA;
+  --c-m6:#D81B60;--c-m6-l:#FDE8F1;--c-m7:#8B4A38;--c-m7-l:#F7EFED;
+  --c-m8:#6B3F6B;--c-m8-l:#F3EDF3;--c-mh:#C47A00;--c-mh-l:#FDF4E3;
+  --c-fk:#C62828;--c-fk-l:#FDEAEA;
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+  --shadow:0 2px 10px rgba(27,58,75,.09);--shadow-lg:0 6px 28px rgba(27,58,75,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:140px;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;}
+.kt-header{background:var(--kt-primary);height:118px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--kt-accent);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:40px;height:40px;background:var(--kt-primary);border:2px solid var(--kt-accent);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:5px 6px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--kt-accent);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.7rem;color:var(--kt-accent);letter-spacing:.14em;display:block;margin-top:2px;}
+.kt-logo-text .sub{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:2px;}
+.brainy-circle{width:68px;height:68px;background:#fff;border:3px solid var(--kt-accent);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.brainy-circle img{width:82%;height:auto;}
+.search-zone{background:var(--kt-surface);border-bottom:1.5px solid var(--kt-border);padding:1rem clamp(1rem,4vw,2rem);position:sticky;top:160px;z-index:190;box-shadow:0 2px 12px rgba(27,58,75,.07);}
+.search-inner{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:.65rem;}
+.search-wrap{position:relative;}
+.search-icon{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--kt-muted);pointer-events:none;}
+#searchInput{width:100%;padding:.7rem 1rem .7rem 2.6rem;border:1.5px solid var(--kt-border);border-radius:var(--r-md);font-family:'DM Sans',sans-serif;font-size:.93rem;color:var(--kt-ink);background:var(--kt-paper);outline:none;transition:border-color .15s;}
+#searchInput:focus{border-color:var(--kt-primary);box-shadow:0 0 0 3px rgba(27,58,75,.12);}
+#searchInput::placeholder{color:var(--kt-muted);}
+.filter-group{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;}
+.filter-label{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--kt-muted);flex-shrink:0;}
+.filter-btn{display:inline-flex;align-items:center;gap:.28rem;padding:.28rem .65rem;border:1.5px solid var(--kt-border);border-radius:20px;background:var(--kt-surface);color:var(--kt-muted);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.filter-btn:hover{border-color:var(--kt-primary);color:var(--kt-primary);}
+.filter-btn.active{background:var(--kt-primary);border-color:var(--kt-primary);color:#fff;font-weight:600;}
+.filter-btn .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+main{max-width:960px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;}
+.results-meta{font-size:.73rem;color:var(--kt-muted);margin-bottom:.9rem;}
+.results-meta strong{color:var(--kt-primary);}
+.modul-sektion{scroll-margin-top:210px;margin-bottom:2.5rem;}
+.modul-sektion.hidden{display:none!important;}
+.modul-sektion-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem;padding-bottom:.5rem;border-bottom:2px solid var(--sek-color,var(--kt-border));}
+.modul-sektion-dot{width:12px;height:12px;border-radius:50%;background:var(--sek-color);flex-shrink:0;}
+.modul-sektion-titel{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--kt-primary);line-height:1;}
+.modul-sektion-sub{font-size:.72rem;color:var(--kt-muted);margin-left:auto;white-space:nowrap;}
+.modul-sektion-link{font-size:.7rem;color:var(--sek-color);text-decoration:none;font-weight:500;padding:.2rem .55rem;border:1px solid var(--sek-color);border-radius:20px;white-space:nowrap;}
+.karten-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.65rem;}
+.kachel{display:flex;flex-direction:column;background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;text-decoration:none;color:var(--kt-ink);transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--shadow);}
+.kachel:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--kachel-color,var(--kt-border));}
+.kachel.hidden{display:none!important;}
+.kachel-stripe{height:3px;background:var(--kachel-color,var(--kt-muted));}
+.kachel-header{background:var(--kachel-bg,rgba(0,0,0,.04));padding:.55rem .65rem .35rem;display:flex;align-items:center;justify-content:space-between;gap:.35rem;}
+.kachel-nr{font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--kachel-color,var(--kt-muted));}
+.kachel-emoji{font-size:1.1rem;line-height:1;}
+.kachel-body{padding:.5rem .65rem .65rem;flex:1;display:flex;flex-direction:column;gap:.22rem;}
+.kachel-titel{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--kt-primary);line-height:1.25;}
+.kachel-sub{font-size:.7rem;color:var(--kt-muted);line-height:1.4;margin-top:auto;padding-top:.18rem;}
+.kachel-tag{display:inline-block;font-size:.57rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.1rem .32rem;border-radius:3px;margin-top:.25rem;align-self:flex-start;background:var(--kachel-bg);color:var(--kachel-color);}
+.no-results{display:none;text-align:center;padding:3rem 1rem;color:var(--kt-muted);}
+.no-results .no-icon{font-size:2.5rem;margin-bottom:.75rem;display:block;}
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.5rem 1rem;font-size:.75rem;margin-top:1.5rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
+.footer-copy{font-size:.65rem;opacity:.4;margin-top:.6rem;display:block;}
+@media(max-width:640px){
+  .kt-header{height:100px;}
+  .search-zone{top:100px;}
+  .karten-grid{grid-template-columns:repeat(2,1fr);}
+  .filter-label{display:none;}
+  .brainy-circle{width:52px;height:52px;}
+}
+</style>
+<script>
+(function(){
+  try{
+    var login = sessionStorage.getItem('klartext_login');
+    var role = sessionStorage.getItem('klartext_role') || '';
+    // Lokale Nutzung (file://) → automatisch als admin
+    if(window.location.protocol === 'file:'){
+      if(login !== 'true'){
+        sessionStorage.setItem('klartext_login','true');
+        sessionStorage.setItem('klartext_role','admin');
+      }
+      return; // Lokal: alle Inhalte sichtbar
+    }
+    // Online (Netlify): Login prüfen
+    if(login !== 'true'){
+      window.location.href = 'KLARTEXT_Login.html';
+      return;
+    }
+    // Rollen die NUR ihr Ziel sehen
+    var ziele = {
+      lk:     'KLARTEXT_Lehrerkurs.html',
+      eltern: 'KLARTEXT_Elternkurs.html'
+    };
+    if(ziele[role]){
+      window.location.href = ziele[role];
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+        <span class="sub">Mentoring-System</span>
+      </div>
+    </a>
+  </div>
+  <div class="brainy-circle"><img src="brainy.png" alt="Brainy"></div>
+  <span id="env-badge" style="display:none;"></span>
+    <nav style="display:flex;align-items:center;gap:.5rem;flex-shrink:0;">
+    <a href="BAROMETER_INGRA.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(110,198,160,.15);border:1px solid rgba(110,198,160,.3);color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(110,198,160,.25)'" onmouseout="this.style.background='rgba(110,198,160,.15)'">🌡️ INGRA</a>
+    <a href="BAROMETER_KIND.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(46,158,90,.15);border:1px solid rgba(46,158,90,.3);color:#4EC880;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(46,158,90,.25)'" onmouseout="this.style.background='rgba(46,158,90,.15)'">🌡️ Kind</a>
+    <a href="M3-Joker.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(196,122,0,.15);border:1px solid rgba(196,122,0,.5);color:#C47A00;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;">🃏 Joker</a>
+    <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .65rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">👩 Über mich</a>
+    <a href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border:1.5px solid rgba(255,100,100,.4);border-radius:20px;color:rgba(255,180,180,.8);font-size:.72rem;font-weight:700;text-decoration:none;background:rgba(255,100,100,.1);">⬅ Logout</a>
+  </nav>
+</header>
+<!-- GLOBALE HAUPTNAVIGATION -->
+<nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
+  <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
+  <a class="gnav-link aktiv" href="DASHBOARD.html">🏠 Dashboard</a>
+  <a class="gnav-link" href="CHAT_View.html">💬 Nachrichten</a>
+  <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
+  <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
+  <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
+  <a class="gnav-link" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
+</nav>
+<a class="wtij-bar" href="DASHBOARD-M3.html">
+  <div class="wtij-bar-icon">🎯</div>
+  <div class="wtij-bar-text">
+    <span class="wtij-bar-label">Sofort-Zugriff · Modul 3</span>
+    <span class="wtij-bar-titel">Was tue ich jetzt?</span>
+    <span class="wtij-bar-sub">8 Situationen · 12 Werkzeuge · direkt im Unterricht</span>
+  </div>
+  <div class="wtij-bar-arrow">›</div>
+</a>
+
+<div class="quick-nav">
+  <a class="qbtn rot" href="#sek-fk" onclick="resetFilter();openSek('sek-fk');return true;">🚒 Feuerwehr-Karten</a>
+  <a class="qbtn" href="#sek-kd" onclick="resetFilter();openSek('sek-kd');return true;">🧒 Kind-Karten</a>
+  <a class="qbtn" href="#sek-tools" onclick="resetFilter();openSek('sek-tools');return true;">⏱️ Tools</a>
+  <a class="qbtn" href="#sek-dl" onclick="resetFilter();openSek('sek-dl');return true;">📥 Downloads</a>
+</div>
+
+<div class="search-zone" id="search">
+  <div class="search-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="searchInput" placeholder="Suche: Barometer, ADHS, Deeskalation, Mobbing …" autocomplete="off">
+    </div>
+    <div style="display:flex;gap:.3rem;flex-wrap:wrap;align-items:center;margin-bottom:.4rem;">
+      <span style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--kt-muted);flex-shrink:0;align-self:center;">Modul:</span>
+      <a href="#sek-m0" class="filter-btn" data-modul="m0" title="M0 · Systemelemente" style="border-color:var(--c-m0);color:var(--c-m0);">M0</a>
+      <a href="#sek-m1" class="filter-btn" data-modul="m1" title="M1 · Rolle & Recht" style="border-color:var(--c-m1);color:var(--c-m1);">M1</a>
+      <a href="#sek-m2" class="filter-btn" data-modul="m2" title="M2 · Kinder verstehen" style="border-color:var(--c-m2);color:var(--c-m2);">M2</a>
+      <a href="#sek-m3" class="filter-btn" data-modul="m3" title="M3 · Sofort-Werkzeuge" style="border-color:var(--c-m3);color:var(--c-m3);">M3</a>
+      <a href="#sek-m4" class="filter-btn" data-modul="m4" title="M4 · Kommunikation" style="border-color:var(--c-m4);color:var(--c-m4);">M4</a>
+      <a href="#sek-m5" class="filter-btn" data-modul="m5" title="M5 · Schwierige Situationen" style="border-color:var(--c-m5);color:var(--c-m5);">M5</a>
+      <a href="#sek-m6" class="filter-btn" data-modul="m6" title="M6 · Krisen" style="border-color:var(--c-m6);color:var(--c-m6);">M6</a>
+      <a href="#sek-m7" class="filter-btn" data-modul="m7" title="M7 · Praxissituationen" style="border-color:var(--c-m7);color:var(--c-m7);">M7</a>
+      <a href="#sek-m8" class="filter-btn" data-modul="m8" title="M8 · Selbstfürsorge" style="border-color:var(--c-m8);color:var(--c-m8);">M8</a>
+      <a href="#sek-lk" class="filter-btn" data-modul="lk" title="Lehrkraft-Karten" style="border-color:var(--c-m1);color:var(--c-m1);">LK</a>
+      <a href="#sek-tk" class="filter-btn" data-modul="tk" title="Teamkoordination" style="border-color:#4A148C;color:#4A148C;">TK</a>
+      <a href="#sek-fk" class="filter-btn" data-modul="fk" title="Feuerwehrkarten" style="border-color:#C62828;color:#C62828;">FK</a>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Bereich:</span>
+      <button class="filter-btn active" data-modul="alle">📋 Alle</button>
+      <button class="filter-btn" data-modul="fk"><span class="dot" style="background:#C62828"></span>🚒 Feuerwehr</button>
+      <button class="filter-btn" data-modul="kd"><span class="dot" style="background:#4FC3C7"></span>🧒 Kinder (Kategorie)</button>
+      <button class="filter-btn" data-modul="tools"><span class="dot" style="background:#455A64"></span>⏱️ Tools</button>
+    </div>
+    </div>
+</div>
+
+<main>
+<!-- Beta-Banner -->
+  <div id="beta-banner" style="display:none;background:#1B3A4B;border-radius:10px;padding:.75rem 1.25rem;margin:.75rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-left:4px solid #6EC6A0;">
+    <div style="display:flex;align-items:center;gap:.75rem;">
+      <span style="font-size:1.1rem;">🧪</span>
+      <div>
+        <div style="font-size:.7rem;font-weight:700;color:#6EC6A0;letter-spacing:.1em;text-transform:uppercase;">Beta-Testphase · bis 07.07.2026</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.75);margin-top:.1rem;">Danke fürs Testen! Dein Feedback macht KLARTEXT besser.</div>
+      </div>
+    </div>
+    <a href="KLARTEXT_Feedback_INGRA.html" style="background:#6EC6A0;color:#1B3A4B;border:none;border-radius:8px;padding:.4rem 1rem;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;">✍️ Feedback geben</a>
+  </div>
+  <script>
+  (function(){
+    try{
+      // Banner nur zeigen, wenn environment_mode === 'beta'
+      var betaBanner = document.getElementById('beta-banner');
+      if(sessionStorage.getItem('klartext_environment') === 'beta'){
+        betaBanner.style.display = 'flex';
+      } else {
+        betaBanner.style.display = 'none';
+      }
+    }catch(e){}
+  })();
+  </script>
+
+
+  <!-- Installations-Hinweis -->
+  <div id="install-banner" style="display:none;background:#EEF7F2;border:1.5px solid #3B8A68;border-radius:10px;padding:.7rem 1.1rem;margin:.75rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:.65rem;">
+      <span style="font-size:1.2rem;">📲</span>
+      <div>
+        <div style="font-size:.78rem;font-weight:700;color:#1B3A4B;">Tipp: Als App installieren</div>
+        <div style="font-size:.72rem;color:#3A3A4A;margin-top:.1rem;">Du nutzt KLARTEXT gerade im Browser. Installiere es auf deinem Homescreen — startet wie eine echte App, ohne Adressleiste.</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.4rem;flex-shrink:0;">
+      <button onclick="zeigeInstallAnleitung()" style="background:#3B8A68;color:#fff;border:none;border-radius:8px;padding:.4rem .9rem;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;">So geht's →</button>
+      <button onclick="installBannerSchliessen()" style="background:none;border:none;color:#7A7060;font-size:1rem;cursor:pointer;padding:.2rem .4rem;">✕</button>
+    </div>
+  </div>
+
+  <!-- Installations-Anleitung Modal -->
+  <div id="install-modal" style="display:none;position:fixed;inset:0;background:rgba(27,58,75,.6);z-index:9998;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:#fff;border-radius:14px;padding:1.5rem;max-width:420px;width:100%;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#1B3A4B;">📲 App installieren</div>
+        <button onclick="document.getElementById('install-modal').style.display='none'" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#7A7060;">✕</button>
+      </div>
+      <div style="background:#EEF7F2;border-radius:10px;padding:.85rem 1rem;margin-bottom:.75rem;">
+        <div style="font-size:.78rem;font-weight:700;color:#1B3A4B;margin-bottom:.4rem;">🍎 iPhone / iPad (Safari)</div>
+        <div style="font-size:.8rem;color:#3A3A4A;line-height:1.7;">
+          1. Link in <b>Safari</b> öffnen (nicht Chrome)<br>
+          2. Unten auf das <b>Teilen-Symbol</b> ↑ tippen<br>
+          3. <b>„Zum Home-Bildschirm"</b> wählen<br>
+          4. Namen bestätigen → <b>„Hinzufügen"</b>
+        </div>
+      </div>
+      <div style="background:#F0F7FF;border-radius:10px;padding:.85rem 1rem;">
+        <div style="font-size:.78rem;font-weight:700;color:#1B3A4B;margin-bottom:.4rem;">🤖 Android (Chrome)</div>
+        <div style="font-size:.8rem;color:#3A3A4A;line-height:1.7;">
+          1. Link in <b>Chrome</b> öffnen<br>
+          2. Oben rechts <b>drei Punkte</b> ⋮ tippen<br>
+          3. <b>„App installieren"</b> wählen<br>
+          4. Bestätigen
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function(){
+    try{
+      // Nur zeigen wenn NICHT bereits als installierte PWA geöffnet
+      var istPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      var bereitsAusgeblendet = localStorage.getItem('kt_install_hint_dismissed') === 'true';
+      if(!istPWA && !bereitsAusgeblendet){
+        document.getElementById('install-banner').style.display='flex';
+      }
+    }catch(e){}
+  })();
+  function zeigeInstallAnleitung(){ document.getElementById('install-modal').style.display='flex'; }
+  function installBannerSchliessen(){
+    document.getElementById('install-banner').style.display='none';
+    try{ localStorage.setItem('kt_install_hint_dismissed','true'); }catch(e){}
+  }
+  </script>
+  <div class="results-meta"><strong id="countDisplay">0</strong> Einträge</div>
+
+  <!-- LERNMATERIALIEN -->
+
+<!-- FEEDBACK -->
+  <section class="modul-sektion" id="sek-feedback" style="scroll-margin-top:210px;--sek-color:#6EC6A0;--sek-light:#EAF7EF;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot"><span class="sek-chevron">▼</span></div>
+      <span class="modul-sektion-titel">⭐ Feedback</span>
+      <span class="modul-sektion-sub">Deine Rückmeldung zählt</span>
+    </div>
+    <div id="feedback-banner-bereich" style="display:flex;flex-direction:column;gap:.6rem;padding:0 clamp(.75rem,3vw,1.5rem);">
+      <!-- Banner 2: Neuer allgemeiner Feedbackbogen — alle außer admin/trainer -->
+      <a class="fb-alle" href="feedback.html" style="background:#1B5E3A;border-radius:10px;padding:.75rem 1.25rem;text-decoration:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-left:4px solid #6EC6A0;">
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:1.1rem;">⭐</span>
+          <div>
+            <div style="font-size:.7rem;font-weight:700;color:#6EC6A0;letter-spacing:.1em;text-transform:uppercase;">Feedback geben</div>
+            <div style="font-size:.82rem;color:rgba(255,255,255,.85);">Deine Rückmeldung macht KLARTEXT besser</div>
+          </div>
+        </div>
+        <span style="background:#6EC6A0;color:#1B3A4B;border-radius:8px;padding:.35rem .9rem;font-size:.75rem;font-weight:700;white-space:nowrap;">⭐ Feedback geben</span>
+      </a>
+      <!-- Banner 3: Admin-Ansicht — nur admin + trainer -->
+      <a class="fb-nur-admin" href="feedbackAdmin.html" style="background:#7A5318;border-radius:10px;padding:.75rem 1.25rem;text-decoration:none;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-left:4px solid #C47A00;">
+        <div style="display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:1.1rem;">📊</span>
+          <div>
+            <div style="font-size:.7rem;font-weight:700;color:#C47A00;letter-spacing:.1em;text-transform:uppercase;">Feedback Admin</div>
+            <div style="font-size:.82rem;color:rgba(255,255,255,.85);">Alle Rückmeldungen einsehen und auswerten</div>
+          </div>
+        </div>
+        <span style="background:#C47A00;color:#fff;border-radius:8px;padding:.35rem .9rem;font-size:.75rem;font-weight:700;white-space:nowrap;">📊 Admin-Ansicht</span>
+      </a>
+    </div>
+  </section>
+
+<!-- LERNMATERIALIEN (konsolidiert) -->
+  <section class="modul-sektion" id="sek-lernmaterialien" style="scroll-margin-top:135px;--sek-color:#1B3A4B;--sek-light:#EAF0F4;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">📚 Lernmaterialien</span>
+      <span class="modul-sektion-sub">Workbook · Lernpfad · Fachbuch · Glossar</span>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="KLARTEXT_Workbook.html" data-modul="learn" data-search="workbook reflexion aufgaben modul vertiefung" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe" style="background:#1B3A4B;"></div><div class="kachel-header"><span class="kachel-nr">📓</span><span class="kachel-emoji">✏️</span></div><div class="kachel-body"><div class="kachel-titel">Workbook</div><div class="kachel-sub">Reflexion · Aufgaben · Vertiefung</div><span class="kachel-tag">Lernmaterial</span></div></a>
+      <a class="kachel" href="KLARTEXT_Lernhandbuch_KOMPLETT.html" data-modul="learn" data-search="lernhandbuch nachlesen inhalt vertiefung modul" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">📚</span></div><div class="kachel-body"><div class="kachel-titel">Lernhandbuch</div><div class="kachel-sub">Alle Inhalte zum Nachlesen · Zur Vertiefung</div><span class="kachel-tag">Optional</span></div></a>
+      <a class="kachel" href="KLARTEXT_Lernpfad_INGRA.html"
+         data-modul="learn" data-search="lernpfad curriculum kurs basiskurs erweiterung">
+        <div class="kachel-stripe" style="background:#1B3A4B;"></div>
+        <div class="kachel-header"><span class="kachel-nr">LP</span><span class="kachel-emoji">🗺️</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">Mein Lernpfad</div>
+          <div class="kachel-sub">8 Wochen Basis · 4 Wochen Erweiterung · Fortschritt</div>
+        </div>
+      </a>
+      <a class="kachel" href="KLARTEXT_Quellenverzeichnis.html" data-modul="learn" data-search="quellen wissenschaft literatur nachweise" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📑</span><span class="kachel-emoji">📑</span></div><div class="kachel-body"><div class="kachel-titel">Quellenverzeichnis</div><div class="kachel-sub">Wissenschaftliche Nachweise</div><span class="kachel-tag">Nachschlagen</span></div></a>
+      <a class="kachel" href="KLARTEXT_Fachbuch_Neu.html" data-modul="learn" data-search="fachbuch buch kapitel grundlagen recht krise" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Fachbuch</span><span class="kachel-emoji">📕</span></div><div class="kachel-body"><div class="kachel-titel">Fachbuch Schulbegleitung</div><div class="kachel-sub">12 Kapitel · Fallbeispiele · Trainingsmodule</div><span class="kachel-tag">Vertiefung</span></div></a>
+      <a class="kachel" href="KLARTEXT_Glossar.html" data-modul="learn" data-search="glossar fachbegriffe definitionen barometer klar joker ingra trauma adhs" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Glossar</span><span class="kachel-emoji">🔤</span></div><div class="kachel-body"><div class="kachel-titel">Glossar</div><div class="kachel-sub">64 Fachbegriffe · A–Ü</div><span class="kachel-tag">Nachschlagen</span></div></a>
+      <a class="kachel" href="KLARTEXT_Systemanleitung.html" data-modul="learn" data-search="anleitung hilfe erklaerung uebersicht start" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">🧭</span></div><div class="kachel-body"><div class="kachel-titel">So funktioniert KLARTEXT</div><div class="kachel-sub">Kurze Übersicht über das ganze System</div><span class="kachel-tag">Hilfe</span></div></a>
+    
+      <a class="kachel" href="KLARTEXT_Downloads.html" data-modul="dl" data-search="downloads formulare drucken pdf barometer tagesdokumentation wochenreflexion eltern lehrkraft tk kinder" style="--kachel-color:#2E7D32;--kachel-bg:#E8F5E9;grid-column:1/-1;"><div class="kachel-stripe" style="background:#2E7D32;"></div><div class="kachel-header"><span class="kachel-nr">Downloads</span><span class="kachel-emoji">📥</span></div><div class="kachel-body"><div class="kachel-titel">Download-Zentrale öffnen</div><div class="kachel-sub">INGRA · Eltern · Lehrkraft · TK · Kinder · Anti-Mobbing — alle Formulare an einem Ort</div><span class="kachel-tag" style="background:#2E7D32;color:#fff;">→ Alle 20+ Formulare</span></div></a>
+    </div>
+  </section>
+
+<section class="modul-sektion" id="sek-learn" style="scroll-margin-top:135px;--sek-color:#1B3A4B;--sek-light:#EAF0F4;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot"></div>
+      <span class="modul-sektion-titel">📚 Bücher · E-Learning · Lernmaterialien</span>
+      <span class="modul-sektion-sub">E-Learning · Handbuch · Workbook · Trainerkurs</span>
+      <span class="sek-chevron">▼</span>
+    </div>
+    <div class="modul-sektion-body"><div class="kacheln-grid">
+      
+      <a class="kachel" href="KLARTEXT_Ueber_Anja_Jolk.html" data-modul="learn" data-search="über anja jolk profil lebenslauf kontakt zertifikate" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Über mich</span><span class="kachel-emoji">👩</span></div><div class="kachel-body"><div class="kachel-titel">Über Anja Jolk</div><div class="kachel-sub">Profil · Qualifikationen · Kontakt</div><span class="kachel-tag">Über mich</span></div></a>
+      <a class="kachel" href="KLARTEXT_Impressum.html" data-modul="learn" data-search="impressum datenschutz urheberrecht kontakt" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Impressum</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Impressum</div><div class="kachel-sub">Rechtliche Angaben</div><span class="kachel-tag">Rechtliches</span></div></a>
+      <a class="kachel" href="KLARTEXT_Trainer_Ausbildung.html" data-modul="learn" data-search="trainer ausbildung schulung kurs werden" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Trainer</span><span class="kachel-emoji">🎓</span></div><div class="kachel-body"><div class="kachel-titel">Trainer-Ausbildung</div><div class="kachel-sub">Selbst KLARTEXT-Trainer werden</div><span class="kachel-tag">Ausbildung</span></div></a>
+      <a class="kachel" href="KLARTEXT_Curriculum_Trainer-Leitfaden_12_Wochen.html" data-modul="learn" data-search="curriculum trainer leitfaden wochen kurs aufbau" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Curriculum</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Trainer-Leitfaden</div><div class="kachel-sub">15-Wochen-Curriculum für Trainer</div><span class="kachel-tag">Ausbildung</span></div></a>
+      <a class="kachel" href="KLARTEXT_Zertifikat_ELearning.html" data-modul="learn" data-search="zertifikat e-learning abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🏆</span></div><div class="kachel-body"><div class="kachel-titel">E-Learning-Zertifikat</div><div class="kachel-sub">Abschlussnachweis E-Learning-Kurs</div><span class="kachel-tag">Zertifikat</span></div></a>
+      <a class="kachel" href="KLARTEXT_Zertifikat_Praesenzkurs.html" data-modul="learn" data-search="zertifikat praesenz kurs abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🎖️</span></div><div class="kachel-body"><div class="kachel-titel">Präsenzkurs-Zertifikat</div><div class="kachel-sub">Abschlussnachweis Präsenzkurs</div><span class="kachel-tag">Zertifikat</span></div></a>
+      <a class="kachel" href="KLARTEXT_Glossar.html" data-modul="learn" data-search="glossar fachbegriffe definitionen barometer klar joker ingra trauma adhs" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Glossar</span><span class="kachel-emoji">🔤</span></div><div class="kachel-body"><div class="kachel-titel">Glossar</div><div class="kachel-sub">64 Fachbegriffe · A–Ü</div><span class="kachel-tag">Nachschlagen</span></div></a>
+      <a class="kachel" href="KLARTEXT_Systemanleitung.html" data-modul="learn" data-search="anleitung hilfe erklaerung uebersicht start" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">🧭</span></div><div class="kachel-body"><div class="kachel-titel">So funktioniert KLARTEXT</div><div class="kachel-sub">Kurze Übersicht über das ganze System</div><span class="kachel-tag">Hilfe</span></div></a>
+
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-m0" style="scroll-margin-top:135px;--sek-color:var(--c-m0);--sek-light:var(--c-m0-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M0 · Systemelemente</span>
+      <span class="modul-sektion-sub">Grundlagen · Das Fundament</span>
+      <a class="modul-sektion-link" href="M0-00_Systemelemente.html">Modul öffnen →</a>
+    </div>
+    <div class="karten-grid">
+      
+      <a class="kachel" href="M0-00_Systemelemente.html" data-modul="m0" data-search="systemelemente barometer klar joker brainy feuerwehr" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M0-00</span><span class="kachel-emoji">🔗</span></div><div class="kachel-body"><div class="kachel-titel">Systemelemente</div><div class="kachel-sub">Barometer · KLAR · Joker · Brainy</div><span class="kachel-tag">Überblick</span></div></a>
+      <a class="kachel" href="M0-01_Selbstcheck.html" data-modul="m0" data-search="selbstcheck haltung reflexion" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M0-01</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Selbstcheck Haltung</div><div class="kachel-sub">Ehrliche Standortbestimmung</div><span class="kachel-tag">Formular</span></div></a>
+      <a class="kachel" href="M0-02_Rollenreflexion.html" data-modul="m0" data-search="rollenreflexion rolle klarheit grenzen" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M0-02</span><span class="kachel-emoji">🔄</span></div><div class="kachel-body"><div class="kachel-titel">Rollenreflexion</div><div class="kachel-sub">Meine Rolle klar halten</div><span class="kachel-tag">Formular</span></div></a>
+    
+    </div>
+  </section>
+
+  <section class="modul-sektion" id="sek-m1" style="scroll-margin-top:135px;--sek-color:var(--c-m1);--sek-light:var(--c-m1-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M1 · Recht &amp; Rolle</span>
+      <span class="modul-sektion-sub">10 Karten · GS · FS · WF</span>
+      <a class="modul-sektion-link" href="M1-00_Recht-Rolle.html">Modul öffnen →</a>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="M1-01.html" data-modul="m1" data-search="rechtliche grundlagen sgb eingliederungshilfe hilfeplan" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-01</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Rechtliche Grundlagen</div><div class="kachel-sub">SGB IX · Hilfeplan · Eingliederungshilfe</div><span class="kachel-tag">Recht</span></div></a>
+      <a class="kachel" href="M1-02.html" data-modul="m1" data-search="aufgaben ingra rolle was nicht" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-02</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Aufgaben von INGRA</div><div class="kachel-sub">Was dazu gehört — was nicht</div><span class="kachel-tag">Rolle</span></div></a>
+      <a class="kachel" href="M1-03.html" data-modul="m1" data-search="schweigepflicht datenschutz dsgvo" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-03</span><span class="kachel-emoji">🔒</span></div><div class="kachel-body"><div class="kachel-titel">Schweigepflicht & Datenschutz</div><div class="kachel-sub">Was bleibt vertraulich</div><span class="kachel-tag">Datenschutz</span></div></a>
+      <a class="kachel" href="M1-04.html" data-modul="m1" data-search="aufsichtspflicht grenzen rolle verantwortung" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-04</span><span class="kachel-emoji">👁️</span></div><div class="kachel-body"><div class="kachel-titel">Aufsichtspflicht</div><div class="kachel-sub">Rahmen und Grenzen</div><span class="kachel-tag">Recht</span></div></a>
+      <a class="kachel" href="M1-05.html" data-modul="m1" data-search="meldewege 8a kindeswohlgefährdung schutzauftrag" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-05</span><span class="kachel-emoji">🚨</span></div><div class="kachel-body"><div class="kachel-titel">Meldewege & § 8a</div><div class="kachel-sub">Kindeswohlgefährdung erkennen</div><span class="kachel-tag">Schutz</span></div></a>
+      <a class="kachel" href="M1-06.html" data-modul="m1" data-search="zusammenarbeit system schule tk eltern kostenträger" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-06</span><span class="kachel-emoji">🔗</span></div><div class="kachel-body"><div class="kachel-titel">Zusammenarbeit im System</div><div class="kachel-sub">Alle Beteiligten</div><span class="kachel-tag">Teamwork</span></div></a>
+      <a class="kachel" href="M1-07.html" data-modul="m1" data-search="hilfeplan verlängerung antrag frist" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M1-07</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Hilfeplan & Verlängerung</div><div class="kachel-sub">Fristen · Vorbereitung</div><span class="kachel-tag">Hilfeplan</span></div></a>
+      <a class="kachel" href="M1-00_Recht-Rolle.html" data-modul="m1" data-search="recht rolle rechtlich sgb aufgaben grenzen schweigepflicht" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Übersicht</span><span class="kachel-emoji">📚</span></div><div class="kachel-body"><div class="kachel-titel">Recht & Rolle · 12 Karten</div><div class="kachel-sub">Rechtliche Grundlagen · Aufgaben · Grenzen</div><span class="kachel-tag">Modul</span></div></a>
+      <a class="kachel" href="M1-01_Rechtsnotiz.html" data-modul="m1" data-search="rechtsnotiz rechtsfrage zuständigkeit" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">↓ DL</span><span class="kachel-emoji">📝</span></div><div class="kachel-body"><div class="kachel-titel">Rechts-Notizblatt</div><div class="kachel-sub">Offene Fragen dokumentieren</div><span class="kachel-tag">Formular</span></div></a>
+      <a class="kachel" href="M1-02_Datenschutzcheck.html" data-modul="m1" data-search="datenschutz dsgvo einwilligung foto sicher" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">↓ DL</span><span class="kachel-emoji">🔒</span></div><div class="kachel-body"><div class="kachel-titel">Datenschutz-Basischeck</div><div class="kachel-sub">DSGVO im Schulalltag</div><span class="kachel-tag">Formular</span></div></a>
+    </div></div></section>
+  </section>
+
+  <section class="modul-sektion" id="sek-m2" style="scroll-margin-top:135px;--sek-color:var(--c-m2);--sek-light:var(--c-m2-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M2 · Kinder verstehen</span>
+      <span class="modul-sektion-sub">41 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="M2-01_Entwicklungsstufen.html" data-modul="m2" data-search="entwicklung stufen alter phasen" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-01</span><span class="kachel-emoji">📈</span></div><div class="kachel-body"><div class="kachel-titel">Entwicklungsstufen</div><div class="kachel-sub">3 bis 14 Jahre</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="M2-02_Regulation.html" data-modul="m2" data-search="regulation dysregulation beruhigen co-regulation" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-02</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Regulation</div><div class="kachel-sub">Beruhigen & Co-Regulation</div><span class="kachel-tag">Kern</span></div></a>
+      <a class="kachel" href="M2-03_Stressreaktionen.html" data-modul="m2" data-search="stress reaktion alarm nervensystem" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-03</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">Stressreaktionen</div><div class="kachel-sub">Körper im Alarm-Modus</div><span class="kachel-tag">Neurobiologie</span></div></a>
+      <a class="kachel" href="M2-04_Fight-Flight-Freeze-Fawn.html" data-modul="m2" data-search="fight flight freeze fawn stressmodi" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-04</span><span class="kachel-emoji">🏃</span></div><div class="kachel-body"><div class="kachel-titel">4 Stressmodi</div><div class="kachel-sub">Fight · Flight · Freeze · Fawn</div><span class="kachel-tag">Zentralkarte</span></div></a>
+      <a class="kachel" href="M2-05_Trauma-Basics.html" data-modul="m2" data-search="trauma trigger verarbeitung sicherheit" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-05</span><span class="kachel-emoji">🌀</span></div><div class="kachel-body"><div class="kachel-titel">Trauma-Basics</div><div class="kachel-sub">Verstehen ohne Diagnose</div><span class="kachel-tag">Neurobiologie</span></div></a>
+      <a class="kachel" href="M2-06_Bindung-Beziehung.html" data-modul="m2" data-search="bindung beziehung vertrauen sicherheit" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-06</span><span class="kachel-emoji">❤️</span></div><div class="kachel-body"><div class="kachel-titel">Bindung & Beziehung</div><div class="kachel-sub">Beziehung vor Inhalt</div><span class="kachel-tag">Fundament</span></div></a>
+      <a class="kachel" href="M2-07_Neurodivergenz.html" data-modul="m2" data-search="neurodivergenz adhs autismus legasthenie" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-07</span><span class="kachel-emoji">🧩</span></div><div class="kachel-body"><div class="kachel-titel">Neurodivergenz</div><div class="kachel-sub">Anders – nicht weniger</div><span class="kachel-tag">Überblick</span></div></a>
+      <a class="kachel" href="M2-08_ADHS.html" data-modul="m2" data-search="adhs aufmerksamkeit impuls hyperaktiv" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-08</span><span class="kachel-emoji">🎯</span></div><div class="kachel-body"><div class="kachel-titel">ADHS</div><div class="kachel-sub">Kann gerade nicht anders</div><span class="kachel-tag">Neurodivergenz</span></div></a>
+      <a class="kachel" href="M2-09_Autismus.html" data-modul="m2" data-search="autismus wahrnehmung sinne routine reize" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-09</span><span class="kachel-emoji">🔵</span></div><div class="kachel-body"><div class="kachel-titel">Autismus</div><div class="kachel-sub">Anderer Wahrnehmungsstil</div><span class="kachel-tag">Neurodivergenz</span></div></a>
+      <a class="kachel" href="M2-10_Emotionale-Entwicklung.html" data-modul="m2" data-search="emotionen gefühle benennen entwicklung" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-10</span><span class="kachel-emoji">😊</span></div><div class="kachel-body"><div class="kachel-titel">Emotionale Entwicklung</div><div class="kachel-sub">Gefühle lernt man durch Erleben</div><span class="kachel-tag">Entwicklung</span></div></a>
+      <a class="kachel" href="M2-11_Impulskontrolle.html" data-modul="m2" data-search="impuls kontrolle warten gehirn reifung" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-11</span><span class="kachel-emoji">🛑</span></div><div class="kachel-body"><div class="kachel-titel">Impulskontrolle</div><div class="kachel-sub">Wächst mit dem Gehirn</div><span class="kachel-tag">Entwicklung</span></div></a>
+      <a class="kachel" href="M2-12_Frustrationstoleranz.html" data-modul="m2" data-search="frustration toleranz enttäuschung aushalten" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-12</span><span class="kachel-emoji">😤</span></div><div class="kachel-body"><div class="kachel-titel">Frustrationstoleranz</div><div class="kachel-sub">Mit Begleitung aushalten</div><span class="kachel-tag">Entwicklung</span></div></a>
+      <a class="kachel" href="M2-13_Selbstwirksamkeit.html" data-modul="m2" data-search="selbstwirksamkeit trauen können lob" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-13</span><span class="kachel-emoji">💪</span></div><div class="kachel-body"><div class="kachel-titel">Selbstwirksamkeit</div><div class="kachel-sub">Ich kann etwas bewegen</div><span class="kachel-tag">Motivation</span></div></a>
+      <a class="kachel" href="M2-14_Motivation.html" data-modul="m2" data-search="motivation intrinsisch extrinsisch neugier" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-14</span><span class="kachel-emoji">🔥</span></div><div class="kachel-body"><div class="kachel-titel">Motivation</div><div class="kachel-sub">Von innen, nicht von außen</div><span class="kachel-tag">Motivation</span></div></a>
+      <a class="kachel" href="M2-15_Lernblockaden.html" data-modul="m2" data-search="lernblockade angst stress druck" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-15</span><span class="kachel-emoji">🚧</span></div><div class="kachel-body"><div class="kachel-titel">Lernblockaden</div><div class="kachel-sub">Blockiert – nicht faul</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M2-16_Ueberforderung.html" data-modul="m2" data-search="überforderung zu viel signale erkennen" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-16</span><span class="kachel-emoji">📉</span></div><div class="kachel-body"><div class="kachel-titel">Überforderung</div><div class="kachel-sub">Sieht manchmal wie Faulheit aus</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M2-17_Unterforderung.html" data-modul="m2" data-search="unterforderung langeweile stören" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-17</span><span class="kachel-emoji">📊</span></div><div class="kachel-body"><div class="kachel-titel">Unterforderung</div><div class="kachel-sub">Unsichtbar, aber real</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M2-18_Koerpersprache.html" data-modul="m2" data-search="körpersprache signale freeze körper lesen" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-18</span><span class="kachel-emoji">👀</span></div><div class="kachel-body"><div class="kachel-titel">Körpersprache lesen</div><div class="kachel-sub">Kinder sprechen mit dem Körper</div><span class="kachel-tag">Beobachtung</span></div></a>
+      <a class="kachel" href="M2-19_Signale.html" data-modul="m2" data-search="frühwarnzeichen signale erkennen stress" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-19</span><span class="kachel-emoji">🔍</span></div><div class="kachel-body"><div class="kachel-titel">Signale erkennen</div><div class="kachel-sub">Früh hinschauen, früh helfen</div><span class="kachel-tag">Beobachtung</span></div></a>
+      <a class="kachel" href="M2-20_Deeskalation.html" data-modul="m2" data-search="deeskalation beruhigen schritte" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-20</span><span class="kachel-emoji">🕊️</span></div><div class="kachel-body"><div class="kachel-titel">Deeskalation</div><div class="kachel-sub">Erst beruhigen, dann reden</div><span class="kachel-tag">Intervention</span></div></a>
+      <a class="kachel" href="M2-21_Uebergaenge.html" data-modul="m2" data-search="übergänge wechsel ritual ankündigen" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-21</span><span class="kachel-emoji">🔄</span></div><div class="kachel-body"><div class="kachel-titel">Übergänge begleiten</div><div class="kachel-sub">Umschalten kostet Energie</div><span class="kachel-tag">Alltag</span></div></a>
+      <a class="kachel" href="M2-22_Pausen-Erholung.html" data-modul="m2" data-search="pause erholung bewegung freispiel gehirn" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-22</span><span class="kachel-emoji">⏸️</span></div><div class="kachel-body"><div class="kachel-titel">Pausen & Erholung</div><div class="kachel-sub">Pause ist Lernzeit</div><span class="kachel-tag">Alltag</span></div></a>
+      <a class="kachel" href="M2-23_Beziehungsgestaltung.html" data-modul="m2" data-search="beziehung verlässlichkeit wärme reparatur" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-23</span><span class="kachel-emoji">🤲</span></div><div class="kachel-body"><div class="kachel-titel">Beziehungsgestaltung</div><div class="kachel-sub">Die Basis für alles</div><span class="kachel-tag">Abschluss</span></div></a>
+      <a class="kachel" href="M2-24_FASD.html" data-modul="m2" data-search="fasd fetales alkohol syndrom schwangerschaft struktur neurologie" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-24</span><span class="kachel-emoji">🍼</span></div><div class="kachel-body"><div class="kachel-titel">FASD</div><div class="kachel-sub">Alkoholbelastete Familien</div><span class="kachel-tag">Neurobiologie</span></div></a>
+      <a class="kachel" href="M2-25_Diabetes_Typ_1.html" data-modul="m2" data-search="diabetes typ1 unterzucker blutzucker notfall schule" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-25</span><span class="kachel-emoji">🩸</span></div><div class="kachel-body"><div class="kachel-titel">Diabetes Typ 1</div><div class="kachel-sub">Unterzucker erkennen</div><span class="kachel-tag">Medizin</span></div></a>
+      <a class="kachel" href="M2-26_Epilepsie.html" data-modul="m2" data-search="epilepsie anfall krampf absence notfall seitenlage" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-26</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">Epilepsie</div><div class="kachel-sub">Anfall erkennen & handeln</div><span class="kachel-tag">Medizin</span></div></a>
+      <a class="kachel" href="M2-27_Selektiver_Mutismus.html" data-modul="m2" data-search="mutismus schweigen angst sprechen schule nonverbal" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-27</span><span class="kachel-emoji">🤫</span></div><div class="kachel-body"><div class="kachel-titel">Selektiver Mutismus</div><div class="kachel-sub">Kann sprechen - aber nicht hier</div><span class="kachel-tag">Angst</span></div></a>
+      <a class="kachel" href="M2-28_Angststoerungen.html" data-modul="m2" data-search="angst störung sozial trennungsangst schulangst vermeidung" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-28</span><span class="kachel-emoji">😨</span></div><div class="kachel-body"><div class="kachel-titel">Angststörungen</div><div class="kachel-sub">Mehr als Schüchternheit</div><span class="kachel-tag">Emotion</span></div></a>
+      <a class="kachel" href="M2-29_Entwicklungsverzoegerungen.html" data-modul="m2" data-search="entwicklung verzögerung tempo sprache motorik förderplan" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-29</span><span class="kachel-emoji">📈</span></div><div class="kachel-body"><div class="kachel-titel">Entwicklungsverzögerungen</div><div class="kachel-sub">Langsamer – nicht weniger</div><span class="kachel-tag">Entwicklung</span></div></a>
+      <a class="kachel" href="M2-30_Bindungsstoerungen.html" data-modul="m2" data-search="bindung störung nähe vertrauen reaktiv gehemmt enthemmt" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-30</span><span class="kachel-emoji">❤️</span></div><div class="kachel-body"><div class="kachel-titel">Bindungsstörungen</div><div class="kachel-sub">Wenn Nähe nicht sicher ist</div><span class="kachel-tag">Bindung</span></div></a>
+      <a class="kachel" href="M2-31_Bindungstrauma_Pflegekinder.html" data-modul="m2" data-search="bindungstrauma pflegekinder loyalität sicherheit bindung überlebensklug" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-31</span><span class="kachel-emoji">🔗</span></div><div class="kachel-body"><div class="kachel-titel">Bindungstrauma & Pflegekinder</div><div class="kachel-sub">Bindungslogik · Loyalitätskonflikte</div><span class="kachel-tag">Spezial</span></div></a>
+      <a class="kachel" href="M2-32_Pflegekinder_Jugendhilfe.html" data-modul="m2" data-search="pflegekinder jugendhilfe system jugendamt helfer übergänge systemstress" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-32</span><span class="kachel-emoji">🏛️</span></div><div class="kachel-body"><div class="kachel-titel">Pflegekinder & Jugendhilfe-System</div><div class="kachel-sub">Systemsprünge · Helfervielfalt</div><span class="kachel-tag">Spezial</span></div></a>
+      <a class="kachel" href="M2-33_Hochkonflikt_Eltern.html" data-modul="m2" data-search="hochkonflikt eltern schutz grenzen kommunikation manipulation aggression" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-33</span><span class="kachel-emoji">🛡️</span></div><div class="kachel-body"><div class="kachel-titel">Hochkonflikt-Eltern & SB-Schutz</div><div class="kachel-sub">Grenzen · Schutz · Kommunikation</div><span class="kachel-tag">Spezial</span></div></a>
+      <a class="kachel" href="M2-34_Esstoerungen_Schulbegleitung.html" data-modul="m2" data-search="essstörungen anorexie erkennen dokumentieren abgrenzen frühwarnsignale" style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M2-34</span><span class="kachel-emoji">🌿</span></div><div class="kachel-body"><div class="kachel-titel">Essstörungen – Grundlagen</div><div class="kachel-sub">Erkennen · Dokumentieren · Abgrenzen</div><span class="kachel-tag">Spezial</span></div></a>
+          <a class="kachel" href="M2-35_Sexueller_Missbrauch_Grundlagen.html"
+             data-modul="m2" data-search="sexueller missbrauch erkennen grundlagen schutz"
+             style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);">
+            <div class="kachel-stripe" style="background:#6B3F6B;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-35</span><span class="kachel-emoji">🔒</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Sex. Missbrauch — Erkennen</div>
+              <div class="kachel-sub">Warnsignale · Was INGRA nicht darf</div>
+            </div>
+          </a>
+          <a class="kachel" href="M2-36_Sexueller_Missbrauch_Handeln.html"
+             data-modul="m2" data-search="sexueller missbrauch handeln melden dokumentieren"
+             style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);">
+            <div class="kachel-stripe" style="background:#6B3F6B;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-36</span><span class="kachel-emoji">🔒</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Sex. Missbrauch — Handeln</div>
+              <div class="kachel-sub">Meldekette · Dokumentation · Schritte</div>
+            </div>
+          </a>
+          <a class="kachel" href="M2-37_Sexueller_Missbrauch_Schutz_INGRA.html"
+             data-modul="m2" data-search="sexueller missbrauch schutz prävention rechtlich"
+             style="--kachel-color:var(--c-m2);--kachel-bg:var(--c-m2-l);">
+            <div class="kachel-stripe" style="background:#6B3F6B;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-37</span><span class="kachel-emoji">🔒</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Sex. Missbrauch — Schutz</div>
+              <div class="kachel-sub">Eigener Schutz · Prävention · § 8a</div>
+            </div>
+          </a>
+          <a class="kachel" href="M2-38_Sehbehinderung_Blindheit_Grundlagen.html"
+             data-modul="m2" data-search="sehbehinderung blindheit sehen auge"
+             style="--kachel-color:#3B8A68;--kachel-bg:#EEF7F2;">
+            <div class="kachel-stripe" style="background:#3B8A68;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-38</span><span class="kachel-emoji">👁️</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Sehbehinderung — Grundlagen</div>
+              <div class="kachel-sub">Formen · Alltag · Orientierung</div>
+            </div>
+          </a>
+          <a class="kachel" href="M2-39_Sehbehinderung_Praxis.html"
+             data-modul="m2" data-search="sehbehinderung blindheit unterricht praxis"
+             style="--kachel-color:#3B8A68;--kachel-bg:#EEF7F2;">
+            <div class="kachel-stripe" style="background:#3B8A68;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-39</span><span class="kachel-emoji">👁️</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Sehbehinderung — Praxis</div>
+              <div class="kachel-sub">Unterricht · Selbstständigkeit · MSD</div>
+            </div>
+          </a>
+          <a class="kachel" href="M2-40_Gehoerlosigkeit_Grundlagen.html"
+             data-modul="m2" data-search="gehörlosigkeit taubheit hören gebärdensprache DGS CI"
+             style="--kachel-color:#3B8A68;--kachel-bg:#EEF7F2;">
+            <div class="kachel-stripe" style="background:#3B8A68;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-40</span><span class="kachel-emoji">👂</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Gehörlosigkeit — Grundlagen</div>
+              <div class="kachel-sub">DGS · CI · Hörerschöpfung</div>
+            </div>
+          </a>
+          <a class="kachel" href="M2-41_Gehoerlosigkeit_Praxis.html"
+             data-modul="m2" data-search="gehörlosigkeit taubheit unterricht kommunikation lippenlesen"
+             style="--kachel-color:#3B8A68;--kachel-bg:#EEF7F2;">
+            <div class="kachel-stripe" style="background:#3B8A68;"></div>
+            <div class="kachel-header"><span class="kachel-nr">M2-41</span><span class="kachel-emoji">👂</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Gehörlosigkeit — Praxis</div>
+              <div class="kachel-sub">Kommunikation · Sitzplatz · Hörgerät</div>
+            </div>
+          </a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-m3" style="scroll-margin-top:135px;--sek-color:var(--c-m3);--sek-light:var(--c-m3-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">🎯 M3 · Was tue ich jetzt?</span>
+      <span class="modul-sektion-sub">20 Karten · GS · FS · WF</span>
+      <a class="modul-sektion-link" href="DASHBOARD-M3.html">M3-Dashboard →</a>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="DASHBOARD-M3.html" data-modul="m3" data-search="werkzeugkasten barometer klar joker brainy timer alle werkzeuge" style="--kachel-color:var(--c-m3);--kachel-bg:var(--c-m3-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M3 · 20</span><span class="kachel-emoji">🧰</span></div><div class="kachel-body"><div class="kachel-titel">Alle 20 Werkzeugkarten</div><div class="kachel-sub">Barometer · KLAR · Joker · Brainy · Timer · u.v.m.</div><span class="kachel-tag">Modul-Dashboard</span></div></a>
+      <a class="kachel" href="M3-01.html" data-modul="m3" data-search="barometer stimmung ampel grün gelb orange rot" style="--kachel-color:var(--c-m3);--kachel-bg:var(--c-m3-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M3-01</span><span class="kachel-emoji">🌡️</span></div><div class="kachel-body"><div class="kachel-titel">Barometer</div><div class="kachel-sub">Inneren Zustand zeigen</div><span class="kachel-tag">Emotion</span></div></a>
+      <a class="kachel" href="M3-Joker.html" data-modul="m3" data-search="joker sofort hilfe notfall werkzeug klar" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">🃏</span><span class="kachel-emoji">🃏</span></div><div class="kachel-body"><div class="kachel-titel">Joker-Karte</div><div class="kachel-sub">Sofort-Hilfe · Immer griffbereit</div><span class="kachel-tag">Werkzeug</span></div></a>
+      <a class="kachel" href="M3_DL_Joker-Karte.html" data-modul="m3" data-search="joker druck karte ausschneiden signal" style="--kachel-color:#B07D2A;--kachel-bg:#FBF4E8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">🖨️</span><span class="kachel-emoji">🃏</span></div><div class="kachel-body"><div class="kachel-titel">Joker-Karte (Druck)</div><div class="kachel-sub">8 Karten zum Ausschneiden</div><span class="kachel-tag">Material</span></div></a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-m4" style="scroll-margin-top:135px;--sek-color:var(--c-m4);--sek-light:var(--c-m4-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M4 · Kommunikation</span>
+      <span class="modul-sektion-sub">16 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="M4-01_Grundprinzipien_der_Kommunikation.html" data-modul="m4" data-search="kommunikation grundprinzipien zuhören klar ton" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-01</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Grundprinzipien</div><div class="kachel-sub">Haltung & Gewohnheiten</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="M4-02_Ich-Botschaften.html" data-modul="m4" data-search="ich-botschaft du-botschaft vorwurf formel" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-02</span><span class="kachel-emoji">🗣️</span></div><div class="kachel-body"><div class="kachel-titel">Ich-Botschaften</div><div class="kachel-sub">Ohne Vorwurf sprechen</div><span class="kachel-tag">Technik</span></div></a>
+      <a class="kachel" href="M4-03_Klarheit_und_Kürze.html" data-modul="m4" data-search="klarheit kürze kurze sätze konkret" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-03</span><span class="kachel-emoji">✂️</span></div><div class="kachel-body"><div class="kachel-titel">Klarheit & Kürze</div><div class="kachel-sub">Weniger ist mehr</div><span class="kachel-tag">Technik</span></div></a>
+      <a class="kachel" href="M4-04_DAZ-freundliche_Sprache.html" data-modul="m4" data-search="daz deutsch zweitsprache einfache sprache" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-04</span><span class="kachel-emoji">🌍</span></div><div class="kachel-body"><div class="kachel-titel">DAZ-freundlich</div><div class="kachel-sub">Einfache Sprache für alle</div><span class="kachel-tag">Inklusion</span></div></a>
+      <a class="kachel" href="M4-05_Gesprächsführung_mit_Kindern.html" data-modul="m4" data-search="kinder gespräch augenhöhe konkret pausen" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-05</span><span class="kachel-emoji">🧒</span></div><div class="kachel-body"><div class="kachel-titel">Mit Kindern sprechen</div><div class="kachel-sub">Auf Augenhöhe</div><span class="kachel-tag">Praxis</span></div></a>
+      <a class="kachel" href="M4-06_Deeskalierende_Sprache.html" data-modul="m4" data-search="deeskalation sprache ruhig krise beruhigen" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-06</span><span class="kachel-emoji">🕊️</span></div><div class="kachel-body"><div class="kachel-titel">Deeskalierende Sprache</div><div class="kachel-sub">Erst beruhigen</div><span class="kachel-tag">Krise</span></div></a>
+      <a class="kachel" href="M4-07_Nonverbale_Kommunikation.html" data-modul="m4" data-search="nonverbal körpersprache blick mimik stimme" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-07</span><span class="kachel-emoji">🧍</span></div><div class="kachel-body"><div class="kachel-titel">Nonverbal</div><div class="kachel-sub">Was der Körper sagt</div><span class="kachel-tag">Körper</span></div></a>
+      <a class="kachel" href="M4-08_Humor_in_der_Kommunikation.html" data-modul="m4" data-search="humor lachen verbinden ironie grenzen" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-08</span><span class="kachel-emoji">😄</span></div><div class="kachel-body"><div class="kachel-titel">Humor</div><div class="kachel-sub">Wann er verbindet</div><span class="kachel-tag">Beziehung</span></div></a>
+      <a class="kachel" href="M4-09_Gesprächsführung_mit_der_Lehrkraft.html" data-modul="m4" data-search="lehrkraft gespräch professionell sachlich" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-09</span><span class="kachel-emoji">📚</span></div><div class="kachel-body"><div class="kachel-titel">Mit Lehrkraft sprechen</div><div class="kachel-sub">Professionell & klar</div><span class="kachel-tag">Team</span></div></a>
+      <a class="kachel" href="M4-10_Gesprächsführung_mit_Eltern.html" data-modul="m4" data-search="eltern gespräch wertschätzung grenzen" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-10</span><span class="kachel-emoji">👨‍👩‍👧</span></div><div class="kachel-body"><div class="kachel-titel">Mit Eltern sprechen</div><div class="kachel-sub">Klar & wertschätzend</div><span class="kachel-tag">Team</span></div></a>
+      <a class="kachel" href="M4-11_Feedback_geben.html" data-modul="m4" data-search="feedback geben spezifisch beobachtung" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-11</span><span class="kachel-emoji">💡</span></div><div class="kachel-body"><div class="kachel-titel">Feedback geben</div><div class="kachel-sub">Beobachtung → Wunsch</div><span class="kachel-tag">Technik</span></div></a>
+      <a class="kachel" href="M4-12_Feedback_annehmen.html" data-modul="m4" data-search="feedback annehmen zuhören danke" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-12</span><span class="kachel-emoji">🤝</span></div><div class="kachel-body"><div class="kachel-titel">Feedback annehmen</div><div class="kachel-sub">Zuhören ohne Abwehr</div><span class="kachel-tag">Technik</span></div></a>
+      <a class="kachel" href="M4-13_Konfliktgespräche.html" data-modul="m4" data-search="konflikt gespräch moment lösung" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-13</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">Konfliktgespräche</div><div class="kachel-sub">Lösung, nicht Recht</div><span class="kachel-tag">Konflikt</span></div></a>
+      <a class="kachel" href="M4-14_Grenzen_setzen.html" data-modul="m4" data-search="grenzen setzen direkt klar konsequenz" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-14</span><span class="kachel-emoji">🛑</span></div><div class="kachel-body"><div class="kachel-titel">Grenzen setzen</div><div class="kachel-sub">Klar & ohne Entschuldigung</div><span class="kachel-tag">Schutz</span></div></a>
+      <a class="kachel" href="M4-15_Schwierige_Gespräche.html" data-modul="m4" data-search="schwierig heikel ansprechen vorbereitung" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-15</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Schwierige Gespräche</div><div class="kachel-sub">5-Schritte-Ablauf</div><span class="kachel-tag">Abschluss</span></div></a>
+      <a class="kachel" href="M4-16_Migrantische_Eltern.html" data-modul="m4" data-search="migrantische eltern ingra elterngespräch kulturell" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-16</span><span class="kachel-emoji">🌍</span></div><div class="kachel-body"><div class="kachel-titel">Migrantische Eltern</div><div class="kachel-sub">Elterngespräche · Kultur</div><span class="kachel-tag">Neu</span></div></a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-m5" style="scroll-margin-top:135px;--sek-color:var(--c-m5);--sek-light:var(--c-m5-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M5 · Dokumentation</span>
+      <span class="modul-sektion-sub">12 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="M5-01_Tagesdokumentation.html" data-modul="m5" data-search="tagesdoku barometer werkzeuge sachlich" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-01</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Tagesdokumentation</div><div class="kachel-sub">Kurz, sachlich, zeitnah</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="M5-02_Wochenreflexion.html" data-modul="m5" data-search="woche reflexion gut schwierig belastung" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-02</span><span class="kachel-emoji">📆</span></div><div class="kachel-body"><div class="kachel-titel">Wochenreflexion</div><div class="kachel-sub">Was war – was kommt</div><span class="kachel-tag">Reflexion</span></div></a>
+      <a class="kachel" href="M5-03_Monatsbericht.html" data-modul="m5" data-search="monatsbericht entwicklung ziele förderplan" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-03</span><span class="kachel-emoji">📊</span></div><div class="kachel-body"><div class="kachel-titel">Monatsbericht</div><div class="kachel-sub">Entwicklungen sichtbar machen</div><span class="kachel-tag">Bericht</span></div></a>
+      <a class="kachel" href="M5-04_Übergabeprotokolle.html" data-modul="m5" data-search="übergabe protokoll weitergeben nächste" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-04</span><span class="kachel-emoji">🔁</span></div><div class="kachel-body"><div class="kachel-titel">Übergabeprotokolle</div><div class="kachel-sub">Was muss weitergegeben werden</div><span class="kachel-tag">Übergabe</span></div></a>
+      <a class="kachel" href="M5-05_Beobachtungsboegen.html" data-modul="m5" data-search="beobachtung sachlich wertung neutral" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-05</span><span class="kachel-emoji">👁️</span></div><div class="kachel-body"><div class="kachel-titel">Beobachtungsbögen</div><div class="kachel-sub">Neutral statt wertend</div><span class="kachel-tag">Beobachtung</span></div></a>
+      <a class="kachel" href="M5-06_Zielvereinbarungen.html" data-modul="m5" data-search="ziel vereinbarung konkret zeitgebunden" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-06</span><span class="kachel-emoji">🎯</span></div><div class="kachel-body"><div class="kachel-titel">Zielvereinbarungen</div><div class="kachel-sub">Richtung für die Begleitung</div><span class="kachel-tag">Planung</span></div></a>
+      <a class="kachel" href="M5-07_Foerderplaene.html" data-modul="m5" data-search="förderplan lesen grundlage ziele" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-07</span><span class="kachel-emoji">📁</span></div><div class="kachel-body"><div class="kachel-titel">Förderpläne</div><div class="kachel-sub">Kompass der Begleitung</div><span class="kachel-tag">Planung</span></div></a>
+      <a class="kachel" href="M5-08_Gespraechsnotizen.html" data-modul="m5" data-search="gespräch notiz vereinbarung datum" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-08</span><span class="kachel-emoji">📝</span></div><div class="kachel-body"><div class="kachel-titel">Gesprächsnotizen</div><div class="kachel-sub">Vereinbarungen festhalten</div><span class="kachel-tag">Protokoll</span></div></a>
+      <a class="kachel" href="M5-09_Checklisten.html" data-modul="m5" data-search="checkliste täglich prüfen übergabe" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-09</span><span class="kachel-emoji">☑️</span></div><div class="kachel-body"><div class="kachel-titel">Checklisten</div><div class="kachel-sub">Abläufe sicher machen</div><span class="kachel-tag">Alltag</span></div></a>
+      <a class="kachel" href="M5-10_Datenschutz_in_der_Dokumentation.html" data-modul="m5" data-search="datenschutz dsgvo privat sicher vernichten" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-10</span><span class="kachel-emoji">🔒</span></div><div class="kachel-body"><div class="kachel-titel">Datenschutz</div><div class="kachel-sub">DSGVO in der Dokumentation</div><span class="kachel-tag">Recht</span></div></a>
+      <a class="kachel" href="M5-11_Dos_und_Donts_der_Dokumentation.html" data-modul="m5" data-search="dos donts erlaubt verboten wertung" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-11</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Do's & Don'ts</div><div class="kachel-sub">Was erlaubt ist – was nicht</div><span class="kachel-tag">Regeln</span></div></a>
+      <a class="kachel" href="M5-12_Dokumentation_in_Krisen.html" data-modul="m5" data-search="krise dokumentation protokoll ablauf" style="--kachel-color:var(--c-m5);--kachel-bg:var(--c-m5-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M5-12</span><span class="kachel-emoji">🚒</span></div><div class="kachel-body"><div class="kachel-titel">Doku in Krisen</div><div class="kachel-sub">5-Schritte-Ablauf</div><span class="kachel-tag">Abschluss</span></div></a>
+    </div></div></section>
+
+  <!-- ANTI-MOBBING TRAINING -->
+  <section class="modul-sektio  <section class="modul-sektion" id="sek-m6" style="scroll-margin-top:135px;--sek-color:var(--c-m6);--sek-light:var(--c-m6-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M6 · Krise &amp; Mobbing</span>
+      <span class="modul-sektion-sub">19 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="M6-01_Mobbing_erkennen.html" data-modul="m6" data-search="mobbing merkmale wiederholung signale rückzug" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-01</span><span class="kachel-emoji">🔍</span></div><div class="kachel-body"><div class="kachel-titel">Mobbing erkennen</div><div class="kachel-sub">Muster – nicht Momente</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="M6-02_Was_tue_ich_jetzt.html" data-modul="m6" data-search="mobbing rolle meldekette dokumentation" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-02</span><span class="kachel-emoji">🛡️</span></div><div class="kachel-body"><div class="kachel-titel">Was tue ich jetzt?</div><div class="kachel-sub">INGRAs Rolle bei Mobbing</div><span class="kachel-tag">Rollenklarheit</span></div></a>
+      <a class="kachel" href="M6-03_Cybermobbing.html" data-modul="m6" data-search="cybermobbing digital online screenshots" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-03</span><span class="kachel-emoji">📱</span></div><div class="kachel-body"><div class="kachel-titel">Cybermobbing</div><div class="kachel-sub">Digital ist real</div><span class="kachel-tag">Digital</span></div></a>
+      <a class="kachel" href="M6-04_Mobbing_im_Klassenverband.html" data-modul="m6" data-search="mobbing klasse gruppe rollen taeter mitlaeufer opfer verteidiger system" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-04</span><span class="kachel-emoji">👥</span></div><div class="kachel-body"><div class="kachel-titel">Mobbing im Klassenverband</div><div class="kachel-sub">Rollen im Gruppe</div><span class="kachel-tag">Gruppenebene</span></div></a>
+      <a class="kachel" href="M6-05_Taetersicht_und_Opfer-Umkehr.html" data-modul="m6" data-search="opfer taeter umkehr reaktion provokation sichtbar falsch beurteilt" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-05</span><span class="kachel-emoji">🔄</span></div><div class="kachel-body"><div class="kachel-titel">Täter-Opfer-Umkehr</div><div class="kachel-sub">Wenn das Opfer als Täter gilt</div><span class="kachel-tag">Dynamik</span></div></a>
+      <a class="kachel" href="M6-06_Mobbing_und_Lehrkraft.html" data-modul="m6" data-search="lehrkraft mobbing zusammenarbeit aufgaben koordination einschaetzung" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-06</span><span class="kachel-emoji">🏫</span></div><div class="kachel-body"><div class="kachel-titel">Mobbing & Lehrkraft</div><div class="kachel-sub">Koordiniert handeln</div><span class="kachel-tag">Zusammenarbeit</span></div></a>
+      <a class="kachel" href="M6-07_Elterngespraech_bei_Mobbing.html" data-modul="m6" data-search="eltern gespräch mobbing opfer taeter emotion vorbereitung tk" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-07</span><span class="kachel-emoji">👨‍👩‍👧</span></div><div class="kachel-body"><div class="kachel-titel">Elterngespräch bei Mobbing</div><div class="kachel-sub">Rolle & Vorbereitung</div><span class="kachel-tag">Kommunikation</span></div></a>
+      <a class="kachel" href="M6-08_Digitale_Spuren_sichern.html" data-modul="m6" data-search="digital spuren sichern screenshot beweis cybermobbing plattform melden" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-08</span><span class="kachel-emoji">📱</span></div><div class="kachel-body"><div class="kachel-titel">Digitale Spuren sichern</div><div class="kachel-sub">Beweise & Schutz</div><span class="kachel-tag">Cybermobbing</span></div></a>
+      <a class="kachel" href="M6-09_Wenn_INGRA_selbst_betroffen_ist.html" data-modul="m6" data-search="ingra selbst betroffen angriff ausgrenzung grenze selbstschutz tk" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-09</span><span class="kachel-emoji">🛡️</span></div><div class="kachel-body"><div class="kachel-titel">Wenn INGRA betroffen ist</div><div class="kachel-sub">Selbstschutz & Grenzen</div><span class="kachel-tag">Abschluss</span></div></a>
+      <a class="kachel" href="M6-10_Prävention_im_Klassenzimmer.html" data-modul="m6" data-search="prävention klassenzimmer frühwarnzeichen beobachten klima" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-10</span><span class="kachel-emoji">🌱</span></div><div class="kachel-body"><div class="kachel-titel">Prävention im Klassenzimmer</div><div class="kachel-sub">Bevor Mobbing entsteht</div><span class="kachel-tag">Prävention</span></div></a>
+      <a class="kachel" href="M6-11_Gruppenintervention_Step_by_Step.html" data-modul="m6" data-search="gruppenintervention phasen koordiniert mobbing stoppen" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-11</span><span class="kachel-emoji">👥</span></div><div class="kachel-body"><div class="kachel-titel">Gruppenintervention</div><div class="kachel-sub">Step by Step</div><span class="kachel-tag">Intervention</span></div></a>
+      <a class="kachel" href="M6-12_No-Blame-Approach.html" data-modul="m6" data-search="no blame approach methode verantwortung lösung keine strafe" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-12</span><span class="kachel-emoji">🤝</span></div><div class="kachel-body"><div class="kachel-titel">No-Blame-Approach</div><div class="kachel-sub">Lösung statt Strafe</div><span class="kachel-tag">Methode</span></div></a>
+      <a class="kachel" href="M6-13_Verteidiger_stärken.html" data-modul="m6" data-search="verteidiger stärken zuschauer eingreifen zivilcourage peers" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-13</span><span class="kachel-emoji">🛡️</span></div><div class="kachel-body"><div class="kachel-titel">Verteidiger stärken</div><div class="kachel-sub">Peers aktivieren</div><span class="kachel-tag">Prävention</span></div></a>
+      <a class="kachel" href="M6-14_Eltern_informieren_und_einbeziehen.html" data-modul="m6" data-search="eltern informieren einbeziehen gespräch mobbing emotion" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-14</span><span class="kachel-emoji">👨‍👩‍👧</span></div><div class="kachel-body"><div class="kachel-titel">Eltern einbeziehen</div><div class="kachel-sub">Kommunikation</div><span class="kachel-tag">Eltern</span></div></a>
+      <a class="kachel" href="M6-15_Nachsorge__nach_dem_Mobbing.html" data-modul="m6" data-search="nachsorge nach mobbing stabilisierung beobachtung checkliste" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M6-15</span><span class="kachel-emoji">🌱</span></div><div class="kachel-body"><div class="kachel-titel">Nachsorge</div><div class="kachel-sub">Nach dem Mobbing</div><span class="kachel-tag">Abschluss</span></div></a>
+      <a class="kachel" href="M6_Geschichtenkarten_Galerie.html" data-modul="m6" data-search="mobbing geschichtenkarten brainy zivilcourage strategien" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">🦸</span></div><div class="kachel-body"><div class="kachel-titel">Brainy-Geschichtenkarten</div><div class="kachel-sub">30 Karten zum Mobbing-Thema</div><span class="kachel-tag">Material</span></div></a>
+      <a class="kachel" href="M6_DL_Mini-Krisenkarte.html" data-modul="m6" data-search="krisenkarte mobbing sofort notfall druck" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📥</span><span class="kachel-emoji">🟥</span></div><div class="kachel-body"><div class="kachel-titel">Krisenkarte (Druck)</div><div class="kachel-sub">Was tun bei Mobbing? · 8 Schritte zum Ausdrucken</div><span class="kachel-tag">Material</span></div></a>
+      <a class="kachel" href="M6_DL_Mini-Checkliste_Erkennen.html" data-modul="m6" data-search="checkliste mobbing erkennen druck" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📥</span><span class="kachel-emoji">🟧</span></div><div class="kachel-body"><div class="kachel-titel">Erkennen — Kurzcheck (Druck)</div><div class="kachel-sub">Kompakt zu M6-01 · zum Ausdrucken</div><span class="kachel-tag">Material</span></div></a>
+      <a class="kachel" href="M6_DL_Digitale_Spuren_Sichern.html" data-modul="m6" data-search="digital spuren sichern cybermobbing druck" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📥</span><span class="kachel-emoji">🟦</span></div><div class="kachel-body"><div class="kachel-titel">Spuren sichern (Druck)</div><div class="kachel-sub">Kompakt zu M6-08 · zum Ausdrucken</div><span class="kachel-tag">Material</span></div></a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-m7" style="scroll-margin-top:135px;--sek-color:var(--c-m7);--sek-light:var(--c-m7-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M7 · Praxissituationen (20 Fälle)</span>
+      <span class="modul-sektion-sub">20 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="M7-01_Schwieriger_Start_in_den_Tag.html" data-modul="m7" data-search="start morgen ankommen stress" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-01</span><span class="kachel-emoji">🌅</span></div><div class="kachel-body"><div class="kachel-titel">Schwieriger Start</div><div class="kachel-sub">Erst ankommen, dann lernen</div><span class="kachel-tag">Alltag</span></div></a>
+      <a class="kachel" href="M7-02_Uebergaenge_im_Schulalltag.html" data-modul="m7" data-search="übergänge wechsel ritual widerstand" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-02</span><span class="kachel-emoji">🔄</span></div><div class="kachel-body"><div class="kachel-titel">Übergänge</div><div class="kachel-sub">Rituale schaffen Sicherheit</div><span class="kachel-tag">Alltag</span></div></a>
+      <a class="kachel" href="M7-03_Arbeitsverweigerung.html" data-modul="m7" data-search="verweigerung trotz angst schutz" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-03</span><span class="kachel-emoji">🚫</span></div><div class="kachel-body"><div class="kachel-titel">Arbeitsverweigerung</div><div class="kachel-sub">Hinter Trotz steckt Angst</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M7-04_Ueberforderung_im_Unterricht.html" data-modul="m7" data-search="überforderung reize senken regulation" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-04</span><span class="kachel-emoji">📉</span></div><div class="kachel-body"><div class="kachel-titel">Überforderung</div><div class="kachel-sub">Weniger ist mehr</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M7-05_Unterforderung_im_Unterricht.html" data-modul="m7" data-search="unterforderung langeweile projekt" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-05</span><span class="kachel-emoji">📈</span></div><div class="kachel-body"><div class="kachel-titel">Unterforderung</div><div class="kachel-sub">Herausforderung ist Respekt</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M7-06_Konflikte_mit_Mitschuelerinnen.html" data-modul="m7" data-search="konflikt mitschüler stoppen klären lösung" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-06</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">Konflikte Mitschüler</div><div class="kachel-sub">5-Schritte-Ablauf</div><span class="kachel-tag">Sozial</span></div></a>
+      <a class="kachel" href="M7-07_Wutanfaelle.html" data-modul="m7" data-search="wut anfall alarm ruhig abstand" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-07</span><span class="kachel-emoji">😤</span></div><div class="kachel-body"><div class="kachel-titel">Wutanfälle</div><div class="kachel-sub">Erst Sturm, dann Gespräch</div><span class="kachel-tag">Krise</span></div></a>
+      <a class="kachel" href="M7-08_Rueckzug_und_Schweigen.html" data-modul="m7" data-search="rückzug schweigen freeze präsenz" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-08</span><span class="kachel-emoji">🤫</span></div><div class="kachel-body"><div class="kachel-titel">Rückzug & Schweigen</div><div class="kachel-sub">Präsenz ohne Druck</div><span class="kachel-tag">Emotion</span></div></a>
+      <a class="kachel" href="M7-09_Weinen_und_Ueberwaltigung.html" data-modul="m7" data-search="weinen regulation trost gefühle" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-09</span><span class="kachel-emoji">😢</span></div><div class="kachel-body"><div class="kachel-titel">Weinen</div><div class="kachel-sub">Gefühle dürfen sein</div><span class="kachel-tag">Emotion</span></div></a>
+      <a class="kachel" href="M7-10_Angst_und_Unsicherheit.html" data-modul="m7" data-search="angst sicherheit ritual anker" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-10</span><span class="kachel-emoji">😨</span></div><div class="kachel-body"><div class="kachel-titel">Angst & Unsicherheit</div><div class="kachel-sub">Sicherheit vor Erklärung</div><span class="kachel-tag">Emotion</span></div></a>
+      <a class="kachel" href="M7-11_Impulsdurchbrueche.html" data-modul="m7" data-search="impuls durchbruch sicherheit raum" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-11</span><span class="kachel-emoji">💥</span></div><div class="kachel-body"><div class="kachel-titel">Impulsdurchbrüche</div><div class="kachel-sub">Ursachen, nicht Strafen</div><span class="kachel-tag">Krise</span></div></a>
+      <a class="kachel" href="M7-12_Stressreaktionen_im_Klassenzimmer.html" data-modul="m7" data-search="fight flight freeze fawn stressmodi" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-12</span><span class="kachel-emoji">🏃</span></div><div class="kachel-body"><div class="kachel-titel">Stressmodi</div><div class="kachel-sub">4 Modi erkennen & reagieren</div><span class="kachel-tag">Zentralkarte</span></div></a>
+      <a class="kachel" href="M7-13_Aufgaben_nicht_verstehen.html" data-modul="m7" data-search="verstehen erklären hilferuf analog" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-13</span><span class="kachel-emoji">❓</span></div><div class="kachel-body"><div class="kachel-titel">Nicht verstehen</div><div class="kachel-sub">An der Erklärung liegen</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M7-14_Fokus_verlieren.html" data-modul="m7" data-search="fokus aufmerksamkeit ablenkung pause" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-14</span><span class="kachel-emoji">🎯</span></div><div class="kachel-body"><div class="kachel-titel">Fokus verlieren</div><div class="kachel-sub">Sanft zurückholen</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M7-15_Pruefungsstress.html" data-modul="m7" data-search="prüfung stress atem ritual ruhig" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-15</span><span class="kachel-emoji">📝</span></div><div class="kachel-body"><div class="kachel-titel">Prüfungsstress</div><div class="kachel-sub">Ruhe ist die beste Vorbereitung</div><span class="kachel-tag">Lernen</span></div></a>
+      <a class="kachel" href="M7-16_Gruppenarbeit_begleiten.html" data-modul="m7" data-search="gruppe arbeit rollen konflikte steuern" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-16</span><span class="kachel-emoji">👥</span></div><div class="kachel-body"><div class="kachel-titel">Gruppenarbeit</div><div class="kachel-sub">Im Hintergrund präsent</div><span class="kachel-tag">Sozial</span></div></a>
+      <a class="kachel" href="M7-17_Eskalation_im_Klassenzimmer.html" data-modul="m7" data-search="eskalation stopp sicherheit hilfe" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-17</span><span class="kachel-emoji">🔥</span></div><div class="kachel-body"><div class="kachel-titel">Eskalation</div><div class="kachel-sub">Sicherheit zuerst</div><span class="kachel-tag">Krise</span></div></a>
+      <a class="kachel" href="M7-18_Grenzen_setzen_bei_Uebergriffen.html" data-modul="m7" data-search="grenzen übergriff klar konsequenz" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-18</span><span class="kachel-emoji">🔷</span></div><div class="kachel-body"><div class="kachel-titel">Grenzen setzen</div><div class="kachel-sub">Klar und ruhig</div><span class="kachel-tag">Schutz</span></div></a>
+      <a class="kachel" href="M7-19_Konflikte_mit_Lehrkraeften.html" data-modul="m7" data-search="lehrkraft konflikt professionell sachlich" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-19</span><span class="kachel-emoji">🏫</span></div><div class="kachel-body"><div class="kachel-titel">Konflikte Lehrkraft</div><div class="kachel-sub">Professionell bleiben</div><span class="kachel-tag">Team</span></div></a>
+      <a class="kachel" href="M7-20_Konflikte_mit_Eltern.html" data-modul="m7" data-search="eltern konflikt gespräch rahmen vereinbaren" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-20</span><span class="kachel-emoji">👨‍👩‍👧</span></div><div class="kachel-body"><div class="kachel-titel">Konflikte Eltern</div><div class="kachel-sub">5-Schritte-Gespräch</div><span class="kachel-tag">Abschluss</span></div></a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-m8" style="scroll-margin-top:135px;--sek-color:var(--c-m8);--sek-light:var(--c-m8-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M8 · Selbstfürsorge</span>
+      <span class="modul-sektion-sub">19 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      
+      <a class="kachel" href="M8-01_Warum_Selbstfuersorge_wichtig_ist.html" data-modul="m8" data-search="selbstfürsorge burnout erschöpfung qualität" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-01</span><span class="kachel-emoji">🌱</span></div><div class="kachel-body"><div class="kachel-titel">Warum Selbstfürsorge</div><div class="kachel-sub">Professionelle Pflicht, kein Luxus</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="M8-02_Stresssignale_erkennen.html" data-modul="m8" data-search="stress signale körper emotion früh" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-02</span><span class="kachel-emoji">🔴</span></div><div class="kachel-body"><div class="kachel-titel">Stresssignale erkennen</div><div class="kachel-sub">Früh erkennen, früh handeln</div><span class="kachel-tag">Selbst</span></div></a>
+      <a class="kachel" href="M8-03_Sofort-Strategien_bei_Stress.html" data-modul="m8" data-search="sofort strategie atem bewegung 54321" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-03</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">Sofort-Strategien</div><div class="kachel-sub">Kleine Tools, große Wirkung</div><span class="kachel-tag">Akut</span></div></a>
+      <a class="kachel" href="M8-04_Grenzen_setzen_fuer_dich_selbst.html" data-modul="m8" data-search="grenzen erreichbarkeit verstrickung nein" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-04</span><span class="kachel-emoji">🔷</span></div><div class="kachel-body"><div class="kachel-titel">Grenzen für dich</div><div class="kachel-sub">Ja zu dir selbst</div><span class="kachel-tag">Schutz</span></div></a>
+      <a class="kachel" href="M8-05_Pausen_und_Erholung_im_Alltag.html" data-modul="m8" data-search="pause erholung abschalten ritual digital" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-05</span><span class="kachel-emoji">☕</span></div><div class="kachel-body"><div class="kachel-titel">Pausen & Erholung</div><div class="kachel-sub">Erholung braucht Bewusstsein</div><span class="kachel-tag">Alltag</span></div></a>
+      <a class="kachel" href="M8-06_Rolle_klar_halten.html" data-modul="m8" data-search="rolle klarheit diffusion professionalität" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-06</span><span class="kachel-emoji">🎭</span></div><div class="kachel-body"><div class="kachel-titel">Rolle klar halten</div><div class="kachel-sub">Klarheit ist Stärke</div><span class="kachel-tag">Rolle</span></div></a>
+      <a class="kachel" href="M8-07_Neutralitaet_und_Allparteilichkeit.html" data-modul="m8" data-search="neutralität allparteilich perspektive" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-07</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Neutralität</div><div class="kachel-sub">Alle Perspektiven ernst nehmen</div><span class="kachel-tag">Haltung</span></div></a>
+      <a class="kachel" href="M8-08_Umgang_mit_Kritik.html" data-modul="m8" data-search="kritik umgang zuhoeren danke professionell" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-08</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Umgang mit Kritik</div><div class="kachel-sub">Professionell reagieren</div><span class="kachel-tag">Kommunikation</span></div></a>
+      <a class="kachel" href="M8-09_Selbstreflexion.html" data-modul="m8" data-search="reflexion fragen rolle zustand muster" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-09</span><span class="kachel-emoji">🔁</span></div><div class="kachel-body"><div class="kachel-titel">Selbstreflexion</div><div class="kachel-sub">Muster erkennen und verändern</div><span class="kachel-tag">Entwicklung</span></div></a>
+      <a class="kachel" href="M8-10_Zusammenarbeit_im_Team.html" data-modul="m8" data-search="team zusammenarbeit verlässlich kommunikation" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-10</span><span class="kachel-emoji">🤝</span></div><div class="kachel-body"><div class="kachel-titel">Zusammenarbeit</div><div class="kachel-sub">Gemeinsam tragen</div><span class="kachel-tag">Team</span></div></a>
+      <a class="kachel" href="M8-11_Kommunikation_im_Kollegium.html" data-modul="m8" data-search="kollegium kommunikation direkt diskret lob" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-11</span><span class="kachel-emoji">🗣️</span></div><div class="kachel-body"><div class="kachel-titel">Kommunikation Kollegium</div><div class="kachel-sub">Wie wir miteinander sprechen</div><span class="kachel-tag">Team</span></div></a>
+      <a class="kachel" href="M8-12_Belastende_Situationen_im_Team.html" data-modul="m8" data-search="belastung team konflikt spannungen tk" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-12</span><span class="kachel-emoji">⛈️</span></div><div class="kachel-body"><div class="kachel-titel">Belastung im Team</div><div class="kachel-sub">Offen benennen macht stark</div><span class="kachel-tag">Abschluss</span></div></a>
+      <a class="kachel" href="M8-13_3_Minuten_mehr_Gelassenheit.html" data-modul="m8" data-search="gelassenheit pause humor stress selbstfuersorge erholung" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-13</span><span class="kachel-emoji">😌</span></div><div class="kachel-body"><div class="kachel-titel">3 Min. Gelassenheit</div><div class="kachel-sub">Drei Orte · drei Mini-Pausen</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+      <a class="kachel" href="M8-14_Lachyoga_Mini-Sequenz.html" data-modul="m8" data-search="lachyoga humor lachen stress" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-14</span><span class="kachel-emoji">😂</span></div><div class="kachel-body"><div class="kachel-titel">Lachyoga</div><div class="kachel-sub">90 Sek. · Im Lehrerzimmer machbar</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+      <a class="kachel" href="M8-15_Der_innere_Kritiker_hat_Pause.html" data-modul="m8" data-search="kritiker selbstkritik gedanken humor" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-15</span><span class="kachel-emoji">🦉</span></div><div class="kachel-body"><div class="kachel-titel">Innerer Kritiker</div><div class="kachel-sub">Gib ihm eine Gestalt — und Feierabend</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+      <a class="kachel" href="M8-16_Selbstfuersorge-Bingo.html" data-modul="m8" data-search="bingo selbstfuersorge woche spiel" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-16</span><span class="kachel-emoji">🎯</span></div><div class="kachel-body"><div class="kachel-titel">Selbstfürsorge-Bingo</div><div class="kachel-sub">16 kleine Dinge für die Woche</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+      <a class="kachel" href="M8-17_Humor-Notfallkoffer.html" data-modul="m8" data-search="humor notfall saetze witzig geduld" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-17</span><span class="kachel-emoji">🧳</span></div><div class="kachel-body"><div class="kachel-titel">Humor-Notfallkoffer</div><div class="kachel-sub">10 Sätze für den Geduldsfaden</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+      <a class="kachel" href="M8-18_Die_Mittagspause-Challenge.html" data-modul="m8" data-search="mittagspause pause erholung challenge" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-18</span><span class="kachel-emoji">🍱</span></div><div class="kachel-body"><div class="kachel-titel">Mittagspause-Challenge</div><div class="kachel-sub">5 echte Erholungs-Ideen, ohne Handy</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+      <a class="kachel" href="M8-19_Wie_eine_Schildkroete.html" data-modul="m8" data-search="schildkroete langsam entschleunigen humor" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-19</span><span class="kachel-emoji">🐢</span></div><div class="kachel-body"><div class="kachel-titel">Wie eine Schildkröte</div><div class="kachel-sub">Bewusst verlangsamen — mit Augenzwinkern</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-mh" style="scroll-margin-top:135px;--sek-color:var(--c-mh);--sek-light:var(--c-mh-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">M-Humor · Zusatzmodul</span>
+      <span class="modul-sektion-sub">8 Karten · GS · FS · WF</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="MH-01_Humor-Regeln.html" data-modul="mh" data-search="humor regeln selbstironie barometer vertrauen" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-01</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Humor-Regeln</div><div class="kachel-sub">5 Grundregeln</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="MH-02_Humor-Grenzen.html" data-modul="mh" data-search="humor grenzen absolut sarkasmus ironie" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-02</span><span class="kachel-emoji">🚧</span></div><div class="kachel-body"><div class="kachel-titel">Humor-Grenzen</div><div class="kachel-sub">Was immer gilt</div><span class="kachel-tag">Grenzen</span></div></a>
+      <a class="kachel" href="MH-03_Humor-Fehlerquellen.html" data-modul="mh" data-search="fehler ablenkung situationsblindheit" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-03</span><span class="kachel-emoji">⚠️</span></div><div class="kachel-body"><div class="kachel-titel">Fehlerquellen</div><div class="kachel-sub">6 typische Fallen</div><span class="kachel-tag">Reflexion</span></div></a>
+      <a class="kachel" href="MH-04_Humor-Notbremse.html" data-modul="mh" data-search="notbremse witz falsch stoppen entschuldigung" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-04</span><span class="kachel-emoji">🛑</span></div><div class="kachel-body"><div class="kachel-titel">Notbremse</div><div class="kachel-sub">Wenn es nicht passte</div><span class="kachel-tag">Korrektur</span></div></a>
+      <a class="kachel" href="MH-05_5_Mikro-Interventionen_mit_Humor.html" data-modul="mh" data-search="mikro intervention absurd gemeinsames wort" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-05</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">5 Mikro-Interventionen</div><div class="kachel-sub">Klein, schnell, verbindend</div><span class="kachel-tag">Praxis</span></div></a>
+      <a class="kachel" href="MH-06_Humor-Checkliste.html" data-modul="mh" data-search="checkliste vor nach einsatz prüfen" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-06</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Checkliste</div><div class="kachel-sub">Vor und nach dem Einsatz</div><span class="kachel-tag">Check</span></div></a>
+      <a class="kachel" href="MH-07_Barometer-Matrix_Wann_passt_Humor.html" data-modul="mh" data-search="barometer matrix grün gelb orange rot humor" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-07</span><span class="kachel-emoji">🌡️</span></div><div class="kachel-body"><div class="kachel-titel">Barometer-Matrix</div><div class="kachel-sub">Wann passt Humor?</div><span class="kachel-tag">Zentralkarte</span></div></a>
+      <a class="kachel" href="MH-08_Humor_in_der_Praxis_Beispiele.html" data-modul="mh" data-search="beispiele passt nicht alltag selbstironie" style="--kachel-color:var(--c-mh);--kachel-bg:var(--c-mh-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">MH-08</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Praxis-Beispiele</div><div class="kachel-sub">Was passt – was nicht</div><span class="kachel-tag">Abschluss</span></div></a>
+    </div></div></section>
+
+  <!-- LEHRERKURS -->
+
+  <!-- LEHRKRAFTKARTEN -->
+
+  <!-- LK-KURS -->
+  <!-- LK-KURS -->
+  <section class="modul-sektion" id="sek-lk" style="scroll-margin-top:135px;--sek-color:#1565C0;--sek-light:#EAF1F8;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">🏫 Für Lehrkräfte</span>
+      <span class="modul-sektion-sub">16 Karten · Zusammenarbeit mit INGRA · Weitergeben</span>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="KLARTEXT_LK_Info.html" data-modul="lk" data-search="lehrkraft weitergeben lk karten zusammenarbeit ingra klar barometer" style="--kachel-color:#1565C0;--kachel-bg:#EAF1F8;"><div class="kachel-stripe" style="background:#1565C0;"></div><div class="kachel-header"><span class="kachel-nr">🏫</span><span class="kachel-emoji">📘</span></div><div class="kachel-body"><div class="kachel-titel">Für Lehrkräfte – zum Weitergeben</div><div class="kachel-sub">16 Karten · kLAR · Barometer · Zusammenarbeit</div><span class="kachel-tag">Lehrkraft</span></div></a>
+    </div>
+  </section>
+
+  <!-- TEAMKOORDINATION -->
+  <section class="modul-sektion" id="sek-tk" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">🗂️ Teamkoordination</span>
+      <span class="modul-sektion-sub">20 Karten · Für Teamkoordination</span>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="KLARTEXT_Urlaubsplan.html"
+             data-modul="tk" data-search="urlaub plan kalender ferien krank abwesenheit"
+             style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;">
+            <div class="kachel-stripe" style="background:#1B3A4B;"></div>
+            <div class="kachel-header"><span class="kachel-nr">Plan</span><span class="kachel-emoji">🏖️</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Urlaubsplan TK</div>
+              <div class="kachel-sub">Team-Kalender · Urlaub · Krank · Schulfrei</div>
+            </div>
+          </a>
+      <a class="kachel" href="TK-01.html" data-modul="tk" data-search="onboarding ingra einführung checkliste erstkontakt hilfeplan" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-01</span><span class="kachel-emoji">🚀</span></div><div class="kachel-body"><div class="kachel-titel">INGRA-Onboarding</div><div class="kachel-sub">Einführung & Checkliste</div><span class="kachel-tag">Grundlage</span></div></a>
+      <a class="kachel" href="TK-02.html" data-modul="tk" data-search="qualitätssicherung standards reflexion teamkoordination überprüfung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-02</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Qualitätssicherung</div><div class="kachel-sub">Standards & Reflexion</div><span class="kachel-tag">Qualität</span></div></a>
+      <a class="kachel" href="TK-03.html" data-modul="tk" data-search="krisenmanagement teamkoordination krise ablauf eskalation melden" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-03</span><span class="kachel-emoji">🆘</span></div><div class="kachel-body"><div class="kachel-titel">Krisenmanagement</div><div class="kachel-sub">Ablauf & Zuständigkeiten</div><span class="kachel-tag">Krise</span></div></a>
+      <a class="kachel" href="TK-04.html" data-modul="tk" data-search="8a kinderschutz ablauf meldung gefährdung teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-04</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">§ 8a Ablauf</div><div class="kachel-sub">Kinderschutz & Meldung</div><span class="kachel-tag">Recht</span></div></a>
+      <a class="kachel" href="TK-05.html" data-modul="tk" data-search="bewilligung verlängerung antrag hilfeplan teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-05</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Bewilligung & Verlängerung</div><div class="kachel-sub">Anträge & Fristen</div><span class="kachel-tag">Verwaltung</span></div></a>
+      <a class="kachel" href="TK-06.html" data-modul="tk" data-search="übergänge koordinieren schulwechsel schule teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-06</span><span class="kachel-emoji">🔄</span></div><div class="kachel-body"><div class="kachel-titel">Übergänge koordinieren</div><div class="kachel-sub">Schulwechsel & Übergaben</div><span class="kachel-tag">Abschluss</span></div></a>
+      <a class="kachel" href="TK-07_Migrantische_Eltern.html" data-modul="tk" data-search="migrantische eltern kultursensibel dolmetscher teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-07</span><span class="kachel-emoji">🌍</span></div><div class="kachel-body"><div class="kachel-titel">Migrantische Eltern</div><div class="kachel-sub">Kultursensibel organisieren</div><span class="kachel-tag">Neu</span></div></a>
+      <a class="kachel" href="TK-08_Rollenklaerung.html" data-modul="tk" data-search="rollenklaerung rollen zustaendigkeit grenzen" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">08</span><span class="kachel-emoji">🤝</span></div><div class="kachel-body"><div class="kachel-titel">Rollenklärung</div><div class="kachel-sub">JA/NEIN/Delegieren — klare Struktur</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-09_Start-Checkliste.html" data-modul="tk" data-search="start checkliste neuer fall beginn" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">09</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Start-Checkliste</div><div class="kachel-sub">Neuer Fall — strukturiert beginnen</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-10_Laufende_Fall-Checkliste.html" data-modul="tk" data-search="laufend checkliste fall pruefung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">10</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Laufende Fall-Checkliste</div><div class="kachel-sub">Regelmäßige Prüfpunkte</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-11_Fallabschluss-Checkliste.html" data-modul="tk" data-search="abschluss checkliste fall beenden" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">11</span><span class="kachel-emoji">🔒</span></div><div class="kachel-body"><div class="kachel-titel">Fallabschluss-Checkliste</div><div class="kachel-sub">Sauber dokumentiert beenden</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-12_Kommunikation.html" data-modul="tk" data-search="kommunikation austausch lehrkraft eltern" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">12</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Kommunikation</div><div class="kachel-sub">3 Zielgruppen mit Beispielsätzen</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-13_Konfliktmoderation.html" data-modul="tk" data-search="konflikt moderation vermittlung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">13</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Konfliktmoderation</div><div class="kachel-sub">4-Schritte-Modell zur Vermittlung</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-14_Dokumentationspruefung.html" data-modul="tk" data-search="dokumentation pruefung muss darf nicht" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">14</span><span class="kachel-emoji">📑</span></div><div class="kachel-body"><div class="kachel-titel">Dokumentationsprüfung</div><div class="kachel-sub">Was rein darf, was nicht</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-15_Vertretungsorganisation.html" data-modul="tk" data-search="vertretung organisation ausfall" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">15</span><span class="kachel-emoji">👥</span></div><div class="kachel-body"><div class="kachel-titel">Vertretungsorganisation</div><div class="kachel-sub">5 Schritte bei Ausfall</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-16_Selbstfuersorge_TK.html" data-modul="tk" data-search="selbstfuersorge tk fuehrung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">16</span><span class="kachel-emoji">💙</span></div><div class="kachel-body"><div class="kachel-titel">Selbstfürsorge TK</div><div class="kachel-sub">Führungsperspektive</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-17_Zeitmanagement.html" data-modul="tk" data-search="zeitmanagement eisenhower prioritaeten" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">17</span><span class="kachel-emoji">⏳</span></div><div class="kachel-body"><div class="kachel-titel">Zeitmanagement</div><div class="kachel-sub">Eisenhower-Matrix · 10-Min-Regel</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-18_Meetingstruktur.html" data-modul="tk" data-search="meeting struktur ablauf" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">18</span><span class="kachel-emoji">📅</span></div><div class="kachel-body"><div class="kachel-titel">Meetingstruktur</div><div class="kachel-sub">5-Punkte-Ablauf</div><span class="kachel-tag">Teamkoordination</span></div></a>
+      <a class="kachel" href="TK-19_Feedback_geben.html" data-modul="tk" data-search="feedback geben regeln" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">19</span><span class="kachel-emoji">💭</span></div><div class="kachel-body"><div class="kachel-titel">Feedback geben</div><div class="kachel-sub">4 Grundregeln</div><span class="kachel-tag">Teamkoordination</span></div></a>
+    </div></div></section>
+
+  <!-- ELTERNKURS -->
+
+  <!-- ELTERNKARTEN -->
+
+  <!-- DOWNLOADS -->
+    <!-- ══ ZEITKONTO + KRANKMELDUNG ══════════════════════════════ --><section id="sek-tools" class="modul-sektion">
+        <div class="modul-sektion-header" onclick="toggleSek(this)">
+          <div class="modul-sektion-titel">⏱️ Zeitkonto & Meldungen
+      <span class="sek-chevron">▼</span>
+    </div>
+        </div>
+        <div class="modul-sektion-body"><div class="kacheln-grid">
+          <a class="kachel" href="KLARTEXT_Urlaubsantrag_INGRA.html" data-modul="tools" data-search="urlaub antrag urlaubsantrag ingra ferien freistellung"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">🌴</span><span class="kachel-emoji">🌴</span></div><div class="kachel-body"><div class="kachel-titel">Urlaubsantrag</div><div class="kachel-sub">Text generieren · Kopieren · Weiterleiten</div><span class="kachel-tag">INGRA</span></div></a>
+      
+      <a class="kachel" href="KLARTEXT_Zeitkonto.html"
+             data-modul="tools" data-search="zeitkonto arbeitszeit stunden erfassen"
+             style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;">
+            <div class="kachel-stripe" style="background:#1B3A4B;"></div>
+            <div class="kachel-header"><span class="kachel-nr">Zeit</span><span class="kachel-emoji">⏱️</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Zeitkonto</div>
+              <div class="kachel-sub">Stunden erfassen · Wochenansicht · Export CSV</div>
+            </div>
+          </a>
+          <a class="kachel" href="KLARTEXT_Krankmeldung.html"
+             data-modul="tools" data-search="krankmeldung kind krank ausfall melden"
+             style="--kachel-color:#C62828;--kachel-bg:#FDEAEA;">
+            <div class="kachel-stripe" style="background:#C62828;"></div>
+            <div class="kachel-header"><span class="kachel-nr">Krank</span><span class="kachel-emoji">🤒</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Krankmeldung</div>
+              <div class="kachel-sub">Ich krank · Kind fehlt · Nachricht generieren</div>
+            </div>
+          </a>
+      <a class="kachel" href="KLARTEXT_Notizblock.html" data-modul="tools" data-search="notizblock notiz schreiben gedanken brainy" style="--kachel-color:#C47A00;--kachel-bg:#FBF4E8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📝</span><span class="kachel-emoji">✏️</span></div><div class="kachel-body"><div class="kachel-titel">Mein Notizblock</div><div class="kachel-sub">Schreiben · Speichern · A5-Druck</div><span class="kachel-tag">Tools</span></div></a>
+      <a class="kachel" href="KLARTEXT_Teilnehmer_Protokoll.html" data-modul="tools" data-search="teilnehmer protokoll schulung feedback vorschlaege" style="--kachel-color:#C47A00;--kachel-bg:#FBF4E8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📋</span><span class="kachel-emoji">🧑‍🤝‍🧑</span></div><div class="kachel-body"><div class="kachel-titel">Teilnehmer-Protokoll</div><div class="kachel-sub">Name · Datum · Vorschläge & Wünsche</div><span class="kachel-tag">Tools</span></div></a>
+          
+        </div>
+      <a class="kachel" href="KLARTEXT_Listen.html" data-modul="tools" data-search="liste todo aufgaben nach testphase ideen wunschliste merkliste" style="position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">NEU</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📋</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Meine Listen</div><div class="kachel-sub">To-do · Nach der Testphase</div><span class="kachel-tag">Planung</span></div></a></div></section>
+
+<!-- ELTERN-INFO -->
+  <section class="modul-sektion" id="sek-elterninfo" style="scroll-margin-top:135px;--sek-color:#AD1457;--sek-light:#FCE4EC;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">💌 Für Eltern — zum Weitergeben</span>
+      <span class="modul-sektion-sub">7 kompakte Infokarten · Link teilen, nicht ausdrucken</span>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="KLARTEXT_Eltern_Info.html" data-modul="learn" data-search="eltern info weitergeben link teilen" style="--kachel-color:#AD1457;--kachel-bg:#FCE4EC;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Eltern</span><span class="kachel-emoji">💌</span></div><div class="kachel-body"><div class="kachel-titel">Eltern-Infopaket</div><div class="kachel-sub">7 Karten zur Weitergabe an Eltern</div><span class="kachel-tag">Weitergabe</span></div></a>
+    </div>
+  </section>
+
+  <!-- WEITERGABE LK/ELTERN -->
+    <!-- TK-FEEDBACK -->
+
+  <section class="modul-sektion" id="sek-kd" style="scroll-margin-top:135px;--sek-color:#4FC3C7;--sek-light:#E0F7F8;scroll-margin-top:135px;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">🧒 Kinderkarten · Für das Kind direkt</span>
+      <span class="modul-sektion-sub">9 Karten + 10 Druckvorlagen</span>
+    </div>
+    <div class="karten-grid">
+      
+      <a class="kachel" href="KD-01.html" data-modul="kd" data-search="wie geht es mir? kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-01</span><span class="kachel-emoji">🌡️</span></div><div class="kachel-body"><div class="kachel-titel">Wie geht es mir?</div><div class="kachel-sub">Barometer für Kinder</div><span class="kachel-tag">Interaktiv</span></div></a>
+<a class="kachel" href="KD-03.html" data-modul="kd" data-search="die stopp-taste kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-03</span><span class="kachel-emoji">🛑</span></div><div class="kachel-body"><div class="kachel-titel">Die Stopp-Taste</div><div class="kachel-sub">Stopp sagen</div><span class="kachel-tag">Tool</span></div></a>
+<a class="kachel" href="KD-04.html" data-modul="kd" data-search="atem-pause kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-04</span><span class="kachel-emoji">🌬️</span></div><div class="kachel-body"><div class="kachel-titel">Atem-Pause</div><div class="kachel-sub">Atemübung für Kinder</div><span class="kachel-tag">Tool</span></div></a>
+<a class="kachel" href="KD-05.html" data-modul="kd" data-search="mein schultag kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-05</span><span class="kachel-emoji">📅</span></div><div class="kachel-body"><div class="kachel-titel">Mein Schultag</div><div class="kachel-sub">Tagesplan</div><span class="kachel-tag">Struktur</span></div></a>
+<a class="kachel" href="KD-06.html" data-modul="kd" data-search="wut-weg kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-06</span><span class="kachel-emoji">💢</span></div><div class="kachel-body"><div class="kachel-titel">Wut-Weg</div><div class="kachel-sub">Wut regulieren</div><span class="kachel-tag">Tool</span></div></a>
+<a class="kachel" href="KD-07.html" data-modul="kd" data-search="die liegende acht kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-07</span><span class="kachel-emoji">∞</span></div><div class="kachel-body"><div class="kachel-titel">Die liegende Acht</div><div class="kachel-sub">Bewegungsübung</div><span class="kachel-tag">Tool</span></div></a>
+<a class="kachel" href="KD-08.html" data-modul="kd" data-search="meine insel kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-08</span><span class="kachel-emoji">🏝️</span></div><div class="kachel-body"><div class="kachel-titel">Meine Insel</div><div class="kachel-sub">Ruhebild</div><span class="kachel-tag">Entspannung</span></div></a>
+<a class="kachel" href="KD-09.html" data-modul="kd" data-search="tag-check kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-09</span><span class="kachel-emoji">☀️</span></div><div class="kachel-body"><div class="kachel-titel">Tag-Check</div><div class="kachel-sub">Tagesrückblick</div><span class="kachel-tag">Reflexion</span></div></a>
+<a class="kachel" href="KD-01_Geheimschueler.html" data-modul="kd" data-search="geheimschüler-ausweis kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">🕵️</span></div><div class="kachel-body"><div class="kachel-titel">Geheimschüler-Ausweis</div><div class="kachel-sub">Druckvorlage · A6</div><span class="kachel-tag">Drucken</span></div></a>
+<a class="kachel" href="KD-DL-02.html" data-modul="kd" data-search="joker-gutscheine kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">🃏</span></div><div class="kachel-body"><div class="kachel-titel">Joker-Gutscheine</div><div class="kachel-sub">Druckvorlage · Notfallsignal</div><span class="kachel-tag">Drucken</span></div></a>
+<a class="kachel" href="KD-DL-03.html" data-modul="kd" data-search="sterntaler kind kinder download drucken" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">⭐</span></div><div class="kachel-body"><div class="kachel-titel">Sterntaler</div><div class="kachel-sub">Druckvorlage · Lob</div><span class="kachel-tag">Drucken</span></div></a>
+    
+      <a class="kachel" href="KD-DL-01.html" data-modul="kd" data-search="geheimschüler-ausweis kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">🕵️</span></div><div class="kachel-body"><div class="kachel-titel">Geheimschüler-Ausweis</div><div class="kachel-sub">Druckvorlage · Original</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-02_Klokarten.html" data-modul="kd" data-search="klo-kärtchen kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">🚽</span></div><div class="kachel-body"><div class="kachel-titel">Klo-Kärtchen</div><div class="kachel-sub">Druckvorlage · Pause</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-04_Lobarmband.html" data-modul="kd" data-search="lob-armband kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">📿</span></div><div class="kachel-body"><div class="kachel-titel">Lob-Armband</div><div class="kachel-sub">Druckvorlage · Belohnung</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-05_Lobkaertchen.html" data-modul="kd" data-search="lob-kärtchen kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">💛</span></div><div class="kachel-body"><div class="kachel-titel">Lob-Kärtchen</div><div class="kachel-sub">Druckvorlage · Wertschätzung</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-06_MiniFitness.html" data-modul="kd" data-search="mini-fitness kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">🤸</span></div><div class="kachel-body"><div class="kachel-titel">Mini-Fitness</div><div class="kachel-sub">Druckvorlage · Bewegung</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-08_HimmelHoelle.html" data-modul="kd" data-search="himmel & hölle kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">🎮</span></div><div class="kachel-body"><div class="kachel-titel">Himmel & Hölle</div><div class="kachel-sub">Druckvorlage · Spiel</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-10_Mutmachkaertchen.html" data-modul="kd" data-search="mutmach-kärtchen kind drucken download" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Druck</span><span class="kachel-emoji">💪</span></div><div class="kachel-body"><div class="kachel-titel">Mutmach-Kärtchen</div><div class="kachel-sub">Druckvorlage · Stärken</div><span class="kachel-tag">Drucken</span></div></a>
+      <a class="kachel" href="KD-11_Mutmach-Tier.html" data-modul="kd" data-search="mutmach tier ausmalen kraft symbol kind" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-11</span><span class="kachel-emoji">🦁</span></div><div class="kachel-body"><div class="kachel-titel">Mutmach-Tier</div><div class="kachel-sub">Ausmalen · Kraftsymbol finden</div><span class="kachel-tag">Download</span></div></a>
+      <a class="kachel" href="KD-12_Gefuehls-Wetterbericht.html" data-modul="kd" data-search="wetter gefuehl jung kind grundschule" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-12</span><span class="kachel-emoji">🌤️</span></div><div class="kachel-body"><div class="kachel-titel">Gefühls-Wetterbericht</div><div class="kachel-sub">1.–3. Klasse · Bild statt Wort</div><span class="kachel-tag">Download</span></div></a>
+      <a class="kachel" href="KD-13_Pausen-Wuerfel.html" data-modul="kd" data-search="wuerfel pause basteln bewegung mittel" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-13</span><span class="kachel-emoji">🎲</span></div><div class="kachel-body"><div class="kachel-titel">Pausen-Würfel</div><div class="kachel-sub">4.–6. Klasse · Zum Basteln</div><span class="kachel-tag">Download</span></div></a>
+      <a class="kachel" href="KD-14_Mein_Comeback-Plan.html" data-modul="kd" data-search="comeback jugendlich aelter plan selbst" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-14</span><span class="kachel-emoji">💪</span></div><div class="kachel-body"><div class="kachel-titel">Mein Comeback-Plan</div><div class="kachel-sub">Ab 7. Klasse · Selbstbestimmt</div><span class="kachel-tag">Download</span></div></a>
+    </div></div></section>
+
+  <section class="modul-sektion" id="sek-fk" style="scroll-margin-top:135px;--sek-color:var(--c-fk);--sek-light:var(--c-fk-l);">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">🚒 Feuerwehrkarten · Barometer ROT</span>
+      <span class="modul-sektion-sub">8 Karten · Akutintervention</span>
+      
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="FK-01.html" data-modul="fk" data-search="eskalation wutanfall schlagen aggression akut" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-01</span><span class="kachel-emoji">⚡</span></div><div class="kachel-body"><div class="kachel-titel">Akute Eskalation</div><div class="kachel-sub">Wutanfall · Angriff · Kontrollverlust</div><span class="kachel-tag">AKUT</span></div></a>
+      <a class="kachel" href="FK-02.html" data-modul="fk" data-search="shutdown erstarren rückzug schweigen freeze" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-02</span><span class="kachel-emoji">🔇</span></div><div class="kachel-body"><div class="kachel-titel">Shutdown</div><div class="kachel-sub">Totaler Rückzug · Erstarren</div><span class="kachel-tag">AKUT</span></div></a>
+      <a class="kachel" href="FK-03.html" data-modul="fk" data-search="panik panikattacke angst herzrasen" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-03</span><span class="kachel-emoji">😰</span></div><div class="kachel-body"><div class="kachel-titel">Panikattacke</div><div class="kachel-sub">Angst · Herzrasen · Atemnot</div><span class="kachel-tag">AKUT</span></div></a>
+      <a class="kachel" href="FK-04.html" data-modul="fk" data-search="fremdgefährdung gefährdet andere angriff" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-04</span><span class="kachel-emoji">⚠️</span></div><div class="kachel-body"><div class="kachel-titel">Fremdgefährdung</div><div class="kachel-sub">Gefahr für andere Personen</div><span class="kachel-tag">AKUT</span></div></a>
+      <a class="kachel" href="FK-05.html" data-modul="fk" data-search="selbstverletzung ritzen kratzen eigen" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-05</span><span class="kachel-emoji">🩹</span></div><div class="kachel-body"><div class="kachel-titel">Selbstverletzung</div><div class="kachel-sub">Gefahr für das Kind selbst</div><span class="kachel-tag">AKUT</span></div></a>
+      <a class="kachel" href="FK-06.html" data-modul="fk" data-search="weglaufen flucht rennen verlassen flight" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-06</span><span class="kachel-emoji">🏃</span></div><div class="kachel-body"><div class="kachel-titel">Weglaufen / Flucht</div><div class="kachel-sub">Kind verlässt die Situation</div><span class="kachel-tag">AKUT</span></div></a>
+      <a class="kachel" href="FK-07.html" data-modul="fk" data-search="dissoziation abwesend starre leer nicht erreichbar" style="--kachel-color:var(--c-fk);--kachel-bg:var(--c-fk-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">FK-07</span><span class="kachel-emoji">🌫️</span></div><div class="kachel-body"><div class="kachel-titel">Dissoziation</div><div class="kachel-sub">Abwesend · Nicht erreichbar</div><span class="kachel-tag">AKUT</span></div></a>
+          <a class="kachel" href="FK-08.html"
+             data-modul="fk" data-search="meltdown eskalation autismus neurologisch überlastung"
+             style="--kachel-color:#C62828;--kachel-bg:#FDEAEA;">
+            <div class="kachel-stripe" style="background:#C62828;"></div>
+            <div class="kachel-header"><span class="kachel-nr">FK-08</span><span class="kachel-emoji">🌋</span></div>
+            <div class="kachel-body">
+              <div class="kachel-titel">Meltdown</div>
+              <div class="kachel-sub">Neurologischer Kontrollverlust · Begleitung · Prävention</div>
+              <span class="kachel-tag">AKUT</span>
+            </div>
+          </a>
+
+    >
+    </div></div></section>
+
+  <div class="no-results" id="noResults">
+    <span class="no-icon">🔍</span>
+    <p>Keine Karte gefunden. Versuche einen anderen Suchbegriff.</p>
+  </div>
+</main>
+
+<footer>
+  <strong>KLARTEXT</strong> Mentoring-System<br>
+  M0 · M1 · M2 · M3 · M4 · M5 · M6 · M7 · M8 · Humor · Kinder · Feuerwehr
+  <span class="footer-copy">Alle Rechte vorbehalten · KLARTEXT-Mentoring-System</span>
+  <div style="margin-top:.75rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+    <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="color:rgba(255,255,255,.4);font-size:.72rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);">Über Anja Jolk</a>
+    <a href="KLARTEXT_Impressum.html" style="color:rgba(255,255,255,.4);font-size:.72rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);">Impressum</a>
+    <a href="KLARTEXT_Quellenverzeichnis.html" style="color:rgba(255,255,255,.4);font-size:.72rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);">Quellenverzeichnis</a>
+    <a href="KLARTEXT_Glossar.html" style="color:rgba(255,255,255,.4);font-size:.72rem;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15);">Glossar</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  const searchInput = document.getElementById('searchInput');
+  const kacheln = Array.from(document.querySelectorAll('.kachel'));
+  const sektionen = Array.from(document.querySelectorAll('.modul-sektion'));
+  const noResults = document.getElementById('noResults');
+  const countEl = document.getElementById('countDisplay');
+  const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
+  let activeModul = 'alle';
+  let searchTerm = '';
+  function normalize(str) {
+    return str.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9\s]/g,'');
+  }
+  function applyFilters() {
+    const q = normalize(searchTerm.trim());
+    let visible = 0;
+    sektionen.forEach(function(sek) {
+      const sekModul = sek.id.replace('sek-','');
+      const sekMatch = activeModul === 'alle' || sekModul === activeModul;
+      sek.classList.toggle('hidden', !sekMatch && q === '');
+    });
+    kacheln.forEach(function(kachel) {
+      const modul = kachel.getAttribute('data-modul') || '';
+      const search = normalize(kachel.getAttribute('data-search') || '');
+      const titel = normalize(kachel.querySelector('.kachel-titel')?.textContent || '');
+      const modulMatch = activeModul === 'alle' || modul === activeModul;
+      const textMatch = !q || search.includes(q) || titel.includes(q);
+      const show = modulMatch && textMatch;
+      kachel.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    if (q) {
+      sektionen.forEach(function(sek) {
+        const hasVisible = sek.querySelectorAll('.kachel:not(.hidden)').length > 0;
+        sek.classList.toggle('hidden', !hasVisible);
+      });
+    }
+    noResults.style.display = (visible === 0) ? 'block' : 'none';
+    countEl.textContent = visible;
+  }
+  countEl.textContent = kacheln.length;
+  searchInput.addEventListener('input', function() { searchTerm = this.value; applyFilters(); });
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      activeModul = this.getAttribute('data-modul');
+      searchInput.value = '';
+      searchTerm = '';
+      applyFilters();
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  // ── ROLLE ERMITTELN ──────────────────────────────────────
+  var role = 'admin';
+  try { role = sessionStorage.getItem('klartext_role') || 'admin'; } catch(e) {}
+
+  var LABELS = {ingra:'INGRA',lk:'Lehrkraft',eltern:'Eltern',tk:'TK',trainer:'Trainer:in',admin:'Admin 🔑'};
+  var FARBEN = {ingra:'#3B8A68',lk:'#1565C0',eltern:'#AD1457',tk:'#4A148C',trainer:'#B07D2A',admin:'#6EC6A0'};
+
+  // ── HIDE-CONFIG ──────────────────────────────────────────
+  var HIDE = {
+    // INGRA: sieht Module + Tools + Kind-Karten + Downloads + Lernmaterialien + Lehrerkurs-Kachel + Eltern-Infopaket + Weitergabe-Anleitung — KEIN TK-Feedback, KEINE TK-Inbox, kein sek-learn (Trainer-intern)
+    ingra:   ['sek-lkkurs','sek-tk','sek-elkurs','sek-el','sek-learn','sek-tkfeedback'],
+    // LK: NUR eigene LK-Karten + Kinderkarten + Downloads — KEIN Chat, KEINE Lernmaterialien (INGRA-intern)
+    lk:      ['sek-m0','sek-m1','sek-m2','sek-m3','sek-m4','sek-m5','sek-m6',
+               'sek-m7','sek-m8','sek-mh','sek-fk','sek-tk',
+               'sek-elkurs','sek-el','sek-learn','sek-tools','sek-lernmaterialien','sek-feedback',
+               'sek-elterninfo','sek-weitergabe','sek-tkfeedback'],
+    // ELTERN: NUR Kinderkarten + Downloads (für Material zum Kind) — sonst nichts, KEIN Chat
+    eltern:  ['sek-m0','sek-m1','sek-m2','sek-m3','sek-m4','sek-m5','sek-m6',
+               'sek-m7','sek-m8','sek-mh','sek-fk','sek-lkkurs','sek-lk','sek-tk',
+               'sek-learn','sek-tools','sek-elterninfo','sek-weitergabe','sek-tkfeedback','sek-feedback'],
+    // TK: alles wie Trainer + Fachbuch + Eltern-Infopaket + Weitergabe-Anleitung + EIGENES Feedback-Formular + Weiterleiten + Inbox + Nachrichten
+    tk:      ['sek-lkkurs','sek-elkurs'],
+    // TRAINER: Module + E-Learning + Curriculum + Fachbuch — NICHT Teilnehmerkurse, NICHT Weitergabe-Anleitung, NICHT TK-Feedback, NICHT Weiterleiten, NICHT Chat (operative Funktionen, nicht Trainer-Aufgabe)
+    trainer: ['sek-lkkurs','sek-elkurs','sek-weitergabe','sek-tkfeedback'],
+    // ADMIN: sieht alles
+    admin:   []
+    // Hinweis: springer_ingra/pool_ingra/vertretung_ingra existieren noch nicht als echte Login-Rollen.
+    // Sobald sie eingeführt werden, sollten sie wie 'ingra' behandelt werden (Chat sichtbar).
+  };
+
+  // ── SOFORT AUSFÜHREN (nicht auf DOM warten) ──────────────
+  // Sektionen per CSS sofort verstecken — BEVOR sie gerendert werden
+  var toHide = HIDE[role] || [];
+  if(toHide.length > 0) {
+    var styleEl = document.createElement('style');
+    styleEl.textContent = toHide.map(function(id){ return '#'+id+'.role-hidden{display:none!important;}'; }).join('');
+    document.head.appendChild(styleEl);
+  }
+
+  // ── NACH DOM-LOAD: Kacheln + Badge ──────────────────────
+  document.addEventListener('DOMContentLoaded', function(){
+    // Environment-Anzeige — rein visuell, keine Logik, kein Filter, keine Verhaltensänderung
+    try {
+      var envMode = sessionStorage.getItem('klartext_environment');
+      if (envMode) {
+        var envBadge = document.getElementById('env-badge');
+        if (envBadge) {
+          envBadge.textContent = 'Environment: ' + envMode;
+          envBadge.style.display = 'inline-flex';
+        }
+      }
+    } catch(e) {}
+
+    // Sektionen nochmal sicher verstecken (per Klasse, nicht Inline-Style — kollisionsfrei mit Such-/Modul-Filter)
+    toHide.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.classList.add('role-hidden');
+    });
+
+    // Kacheln nach Attributen filtern
+    document.querySelectorAll('[data-admin-only]').forEach(function(el){
+      if(role !== 'admin') el.style.display = 'none';
+    });
+    document.querySelectorAll('[data-trainer-only]').forEach(function(el){
+      if(role !== 'admin' && role !== 'trainer') el.style.display = 'none';
+    });
+    document.querySelectorAll('[data-expert-only]').forEach(function(el){
+      if(!['admin','trainer','tk'].includes(role)) el.style.display = 'none';
+    });
+
+    // Rollen-Badge im Header
+    var badge = document.createElement('span');
+    badge.style.cssText = 'font-size:.65rem;font-weight:700;color:#fff;background:'+(FARBEN[role]||'#1B3A4B')+';padding:.2rem .6rem;border-radius:20px;margin-right:.3rem;';
+    badge.textContent = LABELS[role] || role;
+
+    var logout = document.querySelector('a[href="KLARTEXT_Landing.html"][onclick]');
+    if(!logout) logout = document.querySelector('a[onclick*="sessionStorage.clear"]');
+    if(logout) {
+      logout.parentNode.insertBefore(badge, logout);
+    } else {
+      var nav = document.querySelector('.header-nav, .kt-header nav, nav');
+      if(nav) nav.appendChild(badge);
+    }
+  });
+})();
+
+// Sektions-Toggle
+function toggleSek(header) {
+  var sek = header.closest('.modul-sektion');
+  if(sek) sek.classList.toggle('open');
+}
+function openSek(id) {
+  var sek = document.getElementById(id);
+  if(sek) { sek.classList.add('open'); }
+}
+// FK-Karten immer offen
+document.addEventListener('DOMContentLoaded', function(){
+  var fk = document.getElementById('sek-fk');
+  if(fk) fk.classList.add('open');
+  var m3 = document.getElementById('sek-m3');
+  if(m3) m3.classList.add('open');
+});
+
+function resetFilter() {
+  // Filter-Buttons zurücksetzen
+  document.querySelectorAll('.filter-btn').forEach(function(b){
+    b.classList.remove('active');
+  });
+  var alleBtn = document.querySelector('.filter-btn[data-modul="alle"]');
+  if(alleBtn) alleBtn.classList.add('active');
+  // Alle Kacheln und Sektionen über die gleiche Klasse wie applyFilters() steuern
+  document.querySelectorAll('.kachel').forEach(function(k){
+    k.classList.remove('hidden');
+    k.style.display = '';
+  });
+  document.querySelectorAll('.modul-sektion').forEach(function(s){
+    s.classList.remove('hidden');
+    s.style.display = '';
+  });
+  if (typeof activeModul !== 'undefined') activeModul = 'alle';
+  if (typeof searchTerm !== 'undefined') searchTerm = '';
+  if (typeof searchInput !== 'undefined' && searchInput) searchInput.value = '';
+}
+
+</script>
+
+<style>
+.logout-fab{display:none;}
+@media(max-width:768px){.logout-fab{display:flex!important;}}
+
+/* ── WAS TUE ICH JETZT Banner ──────────────────────────── */
+.wtij-banner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #7A5318, #B07D2A);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+  border: 2px solid #E0C88A;
+  box-shadow: 0 4px 20px rgba(176,125,42,.3);
+  transition: all .18s;
+  position: relative;
+  overflow: hidden;
+}
+.wtij-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(255,255,255,.08) 0%, transparent 60%);
+}
+.wtij-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(176,125,42,.4);
+}
+.wtij-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  position: relative;
+}
+.wtij-text {
+  flex: 1;
+  position: relative;
+}
+.wtij-label {
+  font-size: .6rem;
+  font-weight: 700;
+  color: #E0C88A;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: .2rem;
+}
+.wtij-titel {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+  line-height: 1.2;
+}
+.wtij-sub {
+  font-size: .72rem;
+  color: rgba(255,255,255,.6);
+  display: block;
+  margin-top: .2rem;
+}
+.wtij-arrow {
+  font-size: 1.5rem;
+  color: #E0C88A;
+  flex-shrink: 0;
+  position: relative;
+}
+@media(max-width:480px) {
+  .wtij-titel { font-size: 1.05rem; }
+  .wtij-icon { font-size: 1.8rem; }
+}
+
+/* ── WAS TUE ICH JETZT — sticky unter Nav ──────────────── */
+.wtij-bar {
+  background: linear-gradient(135deg, #7A5318, #B07D2A);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .55rem clamp(.75rem,3vw,1.5rem);
+  border-bottom: 1px solid #E0C88A;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity .15s;
+}
+.wtij-bar:hover { opacity: .92; }
+.wtij-bar-icon { font-size: 1.1rem; flex-shrink: 0; }
+.wtij-bar-text { flex: 1; }
+.wtij-bar-label { font-size: .55rem; color: #E0C88A; letter-spacing: .16em; text-transform: uppercase; display: block; }
+.wtij-bar-titel { font-family: "Playfair Display", serif; font-size: .92rem; font-weight: 700; color: #fff; display: block; line-height: 1.2; }
+.wtij-bar-sub { font-size: .65rem; color: rgba(255,255,255,.55); display: block; margin-top: .1rem; }
+.wtij-bar-arrow { font-size: 1.2rem; color: #E0C88A; flex-shrink: 0; }
+
+/* ── SCHNELL-BUTTONS ─────────────────────────── */
+.quick-nav {
+  background: var(--kt-surface);
+  border-bottom: 1.5px solid var(--kt-border);
+  padding: .65rem clamp(.75rem,3vw,1.5rem);
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.qbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .32rem .75rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--kt-border);
+  background: var(--kt-surface);
+  color: var(--kt-text);
+  font-family: "DM Sans", sans-serif;
+  font-size: .72rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.qbtn:hover { background: var(--kt-paper); border-color: var(--kt-m); }
+.qbtn.rot  { background: #FDEAEA; border-color: #C62828; color: #C62828; }
+.qbtn.rot:hover { background: #C62828; color: #fff; }
+.qbtn.gold { background: #FBF4E8; border-color: #C47A00; color: #7A5318; }
+.qbtn.gold:hover { background: #C47A00; color: #fff; }
+
+/* ── SEKTIONS-TOGGLE ──────────────────────────── */
+.modul-sektion-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .65rem 0;
+  border-bottom: 1.5px solid var(--kt-border);
+  margin-bottom: 0;
+}
+.modul-sektion-header:hover { opacity: .85; }
+.sek-chevron {
+  font-size: .75rem;
+  color: var(--kt-muted);
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.modul-sektion.open .sek-chevron { transform: rotate(180deg); }
+.modul-sektion-body {
+  display: none;
+  padding-top: .75rem;
+}
+.modul-sektion.open .modul-sektion-body { display: block; }
+/* FK immer offen */
+#sek-fk:not(.hidden) .modul-sektion-body { display: block !important; }
+
+</style>
+<a class="logout-fab" 
+   href="KLARTEXT_Landing.html" 
+   onclick="try{sessionStorage.clear();}catch(e){}"
+   style="position:fixed;bottom:5.5rem;right:1rem;
+          align-items:center;justify-content:center;
+          width:44px;height:44px;border-radius:50%;
+          background:#C62828;color:#fff;
+          font-size:.85rem;font-weight:700;
+          text-decoration:none;
+          box-shadow:0 4px 16px rgba(198,40,40,.4);
+          z-index:9999;
+          -webkit-transform:translateZ(0);transform:translateZ(0);"
+   title="Logout">⬅</a>
+
+
+<script>
+// Feedback-Banner rollenabhängig — läuft nach DOM-Aufbau
+(function(){
+  try{
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    var env   = sessionStorage.getItem('klartext_environment') || '';
+    var istBeta  = (env === 'beta');
+    var istAdmin = (rolle === 'admin' || rolle === 'trainer');
+
+    // Alle ausblenden
+    document.querySelectorAll('.fb-nur-beta,.fb-alle,.fb-nur-admin').forEach(function(el){
+      el.style.display = 'none';
+    });
+
+    // INGRA-BETA: fb-nur-beta + fb-alle sichtbar
+    if (istBeta) {
+      document.querySelectorAll('.fb-nur-beta').forEach(function(el){ el.style.display = 'flex'; });
+      document.querySelectorAll('.fb-alle').forEach(function(el){ el.style.display = 'flex'; });
+    }
+    // INGRA / TK: nur fb-alle sichtbar
+    else if (!istAdmin) {
+      document.querySelectorAll('.fb-alle').forEach(function(el){ el.style.display = 'flex'; });
+    }
+    // Admin / Trainer: nur fb-nur-admin sichtbar
+    else {
+      document.querySelectorAll('.fb-nur-admin').forEach(function(el){ el.style.display = 'flex'; });
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

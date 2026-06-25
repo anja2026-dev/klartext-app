@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Weitergabe an LK & Eltern</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:780px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+
+.hero{background:var(--navy);border-radius:16px;padding:1.75rem 1.5rem;margin-bottom:1.5rem;text-align:center;}
+.hero img{width:56px;height:56px;object-fit:contain;margin-bottom:.75rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff;margin-bottom:.4rem;}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.7);max-width:480px;margin:0 auto;line-height:1.5;}
+
+.block{background:var(--surface);border-radius:14px;padding:1.25rem 1.4rem;margin-bottom:1.25rem;box-shadow:0 1px 8px rgba(0,0,0,.05);}
+.block-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
+.block-text{font-size:.85rem;color:#3A3A4A;line-height:1.65;margin-bottom:.75rem;}
+
+.zugang-karte{border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:.85rem;border-left:4px solid;}
+.zugang-lk{background:#EAF1F8;border-color:#1565C0;}
+.zugang-eltern{background:#FCE4EC;border-color:#AD1457;}
+.zugang-titel{font-weight:800;font-size:.92rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;}
+.zugang-lk .zugang-titel{color:#0D3F7A;}
+.zugang-eltern .zugang-titel{color:#7A0A3A;}
+.zugang-row{display:flex;gap:.6rem;margin-bottom:.5rem;flex-wrap:wrap;}
+.zugang-feld{background:#fff;border-radius:8px;padding:.5rem .8rem;font-size:.8rem;flex:1;min-width:140px;}
+.zugang-feld b{display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.2rem;}
+.zugang-feld span{font-family:monospace;font-weight:700;color:var(--navy);font-size:.88rem;}
+.zugang-hinweis{font-size:.78rem;color:#3A3A4A;line-height:1.55;margin-top:.5rem;}
+
+.schritt-liste{counter-reset:schritt;}
+.schritt{display:flex;gap:.75rem;margin-bottom:.85rem;}
+.schritt:last-child{margin-bottom:0;}
+.schritt-nr{counter-increment:schritt;background:var(--navy);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;}
+.schritt-nr::before{content:counter(schritt);}
+.schritt-text{font-size:.84rem;color:#3A3A4A;line-height:1.55;padding-top:.1rem;}
+.schritt-text b{color:var(--navy);}
+
+.warnbox{background:#FFF3E0;border-left:4px solid #B7500A;border-radius:8px;padding:.85rem 1.1rem;font-size:.82rem;color:#5A2E00;margin-bottom:1.25rem;line-height:1.6;}
+
+.tabelle{width:100%;border-collapse:collapse;font-size:.82rem;margin-bottom:.5rem;}
+.tabelle th{background:var(--navy);color:#fff;padding:.5rem .7rem;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;}
+.tabelle td{padding:.5rem .7rem;border-bottom:1px solid var(--border);}
+.tabelle tr:nth-child(even) td{background:var(--paper);}
+
+.brainy{display:flex;gap:.85rem;align-items:center;background:var(--surface);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
+.brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+.brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Weitergabe an LK & Eltern</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <img src="brainy.png" alt="Brainy">
+  <div class="hero-titel">Material an Lehrkräfte & Eltern weitergeben</div>
+  <div class="hero-sub">Diese Seite erklärt, was es gibt, wie es funktioniert und welche Zugangsdaten Sie weitergeben können — nur für INGRA & Teamkoordination sichtbar.</div>
+</div>
+
+<div class="block">
+  <div class="block-titel">🏫 Für Lehrkräfte — der Lehrerkurs</div>
+  <div class="block-text">Ein geführter, 16-teiliger Online-Kurs speziell für Lehrkräfte — von der Zusammenarbeit mit INGRA über das Barometer bis hin zu Trauma, Migration und dem kLAR-Modell. Kompakt aufbereitet, mit Tabellen und konkreten Handlungsempfehlungen. Kein Login im Hauptsystem nötig — eigener Zugang.</div>
+
+  <div class="zugang-karte zugang-lk">
+    <div class="zugang-titel">🔑 Zugangsdaten Lehrkraft</div>
+    <div class="zugang-row">
+      <div class="zugang-feld"><b>Link</b><span>klartext-ingra.h9cyz7d9pj.workers.dev/KLARTEXT_Login.html</span></div>
+    </div>
+    <div class="zugang-row">
+      <div class="zugang-feld"><b>Bereich wählen</b><span>Lehrkraft</span></div>
+      <div class="zugang-feld"><b>Passwort</b><span>lehrerkraft</span></div>
+    </div>
+    <div class="zugang-hinweis">Die Lehrkraft landet automatisch direkt im Lehrerkurs — kein Dashboard-Stöbern nötig.</div>
+  </div>
+
+  <div class="warnbox"><b>⚠️ Wichtig:</b> Bitte den Link weiterleiten, nicht ausdrucken — so sieht die Lehrkraft immer die aktuelle Version, auch nach Updates.</div>
+</div>
+
+<div class="block">
+  <div class="block-titel">💌 Für Eltern — das Infopaket</div>
+  <div class="block-text">7 kompakte Karten speziell für Eltern: Was ist INGRA, das Barometer für zuhause, Übergänge, Notfallkontakte, Rechte, Tipps für zuhause, und ein Extra für Familien mit Migrationsgeschichte. Kurz, klar, ohne Fachsprache.</div>
+
+  <div class="zugang-karte zugang-eltern">
+    <div class="zugang-titel">🔑 Zugangsdaten Eltern</div>
+    <div class="zugang-row">
+      <div class="zugang-feld"><b>Link</b><span>klartext-ingra.h9cyz7d9pj.workers.dev/KLARTEXT_Login.html</span></div>
+    </div>
+    <div class="zugang-row">
+      <div class="zugang-feld"><b>Bereich wählen</b><span>Eltern</span></div>
+      <div class="zugang-feld"><b>Passwort</b><span>elternkurs</span></div>
+    </div>
+  </div>
+
+  <div class="warnbox"><b>⚠️ Wichtig:</b> Auch hier gilt — Link weiterleiten, nicht ausdrucken.</div>
+</div>
+
+<div class="block">
+  <div class="block-titel">✅ So gehen Sie vor</div>
+  <div class="schritt-liste">
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text">Entscheiden Sie, ob Lehrkraft, Eltern oder beide Zugang bekommen sollen — je nach Situation und Hilfeplan.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text">Teilen Sie den passenden Link <b>persönlich</b> mit (E-Mail, Messenger) — zusammen mit dem jeweiligen Passwort.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text">Erklären Sie kurz mündlich, worum es geht — die Seite selbst führt dann durch die Inhalte.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text">Bei Rückfragen: Sie als INGRA oder die Teamkoordination sind Ansprechpartner — nicht die Trägerverwaltung.</div></div>
+  </div>
+</div>
+
+<div class="block">
+  <div class="block-titel">📋 Was LK & Eltern NICHT sehen</div>
+  <div class="block-text">Beide Zugänge sind bewusst eingeschränkt — kein Zugriff auf interne Fachmodule, Tools, das Fachbuch oder Trainer-Material. Nur das jeweils relevante, fertig aufbereitete Material.</div>
+  <table class="tabelle">
+    <tr><th>Bereich</th><th>Lehrkraft</th><th>Eltern</th></tr>
+    <tr><td>Lehrerkurs / Eltern-Infopaket</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Kinderkarten & Downloads für Kind</td><td>✓</td><td>✓</td></tr>
+    <tr><td>Module M0–M8, Fachbuch, Tools</td><td>✗</td><td>✗</td></tr>
+    <tr><td>TK-Karten, Trainer-Material</td><td>✗</td><td>✗</td></tr>
+  </table>
+</div>
+
+<div class="brainy">
+  <img src="brainy.png" alt="Brainy">
+  <div><strong>Brainy erinnert:</strong> Klare, fertig aufbereitete Zugänge schützen alle Beteiligten — und ersparen Ihnen lange Erklärungen am Telefon.</div>
+</div>
+
+</div>
+
+</body>
+</html>

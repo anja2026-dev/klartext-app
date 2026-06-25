@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Mini-Checkliste — Mobbing erkennen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem 3rem;gap:1rem;}
+.controls{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;}
+.ctrl{padding:.4rem .9rem;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;border:none;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;}
+.ctrl-print{background:#B07D2A;color:#fff;}
+.ctrl-back{background:rgba(27,58,75,.15);color:#1B3A4B;border:1.5px solid rgba(27,58,75,.2);}
+.a5{width:148mm;max-width:100%;background:#fff;box-shadow:0 8px 40px rgba(0,0,0,.2);border-radius:8px;overflow:hidden;}
+.a5-header{background:linear-gradient(135deg,#D81B60 0%,#A8124A 100%);padding:6mm 8mm;display:flex;align-items:center;gap:8px;}
+.a5h-mark{width:24px;height:24px;border:2px solid #6EC6A0;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.a5h-mark span{font-family:"Playfair Display",serif;font-size:11px;font-weight:700;color:#fff;}
+.a5h-text{flex:1;}
+.a5h-name{font-family:"Playfair Display",serif;font-size:.85rem;font-weight:700;color:#fff;}
+.a5h-sub{font-size:.55rem;color:#6EC6A0;letter-spacing:.1em;text-transform:uppercase;}
+.a5-stripe{height:3px;background:#B07D2A;}
+.a5-body{padding:7mm 8mm 8mm;}
+.guide-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#B07D2A;margin-bottom:.3rem;}
+.guide-sub{font-size:.72rem;color:#7A6060;margin-bottom:.85rem;}
+.schritt{display:flex;gap:.5rem;margin-bottom:.55rem;align-items:flex-start;}
+.schritt-nr{width:22px;height:22px;border-radius:50%;background:#B07D2A;color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.schritt-text{font-size:.78rem;color:#2D2D2D;line-height:1.5;}
+.schritt-text b{color:#B07D2A;}
+.merksatz{background:#FBF4E8;border:1.5px solid #B07D2A;border-radius:8px;padding:.6rem .85rem;margin-top:.75rem;font-size:.8rem;font-style:italic;color:#2D2D2D;text-align:center;}
+.brainy-row{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;background:#F5F0E8;border-radius:8px;padding:.5rem .7rem;}
+.brainy-row img{width:48px;height:48px;object-fit:contain;flex-shrink:0;}
+.brainy-row p{font-size:.7rem;color:#6A6878;line-height:1.4;}
+@media print{body{background:white;padding:0;}.controls{display:none!important;}.a5{box-shadow:none;width:100%;}@page{size:A5;margin:0;}}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+<div class="controls">
+  <button class="ctrl ctrl-print" onclick="window.print()">🖨️ Als PDF drucken</button>
+  <a class="ctrl ctrl-back" href="DASHBOARD.html">← Zurück</a>
+</div>
+<div class="a5">
+  <div class="a5-header">
+    <div class="a5h-mark"><span>K</span></div>
+    <div class="a5h-text"><div class="a5h-name">KLARTEXT</div><span class="a5h-sub">Mentoring-System</span></div>
+  </div>
+  <div class="a5-stripe"></div>
+  <div class="a5-body">
+    <div class="guide-titel">🟧 Mobbing erkennen</div>
+    <div class="guide-sub">Frühzeitig erkennen, nicht erst im Akutfall</div>
+    <div class="schritt"><div class="schritt-nr">1</div><div class="schritt-text"><b>Wiederholung</b> — Passiert es immer wieder?</div></div>
+    <div class="schritt"><div class="schritt-nr">2</div><div class="schritt-text"><b>Absicht</b> — Ist es gezielt verletzend?</div></div>
+    <div class="schritt"><div class="schritt-nr">3</div><div class="schritt-text"><b>Machtungleichgewicht</b> — Mehrere gegen eine Person — körperlich, sozial oder digital überlegen?</div></div>
+    <div class="schritt"><div class="schritt-nr">4</div><div class="schritt-text"><b>Ausschluss</b> — Systematisches Ignorieren, „Du darfst nicht mitspielen"?</div></div>
+    <div class="schritt"><div class="schritt-nr">5</div><div class="schritt-text"><b>Demütigung</b> — Lächerlich machen, Nachäffen, Bloßstellen</div></div>
+    <div class="schritt"><div class="schritt-nr">6</div><div class="schritt-text"><b>Digitale Spuren</b> — Nachrichten, Screenshots, Gruppenchat-Druck</div></div>
+    <div class="schritt"><div class="schritt-nr">7</div><div class="schritt-text"><b>Reaktion des Opfers</b> — Rückzug, Angst, Bauchschmerzen, Schweigen</div></div>
+    <div class="schritt"><div class="schritt-nr">8</div><div class="schritt-text"><b>Umfeld</b> — Niemand greift ein, Verteidiger fehlen</div></div>
+    <div class="merksatz">„Mobbing ist ein Muster — kein Moment."</div>
+    <div class="brainy-row"><img src="brainy.png" alt="Brainy"><p><strong>Brainy erinnert:</strong> Wenn ein Kind leidet und nicht mehr rauskommt — Muster prüfen, nicht nur Einzelsituationen.</p></div>
+  </div>
+</div>
+</body>
+</html>

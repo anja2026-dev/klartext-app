@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Information</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;padding:0 1.25rem;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.shell{max-width:560px;margin:0 auto;padding:2rem 1.25rem 4rem;}
+
+.info-karte{background:var(--surface);border-radius:16px;padding:1.75rem;box-shadow:0 1px 8px rgba(0,0,0,.06);}
+.info-typ{display:inline-block;font-size:.68rem;font-weight:700;padding:.25rem .7rem;border-radius:14px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:1rem;}
+.typ-uebergabe{background:#EAF1F8;color:#1565C0;}
+.typ-barometer{background:#FFF3E0;color:#B7500A;}
+.typ-hinweis{background:#F3E5FF;color:#4A148C;}
+.info-kind{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:var(--navy);margin-bottom:.3rem;}
+.info-zeit{font-size:.78rem;color:var(--muted);margin-bottom:1.5rem;}
+.info-text{font-size:.92rem;line-height:1.75;color:#2D2D2D;white-space:pre-wrap;}
+
+.zustand{text-align:center;padding:3rem 1.5rem;background:var(--surface);border-radius:16px;}
+.zustand-icon{font-size:2.5rem;margin-bottom:1rem;}
+.zustand-titel{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem;}
+.zustand-text{font-size:.84rem;color:var(--muted);line-height:1.6;}
+
+.footer-hinweis{text-align:center;font-size:.7rem;color:var(--muted);margin-top:1.5rem;}
+
+/* Feedback-Popup unten rechts */
+.feedback-popup{position:fixed;bottom:1.25rem;right:1.25rem;left:1.25rem;max-width:340px;margin-left:auto;background:var(--surface);border-radius:14px;padding:1.1rem 1.25rem;box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:100;transition:opacity .3s,transform .3s;}
+.feedback-popup.versteckt{opacity:0;transform:translateY(20px);pointer-events:none;}
+.feedback-frage{font-size:.84rem;font-weight:700;color:var(--navy);margin-bottom:.75rem;}
+.feedback-buttons{display:flex;gap:.5rem;margin-bottom:.6rem;}
+.fb-btn{flex:1;padding:.55rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;}
+.fb-btn.aktiv-ja{border-color:#3B8A68;background:#EAF7EF;color:#1B5E2E;}
+.fb-btn.aktiv-nein{border-color:#C62828;background:#FFEBEE;color:#8B1A1A;}
+.feedback-text{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.5rem .65rem;font-family:"DM Sans",sans-serif;font-size:.78rem;resize:vertical;min-height:50px;margin-bottom:.6rem;display:none;}
+.feedback-text.zeigen{display:block;}
+.feedback-senden{width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:.55rem;font-family:"DM Sans",sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;display:none;}
+.feedback-senden.zeigen{display:block;}
+.feedback-danke{font-size:.8rem;color:#1B5E2E;text-align:center;}
+.feedback-schliessen{position:absolute;top:.5rem;right:.65rem;background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer;line-height:1;}
+</style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Information</span></div>
+</header>
+
+<div class="shell">
+  <div id="inhalt-bereich">
+    <div class="zustand">
+      <div class="zustand-icon">⏳</div>
+      <div class="zustand-titel">Information wird geladen …</div>
+    </div>
+  </div>
+  <div class="footer-hinweis">KLARTEXT-Mentoring · Diese Information wurde Ihnen von einer Schulbegleitung weitergeleitet.</div>
+</div>
+
+<div class="feedback-popup versteckt" id="feedback-popup">
+  <button class="feedback-schliessen" onclick="feedbackSchliessen()">✕</button>
+  <div class="feedback-frage">War diese Information hilfreich?</div>
+  <div class="feedback-buttons">
+    <button class="fb-btn" id="fb-ja" onclick="feedbackWaehlen('ja')">Ja</button>
+    <button class="fb-btn" id="fb-nein" onclick="feedbackWaehlen('nein')">Nein</button>
+  </div>
+  <textarea class="feedback-text" id="fb-text" placeholder="Möchten Sie noch etwas ergänzen? (optional) …"></textarea>
+  <button class="feedback-senden" id="fb-senden" onclick="feedbackSenden()">Absenden</button>
+</div>
+
+<script>
+const TYP_KLASSEN = {
+  'Übergabe': 'typ-uebergabe',
+  'Barometer': 'typ-barometer',
+  'Hinweis': 'typ-hinweis'
+};
+
+function formatZeit(timestamp) {
+  if (!timestamp) return '';
+  const datum = new Date(timestamp);
+  return datum.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'}) +
+         ' · ' + datum.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+}
+
+function zeigeFehler(titel, text) {
+  document.getElementById('inhalt-bereich').innerHTML =
+    `<div class="zustand"><div class="zustand-icon">⚠️</div><div class="zustand-titel">${titel}</div><div class="zustand-text">${text}</div></div>`;
+}
+
+// forwardId aus der URL lesen
+const urlParams = new URLSearchParams(window.location.search);
+const forwardId = urlParams.get('id');
+
+if (!forwardId) {
+  zeigeFehler('Kein Link erkannt', 'Diese Seite benötigt einen gültigen Link mit Kennung. Bitte verwenden Sie den vollständigen Link, den Sie erhalten haben.');
+} else {
+  db.ref('forward/' + forwardId).once('value')
+    .then(function(snapshot) {
+      const eintrag = snapshot.val();
+      if (!eintrag) {
+        zeigeFehler('Information nicht gefunden', 'Dieser Link ist nicht mehr gültig oder wurde bereits entfernt.');
+        return;
+      }
+      // Kindname nachladen
+      return db.ref('children/' + eintrag.childId).once('value').then(function(childSnap) {
+        const kind = childSnap.val();
+        const kindName = kind ? kind.name : (eintrag.childId || 'Unbekannt');
+        const typKlasse = TYP_KLASSEN[eintrag.type] || 'typ-hinweis';
+
+        document.getElementById('inhalt-bereich').innerHTML = `
+          <div class="info-karte">
+            <span class="info-typ ${typKlasse}">${eintrag.type || '—'}</span>
+            <div class="info-kind">${kindName}</div>
+            <div class="info-zeit">${formatZeit(eintrag.timestamp)}</div>
+            <div class="info-text">${eintrag.text || ''}</div>
+          </div>`;
+
+        // Feedback-Popup nach kurzer Verzögerung einblenden
+        setTimeout(function() {
+          document.getElementById('feedback-popup').classList.remove('versteckt');
+        }, 1500);
+      });
+    })
+    .catch(function(error) {
+      zeigeFehler('Fehler beim Laden', 'Die Information konnte nicht geladen werden: ' + error.message);
+    });
+}
+
+// Feedback-Logik
+let feedbackWert = null;
+
+function feedbackWaehlen(wert) {
+  feedbackWert = wert;
+  document.getElementById('fb-ja').classList.toggle('aktiv-ja', wert === 'ja');
+  document.getElementById('fb-nein').classList.toggle('aktiv-nein', wert === 'nein');
+  document.getElementById('fb-text').classList.add('zeigen');
+  document.getElementById('fb-senden').classList.add('zeigen');
+}
+
+function feedbackSchliessen() {
+  document.getElementById('feedback-popup').classList.add('versteckt');
+}
+
+function feedbackSenden() {
+  if (!forwardId || feedbackWert === null) return;
+  const btn = document.getElementById('fb-senden');
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet …';
+
+  const feedbackDaten = {
+    hilfreich: feedbackWert,
+    text: document.getElementById('fb-text').value.trim(),
+    timestamp: Date.now()
+  };
+
+  db.ref('feedback_read/' + forwardId).push(feedbackDaten)
+    .then(function() {
+      document.getElementById('feedback-popup').innerHTML =
+        '<button class="feedback-schliessen" onclick="feedbackSchliessen()">✕</button><div class="feedback-danke">Danke für Ihre Rückmeldung!</div>';
+      setTimeout(feedbackSchliessen, 2500);
+    })
+    .catch(function(error) {
+      btn.disabled = false;
+      btn.textContent = 'Absenden';
+      alert('Fehler beim Senden: ' + error.message);
+    });
+}
+</script>
+</body>
+</html>

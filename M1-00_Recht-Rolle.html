@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – M1-00 · Recht &amp; Rolle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+/* ── Modul 1 · Stahlblau ── */
+:root {
+  --m3:        #2E5E8A;
+  --m3-dark:   #1A3D5C;
+  --m3-light:  #EAF1F8;
+  --m3-border: #9BBBD8;
+}
+
+/* ── Scroll-Seite Layout ── */
+.page-intro {
+  max-width: 760px; margin: 2rem auto 1.5rem;
+  padding: 0 var(--pad-h);
+  display: flex; align-items: center; gap: 1rem;
+}
+.page-intro-bar {
+  width: 5px; height: 52px;
+  background: var(--m3); border-radius: 4px; flex-shrink: 0;
+}
+.page-intro h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem; color: var(--m3); line-height: 1.15;
+}
+.page-intro p { font-size: .82rem; color: var(--kt-muted); margin-top: .2rem; letter-spacing: .04em; }
+
+.card-grid {
+  max-width: 760px; margin: 0 auto;
+  padding: 0 var(--pad-h) 6rem;
+  display: flex; flex-direction: column; gap: 2rem;
+}
+
+/* ── Karte ── */
+.karte-m1 {
+  background: #fff; border-radius: 14px;
+  box-shadow: 0 3px 24px rgba(28,27,24,.08), 0 1px 3px rgba(28,27,24,.04);
+  overflow: hidden;
+  animation: rise .4s ease both;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.karte-m1:nth-child(1)  { animation-delay: .05s; }
+.karte-m1:nth-child(2)  { animation-delay: .10s; }
+.karte-m1:nth-child(3)  { animation-delay: .15s; }
+.karte-m1:nth-child(4)  { animation-delay: .20s; }
+.karte-m1:nth-child(5)  { animation-delay: .25s; }
+.karte-m1:nth-child(6)  { animation-delay: .30s; }
+.karte-m1:nth-child(7)  { animation-delay: .35s; }
+.karte-m1:nth-child(8)  { animation-delay: .40s; }
+.karte-m1:nth-child(9)  { animation-delay: .45s; }
+.karte-m1:nth-child(10) { animation-delay: .50s; }
+.karte-m1:nth-child(11) { animation-delay: .55s; }
+.karte-m1:nth-child(12) { animation-delay: .60s; }
+
+.karte-m1-header {
+  background: var(--m3);
+  padding: 1.2rem 1.6rem 1rem;
+}
+.karte-m1-meta {
+  font-size: .7rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: .3rem;
+}
+.karte-m1-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem; color: #fff; line-height: 1.2;
+}
+.badge-row { display: flex; gap: .4rem; margin-top: .55rem; flex-wrap: wrap; }
+.badge {
+  display: inline-flex; align-items: center;
+  padding: .18rem .55rem; border-radius: 999px;
+  font-size: .68rem; font-weight: 700; letter-spacing: .05em;
+  border: 1.5px solid rgba(255,255,255,.35);
+  color: #fff; background: rgba(255,255,255,.12);
+}
+
+.karte-m1-body {
+  padding: 1.5rem 1.6rem 1.2rem;
+  display: flex; flex-direction: column; gap: 1.2rem;
+}
+
+.lead-m1 {
+  font-size: .95rem; color: var(--kt-muted); line-height: 1.65;
+  border-left: 3px solid var(--m3-border); padding-left: .85rem;
+}
+
+.section-title-m1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; color: var(--kt-ink); margin-bottom: .45rem;
+}
+.section-text-m1 { font-size: .88rem; line-height: 1.65; color: var(--kt-muted); }
+
+hr.div { border: none; border-top: 1px solid var(--kt-border); }
+
+/* ── Zwei-Spalten Listen ── */
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .85rem;
+}
+@media (max-width: 500px) {
+  .two-col { grid-template-columns: 1fr; }
+  .karte-m1-header { padding: 1rem 1.2rem .9rem; }
+  .karte-m1-body   { padding: 1.2rem 1.2rem 1rem; }
+}
+.list-block { border-radius: 9px; padding: .9rem 1rem; }
+.list-block.green { background: #E8F5EE; border: 1px solid #B7DFC9; }
+.list-block.red   { background: #FDECEA; border: 1px solid #F1948A; }
+.list-block-title {
+  font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; margin-bottom: .5rem;
+}
+.list-block.green .list-block-title { color: #2D6A4F; }
+.list-block.red   .list-block-title { color: #C0392B; }
+.list-block ul { list-style: none; display: flex; flex-direction: column; gap: .28rem; }
+.list-block li {
+  font-size: .85rem; color: var(--kt-muted);
+  display: flex; align-items: flex-start; gap: .45rem; line-height: 1.4;
+}
+.list-block.green li::before { content: "✓"; color: #2D6A4F; font-weight: 700; flex-shrink: 0; }
+.list-block.red   li::before { content: "✗"; color: #C0392B; font-weight: 700; flex-shrink: 0; }
+
+/* ── Einfache Liste ── */
+.plain-list { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+.plain-list li {
+  font-size: .88rem; color: var(--kt-muted);
+  display: flex; align-items: flex-start; gap: .5rem; line-height: 1.45;
+}
+.plain-list li::before { content: "·"; font-weight: 700; color: var(--m3); flex-shrink: 0; }
+
+/* ── Boxen ── */
+.info-box, .warn-box, .hint-box {
+  border-radius: 9px; padding: .9rem 1.1rem;
+  display: flex; gap: .65rem; align-items: flex-start;
+}
+.info-box { background: #E8F5EE; border: 1.5px solid #B7DFC9; border-left: 4px solid #2D6A4F; }
+.warn-box { background: #FDECEA; border: 1.5px solid #F1948A; border-left: 4px solid #C0392B; }
+.hint-box { background: #EAF2FB; border: 1.5px solid #AED6F1; border-left: 4px solid #1A5276; }
+.box-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.info-box .box-text { font-size: .86rem; line-height: 1.6; color: #2D6A4F; font-weight: 500; }
+.warn-box .box-text { font-size: .86rem; line-height: 1.6; color: #C0392B; font-weight: 500; }
+.hint-box .box-text { font-size: .86rem; line-height: 1.6; color: #1A5276; font-weight: 500; }
+
+/* ── Ablauf (Flow) ── */
+.flow { display: flex; flex-direction: column; gap: 0; }
+.flow-step { display: flex; align-items: flex-start; gap: .75rem; }
+.flow-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; }
+.flow-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--m3); color: #fff;
+  font-size: .72rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.flow-line { width: 2px; flex: 1; min-height: 18px; background: var(--kt-border); margin: 2px 0; }
+.flow-content { padding-top: 4px; padding-bottom: 14px; }
+.flow-label { font-size: .82rem; font-weight: 600; color: var(--kt-ink); line-height: 1.3; }
+.flow-desc  { font-size: .8rem; color: var(--kt-muted); margin-top: .15rem; line-height: 1.45; }
+
+/* ── Karten-Footer ── */
+.karte-m1-footer {
+  background: var(--kt-paper); padding: .75rem 1.6rem;
+  font-size: .8rem; color: var(--kt-muted);
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--kt-border); flex-wrap: wrap; gap: .3rem;
+}
+.karte-m1-footer .closing { font-style: italic; color: var(--m3); font-weight: 500; }
+.karte-m1-footer .meta    { font-size: .72rem; color: #aaa; }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurück">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT – Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+
+<div class="kt-context" aria-hidden="true">KLARTEXT · Modul 1 · Recht &amp; Rolle</div>
+
+<!-- ══ SEITEN-INTRO ══ -->
+<div class="page-intro">
+  <div class="page-intro-bar"></div>
+  <div>
+    <h1>Recht &amp; Rolle</h1>
+    <p>12 Karten · Zielgruppen: GS · FS · WF</p>
+  </div>
+</div>
+
+<!-- ══ KARTEN ══ -->
+<div class="card-grid">
+
+  <!-- K1 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 1</div>
+      <h2 class="karte-m1-title">Rechtliche Einordnung der Schulbegleitung</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Schulbegleitung ist eine Leistung der Eingliederungshilfe – kein Lehrauftrag und keine pädagogische Fachkraft im schulischen Sinne.</p>
+      <section>
+        <h3 class="section-title-m1">Rechtliche Grundlage</h3>
+        <p class="section-text-m1">Die Schulbegleitung wird auf Grundlage des SGB IX (Teilhaberecht) oder SGB VIII (Kinder- und Jugendhilfe) gewährt. Der Anspruch liegt beim Kind, nicht bei der Schule.</p>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Was Schulbegleitung ist</h3>
+        <ul class="plain-list">
+          <li>Unterstützung bei der Teilhabe am Schulalltag</li>
+          <li>Hilfe bei der Umsetzung des Förderplans</li>
+          <li>Begleitung, nicht Übernahme von Aufgaben</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Was Schulbegleitung nicht ist</h3>
+        <ul class="plain-list">
+          <li>Keine Lehrkraft und kein Ersatz für Unterricht</li>
+          <li>Keine therapeutische Fachkraft</li>
+          <li>Kein allgemeiner Klassenassistent</li>
+        </ul>
+      </section>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Die Rolle ist klar definiert – und das schützt alle Beteiligten.</span>
+      <span class="meta">Karte 1 / 12</span>
+    </div>
+  </article>
+
+  <!-- K2 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 2</div>
+      <h2 class="karte-m1-title">Aufgaben von INGRA</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Als INGRA begleitest du das Kind im Schulalltag – mit klarem Fokus auf Teilhabe, Selbstständigkeit und Sicherheit.</p>
+      <section>
+        <h3 class="section-title-m1">Deine Kernaufgaben</h3>
+        <ul class="plain-list">
+          <li>Begleitung im Unterricht und in Pausen</li>
+          <li>Unterstützung bei der Alltagsstruktur und Orientierung</li>
+          <li>Hilfe bei Kommunikation und sozialem Miteinander</li>
+          <li>Unterstützung bei pflegerischen Grundhandlungen (wenn im Hilfeplan vereinbart)</li>
+          <li>Beobachtung und Dokumentation des Tagesverlaufs</li>
+          <li>Regelmäßiger Austausch mit TK und Lehrkraft</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Leitprinzip</h3>
+        <p class="section-text-m1">So viel Unterstützung wie nötig – so viel Eigenständigkeit wie möglich. INGRA befähigt, übernimmt nicht.</p>
+      </section>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Deine Aufgaben sind klar – und genau das macht gute Begleitung aus.</span>
+      <span class="meta">Karte 2 / 12</span>
+    </div>
+  </article>
+
+  <!-- K3 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 3</div>
+      <h2 class="karte-m1-title">Nicht-Aufgaben von INGRA</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Klare Grenzen schützen dich, das Kind und das Team. Was nicht zur Rolle gehört, ist kein Versagen – sondern Professionalität.</p>
+      <section>
+        <h3 class="section-title-m1">Das gehört nicht zu deinen Aufgaben</h3>
+        <ul class="plain-list">
+          <li>Unterricht planen, vorbereiten oder eigenständig leiten</li>
+          <li>Andere Kinder der Klasse beaufsichtigen oder betreuen</li>
+          <li>Diagnosen stellen oder therapeutische Maßnahmen durchführen</li>
+          <li>Elterngespräche ohne Absprache mit TK oder Lehrkraft führen</li>
+          <li>Entscheidungen über den Förderplan treffen</li>
+          <li>Medikamentengabe (außer mit expliziter Regelung und Schulung)</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <div class="warn-box">
+        <span class="box-icon">⚠️</span>
+        <p class="box-text">Wirst du um Aufgaben gebeten, die nicht zur Rolle gehören, sprich das offen an – mit der Lehrkraft oder der TK. Das ist kein Konflikt, sondern Rollenklarheit.</p>
+      </div>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Grenzen zu kennen ist keine Schwäche – es ist eine Stärke.</span>
+      <span class="meta">Karte 3 / 12</span>
+    </div>
+  </article>
+
+  <!-- K4 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 4</div>
+      <h2 class="karte-m1-title">Schweigepflicht</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Alles, was du über das Kind und seine Familie erfährst, bleibt vertraulich – auch nach Dienstschluss.</p>
+      <div class="two-col">
+        <div class="list-block green">
+          <div class="list-block-title">Das darfst du teilen</div>
+          <ul>
+            <li>Informationen an TK und Lehrkraft, die für die Begleitung relevant sind</li>
+            <li>Inhalte, die im Hilfeplan ausdrücklich geteilt werden dürfen</li>
+            <li>Beobachtungen im vereinbarten Dokumentationsrahmen</li>
+          </ul>
+        </div>
+        <div class="list-block red">
+          <div class="list-block-title">Das bleibt vertraulich</div>
+          <ul>
+            <li>Diagnosen und medizinische Details</li>
+            <li>Familiäre Hintergründe und private Situationen</li>
+            <li>Gespräche mit Eltern ohne Freigabe</li>
+            <li>Beobachtungen außerhalb des Auftrags</li>
+          </ul>
+        </div>
+      </div>
+      <hr class="div">
+      <div class="info-box">
+        <span class="box-icon">ℹ️</span>
+        <p class="box-text">Bist du unsicher, ob du etwas weitergeben darfst? Frage zuerst deine TK. Im Zweifel gilt: schweigen ist sicherer als reden.</p>
+      </div>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Schweigepflicht ist Vertrauensschutz – für das Kind, die Familie und dich.</span>
+      <span class="meta">Karte 4 / 12</span>
+    </div>
+  </article>
+
+  <!-- K5 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 5</div>
+      <h2 class="karte-m1-title">Datenschutz in der Schule</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Sensible Daten über Kinder und Familien sind besonders schützenswert. Die DSGVO gilt auch im Schulalltag.</p>
+      <section>
+        <h3 class="section-title-m1">Grundregeln im Umgang mit Daten</h3>
+        <ul class="plain-list">
+          <li>Keine Fotos von Kindern ohne ausdrückliche Einwilligung</li>
+          <li>Dokumente nicht auf privaten Geräten speichern</li>
+          <li>Gespräche über Kinder nicht in der Öffentlichkeit führen</li>
+          <li>Papierunterlagen sicher verwahren oder vernichten</li>
+          <li>Digitale Kommunikation nur über freigegebene Kanäle</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <div class="hint-box">
+        <span class="box-icon">📋</span>
+        <p class="box-text">Im Zweifel gilt das Prinzip der Datensparsamkeit – nur so viele Daten wie nötig, so sicher wie möglich. Bei Unsicherheiten wende dich an deine TK oder den Datenschutzbeauftragten von INGRA.</p>
+      </div>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Datenschutz ist kein Bürokratismus – er ist Respekt vor den Menschen, die du begleitest.</span>
+      <span class="meta">Karte 5 / 12</span>
+    </div>
+  </article>
+
+  <!-- K6 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 6</div>
+      <h2 class="karte-m1-title">Aufsichtspflicht – was gilt für INGRA?</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Die Aufsichtspflicht liegt grundsätzlich bei der Schule und der Lehrkraft – nicht bei INGRA. Aber es gibt Situationen, in denen du konkrete Verantwortung trägst.</p>
+      <div class="two-col">
+        <div class="list-block green">
+          <div class="list-block-title">Das liegt bei dir</div>
+          <ul>
+            <li>Unmittelbare Nähe zum begleiteten Kind</li>
+            <li>Sicherheit in akuten Situationen gewährleisten</li>
+            <li>Auffälliges Verhalten sofort melden</li>
+            <li>Das Kind nicht unbeaufsichtigt lassen, wenn das im Plan vereinbart ist</li>
+          </ul>
+        </div>
+        <div class="list-block red">
+          <div class="list-block-title">Das liegt nicht bei dir</div>
+          <ul>
+            <li>Gesamtaufsicht über die Klasse</li>
+            <li>Aufsicht in Bereichen ohne Beauftragung</li>
+            <li>Entscheidungen über Ausflüge oder Aktivitäten</li>
+          </ul>
+        </div>
+      </div>
+      <hr class="div">
+      <div class="info-box">
+        <span class="box-icon">ℹ️</span>
+        <p class="box-text">Bei Ausflügen oder besonderen Situationen immer vorab klären, wer welche Aufsichtspflicht trägt. Das besprichst du mit der Lehrkraft und TK.</p>
+      </div>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Klare Zuständigkeiten schützen das Kind – und dich.</span>
+      <span class="meta">Karte 6 / 12</span>
+    </div>
+  </article>
+
+  <!-- K7 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 7</div>
+      <h2 class="karte-m1-title">Grenzen der Rolle</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Professionelle Grenzen zu halten schützt das Kind vor Abhängigkeit – und schützt dich vor Überlastung und Rollendiffusion.</p>
+      <section>
+        <h3 class="section-title-m1">Signale, dass Grenzen überschritten werden</h3>
+        <ul class="plain-list">
+          <li>Du übernimmst dauerhaft Aufgaben, die die Lehrkraft erledigen sollte</li>
+          <li>Das Kind will nur noch mit dir sprechen oder arbeiten</li>
+          <li>Eltern wenden sich direkt und ausschließlich an dich</li>
+          <li>Du bist auch außerhalb deiner Dienstzeit erreichbar und wirst kontaktiert</li>
+          <li>Du hast das Gefühl, „alles" tragen zu müssen</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <div class="warn-box">
+        <span class="box-icon">⚠️</span>
+        <p class="box-text">Wenn du merkst, dass Grenzen verschwimmen: Sprich es an. Mit der TK, in der Reflexion oder im Teamgespräch. Das ist keine Schwäche – es ist professionelle Selbstfürsorge.</p>
+      </div>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Wer die eigenen Grenzen kennt, kann besser für andere da sein.</span>
+      <span class="meta">Karte 7 / 12</span>
+    </div>
+  </article>
+
+  <!-- K8 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 8</div>
+      <h2 class="karte-m1-title">Zusammenarbeit mit der Lehrkraft</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Lehrkraft und INGRA haben unterschiedliche Rollen – aber ein gemeinsames Ziel: das Wohlbefinden und die Entwicklung des Kindes.</p>
+      <section>
+        <h3 class="section-title-m1">Rollen im Unterricht</h3>
+        <p class="section-text-m1">Die Lehrkraft leitet den Unterricht und trägt die pädagogische Verantwortung für die gesamte Klasse. INGRA unterstützt das begleitete Kind dabei, am Unterricht teilzuhaben – ohne den Unterrichtsfluss zu stören.</p>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Gute Zusammenarbeit heißt</h3>
+        <ul class="plain-list">
+          <li>Kurze Absprachen vor oder nach dem Unterricht – nicht währenddessen</li>
+          <li>Klare Kommunikation, wenn etwas unklar oder schwierig ist</li>
+          <li>Respekt für die Unterrichtsführung der Lehrkraft</li>
+          <li>Rückmeldungen aus der Begleitung weitergeben, die für den Unterricht relevant sind</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Bei Unklarheiten</h3>
+        <p class="section-text-m1">Wenn Rollen oder Aufgaben unklar sind, kläre das mit der TK – nicht im direkten Konflikt mit der Lehrkraft. Die TK ist dein erster Ansprechpunkt.</p>
+      </section>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Klare Rollen schaffen Raum für echte Zusammenarbeit.</span>
+      <span class="meta">Karte 8 / 12</span>
+    </div>
+  </article>
+
+  <!-- K9 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 9</div>
+      <h2 class="karte-m1-title">Zusammenarbeit mit der Teilhabe-Koordination (TK)</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Die TK ist deine direkte Ansprechperson bei INGRA. Sie koordiniert den Einsatz, begleitet dich fachlich und ist erste Anlaufstelle bei Fragen und Schwierigkeiten.</p>
+      <section>
+        <h3 class="section-title-m1">Was du der TK mitteilst</h3>
+        <ul class="plain-list">
+          <li>Auffälligkeiten im Verhalten oder Wohlbefinden des Kindes</li>
+          <li>Veränderungen in der Familiensituation (soweit bekannt)</li>
+          <li>Konflikte oder Unklarheiten mit Lehrkraft oder Eltern</li>
+          <li>Eigene Belastungen oder Unsicherheiten in der Rolle</li>
+          <li>Alles, was du nicht allein entscheiden kannst oder willst</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Kommunikationswege</h3>
+        <p class="section-text-m1">Nutze die vereinbarten Kanäle (z. B. Tagesdoku, Telefon, App). Dringende Infos sofort – Allgemeines im regulären Austausch. Informiere die TK lieber einmal zu viel als einmal zu wenig.</p>
+      </section>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Die TK trägt mit dir – du musst nichts allein entscheiden.</span>
+      <span class="meta">Karte 9 / 12</span>
+    </div>
+  </article>
+
+  <!-- K10 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 10</div>
+      <h2 class="karte-m1-title">Zusammenarbeit mit Eltern</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Eltern sind wichtige Partner – aber du bist nicht ihr Hauptansprechpunkt. Deine Kommunikation mit Eltern ist klar, wertschätzend und rollengerecht.</p>
+      <section>
+        <h3 class="section-title-m1">Was im Kontakt mit Eltern gilt</h3>
+        <ul class="plain-list">
+          <li>Kurze, sachliche Rückmeldungen zum Tagesverlauf sind in Ordnung</li>
+          <li>Tiefere Gespräche oder Problemgespräche gehören zur TK oder Lehrkraft</li>
+          <li>Keine Aussagen über Diagnosen, Fördermaßnahmen oder Schulentscheidungen</li>
+          <li>Keine privaten Kontaktdaten weitergeben oder annehmen</li>
+        </ul>
+      </section>
+      <hr class="div">
+      <section>
+        <h3 class="section-title-m1">Wenn Eltern mehr wollen</h3>
+        <p class="section-text-m1">Wenn Eltern intensivere Gespräche suchen oder Fragen haben, die du nicht beantworten kannst oder sollst: freundlich verweisen an die TK oder Lehrkraft. Das ist keine Abweisung, sondern Professionalität.</p>
+      </section>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Klare Grenzen ermöglichen echtes Vertrauen.</span>
+      <span class="meta">Karte 10 / 12</span>
+    </div>
+  </article>
+
+  <!-- K11 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 11</div>
+      <h2 class="karte-m1-title">Dokumentationspflichten im Alltag</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Dokumentation ist Teil deiner professionellen Arbeit – sie schützt das Kind, die Eltern, die Schule und dich.</p>
+      <div class="two-col">
+        <div class="list-block green">
+          <div class="list-block-title">Das dokumentierst du</div>
+          <ul>
+            <li>Tagesverlauf (Tagesdoku)</li>
+            <li>Barometer-Farben und Werkzeuge</li>
+            <li>Besondere Ereignisse oder Auffälligkeiten</li>
+            <li>Verletzungen oder Vorfälle</li>
+            <li>Relevante Rückmeldungen des Kindes</li>
+          </ul>
+        </div>
+        <div class="list-block red">
+          <div class="list-block-title">Das dokumentierst du nicht</div>
+          <ul>
+            <li>Vermutungen und Interpretationen</li>
+            <li>Private Details aus der Familie</li>
+            <li>Diagnosen oder medizinische Einschätzungen</li>
+            <li>Bewertungen von Verhalten</li>
+          </ul>
+        </div>
+      </div>
+      <hr class="div">
+      <div class="info-box">
+        <span class="box-icon">ℹ️</span>
+        <p class="box-text">Die Tagesdoku ist das wichtigste Dokumentationsinstrument im Alltag. Sie wird zeitnah, knapp und sachlich ausgefüllt – nicht rückwirkend rekonstruiert.</p>
+      </div>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Gute Dokumentation macht unsichtbare Arbeit sichtbar.</span>
+      <span class="meta">Karte 11 / 12</span>
+    </div>
+  </article>
+
+  <!-- K12 -->
+  <article class="karte-m1">
+    <div class="karte-m1-header">
+      <div class="karte-m1-meta">Modul 1 · Karte 12</div>
+      <h2 class="karte-m1-title">Meldewege &amp; Eskalation</h2>
+      <div class="badge-row"><span class="badge">GS</span><span class="badge">FS</span><span class="badge">WF</span></div>
+    </div>
+    <div class="karte-m1-body">
+      <p class="lead-m1">Nicht alles musst du allein lösen – aber du musst wissen, wann und wie du weitergibst. Klare Meldewege schützen das Kind und entlasten dich.</p>
+      <section>
+        <h3 class="section-title-m1">Ablauf: Was wann an wen?</h3>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot">1</div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <div class="flow-label">Beobachtung im Alltag</div>
+              <div class="flow-desc">Du nimmst etwas wahr – im Verhalten, Wohlbefinden oder einer Situation. Du notierst es in der Tagesdoku.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot">2</div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <div class="flow-label">Einschätzung: dringend oder nicht?</div>
+              <div class="flow-desc">Ist die Situation akut oder gefährlich? → Sofort handeln und melden. Ist sie auffällig, aber nicht akut? → Im nächsten Austausch ansprechen.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot">3</div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <div class="flow-label">Meldung an TK</div>
+              <div class="flow-desc">Deine TK ist erste Anlaufstelle. Schildere sachlich, was du beobachtet hast – ohne Interpretation. Sie entscheidet das weitere Vorgehen.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot">4</div><div class="flow-line"></div></div>
+            <div class="flow-content">
+              <div class="flow-label">TK koordiniert weiter</div>
+              <div class="flow-desc">Die TK informiert ggf. Lehrkraft, Eltern, Fachstellen oder leitet eine Fallbesprechung ein. Du bleibst eingebunden, trägst aber nicht allein.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-left"><div class="flow-dot">5</div></div>
+            <div class="flow-content">
+              <div class="flow-label">Akute Gefahr: Sofortmaßnahmen</div>
+              <div class="flow-desc">Bei unmittelbarer Gefahr für das Kind: Schule und Notdienste einbeziehen (110 / 112), danach sofort TK informieren. Dokumentation unmittelbar danach.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="karte-m1-footer">
+      <span class="closing">Du musst nicht alles wissen – aber du musst wissen, wen du fragst.</span>
+      <span class="meta">Karte 12 / 12</span>
+    </div>
+  </article>
+
+</div><!-- /.card-grid -->
+
+<!-- ══ FLOATING ACTION BUTTONS (nur Mobile) ══ -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

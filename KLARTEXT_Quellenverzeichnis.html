@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Quellenverzeichnis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --m:#1B3A4B; --accent:#6EC6A0; --paper:#F5F0E8;
+  --ink:#2D2D2D; --muted:#7A7060; --surface:#fff;
+  --border:#DDD8CE; --r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+.kt-header{background:var(--m);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.6rem;color:var(--accent);letter-spacing:.14em;display:block;margin-top:1px;}
+.dash-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border:1.5px solid var(--accent);border-radius:20px;color:var(--accent);font-size:.7rem;font-weight:700;text-decoration:none;}
+
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2.5rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-label{font-size:.65rem;font-weight:700;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;margin-bottom:.6rem;}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.6);max-width:540px;margin:0 auto 1.2rem;}
+.hero-pills{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;}
+.hero-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.25rem .75rem;font-size:.7rem;color:rgba(255,255,255,.7);}
+.hero-pill b{color:var(--accent);}
+
+.shell{max-width:860px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 6rem;}
+
+/* Suchfeld */
+.search-wrap{position:relative;margin-bottom:1.5rem;}
+.search-wrap svg{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--muted);}
+#suche{width:100%;padding:.7rem 1rem .7rem 2.6rem;border:1.5px solid var(--border);border-radius:var(--r);font-family:"DM Sans",sans-serif;font-size:.9rem;background:var(--surface);outline:none;transition:border-color .15s;}
+#suche:focus{border-color:var(--m);}
+#suche::placeholder{color:var(--muted);}
+
+/* Filter */
+.filter-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.filter-btn{padding:.28rem .65rem;border:1.5px solid var(--border);border-radius:20px;background:var(--surface);color:var(--muted);font-family:"DM Sans",sans-serif;font-size:.72rem;font-weight:500;cursor:pointer;transition:all .15s;}
+.filter-btn:hover{border-color:var(--m);color:var(--m);}
+.filter-btn.aktiv{background:var(--m);border-color:var(--m);color:#fff;font-weight:600;}
+
+/* Abschnitt */
+.abschnitt{margin-bottom:2rem;}
+.abschnitt.hidden{display:none;}
+.abschnitt-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.85rem;padding-bottom:.4rem;border-bottom:2px solid var(--m);}
+.abschnitt-dot{width:10px;height:10px;border-radius:50%;background:var(--m);flex-shrink:0;}
+.abschnitt-titel{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--m);}
+.abschnitt-count{font-size:.7rem;color:var(--muted);margin-left:auto;}
+
+/* Einzel-Quelle */
+.quelle-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:.55rem;transition:border-color .15s;}
+.quelle-item:hover{border-color:var(--m);}
+.quelle-item.hidden{display:none;}
+.quelle-apa{font-size:.87rem;line-height:1.75;color:var(--ink);}
+.quelle-apa em{font-style:italic;}
+.quelle-tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.45rem;}
+.qtag{font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.1rem .4rem;border-radius:4px;background:var(--paper);color:var(--muted);border:1px solid var(--border);}
+.qtag.neu{background:#EAF0F4;color:var(--m);border-color:#9BB5C4;}
+.quelle-apa .author{font-weight:500;}
+
+.hinweis{background:#EAF0F4;border:1px solid #9BB5C4;border-radius:var(--r);padding:1rem 1.2rem;font-size:.82rem;color:var(--m);line-height:1.7;margin-bottom:1.5rem;}
+.hinweis strong{display:block;margin-bottom:.25rem;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;}
+
+.no-results{text-align:center;padding:3rem 1rem;color:var(--muted);display:none;}
+
+@media print{
+  .kt-header,.search-wrap,.filter-row,div[style*="position:fixed"]{display:none!important;}
+  .quelle-item{border:none;padding:.5rem 0;border-bottom:1px solid #ddd;border-radius:0;}
+  .abschnitt-header{border-bottom:2px solid #000;}
+}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<header class="kt-header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT</div><span class="logo-sub">Quellenverzeichnis</span></div>
+  </a>
+      <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">👩 Über mich</a>
+    <a href="KLARTEXT_Glossar.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,.12)'" onmouseout="this.style.background='transparent'">🔤 Glossar</a>
+    <a class="dash-btn" href="DASHBOARD.html">
+    <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+    Dashboard
+  </a>
+</header>
+
+<div class="hero">
+  <div class="hero-label">KLARTEXT Mentoring-System</div>
+  <h1 class="hero-titel">Wissenschaftliches Quellenverzeichnis</h1>
+  <p class="hero-sub">Alle zitierten Quellen des KLARTEXT-Systems — nach APA 7. Auflage formatiert, thematisch geordnet.</p>
+  <div class="hero-pills">
+    <div class="hero-pill"><b>91</b> Quellen</div>
+    <div class="hero-pill"><b>APA 7</b> Format</div>
+    <div class="hero-pill"><b>9</b> Themenbereiche</div>
+    <div class="hero-pill"><b>1957–2023</b> Publikationsjahre</div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div class="hinweis">
+    <strong>Zitierweise</strong>
+    Alle Quellen folgen dem APA-Format (7. Auflage): Autor, A. A. (Jahr). <em>Titel des Werkes</em>. Verlag. — Bei Zeitschriftenartikeln: Autor, A. A. (Jahr). Titel des Artikels. <em>Zeitschrift, Band</em>(Heft), Seiten. DOI/URL wenn verfügbar. Für den Einsatz in wissenschaftlichen Arbeiten bitte Primärquellen direkt prüfen.
+  </div>
+
+  <!-- SUCHE -->
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+    <input type="search" id="suche" placeholder="Suche: Bowlby, Trauma, ADHS, Mobbing …" autocomplete="off">
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-row">
+    <button class="filter-btn aktiv" data-filter="alle">Alle (73)</button>
+    <button class="filter-btn" data-filter="neurobiologie">Neurobiologie</button>
+    <button class="filter-btn" data-filter="entwicklung">Entwicklung</button>
+    <button class="filter-btn" data-filter="trauma">Trauma & Bindung</button>
+    <button class="filter-btn" data-filter="mobbing">Mobbing</button>
+    <button class="filter-btn" data-filter="kommunikation">Kommunikation</button>
+    <button class="filter-btn" data-filter="schulbegleitung">Schulbegleitung</button>
+    <button class="filter-btn" data-filter="recht">Recht & SGB</button>
+    <button class="filter-btn" data-filter="selbstfuersorge">Selbstfürsorge</button>
+    <button class="filter-btn" data-filter="sonstiges">Sonstiges</button>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 1. NEUROBIOLOGIE & REGULATION       -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="neurobiologie">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">1. Neurobiologie, Stress & Regulation</span>
+      <span class="abschnitt-count">10 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Porges, S. W.</span> (1994). The polyvagal theory: Phylogenetic substrates of a social nervous system. <em>International Journal of Psychophysiology, 42</em>(2), 123–146. <a href="https://doi.org/10.1016/S0167-8760(01)00162-3" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Regulation</span><span class="qtag">Polyvagal</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Porges, S. W.</span> (2011). <em>The polyvagal theory: Neurophysiological foundations of emotions, attachment, communication, and self-regulation.</em> Norton.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Polyvagal</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">LeDoux, J.</span> (1996). <em>The emotional brain: The mysterious underpinnings of emotional life.</em> Simon &amp; Schuster.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Amygdala</span><span class="qtag">Emotion</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Sapolsky, R. M.</span> (2004). <em>Why zebras don't get ulcers: The acclaimed guide to stress, stress-related diseases, and coping</em> (3rd ed.). Henry Holt.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Stress</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Walker, P.</span> (2013). <em>Complex PTSD: From surviving to thriving.</em> Azure Coyote.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Trauma</span><span class="qtag">Fawn</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Dana, D.</span> (2018). <em>The polyvagal theory in therapy: Engaging the rhythm of regulation.</em> Norton.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Therapie</span><span class="qtag">Polyvagal</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Siegel, D. J.</span> (1999). <em>The developing mind: How relationships and the brain interact to shape who we are.</em> Guilford Press.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Interpersonelle Neurobiologie</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Baddeley, A.</span> (2000). The episodic buffer: A new component of working memory? <em>Trends in Cognitive Sciences, 4</em>(11), 417–423. <a href="https://doi.org/10.1016/S1364-6613(00)01538-2" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Gedächtnis</span><span class="qtag">Arbeitsgedächtnis</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Kleitman, N.</span> (1963). <em>Sleep and wakefulness</em> (Rev. ed.). University of Chicago Press.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Schlaf</span><span class="qtag">Erholung</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Shapiro, F.</span> (1995). <em>Eye movement desensitization and reprocessing: Basic principles, protocols, and procedures.</em> Guilford Press.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Trauma</span><span class="qtag">EMDR</span></div>
+    </div>
+  
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Roth, G.</span> (2003). <em>Fühlen, Denken, Handeln: Wie das Gehirn unser Verhalten steuert</em> (Neue, vollständig überarbeitete Ausg.). Suhrkamp.</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Grundlagenwerk</span><span class="qtag">Deutsch</span></div>
+    </div>
+    <div class="quelle-item" data-tags="neurobiologie">
+      <div class="quelle-apa"><span class="author">Hüther, G.</span> (2006). <em>Bedienungsanleitung für ein menschliches Gehirn</em> (12. Aufl.). Vandenhoeck &amp; Ruprecht. ISBN 978-3-525-01464-6</div>
+      <div class="quelle-tags"><span class="qtag">Neurobiologie</span><span class="qtag">Populärwissenschaft</span><span class="qtag">Deutsch</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 2. ENTWICKLUNGSPSYCHOLOGIE          -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="entwicklung">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">2. Entwicklungspsychologie & Lernen</span>
+      <span class="abschnitt-count">11 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Piaget, J.</span> (1952). <em>The origins of intelligence in children.</em> International Universities Press.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Kognition</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Vygotsky, L. S.</span> (1978). <em>Mind in society: The development of higher psychological processes.</em> Harvard University Press.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Zone der nächsten Entwicklung</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Bandura, A.</span> (1977). Self-efficacy: Toward a unifying theory of behavioral change. <em>Psychological Review, 84</em>(2), 191–215. <a href="https://doi.org/10.1037/0033-295X.84.2.191" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Selbstwirksamkeit</span><span class="qtag">Motivation</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Seligman, M. E. P.</span> (1975). <em>Helplessness: On depression, development, and death.</em> Freeman.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Motivation</span><span class="qtag">Erlernter Rückzug</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Dweck, C. S.</span> (2006). <em>Mindset: The new psychology of success.</em> Random House.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Motivation</span><span class="qtag">Growth Mindset</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Hattie, J.</span> (2009). <em>Visible learning: A synthesis of over 800 meta-analyses relating to achievement.</em> Routledge.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Lernen</span><span class="qtag">Lehrer-Schüler-Beziehung</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Csikszentmihalyi, M.</span> (1990). <em>Flow: The psychology of optimal experience.</em> Harper &amp; Row.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Motivation</span><span class="qtag">Flow</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Döpfner, M., Frölich, J., &amp; Lehmkuhl, G.</span> (2019). <em>ADHS — Aufmerksamkeitsdefizit-Hyperaktivitätsstörung</em> (4. Aufl.). Hogrefe.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">ADHS</span><span class="qtag">Neurodivergenz</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">American Psychiatric Association.</span> (2013). <em>Diagnostic and statistical manual of mental disorders</em> (5th ed.). APA Publishing. <a href="https://doi.org/10.1176/appi.books.9780890425596" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Diagnostik</span><span class="qtag">DSM-5</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Milton, D. E. M.</span> (2012). On the ontological status of autism: The 'double empathy problem'. <em>Disability &amp; Society, 27</em>(6), 883–887. <a href="https://doi.org/10.1080/09687599.2012.710008" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Autismus</span><span class="qtag">Neurodivergenz</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Streissguth, A. P., Bookstein, F. L., Barr, H. M., Sampson, P. D., O'Malley, K., &amp; Young, J. K.</span> (2004). <em>Risk factors for adverse life outcomes in fetal alcohol syndrome and fetal alcohol effects.</em> Centers for Disease Control and Prevention.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">FASD</span><span class="qtag">Neurobiologie</span></div>
+    </div>
+  
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Oerter, R., &amp; Montada, L. (Hrsg.).</span> (2008). <em>Entwicklungspsychologie</em> (6. Aufl.). Beltz Psychologie Verlags Union.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Grundlagenwerk</span><span class="qtag">Deutsch</span></div>
+    </div>
+    <div class="quelle-item" data-tags="entwicklung">
+      <div class="quelle-apa"><span class="author">Largo, R. H.</span> (2020). <em>Kinderjahre: Die Individualität des Kindes als erzieherische Herausforderung.</em> Piper. <a href="https://books.google.com/books?id=qHvhDwAAQBAJ" target="_blank" style="color:var(--m);font-size:.8rem;">Quelle</a></div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Individualität</span><span class="qtag">Deutsch</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 3. TRAUMA & BINDUNG                 -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="trauma">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">3. Trauma, Bindung & Beziehung</span>
+      <span class="abschnitt-count">10 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">van der Kolk, B. A.</span> (2014). <em>The body keeps the score: Brain, mind, and body in the healing of trauma.</em> Viking.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Bindung</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Bowlby, J.</span> (1969). <em>Attachment and loss: Vol. 1. Attachment.</em> Basic Books.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Bindung</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Ainsworth, M. D. S., Blehar, M. C., Waters, E., &amp; Wall, S.</span> (1978). <em>Patterns of attachment: A psychological study of the strange situation.</em> Erlbaum.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Bindung</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Weiß, W.</span> (2013). <em>Philipp sucht sein Ich: Zum pädagogischen Umgang mit Traumata in den Erziehungshilfen</em> (7. Aufl.). Juventa.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Pädagogik</span><span class="qtag">Praxis</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Szalavitz, M., &amp; Perry, B. D.</span> (2006). <em>The boy who was raised as a dog: And other stories from a child psychiatrist's notebook.</em> Basic Books.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Bindung</span><span class="qtag">Fallbeispiele</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Rogers, C. R.</span> (1957). The necessary and sufficient conditions of therapeutic personality change. <em>Journal of Consulting Psychology, 21</em>(2), 95–103. <a href="https://doi.org/10.1037/h0045357" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Bindung</span><span class="qtag">Beziehung</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Bergman, R. L., Gonzalez, A., Piacentini, J., &amp; Keller, M. L.</span> (2013). Integrated behavior therapy for selective mutism: A randomized controlled pilot study. <em>Behaviour Research and Therapy, 51</em>(10), 680–689. <a href="https://doi.org/10.1016/j.brat.2013.07.003" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Selektiver Mutismus</span><span class="qtag">Angst</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Schneider, S., &amp; Margraf, J.</span> (2004). <em>Angststörungen bei Kindern und Jugendlichen: Grundlagen und Behandlung.</em> Springer.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Angst</span><span class="qtag">Kinder</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Stierlin, H.</span> (1977). <em>Psychoanalyse und Familientherapie.</em> Klett-Cotta.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Familie</span><span class="qtag">Systemisch</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Bronfenbrenner, U.</span> (1979). <em>The ecology of human development: Experiments by nature and design.</em> Harvard University Press.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Entwicklung</span><span class="qtag">Ökosystemisch</span></div>
+    </div>
+  
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Brisch, K. H.</span> (1999). <em>Bindungsstörungen: Von der Bindungstheorie zur Beratung und Therapie.</em> Klett-Cotta. <a href="https://books.google.com/books?id=BZ12EAAAQBAJ" target="_blank" style="color:var(--m);font-size:.8rem;">Quelle</a></div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Bindung</span><span class="qtag">Deutsch</span></div>
+    </div>
+    <div class="quelle-item" data-tags="trauma">
+      <div class="quelle-apa"><span class="author">Levold, T., &amp; Wirsching, M. (Hrsg.).</span> (2014). <em>Systemische Therapie und Beratung — das große Lehrbuch.</em> Carl-Auer. <a href="https://www.carl-auer.de/media/carl-auer/sample/LP/978-3-89670-577-8.pdf" target="_blank" style="color:var(--m);font-size:.8rem;">PDF-Leseprobe</a></div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Systemisch</span><span class="qtag">Deutsch</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 4. MOBBING & SOZIALE DYNAMIKEN      -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="mobbing">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">4. Mobbing, Aggression & soziale Dynamiken</span>
+      <span class="abschnitt-count">7 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Olweus, D.</span> (1993). <em>Bullying at school: What we know and what we can do.</em> Blackwell.</div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Grundlagenwerk</span><span class="qtag">Definition</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Salmivalli, C., Lagerspetz, K., Björkqvist, K., Österman, K., &amp; Kaukiainen, A.</span> (1996). Bullying as a group process: Participant roles and their relations to social status within the group. <em>Aggressive Behavior, 22</em>(1), 1–15. <a href="https://doi.org/10.1002/(SICI)1098-2337(1996)22:1<1::AID-AB1>3.0.CO;2-T" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Gruppenrollen</span><span class="qtag">Klassenzimmer</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Salmivalli, C.</span> (2010). Bullying and the peer group: A review. <em>Aggression and Violent Behavior, 15</em>(2), 112–120. <a href="https://doi.org/10.1016/j.avb.2009.08.007" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Gruppe</span><span class="qtag">Peers</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Schäfer, M.</span> (2010). <em>Mobbing in der Schule: Hintergründe, Prävention und Handlungsmöglichkeiten.</em> BZgA.</div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Schule</span><span class="qtag">Praxis</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Bundesministerium für Bildung und Forschung.</span> (2022). <em>Cybermobbing — Ursachen, Ausmaß und Folgen.</em> BMBF.</div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Cybermobbing</span><span class="qtag">Digital</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Rose, C. A., Monda-Amaya, L. E., &amp; Espelage, D. L.</span> (2011). Bullying perpetration and victimization in special education: A review of the literature. <em>Exceptional Children, 77</em>(2), 107–135. <a href="https://doi.org/10.1177/001440291107700201" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Inklusion</span><span class="qtag">Schulbegleitung</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Gottman, J. M.</span> (1994). <em>Why marriages succeed or fail: And how you can make yours last.</em> Simon &amp; Schuster.</div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Kommunikation</span><span class="qtag">Beziehung</span></div>
+    </div>
+  
+    <div class="quelle-item" data-tags="mobbing">
+      <div class="quelle-apa"><span class="author">Alsaker, F. D.</span> (2012). <em>Mutig gegen Mobbing in Kindergarten und Schule.</em> Universität Bern / Huber. <a href="https://boris-portal.unibe.ch/entities/publication/a63223fe-d925-4e82-8c6e-8c36a2ed4b2e" target="_blank" style="color:var(--m);font-size:.8rem;">Quelle</a></div>
+      <div class="quelle-tags"><span class="qtag">Mobbing</span><span class="qtag">Prävention</span><span class="qtag">Deutsch</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 5. KOMMUNIKATION                    -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="kommunikation">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">5. Kommunikation & Gesprächsführung</span>
+      <span class="abschnitt-count">9 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Watzlawick, P., Beavin, J. H., &amp; Jackson, D. D.</span> (1967). <em>Pragmatics of human communication: A study of interactional patterns, pathologies and paradoxes.</em> Norton.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Grundlagenwerk</span><span class="qtag">Axiome</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Mehrabian, A.</span> (1971). <em>Silent messages: Implicit communication of emotions and attitudes.</em> Wadsworth.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Nonverbal</span><span class="qtag">Körpersprache</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Gordon, T.</span> (1970). <em>Parent effectiveness training: The proven program for raising responsible children.</em> Wyden.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Ich-Botschaften</span><span class="qtag">Eltern</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Rosenberg, M. B.</span> (2003). <em>Nonviolent communication: A language of life</em> (2nd ed.). PuddleDancer Press.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">GFK</span><span class="qtag">Konflikt</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Stone, D., Patton, B., &amp; Heen, S.</span> (1999). <em>Difficult conversations: How to discuss what matters most.</em> Viking.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Konflikt</span><span class="qtag">Praxis</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Bateson, G.</span> (1972). <em>Steps to an ecology of mind: Collected essays in anthropology, psychiatry, evolution, and epistemology.</em> Chandler.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Systemtheorie</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Luhmann, N.</span> (1984). <em>Soziale Systeme: Grundriss einer allgemeinen Theorie.</em> Suhrkamp.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Systemtheorie</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Baron-Cohen, S.</span> (1995). <em>Mindblindness: An essay on autism and theory of mind.</em> MIT Press.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Autismus</span><span class="qtag">Theory of Mind</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Premack, D., &amp; Woodruff, G.</span> (1978). Does the chimpanzee have a theory of mind? <em>Behavioral and Brain Sciences, 1</em>(4), 515–526.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Theory of Mind</span></div>
+    </div>
+  
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Schulz von Thun, F.</span> (1981). <em>Miteinander reden 1: Störungen und Klärungen.</em> Rowohlt.</div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Grundlagenwerk</span><span class="qtag">Deutsch</span></div>
+    </div>
+    <div class="quelle-item" data-tags="kommunikation">
+      <div class="quelle-apa"><span class="author">Satir, V.</span> (1990). <em>Kommunikation, Selbstwert, Kongruenz: Konzepte und Perspektiven familientherapeutischer Praxis.</em> Junfermann. <a href="https://ixtheo.de/Record/02566039X" target="_blank" style="color:var(--m);font-size:.8rem;">Quelle</a></div>
+      <div class="quelle-tags"><span class="qtag">Kommunikation</span><span class="qtag">Systemisch</span><span class="qtag">Deutsch</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 6. SCHULBEGLEITUNG & INKLUSION      -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="schulbegleitung">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">6. Schulbegleitung, Inklusion & Sonderpädagogik</span>
+      <span class="abschnitt-count">8 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Dworschak, W.</span> (2012). <em>Schulbegleitung als Maßnahme der Eingliederungshilfe: Beschreibung, Analyse und Interpretation eines sonderpädagogischen Handlungsfeldes.</em> Klinkhardt.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Grundlagenwerk</span><span class="qtag">Eingliederungshilfe</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Neumann, S.</span> (2018). <em>Inklusion im Übergang: Schulbegleitung zwischen Förderung und Kontrolle.</em> Klinkhardt.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Inklusion</span><span class="qtag">Übergänge</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Singer, G. H. S., Ethridge, B. L., &amp; Aldana, S. I.</span> (2006). Primary and secondary effects of parenting and stress management interventions for parents of children with developmental disabilities: A meta-analysis. <em>Mental Retardation and Developmental Disabilities Research Reviews, 13</em>(4), 357–369.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Eltern</span><span class="qtag">Stress</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Kultusministerkonferenz.</span> (2020). <em>Empfehlungen zur inklusiven Bildung von Kindern und Jugendlichen mit Behinderungen in Schulen.</em> KMK.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Inklusion</span><span class="qtag">Recht</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Hejlskov Elvén, B.</span> (2022). <em>Keine Macht den Mächtigen: Warum Zwang und Druck in der Erziehung scheitern.</em> Probst.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Pädagogik</span><span class="qtag">Regulation</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Carter, S. L.</span> (1987). Use of puppets to treat traumatized children. <em>Child Welfare, 66</em>(3), 269–278.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Trauma</span><span class="qtag">Methode</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Conen, M.-L.</span> (2012). <em>Wenn Familien keine Veränderung wollen: Systemische Therapie und Beratung in Zwangskontexten</em> (3. Aufl.). Carl-Auer.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Systemisch</span><span class="qtag">Familie</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="schulbegleitung">
+      <div class="quelle-apa"><span class="author">Fredrickson, B. L.</span> (2001). The role of positive emotions in positive psychology: The broaden-and-build theory of positive emotions. <em>American Psychologist, 56</em>(3), 218–226.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Positive Psychologie</span><span class="qtag">Emotion</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 7. RECHT & SGB                      -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="recht">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">7. Recht, SGB VIII & Datenschutz</span>
+      <span class="abschnitt-count">6 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="recht">
+      <div class="quelle-apa"><span class="author">Wiesner, R. (Hrsg.).</span> (2022). <em>SGB VIII: Kinder- und Jugendhilfe. Kommentar</em> (6. Aufl.). C. H. Beck.</div>
+      <div class="quelle-tags"><span class="qtag">Recht</span><span class="qtag">SGB VIII</span><span class="qtag">Kommentar</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="recht">
+      <div class="quelle-apa"><span class="author">Münder, J., Meysen, T., &amp; Trenczek, T. (Hrsg.).</span> (2022). <em>Frankfurter Kommentar SGB VIII: Kinder- und Jugendhilfe</em> (8. Aufl.). Nomos.</div>
+      <div class="quelle-tags"><span class="qtag">Recht</span><span class="qtag">SGB VIII</span><span class="qtag">Kommentar</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="recht">
+      <div class="quelle-apa"><span class="author">Grüneberg, C. (Hrsg.).</span> (2023). <em>Bürgerliches Gesetzbuch: BGB Kommentar</em> (82. Aufl.). C. H. Beck. [vormals Palandt]</div>
+      <div class="quelle-tags"><span class="qtag">Recht</span><span class="qtag">BGB</span><span class="qtag">Aufsichtspflicht</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="recht">
+      <div class="quelle-apa"><span class="author">Bundesministerium für Arbeit und Soziales.</span> (2021). <em>Ratgeber für Menschen mit Behinderungen.</em> BMAS.</div>
+      <div class="quelle-tags"><span class="qtag">Recht</span><span class="qtag">Eingliederungshilfe</span><span class="qtag">SGB IX</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="recht">
+      <div class="quelle-apa">Strafgesetzbuch (StGB) §§ 185, 187, 238, 241. <em>Beleidigung, Verleumdung, Nachstellung, Bedrohung.</em> Bundesministerium der Justiz.</div>
+      <div class="quelle-tags"><span class="qtag">Recht</span><span class="qtag">Cybermobbing</span><span class="qtag">Strafrecht</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="recht">
+      <div class="quelle-apa">Datenschutz-Grundverordnung (DSGVO). (2018). <em>Verordnung (EU) 2016/679 des Europäischen Parlaments und des Rates.</em> Amtsblatt der Europäischen Union.</div>
+      <div class="quelle-tags"><span class="qtag">Recht</span><span class="qtag">Datenschutz</span><span class="qtag">DSGVO</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 8. SELBSTFÜRSORGE & BURNOUT         -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="selbstfuersorge">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">8. Selbstfürsorge, Burnout & Stressmanagement</span>
+      <span class="abschnitt-count">6 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Maslach, C., &amp; Leiter, M. P.</span> (2003). <em>Burnout: The cost of caring.</em> Jossey-Bass.</div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Burnout</span><span class="qtag">Helfende Berufe</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Figley, C. R.</span> (1995). <em>Compassion fatigue: Coping with secondary traumatic stress disorder in those who treat the traumatized.</em> Brunner/Mazel.</div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Compassion Fatigue</span><span class="qtag">Sekundärtrauma</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Sonnentag, S.</span> (2003). Recovery, work engagement, and proactive behavior: A new look at the interface between nonwork and work. <em>Journal of Applied Psychology, 88</em>(3), 518–528. <a href="https://doi.org/10.1037/0021-9010.88.3.518" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Erholung</span><span class="qtag">Arbeit</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Hobfoll, S. E.</span> (1989). Conservation of resources: A new attempt at conceptualizing stress. <em>American Psychologist, 44</em>(3), 513–524. <a href="https://doi.org/10.1037/0003-066X.44.3.513" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Stress</span><span class="qtag">Ressourcen</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Theorell, T., &amp; Karasek, R. A.</span> (1990). <em>Healthy work: Stress, productivity, and the reconstruction of working life.</em> Basic Books.</div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Arbeit</span><span class="qtag">Stress</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Weil, A.</span> (2015). <em>Spontaneous happiness: A new path to emotional well-being.</em> Houghton Mifflin Harcourt.</div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Wohlbefinden</span><span class="qtag">Atemtechniken</span></div>
+    </div>
+  
+    <div class="quelle-item" data-tags="selbstfuersorge">
+      <div class="quelle-apa"><span class="author">Fengler, J.</span> (2008). <em>Helfen macht müde: Zur Analyse und Bewältigung von Burnout und beruflicher Deformation.</em> Klett-Cotta. <a href="https://books.google.com/books?id=dXB5prtlsD4C" target="_blank" style="color:var(--m);font-size:.8rem;">Quelle</a></div>
+      <div class="quelle-tags"><span class="qtag">Selbstfürsorge</span><span class="qtag">Burnout</span><span class="qtag">Deutsch</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- 9. HUMOR & POSITIV-PSYCHOLOGIE      -->
+  <!-- ════════════════════════════════════ -->
+  <div class="abschnitt" data-section="sonstiges">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">9. Humor, Positive Psychologie & Sonstiges</span>
+      <span class="abschnitt-count">6 Quellen</span>
+    </div>
+
+    <div class="quelle-item" data-tags="sonstiges">
+      <div class="quelle-apa"><span class="author">Martin, R. A.</span> (2007). <em>The psychology of humor: An integrative approach.</em> Academic Press.</div>
+      <div class="quelle-tags"><span class="qtag">Humor</span><span class="qtag">Positive Psychologie</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="sonstiges">
+      <div class="quelle-apa"><span class="author">Fredrickson, B. L.</span> (2001). The role of positive emotions in positive psychology: The broaden-and-build theory of positive emotions. <em>American Psychologist, 56</em>(3), 218–226. <a href="https://doi.org/10.1037/0003-066X.56.3.218" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Humor</span><span class="qtag">Positive Psychologie</span><span class="qtag">Emotion</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="sonstiges">
+      <div class="quelle-apa"><span class="author">Heller, K. A., &amp; Perleth, C.</span> (2013). <em>Münchner Hochbegabungstestsystem für die Sekundarstufe.</em> Hogrefe.</div>
+      <div class="quelle-tags"><span class="qtag">Entwicklung</span><span class="qtag">Begabung</span><span class="qtag">Diagnostik</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="sonstiges">
+      <div class="quelle-apa"><span class="author">Hejlskov Elvén, B., &amp; Veje, H.</span> (2022). <em>Leise Signale: Wenn Kinder und Jugendliche mit Autismus-Spektrum-Störung ihre Grenzen zeigen.</em> Probst.</div>
+      <div class="quelle-tags"><span class="qtag">Autismus</span><span class="qtag">Pädagogik</span><span class="qtag">Praxis</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="sonstiges">
+      <div class="quelle-apa"><span class="author">Breitenbach, E.</span> (2014). <em>Heilpädagogik: Ein interdisziplinäres Lehrbuch</em> (6. Aufl.). Kohlhammer.</div>
+      <div class="quelle-tags"><span class="qtag">Schulbegleitung</span><span class="qtag">Heilpädagogik</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+
+    <div class="quelle-item" data-tags="sonstiges">
+      <div class="quelle-apa"><span class="author">Levine, P. A.</span> (2010). <em>In an unspoken voice: How the body releases trauma and restores goodness.</em> North Atlantic Books.</div>
+      <div class="quelle-tags"><span class="qtag">Trauma</span><span class="qtag">Körper</span><span class="qtag">Regulation</span></div>
+    </div>
+  </div>
+
+
+  <div class="abschnitt" data-section="kinderschutz-sinne">
+    <div class="abschnitt-header">
+      <div class="abschnitt-dot"></div>
+      <span class="abschnitt-titel">10. Sehbehinderung, Gehörlosigkeit &amp; Kinderschutz</span>
+      <span class="abschnitt-count">8 Quellen</span>
+    </div>
+    <div class="quelle-item" data-tags="sehbehinderung">
+      <div class="quelle-apa"><span class="author">Rath, W., &amp; Gruber, H.</span> (2003). <em>Sehgeschädigte Kinder und Jugendliche</em> (2. Aufl.). Beltz.</div>
+      <div class="quelle-tags"><span class="qtag">Sehbehinderung</span><span class="qtag">Schulbegleitung</span><span class="qtag">Praxis</span></div>
+    </div>
+    <div class="quelle-item" data-tags="hoerbehinderung">
+      <div class="quelle-apa"><span class="author">Leonhardt, A.</span> (2010). <em>Einführung in die Hörgeschädigtenpädagogik</em> (3. Aufl.). Ernst Reinhardt.</div>
+      <div class="quelle-tags"><span class="qtag">Hörbehinderung</span><span class="qtag">DGS</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+    <div class="quelle-item" data-tags="hoerbehinderung">
+      <div class="quelle-apa"><span class="author">Diller, G.</span> (1995). <em>Wenn Eltern ihr Kind nicht hören können.</em> Median-Verlag.</div>
+      <div class="quelle-tags"><span class="qtag">Gehörlosigkeit</span><span class="qtag">Familie</span><span class="qtag">Praxis</span></div>
+    </div>
+    <div class="quelle-item" data-tags="hoerbehinderung">
+      <div class="quelle-apa"><span class="author">Krammer, K.</span> (2001). <em>Lautsprachbegleitende Gebärden als Kommunikationshilfe.</em> Median-Verlag.</div>
+      <div class="quelle-tags"><span class="qtag">Gebärdensprache</span><span class="qtag">Kommunikation</span><span class="qtag">Hörbehinderung</span></div>
+    </div>
+    <div class="quelle-item" data-tags="kinderschutz">
+      <div class="quelle-apa"><span class="author">Enders, U. (Hrsg.).</span> (2012). <em>Zart war ich, bitter war's: Sexueller Missbrauch an Mädchen und Jungen — Erkennen, Schützen, Beraten</em> (7. Aufl.). Kiepenheuer &amp; Witsch.</div>
+      <div class="quelle-tags"><span class="qtag">Kinderschutz</span><span class="qtag">Sexueller Missbrauch</span><span class="qtag">Grundlagenwerk</span></div>
+    </div>
+    <div class="quelle-item" data-tags="kinderschutz">
+      <div class="quelle-apa"><span class="author">Fegert, J. M., Hoffmann, U., König, E., Niehues, J., &amp; Liebhardt, H.</span> (2015). <em>Sexueller Missbrauch von Kindern und Jugendlichen im Kontext von Institutionen.</em> Springer. <a href="https://doi.org/10.1007/978-3-642-54994-4" target="_blank" style="color:var(--m);font-size:.8rem;">DOI</a></div>
+      <div class="quelle-tags"><span class="qtag">Kinderschutz</span><span class="qtag">Institution</span><span class="qtag">Schulbegleitung</span></div>
+    </div>
+    <div class="quelle-item" data-tags="kinderschutz">
+      <div class="quelle-apa"><span class="author">Deegener, G., &amp; Körner, W. (Hrsg.).</span> (2006). <em>Kindesmisshandlung und Vernachlässigung: Ein Handbuch.</em> Hogrefe.</div>
+      <div class="quelle-tags"><span class="qtag">Kinderschutz</span><span class="qtag">Kindeswohlgefährdung</span><span class="qtag">Praxis</span></div>
+    </div>
+    <div class="quelle-item" data-tags="kinderschutz">
+      <div class="quelle-apa"><span class="author">Meysen, T., &amp; Eschelbach, D.</span> (2012). <em>Das neue Bundeskinderschutzgesetz.</em> Nomos.</div>
+      <div class="quelle-tags"><span class="qtag">Kinderschutz</span><span class="qtag">§ 8a SGB VIII</span><span class="qtag">Recht</span></div>
+    </div>
+  </div>
+
+  <div class="no-results" id="no-results">
+    <p style="font-size:1.5rem;margin-bottom:.5rem;">🔍</p>
+    <p>Keine Quellen gefunden. Versuche einen anderen Suchbegriff.</p>
+  </div>
+
+</div>
+
+<!-- FABs -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+// Suche
+document.getElementById('suche').addEventListener('input', function() {
+  filterAlles(this.value.toLowerCase(), aktiverFilter);
+});
+
+// Filter
+let aktiverFilter = 'alle';
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('aktiv'));
+    this.classList.add('aktiv');
+    aktiverFilter = this.dataset.filter;
+    filterAlles(document.getElementById('suche').value.toLowerCase(), aktiverFilter);
+  });
+});
+
+function filterAlles(suche, filter) {
+  let gesamt = 0;
+  document.querySelectorAll('.abschnitt').forEach(sek => {
+    const secFilter = sek.dataset.section || 'sonstiges';
+    const secMatch = filter === 'alle' || secFilter === filter;
+    let sichtbar = 0;
+    sek.querySelectorAll('.quelle-item').forEach(item => {
+      const tags = (item.dataset.tags || '').toLowerCase();
+      const text = item.textContent.toLowerCase();
+      const tagMatch = filter === 'alle' || tags.includes(filter);
+      const textMatch = !suche || text.includes(suche);
+      const show = tagMatch && textMatch;
+      item.classList.toggle('hidden', !show);
+      if (show) { sichtbar++; gesamt++; }
+    });
+    sek.classList.toggle('hidden', sichtbar === 0);
+  });
+  document.getElementById('no-results').style.display = gesamt === 0 ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

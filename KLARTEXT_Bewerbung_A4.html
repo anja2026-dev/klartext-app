@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Bewerbungs-Zusatzinfo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#C8C0B8;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem 3rem;}
+
+/* STEUERLEISTE */
+.controls{display:flex;gap:.6rem;margin-bottom:1.5rem;flex-wrap:wrap;justify-content:center;}
+.ctrl{padding:.45rem 1rem;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;border:none;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;}
+.ctrl-print{background:#1B3A4B;color:#fff;}
+.ctrl-back{background:rgba(27,58,75,.15);color:#1B3A4B;}
+
+/* A4 SEITE */
+.a4{width:210mm;min-height:297mm;background:#fff;box-shadow:0 8px 40px rgba(0,0,0,.25);position:relative;overflow:hidden;}
+
+/* LINKE SPALTE */
+.links{position:absolute;left:0;top:0;bottom:0;width:62mm;background:linear-gradient(180deg,#1B3A4B 0%,#2A5570 100%);padding:10mm 7mm;}
+
+/* FOTO */
+.foto-wrap{width:44mm;height:44mm;border-radius:50%;border:2.5px solid #6EC6A0;overflow:hidden;margin:0 auto 7mm;display:block;}
+.foto-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.foto-ph{width:44mm;height:44mm;border-radius:50%;border:2.5px solid #6EC6A0;background:rgba(255,255,255,.1);margin:0 auto 7mm;display:flex;align-items:center;justify-content:center;font-size:2rem;}
+
+/* LOGO LINKS */
+.l-logo{text-align:center;margin-bottom:8mm;padding-bottom:6mm;border-bottom:1px solid rgba(255,255,255,.15);}
+.l-logo-mark{width:32px;height:32px;border:2px solid #6EC6A0;border-radius:6px;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;}
+.l-logo-mark span{font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+.l-logo-name{font-family:"Playfair Display",serif;font-size:.8rem;font-weight:700;color:#fff;}
+.l-logo-sub{font-size:.42rem;color:#6EC6A0;letter-spacing:.16em;text-transform:uppercase;}
+
+/* SEKTION LINKS */
+.l-sek{margin-bottom:6mm;}
+.l-sek-titel{font-size:.5rem;font-weight:700;color:#6EC6A0;letter-spacing:.16em;text-transform:uppercase;margin-bottom:3mm;border-bottom:1px solid rgba(110,198,160,.3);padding-bottom:1.5mm;}
+.l-item{font-size:.55rem;color:rgba(255,255,255,.75);line-height:1.6;display:flex;gap:3px;margin-bottom:1.5mm;}
+.l-item::before{content:"·";color:#6EC6A0;flex-shrink:0;}
+
+/* KONTAKT LINKS */
+.l-kontakt{display:flex;flex-direction:column;gap:2.5mm;}
+.l-k{display:flex;align-items:center;gap:3px;font-size:.55rem;color:rgba(255,255,255,.65);}
+.l-k-icon{font-size:.7rem;flex-shrink:0;}
+
+/* RECHTE SPALTE */
+.rechts{margin-left:62mm;padding:10mm 10mm 10mm 8mm;min-height:297mm;}
+
+/* HEADER RECHTS */
+.r-header{margin-bottom:7mm;padding-bottom:6mm;border-bottom:2px solid #6EC6A0;}
+.r-pre{font-size:.48rem;font-weight:700;color:#6EC6A0;letter-spacing:.2em;text-transform:uppercase;margin-bottom:2mm;}
+.r-name{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:#1B3A4B;line-height:1.1;margin-bottom:1.5mm;}
+.r-rolle{font-size:.6rem;color:#7A7060;line-height:1.6;}
+
+/* KLARTEXT BLOCK */
+.r-klartext{background:linear-gradient(135deg,#EAF0F4,#F5F0E8);border-radius:8px;padding:5mm;margin-bottom:6mm;border-left:3px solid #1B3A4B;}
+.r-kt-titel{font-family:"Playfair Display",serif;font-size:.75rem;font-weight:700;color:#1B3A4B;margin-bottom:2mm;}
+.r-kt-text{font-size:.55rem;color:#4A4A5A;line-height:1.7;margin-bottom:3mm;}
+.r-kt-stats{display:flex;gap:4mm;}
+.r-kt-stat{text-align:center;}
+.r-kt-n{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:#1B3A4B;display:block;}
+.r-kt-l{font-size:.42rem;color:#7A7060;letter-spacing:.08em;text-transform:uppercase;}
+
+/* SEKTIONEN RECHTS */
+.r-sek{margin-bottom:5mm;}
+.r-sek-titel{font-size:.52rem;font-weight:700;color:#1B3A4B;text-transform:uppercase;letter-spacing:.12em;margin-bottom:2.5mm;display:flex;align-items:center;gap:2mm;}
+.r-sek-titel::after{content:"";flex:1;height:1px;background:#E0D8CC;}
+
+/* KOMPETENZ-GRID */
+.komp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2mm;}
+.komp{font-size:.55rem;color:#4A4A5A;line-height:1.55;display:flex;gap:2mm;align-items:flex-start;}
+.komp::before{content:"✓";color:#6EC6A0;font-weight:700;flex-shrink:0;margin-top:1px;}
+
+/* WB TAGS */
+.wb-tags{display:flex;flex-wrap:wrap;gap:1.5mm;}
+.wb-tag{font-size:.48rem;padding:.8mm 2mm;border-radius:3px;background:#F0EDE8;color:#5A5060;border:1px solid #DDD8CE;}
+
+/* FOOTER */
+.r-footer{position:absolute;bottom:8mm;right:10mm;left:70mm;display:flex;align-items:center;justify-content:space-between;padding-top:4mm;border-top:1px solid #E0D8CC;}
+.r-footer-copy{font-size:.42rem;color:#B0A898;}
+.r-footer-logo{font-family:"Playfair Display",serif;font-size:.5rem;color:#1B3A4B;font-weight:700;}
+
+@media print{
+  body{background:white;padding:0;}
+  .controls{display:none;}
+  .a4{box-shadow:none;width:100%;min-height:0;}
+  @page{size:A4;margin:0;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<div class="controls">
+  <button class="ctrl ctrl-print" onclick="window.print()">🖨️ Als PDF drucken</button>
+  <a class="ctrl ctrl-back" href="DASHBOARD.html">← Dashboard</a>
+</div>
+
+<div class="a4">
+
+  <!-- LINKE SPALTE -->
+  <div class="links">
+
+    <!-- Foto -->
+    <div class="foto-wrap">
+      <img src="anja.jpg" alt="Anja Jolk"
+           onerror="this.parentElement.innerHTML='<div class=\'foto-ph\'>👩</div>'">
+    </div>
+
+    <!-- Logo -->
+    <div class="l-logo">
+      <div class="l-logo-mark"><span>K</span></div>
+      <div class="l-logo-name">KLARTEXT</div>
+      <div class="l-logo-sub">Mentoring-System</div>
+    </div>
+
+    <!-- Zertifikate -->
+    <div class="l-sek">
+      <div class="l-sek-titel">Qualifikationen</div>
+      <div class="l-item">Systemische Beratung / Coach IHK</div>
+      <div class="l-item">Integrative Lerntherapie (IFLW)</div>
+      <div class="l-item">Fachkraft Integrationspädagogik</div>
+      <div class="l-item">Sprachentwicklungsexpertin (FAPS)</div>
+      <div class="l-item">Erwachsenenbildung &amp; WB (IU)</div>
+      <div class="l-item">Montessori-Pädagogik</div>
+      <div class="l-item">DAZ · Deutsch als Zweitsprache</div>
+      <div class="l-item">Body'n'Brain-Trainerin®</div>
+      <div class="l-item">GFK nach Rosenberg</div>
+      <div class="l-item">Kinderschutz (Uni-Klinikum)</div>
+      <div class="l-item">Trauma im Kontext Flucht &amp; Asyl</div>
+      <div class="l-item">Pädagog. Psychologie (utb)</div>
+    </div>
+
+    <!-- Kontakt -->
+    <div class="l-sek">
+      <div class="l-sek-titel">Kontakt</div>
+      <div class="l-kontakt">
+        <div class="l-k"><span class="l-k-icon">📍</span>Schwerte, NRW</div>
+        <div class="l-k"><span class="l-k-icon">📞</span>+49 176 62311567</div>
+        <div class="l-k"><span class="l-k-icon">✉️</span>anja.jolk@gmx.de</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECHTE SPALTE -->
+  <div class="rechts">
+
+    <div class="r-header">
+      <div class="r-pre">Bewerbungsunterlage · Zusatzinformation</div>
+      <div class="r-name">Anja Jolk</div>
+      <div class="r-rolle">Trainerin · Systemische Beraterin und Coachin (SCGD/IHK) · Lerntherapeutin · Konzeption &amp; Entwicklung KLARTEXT Mentoring-System</div>
+    </div>
+
+    <!-- KLARTEXT Block -->
+    <div class="r-klartext">
+      <div class="r-kt-titel">📚 Eigene Trainingsentwicklung: KLARTEXT Mentoring-System</div>
+      <div class="r-kt-text">Während meiner beruflichen Neuorientierung habe ich ein vollständiges digitales Mentoring- und Lernsystem für Schulbegleitpersonen (INGRAs) konzipiert und entwickelt. KLARTEXT verbindet neurobiologisches Fachwissen mit praxisorientierten Werkzeugen — strukturiert, quellenbelegbar und sofort einsetzbar.</div>
+      <div class="r-kt-stats">
+        <div class="r-kt-stat"><span class="r-kt-n">235+</span><span class="r-kt-l">Lernkarten</span></div>
+        <div class="r-kt-stat"><span class="r-kt-n">10</span><span class="r-kt-l">E-Learning Module</span></div>
+        <div class="r-kt-stat"><span class="r-kt-n">73</span><span class="r-kt-l">Wissenschaftl. Quellen</span></div>
+        <div class="r-kt-stat"><span class="r-kt-n">4</span><span class="r-kt-l">Zielgruppen</span></div>
+      </div>
+    </div>
+
+    <!-- Kernkompetenzen -->
+    <div class="r-sek">
+      <div class="r-sek-titel">Kernkompetenzen</div>
+      <div class="komp-grid">
+        <div class="komp">Konzeption digitaler Lernformate</div>
+        <div class="komp">Systemische Beratung &amp; Coaching</div>
+        <div class="komp">Training &amp; Erwachsenenbildung</div>
+        <div class="komp">Trauma-informierte Pädagogik</div>
+        <div class="komp">Schnittstellenkommunikation</div>
+        <div class="komp">Qualitätssicherung &amp; Dokumentation</div>
+        <div class="komp">Inklusion &amp; Förderpädagogik</div>
+        <div class="komp">Koordination &amp; Teamführung</div>
+      </div>
+    </div>
+
+    <!-- Was KLARTEXT zeigt -->
+    <div class="r-sek">
+      <div class="r-sek-titel">Was KLARTEXT über meine Kompetenzen zeigt</div>
+      <div class="wb-tags">
+        <span class="wb-tag">Eigeninitiative &amp; Selbststrukturierung</span>
+        <span class="wb-tag">Didaktische Konzeption</span>
+        <span class="wb-tag">Wissenschaftliche Fundierung</span>
+        <span class="wb-tag">Digitale Kompetenz</span>
+        <span class="wb-tag">Zielgruppenorientierung</span>
+        <span class="wb-tag">Projektmanagement</span>
+        <span class="wb-tag">Qualitätsbewusstsein</span>
+        <span class="wb-tag">Ganzheitliches Systemdenken</span>
+      </div>
+    </div>
+
+    <!-- Beruflicher Hintergrund -->
+    <div class="r-sek" style="margin-top:4mm;">
+      <div class="r-sek-titel">Beruflicher Hintergrund</div>
+      <div class="komp-grid">
+        <div class="komp">Integrationskraft VeBu/Lebenshilfe (2010–2017)</div>
+        <div class="komp">Vertretungslehrerin Land NRW (2017–2021)</div>
+        <div class="komp">Standortleitung Studienkreis (2012–2024)</div>
+        <div class="komp">Systemische Beraterin und Coachin (SCGD/IHK) / Coach IHK (2024–2026)</div>
+      </div>
+    </div>
+
+    <!-- System-Link -->
+    <div style="margin-top:5mm;background:#F0EDE8;border-radius:6px;padding:3.5mm 5mm;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:.52rem;font-weight:700;color:#1B3A4B;margin-bottom:1mm;">KLARTEXT live erleben</div>
+        <div style="font-size:.5rem;color:#7A7060;">Das vollständige System ist online verfügbar — gerne auf Anfrage.</div>
+      </div>
+      <div style="font-size:.5rem;color:#6EC6A0;font-weight:700;text-align:right;">anja.jolk@gmx.de<br>+49 176 62311567</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="r-footer">
+    <div class="r-footer-copy">© 2026 Anja Jolk · Alle Rechte vorbehalten</div>
+    <div class="r-footer-logo">KLARTEXT Mentoring-System</div>
+  </div>
+
+</div>
+</body>
+</html>

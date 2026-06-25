@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Teamkoordination</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login=sessionStorage.getItem('klartext_login');
+  var role=sessionStorage.getItem('klartext_role')||'';
+  if(login!=='true'){window.location.href='KLARTEXT_Login.html';return;}
+  if(!['tk','admin'].includes(role)){window.location.href='KLARTEXT_Login.html';}
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--tk:#4A148C;--tkl:#F3E5F5;--tkb:#CE93D8;--kt:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#1A1A2E;--muted:#6A6878;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.kt-header{background:var(--kt);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid var(--acc);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;flex-shrink:0;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:var(--acc);letter-spacing:.14em;display:block;margin-top:2px;}
+.logout-btn{padding:.28rem .7rem;border-radius:20px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);font-size:.68rem;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:none;}
+.logout-btn:hover{background:rgba(255,255,255,.18);}
+.shell{max-width:700px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:linear-gradient(135deg,var(--tk),#7B1FA2);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.6;}
+.sek-titel{font-size:.62rem;font-weight:700;color:var(--tk);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.75rem;}
+.karten-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.tk-karte{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;text-decoration:none;transition:all .18s;display:block;border-left:4px solid var(--tk);}
+.tk-karte:hover{transform:translateX(3px);box-shadow:0 3px 12px rgba(74,20,140,.12);border-left-color:var(--tk);}
+.tk-nr{font-size:.58rem;font-weight:700;color:var(--tk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.2rem;}
+.tk-titel{font-size:.9rem;font-weight:700;color:var(--ink);margin-bottom:.15rem;line-height:1.3;}
+.tk-sub{font-size:.72rem;color:var(--muted);line-height:1.5;}
+@media(max-width:480px){.karten-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Teamkoordination</span></div>
+  </div>
+  <a class="logout-btn" href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}">Abmelden</a>
+</header>
+<div class="shell">
+  <div class="hero">
+    <div class="hero-titel">Willkommen, Teamkoordination</div>
+    <div class="hero-sub">Ihre 6 Handlungskarten für die Begleitung und Führung von Schulbegleiter:innen.</div>
+  </div>
+  <div class="sek-titel">Ihre Karten</div>
+  <div class="karten-grid">
+    <a class="tk-karte" href="TK-01.html">
+      <div class="tk-nr">TK-01</div>
+      <div class="tk-titel">Zurück
+  KLARTEXTKlar. Warm. Menschlich.
+  Dashboard
+    ⬅ Logout
+
+KLARTEXT &middot; Teamkoordination
+
+  
+  
+    TK
+    Karte 01
+    Koordination im Team</div>
+      <div class="tk-sub"></div>
+    </a>
+    <a class="tk-karte" href="TK-02.html">
+      <div class="tk-nr">TK-02</div>
+      <div class="tk-titel">Zurück
+  KLARTEXTKlar. Warm. Menschlich.
+  Dashboard
+    ⬅ Logout
+
+KLARTEXT &middot; Teamkoordination
+
+  
+  
+    TK
+    Karte 02
+    Fallbesprechung strukturieren</div>
+      <div class="tk-sub"></div>
+    </a>
+    <a class="tk-karte" href="TK-03.html">
+      <div class="tk-nr">TK-03</div>
+      <div class="tk-titel">Zurück
+  KLARTEXTKlar. Warm. Menschlich.
+  Dashboard
+    ⬅ Logout
+
+KLARTEXT &middot; Teamkoordination
+
+  
+  
+    TK
+    Karte 03
+    Hilfeplangespräch vorbereiten</div>
+      <div class="tk-sub"></div>
+    </a>
+    <a class="tk-karte" href="TK-04.html">
+      <div class="tk-nr">TK-04</div>
+      <div class="tk-titel">Zurück
+  KLARTEXTKlar. Warm. Menschlich.
+  Dashboard
+    ⬅ Logout
+
+KLARTEXT &middot; Teamkoordination
+
+  
+  
+    TK
+    Karte 04
+    § 8a — Schutzauftrag</div>
+      <div class="tk-sub"></div>
+    </a>
+    <a class="tk-karte" href="TK-05.html">
+      <div class="tk-nr">TK-05</div>
+      <div class="tk-titel">Zurück
+  KLARTEXTKlar. Warm. Menschlich.
+  Dashboard
+    ⬅ Logout
+
+KLARTEXT &middot; Teamkoordination
+
+  
+  
+    TK
+    Karte 05
+    Qualitätssicherung</div>
+      <div class="tk-sub"></div>
+    </a>
+    <a class="tk-karte" href="TK-06.html">
+      <div class="tk-nr">TK-06</div>
+      <div class="tk-titel">Zurück
+  KLARTEXTKlar. Warm. Menschlich.
+  Dashboard
+    ⬅ Logout
+
+KLARTEXT &middot; Teamkoordination
+
+  
+  
+    TK
+    Karte 06
+    Teamentwicklung</div>
+      <div class="tk-sub"></div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

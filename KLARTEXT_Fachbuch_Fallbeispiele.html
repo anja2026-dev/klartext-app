@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Fachbuch · Fallbeispiele</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:800px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.hero{background:var(--navy);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;text-align:center;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.65);}
+.fb-fall-karte{background:var(--surface);border-radius:12px;margin-bottom:.85rem;box-shadow:0 1px 6px rgba(0,0,0,.05);overflow:hidden;}
+.fb-fall-header{display:flex;align-items:center;gap:.75rem;padding:.9rem 1.1rem;cursor:pointer;user-select:none;}
+.fb-fall-nr{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;flex-shrink:0;}
+.fb-fall-titel{flex:1;font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:.95rem;}
+.fb-fall-chevron{color:var(--muted);font-size:.75rem;transition:transform .2s;}
+.fb-fall-chevron.offen{transform:rotate(180deg);}
+.fb-fall-body{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 1.1rem;}
+.fb-fall-body.offen{max-height:2000px;padding:0 1.1rem 1.1rem;}
+.fb-fall-abschnitt{margin-bottom:.85rem;}
+.fb-fall-abschnitt b{display:block;font-size:.68rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;}
+.fb-fall-abschnitt p{font-size:.84rem;line-height:1.65;color:#2D2D2D;}
+.fb-dialog-box{background:var(--paper);border-radius:8px;padding:.7rem .9rem;}
+.fb-dialog-zeile{font-size:.82rem;color:#2D2D2D;line-height:1.6;margin-bottom:.3rem;font-style:italic;}
+.fb-doku-abschnitt{background:#EAF1F8;border-radius:8px;padding:.7rem .9rem;}
+.fb-doku-abschnitt b{color:#1565C0;}
+.fb-doku-text{font-family:monospace;font-size:.78rem!important;}
+.fb-reflexion-abschnitt{background:#EAF7EF;border-radius:8px;padding:.7rem .9rem;}
+.fb-reflexion-abschnitt b{color:#2E7D47;}
+.fb-brainy{display:flex;gap:.85rem;align-items:center;background:var(--surface);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
+.fb-brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+.fb-brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Fachbuch · Fallbeispiele</span></div>
+  <a class="back-btn" href="KLARTEXT_Fachbuch_Neu.html">← Zum Fachbuch</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">10 Fallbeispiele aus dem Schulalltag</div>
+  <div class="hero-sub">Situation · Dialog · Analyse · Intervention · Dokumentation · Reflexion</div>
+</div>
+
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(1)">
+        <span class="fb-fall-nr">1</span>
+        <span class="fb-fall-titel">Überreizung im Unterricht</span>
+        <span class="fb-fall-chevron" id="chev-1">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-1">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>Es ist Montagmorgen. Die Klasse arbeitet an einem Gruppenprojekt. Der Raum ist laut, viele Kinder bewegen sich, mehrere Gespräche laufen gleichzeitig. X sitzt am Tisch, hält den Stift fest, atmet schneller und schaut unruhig im Raum umher. Die Schulbegleitung erkennt die ersten Anzeichen von Überreizung.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Ich sehe, dass es gerade viel ist. Wir machen einen kleinen Schritt zurück.“</p><p class="fb-dialog-zeile">X nickt, sagt aber nichts.</p><p class="fb-dialog-zeile">SB: „Wir gehen kurz an den ruhigen Platz. Nur zwei Minuten.“</p><p class="fb-dialog-zeile">X steht langsam auf und folgt.</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>X reagiert nicht „schwierig“, sondern überreizt. Die Reize im Raum übersteigen die Kapazität des Kindes. Schulbegleitung erkennt die Frühwarnsignale: schneller Atem, starre Haltung, Blicksuche, Unruhe.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung führt X an einen ruhigen Ort im Klassenraum. Sie spricht leise, reduziert Sprache und bietet eine klare Struktur an: „Wir atmen einmal tief ein. Und wieder aus. Wir bleiben kurz hier, bis dein Körper wieder ruhig wird.“ Nach zwei Minuten wirkt X entspannter.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„10:05 — X wirkt überreizt (schneller Atem, starre Haltung). Ich begleite X an ruhigen Platz, biete Atempause an. X beruhigt sich nach 2 Minuten und kehrt in Gruppe zurück.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat früh reagiert und damit eine Krise verhindert. Wichtig war die ruhige Sprache, die klare Struktur und die kurze Pause.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(2)">
+        <span class="fb-fall-nr">2</span>
+        <span class="fb-fall-titel">Impulsdurchbruch</span>
+        <span class="fb-fall-chevron" id="chev-2">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-2">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>Während einer Matheaufgabe wirft X plötzlich den Stift auf den Tisch und ruft laut: „Ich kann das nicht! Das ist blöd!“ Die Schulbegleitung erkennt, dass X nicht trotzig ist, sondern überfordert.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Stopp. Ich bin da.“</p><p class="fb-dialog-zeile">X: „Ich kann das nicht!“</p><p class="fb-dialog-zeile">SB: „Wir machen das zusammen. Ein kleiner Schritt.“</p><p class="fb-dialog-zeile">SB: „Wir schauen nur die erste Aufgabe an. Nicht alles.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Der Impulsdurchbruch ist ein Zeichen von Überforderung. X braucht Entlastung, nicht Ermahnung.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung teilt die Aufgabe in kleine Schritte. Sie zeigt nur die erste Zeile: „Wir beginnen hier. Nur das.“ X entspannt sich sichtbar.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„09:40 — X wirft Stift, ruft laut. Überforderung erkennbar. Ich reduziere Aufgabe auf ersten Schritt. X arbeitet nach 1 Minute weiter.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat richtig reagiert, indem sie die Aufgabe reduziert hat.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(3)">
+        <span class="fb-fall-nr">3</span>
+        <span class="fb-fall-titel">Sozialer Konflikt</span>
+        <span class="fb-fall-chevron" id="chev-3">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-3">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>In der Pause kommt ein Kind zu X und sagt: „Du darfst nicht mitspielen.“ X wirkt verletzt und zieht sich zurück.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Ich habe gesehen, dass du traurig bist.“</p><p class="fb-dialog-zeile">X: „Die wollen mich nicht.“</p><p class="fb-dialog-zeile">SB: „Das tut weh. Wir schauen, was du jetzt brauchst.“</p><p class="fb-dialog-zeile">SB: „Wir bleiben kurz hier und atmen. Danach entscheiden wir weiter.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>X erlebt einen sozialen Ausschluss. Die Schulbegleitung reagiert nicht mit Lösungen, sondern mit Beziehung und Sicherheit.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung bleibt bei X, benennt Gefühle und bietet Orientierung: „Möchtest du mit mir eine Runde gehen oder jemanden fragen, ob du mitspielen kannst?“</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„10:55 — X wird von Mitschülern ausgeschlossen, wirkt traurig. Ich benenne Gefühle, biete Rückzug an. X beruhigt sich nach 3 Minuten.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat nicht über das Kind entschieden, sondern Wahlmöglichkeiten gegeben.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(4)">
+        <span class="fb-fall-nr">4</span>
+        <span class="fb-fall-titel">Fluchtverhalten</span>
+        <span class="fb-fall-chevron" id="chev-4">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-4">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>Während einer Gruppenarbeit steht X plötzlich auf und läuft Richtung Tür. Die Schulbegleitung erkennt das Muster: X flieht aus Überforderung.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB (ruhig, ohne zu rufen): „Ich gehe mit dir.“</p><p class="fb-dialog-zeile">X bleibt im Flur stehen.</p><p class="fb-dialog-zeile">SB: „Das war viel. Wir bleiben kurz hier.“</p><p class="fb-dialog-zeile">SB: „Wir warten, bis dein Körper wieder ruhig ist.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Flucht ist ein Schutzmechanismus. X versucht, sich aus einer überfordernden Situation zu entfernen.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung bleibt in Sichtweite, aber ohne körperliche Nähe aufzudrängen. Nach einigen Minuten kehrt X freiwillig zurück.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„11:20 — X verlässt Raum, wirkt überfordert. Ich begleite in Flur, biete Ruhe an. X kehrt nach 4 Minuten zurück.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Wichtig war, dass die Schulbegleitung nicht festhält oder drängt.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(5)">
+        <span class="fb-fall-nr">5</span>
+        <span class="fb-fall-titel">Verweigerung</span>
+        <span class="fb-fall-chevron" id="chev-5">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-5">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>X sitzt vor einer Aufgabe und sagt: „Ich mache das nicht.“ Die Schulbegleitung erkennt, dass Verweigerung oft ein Zeichen von Unsicherheit ist.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Ich sehe, dass du nicht anfangen willst.“</p><p class="fb-dialog-zeile">X: „Nein.“</p><p class="fb-dialog-zeile">SB: „Wir machen nur den ersten Schritt. Nicht alles.“</p><p class="fb-dialog-zeile">X: „Vielleicht.“</p><p class="fb-dialog-zeile">SB: „Ich bin bei dir.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Verweigerung ist selten Trotz. Sie ist oft Angst vor Überforderung.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung zeigt nur die erste Aufgabe. X beginnt langsam zu arbeiten.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„08:50 — X verweigert Aufgabe. Ich reduziere auf ersten Schritt. X beginnt nach 2 Minuten.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat die richtige Balance zwischen Struktur und Entlastung gefunden.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(6)">
+        <span class="fb-fall-nr">6</span>
+        <span class="fb-fall-titel">Mobbingverdacht</span>
+        <span class="fb-fall-chevron" id="chev-6">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-6">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>X erzählt in der Pause: „Die anderen sagen immer, ich bin komisch.“ Die Schulbegleitung nimmt die Aussage ernst, ohne zu dramatisieren.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Das klingt schwer. Danke, dass du es mir sagst.“</p><p class="fb-dialog-zeile">X: „Ich will nicht mehr in die Schule.“</p><p class="fb-dialog-zeile">SB: „Wir schauen uns das gemeinsam an. Du bist nicht allein.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Die Schulbegleitung erkennt, dass es sich um einen möglichen Mobbingprozess handeln könnte. Sie bewertet nicht, sondern dokumentiert und informiert die Lehrkraft.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung bleibt ruhig, hört zu und sichert zu, dass sie die Information weitergibt. Sie trifft keine eigenen Entscheidungen.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„12:15 — X berichtet, Mitschüler würden ihn 'komisch' nennen. Wirkt belastet. Ich höre zu, sichere Weitergabe an Lehrkraft zu.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Wichtig war, dass die Schulbegleitung nicht selbst eingreift, sondern die Meldekette einhält.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(7)">
+        <span class="fb-fall-nr">7</span>
+        <span class="fb-fall-titel">Trauma-Trigger</span>
+        <span class="fb-fall-chevron" id="chev-7">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-7">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>Ein lautes Geräusch im Flur lässt X zusammenzucken. X wirkt panisch, atmet schnell und zieht sich unter den Tisch zurück.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB (leise): „Ich bin hier.“</p><p class="fb-dialog-zeile">X: „Ich will weg.“</p><p class="fb-dialog-zeile">SB: „Wir bleiben kurz hier. Du bist sicher.“</p><p class="fb-dialog-zeile">SB: „Wir atmen zusammen. Ein... und aus.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>X reagiert auf einen Trigger. Schulbegleitung erkennt die körperliche Reaktion und reagiert mit Sicherheit und Ruhe.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung bleibt in der Nähe, spricht leise und bietet Atemregulation an. Sie drängt nicht und erklärt nichts.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„09:10 — X reagiert panisch auf lautes Geräusch. Ich bleibe bei X, biete Atempause an. X beruhigt sich nach 5 Minuten.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat Sicherheit vermittelt, ohne zu überfordern.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(8)">
+        <span class="fb-fall-nr">8</span>
+        <span class="fb-fall-titel">Überforderung durch Gruppenarbeit</span>
+        <span class="fb-fall-chevron" id="chev-8">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-8">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>X soll in einer Gruppe arbeiten, wirkt aber überfordert und zieht sich zurück. Die Schulbegleitung erkennt, dass Gruppenarbeit zu viele Reize enthält.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Es ist viel los. Wir machen das anders.“</p><p class="fb-dialog-zeile">X: „Ich will alleine arbeiten.“</p><p class="fb-dialog-zeile">SB: „Das ist in Ordnung. Wir suchen einen ruhigen Platz.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Gruppenarbeit ist für viele Kinder schwierig. Schulbegleitung erkennt die Belastung und bietet Alternativen an.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung organisiert einen Einzelarbeitsplatz und strukturiert die Aufgabe.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„10:30 — X überfordert in Gruppenarbeit. Ich biete Einzelplatz an. X arbeitet 15 Minuten konzentriert.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat flexibel reagiert und Teilhabe ermöglicht.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(9)">
+        <span class="fb-fall-nr">9</span>
+        <span class="fb-fall-titel">Elternkonflikt</span>
+        <span class="fb-fall-chevron" id="chev-9">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-9">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>Eine Mutter spricht die Schulbegleitung emotional an: „Warum hat mein Kind schon wieder geweint? Was machst du da eigentlich?“ Die Schulbegleitung bleibt ruhig.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB: „Ich verstehe, dass Sie sich Sorgen machen.“</p><p class="fb-dialog-zeile">Mutter: „Das passiert ständig!“</p><p class="fb-dialog-zeile">SB: „Ich kann dir sagen, wie es deinem Kind heute ging. Für alles Weitere spreche ich mit der Lehrkraft.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Die Mutter ist emotional, nicht feindselig. Schulbegleitung bleibt professionell und verweist auf die richtigen Stellen.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Die Schulbegleitung beschreibt neutral, was passiert ist, und verweist auf Lehrkraft und Einsatzleitung.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„12:40 — Mutter spricht emotional an. Ich bleibe ruhig, gebe neutrale Info, verweise auf Lehrkraft.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat Grenzen gewahrt und professionell kommuniziert.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(10)">
+        <span class="fb-fall-nr">10</span>
+        <span class="fb-fall-titel">Konflikt mit Lehrkraft</span>
+        <span class="fb-fall-chevron" id="chev-10">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-10">
+        <div class="fb-fall-abschnitt"><b>Situation</b><p>Die Lehrkraft sagt im Unterricht laut: „Sie müssen besser aufpassen! X läuft schon wieder herum!“ Die Schulbegleitung bleibt ruhig und reagiert nicht vor der Klasse.</p></div>
+        <div class="fb-fall-abschnitt"><b>Dialog</b><div class="fb-dialog-box"><p class="fb-dialog-zeile">SB (nach dem Unterricht): „Ich möchte kurz über die Situation sprechen.“</p><p class="fb-dialog-zeile">Lehrkraft: „Ich war gestresst.“</p><p class="fb-dialog-zeile">SB: „Ich verstehe. Für X wäre es hilfreich, wenn wir solche Dinge kurz im Flur klären.“</p></div></div>
+        <div class="fb-fall-abschnitt"><b>Analyse</b><p>Die Schulbegleitung vermeidet eine Eskalation und sucht das Gespräch im richtigen Moment.</p></div>
+        <div class="fb-fall-abschnitt"><b>Intervention</b><p>Ein ruhiges Nachgespräch schafft Klarheit und stärkt die Zusammenarbeit.</p></div>
+        <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„11:50 — Lehrkraft kritisiert mich vor Klasse. Ich spreche nach Unterricht ruhig an. Absprachen getroffen.“</p></div>
+        <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat professionell gehandelt und die Beziehung geschützt.</p></div>
+      </div>
+    </div>
+
+<div class="fb-brainy">
+  <img src="brainy.png" alt="Brainy">
+  <div><strong>Brainy erinnert:</strong> Jeder Fall ist anders — aber die Struktur dahinter bleibt immer gleich: ruhig bleiben, beobachten, klein anfangen, dokumentieren.</div>
+</div>
+
+</div>
+
+<script>
+function toggleFall(nr) {
+  const body = document.getElementById('fall-' + nr);
+  const chev = document.getElementById('chev-' + nr);
+  body.classList.toggle('offen');
+  chev.classList.toggle('offen');
+}
+</script>
+</body>
+</html>

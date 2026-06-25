@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Fachbuch Schulbegleitung</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:820px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+
+.hero{background:var(--navy);border-radius:16px;padding:1.75rem 1.5rem;margin-bottom:1.5rem;text-align:center;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.6rem;color:#fff;margin-bottom:.4rem;}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.65);}
+.hero-stats{display:flex;justify-content:center;gap:2rem;margin-top:1rem;}
+.hero-stat-num{font-size:1.4rem;font-weight:800;color:var(--acc);}
+.hero-stat-label{font-size:.65rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;}
+
+.fb-hinweis{background:#fff;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:.8rem;color:#3A3A4A;line-height:1.6;display:flex;gap:.75rem;align-items:flex-start;}
+.fb-hinweis img{width:36px;height:36px;object-fit:contain;flex-shrink:0;}
+
+.fb-nav-titel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 .75rem;}
+.fb-kapitel-link{display:flex;align-items:center;gap:.85rem;background:#fff;border-radius:10px;padding:.75rem 1rem;margin-bottom:.5rem;text-decoration:none;color:inherit;box-shadow:0 1px 6px rgba(0,0,0,.05);transition:transform .15s;}
+.fb-kapitel-link:hover{transform:translateX(4px);}
+.fb-kapitel-nr{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
+.fb-kapitel-titel{font-weight:700;color:var(--navy);font-size:.88rem;}
+.fb-kapitel-modul{font-size:.68rem;color:var(--muted);margin-top:.1rem;}
+
+.fb-kapitel{background:#fff;border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;scroll-margin-top:80px;}
+.fb-kapitel-header{border-bottom:2px solid var(--paper);padding-bottom:1rem;margin-bottom:1rem;}
+.fb-kapitel-badge{display:inline-block;background:var(--gold);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:12px;margin-bottom:.5rem;}
+.fb-kapitel-header h2{font-family:"Playfair Display",serif;font-size:1.25rem;color:var(--navy);}
+.fb-kapitel-meta{font-size:.72rem;color:var(--muted);margin-top:.3rem;}
+.fb-platzhalter{text-align:center;padding:2rem 1rem;background:var(--paper);border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:.75rem;}
+.fb-platzhalter img{width:48px;height:48px;object-fit:contain;}
+.fb-platzhalter p{font-size:.8rem;color:var(--muted);}
+
+.fb-p{font-size:.88rem;line-height:1.75;color:#2D2D2D;margin-bottom:1rem;}
+.fb-h3{font-family:"Playfair Display",serif;font-size:1.02rem;color:var(--navy);margin:1.5rem 0 .75rem;}
+.fb-karte-link{color:var(--acc);text-decoration:none;font-weight:700;}
+.fb-saeulen{display:grid;gap:.85rem;margin-bottom:1rem;}
+.fb-saeule{background:var(--paper);border-left:4px solid var(--navy);border-radius:8px;padding:.85rem 1.1rem;}
+.fb-saeule-titel{font-weight:800;color:var(--navy);font-size:.88rem;margin-bottom:.35rem;}
+.fb-saeule p{font-size:.82rem;color:#3A3A4A;line-height:1.6;}
+.fb-zitat{background:#EAF7EF;border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1rem;}
+.fb-zitat-richtig{font-size:.95rem;font-weight:700;color:#1B5E2E;font-style:italic;margin-bottom:.3rem;}
+.fb-zitat-falsch{font-size:.78rem;color:#7A6A50;font-style:italic;}
+.fb-brainy{display:flex;gap:.85rem;align-items:center;background:var(--paper);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
+.fb-brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+.fb-brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+
+.fb-saetze{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem;margin-bottom:1.25rem;}
+.fb-satz{background:var(--paper);border-radius:8px;padding:.6rem .8rem;font-size:.8rem;font-style:italic;color:#2D2D2D;border-left:3px solid var(--navy);}
+.fb-saetze-blau .fb-satz{border-left-color:#1565C0;background:#EAF1F8;}
+.fb-saetze-gruen .fb-satz{border-left-color:#3B8A68;background:#EAF5EE;}
+.fb-saetze-rot .fb-satz{border-left-color:#C62828;background:#FFEBEE;}
+
+.fb-merksatz{background:#EAF7EF;border-left:4px solid #3B8A68;border-radius:8px;padding:.75rem 1rem;font-size:.82rem;color:#1B5E2E;margin-bottom:1.25rem;}
+.fb-ablauf{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+.fb-ablauf-schritt{display:flex;align-items:center;gap:.65rem;font-size:.85rem;font-weight:600;color:var(--navy);}
+.fb-ablauf-nr{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;}
+.fb-warnung{background:#FFEBEE;border-left:4px solid #C62828;border-radius:8px;padding:.75rem 1rem;font-size:.82rem;color:#8B1A1A;margin-bottom:1.25rem;}
+
+.fb-saeulen-4{grid-template-columns:repeat(2,1fr);}
+@media(max-width:600px){.fb-saeulen-4{grid-template-columns:1fr;}}
+
+.fb-stufen{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.25rem;}
+.fb-stufe{border-radius:8px;padding:.65rem .9rem;border-left:4px solid;}
+.fb-stufe-titel{font-weight:700;font-size:.85rem;margin-bottom:.2rem;}
+.fb-stufe p{font-size:.78rem;color:#3A3A4A;}
+.fb-stufe-gelb{background:#FFF8E0;border-color:#D4A017;}
+.fb-stufe-gelb .fb-stufe-titel{color:#8A6800;}
+.fb-stufe-orange{background:#FFF0E0;border-color:#D2691E;}
+.fb-stufe-orange .fb-stufe-titel{color:#A04E10;}
+.fb-stufe-rot{background:#FFEBEE;border-color:#C62828;}
+.fb-stufe-rot .fb-stufe-titel{color:#8B1A1A;}
+.fb-stufe-grau{background:#F0F0F0;border-color:#757575;}
+.fb-stufe-grau .fb-stufe-titel{color:#4A4A4A;}
+.fb-klar-box{background:var(--navy);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.25rem;}
+.fb-klar-titel{color:var(--acc);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.85rem;text-align:center;}
+.fb-klar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;}
+.fb-klar-item{display:flex;align-items:center;gap:.6rem;color:#fff;font-size:.78rem;}
+.fb-klar-buchstabe{width:32px;height:32px;border-radius:50%;background:var(--acc);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;}
+@media(max-width:600px){.fb-klar-grid{grid-template-columns:1fr;}}
+
+.fb-liste{list-style:none;margin-bottom:1rem;}
+.fb-liste li{font-size:.85rem;color:#2D2D2D;padding:.3rem 0 .3rem 1.2rem;position:relative;}
+.fb-liste li::before{content:"→";position:absolute;left:0;color:var(--navy);font-weight:700;}
+.fb-doku-methode{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.75rem;}
+.fb-doku-schritt{background:rgba(255,255,255,.1);border-radius:8px;padding:.7rem .8rem;}
+.fb-doku-schritt b{color:var(--acc);font-size:.8rem;display:block;margin-bottom:.3rem;}
+.fb-doku-schritt p{color:rgba(255,255,255,.85);font-size:.74rem;line-height:1.5;}
+@media(max-width:600px){.fb-doku-methode{grid-template-columns:1fr;}}
+.fb-beispiel-box{background:#EAF1F8;border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1.25rem;}
+.fb-beispiel-label{font-size:.62rem;font-weight:700;color:#1565C0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem;}
+.fb-beispiel-box p{font-size:.85rem;font-style:italic;color:#1A1A2E;}
+.fb-gegenueber{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.25rem;}
+@media(max-width:600px){.fb-gegenueber{grid-template-columns:1fr;}}
+.fb-gegenueber-gut{background:#EAF7EF;border:1.5px solid #3B8A68;border-radius:10px;padding:.9rem 1rem;}
+.fb-gegenueber-schlecht{background:#FFEBEE;border:1.5px solid #C62828;border-radius:10px;padding:.9rem 1rem;}
+.fb-gegenueber-label{font-weight:800;font-size:.85rem;margin-bottom:.5rem;}
+.fb-gegenueber-gut .fb-gegenueber-label{color:#1B5E2E;}
+.fb-gegenueber-schlecht .fb-gegenueber-label{color:#8B1A1A;}
+.fb-gegenueber-text{font-size:.8rem;font-style:italic;color:#2D2D2D;margin-bottom:.5rem;line-height:1.55;}
+.fb-gegenueber-hinweis{font-size:.7rem;color:#5A5A5A;line-height:1.5;}
+
+.fb-kindkarten-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-bottom:1.25rem;}
+@media(max-width:600px){.fb-kindkarten-grid{grid-template-columns:1fr;}}
+.fb-kindkarte{background:var(--paper);border-radius:8px;padding:.7rem .9rem;border-left:3px solid #4FC3C7;}
+.fb-kindkarte b{color:#1B7A7D;font-size:.82rem;display:block;margin-bottom:.3rem;}
+.fb-kindkarte p{font-size:.76rem;color:#3A3A4A;line-height:1.5;}
+
+.fb-glossar{display:grid;gap:.5rem;margin-bottom:1.25rem;}
+.fb-glossar-item{display:flex;gap:.75rem;background:var(--paper);border-radius:8px;padding:.65rem .9rem;align-items:baseline;}
+.fb-glossar-begriff{font-weight:800;color:var(--navy);font-size:.84rem;min-width:140px;flex-shrink:0;}
+.fb-glossar-def{font-size:.8rem;color:#3A3A4A;line-height:1.5;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Fachbuch Schulbegleitung</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">Fachbuch Schulbegleitung</div>
+  <div class="hero-sub">12 Kapitel · 6 Systemkapitel · 10 Fallbeispiele · 8 Trainingsmodule</div>
+  <div class="hero-stats">
+    <div><div class="hero-stat-num">12</div><div class="hero-stat-label">Kapitel</div></div>
+    <div><div class="hero-stat-num">6</div><div class="hero-stat-label">Systemkapitel</div></div>
+    <div><div class="hero-stat-num">10</div><div class="hero-stat-label">Fallbeispiele</div></div>
+    <div><div class="hero-stat-num">8</div><div class="hero-stat-label">Trainingsmodule</div></div>
+  </div>
+</div>
+
+<div class="fb-hinweis">
+  <img src="brainy.png" alt="Brainy">
+  <div>Im KLARTEXT-Kartensystem wird der Begriff <b>INGRA</b> verwendet. Dieses Fachbuch nutzt den offiziellen Begriff <b>Schulbegleitung</b> gemäß SGB IX.</div>
+</div>
+
+<div class="fb-nav-titel">Inhaltsverzeichnis</div>
+<a class="fb-kapitel-link" href="#kap-1" data-kap="1">
+        <span class="fb-kapitel-nr">1</span>
+        <div><div class="fb-kapitel-titel">Grundlagen der Schulbegleitung</div><div class="fb-kapitel-modul">Karten: M1-01 bis M1-07</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-2" data-kap="2">
+        <span class="fb-kapitel-nr">2</span>
+        <div><div class="fb-kapitel-titel">Rechtliche Rahmenbedingungen</div><div class="fb-kapitel-modul">Karten: M1</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-3" data-kap="3">
+        <span class="fb-kapitel-nr">3</span>
+        <div><div class="fb-kapitel-titel">Kommunikation und Beziehung</div><div class="fb-kapitel-modul">Karten: M4</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_3a_Bindungstrauma.html">
+        <span class="fb-kapitel-nr">3a</span>
+        <div><div class="fb-kapitel-titel">Bindungstrauma & Pflegekinder</div><div class="fb-kapitel-modul">Vertiefung · mit Fachquellen</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_3b_Hochkonflikt.html">
+        <span class="fb-kapitel-nr">3b</span>
+        <div><div class="fb-kapitel-titel">Hochkonflikt-Eltern</div><div class="fb-kapitel-modul">Vertiefung · mit Fachquellen</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_3c_Esstoerungen.html">
+        <span class="fb-kapitel-nr">3c</span>
+        <div><div class="fb-kapitel-titel">Essstörungen</div><div class="fb-kapitel-modul">Vertiefung · mit Fachquellen</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-4" data-kap="4">
+        <span class="fb-kapitel-nr">4</span>
+        <div><div class="fb-kapitel-titel">Pädagogische Interventionen</div><div class="fb-kapitel-modul">Karten: M3, M7</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-5" data-kap="5">
+        <span class="fb-kapitel-nr">5</span>
+        <div><div class="fb-kapitel-titel">Krisenpädagogik & Deeskalation</div><div class="fb-kapitel-modul">Karten: M5, M6</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-6" data-kap="6">
+        <span class="fb-kapitel-nr">6</span>
+        <div><div class="fb-kapitel-titel">Dokumentation & Datenschutz</div><div class="fb-kapitel-modul">Karten: M5</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-7" data-kap="7">
+        <span class="fb-kapitel-nr">7</span>
+        <div><div class="fb-kapitel-titel">Elternarbeit</div><div class="fb-kapitel-modul">Karten: M4</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-8" data-kap="8">
+        <span class="fb-kapitel-nr">8</span>
+        <div><div class="fb-kapitel-titel">Teamarbeit & Kooperation</div><div class="fb-kapitel-modul">Karten: TK</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-9" data-kap="9">
+        <span class="fb-kapitel-nr">9</span>
+        <div><div class="fb-kapitel-titel">Qualitätssicherung</div><div class="fb-kapitel-modul">Karten: TK</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-10" data-kap="10">
+        <span class="fb-kapitel-nr">10</span>
+        <div><div class="fb-kapitel-titel">Das Kind-Modul</div><div class="fb-kapitel-modul">Karten: M2</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-11" data-kap="11">
+        <span class="fb-kapitel-nr">11</span>
+        <div><div class="fb-kapitel-titel">Das Eltern-Modul</div><div class="fb-kapitel-modul">Karten: —</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="#kap-12" data-kap="12">
+        <span class="fb-kapitel-nr">12</span>
+        <div><div class="fb-kapitel-titel">Glossar & Anhang</div><div class="fb-kapitel-modul">Karten: —</div></div>
+      </a>
+
+      <div class="fb-nav-titel" style="margin-top:1.5rem;">Systemkapitel</div>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_System_Paedagogik.html">
+        <span class="fb-kapitel-nr">S1</span>
+        <div><div class="fb-kapitel-titel">Pädagogische Besonderheiten</div><div class="fb-kapitel-modul">Down-Syndrom · Epilepsie · FASD u.a.</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_System_Verbruederung.html">
+        <span class="fb-kapitel-nr">S2</span>
+        <div><div class="fb-kapitel-titel">Verbrüderung und Grenzverlust</div><div class="fb-kapitel-modul">4 gefährliche Muster — und wie man sie vermeidet</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_System_Selbsthilfe.html">
+        <span class="fb-kapitel-nr">S3</span>
+        <div><div class="fb-kapitel-titel">Selbsthilfe und Selbstwert</div><div class="fb-kapitel-modul">Netzwerk, Krankmeldungen, Stabilisierung</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_System_Mobbing.html">
+        <span class="fb-kapitel-nr">S4</span>
+        <div><div class="fb-kapitel-titel">Mobbing & soziale Dynamiken</div><div class="fb-kapitel-modul">Betroffene, Ausübende, Cybermobbing, Gruppendynamik</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_System_Sinnesbehinderung_Kinderschutz.html">
+        <span class="fb-kapitel-nr">S5</span>
+        <div><div class="fb-kapitel-titel">Sinnesbehinderungen & Kinderschutz</div><div class="fb-kapitel-modul">Sehbehinderung · Gehörlosigkeit · Sexueller Missbrauch (sensibel)</div></div>
+      </a>
+
+      <div class="fb-nav-titel" style="margin-top:1.5rem;">Praxis</div>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_Fallbeispiele.html">
+        <span class="fb-kapitel-nr">📂</span>
+        <div><div class="fb-kapitel-titel">10 Fallbeispiele</div><div class="fb-kapitel-modul">Situation · Dialog · Analyse · Dokumentation</div></div>
+      </a>
+      <a class="fb-kapitel-link" href="KLARTEXT_Fachbuch_Trainingsmodule.html">
+        <span class="fb-kapitel-nr">🎯</span>
+        <div><div class="fb-kapitel-titel">8 Trainingsmodule</div><div class="fb-kapitel-modul">Zum Üben und Reflektieren</div></div>
+      </a>
+
+<section class="fb-kapitel" id="kap-1">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 1</span>
+      <h2>Grundlagen der Schulbegleitung</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: M1-01 bis M1-07 · <a href="M1-03.html" class="fb-karte-link">↗ M1-03</a> · <a href="M1-06.html" class="fb-karte-link">↗ M1-06</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Schulbegleitung ist eine Form der individuellen Teilhabeunterstützung. Sie ermöglicht Kindern und Jugendlichen mit besonderen Bedürfnissen, am Unterricht und am Schulleben teilzunehmen. Dabei geht es nicht darum, das Kind „anzupassen", sondern darum, Barrieren abzubauen und Bedingungen zu schaffen, unter denen Lernen, Entwicklung und soziale Teilhabe möglich werden.</p>
+
+      <p class="fb-p">Professionelle Schulbegleitung bedeutet, dass ein Kind im schulischen Alltag eine verlässliche, ruhige und klare Bezugsperson an seiner Seite hat. Diese Person hilft, Strukturen zu verstehen, Übergänge zu bewältigen, Reize zu regulieren und soziale Situationen sicher zu durchlaufen. Schulbegleitung ist kein Ersatz für Lehrkräfte, keine therapeutische Instanz und keine private Bezugsperson. Sie ist eine pädagogische Unterstützung, die Orientierung, Sicherheit und Stabilität schafft.</p>
+
+      <h3 class="fb-h3">1.1 Was Schulbegleitung ist — und was nicht</h3>
+      <p class="fb-p">Schulbegleitung unterstützt Kinder dabei, am Unterricht teilzunehmen, Aufgaben zu verstehen, sich im Raum zu orientieren, soziale Situationen zu bewältigen und emotionale Herausforderungen zu regulieren. Sie schafft Struktur, vermittelt Sicherheit und hilft, Anforderungen in kleine, machbare Schritte zu übersetzen.</p>
+      <p class="fb-p">Schulbegleitung ist jedoch nicht verantwortlich für Unterrichtsinhalte, Leistungsbewertung oder Disziplinarmaßnahmen. Sie ersetzt keine Therapie, keine Erziehung und keine medizinische Betreuung. Sie übernimmt keine Aufsichtspflicht für die gesamte Klasse und keine organisatorischen Aufgaben der Lehrkraft. Schulbegleitung ist eine individuelle Unterstützung — nicht eine zusätzliche Lehrkraft und nicht eine private Bezugsperson.</p>
+
+      <h3 class="fb-h3">1.2 Die drei Säulen professioneller Schulbegleitung</h3>
+      <p class="fb-p">Professionelle Schulbegleitung ruht auf drei zentralen Säulen:</p>
+
+      <div class="fb-saeulen">
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Beziehung</div>
+          <p>Kinder lernen nur, wenn sie sich sicher fühlen. Eine ruhige, wertschätzende und verlässliche Beziehung ist die Grundlage jeder Unterstützung. Beziehung bedeutet nicht Nähe ohne Grenzen, sondern Klarheit, Verlässlichkeit und Respekt.</p>
+        </div>
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Struktur</div>
+          <p>Viele Kinder benötigen klare Abläufe, vorhersehbare Schritte und visuelle Orientierung. Struktur schafft Sicherheit und reduziert Stress. Schulbegleitung übersetzt Anforderungen in kleine, machbare Schritte und hilft, Übergänge zu bewältigen.</p>
+        </div>
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Regulation</div>
+          <p>Kinder geraten im Schulalltag schnell in Überforderung — durch Reize, soziale Situationen, Aufgaben oder Erwartungen. Schulbegleitung hilft, diese Momente zu erkennen, zu entschärfen und das Kind wieder in einen regulierten Zustand zu begleiten.</p>
+        </div>
+      </div>
+
+      <h3 class="fb-h3">1.3 Neurodiversität verstehen</h3>
+      <div class="fb-zitat">
+        <div class="fb-zitat-richtig">„Was braucht dieses Kind, um teilhaben zu können?"</div>
+        <div class="fb-zitat-falsch">Nicht: „Was stimmt nicht mit dem Kind?"</div>
+      </div>
+      <p class="fb-p">Kinder nehmen die Welt unterschiedlich wahr. Manche sind reizempfindlich, manche impulsiv, manche brauchen viel Struktur, manche viel Bewegung. Schulbegleitung arbeitet mit Kindern, die anders denken, fühlen und reagieren — und genau das ist normal.</p>
+      <p class="fb-p">Neurodiversität bedeutet, dass Unterschiede in Wahrnehmung, Aufmerksamkeit, Kommunikation und Verhalten keine Defizite sind, sondern Varianten menschlicher Entwicklung. Schulbegleitung fragt daher nicht: „Was stimmt nicht mit dem Kind?", sondern: „Was braucht dieses Kind, um teilhaben zu können?"</p>
+
+      <h3 class="fb-h3">1.4 Haltung und Ethik</h3>
+      <p class="fb-p">Professionelle Schulbegleitung basiert auf einer klaren Haltung: <b>Würde, Respekt, Transparenz, Selbstbestimmung und Schutz.</b></p>
+      <p class="fb-p">Eine gute Schulbegleitung begleitet, ohne zu führen. Sie unterstützt, ohne zu übernehmen. Sie schützt, ohne zu kontrollieren. Sie bleibt ruhig, auch wenn das Kind es nicht kann. Sie bleibt klar, auch wenn die Situation chaotisch wird. Und sie bleibt professionell, auch wenn Beziehungen eng werden.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-m1.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Schulbegleitung heißt nicht, alles richtig zu machen — sondern Orientierung zu geben, auch wenn es selbst mal unsicher wird.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-2">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 2</span>
+      <h2>Rechtliche Rahmenbedingungen</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: M1-01 bis M1-07 · § 8a & Schweigepflicht · <a href="M1-01.html" class="fb-karte-link">↗ M1-01</a> · <a href="M1-05.html" class="fb-karte-link">↗ M1-05</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Schulbegleitung bewegt sich in einem klar definierten rechtlichen Rahmen. Dieser Rahmen schützt das Kind, die Schule, die Eltern und die Schulbegleitung selbst. Wer professionell arbeiten möchte, braucht ein grundlegendes Verständnis dieser Regeln.</p>
+
+      <h3 class="fb-h3">2.1 Schweigepflicht</h3>
+      <p class="fb-p">Schulbegleitung unterliegt der Schweigepflicht. Das bedeutet, dass keine Informationen über andere Kinder, Diagnosen, familiäre Hintergründe oder schulinterne Vorgänge weitergegeben werden dürfen. Auch beiläufige Gespräche auf dem Schulhof oder im Lehrerzimmer fallen unter die Schweigepflicht.</p>
+      <div class="fb-merksatz">Schweigepflicht schützt das Kind — und schützt die Schulbegleitung vor Konflikten und Grenzüberschreitungen.</div>
+
+      <h3 class="fb-h3">2.2 Aufsichtspflicht</h3>
+      <p class="fb-p">Die Aufsichtspflicht liegt immer bei der Lehrkraft, niemals bei der Schulbegleitung. Schulbegleitung unterstützt das Kind, aber sie übernimmt keine Verantwortung für die Klasse oder für sicherheitsrelevante Entscheidungen. Wenn die Lehrkraft den Raum verlässt, bleibt die Aufsichtspflicht bei ihr.</p>
+
+      <h3 class="fb-h3">2.3 Eingliederungshilfe und BTHG</h3>
+      <p class="fb-p">Schulbegleitung ist eine Leistung der Eingliederungshilfe nach dem SGB IX. Ziel ist nicht Förderung, sondern Teilhabe. Das bedeutet: Schulbegleitung soll Barrieren abbauen, damit das Kind am Unterricht teilnehmen kann. Sie ist keine pädagogische Zusatzkraft, sondern eine individuelle Unterstützung.</p>
+
+      <h3 class="fb-h3">2.4 Schutzauftrag</h3>
+      <p class="fb-p">Bei Verdacht auf Kindeswohlgefährdung gilt eine klare Reihenfolge:</p>
+      <div class="fb-ablauf">
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">1</span>Beobachten</div>
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">2</span>Dokumentieren</div>
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">3</span>Einsatzleitung informieren</div>
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">4</span>Meldekette einhalten</div>
+      </div>
+      <div class="fb-warnung">Schulbegleitung spricht niemals direkt mit Eltern über Verdachtsmomente und trifft keine eigenen Entscheidungen.</div>
+
+      <h3 class="fb-h3">2.5 Datenschutz</h3>
+      <p class="fb-p">Datenschutz bedeutet, dass keine Fotos, Videos oder privaten Nachrichten über Kinder erstellt oder gespeichert werden. Private Geräte sind tabu. Kommunikation mit Eltern findet niemals über WhatsApp statt. Dokumentation erfolgt ausschließlich über die vorgesehenen Wege.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-m1.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Klare Regeln sind kein Misstrauen — sie schützen alle Beteiligten gleichermaßen.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-3">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 3</span>
+      <h2>Kommunikation und Beziehung</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: M4-01 bis M4-08 · Kommunikation · <a href="M4-04_DAZ-freundliche_Sprache.html" class="fb-karte-link">↗ M4-04</a> · <a href="M4-07_Nonverbale_Kommunikation.html" class="fb-karte-link">↗ M4-07</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Kommunikation ist das wichtigste Werkzeug der Schulbegleitung. Sie entscheidet darüber, ob ein Kind sich sicher fühlt, ob Eltern Vertrauen entwickeln und ob Lehrkräfte die Zusammenarbeit als Unterstützung erleben.</p>
+
+      <h3 class="fb-h3">3.1 Beziehung als Arbeitsgrundlage</h3>
+      <div class="fb-zitat">
+        <div class="fb-zitat-richtig">„Diese Person bleibt ruhig, auch wenn ich es nicht kann."</div>
+        <div class="fb-zitat-falsch">Beziehung entsteht durch Verlässlichkeit — nicht durch Nähe ohne Grenzen.</div>
+      </div>
+      <p class="fb-p">Kinder lernen nur in sicherer Beziehung. Schulbegleitung schafft diese Sicherheit durch eine ruhige, klare und wertschätzende Präsenz. Beziehung bedeutet nicht, dass man „Freundin" des Kindes wird. Beziehung bedeutet, dass das Kind weiß: „Diese Person bleibt ruhig, auch wenn ich es nicht kann. Diese Person bleibt klar, auch wenn ich überfordert bin."</p>
+      <p class="fb-p">Beziehung entsteht durch Verlässlichkeit, nicht durch Nähe ohne Grenzen.</p>
+
+      <h3 class="fb-h3">3.2 Kommunikation mit Kindern</h3>
+      <p class="fb-p">Kinder brauchen klare, kurze und konkrete Sprache. Lange Erklärungen überfordern. Ironie verwirrt. Drohungen verunsichern. Gute Kommunikation ist ruhig, freundlich und vorhersehbar.</p>
+      <div class="fb-saetze">
+        <div class="fb-satz">„Ich bin da."</div>
+        <div class="fb-satz">„Wir machen das zusammen."</div>
+        <div class="fb-satz">„Ein Schritt nach dem anderen."</div>
+        <div class="fb-satz">„Du bist sicher."</div>
+      </div>
+
+      <h3 class="fb-h3">3.3 Kommunikation mit Lehrkräften</h3>
+      <p class="fb-p">Lehrkräfte tragen die pädagogische Verantwortung. Schulbegleitung unterstützt diese Verantwortung, ersetzt sie aber nicht. Gute Zusammenarbeit entsteht durch kurze Absprachen, klare Rollen und gegenseitigen Respekt.</p>
+      <div class="fb-saetze fb-saetze-blau">
+        <div class="fb-satz">„Ich unterstütze X — nicht die Klasse."</div>
+        <div class="fb-satz">„Ich brauche eine kurze Rückmeldung."</div>
+        <div class="fb-satz">„Ich beobachte gerade …"</div>
+      </div>
+
+      <h3 class="fb-h3">3.4 Kommunikation mit Eltern</h3>
+      <p class="fb-p">Eltern sind Expertinnen und Experten für ihr Kind. Schulbegleitung ist Expertin für den Alltag in der Schule. Gute Elternarbeit bedeutet Austausch, aber keine Vermischung von Rollen. Schulbegleitung gibt Informationen über das Kind — aber keine Einschätzungen über Lehrkräfte, andere Kinder oder schulische Entscheidungen.</p>
+      <div class="fb-saetze fb-saetze-gruen">
+        <div class="fb-satz">„Ich kann dir sagen, wie es deinem Kind heute ging."</div>
+        <div class="fb-satz">„Zu anderen Kindern darf ich nichts sagen."</div>
+        <div class="fb-satz">„Für alles Weitere spreche ich mit der Einsatzleitung."</div>
+      </div>
+
+      <h3 class="fb-h3">3.5 Kommunikation in Krisen</h3>
+      <p class="fb-p">In Krisen gilt: Ton senken, Tempo reduzieren, klare Sätze. Keine Diskussionen, keine Erklärungen, keine moralischen Appelle. Kinder in Überforderung brauchen Sicherheit, nicht Argumente.</p>
+      <div class="fb-saetze fb-saetze-rot">
+        <div class="fb-satz">„Stopp. Ich bin da."</div>
+        <div class="fb-satz">„Wir gehen einen Schritt zurück."</div>
+        <div class="fb-satz">„Wir atmen einmal."</div>
+        <div class="fb-satz">„Du bist sicher."</div>
+      </div>
+
+      <div class="fb-brainy">
+        <img src="brainy-m4.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Vier Zielgruppen, vier Tonlagen — die Worte ändern sich, die Klarheit bleibt immer gleich.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-4">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 4</span>
+      <h2>Pädagogische Interventionen und Alltagspraxis</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: M3-01 bis M3-23 · Werkzeugkasten · <a href="M3-01.html" class="fb-karte-link">↗ M3-01</a> · <a href="M3-16.html" class="fb-karte-link">↗ M3-16</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Der schulische Alltag ist für viele Kinder ein komplexes Gefüge aus Reizen, Erwartungen, sozialen Anforderungen und wechselnden Situationen. Schulbegleitung hilft, diesen Alltag überschaubar und bewältigbar zu machen. Dabei geht es nicht darum, Aufgaben für das Kind zu übernehmen, sondern darum, Bedingungen zu schaffen, unter denen das Kind selbst aktiv werden kann.</p>
+
+      <p class="fb-p">Professionelle Unterstützung bedeutet, dass Schulbegleitung Orientierung gibt, ohne zu dominieren. Sie schafft Struktur, ohne zu kontrollieren. Sie hilft, ohne zu bevormunden. Und sie bleibt ruhig, auch wenn das Kind es nicht kann.</p>
+
+      <h3 class="fb-h3">4.1 Grundprinzipien der pädagogischen Unterstützung</h3>
+      <p class="fb-p">Gute Schulbegleitung folgt einigen einfachen, aber wirkungsvollen Grundprinzipien:</p>
+
+      <div class="fb-saeulen fb-saeulen-4">
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Vorhersehbarkeit</div>
+          <p>Kinder brauchen Klarheit darüber, was als Nächstes passiert. Schulbegleitung kündigt Schritte an, erklärt Abläufe und schafft Orientierung.</p>
+        </div>
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Struktur</div>
+          <p>Viele Kinder profitieren von klaren, wiederkehrenden Abläufen. Schulbegleitung hilft, Aufgaben in kleine Schritte zu teilen und Übergänge zu begleiten.</p>
+        </div>
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Unterstützung statt Übernahme</div>
+          <p>Das Ziel ist immer, das Kind zu befähigen — nicht, es zu entlasten, indem man Aufgaben für es erledigt. Unterstützung bedeutet, gemeinsam anzufangen, nicht stellvertretend zu arbeiten.</p>
+        </div>
+        <div class="fb-saeule">
+          <div class="fb-saeule-titel">Ruhige Präsenz</div>
+          <p>Kinder orientieren sich an der emotionalen Stabilität der Erwachsenen. Eine ruhige, klare und freundliche Haltung wirkt regulierend.</p>
+        </div>
+      </div>
+
+      <h3 class="fb-h3">4.2 Reizregulation im Schulalltag</h3>
+      <p class="fb-p">Viele Kinder erleben den Schulalltag als überfordernd, weil Geräusche, Bewegungen, Licht, Stimmen und soziale Situationen gleichzeitig auf sie einwirken. Schulbegleitung hilft, diese Reize zu filtern und zu reduzieren.</p>
+      <p class="fb-p">Reizregulation bedeutet nicht, das Kind abzuschirmen, sondern Bedingungen zu schaffen, unter denen es sich orientieren kann. Dazu gehören ein ruhiger Sitzplatz, klare Signale, kurze Pausen und visuelle Hilfen. Schulbegleitung erkennt früh, wann ein Kind überreizt ist, und bietet Alternativen an, bevor eine Krise entsteht.</p>
+
+      <h3 class="fb-h3">4.3 Impuls- und Emotionsregulation</h3>
+      <p class="fb-p">Kinder geraten im Schulalltag schnell in emotionale Überforderung. Das kann sich in Rückzug, Wut, Weinen, Lautstärke oder Impulsdurchbrüchen zeigen. Schulbegleitung hilft, diese Momente zu entschärfen, indem sie ruhig bleibt, klare Sätze verwendet und Alternativen anbietet.</p>
+      <p class="fb-p">Regulation bedeutet nicht, Gefühle zu unterdrücken, sondern dem Kind zu helfen, wieder handlungsfähig zu werden. Das geschieht durch Atempausen, kurze Rückzüge, klare Struktur und eine ruhige, wertschätzende Haltung.</p>
+
+      <h3 class="fb-h3">4.4 Unterstützung im Unterricht</h3>
+      <p class="fb-p">Schulbegleitung unterstützt das Kind im Unterricht, ohne den Unterricht zu übernehmen. Sie erklärt Aufgaben in einfachen Schritten, hilft beim Start, strukturiert Materialien und begleitet das Kind durch den Lernprozess. Sie ist keine Nachhilfe und keine zweite Lehrkraft. Sie sorgt dafür, dass das Kind teilnehmen kann — nicht dafür, dass es perfekte Leistungen erbringt.</p>
+
+      <h3 class="fb-h3">4.5 Übergänge und Routinen</h3>
+      <p class="fb-p">Übergänge sind für viele Kinder besonders herausfordernd: Stundenwechsel, Raumwechsel, Pausenbeginn, Pausenende, Gruppenarbeit, Arbeitsphasen. Schulbegleitung bereitet Übergänge vor, kündigt sie an und begleitet sie ruhig und klar.</p>
+      <p class="fb-p">Routinen geben Sicherheit. Wenn ein Kind weiß, was als Nächstes passiert, sinkt der Stress. Schulbegleitung hilft, diese Routinen aufzubauen und zu stabilisieren.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-m3.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Struktur ist kein Selbstzweck — sie gibt dem Kind die Freiheit, sich auf das Wesentliche zu konzentrieren.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-5">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 5</span>
+      <h2>Krisenpädagogik und Deeskalation</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: FK-01 bis FK-07 · kLAR-System · <a href="FK-01.html" class="fb-karte-link">↗ FK-01</a> · <a href="M4-07_Nonverbale_Kommunikation.html" class="fb-karte-link">↗ M4-07</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Krisen gehören zum Schulalltag. Sie sind kein Zeichen von Versagen, sondern ein Zeichen von Überforderung. Professionelle Schulbegleitung erkennt Krisen früh, begleitet sie ruhig und sorgt dafür, dass das Kind wieder in einen regulierten Zustand findet.</p>
+      <div class="fb-merksatz">Krisenpädagogik bedeutet nicht, Krisen zu verhindern, sondern sie sicher zu begleiten.</div>
+
+      <h3 class="fb-h3">5.1 Was eine Krise ist</h3>
+      <div class="fb-zitat">
+        <div class="fb-zitat-richtig">Krise = Überforderung, nicht Absicht.</div>
+        <div class="fb-zitat-falsch">Das Kind verliert die Kontrolle — es wählt sie nicht. Erklärungen helfen jetzt nicht. Sicherheit schon.</div>
+      </div>
+      <p class="fb-p">Eine Krise entsteht, wenn die Anforderungen die Fähigkeiten des Kindes übersteigen. Das kann durch Reize, soziale Situationen, Aufgaben, Konflikte oder innere Belastungen ausgelöst werden. Eine Krise ist kein „Fehlverhalten", sondern ein Zustand, in dem das Kind nicht mehr selbst regulieren kann.</p>
+
+      <h3 class="fb-h3">5.2 Eskalationsstufen</h3>
+      <p class="fb-p">Krisen verlaufen in Stufen. Schulbegleitung erkennt diese Stufen und reagiert entsprechend:</p>
+      <div class="fb-stufen">
+        <div class="fb-stufe fb-stufe-gelb"><div class="fb-stufe-titel">Anspannung</div><p>Das Kind wirkt unruhig, reizbar, abgelenkt oder überdreht.</p></div>
+        <div class="fb-stufe fb-stufe-orange"><div class="fb-stufe-titel">Überforderung</div><p>Das Kind zeigt deutliche Stresssignale: Lautstärke, Rückzug, Weinen, Impulse.</p></div>
+        <div class="fb-stufe fb-stufe-rot"><div class="fb-stufe-titel">Krise</div><p>Das Kind verliert die Kontrolle über Verhalten oder Emotionen.</p></div>
+        <div class="fb-stufe fb-stufe-grau"><div class="fb-stufe-titel">Nachphase</div><p>Das Kind ist erschöpft, sensibel und braucht Ruhe.</p></div>
+      </div>
+
+      <h3 class="fb-h3">5.3 Die kLAR-Regel der Deeskalation</h3>
+      <div class="fb-klar-box">
+        <div class="fb-klar-titel">k · L · A · R — automatisch abrufen</div>
+        <div class="fb-klar-grid">
+          <div class="fb-klar-item"><span class="fb-klar-buchstabe">k</span><div><b>Körperliche Sicherheit</b></div></div>
+          <div class="fb-klar-item"><span class="fb-klar-buchstabe">L</span><div><b>Leise & Langsam</b></div></div>
+          <div class="fb-klar-item"><span class="fb-klar-buchstabe">A</span><div><b>Anerkennung & Atmen</b> — kein Machtkampf</div></div>
+          <div class="fb-klar-item"><span class="fb-klar-buchstabe">R</span><div><b>Reizreduktion, Raum</b></div></div>
+        </div>
+      </div>
+
+      <p class="fb-p">Professionelle Krisenbegleitung folgt drei einfachen Schritten:</p>
+      <div class="fb-ablauf">
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">1</span><b>Regulieren</b> — Ton und Tempo senken, Ruhe schaffen, Sicherheit vermitteln</div>
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">2</span><b>Sichern</b> — dafür sorgen, dass niemand verletzt wird und das Kind Raum bekommt</div>
+        <div class="fb-ablauf-schritt"><span class="fb-ablauf-nr">3</span><b>Handeln</b> — Alternativen anbieten: Rückzug, Pause, klare Schritte</div>
+      </div>
+      <p class="fb-p">Diese Reihenfolge bleibt immer gleich — unabhängig von der Art der Krise.</p>
+
+      <h3 class="fb-h3">5.4 Was man in Krisen nicht tut</h3>
+      <p class="fb-p">In Krisen sind bestimmte Reaktionen kontraproduktiv:</p>
+      <div class="fb-warnung">Diskussionen · Erklärungen · Vorwürfe · moralische Appelle · körperliche Blockaden · Drohungen</div>
+      <p class="fb-p">Kinder in Überforderung können nicht argumentieren. Sie brauchen Sicherheit, nicht Logik.</p>
+
+      <h3 class="fb-h3">5.5 Nachbereitung</h3>
+      <p class="fb-p">Nach einer Krise braucht das Kind Ruhe, Orientierung und eine klare, wertschätzende Haltung. Schulbegleitung erklärt kurz, was passiert ist, ohne Vorwürfe oder Bewertungen. Die Beziehung wird stabilisiert, und das Kind bekommt die Möglichkeit, wieder in den Alltag zurückzufinden.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-m6.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> kLAR funktioniert nur, wenn es automatisch sitzt — nicht in der Krise nachschlagen, sondern vorher einüben.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-6">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 6</span>
+      <h2>Dokumentation und Datenschutz</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: M5-01 bis M5-10 · Dokumentation · <a href="M5-01_Tagesdokumentation.html" class="fb-karte-link">↗ M5-01</a> · <a href="M5-02_Wochenreflexion.html" class="fb-karte-link">↗ M5-02</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Dokumentation ist ein wichtiger Bestandteil professioneller Schulbegleitung. Sie schafft Transparenz, schützt das Kind und die Schulbegleitung und ermöglicht eine klare Kommunikation mit Schule und Träger. Gute Dokumentation ist kurz, neutral und sachlich.</p>
+
+      <h3 class="fb-h3">6.1 Warum Dokumentation wichtig ist</h3>
+      <p class="fb-p">Dokumentation dient mehreren Zwecken:</p>
+      <ul class="fb-liste">
+        <li>Du machst Entwicklungen sichtbar.</li>
+        <li>Sie schafft Klarheit über Abläufe.</li>
+        <li>Sie schützt Schulbegleitung vor Missverständnissen.</li>
+        <li>Sie ermöglicht dem Träger, Entscheidungen zu treffen.</li>
+        <li>Sie unterstützt die Zusammenarbeit mit Lehrkräften.</li>
+      </ul>
+      <div class="fb-merksatz">Dokumentation ist kein Bericht über „richtig" oder „falsch", sondern eine sachliche Beschreibung des Alltags.</div>
+
+      <h3 class="fb-h3">6.2 Die KLARTEXT-Dokumentationsmethode</h3>
+      <div class="fb-klar-box">
+        <div class="fb-klar-titel">Beobachten → Handeln → Wirkung notieren</div>
+        <div class="fb-doku-methode">
+          <div class="fb-doku-schritt"><b>Beobachtung</b><p>Was ist sichtbar passiert? Ohne Bewertung, ohne Interpretation.</p></div>
+          <div class="fb-doku-schritt"><b>Handlung</b><p>Was hat die Schulbegleitung getan?</p></div>
+          <div class="fb-doku-schritt"><b>Wirkung</b><p>Was hat sich verändert?</p></div>
+        </div>
+      </div>
+      <p class="fb-p">Diese Struktur hält Dokumentation kurz, klar und rechtssicher. Datum, Uhrzeit und Kontext gehören immer dazu — keine Diagnosen, keine Bewertungen.</p>
+
+      <div class="fb-beispiel-box">
+        <div class="fb-beispiel-label">Beispiel</div>
+        <p>„10:20 — Kind steht mehrfach auf. Ich biete Pause an. Kind beruhigt sich nach 2 Min."</p>
+      </div>
+
+      <h3 class="fb-h3">6.3 Gute vs. schlechte Dokumentation</h3>
+      <div class="fb-gegenueber">
+        <div class="fb-gegenueber-gut">
+          <div class="fb-gegenueber-label">✓ Gut</div>
+          <p class="fb-gegenueber-text">„10:20 — X steht mehrfach auf, wirkt angespannt. Ich biete kurze Pause an. X beruhigt sich nach 2 Minuten und arbeitet weiter."</p>
+          <p class="fb-gegenueber-hinweis">Neutral, beschreibt nur das tatsächlich Beobachtete — keine Diagnosen, Bewertungen oder Gefühle der Schulbegleitung.</p>
+        </div>
+        <div class="fb-gegenueber-schlecht">
+          <div class="fb-gegenueber-label">✗ Schlecht</div>
+          <p class="fb-gegenueber-text">„X war frech." · „X wollte nicht arbeiten." · „X hat provoziert."</p>
+          <p class="fb-gegenueber-hinweis">Enthält Bewertungen, Interpretationen und Schuldzuweisungen — unprofessionell und rechtlich problematisch.</p>
+        </div>
+      </div>
+
+      <h3 class="fb-h3">6.4 Datenschutz</h3>
+      <p class="fb-p">Datenschutz bedeutet, dass alle Informationen über das Kind geschützt werden. Fotos, Videos oder private Nachrichten sind nicht erlaubt. Dokumentation erfolgt ausschließlich über die vorgesehenen Wege. Private Geräte dürfen nicht genutzt werden.</p>
+      <div class="fb-merksatz">Datenschutz schützt das Kind — und schützt die Schulbegleitung vor Konflikten.</div>
+
+      <div class="fb-brainy">
+        <img src="brainy-m5.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Was du nicht dokumentierst, ist im Zweifel nicht passiert — schreib es auf, solange es frisch ist.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-7">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 7</span>
+      <h2>Elternarbeit</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: EL-01 bis EL-07 · Eltern-Karten · <a href="EL-01.html" class="fb-karte-link">↗ EL-01</a> · <a href="M4-04_DAZ-freundliche_Sprache.html" class="fb-karte-link">↗ M4-04</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Elternarbeit ist ein zentraler Bestandteil der Schulbegleitung. Eltern kennen ihr Kind besser als jeder andere Mensch. Sie wissen, was funktioniert, was schwierig ist, welche Routinen helfen und welche Situationen Stress auslösen. Gleichzeitig erleben Eltern den Schulalltag nicht direkt — sie sind auf Rückmeldungen angewiesen, um zu verstehen, wie es ihrem Kind geht.</p>
+
+      <p class="fb-p">Professionelle Elternarbeit bedeutet, eine Brücke zu bauen: zwischen dem, was das Kind braucht, und dem, was Schule leisten kann. Diese Brücke muss stabil, klar und gut geschützt sein. Schulbegleitung ist Teil dieser Brücke — aber nicht die Person, die sie trägt.</p>
+
+      <h3 class="fb-h3">7.1 Bedeutung der Elternarbeit</h3>
+      <p class="fb-p">Elternarbeit schafft Vertrauen. Wenn Eltern wissen, dass ihr Kind gesehen, verstanden und respektvoll begleitet wird, entsteht Sicherheit. Diese Sicherheit wirkt sich direkt auf das Kind aus. Kinder spüren, wenn Erwachsene miteinander kooperieren — und sie spüren genauso, wenn Erwachsene gegeneinander arbeiten.</p>
+      <p class="fb-p">Gute Elternarbeit bedeutet, dass Schulbegleitung transparent, ruhig und wertschätzend kommuniziert. Das bedeutet auch, dass Schulbegleitung Grenzen wahrt und sich nicht in familiäre oder schulische Konflikte hineinziehen lässt.</p>
+
+      <h3 class="fb-h3">7.2 Grenzen der Elternarbeit</h3>
+      <p class="fb-p">Elternarbeit hat klare Grenzen. Schulbegleitung ist keine Familienhilfe, keine Therapeutin und keine private Bezugsperson. Sie gibt keine Diagnosen weiter, keine Einschätzungen über Lehrkräfte und keine Bewertungen über andere Kinder. Sie trifft keine Entscheidungen über Unterricht, Förderung oder schulische Maßnahmen.</p>
+      <div class="fb-merksatz">Professionelle Elternarbeit bedeutet, Informationen über das Kind weiterzugeben — nicht über das System.</div>
+
+      <h3 class="fb-h3">7.3 Gesprächsführung mit Eltern</h3>
+      <p class="fb-p">Gute Gespräche mit Eltern sind kurz, klar und lösungsorientiert. Schulbegleitung beschreibt, was sie beobachtet hat, ohne zu bewerten. Sie erklärt, wie das Kind unterstützt wurde, ohne sich zu rechtfertigen. Und sie benennt Grenzen, ohne zu verletzen.</p>
+      <div class="fb-saetze fb-saetze-gruen">
+        <div class="fb-satz">„Ich kann dir sagen, wie es deinem Kind heute ging."</div>
+        <div class="fb-satz">„Zu anderen Kindern darf ich nichts sagen."</div>
+        <div class="fb-satz">„Für alles Weitere spreche ich mit der Einsatzleitung."</div>
+      </div>
+      <p class="fb-p">Diese Sätze schützen das Kind, die Eltern und die Schulbegleitung.</p>
+
+      <h3 class="fb-h3">7.4 Schwierige Elternsituationen</h3>
+      <p class="fb-p">Manche Eltern sind emotional, überfordert oder misstrauisch. Manche Eltern suchen Verbündete. Manche Eltern möchten, dass die Schulbegleitung Partei ergreift. In solchen Situationen ist es besonders wichtig, ruhig zu bleiben und Grenzen klar zu kommunizieren.</p>
+      <p class="fb-p">Schulbegleitung bleibt freundlich, aber bestimmt. Sie erklärt, was sie sagen darf — und was nicht. Sie verweist auf die Einsatzleitung, wenn Gespräche zu komplex oder zu emotional werden. Und sie schützt das Kind, indem sie neutral bleibt.</p>
+
+      <h3 class="fb-h3">7.5 Eltern als Ressource</h3>
+      <p class="fb-p">Eltern können wertvolle Hinweise geben: über Routinen, Vorlieben, Trigger, Regulationstechniken und Kommunikationsformen. Schulbegleitung nutzt dieses Wissen, um das Kind im Alltag besser zu unterstützen. Elternarbeit ist dann am stärksten, wenn sie auf Augenhöhe stattfindet — mit Respekt, Klarheit und gegenseitigem Vertrauen.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-m4.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Eltern sind Verbündete im Sinne des Kindes — nicht Verbündete gegen die Schule, und auch nicht andersherum.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-8">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 8</span>
+      <h2>Teamarbeit und Kooperation</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: LK-01 bis LK-15 · Lehrkraft · <a href="LK-01.html" class="fb-karte-link">↗ LK-01</a> · <a href="EL-01.html" class="fb-karte-link">↗ EL-01</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Schulbegleitung ist Teil eines Systems. Sie arbeitet nicht isoliert, sondern in einem Netzwerk aus Lehrkräften, pädagogischen Fachkräften, Therapeutinnen, Eltern und dem Träger. Gute Teamarbeit bedeutet, dass alle Beteiligten ihre Rollen kennen und respektieren.</p>
+
+      <h3 class="fb-h3">8.1 Zusammenarbeit mit Lehrkräften</h3>
+      <p class="fb-p">Lehrkräfte tragen die pädagogische Verantwortung für die Klasse. Schulbegleitung unterstützt diese Verantwortung, indem sie das Kind begleitet, strukturiert und stabilisiert. Gute Zusammenarbeit entsteht durch kurze Absprachen, klare Rollen und gegenseitige Wertschätzung.</p>
+      <div class="fb-saetze fb-saetze-blau">
+        <div class="fb-satz">„Ich unterstütze X — nicht die Klasse."</div>
+        <div class="fb-satz">„Ich brauche eine kurze Rückmeldung."</div>
+        <div class="fb-satz">„Ich beobachte gerade …"</div>
+      </div>
+      <p class="fb-p">Diese Sätze schaffen Klarheit und verhindern Missverständnisse.</p>
+
+      <h3 class="fb-h3">8.2 Zusammenarbeit mit dem Träger</h3>
+      <p class="fb-p">Der Träger ist für Verträge, Qualitätssicherung, Einarbeitung und Krisenbegleitung zuständig. Schulbegleitung kommuniziert mit dem Träger über Entwicklungen, Herausforderungen und besondere Situationen. Der Träger ist nicht für alltägliche Sorgen zuständig, sondern für strukturelle und rechtliche Fragen.</p>
+      <p class="fb-p">Gute Zusammenarbeit bedeutet, dass Schulbegleitung frühzeitig informiert, wenn Situationen schwierig werden, und dass der Träger klare Unterstützung bietet.</p>
+
+      <h3 class="fb-h3">8.3 Multiprofessionelles Team</h3>
+      <p class="fb-p">Viele Kinder werden von mehreren Fachpersonen begleitet: Therapeutinnen, Schulsozialarbeit, OGS, Beratungsstellen. Schulbegleitung ist Teil dieses Teams, aber nicht die koordinierende Instanz. Sie gibt Beobachtungen weiter, aber keine Diagnosen. Sie beschreibt Verhalten, aber keine Ursachen.</p>
+      <div class="fb-merksatz">Multiprofessionelle Zusammenarbeit gelingt, wenn alle Beteiligten ihre Rollen kennen und respektieren.</div>
+
+      <h3 class="fb-h3">8.4 Konflikte im Team</h3>
+      <p class="fb-p">Konflikte gehören zum Alltag. Sie entstehen durch Missverständnisse, unterschiedliche Erwartungen oder fehlende Kommunikation. Schulbegleitung bleibt in Konflikten ruhig, sachlich und lösungsorientiert. Sie spricht Probleme an, ohne Vorwürfe zu machen, und sucht nach gemeinsamen Lösungen.</p>
+      <p class="fb-p">Professionelle Konfliktkommunikation bedeutet:</p>
+      <ul class="fb-liste">
+        <li>Ich-Botschaften</li>
+        <li>klare Wünsche</li>
+        <li>konkrete Beispiele</li>
+        <li>keine Schuldzuweisungen</li>
+      </ul>
+      <div class="fb-merksatz">Konflikte sind kein Zeichen von Scheitern, sondern eine Chance für Klarheit.</div>
+
+      <div class="fb-brainy">
+        <img src="brainy-tk.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Ein gutes Team merkt man nicht daran, dass es nie Konflikte gibt — sondern daran, wie es mit ihnen umgeht.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-9">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 9</span>
+      <h2>Qualitätssicherung</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karte: <a href="TK-05.html" class="fb-karte-link">↗ TK-05 · Qualitätssicherung</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Qualitätssicherung ist ein zentraler Bestandteil professioneller Schulbegleitung. Sie schützt das Kind, die Schulbegleitung, die Schule und den Träger. Qualität entsteht nicht zufällig — sie entsteht durch klare Standards, regelmäßige Reflexion und transparente Kommunikation.</p>
+
+      <h3 class="fb-h3">9.1 Bedeutung von Qualität</h3>
+      <p class="fb-p">Gute Schulbegleitung ist verlässlich, klar und professionell. Sie arbeitet strukturiert, reflektiert und mit einer klaren Haltung. Qualität bedeutet, dass das Kind sicher ist, dass Eltern Vertrauen haben und dass Lehrkräfte die Zusammenarbeit als Unterstützung erleben.</p>
+
+      <h3 class="fb-h3">9.2 Qualitätsstandards</h3>
+      <p class="fb-p">Professionelle Schulbegleitung folgt festen Standards:</p>
+      <ul class="fb-liste">
+        <li>klare Rollen</li>
+        <li>klare Grenzen</li>
+        <li>regelmäßige Reflexion</li>
+        <li>sachliche Dokumentation</li>
+        <li>ruhige Krisenbegleitung</li>
+        <li>transparente Kommunikation</li>
+      </ul>
+      <div class="fb-merksatz">Diese Standards schützen alle Beteiligten.</div>
+
+      <h3 class="fb-h3">9.3 Reflexion und Supervision</h3>
+      <p class="fb-p">Reflexion ist ein wesentlicher Bestandteil professioneller Arbeit. Schulbegleitung reflektiert regelmäßig, was gut lief, was schwierig war und was verändert werden kann. Supervision bietet Raum für Entlastung, Perspektivwechsel und professionelle Weiterentwicklung.</p>
+      <div class="fb-merksatz">Reflexion schützt vor Überforderung, Grenzverlust und Verbrüderung.</div>
+
+      <h3 class="fb-h3">9.4 Einarbeitung neuer Schulbegleitungen</h3>
+      <p class="fb-p">Neue Schulbegleitungen brauchen eine klare, strukturierte Einarbeitung. Dazu gehören:</p>
+      <ul class="fb-liste">
+        <li>Rollenklärung</li>
+        <li>rechtliche Grundlagen</li>
+        <li>Krisenkompetenz</li>
+        <li>Dokumentation</li>
+        <li>Kommunikation</li>
+        <li>Selbstschutz</li>
+      </ul>
+      <p class="fb-p">Eine gute Einarbeitung verhindert Fehler, stärkt Sicherheit und schafft Qualität von Anfang an.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-tk.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Qualität ist kein Zustand, den man erreicht — sondern eine Gewohnheit, die man pflegt.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-10">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 10</span>
+      <h2>Das Kind-Modul</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: KD-01 bis KD-14 · Kind-Karten · <a href="KD-01.html" class="fb-karte-link">↗ KD-01</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Kinder brauchen Orientierung, Sicherheit und klare Strukturen, um im Schulalltag bestehen zu können. Viele Kinder profitieren von visuellen Hilfen, weil sie Informationen schneller erfassen, besser behalten und leichter anwenden können, wenn sie sichtbar sind. Das Kind-Modul stellt Werkzeuge bereit, die Schulbegleitung nutzen kann, um den Alltag für das Kind überschaubar und vorhersehbar zu machen.</p>
+
+      <p class="fb-p">Diese Karten sind kein „Hilfsmittel für schwache Kinder", sondern professionelle Werkzeuge, die Stress reduzieren, Selbstständigkeit fördern und Krisen vorbeugen. Sie geben dem Kind die Möglichkeit, aktiv mitzusteuern, statt passiv zu reagieren.</p>
+
+      <h3 class="fb-h3">10.1 Warum Kinder Karten brauchen</h3>
+      <p class="fb-p">Der Schulalltag ist komplex. Viele Kinder verlieren den Überblick, bevor sie überhaupt beginnen können. Visuelle Karten schaffen Klarheit. Sie zeigen dem Kind, was gerade wichtig ist, was als Nächstes kommt und welche Möglichkeiten es hat, sich zu regulieren.</p>
+      <p class="fb-p">Karten entlasten das Kind, weil sie Informationen sichtbar machen. Sie entlasten die Schulbegleitung, weil sie nicht alles ständig erklären muss. Und sie entlasten die Lehrkraft, weil das Kind selbstständiger wird.</p>
+      <div class="fb-merksatz">Karten sind ein Werkzeug der Selbstwirksamkeit: Das Kind lernt, dass es Einfluss auf seinen Alltag hat.</div>
+
+      <h3 class="fb-h3">10.2 Wichtige Karten im Überblick</h3>
+      <div class="fb-kindkarten-grid">
+        <div class="fb-kindkarte"><b>Barometer</b><p>Zeigt dem Kind, wie es sich fühlt und was es braucht. Hilft, Überforderung früh zu erkennen und zu benennen.</p></div>
+        <div class="fb-kindkarte"><b>Joker</b><p>Ein Signal für „Ich brauche eine Pause". Ermöglicht dem Kind, sich zurückzuziehen, bevor eine Krise entsteht.</p></div>
+        <div class="fb-kindkarte"><b>Atem-Pause</b><p>Eine einfache, visuelle Anleitung für kurze Atemübungen. Hilft, Stress abzubauen und den Körper zu beruhigen.</p></div>
+        <div class="fb-kindkarte"><b>Tagesstruktur</b><p>Zeigt, was heute passiert. Schafft Orientierung und reduziert Unsicherheit.</p></div>
+        <div class="fb-kindkarte"><b>Rechtekarte</b><p>Erinnert das Kind daran, dass es Pausen machen darf, Hilfe holen darf und nicht alles alleine schaffen muss.</p></div>
+        <div class="fb-kindkarte"><b>Unterstützungsprofil</b><p>Zeigt, wie das Kind am besten lernen kann: kurze Schritte, visuelle Hilfen, Bewegungspausen, klare Sprache.</p></div>
+        <div class="fb-kindkarte"><b>Reizfilterkarte</b><p>Zeigt, welche Reize das Kind besonders belasten und welche Strategien helfen.</p></div>
+        <div class="fb-kindkarte"><b>Rückzugskarte</b><p>Ein Signal dafür, dass das Kind einen sicheren Ort braucht, um sich zu regulieren.</p></div>
+      </div>
+
+      <h3 class="fb-h3">10.3 Einführung der Karten</h3>
+      <p class="fb-p">Karten werden nicht einfach „gegeben". Sie werden eingeführt. Das bedeutet, dass Schulbegleitung erklärt, wofür die Karte da ist, wie sie funktioniert und warum sie hilfreich ist. Kinder akzeptieren Karten leichter, wenn sie sie als Werkzeug und nicht als Kontrolle erleben.</p>
+      <p class="fb-p">Die Einführung erfolgt ruhig, spielerisch und ohne Druck. Schulbegleitung zeigt, wie die Karte funktioniert, und übt gemeinsam mit dem Kind. Je vertrauter die Karte ist, desto eher nutzt das Kind sie in schwierigen Situationen.</p>
+
+      <h3 class="fb-h3">10.4 Umgang mit Widerstand</h3>
+      <p class="fb-p">Manche Kinder lehnen Karten zunächst ab. Das ist normal. Widerstand bedeutet nicht, dass die Karte ungeeignet ist, sondern dass das Kind Zeit braucht. Schulbegleitung bleibt ruhig, bietet Alternativen an und führt die Karte schrittweise ein.</p>
+      <div class="fb-warnung">Wichtig: Karten werden niemals als Druckmittel eingesetzt. Sie sind ein Angebot — kein Zwang.</div>
+
+      <div class="fb-brainy">
+        <img src="brainy-m2.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Eine Karte, die das Kind ablehnt, ist nicht gescheitert — sie braucht nur noch etwas Zeit.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-11">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 11</span>
+      <h2>Das Eltern-Modul</h2>
+      <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: EL-01 bis EL-07 · Eltern-Karten · <a href="EL-02.html" class="fb-karte-link">↗ EL-02</a> · <a href="EL-05.html" class="fb-karte-link">↗ EL-05</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Eltern sind ein wichtiger Teil des Systems. Sie kennen ihr Kind, seine Geschichte, seine Stärken und seine Herausforderungen. Gleichzeitig erleben sie den Schulalltag nicht direkt. Das Eltern-Modul schafft Transparenz und stärkt die Zusammenarbeit.</p>
+
+      <h3 class="fb-h3">11.1 Ziel des Eltern-Moduls</h3>
+      <p class="fb-p">Das Eltern-Modul hilft Eltern zu verstehen, was Schulbegleitung ist, wie sie arbeitet und welche Rolle sie im Alltag spielt. Es schafft Klarheit über Aufgaben, Grenzen und Möglichkeiten. Eltern sollen wissen, was sie erwarten können — und was nicht.</p>
+      <div class="fb-merksatz">Ein klarer Rahmen verhindert Missverständnisse und schützt die Beziehung zwischen Eltern, Schule und Schulbegleitung.</div>
+
+      <h3 class="fb-h3">11.2 Wichtige Karten für Eltern</h3>
+      <div class="fb-kindkarten-grid">
+        <div class="fb-kindkarte"><b>Aufgabenkarte</b><p>Zeigt, was Schulbegleitung tut — und was nicht. Das verhindert falsche Erwartungen.</p></div>
+        <div class="fb-kindkarte"><b>Kommunikationskarte</b><p>Erklärt, wie und wann Schulbegleitung mit Eltern kommuniziert.</p></div>
+        <div class="fb-kindkarte"><b>Rechtekarte</b><p>Zeigt, welche Rechte Eltern haben — und welche Grenzen gelten.</p></div>
+        <div class="fb-kindkarte"><b>Ansprechpartnerkarte</b><p>Zeigt, wer für welche Fragen zuständig ist: Lehrkraft, Schulbegleitung, Einsatzleitung, Schulleitung.</p></div>
+      </div>
+
+      <h3 class="fb-h3">11.3 Einführung des Eltern-Moduls</h3>
+      <p class="fb-p">Das Eltern-Modul wird zu Beginn der Zusammenarbeit vorgestellt. Schulbegleitung erklärt ruhig und klar, wie sie arbeitet und welche Strukturen gelten. Eltern sollen sich sicher fühlen, ohne dass Schulbegleitung zur „Familienhilfe" wird.</p>
+      <div class="fb-merksatz">Eine klare Einführung verhindert spätere Konflikte.</div>
+
+      <h3 class="fb-h3">11.4 Grenzen der Elternarbeit</h3>
+      <p class="fb-p">Elternarbeit endet dort, wo private Themen beginnen. Schulbegleitung nimmt keine Rolle ein, die über den schulischen Kontext hinausgeht. Sie trifft keine Entscheidungen über Erziehung, Diagnostik oder Therapie. Sie bleibt neutral und verweist bei Unsicherheiten an die Einsatzleitung.</p>
+
+      <div class="fb-brainy">
+        <img src="brainy-m4.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Klarheit von Anfang an erspart spätere Missverständnisse — bei Eltern genauso wie überall sonst.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="fb-kapitel" id="kap-12">
+    <div class="fb-kapitel-header">
+      <span class="fb-kapitel-badge">Kapitel 12</span>
+      <h2>Glossar und Anhang</h2>
+      <div class="fb-kapitel-meta">Ausführliches Glossar: <a href="KLARTEXT_Glossar.html" class="fb-karte-link">↗ 64 Fachbegriffe A–Ü</a></div>
+    </div>
+    <div class="fb-kapitel-body">
+
+      <p class="fb-p">Das Glossar bietet kurze, verständliche Erklärungen zu wichtigen Begriffen der Schulbegleitung. Es dient als Nachschlagewerk für Schulbegleitungen, Lehrkräfte und Eltern.</p>
+
+      <h3 class="fb-h3">12.1 Glossar</h3>
+      <div class="fb-glossar">
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Teilhabe</div><div class="fb-glossar-def">Die Möglichkeit, am schulischen Leben aktiv teilzunehmen.</div></div>
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Regulation</div><div class="fb-glossar-def">Die Fähigkeit, Gefühle, Verhalten und Aufmerksamkeit zu steuern.</div></div>
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Reizüberflutung</div><div class="fb-glossar-def">Ein Zustand, in dem zu viele Eindrücke gleichzeitig auf das Kind einwirken.</div></div>
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Trigger</div><div class="fb-glossar-def">Ein Auslöser, der Stress oder Überforderung verursacht.</div></div>
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Deeskalation</div><div class="fb-glossar-def">Maßnahmen, die eine Krise entschärfen.</div></div>
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Neutralität</div><div class="fb-glossar-def">Die Haltung, keine Partei zu ergreifen und keine Allianzen zu bilden.</div></div>
+        <div class="fb-glossar-item"><div class="fb-glossar-begriff">Rollenklärung</div><div class="fb-glossar-def">Das Bewusstsein darüber, was die eigene Aufgabe ist — und was nicht.</div></div>
+      </div>
+
+      <h3 class="fb-h3">12.2 Anhang</h3>
+      <p class="fb-p">Der Anhang enthält Vorlagen, Checklisten und Leitfäden, die Schulbegleitung im Alltag unterstützen. Dazu gehören:</p>
+      <ul class="fb-liste">
+        <li>Gesprächsleitfäden</li>
+        <li>Dokumentationsvorlagen</li>
+        <li>Krisenabläufe</li>
+        <li>Reflexionskarten</li>
+        <li>Einführungskarten für Kinder und Eltern</li>
+      </ul>
+      <div class="fb-merksatz">Der Anhang ist ein praktisches Werkzeug, das Schulbegleitung im Alltag entlastet und Orientierung gibt.</div>
+
+      <div class="fb-brainy">
+        <img src="brainy.png" alt="Brainy">
+        <div><strong>Brainy erinnert:</strong> Du musst nicht alle Begriffe auswendig kennen — wichtig ist, dass du weißt, wo du nachschauen kannst.</div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

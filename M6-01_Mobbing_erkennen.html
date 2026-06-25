@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – M6 · Karte 01 · Mobbing erkennen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root {
+    --m3:        #D81B60;
+    --m3-dark:   #8C0A38;
+    --m3-light:  #FDE8F1;
+    --m3-border: #F4A0C8;
+  }
+  /* M6-spezifische Elemente */
+  .merkmal-box { background:var(--m3-light); border-radius:var(--r-md); padding:.9rem 1rem; border:1px solid var(--m3-border); }
+  .merkmal-box-titel { font-size:.72rem; font-weight:700; color:var(--m3); text-transform:uppercase; letter-spacing:.3px; margin-bottom:.6rem; }
+  .schritt-m6 { display:flex; gap:.5rem; font-size:.88rem; color:var(--kt-muted); line-height:1.45; margin-bottom:.5rem; }
+  .schritt-num { font-weight:700; color:var(--m3); min-width:20px; flex-shrink:0; }
+  .signale-sub { font-size:.68rem; font-weight:700; color:#aaa; text-transform:uppercase; letter-spacing:.4px; margin-bottom:.5rem; margin-top:.75rem; }
+  .signal-row { display:flex; gap:.5rem; font-size:.88rem; color:var(--kt-muted); line-height:1.45; margin-bottom:.3rem; }
+  .signal-mark { color:var(--m3); font-weight:700; flex-shrink:0; }
+  .do-list, .dont-list { display:flex; flex-direction:column; gap:.3rem; }
+  .do-row, .dont-row { display:flex; gap:.5rem; font-size:.88rem; line-height:1.45; }
+  .do-row { color:var(--kt-muted); }
+  .dont-row { color:#C0392B; }
+  .ok-mark { color:#2D6A4F; font-weight:700; flex-shrink:0; }
+  .no-mark { color:#C0392B; font-weight:700; flex-shrink:0; }
+  .meldekette { display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; margin-top:.75rem; }
+  .meld-step { border:1.5px solid var(--m3); border-radius:20px; padding:.2rem .7rem; font-size:.78rem; font-weight:700; color:var(--m3); background:var(--m3-light); }
+  .meld-arrow { color:var(--m3); font-size:.9rem; font-weight:700; }
+  .cyber-card { background:var(--m3-light); border-radius:var(--r-md); padding:.75rem 1rem; border:1px solid var(--m3-border); margin-bottom:.5rem; }
+  .cyber-card-titel { font-size:.78rem; font-weight:700; color:var(--m3); margin-bottom:.3rem; }
+  .cyber-card-text { font-size:.88rem; color:var(--kt-muted); line-height:1.5; }
+  .merksatz-banner { background:var(--m3); padding:.9rem 1.5rem; }
+  .merksatz-banner p { font-size:.93rem; font-weight:700; color:#fff; line-height:1.3; font-style:italic; }
+  .quelle { font-size:.72rem; color:#aaa; font-style:italic; margin-top:.75rem; }
+  .two-col-m6 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media(max-width:500px){ .two-col-m6{ grid-template-columns:1fr; } }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurück">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT – Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT · Modul 6 · Krise &amp; Mobbing</div>
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">M-06</div>
+        <div class="karte-nr">Karte 01 · Grundlage</div>
+        <h1 class="karte-titel" id="karte-titel">Mobbing erkennen</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">🔍</div>
+    </div>
+    <div class="karte-lead">Mobbing ist kein Konflikt. Mobbing ist ein systematischer Prozess — wiederholt, zielgerichtet, mit Machtungleichgewicht.</div>
+    <div class="karte-body">
+      <div class="ab">
+        <div class="ab-titel">Was ist Mobbing?</div>
+        <div class="merkmal-box">
+          <div class="merkmal-box-titel">Die 3 Merkmale von Mobbing</div>
+          <div class="schritt-m6"><span class="schritt-num">1.</span><div><strong>Wiederholung</strong> — nicht einmalig, sondern immer wieder</div></div>
+          <div class="schritt-m6"><span class="schritt-num">2.</span><div><strong>Machtungleichgewicht</strong> — das Kind kann sich nicht selbst schützen</div></div>
+          <div class="schritt-m6"><span class="schritt-num">3.</span><div><strong>Absicht</strong> — gezielt gegen eine Person gerichtet</div></div>
+        </div>
+      </div>
+      <div class="box box-gruen" role="note">
+        <div class="box-label">Kein Mobbing ist</div>
+        Ein einmaliger Streit · ein Konflikt unter Gleichgestellten · gegenseitige Auseinandersetzungen. Diese brauchen andere Interventionen.
+      </div>
+      <div class="ab">
+        <div class="ab-titel">Woran du es erkennst</div>
+        <div class="signale-sub">Beim betroffenen Kind</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Rückzug · plötzliches Schweigen</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Schulvermeidung · Bauchschmerzen</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Alleinsein in der Pause</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Verlust von Dingen · Leistungsabfall</div>
+        <div class="signale-sub" style="margin-top:.75rem">In der Gruppe</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Tuscheln, Lachen auf Kosten eines Kindes</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Ausschluss aus Spielen und Gruppen</div>
+        <div class="signal-row"><span class="signal-mark">!</span>Schweigen, wenn das Kind den Raum betritt</div>
+      </div>
+      <p class="quelle">Olweus, D. (1993). Bullying at School. Blackwell. · Schäfer, M. (2010). Bullying im Schulkontext. Beltz. · Rose, C. A. et al. (2011). Exceptional Children.</p>
+      <div class="box box-gruen" role="note" style="margin-top:.75rem;"><div class="box-label">📥 Materialien zum Download</div><a href="M6_DL_Mini-Checkliste_Erkennen.html" style="display:block;color:var(--m3);font-weight:700;margin:.2rem 0;">→ Mini-Checkliste „Mobbing erkennen"</a><a href="M6_Geschichtenkarten_Galerie.html" style="display:block;color:var(--m3);font-weight:700;margin:.2rem 0;">→ Brainy-Geschichtenkarten (30 Karten)</a></div>
+
+      <div class="brainy-block">
+        <img src="brainy-m6.png" alt="Brainy">
+        <div class="brainy-block-text">
+          <strong>Brainy erinnert:</strong>
+          Mobbing erkennt man an Mustern — nicht an einzelnen Momenten. Regelmäßig beobachten und dokumentieren.
+        </div>
+      </div>
+    </div>
+    <div class="merksatz-banner"><p>Mobbing erkennt man an Mustern — nicht an Momenten.</p></div>
+    
+<nav class="karte-nav"><span></span><span class="spacer"></span><a class="nav-next" href="M6-02_Was_tue_ich_jetzt.html">02 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
+<div class="karte-footer">
+      <span class="footer-links">Modul 6 · Karte 01 · → M5 · Beobachtungsbögen</span>
+      <span class="footer-nr">01 / 15</span>
+    </div>
+  </article>
+</main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

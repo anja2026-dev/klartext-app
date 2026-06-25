@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Moderationsleitfaden Workshop 2 Tage</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:860px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:#1B3A4B;border-radius:14px;padding:1.75rem 2rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.35rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:.75rem;}
+.hero-stats{display:flex;gap:.5rem;flex-wrap:wrap;}
+.h-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:.35rem .75rem;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600;}
+
+/* ABSCHNITTE */
+.abschnitt{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;overflow:hidden;margin-bottom:1rem;}
+.abschnitt-header{display:flex;align-items:center;gap:.75rem;padding:.85rem 1.1rem;background:#1B3A4B;cursor:pointer;}
+.abschnitt-zeit{background:rgba(110,198,160,.2);color:#6EC6A0;border-radius:6px;padding:.25rem .6rem;font-size:.7rem;font-weight:700;white-space:nowrap;}
+.abschnitt-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;flex:1;}
+.abschnitt-sub{font-size:.72rem;color:rgba(255,255,255,.55);}
+.abschnitt-chev{color:rgba(255,255,255,.5);font-size:.75rem;transition:transform .2s;margin-left:auto;}
+.abschnitt.open .abschnitt-chev{transform:rotate(180deg);}
+.abschnitt-body{display:none;padding:1.1rem 1.25rem;}
+.abschnitt.open .abschnitt-body{display:block;}
+
+/* WÖRTLICHE REDE */
+.rede-block{background:#EAF5F0;border-left:4px solid #6EC6A0;border-radius:0 10px 10px 0;padding:.85rem 1.1rem;margin:.6rem 0;}
+.rede-label{font-size:.58rem;font-weight:700;color:#2E7D47;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;}
+.rede-text{font-size:.88rem;line-height:1.9;color:#1A2A1A;font-style:italic;}
+.rede-text strong{font-style:normal;color:#1B3A4B;}
+
+/* ANWEISUNG */
+.anweisung{background:#EAF0F4;border-left:4px solid #1B3A4B;border-radius:0 10px 10px 0;padding:.75rem 1rem;margin:.5rem 0;}
+.anweisung-label{font-size:.58rem;font-weight:700;color:#1B3A4B;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.3rem;}
+.anweisung-text{font-size:.83rem;line-height:1.75;color:#1A2A3A;}
+
+/* TRAINER-TIPP */
+.tipp{background:#F3EDF3;border-left:4px solid #6B3F6B;border-radius:0 10px 10px 0;padding:.7rem 1rem;margin:.5rem 0;}
+.tipp-label{font-size:.58rem;font-weight:700;color:#4A148C;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.3rem;}
+.tipp-text{font-size:.82rem;line-height:1.75;color:#2A0A3A;}
+
+/* PAUSE */
+.pause-bar{background:#FBF4E8;border:1.5px dashed #C47A00;border-radius:8px;padding:.55rem 1rem;margin:.5rem 0;font-size:.8rem;color:#7A5318;font-weight:600;text-align:center;}
+
+/* MATERIAL */
+.material-box{background:#FAFAFA;border:1.5px solid #DDD8CE;border-radius:8px;padding:.75rem 1rem;margin:.5rem 0;}
+.material-titel{font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.45rem;}
+.material-grid{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;}
+.material-item{font-size:.79rem;color:#3A3A4A;padding:.2rem 0;}
+</style>
+<style>
+.tag-trennlinie{background:#6B3F6B;border-radius:10px;padding:.75rem 1.25rem;margin:1.5rem 0 .75rem;display:flex;align-items:center;gap:.75rem;}
+.tag-trennlinie .tag-nr{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;}
+.tag-trennlinie .tag-info .tag-titel{font-size:.95rem;font-weight:700;color:#fff;}
+.tag-trennlinie .tag-info .tag-sub{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:.1rem;}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Moderationsleitfaden · Workshop 2 Tage</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">Moderationsleitfaden · Workshop 2 Tage</div>
+  <div class="hero-sub">Vollständiger Leitfaden mit wörtlicher Rede für alle Blöcke des 2-Tages-Workshops. Tag 1 legt das Fundament — Tag 2 geht in die Tiefe. Mit Übernacht-Aufgabe und Zertifikat-Übergabe.</div>
+  <div class="hero-stats">
+    <span class="h-stat">⏱️ 2 × 6 Stunden</span>
+    <span class="h-stat">12 Blöcke</span>
+    <span class="h-stat">👥 4–15 TN</span>
+    <span class="h-stat">🎓 Zertifikat</span>
+  </div>
+</div>
+
+<!-- ══ TAG 1 ══════════════════════════════════════════════ -->
+<div class="tag-trennlinie">
+  <div class="tag-nr">Tag 1</div>
+  <div class="tag-info">
+    <div class="tag-titel">Grundlagen & Orientierung</div>
+    <div class="tag-sub">09:00 – 16:00 · System · Rolle · Barometer & kLAR</div>
+  </div>
+</div>
+
+<!-- T1 B1: EINSTIEG -->
+<div class="abschnitt open" id="t1b1">
+  <div class="abschnitt-header" onclick="toggleA('t1b1')">
+    <span class="abschnitt-zeit">09:00 – 09:45</span>
+    <span class="abschnitt-titel">T1 · Block 1 · Ankommen & Rahmen setzen</span>
+    <span class="abschnitt-sub">45 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="anweisung">
+      <div class="anweisung-label">Vorbereitung</div>
+      <div class="anweisung-text">Raum vorbereitet. Namensschilder auf Tischen. Handout liegt. Musik läuft leise beim Reinkommen — stoppt wenn du anfängst. Du stehst — nicht sitzt.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Begrüßung</div>
+      <div class="rede-text">
+        Herzlich willkommen zu diesen zwei Tagen.<br><br>
+        Zwei Tage — das ist mehr als ein Kurstag. Das ist eine Entscheidung. Ihr habt Zeit investiert — ich nehme das ernst.<br><br>
+        Mein Name ist <strong>[Name]</strong>. Ich bin Schulbegleiterin, systemische Beraterin, und ich habe KLARTEXT entwickelt — weil ich selbst lange nicht wusste was ich tue wenn ein Kind eskaliert, wenn die Lehrerin mich anschaut, wenn die Eltern unzufrieden sind.<br><br>
+        KLARTEXT ist meine Antwort auf diese Momente. In den nächsten zwei Tagen zeige ich euch wie es funktioniert — und noch wichtiger: wie ihr es für euch nutzt.<br><br>
+        Bevor wir anfangen: Ich möchte wissen mit wem ich es zu tun habe. Stellt euch kurz vor — Name, wie lange als INGRA, und dann: <strong>Was hat euch hierher gebracht? Was ist der Moment aus eurer Praxis der euch antreibt besser zu werden?</strong>
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Vorstellungsrunde — 20–25 Minuten</div>
+      <div class="anweisung-text">Pro Person 2–3 Minuten. Wirklich zuhören. Notiere dir konkrete Situationen — du wirst sie heute und morgen aufgreifen. Das zeigt der Gruppe dass du zugehört hast.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — nach Vorstellungsrunde</div>
+      <div class="rede-text">
+        Danke euch. Was ich gerade gehört habe — das ist keine Sammlung von Problemen. Das ist Erfahrung. Kompetenz. Einsatz.<br><br>
+        Ihr macht einen der schwersten Jobs im Bildungssystem. Oft allein. Oft ohne Anerkennung. Oft ohne Werkzeuge.<br><br>
+        Genau das ändert sich heute.<br><br>
+        Hier ist unser Plan für die zwei Tage. [Ablauf zeigen] Fragen?
+      </div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — KLARTEXT-Philosophie</div>
+      <div class="rede-text">
+        Bevor wir ins System gehen — drei Worte die ihr über diesem ganzen Workshop stehen haben sollt:<br><br>
+        <strong>Klar.</strong> Ihr wisst was eure Aufgabe ist. Keine Graubereiche, keine schlechten Gewissen weil ihr etwas nicht tut das nicht euer Job ist.<br><br>
+        <strong>Warm.</strong> Ihr seid trotzdem keine Maschinen. Beziehung ist das Fundament — nicht Technik.<br><br>
+        <strong>Menschlich.</strong> Fehler passieren. Tage laufen schief. Das ist in Ordnung. Ihr seid auch nur Menschen.<br><br>
+        Klar. Warm. Menschlich. Das ist KLARTEXT.
+      </div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Bei einem 2-Tages-Workshop ist der Einstieg entscheidender als beim 1-Tages-Workshop. Die Gruppe wird zwei Tage zusammen sein — die Verbindung die hier entsteht trägt den ganzen Workshop.</div>
+    </div>
+  </div>
+</div>
+
+<!-- T1 B2: SYSTEM -->
+<div class="abschnitt" id="t1b2">
+  <div class="abschnitt-header" onclick="toggleA('t1b2')">
+    <span class="abschnitt-zeit">09:45 – 11:00</span>
+    <span class="abschnitt-titel">T1 · Block 2 · Das KLARTEXT-System</span>
+    <span class="abschnitt-sub">75 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Einstieg System</div>
+      <div class="rede-text">
+        So — jetzt öffnen wir gemeinsam KLARTEXT. Zugänge liegen vor euch. Bereich INGRA, Passwort eingeben. Ihr habt eine Minute.<br><br>
+        [Warten bis alle drin sind]<br><br>
+        Was ihr seht ist das Dashboard. Nehmt euch einen Moment — schaut einfach drauf. Noch nichts anklicken.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">30 Sekunden Stille</div>
+      <div class="anweisung-text">Lass das Dashboard wirken. Dann Live-Demo starten.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Dashboard erklären</div>
+      <div class="rede-text">
+        Was ihr seht — von oben nach unten.<br><br>
+        Der <strong>goldene Balken</strong>: "Was tue ich jetzt?" — das ist euer Notfallknopf. Immer erreichbar. Immer einen Klick entfernt. Wir kommen gleich dazu.<br><br>
+        Die <strong>Schnell-Buttons</strong>: Module, Feuerwehr, Barometer INGRA, Barometer Kind, Downloads, Glossar, Tools. Alles was ihr regelmäßig braucht — einen Klick entfernt.<br><br>
+        Die <strong>Suche</strong>: Tippt einfach ein was ihr sucht. Das System findet es.<br><br>
+        Die <strong>Module</strong>: Neun Themen, über 200 Karten. M0 bis M8, plus Spezialmodule. Heute und morgen lernt ihr die wichtigsten kennen — den Rest erkundet ihr im Lernpfad selbst.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Freie Exploration — 20 Minuten</div>
+      <div class="anweisung-text">Mehr Zeit als im 1-Tages-Workshop. Danach: Partner-Austausch (5 Min) — "Zeig deiner Partnerin deine 3 wichtigsten Entdeckungen." Dann Plenum: Was hat überrascht?</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — nach Exploration</div>
+      <div class="rede-text">
+        Was habt ihr entdeckt? Wer möchte teilen?<br><br>
+        [3–4 Entdeckungen sammeln, kurz kommentieren]<br><br>
+        Gut. Was ich noch nicht gezeigt habe — und was wichtig ist:<br><br>
+        KLARTEXT ist nicht perfekt. Es wächst. Wenn ihr etwas vermisst — sagt es mir. Euer Feedback ist das Wertvollste was ich haben kann.<br><br>
+        Und: Das System ist nicht für Experten gemacht. Es ist für den Moment um 8:15 Uhr wo alles schiefläuft und ihr keine Zeit habt nachzudenken. Genau dann braucht ihr KLARTEXT.
+      </div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Bei 2 Tagen kannst du dir mehr Explorationszeit leisten — und mehr in die Tiefe gehen. Der Zeitdruck ist geringer. Nutze das.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pause-bar">☕ Pause 11:00 – 11:15 Uhr</div>
+
+<!-- T1 B3: ROLLE -->
+<div class="abschnitt" id="t1b3">
+  <div class="abschnitt-header" onclick="toggleA('t1b3')">
+    <span class="abschnitt-zeit">11:15 – 12:30</span>
+    <span class="abschnitt-titel">T1 · Block 3 · Meine Rolle — tief und klar</span>
+    <span class="abschnitt-sub">75 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Rolleneinstieg</div>
+      <div class="rede-text">
+        Rollenklarheit. Das klingt trocken. Es ist das Wichtigste was ich euch heute beibringen kann.<br><br>
+        Ich sage euch warum: Fast jeder Burnout in der Schulbegleitung den ich kenne — und ich kenne viele — hat eine Ursache. Keine klare Rolle. Zu viel übernommen. Zu wenig Nein gesagt. Nicht weil die Menschen schwach waren — sondern weil niemand ihnen je klar gesagt hat was ihr Job ist und was nicht.<br><br>
+        Das ändert sich jetzt. Öffnet M1-01 — das Rollenprofil INGRA. Zwei Minuten lesen — in Stille.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Lesen — 2 Minuten</div>
+      <div class="anweisung-text">Wirklich still bleiben. Dann: "Was habt ihr gelesen das ihr noch nie so klar gesagt bekommen habt?"</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Rollenspiel Elterngespräch</div>
+      <div class="rede-text">
+        Ich möchte etwas ausprobieren. Ich brauche eine Freiwillige — wer traut sich?<br><br>
+        Ich spiele jetzt eine Mutter. Sie ist unzufrieden. Sie denkt ihr Kind bekommt nicht genug Unterstützung. Sie wendet sich an euch — die INGRA.<br><br>
+        Eure Aufgabe: Reagiert so wie ihr normalerweise reagieren würdet. Nicht perfekt — einfach natürlich. Bereit?
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Rollenspiel — 5–8 Minuten</div>
+      <div class="anweisung-text">Spiele die Mutter realistisch aber fair — nicht gemein. Danach Debrief mit der ganzen Gruppe: Was habt ihr beobachtet? Was war INGRA-Aufgabe, was nicht?</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Galeriegang</div>
+      <div class="rede-text">
+        Jetzt machen wir etwas Praktisches. Ich gebe euch zwei Karten — eine grüne, eine rote.<br><br>
+        Auf die grüne: Schreibt was EURE Aufgabe ist. Auf die rote: Was NICHT eure Aufgabe ist.<br><br>
+        Hängt sie dann an die Wand. Ihr habt fünf Minuten.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Galeriegang — 15 Minuten</div>
+      <div class="anweisung-text">Alle Karten hängen. Gruppe liest in Stille. Dann gemeinsam: Was fällt auf? Wo sind die meisten roten Karten? Was steckt dahinter?</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Rechtlicher Rahmen</div>
+      <div class="rede-text">
+        Noch kurz der rechtliche Rahmen — nicht weil Recht interessant ist, sondern weil es euch schützt.<br><br>
+        Drei Paragraphen die ihr kennen sollt:<br><br>
+        <strong>§ 35a SGB VIII</strong> — das ist eure Rechtsgrundlage wenn das Kind seelisch beeinträchtigt ist. Das ist das "Warum" eurer Stelle.<br><br>
+        <strong>§ 8a SGB VIII</strong> — der Schutzauftrag. Wenn ihr etwas wahrnehmt das dem Kind schaden könnte — ihr meldet es der TK. Nicht dem Jugendamt. Nicht den Eltern. Der TK. Sofort.<br><br>
+        <strong>Schweigepflicht</strong> — gilt. Außer bei Kindeswohlgefährdung. Dann bricht sie auf.
+      </div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Den rechtlichen Teil kurz halten — er ist wichtig, aber nicht emotional. Danach kommt die Mittagspause — das ist gut. Die Gruppe kann es setzen lassen.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pause-bar">🍽️ Mittagspause 12:30 – 13:30 Uhr</div>
+
+<!-- T1 B4: BAROMETER -->
+<div class="abschnitt" id="t1b4">
+  <div class="abschnitt-header" onclick="toggleA('t1b4')">
+    <span class="abschnitt-zeit">13:30 – 15:00</span>
+    <span class="abschnitt-titel">T1 · Block 4 · Barometer & kLAR vertieft</span>
+    <span class="abschnitt-sub">90 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Barometer einführen</div>
+      <div class="rede-text">
+        Willkommen zurück — ich hoffe die Mittagspause war gut.<br><br>
+        Jetzt kommen wir zum emotionalsten Teil des Workshops. Nicht dem schwersten — dem emotionalsten.<br><br>
+        Öffnet das Barometer — INGRA oder Kind, ihr wählt. Und dann — bevor ich irgendetwas erkläre — schätzt euch selbst ein. Wie seid ihr gerade? Welche Farbe?
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Barometer-Runde</div>
+      <div class="anweisung-text">Kurz reihum — jede Person sagt ihre Farbe. Kein Kommentar nötig. Dann: "Gut. Das ist der Ausgangspunkt." Dann Barometer erklären.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — 3 Fallbeispiele</div>
+      <div class="rede-text">
+        Ich lese euch drei Situationen vor. Ihr sagt mir die Farbe — und dann: was tut ihr?<br><br>
+        <strong>Situation 1:</strong> Das Kind sitzt. Es macht nichts. Es schaut aus dem Fenster. Es antwortet wenn es angesprochen wird — aber es initiiert nichts. Es ist... weg. Irgendwie abwesend. Welche Farbe?<br><br>
+        [Antworten sammeln — dann Auflösung: Grau oder Gelb — das ist die schwierigste Farbe weil sie am unauffälligsten ist]<br><br>
+        <strong>Situation 2:</strong> Das Kind weint. Nicht laut — leise. Es zieht sich in die Ecke zurück. Es lässt sich nicht ansprechen. Welche Farbe?<br><br>
+        [Orange bis Rot]<br><br>
+        <strong>Situation 3:</strong> Das Kind springt auf. Es wirft das Heft. Es schreit. Die Klasse schaut. Die Lehrerin schaut euch an. Welche Farbe — und was tut ihr in den nächsten 30 Sekunden?<br><br>
+        [Rot — kLAR]
+      </div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — kLAR Rollenspiel einleiten</div>
+      <div class="rede-text">
+        Jetzt spielen wir die dritte Situation durch. Ich brauche Dreiergruppen — Kind, INGRA, Beobachterin.<br><br>
+        Die Beobachterin hat eine Aufgabe: Sie schaut was die INGRA macht — und notiert was gut war und was sie anders machen würde.<br><br>
+        Zehn Minuten — dann wechseln wir.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Rollenspiel Dreiergruppen — 20–25 Minuten</div>
+      <div class="anweisung-text">Alle gleichzeitig in Kleingruppen. Gehe rum, beobachte, greife nicht ein. Nach 10 Minuten rufst du zum Wechsel. Dann Debrief im Plenum.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Debrief nach Rollenspiel</div>
+      <div class="rede-text">
+        Gut — kommt zurück.<br><br>
+        Ich frage zuerst die, die das Kind gespielt haben: Wie war das? Was habt ihr gebraucht — und was habt ihr bekommen?<br><br>
+        [2–3 Antworten]<br><br>
+        Und jetzt die INGRAs: Was war leicht? Was war schwer?<br><br>
+        [2–3 Antworten]<br><br>
+        Was ich immer wieder höre: Das Schwerste ist das Schweigen. Nichts sagen. Nicht erklären. Nicht fragen. Einfach da sein.<br><br>
+        Das ist kLAR. Weniger ist mehr.
+      </div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Das Kind zu spielen ist oft die stärkste Erfahrung des ganzen Workshops. Wer das Kind gespielt hat versteht kLAR mit dem Körper — nicht nur mit dem Kopf. Debrief immer vollständig machen.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pause-bar">☕ Pause 15:00 – 15:15 Uhr</div>
+
+<!-- T1 B5: TAG 1 ABSCHLUSS -->
+<div class="abschnitt" id="t1b5">
+  <div class="abschnitt-header" onclick="toggleA('t1b5')">
+    <span class="abschnitt-zeit">15:15 – 16:00</span>
+    <span class="abschnitt-titel">T1 · Block 5 · Tag 1 Abschluss & Übernacht-Aufgabe</span>
+    <span class="abschnitt-sub">45 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Blitzlicht Tag 1</div>
+      <div class="rede-text">
+        Wir schließen Tag 1 ab.<br><br>
+        Ich möchte von jeder Person einen Satz hören — kurz, ehrlich:<br><br>
+        <strong>Was bleibt von heute?</strong> Ein Gedanke, ein Bild, ein Satz — was auch immer gerade da ist.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Blitzlichtrunde — alle reihum</div>
+      <div class="anweisung-text">Nicht kommentieren. Einfach zuhören. Am Ende kurz zusammenfassen: "Ich höre... und... und..." — 2–3 Punkte benennen.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Übernacht-Aufgabe</div>
+      <div class="rede-text">
+        Bevor ihr geht — ich habe eine Aufgabe für heute Abend. Keine große — aber eine wichtige.<br><br>
+        <strong>Öffnet heute Abend das Barometer INGRA.</strong> Schaut wie ihr gerade seid — nach diesem Tag, nach der Arbeit, nach dem Abendessen. Notiert eure Farbe und einen Satz dazu.<br><br>
+        Und dann: <strong>Denkt an eine Situation aus eurer Praxis die euch noch beschäftigt.</strong> Nicht lösen — nur beschreiben. Einen Satz. Morgen früh bringen wir das mit.
+      </div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Ausblick Tag 2</div>
+      <div class="rede-text">
+        Morgen geht es tiefer. Wir schauen uns an wie Kinder wirklich funktionieren — warum sie tun was sie tun. Wir reden über Kommunikation — mit Eltern, mit Lehrkräften, in schwierigen Momenten.<br><br>
+        Und am Ende: ihr geht mit einem Zertifikat nach Hause.<br><br>
+        Gute Nacht — und danke für den heutigen Tag. Passt auf euch auf.
+      </div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Die Übernacht-Aufgabe ist kein Test. Sie hält die Gruppe mit dem Thema verbunden und gibt dir morgen früh einen natürlichen Einstieg.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAG 2 ══════════════════════════════════════════════ -->
+<div class="tag-trennlinie" style="margin-top:2rem;">
+  <div class="tag-nr">Tag 2</div>
+  <div class="tag-info">
+    <div class="tag-titel">Vertiefung & Transfer</div>
+    <div class="tag-sub">09:00 – 16:00 · Kinder · Kommunikation · Selbstfürsorge · Zertifikat</div>
+  </div>
+</div>
+
+<!-- T2 B1: CHECK-IN -->
+<div class="abschnitt" id="t2b1">
+  <div class="abschnitt-header" onclick="toggleA('t2b1')">
+    <span class="abschnitt-zeit">09:00 – 09:30</span>
+    <span class="abschnitt-titel">T2 · Block 1 · Check-in & Übernacht-Aufgabe</span>
+    <span class="abschnitt-sub">30 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Guten Morgen</div>
+      <div class="rede-text">
+        Guten Morgen — schön dass ihr alle wieder da seid.<br><br>
+        Bevor wir anfangen: Wo seid ihr heute morgen? Barometer — kurze Runde. Eine Farbe pro Person.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Barometer-Runde — 5 Minuten</div>
+      <div class="anweisung-text">Kurz, schnell, reihum. Dann: Wer möchte die Übernacht-Aufgabe teilen?</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Übernacht-Aufgabe besprechen</div>
+      <div class="rede-text">
+        Wer möchte teilen — entweder eure Barometer-Erfahrung von gestern Abend, oder die Situation aus eurer Praxis die euch noch beschäftigt?
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">2–3 Berichte anhören</div>
+      <div class="anweisung-text">Kurz kommentieren — "Das kenne ich.", "Das ist genau das worum es geht." Dann Überleitung zu Block 2.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Brücke zu Tag 2</div>
+      <div class="rede-text">
+        Gut. Gestern haben wir das System kennengelernt, die Rolle geklärt, das Barometer verstanden.<br><br>
+        Heute gehen wir tiefer. Wir schauen uns an warum Kinder so sind wie sie sind. Wir üben Kommunikation in schwierigen Momenten. Und am Ende des Tages — ihr geht mit einem Zertifikat nach Hause.<br><br>
+        Los geht's.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- T2 B2: KINDER VERSTEHEN -->
+<div class="abschnitt" id="t2b2">
+  <div class="abschnitt-header" onclick="toggleA('t2b2')">
+    <span class="abschnitt-zeit">09:30 – 11:00</span>
+    <span class="abschnitt-titel">T2 · Block 2 · Kinder verstehen — Modul 2</span>
+    <span class="abschnitt-sub">90 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Neurobiologie Einstieg</div>
+      <div class="rede-text">
+        Warum tut ein Kind was es tut?<br><br>
+        Das ist die Frage hinter allem. Hinter jedem Wutausbruch, jeder Verweigerung, jedem Rückzug.<br><br>
+        Die kurze Antwort: Das Gehirn. Nicht der Wille. Nicht die schlechte Erziehung. Das Gehirn.<br><br>
+        Ich erkläre euch das in drei Minuten — wirklich kurz, dann machen wir Stationsarbeit.<br><br>
+        [Neurobiologie kurz erklären: Amygdala, Stressreaktion, Fenster der Toleranz]<br><br>
+        Der wichtigste Satz den ihr euch merken sollt:<br><br>
+        <strong>"Kann nicht anders" ist nicht dasselbe wie "Will nicht."</strong><br><br>
+        Ein Kind das eskaliert kann in diesem Moment nicht anders. Das Gehirn ist im Alarmmodus. Logik, Einsicht, Kooperation — alles offline. Erst wenn das Gehirn wieder sicher ist — dann kann das Kind wieder.<br><br>
+        Genau dafür ist kLAR. Sicherheit herstellen. Nicht überzeugen.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Stationsarbeit — 30 Minuten</div>
+      <div class="anweisung-text">4 Stationen: ADHS · Autismus · Trauma · FAS. Je 7 Minuten. An jeder Station: eine Karte aus M2 + 2 Leitfragen. "Was sehe ich im Schulalltag? Was braucht das Kind von mir?" Dann Zusammenführung im Plenum.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Fallarbeit einleiten</div>
+      <div class="rede-text">
+        Jetzt — und das ist freiwillig — möchte ich eine Person einladen ihr Kind zu beschreiben. Anonym, kein Name, kein Träger. Einfach das Kind.<br><br>
+        Und dann schauen wir gemeinsam: Was verstehen wir jetzt besser — nach Modul 2?
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Fallarbeit — 15 Minuten</div>
+      <div class="anweisung-text">Eine Freiwillige beschreibt ihr Kind. Gruppe hört zu. Dann: "Was sehen wir? Welches Konzept aus Modul 2 hilft uns das einzuordnen?" Behutsam — keine Diagnosen stellen, nur verstehen.</div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Die Fallarbeit ist der persönlichste Moment des Workshops. Schutzrahmen benennen: "Alles was hier gesagt wird bleibt hier." Und: Kein Druck — wer nicht teilen möchte, muss nicht.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pause-bar">☕ Pause 11:00 – 11:15 Uhr</div>
+
+<!-- T2 B3: KOMMUNIKATION -->
+<div class="abschnitt" id="t2b3">
+  <div class="abschnitt-header" onclick="toggleA('t2b3')">
+    <span class="abschnitt-zeit">11:15 – 12:30</span>
+    <span class="abschnitt-titel">T2 · Block 3 · Kommunikation — schwierige Gespräche</span>
+    <span class="abschnitt-sub">75 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Kommunikation Einstieg</div>
+      <div class="rede-text">
+        Kommunikation. Das klingt nach Theorie. Es ist Praxis.<br><br>
+        Drei Situationen die fast alle INGRAs kennen:<br><br>
+        Erstens: Eine Mutter ist unzufrieden. Sie denkt ihr Kind bekommt nicht genug.<br>
+        Zweitens: Eine Lehrerin ist genervt. Sie will dass ihr das Kind aus dem Unterricht nehmt.<br>
+        Drittens: Ihr selbst seid am Limit. Und müsst trotzdem professionell bleiben.<br><br>
+        Für alle drei gibt es einen Kern: <strong>Ich-Botschaften.</strong><br><br>
+        Nicht: "Sie verstehen das nicht." — Sondern: "Ich mache mir Sorgen dass..."<br>
+        Nicht: "Das Kind will nicht." — Sondern: "Ich beobachte dass..."<br>
+        Nicht: "Das ist nicht mein Job." — Sondern: "Meine Aufgabe ist... und dabei kann ich helfen."<br><br>
+        Kurze Übung: Ich sage einen Satz — ihr formuliert ihn als Ich-Botschaft um.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Übung Ich-Botschaften — 10 Minuten</div>
+      <div class="anweisung-text">3–4 Beispielsätze vorlesen. Gruppe formuliert um. Kurz kommentieren. Dann Rollenspiel.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Rollenspiel Elterngespräch</div>
+      <div class="rede-text">
+        Jetzt spielen wir ein schwieriges Elterngespräch durch. Ich spiele eine Mutter — sie ist nicht aggressiv, aber sie ist fordernd. Sie fragt warum ihr Kind heute wieder ausgerastet ist und was ihr dagegen tut.<br><br>
+        Wer traut sich?
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Rollenspiel — 8–10 Minuten</div>
+      <div class="anweisung-text">Freiwillige findet sich. Rollenspiel durchführen. Dann Debrief: Was hat geholfen? Was war die schwierigste Stelle? Was würdest du beim nächsten Mal anders sagen?</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Lehrkraft-Kommunikation</div>
+      <div class="rede-text">
+        Noch kurz zur Lehrkraft — das ist eine besondere Beziehung.<br><br>
+        Ihr seid im selben Raum. Ihr seht dieselben Dinge. Aber ihr habt verschiedene Rollen und verschiedene Verantwortungen.<br><br>
+        Drei Grundsätze die ihr euch merken sollt:<br><br>
+        <strong>Erstens:</strong> Regelmäßige kurze Absprachen — 5 Minuten vor oder nach dem Unterricht. Nicht wochenlang schweigen und dann einen langen Brief schreiben.<br><br>
+        <strong>Zweitens:</strong> Beobachtungen weitergeben — nicht Meinungen. "Ich habe beobachtet dass..." — nicht "Das Kind ist..."<br><br>
+        <strong>Drittens:</strong> Bei Konflikten: TK einbeziehen. Nicht zwischen euch austragen.
+      </div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Das Elterngespräch-Rollenspiel löst oft Erleichterung aus — "Endlich darf ich üben ohne dass es echte Konsequenzen hat." Das ist wertvoll. Genug Zeit lassen.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pause-bar">🍽️ Mittagspause 12:30 – 13:30 Uhr</div>
+
+<!-- T2 B4: SELBSTFÜRSORGE -->
+<div class="abschnitt" id="t2b4">
+  <div class="abschnitt-header" onclick="toggleA('t2b4')">
+    <span class="abschnitt-zeit">13:30 – 14:30</span>
+    <span class="abschnitt-titel">T2 · Block 4 · Selbstfürsorge & Lernpfad</span>
+    <span class="abschnitt-sub">60 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Selbstfürsorge Einstieg</div>
+      <div class="rede-text">
+        Willkommen zurück.<br><br>
+        Jetzt reden wir über euch. Nicht über eure Kinder. Über euch.<br><br>
+        Ich stelle euch eine Frage — und ich bitte euch ehrlich zu antworten, nur für euch:<br><br>
+        <strong>Wie viel gebt ihr — und was bekommt ihr zurück?</strong><br><br>
+        [Kurze stille Reflexionszeit — 1 Minute]<br><br>
+        Selbstfürsorge ist kein Luxus. Es ist keine Schwäche. Es ist Professionalität.<br><br>
+        Ein Feuerwehrmann geht nicht in ein brennendes Haus ohne Schutzausrüstung. Ihr geht täglich in emotionale Extremsituationen. Eure Schutzausrüstung ist eure eigene Regulation.<br><br>
+        Öffnet M8-01 — und lest kurz.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Lesen — 2 Minuten</div>
+      <div class="anweisung-text">Dann: "Was ist euer persönliches Warnsignal? Woran merkt ihr dass es zu viel wird?" Kurze Runde — jede Person einen Satz.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Peer-Paare</div>
+      <div class="rede-text">
+        Ich möchte dass ihr euch jetzt eine Lernpfad-Partnerin sucht — jemand mit dem ihr die nächsten Wochen in Kontakt bleibt.<br><br>
+        Keine formale Verpflichtung. Aber: Wer von euch weiß dass ihr allein manchmal den Lernpfad nicht weitermacht — der braucht eine Partnerin die nachfragt.<br><br>
+        Nehmt euch drei Minuten — findet eure Partnerin und tauscht Kontakt aus.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Peer-Paare bilden — 5 Minuten</div>
+      <div class="anweisung-text">Dann Lernpfad öffnen lassen. Woche 1 aufklicken. Erste Aufgabe anschauen. Reflexionsfeld — einen Satz schreiben.</div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Peer-Paare sind einer der wertvollsten Nebeneffekte des 2-Tages-Workshops. Sie entstehen nur wenn genug Verbindung da ist — deshalb ist Tag 1 so wichtig.</div>
+    </div>
+  </div>
+</div>
+
+<!-- T2 B5: PRAXIS-TRANSFER -->
+<div class="abschnitt" id="t2b5">
+  <div class="abschnitt-header" onclick="toggleA('t2b5')">
+    <span class="abschnitt-zeit">14:30 – 15:30</span>
+    <span class="abschnitt-titel">T2 · Block 5 · Praxis-Transfer & offene Fragen</span>
+    <span class="abschnitt-sub">60 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Praxis-Transfer einleiten</div>
+      <div class="rede-text">
+        Wir haben noch eine Stunde. Diese Stunde gehört euren Fragen — euren echten Fragen aus der Praxis.<br><br>
+        Wer hat eine Situation die noch offen ist? Die ihn oder sie noch beschäftigt? Die Gruppe hilft.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Offene Fallarbeit — 30–40 Minuten</div>
+      <div class="anweisung-text">1–2 Situationen aus der Gruppe. Gruppe berät — du moderierst. Verweise auf konkrete KLARTEXT-Karten wenn passend. Keine perfekten Lösungen versprechen — aber Orientierung geben.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — nächste Schritte</div>
+      <div class="rede-text">
+        Bevor wir zum Abschluss kommen — drei konkrete nächste Schritte die ihr morgen früh machen könnt:<br><br>
+        <strong>Erster Schritt:</strong> Barometer INGRA. Morgen früh bevor ihr zur Arbeit geht — eine Minute. Wo bin ich?<br><br>
+        <strong>Zweiter Schritt:</strong> Lernpfad Woche 1. Erste Aufgabe. Das dauert keine 20 Minuten.<br><br>
+        <strong>Dritter Schritt:</strong> Eure Lernpfad-Partnerin kontaktieren — bis Freitag.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- T2 B6: ZERTIFIKAT -->
+<div class="abschnitt" id="t2b6">
+  <div class="abschnitt-header" onclick="toggleA('t2b6')">
+    <span class="abschnitt-zeit">15:30 – 16:00</span>
+    <span class="abschnitt-titel">T2 · Block 6 · Zertifikat & Abschluss</span>
+    <span class="abschnitt-sub">30 Minuten</span>
+    <span class="abschnitt-chev">▼</span>
+  </div>
+  <div class="abschnitt-body">
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Abschlussrunde</div>
+      <div class="rede-text">
+        Wir kommen zum Abschluss dieser zwei Tage.<br><br>
+        Ich möchte von jeder Person einen einzigen Satz hören:<br><br>
+        <strong>Was nehme ich aus diesen zwei Tagen mit — für morgen früh um 8 Uhr?</strong>
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Abschlussrunde — alle reihum</div>
+      <div class="anweisung-text">Nicht kommentieren. Einfach zuhören. Am Ende kurz zusammenfassen — 2–3 Punkte die du gehört hast.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Zertifikat-Übergabe</div>
+      <div class="rede-text">
+        Jetzt möchte ich euch etwas überreichen.<br><br>
+        Ich rufe jede Person einzeln auf. Ihr kommt nach vorne — ich sage einen Satz über euch, über das was ich in diesen zwei Tagen von euch wahrgenommen habe. Dann das Zertifikat.<br><br>
+        Kein langer Applaus nötig — einfach ein Moment der Anerkennung.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Zertifikat-Übergabe — pro Person 1 Minute</div>
+      <div class="anweisung-text">Jeden Namen aufrufen. Einen persönlichen Satz sagen — wirklich persönlich, basierend auf dem was du in zwei Tagen beobachtet hast. Zertifikat übergeben. Handschlag oder Umarmung — je nach Gruppe.</div>
+    </div>
+    <div class="rede-block">
+      <div class="rede-label">Wörtliche Rede — Abschluss</div>
+      <div class="rede-text">
+        Zwei Tage. Das ist nicht wenig.<br><br>
+        Ihr habt euch Zeit genommen — für euch, für eure Kinder, für euren Job. Das ist nicht selbstverständlich. Das ist Professionalität.<br><br>
+        KLARTEXT gehört euch jetzt. Nutzt es. Lasst es wachsen mit euch.<br><br>
+        Wenn ihr eine Situation habt die im System fehlt — schreibt mir. Wenn ihr eine Karte findet die falsch ist — schreibt mir. Wenn ihr einfach sagen wollt wie es läuft — schreibt mir.<br><br>
+        Ich wünsche euch einen guten Start morgen früh. Und euren Kindern: einen grünen Tag.<br><br>
+        Passt auf euch auf.
+      </div>
+    </div>
+    <div class="anweisung">
+      <div class="anweisung-label">Feedback-Bögen — 5 Minuten</div>
+      <div class="anweisung-text">Ausklang mit Musik. Bögen ausfüllen lassen. Verabschiedung einzeln — nicht in der Gruppe.</div>
+    </div>
+    <div class="tipp">
+      <div class="tipp-label">Trainer-Tipp</div>
+      <div class="tipp-text">Der persönliche Satz bei der Zertifikat-Übergabe ist das Wichtigste. Bereite ihn für jede Person vor — notiere dir während der zwei Tage etwas Konkretes über jede Person. "Du hast heute beim Rollenspiel etwas gezeigt das ich nicht vergessen werde." — das bleibt ein Leben lang.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+function toggleA(id){
+  var el=document.getElementById(id);
+  if(el)el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

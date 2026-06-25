@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT Brainy-Zauberfächer · Streifen</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', Arial, sans-serif; background: #E8E4DF; padding: 24px; }
+h1 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; color: #1a2e44; margin-bottom: 4px; }
+.meta { font-size: 12px; color: #888; margin-bottom: 20px; }
+.anleitung { background: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; border-left: 4px solid #c8541a; max-width: 800px; font-size: 13px; color: #555; line-height: 1.7; }
+.anleitung strong { color: #1a2e44; }
+.modul-gruppe { margin-bottom: 28px; max-width: 800px; }
+.modul-kopf { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.modul-farb { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.modul-name { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800; }
+.modul-count { font-size: 11px; color: #999; }
+.seiten-label { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 8px; opacity: 0.7; }
+.streifen-liste { display: flex; flex-direction: column; gap: 5px; }
+
+/* VORDERSEITE — mit Farbe links, Text weiß, Brainy rechts */
+.streifen {
+  width: 756px; height: 113px;
+  border-radius: 8px;
+  display: flex; align-items: stretch; overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  break-inside: avoid; page-break-inside: avoid;
+}
+.streifen-loch {
+  width: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.loch-ring { width: 18px; height: 18px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.6); background: rgba(255,255,255,0.15); }
+.streifen-farbe { width: 10px; flex-shrink: 0; background: rgba(0,0,0,0.08); }
+.streifen-inhalt { flex: 1; background: white; padding: 0 18px; display: flex; flex-direction: column; justify-content: center; }
+.streifen-name { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 900; line-height: 1.1; margin-bottom: 5px; }
+.streifen-text { font-size: 12px; color: #444; line-height: 1.55; }
+.streifen-brainy { width: 90px; flex-shrink: 0; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; padding-bottom: 4px; }
+.streifen-brainy img { width: 85px; margin-bottom: 6px; opacity: 0.55; }
+
+/* RÜCKSEITE — weißer Grund, Brainy mittig in Modulfarbe, dünner Farbstreifen links */
+.streifen-rs {
+  width: 756px; height: 113px;
+  border-radius: 8px;
+  display: flex; align-items: stretch; overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  break-inside: avoid; page-break-inside: avoid;
+}
+.rs-loch {
+  width: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid #E8E4DF;
+}
+.rs-loch-ring { width: 18px; height: 18px; border-radius: 50%; border: 2px dashed #CCC; }
+.rs-farbbalken { width: 8px; flex-shrink: 0; }
+.rs-mitte {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px;
+}
+.rs-brainy-wrap { display: flex; align-items: center; height: 113px; overflow: hidden; padding: 6px 0; }
+.rs-brainy-wrap img { width: 90px; }
+.rs-text {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.rs-name { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 800; }
+.rs-copy { font-size: 9px; color: #CCC; letter-spacing: 0.5px; }
+
+.schnitt { font-size: 9px; color: #CCC; text-align: center; margin: 2px 0; letter-spacing: 0.5px; }
+.trenner { border: none; border-top: 2px dashed #CCC; margin: 18px 0; }
+
+@media print {
+  body { background: white; padding: 8px; }
+  h1, .meta, .anleitung, .modul-kopf, .seiten-label, .schnitt { display: none; }
+  .modul-gruppe { margin-bottom: 2px; }
+  .streifen-liste { gap: 3px; }
+  .streifen, .streifen-rs { box-shadow: none; border: 0.5px solid #DDD; }
+  .trenner { display: none; }
+  @page { size: A4; margin: 8mm; }
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<h1>🪄 Brainy-Zauberfächer — Streifen</h1>
+<p class="meta">20 cm × 3 cm · Vorder- und Rückseite · Ausdrucken · Laminieren · Lochen · Schlüsselring</p>
+
+<div class="anleitung">
+  <strong>Drucken:</strong> Seite 1 drucken (Vorderseiten) → Papier umdrehen → Seite 2 drucken (Rückseiten). Oder: beide Seiten separat ausdrucken und aufeinanderkleben.<br>
+  <strong>Im Einsatz:</strong> INGRA hält den Fächer mit der <em>Brainy-Seite</em> zum Kind. Das Kind zieht intuitiv einen Streifen heraus — INGRA dreht den Streifen um!<br>
+  <strong>Tipp:</strong> Laminieren macht die Streifen wischfest und langlebig. Ein Schlüsselring pro Modulfarbe.
+</div>
+<div class="modul-gruppe"><div class="modul-kopf">
+  <div class="modul-farb" style="background:#c8860a;"></div>
+  <span class="modul-name" style="color:#c8860a;">Brainy-Flow</span>
+  <span class="modul-count">(M3 · 10 Streifen)</span>
+</div><div class="seiten-label" style="color:#c8860a;">▶ Vorderseite (mit Text)</div><div class="streifen-liste"><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Flamingo</div>
+    <div class="streifen-text">Steh auf einem Bein und zähl rückwärts von 20 bis 0. Wackelst du? Fang von vorne an!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Die Zeitlupe</div>
+    <div class="streifen-text">Geh zur Tür und zurück — SO langsam wie ein Astronaut auf dem Mond.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Spiegel</div>
+    <div class="streifen-text">Such dir jemanden und mach jede Bewegung von ihm für 30 Sekunden genau nach.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Elefant</div>
+    <div class="streifen-text">Beug dich vor, lass einen Arm als Rüssel hängen und male mit der Nase Achten in die Luft.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Affe</div>
+    <div class="streifen-text">Knie hin, klopf dir auf die Brust und mach den besten Affenlaut den du kannst!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Hubschrauber</div>
+    <div class="streifen-text">Steck beide Arme zur Seite und dreh dich 5× langsam im Kreis. Nicht schwindeln!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Liegende Achter</div>
+    <div class="streifen-text">Steck einen Finger aus und male eine liegende 8 in die Luft — so groß wie möglich. 3×!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Die Überkreuz</div>
+    <div class="streifen-text">Rechter Ellenbogen trifft linkes Knie — dann andersrum. 10× so langsam wie möglich.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Der Roboter</div>
+    <div class="streifen-text">Geh 30 Sekunden wie ein Roboter — steife Arme, steife Beine, piep piep!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8860a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8860acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8860a;">Die Schnecke</div>
+    <div class="streifen-text">Kringel dich auf dem Stuhl ganz klein zusammen — dann ganz langsam aufstrecken.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div><div class="seiten-label" style="color:#c8860a;margin-top:16px;">◀ Rückseite (Brainy-Seite · weißer Grund · druckerfreundlich)</div><div class="streifen-liste"><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8860a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(-30deg) saturate(0.85);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8860a;">Brainy-Flow</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div></div><hr class="trenner"><div class="modul-gruppe"><div class="modul-kopf">
+  <div class="modul-farb" style="background:#c2185b;"></div>
+  <span class="modul-name" style="color:#c2185b;">Spaß & Quatsch</span>
+  <span class="modul-count">(M6 · 8 Streifen)</span>
+</div><div class="seiten-label" style="color:#c2185b;">▶ Vorderseite (mit Text)</div><div class="streifen-liste"><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Nicht lachen!</div>
+    <div class="streifen-text">Schau jemanden direkt an und versuch dabei NICHT zu lachen. Wer zuerst lacht, verliert!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Die blöde Fratze</div>
+    <div class="streifen-text">Mach die allerbeste blöde Fratze. Zeig sie jemandem — wer lacht zuerst?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Die Zunge</div>
+    <div class="streifen-text">Lass die Zunge raus und sag: "Heute ist ein wunderschöner Tag!"</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Der Hüpfer</div>
+    <div class="streifen-text">Hüpf 5× so hoch du kannst — dabei laut zählen!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Der Flüsterer</div>
+    <div class="streifen-text">Flüster für die nächsten 2 Minuten alles — auch wenn jemand fragt warum!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Der Schleicher</div>
+    <div class="streifen-text">Schleich wie ein Ninja durch den Raum — kein Geräusch, kein Wackeln!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Der Wackelkopf</div>
+    <div class="streifen-text">Sag "Ja" — dabei den Kopf schütteln. Sag "Nein" — dabei nicken. Schaffst du das?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c2185b;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c2185bcc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c2185b;">Das Spiegelbild</div>
+    <div class="streifen-text">Stell dich vor einen Spiegel und mach 10 Sekunden lang die lustigsten Gesichter!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div><div class="seiten-label" style="color:#c2185b;margin-top:16px;">◀ Rückseite (Brainy-Seite · weißer Grund · druckerfreundlich)</div><div class="streifen-liste"><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c2185b;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(310deg) saturate(1.2);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c2185b;">Spaß & Quatsch</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div></div><hr class="trenner"><div class="modul-gruppe"><div class="modul-kopf">
+  <div class="modul-farb" style="background:#7b5ea7;"></div>
+  <span class="modul-name" style="color:#7b5ea7;">Atem & Ruhe</span>
+  <span class="modul-count">(M4 · 7 Streifen)</span>
+</div><div class="seiten-label" style="color:#7b5ea7;">▶ Vorderseite (mit Text)</div><div class="streifen-liste"><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Der Atemzug</div>
+    <div class="streifen-text">4 Sekunden einatmen — 2 halten — 6 ausatmen. 3 Durchgänge. Du schaffst das!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Der Wunsch</div>
+    <div class="streifen-text">Schließ die Augen und wünsch dir etwas. Ganz in Ruhe. Du hast 30 Sekunden.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Das Summen</div>
+    <div class="streifen-text">Summ einen langen Ton so lange du Luft hast. Spür die Vibration in der Brust!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Die Stille</div>
+    <div class="streifen-text">Leg den Kopf auf den Tisch und zähl leise bis 30. Kein Sprechen, kein Bewegen.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Die Schultern</div>
+    <div class="streifen-text">Schultern hoch zu den Ohren — 5 Sekunden halten — loslassen. 3×!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Der Bauch</div>
+    <div class="streifen-text">Hand auf den Bauch. Einatmen: hebt sich. Ausatmen: senkt sich. 5× spüren.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#7b5ea7;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#7b5ea7cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#7b5ea7;">Die Augen</div>
+    <div class="streifen-text">Reib die Hände warm und leg sie auf die geschlossenen Augen. 30 Sekunden Dunkelheit.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div><div class="seiten-label" style="color:#7b5ea7;margin-top:16px;">◀ Rückseite (Brainy-Seite · weißer Grund · druckerfreundlich)</div><div class="streifen-liste"><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#7b5ea7;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(260deg) saturate(0.9);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#7b5ea7;">Atem & Ruhe</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div></div><hr class="trenner"><div class="modul-gruppe"><div class="modul-kopf">
+  <div class="modul-farb" style="background:#1d9e75;"></div>
+  <span class="modul-name" style="color:#1d9e75;">Miteinander</span>
+  <span class="modul-count">(M1 · 7 Streifen)</span>
+</div><div class="seiten-label" style="color:#1d9e75;">▶ Vorderseite (mit Text)</div><div class="streifen-liste"><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Das Kompliment</div>
+    <div class="streifen-text">Geh zu jemandem und sag ihm etwas Echtes Nettes — von Herzen!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Die Umarmung</div>
+    <div class="streifen-text">Drück dich selbst! Arme kreuzen und fest drücken. 10 Sekunden halten.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Das Lob</div>
+    <div class="streifen-text">Sag dir selbst laut 3 Dinge die du gut kannst. Laut! So dass man es hört.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Das Klopfen</div>
+    <div class="streifen-text">Klopf dir selbst auf die Schulter und sag: "Gut gemacht!"</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Der Rückenkrauler</div>
+    <div class="streifen-text">Frag jemanden ob du ihm den Rücken kraulen darfst. 30 Sekunden. Dann tauschen!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Die Hand</div>
+    <div class="streifen-text">Mal deine Hand auf ein Blatt und schreib in jeden Finger etwas das du magst.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#1d9e75;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#1d9e75cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#1d9e75;">Die Stille Post</div>
+    <div class="streifen-text">Flüster jemandem einen lustigen Satz ins Ohr — der gibt ihn weiter!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div><div class="seiten-label" style="color:#1d9e75;margin-top:16px;">◀ Rückseite (Brainy-Seite · weißer Grund · druckerfreundlich)</div><div class="streifen-liste"><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#1d9e75;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(140deg) saturate(1.1);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#1d9e75;">Miteinander</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div></div><hr class="trenner"><div class="modul-gruppe"><div class="modul-kopf">
+  <div class="modul-farb" style="background:#185fa5;"></div>
+  <span class="modul-name" style="color:#185fa5;">Denken & Entdecken</span>
+  <span class="modul-count">(M2 · 7 Streifen)</span>
+</div><div class="seiten-label" style="color:#185fa5;">▶ Vorderseite (mit Text)</div><div class="streifen-liste"><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Die 5 Tiere</div>
+    <div class="streifen-text">Nenn 5 Tiere die GRÜN sind. Zu leicht? 5 blaue!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Die Wörter</div>
+    <div class="streifen-text">Nenn 5 Wörter mit AU — dann 5 mit ÄU. Wer ist schneller?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Das Ich höre</div>
+    <div class="streifen-text">Schließ die Augen und hör 30 Sekunden lang genau hin. Was hörst du alles?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Der Detektiv</div>
+    <div class="streifen-text">Such dir einen Gegenstand. Beschreib ihn ohne den Namen — wer errät ihn?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Die Malaufgabe</div>
+    <div class="streifen-text">Stell jemandem eine Aufgabe: "Mal einen Elefanten auf einem Einrad!"</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Das Gedicht</div>
+    <div class="streifen-text">Erfind einen Reim mit deinem Namen. Er muss nur lustig sein!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#185fa5;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#185fa5cc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#185fa5;">Die 5 Pflanzen</div>
+    <div class="streifen-text">Nenn 5 Pflanzen → 5 Gemüse → 5 Obstsorten. Wer kommt weiter?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div><div class="seiten-label" style="color:#185fa5;margin-top:16px;">◀ Rückseite (Brainy-Seite · weißer Grund · druckerfreundlich)</div><div class="streifen-liste"><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#185fa5;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:hue-rotate(200deg) saturate(1.4);opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#185fa5;">Denken & Entdecken</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div></div><hr class="trenner"><div class="modul-gruppe"><div class="modul-kopf">
+  <div class="modul-farb" style="background:#c8541a;"></div>
+  <span class="modul-name" style="color:#c8541a;">Selbstfürsorge</span>
+  <span class="modul-count">(M5 · 6 Streifen)</span>
+</div><div class="seiten-label" style="color:#c8541a;">▶ Vorderseite (mit Text)</div><div class="streifen-liste"><div class="streifen">
+  <div class="streifen-loch" style="background:#c8541a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8541acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8541a;">Das Wasser</div>
+    <div class="streifen-text">Trink ein ganzes Glas Wasser. Langsam. Jeden Schluck spüren.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:none;" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8541a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8541acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8541a;">Das Etui</div>
+    <div class="streifen-text">Sortier dein Etui — alle Stifte nach Farbe. Du hast 2 Minuten!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:none;" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8541a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8541acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8541a;">Das Aufräumen</div>
+    <div class="streifen-text">Räum leise 3 Dinge auf. Wer sieht es als Erster?</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:none;" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8541a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8541acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8541a;">Das Strecken</div>
+    <div class="streifen-text">Streck alle 4 Gliedmaßen so weit du kannst — dann alles ausschütteln!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:none;" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8541a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8541acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8541a;">Die Pause</div>
+    <div class="streifen-text">Leg den Kopf auf den Tisch. 60 Sekunden. Nichts denken. Einfach sein.</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:none;" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen">
+  <div class="streifen-loch" style="background:#c8541a;">
+    <div class="loch-ring"></div>
+  </div>
+  <div class="streifen-farbe" style="background:#c8541acc;"></div>
+  <div class="streifen-inhalt">
+    <div class="streifen-name" style="color:#c8541a;">Der Händeschüttler</div>
+    <div class="streifen-text">Schüttle beide Hände 30 Sekunden — als ob du Wasser abschüttelst!</div>
+  </div>
+  <div class="streifen-brainy">
+    <img src="brainy.png" style="filter:none;" alt="Brainy">
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div><div class="seiten-label" style="color:#c8541a;margin-top:16px;">◀ Rückseite (Brainy-Seite · weißer Grund · druckerfreundlich)</div><div class="streifen-liste"><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8541a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:none;opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8541a;">Selbstfürsorge</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8541a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:none;opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8541a;">Selbstfürsorge</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8541a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:none;opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8541a;">Selbstfürsorge</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8541a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:none;opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8541a;">Selbstfürsorge</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8541a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:none;opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8541a;">Selbstfürsorge</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div><div class="streifen-rs">
+  <div class="rs-loch">
+    <div class="rs-loch-ring"></div>
+  </div>
+  <div class="rs-farbbalken" style="background:#c8541a;"></div>
+  <div class="rs-mitte">
+    <div class="rs-brainy-wrap">
+      <img src="brainy.png" style="filter:none;opacity:0.85;" alt="Brainy">
+    </div>
+    <div class="rs-text">
+      <div class="rs-name" style="color:#c8541a;">Selbstfürsorge</div>
+      <div class="rs-copy">KLARTEXT-MENTORING</div>
+    </div>
+  </div>
+</div>
+<div class="schnitt">· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·</div></div></div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4FC3C7" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#4FC3C7"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body></html>

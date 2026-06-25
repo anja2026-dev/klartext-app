@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – Modul 4 · Kommunikation · Karte 16 · Elterngespräche mit migrantischen Familien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root {
+    --m3:        #5D3A7A;
+    --m3-dark:   #3A2150;
+    --m3-light:  #F3EEF9;
+    --m3-border: #C4A8E0;
+  }
+  .icon-card { background: #F3EEF9; }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurück">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT – Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT &middot; Modul 4 · Kommunikation</div>
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">M4 · 16</div>
+        <div class="karte-nr">Karte 16</div>
+        <h1 class="karte-titel" id="karte-titel">Elterngespräche mit migrantischen Familien</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">🌍</div>
+    </div>
+    <div class="karte-lead">Bis zu 75 % der Familien haben Migrationsgeschichte. Gesprächsführung mit kultureller Sensibilität ist keine Zusatzaufgabe — sie ist professionelle Grundhaltung.</div>
+    <div class="karte-body">
+      <div class="ab">
+        <div class="ab-titel">Warum migrantische Eltern besondere Aufmerksamkeit brauchen</div>
+        <ul>
+          <li>Bis zu 75 % der begleiteten Kinder kommen aus Familien mit Migrationsgeschichte</li>
+          <li>Schule ist für viele Eltern ein fremder, mächtiger Raum – besonders ohne eigene deutsche Schulerfahrung</li>
+          <li>Misstrauen gegenüber Behörden ist oft durch Erfahrungen im Herkunftsland begründet – kein Desinteresse</li>
+          <li>Behinderung und Förderbedarf können kulturell als Scham oder Tabuthema erlebt werden</li>
+        </ul>
+      </div>
+      <div class="ab">
+        <div class="ab-titel">Häufige Barrieren — und was dahintersteckt</div>
+        <div class="zwei-sp" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+          <div style="background:#F3EEF9;border-radius:8px;padding:9px 11px;">
+            <div style="font-size:.65rem;font-weight:700;color:#5D3A7A;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Barriere</div>
+            <ul style="list-style:none;font-size:.82rem;">
+              <li>Sprachbarriere</li>
+              <li>Behördenangst</li>
+              <li>Kollektiv-Entscheidungen</li>
+              <li>Scham / Tabu</li>
+              <li>Autoritätsgefälle</li>
+            </ul>
+          </div>
+          <div style="background:#EEF7F2;border-radius:8px;padding:9px 11px;">
+            <div style="font-size:.65rem;font-weight:700;color:#235840;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Mein Umgang</div>
+            <ul style="list-style:none;font-size:.82rem;">
+              <li>Einfache Sprache, Bild-Karten</li>
+              <li>Neutral auftreten, nicht für Schule sprechen</li>
+              <li>Geduld, kein Sofort-Entscheid verlangen</li>
+              <li>Diskret, würdevoll, ohne Stigma</li>
+              <li>Meinung aktiv einladen</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="ab">
+        <div class="ab-titel">Im Gespräch — was hilft</div>
+        <ul>
+          <li>Positives zuerst — nie mit Problem beginnen</li>
+          <li>Langsam und deutlich sprechen, Pausen lassen</li>
+          <li>Schweigen aushalten — kein Zeichen von Unverständnis</li>
+          <li>Nie das Kind als Dolmetscher nutzen — das überfordert und schadet der Beziehung</li>
+          <li>Vereinbarungen schriftlich festhalten und vorlesen lassen</li>
+          <li>Aktiv einladen: „Was wünschen Sie sich von mir?"</li>
+        </ul>
+      </div>
+      <div class="box box-gruen" role="note">
+        <div class="box-label">Wichtige Abgrenzung</div>
+        Ich bin Brückenperson — nicht Behördenvertreterin. Fragen zu Aufenthaltsstatus, Rechtslage oder Finanzierung gehören nicht zu meinem Auftrag. Weiterverweisen ist fachlich korrekt.
+      </div>
+      <div class="box box-blau" role="note">
+        <div class="box-label">Forschungshinweis</div>
+        Migrantische Eltern erleben Schule oft als fremden Machtort (Diehm & Radtke, 1999). Die INGRA kann Brückenperson sein — wenn sie sich nicht als verlängerter Arm der Schule positioniert.
+      </div>
+      <div class="brainy-block">
+        <img src="brainy-m4.png" alt="Brainy">
+        <div class="brainy-block-text">
+          <strong>Brainy erinnert:</strong>
+          Kulturelle Unterschiede als Defizit zu rahmen ist falsch. „Die Eltern wollen nicht" ist fast immer: „Die Eltern wissen nicht wie, oder trauen sich nicht."
+        </div>
+      </div>
+    </div>
+    <nav class="karte-nav"><span></span><span class="spacer"></span><span></span></nav>
+    <div class="karte-footer">
+      <span class="footer-links">Modul 4 · Karte 16 · → M4-10 · Gesprächsführung Eltern</span>
+      <span class="footer-nr">16 / 16</span>
+    </div>
+  </article>
+</main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);" aria-label="Suche">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);" aria-label="Dashboard">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<footer role="contentinfo">
+  <strong>KLARTEXT</strong> &middot; Modul 4 · Kommunikation &middot; Karte 16 &middot; Elterngespräche mit migrantischen Familien
+  <span class="footer-copy">Alle Rechte vorbehalten &middot; KLARTEXT-Mentoring-System</span>
+</footer>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

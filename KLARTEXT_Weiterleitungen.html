@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Weiterleitungen</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;
+  --neu:#C62828;--gelesen:#388E3C;
+}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+
+/* ─── HEADER ─── */
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+
+/* ─── LAYOUT ─── */
+.shell{max-width:800px;margin:0 auto;padding:1.5rem 1rem 5rem;}
+
+/* ─── TABS ─── */
+.tab-nav{display:flex;gap:0;background:#E8E4DC;border-radius:12px;padding:.3rem;margin-bottom:1.5rem;}
+.tab-btn{flex:1;padding:.6rem .5rem;border:none;background:none;font-family:"DM Sans",sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;border-radius:8px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:.3rem;}
+.tab-btn.aktiv{background:var(--surface);color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.tab-inhalt{display:none;}
+.tab-inhalt.aktiv{display:block;}
+
+/* ─── KARTE ─── */
+.karte{background:var(--surface);border-radius:14px;padding:1.4rem;box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:1rem;}
+.karte-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1.1rem;}
+
+/* ─── FORMULAR ─── */
+.fg{margin-bottom:1rem;}
+.fg-zeile{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem;}
+.fg label{display:block;font-size:.74rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
+.fg label .pflicht{color:var(--neu);margin-left:.15rem;}
+.fg-hinweis{font-size:.7rem;color:var(--muted);margin-top:.25rem;}
+select,textarea,input[type="text"]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.65rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;background:#FAFAFA;color:#1A1A2E;}
+select:focus,textarea:focus,input:focus{outline:none;border-color:var(--navy);}
+textarea{resize:vertical;min-height:100px;line-height:1.55;}
+
+.empf-gruppe{display:flex;gap:.5rem;flex-wrap:wrap;}
+.empf-btn{padding:.5rem 1rem;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:"DM Sans",sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;}
+.empf-btn.aktiv-tk{border-color:#C47A00;background:#FBF4E8;color:#7A4A00;}
+.empf-btn.aktiv-lk{border-color:#1565C0;background:#EAF1F8;color:#0D47A1;}
+.empf-btn.aktiv-eltern{border-color:#AD1457;background:#FCE4EC;color:#7B0D35;}
+
+.datei-label{display:flex;align-items:center;gap:.6rem;border:1.5px dashed var(--border);border-radius:8px;padding:.75rem 1rem;cursor:pointer;font-size:.82rem;color:var(--muted);background:#FAFAFA;}
+.datei-label:hover{border-color:var(--navy);color:var(--navy);}
+input[type="file"]{display:none;}
+.datei-name{font-size:.78rem;color:var(--navy);margin-top:.3rem;}
+
+.fehler-box{background:#FFEBEE;border-left:4px solid var(--neu);border-radius:8px;padding:.65rem 1rem;font-size:.8rem;color:#8B1A1A;margin-bottom:1rem;display:none;}
+.fehler-box.zeigen{display:block;}
+.btn-senden{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.9rem;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:background .15s;}
+.btn-senden:hover{background:#0F2230;}
+.btn-senden:disabled{background:var(--border);cursor:not-allowed;}
+
+/* ─── LISTEN-EINTRÄGE ─── */
+.leer{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.84rem;background:var(--surface);border-radius:14px;}
+.tabelle{width:100%;border-collapse:collapse;background:var(--surface);border-radius:12px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.tabelle th{background:var(--navy);color:#fff;padding:.6rem .75rem;text-align:left;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.tabelle td{padding:.65rem .75rem;border-bottom:1px solid #F0EDE5;font-size:.8rem;vertical-align:top;}
+.tabelle tr:last-child td{border-bottom:none;}
+.tabelle tr:hover td{background:#FAFAF5;}
+.status-neu{display:inline-block;background:#FFEBEE;color:var(--neu);font-size:.62rem;font-weight:800;padding:.15rem .5rem;border-radius:8px;text-transform:uppercase;}
+.status-gel{display:inline-block;background:#EAF7EF;color:var(--gelesen);font-size:.62rem;font-weight:800;padding:.15rem .5rem;border-radius:8px;text-transform:uppercase;}
+.status-bea{display:inline-block;background:#EAF1F8;color:#1565C0;font-size:.62rem;font-weight:800;padding:.15rem .5rem;border-radius:8px;text-transform:uppercase;}
+.typ-chip{display:inline-block;background:#EAF0F4;color:#1B3A4B;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:8px;}
+.details-btn{font-size:.72rem;color:var(--navy);background:none;border:none;cursor:pointer;text-decoration:underline;padding:0;}
+.detail-panel{display:none;border-top:1px solid #E8E4DC;margin-top:.4rem;padding-top:.65rem;}
+.detail-panel.offen{display:block;}
+.detail-text{font-size:.8rem;color:#2D2D2D;line-height:1.6;white-space:pre-wrap;background:var(--paper);border-radius:8px;padding:.65rem .85rem;margin-bottom:.65rem;}
+.antwort-feld{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.55rem .75rem;font-family:"DM Sans",sans-serif;font-size:.8rem;resize:vertical;min-height:60px;background:#FAFAFA;}
+.antwort-btn{background:var(--acc);color:var(--navy);border:none;border-radius:8px;padding:.45rem .9rem;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;margin-top:.4rem;}
+.link-btn-s{background:var(--gold);color:#fff;border:none;border-radius:7px;padding:.3rem .65rem;font-family:"DM Sans",sans-serif;font-size:.7rem;font-weight:700;cursor:pointer;}
+.kop-best{font-size:.68rem;color:var(--gelesen);font-weight:700;margin-left:.5rem;opacity:0;transition:opacity .25s;display:inline;}
+.kop-best.zeigen{opacity:1;}
+
+/* ─── OVERLAY ─── */
+.overlay{position:fixed;inset:0;background:rgba(27,58,75,.88);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;}
+.overlay.zeigen{display:flex;}
+.overlay-karte{background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:360px;text-align:center;width:100%;}
+.overlay-icon{font-size:2.5rem;margin-bottom:.7rem;}
+.overlay-titel{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--navy);margin-bottom:.4rem;}
+.overlay-sub{font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:1.2rem;}
+.overlay-link-btn{width:100%;background:var(--gold);color:#fff;border:none;border-radius:10px;padding:.7rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;margin-bottom:.4rem;}
+.overlay-link-best{font-size:.74rem;color:var(--gelesen);font-weight:700;opacity:0;transition:opacity .25s;margin-bottom:.8rem;}
+.overlay-link-best.zeigen{opacity:1;}
+.overlay-close{background:none;border:1.5px solid var(--border);border-radius:10px;padding:.6rem 1.4rem;font-family:"DM Sans",sans-serif;font-size:.83rem;font-weight:700;color:var(--navy);cursor:pointer;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Weiterleitungen</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="tab-nav">
+    <button class="tab-btn aktiv" id="tbtn-weiterleiten" onclick="tab('weiterleiten')">📤 Weiterleiten</button>
+    <button class="tab-btn" id="tbtn-bereich" onclick="tab('bereich')">📦 Bereich senden</button>
+    <button class="tab-btn" id="tbtn-inbox" onclick="tab('inbox')">📥 TK-Inbox</button>
+    <button class="tab-btn" id="tbtn-verlauf" onclick="tab('verlauf')">📋 Mein Verlauf</button>
+  </div>
+
+  <!-- ══ TAB: WEITERLEITEN ══ -->
+  <div id="tab-weiterleiten" class="tab-inhalt aktiv">
+    <div class="karte">
+      <div class="karte-titel">📤 Neue Weiterleitung</div>
+
+      <div class="fehler-box" id="fw-fehler"></div>
+
+      <div class="fg-zeile">
+        <div class="fg">
+          <label for="fw-art">Art der Weiterleitung<span class="pflicht">*</span></label>
+          <select id="fw-art" onchange="artGeaendert()">
+            <option value="">Bitte wählen …</option>
+            <optgroup label="Berichte & Hinweise">
+              <option value="Nachricht">Nachricht</option>
+              <option value="Barometer-Hinweis">Barometer-Hinweis</option>
+              <option value="Hinweis besondere Situation">Hinweis besondere Situation</option>
+            </optgroup>
+            <optgroup label="Meldungen">
+              <option value="Krankmeldung Kind">Krankmeldung Kind</option>
+              <option value="Krankmeldung INGRA">Krankmeldung INGRA</option>
+            </optgroup>
+            <optgroup label="Rückfragen">
+              <option value="Rückfrage an TK">Rückfrage an TK</option>
+              <option value="Rückfrage an LK">Rückfrage an LK</option>
+            </optgroup>
+            <optgroup label="Weitergabe">
+              <option value="Weitergabe an Eltern">Weitergabe an Eltern</option>
+              <option value="Weitergabe an LK">Weitergabe an LK</option>
+            </optgroup>
+            <optgroup label="Sonstiges">
+              <option value="Material/Datei">Material / Datei</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Empfänger<span class="pflicht">*</span></label>
+          <div class="empf-gruppe" id="empf-gruppe">
+            <button type="button" class="empf-btn" data-rolle="tk" onclick="empfWaehlen(this)">🟡 Teamkoordination</button>
+            <button type="button" class="empf-btn" data-rolle="lk" onclick="empfWaehlen(this)">🔵 Lehrkraft</button>
+            <button type="button" class="empf-btn" data-rolle="eltern" onclick="empfWaehlen(this)">🩷 Eltern</button>
+          </div>
+          <div class="fg-hinweis">LK/Eltern erhalten einen Leselink (kein Login nötig)</div>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label for="fw-text">Nachricht<span class="pflicht">*</span></label>
+        <textarea id="fw-text" placeholder="Was möchten Sie mitteilen? Bitte klar und präzise formulieren …"></textarea>
+      </div>
+
+      <div class="fg">
+        <label>Datei anhängen (optional)</label>
+        <label class="datei-label" for="fw-datei">
+          📎 Datei auswählen
+        </label>
+        <input type="file" id="fw-datei" accept=".pdf,.jpg,.png,.docx" onchange="dateiGewaehlt()">
+        <div class="datei-name" id="fw-datei-name" style="display:none;"></div>
+        <div class="fg-hinweis">PDF, JPG, PNG oder Word · max. 5 MB · wird als Hinweis im Text vermerkt</div>
+      </div>
+
+      <button class="btn-senden" id="fw-btn" onclick="weiterleitungSenden()">Weiterleiten</button>
+    </div>
+  </div>
+
+  <!-- ══ TAB: BEREICH SENDEN ══ -->
+  <div id="tab-bereich" class="tab-inhalt">
+    <div class="karte">
+      <div class="karte-titel">📦 Bereich weiterleiten</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.55;">Das System sendet einen einzigen Sammel-Leselink — der Empfänger öffnet eine Seite mit allen zugehörigen Karten. Kein Login nötig.</p>
+
+      <div class="fehler-box" id="br-fehler"></div>
+
+      <div class="fg-zeile">
+        <div class="fg">
+          <label for="br-bereich">Bereich<span class="pflicht">*</span></label>
+          <select id="br-bereich" onchange="bereichGewaehlt()">
+            <option value="">Bitte wählen …</option>
+            <option value="lk">Für Lehrkräfte – zum Weitergeben</option>
+            <option value="eltern">Für Eltern – zum Weitergeben</option>
+          </select>
+        </div>
+
+        <div class="fg">
+          <label>Empfänger<span class="pflicht">*</span></label>
+          <div class="empf-gruppe" id="br-empf-gruppe">
+            <button type="button" class="empf-btn" data-rolle="lk" onclick="brEmpfWaehlen(this)">🔵 Lehrkraft</button>
+            <button type="button" class="empf-btn" data-rolle="eltern" onclick="brEmpfWaehlen(this)">🩷 Eltern</button>
+            <button type="button" class="empf-btn" data-rolle="tk" onclick="brEmpfWaehlen(this)">🟡 Teamkoordination</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vorschau des Sammel-Links -->
+      <div id="br-vorschau" style="display:none;" class="fg">
+        <label>Sammel-Leselink (wird automatisch eingefügt)</label>
+        <div style="background:var(--paper);border:1.5px solid var(--border);border-radius:8px;padding:.6rem .85rem;font-size:.78rem;color:var(--navy);word-break:break-all;" id="br-link-anzeige"></div>
+      </div>
+
+      <div class="fg">
+        <label for="br-text">Nachrichtentext (optional)</label>
+        <textarea id="br-text" placeholder="z. B. „Hallo Frau Müller, anbei die Materialien für die Zusammenarbeit mit INGRA …"" style="min-height:70px;"></textarea>
+      </div>
+
+      <button class="btn-senden" id="br-btn" onclick="bereichSenden()">Bereich weiterleiten</button>
+    </div>
+  </div>
+
+  <!-- ══ TAB: TK-INBOX ══ -->
+  <div id="tab-inbox" class="tab-inhalt">
+    <div id="inbox-wrap"><div class="leer">Lade Einträge …</div></div>
+  </div>
+
+  <!-- ══ TAB: MEIN VERLAUF ══ -->
+  <div id="tab-verlauf" class="tab-inhalt">
+    <div id="verlauf-wrap"><div class="leer">Lade Verlauf …</div></div>
+  </div>
+
+</div>
+
+<!-- ERFOLGS-OVERLAY -->
+<div class="overlay" id="fw-overlay">
+  <div class="overlay-karte">
+    <div class="overlay-icon">✅</div>
+    <div class="overlay-titel">Weiterleitung gesendet</div>
+    <div class="overlay-sub" id="overlay-sub">Die Information wurde übermittelt.</div>
+    <button class="overlay-link-btn" id="overlay-link-btn" onclick="overlayLinkKopieren()" style="display:none;">🔗 Leselink kopieren</button>
+    <div class="overlay-link-best" id="overlay-link-best">Link kopiert!</div>
+    <button class="overlay-close" onclick="overlaySchliessen()">Schließen</button>
+  </div>
+</div>
+
+<script>
+// ── ZUSTAND ──────────────────────────────────────────────
+const ME = {
+  id:   sessionStorage.getItem('klartext_user_id') || 'ingra_1',
+  role: sessionStorage.getItem('klartext_role')    || 'ingra',
+  name: sessionStorage.getItem('klartext_name')    || 'INGRA'
+};
+
+let gewaehlterEmpfaenger = null;  // 'tk' | 'lk' | 'eltern'
+let letzteForwardId       = null;
+let inboxGeladenHook      = null;
+let verlaufGeladenHook    = null;
+
+const ART_ZU_EMPF = {
+  'Rückfrage an TK':    'tk',
+  'Rückfrage an LK':   'lk',
+  'Weitergabe an Eltern': 'eltern',
+  'Weitergabe an LK':  'lk',
+  'Krankmeldung INGRA': 'tk',
+};
+
+// ── TABS ─────────────────────────────────────────────────
+function tab(id) {
+  ['weiterleiten','bereich','inbox','verlauf'].forEach(function(t) {
+    document.getElementById('tab-'+t).classList.toggle('aktiv', t===id);
+    document.getElementById('tbtn-'+t).classList.toggle('aktiv', t===id);
+  });
+  if (id==='inbox')   ladeInbox();
+  if (id==='verlauf') ladeVerlauf();
+}
+
+// ── FORMULAR-LOGIK ────────────────────────────────────────
+function artGeaendert() {
+  const art = document.getElementById('fw-art').value;
+  // Empfänger auto-vorbelegen wenn die Art es eindeutig bestimmt
+  if (ART_ZU_EMPF[art]) {
+    document.querySelectorAll('.empf-btn').forEach(function(b) {
+      b.className = 'empf-btn';
+    });
+    const match = document.querySelector(`.empf-btn[data-rolle="${ART_ZU_EMPF[art]}"]`);
+    if (match) { match.classList.add('aktiv-'+ART_ZU_EMPF[art]); gewaehlterEmpfaenger = ART_ZU_EMPF[art]; }
+  }
+}
+
+function empfWaehlen(btn) {
+  document.querySelectorAll('.empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
+  const rolle = btn.dataset.rolle;
+  btn.classList.add('aktiv-'+rolle);
+  gewaehlterEmpfaenger = rolle;
+}
+
+function dateiGewaehlt() {
+  const input = document.getElementById('fw-datei');
+  const nameEl = document.getElementById('fw-datei-name');
+  if (input.files.length > 0) {
+    nameEl.textContent = '📎 ' + input.files[0].name;
+    nameEl.style.display = 'block';
+  } else {
+    nameEl.style.display = 'none';
+  }
+}
+
+function weiterleitungSenden() {
+  const fehler = document.getElementById('fw-fehler');
+  fehler.classList.remove('zeigen');
+
+  const art  = document.getElementById('fw-art').value;
+  const text = document.getElementById('fw-text').value.trim();
+  const datei = document.getElementById('fw-datei').files[0];
+
+  if (!art) { zeigeFehler('Bitte eine Art der Weiterleitung wählen.'); return; }
+  if (!gewaehlterEmpfaenger) { zeigeFehler('Bitte einen Empfänger wählen.'); return; }
+  if (!text) { zeigeFehler('Bitte eine Nachricht eingeben.'); return; }
+
+  const btn = document.getElementById('fw-btn');
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet …';
+
+  let nachrichtText = text;
+  if (datei) nachrichtText += '\n\n📎 Datei: ' + datei.name + ' (wurde lokal angehängt, bitte separat übermitteln)';
+
+  const daten = {
+    fromUser:   ME.id,
+    fromRole:   ME.role,
+    fromName:   ME.name,
+    targetRole: gewaehlterEmpfaenger,
+    type:       art,
+    text:       nachrichtText,
+    timestamp:  Date.now(),
+    gelesen:    false
+  };
+
+  db.ref('forward').push(daten).then(function(ref) {
+    letzteForwardId = ref.key;
+    // Formular zurücksetzen
+    document.getElementById('fw-art').value   = '';
+    document.getElementById('fw-text').value  = '';
+    document.getElementById('fw-datei').value = '';
+    document.getElementById('fw-datei-name').style.display = 'none';
+    document.querySelectorAll('.empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
+    gewaehlterEmpfaenger = null;
+    btn.disabled = false;
+    btn.textContent = 'Weiterleiten';
+
+    // Overlay anzeigen
+    const empfNamen = {tk:'Teamkoordination',lk:'Lehrkraft',eltern:'Eltern'};
+    document.getElementById('overlay-sub').textContent =
+      'Übermittelt an: ' + (empfNamen[daten.targetRole] || daten.targetRole);
+    const linkBtn = document.getElementById('overlay-link-btn');
+    // Leselink nur für LK/Eltern (die haben keinen Login)
+    linkBtn.style.display = (daten.targetRole !== 'tk') ? 'block' : 'none';
+    document.getElementById('fw-overlay').classList.add('zeigen');
+  }).catch(function(err) {
+    zeigeFehler('Fehler beim Senden: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Weiterleiten';
+  });
+}
+
+function zeigeFehler(msg) {
+  const el = document.getElementById('fw-fehler');
+  el.textContent = msg;
+  el.classList.add('zeigen');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── OVERLAY ──────────────────────────────────────────────
+function overlayLinkKopieren() {
+  if (!letzteForwardId) return;
+  const basis = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1);
+  const link = basis + 'KLARTEXT_Forward_Read.html?id=' + letzteForwardId;
+  navigator.clipboard.writeText(link).then(function() {
+    const el = document.getElementById('overlay-link-best');
+    el.classList.add('zeigen');
+    setTimeout(function() { el.classList.remove('zeigen'); }, 2500);
+  }).catch(function() { prompt('Manuell kopieren:', link); });
+}
+
+function overlaySchliessen() {
+  document.getElementById('fw-overlay').classList.remove('zeigen');
+  document.getElementById('overlay-link-best').classList.remove('zeigen');
+}
+
+// ── DATUM FORMATIEREN ────────────────────────────────────
+function fmtDatum(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})
+       + ' ' + d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+
+function statusHtml(e, istInbox) {
+  if (istInbox) {
+    return e.gelesen
+      ? '<span class="status-gel">Gelesen</span>'
+      : '<span class="status-neu">Neu</span>';
+  } else {
+    if (e.beantwortet) return '<span class="status-bea">Beantwortet</span>';
+    if (e.gelesen)     return '<span class="status-gel">Gelesen</span>';
+    return '<span class="status-gel">Zugestellt</span>';
+  }
+}
+
+function linkKopieren(forwardId) {
+  const basis = window.location.href.substring(0, window.location.href.lastIndexOf('/')+1);
+  const link  = basis + 'KLARTEXT_Forward_Read.html?id=' + forwardId;
+  navigator.clipboard.writeText(link).then(function() {
+    const el = document.getElementById('kob-' + forwardId);
+    if (el) { el.classList.add('zeigen'); setTimeout(function() { el.classList.remove('zeigen'); }, 2500); }
+  }).catch(function() { prompt('Manuell kopieren:', link); });
+}
+
+function detailToggle(id) {
+  const el = document.getElementById('detail-' + id);
+  if (el) el.classList.toggle('offen');
+  // Als gelesen markieren
+  db.ref('forward/' + id + '/gelesen').set(true).catch(function(){});
+}
+
+function antwortSenden(forwardId) {
+  const feld = document.getElementById('antwort-' + forwardId);
+  if (!feld || !feld.value.trim()) return;
+  const antwortText = feld.value.trim();
+  db.ref('forward/' + forwardId).update({
+    antwort: antwortText,
+    antwortVon: ME.name,
+    antwortTs: Date.now(),
+    beantwortet: true
+  }).then(function() {
+    feld.value = '';
+    const btn = document.getElementById('antwort-btn-' + forwardId);
+    if (btn) { btn.textContent = '✓ Gesendet'; btn.disabled = true; }
+  }).catch(function(e) { alert('Fehler: ' + e.message); });
+}
+
+// ── TK-INBOX laden ───────────────────────────────────────
+function ladeInbox() {
+  const wrap = document.getElementById('inbox-wrap');
+  wrap.innerHTML = '<div class="leer">Lade …</div>';
+  if (inboxGeladenHook) { inboxGeladenHook.off('value'); }
+
+  inboxGeladenHook = db.ref('forward').orderByChild('targetRole').equalTo('tk');
+  inboxGeladenHook.on('value', function(snap) {
+    const alle = snap.val() || {};
+    const ids  = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0)-(alle[a].timestamp||0); });
+    if (ids.length === 0) {
+      wrap.innerHTML = '<div class="leer">Noch keine eingegangenen Weiterleitungen.</div>';
+      return;
+    }
+    wrap.innerHTML = '<table class="tabelle"><thead><tr>'
+      + '<th>Datum</th><th>Absender</th><th>Art</th><th>Status</th><th></th>'
+      + '</tr></thead><tbody>'
+      + ids.map(function(id) {
+          const e = alle[id];
+          return '<tr>'
+            + '<td style="white-space:nowrap;">' + fmtDatum(e.timestamp) + '</td>'
+            + '<td>' + (e.fromName||e.fromRole||'—') + '</td>'
+            + '<td><span class="typ-chip">' + (e.type||'—') + '</span></td>'
+            + '<td>' + statusHtml(e, true) + '</td>'
+            + '<td><button class="details-btn" onclick="detailToggle(\'' + id + '\')">Details ▾</button></td>'
+            + '</tr>'
+            + '<tr><td colspan="5" style="padding:0 .5rem;">'
+            + '<div class="detail-panel" id="detail-' + id + '">'
+            + '<div class="detail-text">' + (e.text||'') + '</div>'
+            + (e.targetRole !== 'tk' ? '<button class="link-btn-s" onclick="linkKopieren(\'' + id + '\')">🔗 Leselink</button><span class="kop-best" id="kob-' + id + '">Kopiert!</span><br><br>' : '')
+            + '<textarea class="antwort-feld" id="antwort-' + id + '" placeholder="Antwort …">'
+            + (e.beantwortet && e.antwort ? e.antwort : '') + '</textarea>'
+            + '<button class="antwort-btn" id="antwort-btn-' + id + '" onclick="antwortSenden(\'' + id + '\')">'
+            + (e.beantwortet ? '✓ Beantwortet' : 'Antworten') + '</button>'
+            + '</div></td></tr>';
+        }).join('')
+      + '</tbody></table>';
+  });
+}
+
+// ── MEIN VERLAUF laden ───────────────────────────────────
+function ladeVerlauf() {
+  const wrap = document.getElementById('verlauf-wrap');
+  wrap.innerHTML = '<div class="leer">Lade …</div>';
+  if (verlaufGeladenHook) { verlaufGeladenHook.off('value'); }
+
+  verlaufGeladenHook = db.ref('forward').orderByChild('fromUser').equalTo(ME.id);
+  verlaufGeladenHook.on('value', function(snap) {
+    const alle = snap.val() || {};
+    const ids  = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0)-(alle[a].timestamp||0); });
+    if (ids.length === 0) {
+      wrap.innerHTML = '<div class="leer">Noch keine eigenen Weiterleitungen.</div>';
+      return;
+    }
+    const empfNamen = {tk:'Teamkoordination',lk:'Lehrkraft',eltern:'Eltern'};
+    wrap.innerHTML = '<table class="tabelle"><thead><tr>'
+      + '<th>Datum</th><th>Empfänger</th><th>Art</th><th>Status</th><th></th>'
+      + '</tr></thead><tbody>'
+      + ids.map(function(id) {
+          const e = alle[id];
+          return '<tr>'
+            + '<td style="white-space:nowrap;">' + fmtDatum(e.timestamp) + '</td>'
+            + '<td>' + (empfNamen[e.targetRole]||e.targetRole||'—') + '</td>'
+            + '<td><span class="typ-chip">' + (e.type||'—') + '</span></td>'
+            + '<td>' + statusHtml(e, false) + '</td>'
+            + '<td>'
+            + (e.targetRole !== 'tk' ? '<button class="link-btn-s" onclick="linkKopieren(\'' + id + '\')">🔗</button> <span class="kop-best" id="kob-' + id + '">Kopiert!</span>' : '')
+            + '</td>'
+            + '</tr>'
+            + '<tr><td colspan="5" style="padding:0 .5rem;">'
+            + '<div class="detail-panel" id="detail-' + id + '">'
+            + '<div class="detail-text">' + (e.text||'') + '</div>'
+            + (e.beantwortet ? '<div style="font-size:.78rem;color:var(--gelesen);margin-top:.4rem;">✓ Antwort von ' + (e.antwortVon||'TK') + ': ' + (e.antwort||'') + '</div>' : '')
+            + '</div></td></tr>'
+            + '<tr><td colspan="5" style="padding:0;height:0;"><button class="details-btn" style="padding:.2rem .75rem .4rem;" onclick="detailToggle(\'' + id + '\')">Details ▾</button></td></tr>';
+        }).join('')
+      + '</tbody></table>';
+  });
+}
+
+// ── BEREICH SENDEN ───────────────────────────────────────
+const BEREICHE = {
+  lk:     { label: 'Für Lehrkräfte – zum Weitergeben', datei: 'KLARTEXT_LK_Info.html' },
+  eltern: { label: 'Für Eltern – zum Weitergeben',     datei: 'KLARTEXT_Eltern_Info.html' }
+};
+
+let brGewaehlterBereich   = null;  // 'lk' | 'eltern'
+let brGewaehlterEmpfaenger = null; // 'lk' | 'eltern' | 'tk'
+
+function basisUrl() {
+  return window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+}
+
+function bereichGewaehlt() {
+  const wahl = document.getElementById('br-bereich').value;
+  brGewaehlterBereich = wahl || null;
+  const vorschau = document.getElementById('br-vorschau');
+  const linkAnzeige = document.getElementById('br-link-anzeige');
+  if (wahl && BEREICHE[wahl]) {
+    const link = basisUrl() + BEREICHE[wahl].datei;
+    linkAnzeige.textContent = link;
+    vorschau.style.display = 'block';
+    // Passenden Empfänger automatisch vorbelegen
+    document.querySelectorAll('#br-empf-gruppe .empf-btn').forEach(function(b) {
+      b.className = 'empf-btn';
+    });
+    const match = document.querySelector('#br-empf-gruppe .empf-btn[data-rolle="' + wahl + '"]');
+    if (match) { match.classList.add('aktiv-' + wahl); brGewaehlterEmpfaenger = wahl; }
+  } else {
+    vorschau.style.display = 'none';
+    brGewaehlterBereich = null;
+  }
+}
+
+function brEmpfWaehlen(btn) {
+  document.querySelectorAll('#br-empf-gruppe .empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
+  const rolle = btn.dataset.rolle;
+  btn.classList.add('aktiv-' + rolle);
+  brGewaehlterEmpfaenger = rolle;
+}
+
+function bereichSenden() {
+  const fehler = document.getElementById('br-fehler');
+  fehler.classList.remove('zeigen');
+
+  if (!brGewaehlterBereich) { brZeigeFehler('Bitte einen Bereich wählen.'); return; }
+  if (!brGewaehlterEmpfaenger) { brZeigeFehler('Bitte einen Empfänger wählen.'); return; }
+
+  const bereich = BEREICHE[brGewaehlterBereich];
+  const sammelLink = basisUrl() + bereich.datei;
+  const optText = document.getElementById('br-text').value.trim();
+
+  const nachrichtText = 'Weitergeleiteter Bereich: ' + bereich.label
+    + '\n\nLeselink: ' + sammelLink
+    + (optText ? '\n\n' + optText : '');
+
+  const btn = document.getElementById('br-btn');
+  btn.disabled = true; btn.textContent = 'Wird gesendet …';
+
+  const daten = {
+    fromUser:    ME.id,
+    fromRole:    ME.role,
+    fromName:    ME.name,
+    targetRole:  brGewaehlterEmpfaenger,
+    type:        'Bereich: ' + bereich.label,
+    bereichKey:  brGewaehlterBereich,
+    sammelLink:  sammelLink,
+    text:        nachrichtText,
+    timestamp:   Date.now(),
+    gelesen:     false
+  };
+
+  db.ref('forward').push(daten).then(function(ref) {
+    letzteForwardId = ref.key;
+    // Formular zurücksetzen
+    document.getElementById('br-bereich').value = '';
+    document.getElementById('br-text').value = '';
+    document.getElementById('br-vorschau').style.display = 'none';
+    document.querySelectorAll('#br-empf-gruppe .empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
+    brGewaehlterBereich = null; brGewaehlterEmpfaenger = null;
+    btn.disabled = false; btn.textContent = 'Bereich weiterleiten';
+
+    // Overlay anzeigen — Sammel-Link immer kopierbar
+    const empfNamen = { tk: 'Teamkoordination', lk: 'Lehrkraft', eltern: 'Eltern' };
+    document.getElementById('overlay-sub').textContent =
+      bereich.label + ' → ' + (empfNamen[daten.targetRole] || daten.targetRole);
+    document.getElementById('overlay-link-btn').style.display = 'block';
+    document.getElementById('fw-overlay').classList.add('zeigen');
+  }).catch(function(err) {
+    brZeigeFehler('Fehler beim Senden: ' + err.message);
+    btn.disabled = false; btn.textContent = 'Bereich weiterleiten';
+  });
+}
+
+function brZeigeFehler(msg) {
+  const el = document.getElementById('br-fehler');
+  el.textContent = msg; el.classList.add('zeigen');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.addEventListener('beforeunload', function() {
+  if (inboxGeladenHook)   inboxGeladenHook.off('value');
+  if (verlaufGeladenHook) verlaufGeladenHook.off('value');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Meine Verbündeten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--am:#C62828;--am-l:#FFEBEE;--am-b:#FFCDD2;--m:#1B3A4B;--accent:#6EC6A0;--paper:#FDF5F5;--ink:#2D2D2D;--muted:#7A6060;--surface:#fff;--border:#EDD8D8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+.kt-header{background:var(--am);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--am-b);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--am-b);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.ctrl-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;border:1.5px solid var(--am-b);color:var(--am-b);text-decoration:none;background:transparent;transition:all .15s;}
+.ctrl-btn:hover{background:rgba(255,255,255,.15);}
+.ctrl-print{background:var(--am-b);color:var(--am);border-color:var(--am-b);}
+.ctrl-print:hover{background:#fff;}
+.header-actions{display:flex;gap:.5rem;align-items:center;}
+.shell{max-width:800px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 1.5rem;}
+.page-header{text-align:center;margin-bottom:2rem;}
+.page-label{font-size:.65rem;font-weight:700;color:var(--am);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem;}
+.page-titel{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:var(--am);margin-bottom:.3rem;}
+.page-sub{font-size:.85rem;color:var(--muted);}
+@media print{
+  .kt-header{display:none!important;}
+  body{background:white;padding:0;}
+  .shell{padding:5mm 8mm!important;max-width:100%!important;}
+  .druckseite{box-shadow:none!important;border:2px solid #C62828!important;page-break-inside:avoid;}
+  .verbuendete-row{flex-wrap:nowrap!important;gap:6mm!important;}
+  .druckseite{max-width:48%!important;padding:1rem!important;}
+  .druckseite svg{width:140px!important;height:140px!important;}
+  @page{size:A4 landscape;margin:8mm;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <a class="logo" href="KLARTEXT_AntiMobbing_Training.html">
+    <div class="logo-mark"><span>K</span></div>
+    <img src="brainy.png" alt="Brainy" style="width:34px;height:34px;object-fit:contain;margin:0 4px;">
+    <div><div class="logo-text">Anti-Mobbing</div></div>
+  </a>
+  <div class="header-actions">
+    <button class="ctrl-btn ctrl-print" onclick="window.print()">🖨️ Drucken</button>
+    <a class="ctrl-btn" href="KLARTEXT_AntiMobbing_Training.html">← Kurs</a>
+    <a class="ctrl-btn" href="DASHBOARD.html">🏠</a>
+  </div>
+</header>
+<div class="shell">
+  <div class="page-header"><img src="brainy.png" alt="Brainy" style="width:32px;height:32px;object-fit:contain;margin-bottom:.4rem;">
+    <div class="page-label">KLARTEXT · Druckmaterial</div>
+    <div class="page-titel">Meine Verbündeten</div>
+    <div class="page-sub">Wer ist für mich da? · Ausfüllen und aufbewahren</div>
+  </div>
+
+<div class="verbuendete-row" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;">
+  <!-- GS Version -->
+  <div class="druckseite" style="width:100%;max-width:380px;background:#fff;border:3px solid #C62828;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(198,40,40,.1);">
+    <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#C62828;text-align:center;margin-bottom:.4rem;">🌟 Meine Verbündeten</div>
+    <div style="font-size:.7rem;color:#aaa;text-align:center;margin-bottom:1.25rem;">Grundschule</div>
+    <!-- Sonne SVG -->
+    <div style="text-align:center;margin-bottom:1rem;">
+      <svg viewBox="0 0 200 200" width="180" height="180">
+        <!-- Strahlen -->
+        <line x1="100" y1="15" x2="100" y2="42" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="156" y1="44" x2="136" y2="64" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="185" y1="100" x2="158" y2="100" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="156" y1="156" x2="136" y2="136" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="100" y1="185" x2="100" y2="158" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="44" y1="156" x2="64" y2="136" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="15" y1="100" x2="42" y2="100" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <line x1="44" y1="44" x2="64" y2="64" stroke="#FFCDD2" stroke-width="3" stroke-linecap="round"/>
+        <!-- Kreis -->
+        <circle cx="100" cy="100" r="55" fill="#FFEBEE" stroke="#C62828" stroke-width="2"/>
+        <!-- Mitte -->
+        <text x="100" y="94" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#C62828" font-weight="700">Ich bin</text>
+        <text x="100" y="108" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#C62828" font-weight="700">nicht allein</text>
+        <!-- Strahl-Labels -->
+        <text x="100" y="10" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8B0000">Mama/Papa</text>
+        <text x="168" y="47" text-anchor="start" font-family="DM Sans" font-size="8" fill="#8B0000">Geschwister</text>
+        <text x="168" y="103" text-anchor="start" font-family="DM Sans" font-size="8" fill="#8B0000">Freund:in</text>
+        <text x="168" y="159" text-anchor="start" font-family="DM Sans" font-size="8" fill="#8B0000">Lehrer:in</text>
+        <text x="100" y="198" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8B0000">INGRA</text>
+        <text x="32" y="159" text-anchor="end" font-family="DM Sans" font-size="8" fill="#8B0000">Oma/Opa</text>
+        <text x="12" y="103" text-anchor="end" font-family="DM Sans" font-size="8" fill="#8B0000">Freund:in</text>
+        <text x="32" y="47" text-anchor="end" font-family="DM Sans" font-size="8" fill="#8B0000">________</text>
+      </svg>
+    </div>
+    <div style="font-size:.72rem;color:#aaa;text-align:center;">Schreibe die Namen deiner Verbündeten in die Strahlen.</div>
+  </div>
+
+  <!-- WF Version -->
+  <div class="druckseite" style="width:100%;max-width:380px;background:#fff;border:3px solid #C62828;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(198,40,40,.1);">
+    <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#C62828;text-align:center;margin-bottom:.4rem;">🤝 Mein Unterstützungsnetz</div>
+    <div style="font-size:.7rem;color:#aaa;text-align:center;margin-bottom:1rem;">Weiterführende Schule</div>
+    <div style="display:flex;flex-direction:column;gap:.6rem;">
+      <div style="background:#FFEBEE;border-radius:8px;padding:.75rem 1rem;">
+        <div style="font-size:.68rem;font-weight:700;color:#C62828;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;">Zuhause</div>
+        <div style="display:flex;flex-direction:column;gap:.3rem;">
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="font-size:.8rem;">👤</span><span style="font-size:.82rem;color:#5A3030;flex:1;border-bottom:1px solid #FFCDD2;">_______________________</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="font-size:.8rem;">👤</span><span style="font-size:.82rem;color:#5A3030;flex:1;border-bottom:1px solid #FFCDD2;">_______________________</span></div>
+        </div>
+      </div>
+      <div style="background:#FFEBEE;border-radius:8px;padding:.75rem 1rem;">
+        <div style="font-size:.68rem;font-weight:700;color:#C62828;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;">In der Schule</div>
+        <div style="display:flex;flex-direction:column;gap:.3rem;">
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="font-size:.8rem;">🏫</span><span style="font-size:.82rem;color:#5A3030;flex:1;border-bottom:1px solid #FFCDD2;">_______________________</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="font-size:.8rem;">🏫</span><span style="font-size:.82rem;color:#5A3030;flex:1;border-bottom:1px solid #FFCDD2;">_______________________</span></div>
+        </div>
+      </div>
+      <div style="background:#FFEBEE;border-radius:8px;padding:.75rem 1rem;">
+        <div style="font-size:.68rem;font-weight:700;color:#C62828;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;">Freunde</div>
+        <div style="display:flex;flex-direction:column;gap:.3rem;">
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="font-size:.8rem;">💛</span><span style="font-size:.82rem;color:#5A3030;flex:1;border-bottom:1px solid #FFCDD2;">_______________________</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;"><span style="font-size:.8rem;">💛</span><span style="font-size:.82rem;color:#5A3030;flex:1;border-bottom:1px solid #FFCDD2;">_______________________</span></div>
+        </div>
+      </div>
+      <div style="background:#FFEBEE;border-radius:8px;padding:.75rem 1rem;">
+        <div style="font-size:.68rem;font-weight:700;color:#C62828;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;">Notfall-Nummern</div>
+        <div style="font-size:.82rem;color:#5A3030;line-height:1.7;">📞 Nummer gegen Kummer: <strong>116 111</strong><br>📞 Notruf: <strong>110 / 112</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

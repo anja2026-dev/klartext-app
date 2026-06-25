@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT M3-08 · Krise — Rot oder Grau — Feuerwehr</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+:root{--m3:#B07D2A;--m3-dark:#7A5318;--m3-light:#FBF4E8;--m3-border:#E0C88A;}
+
+/* SITUATION HERO */
+.situation-hero{
+  background:linear-gradient(135deg,#B07D2A 0%,#7A5318 100%);
+  padding:1.25rem var(--pad-card,1.25rem);
+  display:flex;align-items:center;gap:1rem;
+}
+.sit-emoji{font-size:2.2rem;flex-shrink:0;}
+.sit-text{flex:1;}
+.sit-label{font-size:.58rem;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.2rem;}
+.sit-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.2;}
+
+/* BAROMETER INDIKATOR */
+.baro-indikator{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.6rem var(--pad-card,1.25rem);
+  background:#FBF4E8;border-bottom:1px solid #E0C88A;
+}
+.baro-dot{width:16px;height:16px;border-radius:50%;background:#9B2626;flex-shrink:0;box-shadow:0 0 0 3px #9B262633;}
+.baro-text{font-size:.75rem;font-weight:600;color:#7A5318;}
+.baro-sub{font-size:.65rem;color:#7A7060;margin-left:.25rem;}
+
+/* SCHRITTE */
+.schritte-wrap{padding:1rem var(--pad-card,1.25rem) .5rem;}
+.schritte-label{font-size:.62rem;font-weight:700;color:#B07D2A;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.85rem;display:flex;align-items:center;gap:.4rem;}
+.schritte-label::before{content:"";width:18px;height:2px;background:#B07D2A;display:block;}
+.schritt-item{display:flex;gap:.75rem;margin-bottom:.6rem;padding:.5rem .7rem;border-radius:8px;transition:background .15s;}
+.schritt-item:hover{background:rgba(176,125,42,.06);}
+.schritt-item.aufgedeckt{background:#FBF4E8;border:1px solid #E0C88A;}
+.schritt-nr-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.schritt-nr{width:28px;height:28px;border-radius:50%;background:#B07D2A;color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.schritt-item.aufgedeckt .schritt-nr{background:#7A5318;}
+.schritt-connector{width:2px;flex:1;background:#E0C88A;margin:3px 0;min-height:12px;}
+.schritt-inhalt{flex:1;padding-top:3px;}
+.schritt-titel{font-size:.88rem;font-weight:600;color:#7A5318;line-height:1.4;}
+.schritt-text{font-size:.82rem;color:#4A4A5A;line-height:1.7;margin-top:.3rem;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ALLE AUFDECKEN */
+.alle-btn{
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+  margin:.5rem var(--pad-card,1.25rem);
+  padding:.5rem;border-radius:8px;
+  background:transparent;border:1.5px dashed #E0C88A;
+  color:#B07D2A;font-size:.75rem;font-weight:600;
+  cursor:pointer;font-family:"DM Sans",sans-serif;
+  transition:all .15s;
+}
+.alle-btn:hover{background:#FBF4E8;border-style:solid;}
+
+/* TOOLS */
+.tools-wrap{padding:.75rem var(--pad-card,1.25rem);border-top:1px solid #E0C88A;}
+.tools-label{font-size:.62rem;font-weight:700;color:#B07D2A;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.5rem;}
+.tool-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
+.tool-chip{display:inline-flex;align-items:center;padding:.28rem .7rem;border-radius:20px;border:1.5px solid #E0C88A;color:#B07D2A;font-size:.75rem;font-weight:600;text-decoration:none;transition:all .15s;background:#fff;}
+.tool-chip:hover{background:#B07D2A;color:#fff;border-color:#B07D2A;}
+
+/* TIPP */
+.tipp-box{margin:.75rem var(--pad-card,1.25rem);background:#EAF5F0;border:1px solid #A8DFC0;border-radius:8px;padding:.7rem .9rem;display:flex;gap:.5rem;}
+.tipp-icon{font-size:1rem;flex-shrink:0;}
+.tipp-text{font-size:.8rem;color:#1A4A2E;line-height:1.65;}
+
+/* NAV */
+.karte-nav{display:flex;align-items:center;justify-content:space-between;padding:.35rem var(--pad-card,1.25rem);border-top:1px solid #E0C88A;background:#FBF4E8;}
+.karte-nav a{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:600;color:#B07D2A;text-decoration:none;opacity:.7;transition:opacity .15s;padding:.2rem .4rem;border-radius:4px;}
+.karte-nav a:hover{opacity:1;background:rgba(0,0,0,.04);}
+
+/* FORTSCHRITT */
+.fortschritt{height:3px;background:#FBF4E8;position:relative;overflow:hidden;}
+.fortschritt-fill{height:100%;background:#B07D2A;transition:width .4s ease;width:0%;}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="DASHBOARD-M3.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>M3
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark" aria-hidden="true"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg><span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+
+<div class="fortschritt"><div class="fortschritt-fill" id="fp"></div></div>
+
+<main>
+<article class="karte" aria-labelledby="karte-titel" style="padding:0;overflow:hidden;">
+
+  <!-- SITUATION -->
+  <div class="situation-hero">
+    <div class="sit-emoji">🚨</div>
+    <div class="sit-text">
+      <div class="sit-label">M3 · Situation 08 von 8</div>
+      <div class="sit-titel" id="karte-titel">Krise — Rot oder Grau — Feuerwehr</div>
+    </div>
+  </div>
+
+  <!-- BAROMETER -->
+  <div class="baro-indikator">
+    <div class="baro-dot"></div>
+    <span class="baro-text">Barometer: Rot / Grau</span>
+    <span class="baro-sub">— typischer Bereich</span>
+  </div>
+
+  <!-- SCHRITTE -->
+  <div class="schritte-wrap">
+    <div class="schritte-label">Was jetzt tun — Schritt für Schritt</div>
+    <div id="schritte-8">
+
+        <div class="schritt-item" id="s8-0" onclick="aufdecken(8,0)" style="cursor:pointer;">
+          <div class="schritt-nr-wrap">
+            <div class="schritt-nr">1</div>
+            <div class="schritt-connector" ></div>
+          </div>
+          <div class="schritt-inhalt">
+            <div class="schritt-titel">SOFORT: Feuerwehr-Protokoll aktivieren</div>
+            <div class="schritt-text" id="st8-0" style="display:none;">Bei Rot oder Grau greift das Feuerwehr-Protokoll. Kein normaler Unterricht mehr. TK informieren — sofort.</div>
+            <div class="schritt-hint" id="sh8-0" style="font-size:.68rem;color:#E0C88A;margin-top:.2rem;">Tippen zum Aufdecken ↓</div>
+          </div>
+        </div>
+        <div class="schritt-item" id="s8-1" onclick="aufdecken(8,1)" style="cursor:pointer;">
+          <div class="schritt-nr-wrap">
+            <div class="schritt-nr">2</div>
+            <div class="schritt-connector" ></div>
+          </div>
+          <div class="schritt-inhalt">
+            <div class="schritt-titel">Andere Kinder schützen</div>
+            <div class="schritt-text" id="st8-1" style="display:none;">LK schickt andere Kinder raus oder gibt Aufgabe. Das betroffene Kind braucht Raum — die Klasse Schutz.</div>
+            <div class="schritt-hint" id="sh8-1" style="font-size:.68rem;color:#E0C88A;margin-top:.2rem;">Tippen zum Aufdecken ↓</div>
+          </div>
+        </div>
+        <div class="schritt-item" id="s8-2" onclick="aufdecken(8,2)" style="cursor:pointer;">
+          <div class="schritt-nr-wrap">
+            <div class="schritt-nr">3</div>
+            <div class="schritt-connector" ></div>
+          </div>
+          <div class="schritt-inhalt">
+            <div class="schritt-titel">kLAR einleiten — alle 4 Schritte</div>
+            <div class="schritt-text" id="st8-2" style="display:none;">k = Kontakt & körperliche Sicherheit · L = Leise & Langsam · A = Anerkennung & Atmen · R = Reizreduktion & Rückzug</div>
+            <div class="schritt-hint" id="sh8-2" style="font-size:.68rem;color:#E0C88A;margin-top:.2rem;">Tippen zum Aufdecken ↓</div>
+          </div>
+        </div>
+        <div class="schritt-item" id="s8-3" onclick="aufdecken(8,3)" style="cursor:pointer;">
+          <div class="schritt-nr-wrap">
+            <div class="schritt-nr">4</div>
+            <div class="schritt-connector" ></div>
+          </div>
+          <div class="schritt-inhalt">
+            <div class="schritt-titel">Eltern informieren</div>
+            <div class="schritt-text" id="st8-3" style="display:none;">Bei schwerer Krise: Eltern informieren — durch TK oder LK. Nicht durch INGRA allein.</div>
+            <div class="schritt-hint" id="sh8-3" style="font-size:.68rem;color:#E0C88A;margin-top:.2rem;">Tippen zum Aufdecken ↓</div>
+          </div>
+        </div>
+        <div class="schritt-item" id="s8-4" onclick="aufdecken(8,4)" style="cursor:pointer;">
+          <div class="schritt-nr-wrap">
+            <div class="schritt-nr">5</div>
+            <div class="schritt-connector" style='display:none'></div>
+          </div>
+          <div class="schritt-inhalt">
+            <div class="schritt-titel">Dokumentieren — noch heute</div>
+            <div class="schritt-text" id="st8-4" style="display:none;">Was passiert ist, wann, wie lange, was half, was nicht. Sachlich. Ohne Interpretation. Noch am selben Tag.</div>
+            <div class="schritt-hint" id="sh8-4" style="font-size:.68rem;color:#E0C88A;margin-top:.2rem;">Tippen zum Aufdecken ↓</div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <button class="alle-btn" onclick="alleAufdecken(8)">
+    <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M8 2v12"/></svg>
+    Alle Schritte aufdecken
+  </button>
+
+  <!-- TIPP -->
+  <div class="tipp-box">
+    <div class="tipp-icon">💡</div>
+    <div class="tipp-text">Bei Rot gilt: erst Sicherheit, dann alles andere. Keine Inhalte, keine Gespräche, keine Konsequenzen.</div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="tools-wrap">
+    <div class="tools-label">Werkzeuge für diese Situation</div>
+    <div class="tool-chips"><a href="M0-00_Systemelemente.html" class="tool-chip">→ kLAR-Modell</a><a href="FK-01.html" class="tool-chip">→ FK-01 Feuerwehr</a><a href="TK-04.html" class="tool-chip">→ TK-04 § 8a</a></div>
+  </div>
+
+  <!-- BRAINY -->
+  <div style="padding:.75rem var(--pad-card,1.25rem) 1rem;">
+    <div class="brainy-block">
+      <img src="brainy-m3.png" alt="Brainy">
+      <div class="brainy-block-text"><strong>Brainy:</strong> In dieser Situation zuerst regulieren — dann alles andere.</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="karte-nav"><a class="nav-prev" href="M3-07.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 07</a><span></span><span></span></nav>
+
+  <div class="karte-footer">
+    <span class="footer-links">M3 · Situation 08 · <a href="DASHBOARD-M3.html">M3-Übersicht</a></span>
+    <span class="footer-nr">08 / 20</span>
+  </div>
+
+</article>
+</main>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="M3 Übersicht" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="18" height="18" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+const TOTAL = 5;
+var aufgedeckt_8 = 0;
+
+function aufdecken(karte, idx) {
+  var item = document.getElementById('s'+karte+'-'+idx);
+  var text = document.getElementById('st'+karte+'-'+idx);
+  var hint = document.getElementById('sh'+karte+'-'+idx);
+  if(item.classList.contains('aufgedeckt')) return;
+  item.classList.add('aufgedeckt');
+  text.style.display = 'block';
+  if(hint) hint.style.display = 'none';
+  aufgedeckt_8++;
+  document.getElementById('fp').style.width = (aufgedeckt_8/TOTAL*100)+'%';
+}
+
+function alleAufdecken(karte) {
+  for(var i=0; i<TOTAL; i++) aufdecken(karte, i);
+}
+</script>
+</body>
+</html>

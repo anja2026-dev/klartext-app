@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Für Lehrkräfte</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+// Öffentliche Seite: Login setzen ohne Passwort-Eingabe
+try {
+  sessionStorage.setItem('klartext_login','true');
+  sessionStorage.setItem('klartext_role','lk');
+} catch(e) {}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem;}
+.box{background:#fff;border-radius:16px;padding:2rem;max-width:480px;width:100%;box-shadow:0 4px 24px rgba(27,58,75,.12);}
+.logo{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:#1B3A4B;margin-bottom:.3rem;}
+.sub{font-size:.75rem;color:#1565C0;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem;}
+h1{font-family:"Playfair Display",serif;font-size:1.1rem;color:#1B3A4B;margin-bottom:.75rem;}
+p{font-size:.85rem;color:#3A3A4A;line-height:1.7;margin-bottom:1.25rem;}
+.btn{display:block;background:#1565C0;color:#fff;border-radius:10px;padding:.75rem 1.5rem;text-decoration:none;font-weight:700;font-size:.9rem;text-align:center;margin-bottom:.5rem;}
+.karten-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem;}
+.karte-link{background:#EAF1F8;border:1.5px solid #1565C0;border-radius:8px;padding:.6rem .8rem;text-decoration:none;color:#1565C0;font-size:.78rem;font-weight:700;}
+.karte-link:hover{background:#1565C0;color:#fff;}
+.footer{font-size:.68rem;color:#aaa;margin-top:1.5rem;text-align:center;}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">KLARTEXT</div>
+  <div class="sub">Karten für Lehrkräfte</div>
+  <h1>Schulbegleitung verstehen — in 15 Karten</h1>
+  <p>Diese Karten sind speziell für Lehrkräfte mit Schulbegleitungskindern in ihrer Klasse. Keine Anmeldung nötig — einfach Karte wählen und lesen.</p>
+  <a class="btn" href="KLARTEXT_LK_Index.html">→ Alle 15 Karten im Überblick</a>
+  <p style="font-size:.75rem;color:#6A6878;margin-bottom:.5rem;">Oder direkt zu einer Karte:</p>
+  <div class="karten-grid">
+    <a class="karte-link" href="LK-01.html">LK-01 · Zusammenarbeit</a>
+    <a class="karte-link" href="LK-02.html">LK-02 · Verhalten</a>
+    <a class="karte-link" href="LK-03.html">LK-03 · Elterngespräche</a>
+    <a class="karte-link" href="LK-04.html">LK-04 · Inklusion</a>
+    <a class="karte-link" href="LK-05.html">LK-05 · INGRA fehlt</a>
+    <a class="karte-link" href="LK-08.html">LK-08 · Konflikte</a>
+    <a class="karte-link" href="LK-11.html">LK-11 · Kinderschutz</a>
+    <a class="karte-link" href="LK-15.html">LK-15 · Migr. Eltern</a>
+  </div>
+  <div class="footer">KLARTEXT-Mentoring · Anja Jolk · anja.jolk@gmx.de</div>
+</div>
+</body>
+</html>

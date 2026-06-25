@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Glossar-Ergänzung LK-Serie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --m:#1B3A4B; --accent:#6EC6A0; --paper:#F5F0E8;
+  --ink:#2D2D2D; --muted:#7A7060; --surface:#fff;
+  --border:#DDD8CE; --r:10px;
+  --lk:#4f7b95; --lk-light:rgba(79,123,149,.10);
+}
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:"DM Sans",sans-serif; background:var(--paper); color:var(--ink); line-height:1.7; padding:2rem 1rem 6rem; }
+
+.shell { max-width:860px; margin:0 auto; }
+
+/* Einleitung */
+.intro-box {
+  background:var(--lk); color:#fff;
+  border-radius:var(--r); padding:1.4rem 1.8rem; margin-bottom:2rem;
+}
+.intro-box h1 { font-family:"Playfair Display",serif; font-size:1.4rem; margin-bottom:.4rem; }
+.intro-box p { font-size:.88rem; color:rgba(255,255,255,.78); line-height:1.6; margin-bottom:.5rem; }
+.intro-box code {
+  background:rgba(255,255,255,.15); padding:.15rem .4rem;
+  border-radius:4px; font-size:.8rem; font-family:monospace;
+}
+
+/* Sektion */
+.section-head {
+  display:flex; align-items:center; gap:.75rem;
+  margin:2.5rem 0 1rem; padding-bottom:.5rem;
+  border-bottom:2.5px solid var(--lk);
+}
+.section-head h2 { font-family:"Playfair Display",serif; font-size:1.1rem; color:var(--m); }
+.section-badge {
+  font-size:.62rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; padding:.15rem .5rem; border-radius:4px;
+  background:var(--lk-light); color:var(--lk); border:1px solid rgba(79,123,149,.25);
+}
+
+/* Glossar-Eintrag — exakt wie in KLARTEXT_Glossar.html */
+.glossar-item {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:1.1rem 1.3rem; margin-bottom:.55rem;
+  transition:border-color .15s, box-shadow .15s;
+}
+.glossar-item:hover { border-color:var(--m); box-shadow:0 2px 12px rgba(27,58,75,.08); }
+.glossar-term {
+  font-family:"Playfair Display",serif; font-size:1rem; font-weight:700;
+  color:var(--m); margin-bottom:.3rem; display:flex; align-items:center; gap:.6rem;
+}
+.klartext-badge {
+  font-size:.58rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; padding:.1rem .45rem; border-radius:4px;
+  background:#EAF0F4; color:var(--m); border:1px solid #9BB5C4;
+  font-family:"DM Sans",sans-serif;
+}
+.lk-badge {
+  font-size:.58rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; padding:.1rem .45rem; border-radius:4px;
+  background:var(--lk-light); color:var(--lk);
+  border:1px solid rgba(79,123,149,.3); font-family:"DM Sans",sans-serif;
+}
+.glossar-def { font-size:.88rem; color:var(--ink); line-height:1.75; margin-bottom:.5rem; }
+.glossar-def em { font-style:italic; color:var(--muted); }
+.glossar-def strong { color:var(--m); font-weight:500; }
+.glossar-tags { display:flex; gap:.3rem; flex-wrap:wrap; margin-top:.4rem; }
+.gtag {
+  font-size:.6rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  padding:.1rem .4rem; border-radius:4px;
+  background:var(--paper); color:var(--muted); border:1px solid var(--border);
+}
+.gtag.lk-tag { background:var(--lk-light); color:var(--lk); border-color:rgba(79,123,149,.25); }
+.glossar-quelle { font-size:.75rem; color:#aaa; font-style:italic; margin-top:.4rem; }
+.glossar-karte {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.72rem; color:var(--m); text-decoration:none;
+  border:1px solid var(--border); border-radius:20px; padding:.15rem .5rem;
+  margin-top:.4rem; transition:all .12s;
+}
+.glossar-karte:hover { background:var(--m); color:#fff; }
+.glossar-karte.lk { border-color:var(--lk); color:var(--lk); }
+.glossar-karte.lk:hover { background:var(--lk); color:#fff; }
+
+/* Buchstaben-Gruppe */
+.buchstabe-gruppe { margin-bottom:1.5rem; }
+.buchstabe-anker {
+  font-family:"Playfair Display",serif; font-size:1.6rem;
+  font-weight:700; color:var(--m); opacity:.2; margin-bottom:.5rem;
+}
+
+/* Quellen */
+.quelle-item {
+  background:var(--surface); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:1rem 1.2rem; margin-bottom:.5rem;
+}
+.quelle-ref { font-size:.88rem; color:var(--ink); line-height:1.75; }
+.quelle-ref strong { color:var(--m); }
+.quelle-kontext {
+  font-size:.78rem; color:var(--muted); margin-top:.35rem;
+  padding-top:.35rem; border-top:1px solid var(--border); line-height:1.55;
+}
+.quelle-kontext .karte-link {
+  display:inline-flex; align-items:center; gap:.3rem;
+  font-size:.72rem; color:var(--lk); text-decoration:none;
+  border:1px solid var(--lk); border-radius:20px; padding:.1rem .45rem;
+  margin-left:.3rem; transition:all .12s;
+}
+.quelle-kontext .karte-link:hover { background:var(--lk); color:#fff; }
+
+/* Integrations-Hinweis */
+.integration-box {
+  background:#FFF8E1; border:1.5px solid #FFD54F;
+  border-radius:var(--r); padding:1.2rem 1.5rem; margin-top:2.5rem;
+}
+.integration-box h3 { font-family:"Playfair Display",serif; font-size:1rem; color:#5D4037; margin-bottom:.6rem; }
+.integration-box p, .integration-box li { font-size:.85rem; color:#5D4037; line-height:1.7; }
+.integration-box ul { padding-left:1.2rem; margin-top:.4rem; }
+.integration-box code { background:rgba(0,0,0,.07); padding:.1rem .3rem; border-radius:3px; font-family:monospace; font-size:.8rem; }
+</style>
+<script>
+(function(){
+  try{
+    var login=sessionStorage.getItem('klartext_login');
+    var role=sessionStorage.getItem('klartext_role')||'';
+    if(login!=='true'){window.location.href='KLARTEXT_Login.html';return;}
+    if(!['lk','admin','ingra','trainer'].includes(role))window.location.href='KLARTEXT_Login.html';
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div class="shell">
+
+<!-- ── Einleitung ── -->
+<div class="intro-box">
+  <h1>Glossar-Ergänzung · LK-Serie</h1>
+  <p>Diese Datei enthält <strong>12 neue Glossar-Einträge</strong> für die LK-Serie (Lehrkraft-Perspektive) sowie <strong>8 Quellen-Ergänzungen</strong> für das bestehende Quellenverzeichnis.</p>
+  <p>Integration: Die Einträge nach Buchstabe in die entsprechenden <code>buchstabe-gruppe</code>-Blöcke in <code>KLARTEXT_Glossar.html</code> einfügen. Filter-Kategorie: <code>data-tags="paedagogik lehrkraft"</code> hinzufügen. Filterbutton „Lehrkraft" (neu) in die <code>.filter-row</code> einfügen.</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     NEUE GLOSSAR-EINTRÄGE — ALPHABETISCH
+     ══════════════════════════════════════════ -->
+
+<div class="section-head">
+  <h2>Neue Glossar-Einträge</h2>
+  <span class="section-badge">12 Begriffe · LK-Serie</span>
+</div>
+
+<!-- A -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">A</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft recht" data-buchstabe="A">
+    <div class="glossar-term">Aufsichtspflicht <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Die Lehrkraft trägt die <strong>pädagogische und rechtliche Verantwortung</strong> für alle Schüler:innen ihrer Klasse — auch wenn eine INGRA anwesend ist. Die INGRA übernimmt keine Aufsichtspflicht im Rechtssinne; sie ist nicht befugt, die Lehrkraft zu ersetzen. Bei Ausfall der INGRA bleibt die Aufsichtspflicht vollständig bei der Lehrkraft. <em>Wichtig: Die INGRA ist Mitarbeiterin des Trägers, nicht der Schule.</em></div>
+    <div class="glossar-quelle">SchulG NRW § 57 · Textor, A. (2018). Einführung in die Inklusionspädagogik. Klinkhardt.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Recht</span><span class="gtag">Schulalltag</span></div>
+    <a class="glossar-karte lk" href="LK-05.html">→ LK-05 Wenn die INGRA fehlt</a>
+  </div>
+
+</div>
+
+<!-- I -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">I</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="I">
+    <div class="glossar-term">Inklusion <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Das Recht aller Kinder auf gemeinsamen Unterricht — unabhängig von Behinderung, Förderbedarf oder Herkunft (UN-BRK Art. 24, 2009). In der schulischen Praxis bedeutet Inklusion nicht, dass alle dasselbe tun, sondern dass alle <strong>am gemeinsamen Lernort</strong> teilhaben. Die INGRA ist kein Instrument zur Ausgrenzung, sondern zur Ermöglichung von Teilhabe. <em>Inklusion gelingt am besten, wenn Lehrkraft und INGRA eine gemeinsame Haltung entwickeln.</em></div>
+    <div class="glossar-quelle">UN-Behindertenrechtskonvention Art. 24 (2009) · Heimlich, U. & Kahlert, J. (Hrsg.) (2012). Inklusion in Schule und Unterricht. Kohlhammer.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Pädagogik</span><span class="gtag">Recht</span></div>
+    <a class="glossar-karte lk" href="LK-04.html">→ LK-04 Inklusion planen</a>
+  </div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="I">
+    <div class="glossar-term">Interprofessionelle Kooperation <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Zusammenarbeit von Fachkräften verschiedener Berufsgruppen — in inklusiven Schulen: Lehrkraft, INGRA, Sonderpädagog:in, Schulpsychologie, Sozialpädagogik. Gelingende interprofessionelle Kooperation setzt <strong>gemeinsame Ziele, klare Rollen und regelmäßige Kommunikation</strong> voraus. Studien zeigen: Sie findet an deutschen Schulen noch zu selten strukturiert statt.</div>
+    <div class="glossar-quelle">Meyer, K. (2017). Göttinger Schulbegleitungsstudie (GötS). Universitätsverlag Göttingen. · Richter, D. & Pant, H.A. (2016). Lehrerkooperation in Deutschland. Bertelsmann.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Pädagogik</span><span class="gtag">Kooperation</span></div>
+    <a class="glossar-karte lk" href="LK-01.html">→ LK-01 Zusammenarbeit</a>
+  </div>
+
+</div>
+
+<!-- K -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">K</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="K">
+    <div class="glossar-term">Kostenträger <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Die Behörde, die die Schulbegleitung <strong>bewilligt und finanziert</strong> — je nach Fallkonstellation das Jugendamt (SGB VIII: seelische Behinderung) oder das Sozialamt/Eingliederungshilfe-Träger (SGB IX: körperliche/geistige Behinderung). Der Kostenträger ist <em>nicht</em> die Schule und <em>nicht</em> der Träger der INGRA. Fragen zur Stundenanzahl, Verlängerung oder Änderung des Hilfeplans gehen an den Kostenträger — nicht an die Lehrkraft.</div>
+    <div class="glossar-quelle">SGB VIII § 35a · SGB IX § 90 ff.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Recht</span><span class="gtag">System</span></div>
+    <a class="glossar-karte lk" href="LK-03.html">→ LK-03 Elterngespräche</a>
+  </div>
+
+</div>
+
+<!-- M -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">M</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="M">
+    <div class="glossar-term">Multiprofessionelles Team <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Alle Fachkräfte, die gemeinsam für ein Kind mit besonderem Förderbedarf tätig sind: Lehrkraft, INGRA, Sonderpädagogik, ggf. Therapeuten, Schulpsychologie, Eltern. Das multiprofessionelle Team hat <strong>keine gemeinsame Dienstaufsicht</strong> — jede Kraft ist bei ihrer eigenen Organisation angestellt. Das erfordert bewusste Koordination, weil niemand automatisch zuständig ist.</div>
+    <div class="glossar-quelle">Meyer, K. (2017). GötS. · Resch, K. et al. (Hrsg.) (2022). Wege der Kooperation im Kontext inklusiver Bildung. Waxmann.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Pädagogik</span><span class="gtag">Kooperation</span></div>
+    <a class="glossar-karte lk" href="LK-06.html">→ LK-06 Schuljahresbeginn</a>
+  </div>
+
+</div>
+
+<!-- R -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">R</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="R">
+    <div class="glossar-term">Rollenklarheit (Lehrkraft–INGRA) <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Die klare Abgrenzung der Aufgaben zwischen Lehrkraft und INGRA im Schulalltag. Die Lehrkraft verantwortet <strong>Unterricht, Lernziele und Klassenführung</strong>; die INGRA begleitet das Kind individuell auf Grundlage des Hilfeplans. Unklare Rollenverteilung gehört zu den häufigsten Ursachen für Spannungen. Studien zeigen: <em>Weder Kenntnisse noch Routinen im Umgang mit Schulbegleitung sind bei Lehrkräften bisher verbreitet</em> (Czempiel & Kracke, 2019).</div>
+    <div class="glossar-quelle">Czempiel, S. & Kracke, B. (2019). Kann das jeder? QfI — Qualifizierung für Inklusion, 1(2). · Meyer, K. (2017). GötS.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Kooperation</span><span class="gtag">Pädagogik</span></div>
+    <a class="glossar-karte lk" href="LK-01.html">→ LK-01 Zusammenarbeit</a>
+    <a class="glossar-karte lk" href="LK-08.html">→ LK-08 Wenn es nicht stimmt</a>
+  </div>
+
+</div>
+
+<!-- S -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">S</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="S">
+    <div class="glossar-term">Sonderpädagogischer Förderbedarf <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Formal festgestellter besonderer Unterstützungsbedarf eines Kindes in mindestens einem <strong>Förderschwerpunkt</strong>: Lernen, Sprache, Emotionale und soziale Entwicklung (ESE), Hören, Sehen, körperliche und motorische Entwicklung, geistige Entwicklung, Kranke. Die Feststellung erfolgt durch die Schulbehörde nach Gutachten. <em>Nicht jedes Kind mit INGRA hat einen formal festgestellten sonderpädagogischen Förderbedarf</em> — und umgekehrt.</div>
+    <div class="glossar-quelle">KMK (2011). Inklusive Bildung von Kindern und Jugendlichen mit Behinderungen in Schulen. · AO-SF NRW.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Recht</span><span class="gtag">Pädagogik</span></div>
+    <a class="glossar-karte lk" href="LK-04.html">→ LK-04 Inklusion planen</a>
+  </div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="S">
+    <div class="glossar-term">Shadow-Effekt <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Unerwünschter Nebeneffekt übermäßiger INGRA-Begleitung: Das Kind wird dauerhaft von der INGRA „beschattet", was <strong>soziale Ausgrenzung</strong> fördern und <strong>Selbstständigkeit hemmen</strong> kann. Mitschüler:innen nehmen das begleitete Kind als „anders" wahr. Forschung zeigt: Intensive Eins-zu-eins-Begleitung kann Inklusion paradoxerweise erschweren. Ziel ist immer die größtmögliche Teilhabe mit dem kleinstmöglichen nötigen Unterstützungsgrad.</div>
+    <div class="glossar-quelle">Webster, R. et al. (2010). The Deployment and Impact of Support Staff (DISS). Routledge. · Giangreco, M.F. (2010). Utilization of Teacher Assistants. Remedial and Special Education, 31(3).</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Inklusion</span><span class="gtag">Pädagogik</span></div>
+    <a class="glossar-karte lk" href="LK-04.html">→ LK-04 Inklusion planen</a>
+  </div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="S">
+    <div class="glossar-term">Statusunterschied (LK–INGRA) <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Der strukturell unterschiedliche berufliche Status von Lehrkraft (verbeamtet oder tarifbeschäftigt, Hochschulabschluss, Unterrichtsverantwortung) und INGRA (oft Quereinsteiger:in, Trägerangestellte, ohne eigenständige pädagogische Verantwortung). Dieser Statusunterschied kann Kooperation erschweren, wenn er nicht bewusst reflektiert wird. <em>Augenhöhe ist kein Automatismus — sie muss aktiv hergestellt werden.</em></div>
+    <div class="glossar-quelle">Czempiel, S. & Kracke, B. (2019). QfI. · Meyer, K. (2017). GötS.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Kooperation</span><span class="gtag">Reflexion</span></div>
+    <a class="glossar-karte lk" href="LK-08.html">→ LK-08 Wenn es nicht stimmt</a>
+  </div>
+
+</div>
+
+<!-- T -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">T</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="T">
+    <div class="glossar-term">Träger (der INGRA) <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Die Organisation, bei der die INGRA angestellt ist — z.B. Caritas, AWO, Paritätischer, Lebenshilfe oder ein privater Anbieter. Der Träger ist <strong>Arbeitgeber der INGRA</strong> und trägt die fachliche und organisatorische Verantwortung für deren Einsatz. Beschwerden über die INGRA oder Wünsche nach Änderungen gehen an den Träger — nicht an die Schulleitung. Auch Ausfall- und Vertretungsregelungen sind Trägersache.</div>
+    <div class="glossar-quelle">SGB IX § 78 ff. · Dworschak, W. (2012). Schulbegleitung an Förder- und Allgemeinen Schulen. Klinkhardt.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Recht</span><span class="gtag">System</span></div>
+    <a class="glossar-karte lk" href="LK-05.html">→ LK-05 Wenn die INGRA fehlt</a>
+    <a class="glossar-karte lk" href="LK-08.html">→ LK-08 Wenn es nicht stimmt</a>
+  </div>
+
+</div>
+
+<!-- U -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">Ü</div>
+
+  <div class="glossar-item" data-tags="paedagogik lehrkraft" data-buchstabe="Ü">
+    <div class="glossar-term">Übergabegespräch (LK–LK) <span class="lk-badge">Lehrkraft</span></div>
+    <div class="glossar-def">Strukturiertes Gespräch zwischen abgebender und aufnehmender Lehrkraft beim Klassen- oder Schulwechsel eines Kindes mit Schulbegleitung. Enthält: <strong>Was hat geholfen?</strong> (Rituale, Signale, Materialien), <strong>Was sind Auslöser?</strong> (Stresssituationen, Trigger), <strong>Welche sozialen Bezüge</strong> hat das Kind? Datenschutz: Weitergabe nur mit Einverständnis der Eltern. Pädagogische Übergabe ist mehr als ein Formular — das gesprochene Wissen zählt.</div>
+    <div class="glossar-quelle">Textor, A. (2018). Klinkhardt.</div>
+    <div class="glossar-tags"><span class="gtag lk-tag">Lehrkraft</span><span class="gtag">Übergänge</span><span class="gtag">Kooperation</span></div>
+    <a class="glossar-karte lk" href="LK-07.html">→ LK-07 Übergänge</a>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     QUELLEN-ERGÄNZUNG FÜR KLARTEXT_Quellenverzeichnis.html
+     ══════════════════════════════════════════ -->
+
+<div class="section-head" style="margin-top:3rem;">
+  <h2>Quellenergänzung · LK-Serie</h2>
+  <span class="section-badge">8 Quellen · einfügen in KLARTEXT_Quellenverzeichnis.html</span>
+</div>
+
+<p style="font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;">
+  Die folgenden Quellen sind in der LK-Serie zitiert und ergänzen das bestehende Quellenverzeichnis.
+  Einfügen nach Autor-Alphabet in die entsprechenden Abschnitte.
+</p>
+
+<!-- C -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">C</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Czempiel, S. & Kracke, B. (2019).</strong>
+      Kann das jeder? — Welche Rolle spielt die Qualifikation von Schulbegleiter/innen für die Tätigkeiten und die Zusammenarbeit mit Lehrer/innen? Eine explorative Studie.
+      <em>QfI — Qualifizierung für Inklusion. Online-Zeitschrift zur Forschung über Aus-, Fort- und Weiterbildung pädagogischer Fachkräfte, 1</em>(2).
+      Friedrich-Schiller-Universität Jena.
+    </div>
+    <div class="quelle-kontext">
+      Kernbefund: Lehrkräfte haben weder Kenntnisse noch etablierte Routinen im Umgang mit Schulbegleitung. Statusunterschiede erschweren die Kooperation.
+      <a class="karte-link" href="LK-01.html">LK-01</a>
+      <a class="karte-link" href="LK-06.html">LK-06</a>
+      <a class="karte-link" href="LK-08.html">LK-08</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- G -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">G</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Giangreco, M.F. (2010).</strong>
+      Utilization of Teacher Assistants in Inclusive Schools: Is it the Kind of Help That Helping Is All About?
+      <em>Remedial and Special Education, 31</em>(3), 167–185.
+    </div>
+    <div class="quelle-kontext">
+      Kritische Analyse des Shadow-Effekts: Intensive Einzelbegleitung kann soziale Inklusion paradoxerweise erschweren und Abhängigkeit fördern.
+      <a class="karte-link" href="LK-04.html">LK-04</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- H -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">H</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Heimlich, U. & Kahlert, J. (Hrsg.) (2012).</strong>
+      <em>Inklusion in Schule und Unterricht. Wege zur Bildung für alle.</em>
+      Kohlhammer. Stuttgart.
+    </div>
+    <div class="quelle-kontext">
+      Grundlagenwerk zur schulischen Inklusion in Deutschland — didaktische Konzepte, Schulentwicklung, Kooperation.
+      <a class="karte-link" href="LK-04.html">LK-04</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- M -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">M</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Meyer, K. (2017).</strong>
+      Multiprofessionalität in der inklusiven Schule: Eine empirische Studie zur Kooperation von Lehrkräften und Schulbegleiter/innen (Göttinger Schulbegleitungsstudie — GötS).
+      <em>Göttinger Beiträge zur erziehungswissenschaftlichen Forschung, 37.</em>
+      Universitätsverlag Göttingen.
+    </div>
+    <div class="quelle-kontext">
+      Umfassende empirische Studie zur LK–INGRA-Kooperation. Kernbefund: Systematische Einbindung von Schulbegleitung gelingt selten strukturell — sie hängt vom Engagement der Beteiligten ab.
+      <a class="karte-link" href="LK-01.html">LK-01</a>
+      <a class="karte-link" href="LK-06.html">LK-06</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- R -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">R</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Resch, K., Lindner, K.-T., Streese, B., Proyer, M. & Schwab, S. (Hrsg.) (2022).</strong>
+      <em>Wege der Kooperation im Kontext inklusiver Bildung.</em>
+      Waxmann. Münster.
+    </div>
+    <div class="quelle-kontext">
+      Sammelband zu multiprofessioneller Kooperation: theoretische Konzepte, empirische Befunde, Praxiseinblicke.
+      <a class="karte-link" href="LK-01.html">LK-01</a>
+    </div>
+  </div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Richter, D. & Pant, H.A. (2016).</strong>
+      <em>Lehrerkooperation in Deutschland. Eine Studie zu kooperativen Arbeitsbeziehungen bei Lehrkräften der Sekundarstufe I.</em>
+      Bertelsmann Stiftung / Robert Bosch Stiftung. Gütersloh.
+    </div>
+    <div class="quelle-kontext">
+      Lehrkräfte als „Einzelkämpfer": Empirische Befunde zur geringen Kooperationskultur an deutschen Schulen.
+      <a class="karte-link" href="LK-01.html">LK-01</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- T -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">T</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Textor, A. (2018).</strong>
+      <em>Einführung in die Inklusionspädagogik.</em> 2. Auflage.
+      Klinkhardt / UTB. Bad Heilbrunn.
+    </div>
+    <div class="quelle-kontext">
+      Standardwerk zur Inklusionspädagogik; behandelt u.a. multiprofessionelle Kooperation, Rollendefinitionen und Unterrichtsgestaltung.
+      <a class="karte-link" href="LK-04.html">LK-04</a>
+      <a class="karte-link" href="LK-07.html">LK-07</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- W -->
+<div class="buchstabe-gruppe">
+  <div class="buchstabe-anker">W</div>
+
+  <div class="quelle-item">
+    <div class="quelle-ref">
+      <strong>Webster, R., Blatchford, P., Bassett, P., Brown, P., Martin, C. & Russell, A. (2010).</strong>
+      The Deployment and Impact of Support Staff in Schools (DISS).
+      <em>Routledge.</em> London.
+    </div>
+    <div class="quelle-kontext">
+      Umfangreichste Studie zum Einsatz von Schulbegleitung in England. Kernbefund: Intensive Unterstützung korreliert paradoxerweise mit schlechteren Lernfortschritten — wenn Selbstständigkeit nicht aktiv gefördert wird.
+      <a class="karte-link" href="LK-04.html">LK-04</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Integrations-Hinweis ── -->
+<div class="integration-box">
+  <h3>🛠 Integrations-Anleitung</h3>
+  <p><strong>In KLARTEXT_Glossar.html:</strong></p>
+  <ul>
+    <li>Filter-Button ergänzen: <code>&lt;button class="filter-btn" data-filter="lehrkraft"&gt;Lehrkraft (12)&lt;/button&gt;</code></li>
+    <li>Zähler im Hero aktualisieren: 64 → 76 Begriffe, 9 → 10 Kategorien</li>
+    <li>Neue Einträge alphabetisch in die bestehenden <code>buchstabe-gruppe</code>-Blöcke einfügen</li>
+    <li>Alle neuen Einträge: <code>data-tags="paedagogik lehrkraft"</code></li>
+  </ul>
+  <p style="margin-top:.75rem;"><strong>In KLARTEXT_Quellenverzeichnis.html:</strong></p>
+  <ul>
+    <li>8 neue Quellen alphabetisch nach Erstautor einfügen</li>
+    <li>Zähler ggf. aktualisieren</li>
+    <li>Kategorie „Inklusion & Kooperation" ggf. als neuen Abschnitt ergänzen</li>
+  </ul>
+  <p style="margin-top:.75rem;"><strong>LK-Karten-Verlinkung:</strong></p>
+  <ul>
+    <li>LK-06.html, LK-07.html, LK-08.html aus diesem Chat in dein Netlify-Verzeichnis kopieren</li>
+    <li>In <code>KLARTEXT_Lehrerkurs.html</code> Links auf LK-06 bis LK-08 ergänzen</li>
+    <li>In <code>LK_Dashboard</code> (falls vorhanden) die neuen Karten eintragen</li>
+  </ul>
+</div>
+
+</div><!-- /shell -->
+</body>
+</html>

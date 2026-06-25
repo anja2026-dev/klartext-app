@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Mein Stoppschild</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--am:#C62828;--am-l:#FFEBEE;--am-b:#FFCDD2;--m:#1B3A4B;--accent:#6EC6A0;--paper:#FDF5F5;--ink:#2D2D2D;--muted:#7A6060;--surface:#fff;--border:#EDD8D8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;}
+.kt-header{background:var(--am);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--am-b);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--am-b);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.ctrl-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;border:1.5px solid var(--am-b);color:var(--am-b);text-decoration:none;background:transparent;transition:all .15s;}
+.ctrl-btn:hover{background:rgba(255,255,255,.15);}
+.ctrl-print{background:var(--am-b);color:var(--am);border-color:var(--am-b);}
+.ctrl-print:hover{background:#fff;}
+.header-actions{display:flex;gap:.5rem;align-items:center;}
+.shell{max-width:800px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+.page-header{text-align:center;margin-bottom:2rem;}
+.page-label{font-size:.65rem;font-weight:700;color:var(--am);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem;}
+.page-titel{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:var(--am);margin-bottom:.3rem;}
+.page-sub{font-size:.85rem;color:var(--muted);}
+@media print{
+  .kt-header{display:none!important;}
+  body{background:white;}
+  .druckseite{box-shadow:none!important;border:2px solid #C62828!important;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <a class="logo" href="KLARTEXT_AntiMobbing_Training.html">
+    <div class="logo-mark"><span>K</span></div>
+    <img src="brainy.png" alt="Brainy" style="width:34px;height:34px;object-fit:contain;margin:0 4px;">
+    <div><div class="logo-text">Anti-Mobbing</div></div>
+  </a>
+  <div class="header-actions">
+    <button class="ctrl-btn ctrl-print" onclick="window.print()">🖨️ Drucken</button>
+    <a class="ctrl-btn" href="KLARTEXT_AntiMobbing_Training.html">← Kurs</a>
+    <a class="ctrl-btn" href="DASHBOARD.html">🏠</a>
+  </div>
+</header>
+<div class="shell">
+  <div class="page-header"><img src="brainy.png" alt="Brainy" style="width:32px;height:32px;object-fit:contain;margin-bottom:.4rem;">
+    <div class="page-label">KLARTEXT · Druckmaterial</div>
+    <div class="page-titel">Mein Stoppschild</div>
+    <div class="page-sub">Ausschneiden · Laminieren · Immer dabei haben</div>
+  </div>
+
+<div style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;">
+  <!-- Karte Vorderseite -->
+  <div class="druckseite" style="width:148px;min-height:210px;background:#fff;border:3px solid #C62828;border-radius:12px;padding:1.2rem 1rem;text-align:center;box-shadow:0 4px 20px rgba(198,40,40,.15);display:flex;flex-direction:column;align-items:center;justify-content:space-between;">
+    <div style="font-size:3rem;margin-bottom:.5rem;">🛑</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#C62828;margin-bottom:.5rem;">STOPP!</div>
+    <div style="font-size:.78rem;color:#5A3030;line-height:1.6;margin-bottom:.75rem;">Das ist nicht okay.<br>Ich will das nicht.</div>
+    <div style="width:100%;border-top:1px dashed #FFCDD2;padding-top:.6rem;font-size:.65rem;color:#aaa;">KLARTEXT Mentoring-System</div>
+  </div>
+  <!-- Karte Rückseite -->
+  <div class="druckseite" style="width:148px;min-height:210px;background:#FFEBEE;border:3px solid #C62828;border-radius:12px;padding:1.2rem 1rem;text-align:left;box-shadow:0 4px 20px rgba(198,40,40,.15);display:flex;flex-direction:column;justify-content:space-between;">
+    <div style="font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:#C62828;margin-bottom:.75rem;">Wenn ich das Schild zeige heißt das:</div>
+    <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem;flex:1;">
+      <li style="font-size:.78rem;color:#5A3030;display:flex;gap:.4rem;align-items:flex-start;"><span>🔴</span>Ich fühle mich nicht wohl</li>
+      <li style="font-size:.78rem;color:#5A3030;display:flex;gap:.4rem;align-items:flex-start;"><span>🔴</span>Ich will dass es aufhört</li>
+      <li style="font-size:.78rem;color:#5A3030;display:flex;gap:.4rem;align-items:flex-start;"><span>🔴</span>Ich brauche Hilfe</li>
+    </ul>
+    <div style="margin-top:.75rem;border:1px solid #FFCDD2;border-radius:6px;padding:.4rem .6rem;font-size:.65rem;color:#C62828;font-weight:700;">Meine Ansprechperson:<br><span style="font-weight:400;color:#5A3030;">_________________</span></div>
+  </div>
+  <!-- Großes Klassenposter -->
+  <div class="druckseite" style="width:100%;max-width:500px;background:#fff;border:4px solid #C62828;border-radius:16px;padding:2rem;text-align:center;box-shadow:0 4px 20px rgba(198,40,40,.12);">
+    <div style="font-size:4rem;margin-bottom:.75rem;">🛑</div>
+    <div style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#C62828;margin-bottom:.5rem;">STOPP!</div>
+    <div style="font-size:1rem;color:#5A3030;line-height:1.8;margin-bottom:1.25rem;">In unserer Klasse hat jede:r das Recht<br>sich sicher und respektiert zu fühlen.</div>
+    <div style="display:flex;flex-direction:column;gap:.4rem;text-align:left;background:#FFEBEE;border-radius:10px;padding:1rem 1.2rem;margin-bottom:1rem;">
+      <div style="font-size:.85rem;color:#5A3030;display:flex;gap:.6rem;"><span>✋</span>Wir hören auf wenn jemand Stopp sagt</div>
+      <div style="font-size:.85rem;color:#5A3030;display:flex;gap:.6rem;"><span>✋</span>Wir schließen niemanden aus</div>
+      <div style="font-size:.85rem;color:#5A3030;display:flex;gap:.6rem;"><span>✋</span>Wir holen Hilfe wenn wir etwas sehen</div>
+    </div>
+    <div style="font-size:.65rem;color:#aaa;">KLARTEXT Anti-Mobbing-Training · Klassenposter DIN A4</div>
+  </div>
+</div>
+<p style="text-align:center;font-size:.75rem;color:#aaa;margin-top:1rem;">Tipp: Kleine Karten auf festes Papier drucken, ausschneiden und laminieren.</p>
+
+</div>
+</body>
+</html>

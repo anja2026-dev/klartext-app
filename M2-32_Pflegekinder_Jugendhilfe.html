@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT M2-32 Pflegekinder & Jugendhilfe-System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+:root{--m3:#3B8A68;--m3-dark:#1A5A40;--m3-light:#EEF7F2;--m3-border:#A3CEBB;}
+.warn-box{background:#FFF8E1;border:1.5px solid #FFD54F;border-radius:var(--r-md,8px);padding:.85rem 1rem;margin:.75rem 0;display:flex;gap:.6rem;}
+.warn-icon{font-size:1.1rem;flex-shrink:0;}
+.warn-text{font-size:.82rem;color:#5D4037;line-height:1.7;}
+.nie-liste{list-style:none;padding:0;display:flex;flex-direction:column;gap:.3rem;}
+.nie-liste li{font-size:.85rem;color:#C62828;display:flex;gap:.4rem;align-items:flex-start;line-height:1.6;}
+.nie-liste li::before{content:"✗";font-weight:700;flex-shrink:0;}
+.ja-liste{list-style:none;padding:0;display:flex;flex-direction:column;gap:.3rem;}
+.ja-liste li{font-size:.85rem;color:#1A4A2E;display:flex;gap:.4rem;align-items:flex-start;line-height:1.6;}
+.ja-liste li::before{content:"✓";color:#3B8A68;font-weight:700;flex-shrink:0;}
+.zwei-sp{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.sp-block{border-radius:8px;padding:.85rem 1rem;}
+.sp-rot{background:#FDECEA;border:1px solid #F1948A;}
+.sp-gruen{background:#EAF5EE;border:1px solid #A8DFC0;}
+.sp-titel{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
+.sp-rot .sp-titel{color:#C62828;}
+.sp-gruen .sp-titel{color:#1A4A2E;}
+.satz-box{background:#EEF7F2;border-left:3px solid #3B8A68;border-radius:4px;padding:.6rem .85rem;margin:.4rem 0;font-size:.85rem;color:#1A5A40;font-style:italic;line-height:1.65;}
+@media(max-width:500px){.zwei-sp{grid-template-columns:1fr;}}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Zurück</a>
+    <a class="kt-logo" href="DASHBOARD.html"><div class="kt-logo-mark" aria-hidden="true"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div><div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div></a>
+    <a class="kt-home-btn" href="DASHBOARD.html"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg><span>Dashboard</span></a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT &middot; Modul 2 &middot; Kinder verstehen</div>
+<main><article class="karte" aria-labelledby="karte-titel">
+  <div class="karte-stripe"></div>
+  <div class="karte-header">
+    <div class="karte-meta-wrap">
+      <div class="modul-tag">M-02</div>
+      <div class="karte-nr">Karte 32 &middot; Systemsprünge · Helfervielfalt · Stabilität</div>
+      <h1 class="karte-titel" id="karte-titel">Pflegekinder & Jugendhilfe-System</h1>
+    </div>
+    <div class="karte-icon-wrap" aria-hidden="true">🏛️</div>
+  </div>
+  <div class="karte-lead">Pflegekinder tragen ein komplexes System mit 10–20 Erwachsenen, die 'zuständig' sind. INGRA ist oft die stabilste Bezugsperson im Alltag.</div>
+  <div class="karte-body">
+      <div class="ab"><div class="ab-titel">Das System verstehen</div>
+      <p style="font-size:.88rem;color:var(--kt-muted);line-height:1.75;">Pflegekinder leben in einem System aus Herkunftsfamilie, Pflegefamilie, Jugendamt, Vormund, Schule, Therapeut:innen, Träger und INGRA. Diese Vielzahl von Erwachsenen erzeugt Stress, Überforderung und Misstrauen.</p>
+      <div class="warn-box" style="background:#EAF0F4;border-color:#9BB5C4;"><div class="warn-icon">💡</div><div class="warn-text"><strong>INGRA ist oft die stabilste Bezugsperson im Alltag</strong> — nicht weil andere fehlen, sondern weil INGRA täglich da ist, verlässlich, ruhig, ohne Agenda.</div></div></div>
+      <div class="ab"><div class="ab-titel">Was Systemstress im Alltag bedeutet</div>
+      <ul><li>Viele Termine und Übergänge — das Kind weiß nie genau was als nächstes kommt</li>
+      <li>Viele Erwachsene mit unterschiedlichen Erwartungen</li>
+      <li>Häufige Wechsel zwischen Systemen (Heim, Pflegefamilie, Herkunft)</li>
+      <li>Keine stabile Alltagsroutine</li></ul></div>
+      <div class="ab"><div class="ab-titel">Was INGRA bietet — und was nicht</div>
+      <div class="zwei-sp">
+        <div class="sp-block sp-gruen"><div class="sp-titel">INGRA bietet</div>
+          <ul class="ja-liste"><li>Struktur und Vorhersehbarkeit</li><li>Klare Abläufe und Rituale</li><li>Ruhige Sprache</li><li>Sachliche Dokumentation</li><li>Neutrale Haltung</li></ul>
+        </div>
+        <div class="sp-block sp-rot"><div class="sp-titel">INGRA vermeidet</div>
+          <ul class="nie-liste"><li>Diagnosen äußern</li><li>Schuldzuweisungen an Pflegeeltern/Herkunft</li><li>Bewertungen über das System</li><li>Fragen über Herkunft</li><li>Partei ergreifen</li></ul>
+        </div>
+      </div></div>
+      <div class="ab"><div class="ab-titel">Hochrisiko-Momente: Übergänge</div>
+      <p style="font-size:.88rem;color:var(--kt-muted);line-height:1.75;">Übergänge sind für Pflegekinder besonders gefährlich: Ankommen, Pausen, Raumwechsel, Stundenwechsel, Abholen, Ferienbeginn und -ende. INGRA kündigt jeden Wechsel an, nutzt visuelle Pläne und ruhige Präsenz.</p></div>
+      <div class="ab"><div class="ab-titel">Sichere Dokumentationssprache</div>
+      <div class="satz-box">"10:20 – Kind klammert, wirkt ängstlich. Atem-Anker. Danach stabil."</div>
+      <div class="satz-box">"11:45 – Kind reagiert stark auf Trennung. SB begleitet ruhig."</div>
+      <p style="font-size:.78rem;color:var(--kt-muted);margin-top:.4rem;">Nie: "Kind ist bindungsgestört." · "Pflegeeltern machen Fehler." · "Kind manipuliert."</p></div>
+    <div class="brainy-block"><img src="brainy-m2.png" alt="Brainy">
+      <div class="brainy-block-text"><strong>Brainy erinnert:</strong> Pflegekinder sind nicht schwierig — sie sind belastet und überlebensklug.</div>
+    </div>
+  </div>
+  <nav class="karte-nav"><a class="nav-prev" href="M2-31_Bindungstrauma_Pflegekinder.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 31</a><span class="spacer"></span><a class="nav-next" href="M2-33_Hochkonflikt_Eltern.html">33 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
+  <div class="karte-footer">
+      <span class="footer-links">Modul 2 · Karte 32 · → Karte 31 · Bindungstrauma Pflegekinder</span>
+      <span class="footer-nr">32 / 41</span>
+    </div>
+</article></main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);"><svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg></a>
+</div>
+<footer role="contentinfo"><strong>KLARTEXT</strong> &middot; M2 &middot; Karte 32 &middot; Pflegekinder & Jugendhilfe-System<span class="footer-copy">Alle Rechte vorbehalten &middot; KLARTEXT-Mentoring-System</span></footer>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body></html>

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Lernpfad INGRA</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:780px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+
+/* HERO */
+.hero{background:#1B3A4B;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:.75rem;}
+.hero-stats{display:flex;gap:.5rem;flex-wrap:wrap;}
+.h-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:.35rem .75rem;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600;}
+
+/* GESAMT-PROGRESS */
+.gesamt-bar-wrap{background:#fff;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.25rem;border:1.5px solid #DDD8CE;}
+.gb-label{font-size:.65rem;font-weight:700;color:#1B3A4B;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;justify-content:space-between;}
+.gb-bar{height:10px;background:#F5F0E8;border-radius:5px;overflow:hidden;}
+.gb-fill{height:100%;background:linear-gradient(90deg,#6EC6A0,#2E7D47);border-radius:5px;transition:width .5s;}
+
+/* PHASE-HEADER */
+.phase-header{display:flex;align-items:center;gap:.75rem;margin:1.5rem 0 .75rem;}
+.phase-badge{padding:.3rem .8rem;border-radius:20px;font-size:.7rem;font-weight:700;color:#fff;}
+.phase-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;}
+.phase-sub{font-size:.75rem;color:#6A6878;}
+
+/* WOCHE */
+.woche{background:#fff;border-radius:12px;margin-bottom:.6rem;overflow:hidden;border:1.5px solid #DDD8CE;}
+.woche-header{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;transition:background .15s;}
+.woche-header:hover{background:#F5F0E8;}
+.woche-nr-box{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;flex-shrink:0;}
+.woche-info{flex:1;}
+.woche-titel{font-size:.92rem;font-weight:700;color:#1A1A2E;}
+.woche-sub{font-size:.72rem;color:#6A6878;margin-top:.1rem;}
+.woche-chevron{font-size:.75rem;color:#6A6878;transition:transform .2s;}
+.woche.open .woche-chevron{transform:rotate(180deg);}
+.woche-body{display:none;padding:.75rem 1rem 1rem;border-top:1.5px solid #DDD8CE;}
+.woche.open .woche-body{display:block;}
+.woche-ziel{background:#EAF5F0;border-left:3px solid #6EC6A0;border-radius:0 8px 8px 0;padding:.6rem .9rem;margin-bottom:.75rem;font-size:.82rem;color:#1A3A2A;line-height:1.7;}
+.aufgabe{display:flex;align-items:flex-start;gap:.65rem;padding:.5rem .65rem;border-radius:8px;cursor:pointer;margin-bottom:.3rem;transition:background .1s;border:1.5px solid #DDD8CE;background:#FAFAFA;}
+.aufgabe:hover{background:#F5F0E8;}
+.aufgabe.done{background:#E8F5EE;border-color:#6EC6A0;}
+.aufgabe.done .aufgabe-check{background:#2E7D47;}
+.aufgabe-check{width:20px;height:20px;border-radius:50%;border:2px solid #DDD8CE;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.aufgabe-check svg{display:none;}
+.aufgabe.done .aufgabe-check svg{display:block;}
+.aufgabe-titel{font-size:.85rem;font-weight:700;color:#1A1A2E;}
+.aufgabe-desc{font-size:.75rem;color:#6A6878;margin-top:.1rem;line-height:1.5;}
+.karten-link{font-size:.72rem;color:#1B3A4B;text-decoration:none;background:#EAF0F4;padding:.2rem .55rem;border-radius:20px;border:1px solid #9BB5C4;display:inline-block;margin-bottom:.2rem;}
+.karten-link:hover{background:#1B3A4B;color:#fff;}
+.ref-label{font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin:.75rem 0 .3rem;}
+.ref-area{width:100%;border:1.5px solid #DDD8CE;border-radius:8px;padding:.55rem .75rem;font-family:"DM Sans",sans-serif;font-size:.82rem;color:#1A1A2E;background:#FAFAFA;resize:none;height:72px;outline:none;line-height:1.6;}
+.ref-area:focus{border-color:#1B3A4B;}
+.save-btn{margin-top:.4rem;padding:.35rem .9rem;border-radius:7px;background:#1B3A4B;color:#fff;border:none;font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;}
+.wp-row{display:flex;align-items:center;gap:.5rem;margin-top:.65rem;}
+.wp-label{font-size:.65rem;color:#6A6878;flex-shrink:0;}
+.wp-bar{flex:1;height:6px;background:#F5F0E8;border-radius:3px;overflow:hidden;}
+.wp-fill{height:100%;border-radius:3px;transition:width .4s;}
+.wp-pct{font-size:.65rem;font-weight:700;color:#1B3A4B;flex-shrink:0;}
+
+/* ABSCHLUSS */
+.abschluss{background:#1B3A4B;border-radius:12px;padding:1.5rem;margin-top:1.5rem;display:flex;align-items:center;gap:1.25rem;}
+.abschluss img{width:72px;flex-shrink:0;}
+.abschluss-text{color:#fff;}
+.abschluss-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem;}
+.abschluss-sub{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.7;}
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Lernpfad INGRA</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="hero">
+    <div class="hero-titel">Dein Lernpfad als Schulbegleitung</div>
+    <div class="hero-sub">8 Wochen Basiskurs + 4 Wochen Erweiterung — in deinem eigenen Tempo. Kein Druck, kein Prüfungsstress. Nur du, deine Praxis und das System.</div>
+    <div class="hero-stats">
+      <span class="h-stat">📅 8 Wochen Basis</span>
+      <span class="h-stat">📅 4 Wochen Erweiterung</span>
+      <span class="h-stat">✅ 48 Aufgaben</span>
+      <span class="h-stat">🃏 Direkte Karten-Links</span>
+    </div>
+  </div>
+
+  <!-- GESAMT-FORTSCHRITT -->
+  <div class="gesamt-bar-wrap">
+    <div class="gb-label">
+      <span>Gesamtfortschritt</span>
+      <span id="gesamt-pct">0%</span>
+    </div>
+    <div class="gb-bar"><div class="gb-fill" id="gesamt-fill" style="width:0%;"></div></div>
+  </div>
+
+  <!-- BASISKURS -->
+  <div class="phase-header">
+    <span class="phase-badge" style="background:#1B3A4B;">Basis</span>
+    <div>
+      <div class="phase-titel">Basiskurs — 8 Wochen</div>
+      <div class="phase-sub">Kernkompetenzen für den Schulalltag</div>
+    </div>
+  </div>
+
+  
+<!-- ===== WOCHE 1 ===== -->
+<div class="woche" id="woche-1">
+<div class="woche-header" onclick="toggleW('w1')">
+  <div class="woche-nr-box" style="background:#1B3A4B;">1</div>
+  <div class="woche-info">
+    <div class="woche-titel">Willkommen & Orientierung</div>
+    <div class="woche-sub">Rolle · System kennenlernen · Erster Überblick</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w1-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w1-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w1-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du weißt was KLARTEXT ist und wie du es nutzt. Du kennst deine Rolle als INGRA — klar und mit Grenzen.</div>
+  <div class="aufgabe" id="w1-a1" onclick="toggleTask('w1-a1');updateW('w1')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">KLARTEXT kennenlernen</div><div class="aufgabe-desc">Dashboard öffnen, alle Module anschauen — nicht lesen, nur kennenlernen</div></div>
+  </div>
+  <div class="aufgabe" id="w1-a2" onclick="toggleTask('w1-a2');updateW('w1')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M1-01 lesen</div><div class="aufgabe-desc">Rollenprofil INGRA — was ist meine Aufgabe, was nicht?</div></div>
+  </div>
+  <div class="aufgabe" id="w1-a3" onclick="toggleTask('w1-a3');updateW('w1')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Barometer ausprobieren</div><div class="aufgabe-desc">Eigenen Zustand einschätzen — wo bin ich heute?</div></div>
+  </div>
+  <div class="aufgabe" id="w1-a4" onclick="toggleTask('w1-a4');updateW('w1')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion Workbook</div><div class="aufgabe-desc">Frage 1: Was erhoffe ich mir vom Kurs?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M1-01.html" class="karten-link" target="_blank">→ M1-01</a> <a href="M0-01.html" class="karten-link" target="_blank">→ M0-01</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w1-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w1-ref');updateW('w1')"></textarea>
+  <button class="save-btn" onclick="saveR('w1-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 1</div>
+    <div class="wp-bar"><div class="wp-fill" id="w1-fill" style="width:0%;background:#1B3A4B;"></div></div>
+    <div class="wp-pct" id="w1-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 2 ===== -->
+<div class="woche" id="woche-2">
+<div class="woche-header" onclick="toggleW('w2')">
+  <div class="woche-nr-box" style="background:#2E5E8A;">2</div>
+  <div class="woche-info">
+    <div class="woche-titel">Meine Rolle & Grenzen</div>
+    <div class="woche-sub">Pflichtdreieck · Datenschutz · Rechtlicher Rahmen</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w2-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w2-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w2-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du kennst das Pflichtdreieck (Kind–Schule–Familie) und weißt wann du die TK einschalten musst.</div>
+  <div class="aufgabe" id="w2-a1" onclick="toggleTask('w2-a1');updateW('w2')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M1-02 lesen</div><div class="aufgabe-desc">Pflichtdreieck — zwischen wem stehe ich?</div></div>
+  </div>
+  <div class="aufgabe" id="w2-a2" onclick="toggleTask('w2-a2');updateW('w2')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M1-04 lesen</div><div class="aufgabe-desc">Rollendifferenzierung — INGRA vs. Therapeut vs. Lehrer</div></div>
+  </div>
+  <div class="aufgabe" id="w2-a3" onclick="toggleTask('w2-a3');updateW('w2')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M1-05 lesen</div><div class="aufgabe-desc">Datenschutz im Schulalltag</div></div>
+  </div>
+  <div class="aufgabe" id="w2-a4" onclick="toggleTask('w2-a4');updateW('w2')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Praxisaufgabe</div><div class="aufgabe-desc">Schreibe 3 Situationen auf wo du unsicher bist wer zuständig ist</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M1-02.html" class="karten-link" target="_blank">→ M1-02</a> <a href="M1-04.html" class="karten-link" target="_blank">→ M1-04</a> <a href="M1-05.html" class="karten-link" target="_blank">→ M1-05</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w2-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w2-ref');updateW('w2')"></textarea>
+  <button class="save-btn" onclick="saveR('w2-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 2</div>
+    <div class="wp-bar"><div class="wp-fill" id="w2-fill" style="width:0%;background:#2E5E8A;"></div></div>
+    <div class="wp-pct" id="w2-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 3 ===== -->
+<div class="woche" id="woche-3">
+<div class="woche-header" onclick="toggleW('w3')">
+  <div class="woche-nr-box" style="background:#3B8A68;">3</div>
+  <div class="woche-info">
+    <div class="woche-titel">Das Barometer & Regulation</div>
+    <div class="woche-sub">5 Zustände · kLAR-Modell · Sofort-Werkzeuge</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w3-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w3-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w3-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du erkennst die 5 Regulationszustände beim Kind und bei dir. Du kannst das kLAR-Modell anwenden.</div>
+  <div class="aufgabe" id="w3-a1" onclick="toggleTask('w3-a1');updateW('w3')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Barometer Kind ausprobieren</div><div class="aufgabe-desc">Eines deiner Kinder einschätzen — welcher Zustand?</div></div>
+  </div>
+  <div class="aufgabe" id="w3-a2" onclick="toggleTask('w3-a2');updateW('w3')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M3 öffnen</div><div class="aufgabe-desc">Was tue ich jetzt? — alle 8 Situationen anschauen</div></div>
+  </div>
+  <div class="aufgabe" id="w3-a3" onclick="toggleTask('w3-a3');updateW('w3')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">kLAR-Modell üben</div><div class="aufgabe-desc">Eine konkrete Situation aus deiner Praxis mit kLAR durchdenken</div></div>
+  </div>
+  <div class="aufgabe" id="w3-a4" onclick="toggleTask('w3-a4');updateW('w3')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion Workbook</div><div class="aufgabe-desc">Frage: Welchen Zustand erkenne ich am schwersten?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="BAROMETER_INGRA.html" class="karten-link" target="_blank">→ BAROMETER INGRA</a> <a href="BAROMETER_KIND.html" class="karten-link" target="_blank">→ BAROMETER KIND</a> <a href="DASHBOARD-M3.html" class="karten-link" target="_blank">→ DASHBOARD-M3</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w3-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w3-ref');updateW('w3')"></textarea>
+  <button class="save-btn" onclick="saveR('w3-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 3</div>
+    <div class="wp-bar"><div class="wp-fill" id="w3-fill" style="width:0%;background:#3B8A68;"></div></div>
+    <div class="wp-pct" id="w3-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 4 ===== -->
+<div class="woche" id="woche-4">
+<div class="woche-header" onclick="toggleW('w4')">
+  <div class="woche-nr-box" style="background:#B07D2A;">4</div>
+  <div class="woche-info">
+    <div class="woche-titel">Kinder verstehen — Grundlagen</div>
+    <div class="woche-sub">Neurobiologie · Entwicklung · ADHS · Autismus</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w4-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w4-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w4-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du verstehst warum Kinder tun was sie tun — und kannst Verhalten einordnen statt zu bewerten.</div>
+  <div class="aufgabe" id="w4-a1" onclick="toggleTask('w4-a1');updateW('w4')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-01 lesen</div><div class="aufgabe-desc">Neurobiologie — das Gehirn unter Stress</div></div>
+  </div>
+  <div class="aufgabe" id="w4-a2" onclick="toggleTask('w4-a2');updateW('w4')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-02 lesen</div><div class="aufgabe-desc">Entwicklungsfenster — was kann ein Kind wann?</div></div>
+  </div>
+  <div class="aufgabe" id="w4-a3" onclick="toggleTask('w4-a3');updateW('w4')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-08 oder M2-09</div><div class="aufgabe-desc">ADHS oder Autismus — je nach deinem Kind</div></div>
+  </div>
+  <div class="aufgabe" id="w4-a4" onclick="toggleTask('w4-a4');updateW('w4')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion</div><div class="aufgabe-desc">Was habe ich über ein konkretes Kind heute anders verstanden?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-01.html" class="karten-link" target="_blank">→ M2-01</a> <a href="M2-02.html" class="karten-link" target="_blank">→ M2-02</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w4-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w4-ref');updateW('w4')"></textarea>
+  <button class="save-btn" onclick="saveR('w4-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 4</div>
+    <div class="wp-bar"><div class="wp-fill" id="w4-fill" style="width:0%;background:#B07D2A;"></div></div>
+    <div class="wp-pct" id="w4-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 5 ===== -->
+<div class="woche" id="woche-5">
+<div class="woche-header" onclick="toggleW('w5')">
+  <div class="woche-nr-box" style="background:#5D3A7A;">5</div>
+  <div class="woche-info">
+    <div class="woche-titel">Kommunikation im Schulalltag</div>
+    <div class="woche-sub">Ich-Botschaften · Eltern · Lehrkraft · Konflikt</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w5-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w5-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w5-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du kommunizierst klar, deeskalierend und professionell — mit Kindern, Eltern und Lehrkräften.</div>
+  <div class="aufgabe" id="w5-a1" onclick="toggleTask('w5-a1');updateW('w5')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M4-01 lesen</div><div class="aufgabe-desc">Grundlagen der Kommunikation mit Kindern</div></div>
+  </div>
+  <div class="aufgabe" id="w5-a2" onclick="toggleTask('w5-a2');updateW('w5')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M4-04 lesen</div><div class="aufgabe-desc">Elterngespräche — was ist meine Rolle?</div></div>
+  </div>
+  <div class="aufgabe" id="w5-a3" onclick="toggleTask('w5-a3');updateW('w5')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M4-05 lesen</div><div class="aufgabe-desc">Kommunikation mit Lehrkräften</div></div>
+  </div>
+  <div class="aufgabe" id="w5-a4" onclick="toggleTask('w5-a4');updateW('w5')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Übung</div><div class="aufgabe-desc">Formuliere eine schwierige Aussage als Ich-Botschaft um</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M4-01.html" class="karten-link" target="_blank">→ M4-01</a> <a href="M4-04.html" class="karten-link" target="_blank">→ M4-04</a> <a href="M4-05.html" class="karten-link" target="_blank">→ M4-05</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w5-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w5-ref');updateW('w5')"></textarea>
+  <button class="save-btn" onclick="saveR('w5-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 5</div>
+    <div class="wp-bar"><div class="wp-fill" id="w5-fill" style="width:0%;background:#5D3A7A;"></div></div>
+    <div class="wp-pct" id="w5-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 6 ===== -->
+<div class="woche" id="woche-6">
+<div class="woche-header" onclick="toggleW('w6')">
+  <div class="woche-nr-box" style="background:#D81B60;">6</div>
+  <div class="woche-info">
+    <div class="woche-titel">Schwierige Situationen meistern</div>
+    <div class="woche-sub">Wutausbruch · Verweigerung · Überreizung · Rückzug</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w6-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w6-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w6-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du hast für die häufigsten Krisensituationen konkrete Handlungsstrategien — und weißt wann du Hilfe holst.</div>
+  <div class="aufgabe" id="w6-a1" onclick="toggleTask('w6-a1');updateW('w6')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M5-01 lesen</div><div class="aufgabe-desc">Wutausbrüche — was steckt dahinter?</div></div>
+  </div>
+  <div class="aufgabe" id="w6-a2" onclick="toggleTask('w6-a2');updateW('w6')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M7 öffnen</div><div class="aufgabe-desc">3 Praxissituationen lesen die deinem Alltag ähneln</div></div>
+  </div>
+  <div class="aufgabe" id="w6-a3" onclick="toggleTask('w6-a3');updateW('w6')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Feuerwehr-Karten anschauen</div><div class="aufgabe-desc">Was tue ich bei echter Eskalation?</div></div>
+  </div>
+  <div class="aufgabe" id="w6-a4" onclick="toggleTask('w6-a4');updateW('w6')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion</div><div class="aufgabe-desc">Welche Situation in meiner Praxis hat mich zuletzt am meisten belastet?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M5-01.html" class="karten-link" target="_blank">→ M5-01</a> <a href="M7-01_Schwieriger_Start_in_den_Tag.html" class="karten-link" target="_blank">→ M7-01 Schwieriger Start in den Tag</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w6-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w6-ref');updateW('w6')"></textarea>
+  <button class="save-btn" onclick="saveR('w6-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 6</div>
+    <div class="wp-bar"><div class="wp-fill" id="w6-fill" style="width:0%;background:#D81B60;"></div></div>
+    <div class="wp-pct" id="w6-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 7 ===== -->
+<div class="woche" id="woche-7">
+<div class="woche-header" onclick="toggleW('w7')">
+  <div class="woche-nr-box" style="background:#2E7D47;">7</div>
+  <div class="woche-info">
+    <div class="woche-titel">Selbstfürsorge & meine Grenzen</div>
+    <div class="woche-sub">Eigene Regulation · Burnout-Prävention · Grenzen setzen</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w7-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w7-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w7-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du erkennst eigene Belastungssignale rechtzeitig und hast konkrete Strategien für deine Selbstfürsorge.</div>
+  <div class="aufgabe" id="w7-a1" onclick="toggleTask('w7-a1');updateW('w7')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M8-01 lesen</div><div class="aufgabe-desc">Warum Selbstfürsorge keine Schwäche ist</div></div>
+  </div>
+  <div class="aufgabe" id="w7-a2" onclick="toggleTask('w7-a2');updateW('w7')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M8-02 lesen</div><div class="aufgabe-desc">Meine persönlichen Warnsignale</div></div>
+  </div>
+  <div class="aufgabe" id="w7-a3" onclick="toggleTask('w7-a3');updateW('w7')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Barometer INGRA</div><div class="aufgabe-desc">Woche rückblickend einschätzen</div></div>
+  </div>
+  <div class="aufgabe" id="w7-a4" onclick="toggleTask('w7-a4');updateW('w7')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion Workbook</div><div class="aufgabe-desc">Was tue ich konkret für mich — diese Woche?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M8-01.html" class="karten-link" target="_blank">→ M8-01</a> <a href="M8-02.html" class="karten-link" target="_blank">→ M8-02</a> <a href="BAROMETER_INGRA.html" class="karten-link" target="_blank">→ BAROMETER INGRA</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w7-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w7-ref');updateW('w7')"></textarea>
+  <button class="save-btn" onclick="saveR('w7-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 7</div>
+    <div class="wp-bar"><div class="wp-fill" id="w7-fill" style="width:0%;background:#2E7D47;"></div></div>
+    <div class="wp-pct" id="w7-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 8 ===== -->
+<div class="woche" id="woche-8">
+<div class="woche-header" onclick="toggleW('w8')">
+  <div class="woche-nr-box" style="background:#6EC6A0;">8</div>
+  <div class="woche-info">
+    <div class="woche-titel">Abschluss & Ausblick</div>
+    <div class="woche-sub">Rückblick · Reflexion · Nächste Schritte</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w8-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w8-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w8-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du hast den Basiskurs abgeschlossen und weißt welche Themen du vertiefen möchtest.</div>
+  <div class="aufgabe" id="w8-a1" onclick="toggleTask('w8-a1');updateW('w8')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Workbook abschließen</div><div class="aufgabe-desc">Alle offenen Reflexionsfragen beantworten</div></div>
+  </div>
+  <div class="aufgabe" id="w8-a2" onclick="toggleTask('w8-a2');updateW('w8')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Barometer-Rückblick</div><div class="aufgabe-desc">Wie hat sich mein Zustand über 8 Wochen verändert?</div></div>
+  </div>
+  <div class="aufgabe" id="w8-a3" onclick="toggleTask('w8-a3');updateW('w8')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">3 Erkenntnisse notieren</div><div class="aufgabe-desc">Was nehme ich aus dem Basiskurs mit?</div></div>
+  </div>
+  <div class="aufgabe" id="w8-a4" onclick="toggleTask('w8-a4');updateW('w8')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Erweiterungskurs anschauen</div><div class="aufgabe-desc">Welche Themen möchte ich vertiefen?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="KLARTEXT_Workbook.html" class="karten-link" target="_blank">→ KLARTEXT Workbook</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w8-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w8-ref');updateW('w8')"></textarea>
+  <button class="save-btn" onclick="saveR('w8-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 8</div>
+    <div class="wp-bar"><div class="wp-fill" id="w8-fill" style="width:0%;background:#6EC6A0;"></div></div>
+    <div class="wp-pct" id="w8-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+
+  <!-- ERWEITERUNGSKURS -->
+  <div class="phase-header" style="margin-top:2rem;">
+    <span class="phase-badge" style="background:#6B3F6B;">Erweiterung</span>
+    <div>
+      <div class="phase-titel">Erweiterungskurs — 4 Wochen</div>
+      <div class="phase-sub">Vertiefung: Trauma · Kinderschutz · Sinnesbehinderungen · Krisen</div>
+    </div>
+  </div>
+
+  
+<!-- ===== WOCHE 9 ===== -->
+<div class="woche" id="woche-9">
+<div class="woche-header" onclick="toggleW('w9')">
+  <div class="woche-nr-box" style="background:#6B3F6B;">9</div>
+  <div class="woche-info">
+    <div class="woche-titel">Trauma & Bindung verstehen</div>
+    <div class="woche-sub">Bindungsstörungen · Pflegekinder · Traumafolgen</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w9-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w9-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w9-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du erkennst Bindungstrauma im Schulalltag und weißt wie du stabil und hilfreich reagierst.</div>
+  <div class="aufgabe" id="w9-a1" onclick="toggleTask('w9-a1');updateW('w9')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-31 lesen</div><div class="aufgabe-desc">Bindungstrauma — was ist das?</div></div>
+  </div>
+  <div class="aufgabe" id="w9-a2" onclick="toggleTask('w9-a2');updateW('w9')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-32 lesen</div><div class="aufgabe-desc">Pflegekinder im Schulalltag</div></div>
+  </div>
+  <div class="aufgabe" id="w9-a3" onclick="toggleTask('w9-a3');updateW('w9')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion</div><div class="aufgabe-desc">Erkenne ich bei einem meiner Kinder Bindungsthemen?</div></div>
+  </div>
+  <div class="aufgabe" id="w9-a4" onclick="toggleTask('w9-a4');updateW('w9')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">TK-Gespräch vorbereiten</div><div class="aufgabe-desc">Was möchte ich mit meiner TK besprechen?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-31.html" class="karten-link" target="_blank">→ M2-31</a> <a href="M2-32.html" class="karten-link" target="_blank">→ M2-32</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w9-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w9-ref');updateW('w9')"></textarea>
+  <button class="save-btn" onclick="saveR('w9-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 9</div>
+    <div class="wp-bar"><div class="wp-fill" id="w9-fill" style="width:0%;background:#6B3F6B;"></div></div>
+    <div class="wp-pct" id="w9-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 10 ===== -->
+<div class="woche" id="woche-10">
+<div class="woche-header" onclick="toggleW('w10')">
+  <div class="woche-nr-box" style="background:#C62828;">10</div>
+  <div class="woche-info">
+    <div class="woche-titel">Kinderschutz — Erkennen & Handeln</div>
+    <div class="woche-sub">Warnsignale · Meldekette · § 8a · Eigener Schutz</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w10-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w10-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w10-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du kennst Warnsignale für Kindeswohlgefährdung und weißt genau was du tust — und was nicht.</div>
+  <div class="aufgabe" id="w10-a1" onclick="toggleTask('w10-a1');updateW('w10')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-35 lesen</div><div class="aufgabe-desc">Sexueller Missbrauch — Grundlagen & Warnsignale</div></div>
+  </div>
+  <div class="aufgabe" id="w10-a2" onclick="toggleTask('w10-a2');updateW('w10')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-36 lesen</div><div class="aufgabe-desc">Was tue ich? — Meldekette Schritt für Schritt</div></div>
+  </div>
+  <div class="aufgabe" id="w10-a3" onclick="toggleTask('w10-a3');updateW('w10')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-37 lesen</div><div class="aufgabe-desc">Eigener Schutz als INGRA</div></div>
+  </div>
+  <div class="aufgabe" id="w10-a4" onclick="toggleTask('w10-a4');updateW('w10')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Reflexion</div><div class="aufgabe-desc">Kenne ich die Meldekette bei meinem Träger auswendig?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-35_Sexueller_Missbrauch_Grundlagen.html" class="karten-link" target="_blank">→ M2-35 Sexueller Missbrauch Grundlag</a> <a href="M2-36_Sexueller_Missbrauch_Handeln.html" class="karten-link" target="_blank">→ M2-36 Sexueller Missbrauch Handeln</a> <a href="M2-37_Sexueller_Missbrauch_Schutz_INGRA.html" class="karten-link" target="_blank">→ M2-37 Sexueller Missbrauch Schutz I</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w10-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w10-ref');updateW('w10')"></textarea>
+  <button class="save-btn" onclick="saveR('w10-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 10</div>
+    <div class="wp-bar"><div class="wp-fill" id="w10-fill" style="width:0%;background:#C62828;"></div></div>
+    <div class="wp-pct" id="w10-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 11 ===== -->
+<div class="woche" id="woche-11">
+<div class="woche-header" onclick="toggleW('w11')">
+  <div class="woche-nr-box" style="background:#3B8A68;">11</div>
+  <div class="woche-info">
+    <div class="woche-titel">Sinnesbehinderungen im Schulalltag</div>
+    <div class="woche-sub">Sehbehinderung · Gehörlosigkeit · DGS · Hörerschöpfung</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w11-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w11-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w11-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du begleitest Kinder mit Seh- oder Hörbehinderung kompetent und mit der richtigen Haltung.</div>
+  <div class="aufgabe" id="w11-a1" onclick="toggleTask('w11-a1');updateW('w11')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-38 lesen</div><div class="aufgabe-desc">Sehbehinderung — Grundlagen</div></div>
+  </div>
+  <div class="aufgabe" id="w11-a2" onclick="toggleTask('w11-a2');updateW('w11')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-39 lesen</div><div class="aufgabe-desc">Sehbehinderung — Praxis im Unterricht</div></div>
+  </div>
+  <div class="aufgabe" id="w11-a3" onclick="toggleTask('w11-a3');updateW('w11')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-40 lesen</div><div class="aufgabe-desc">Gehörlosigkeit — Grundlagen & DGS</div></div>
+  </div>
+  <div class="aufgabe" id="w11-a4" onclick="toggleTask('w11-a4');updateW('w11')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M2-41 lesen</div><div class="aufgabe-desc">Gehörlosigkeit — Kommunikation konkret</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-38_Sehbehinderung_Blindheit_Grundlagen.html" class="karten-link" target="_blank">→ M2-38 Sehbehinderung Blindheit Grun</a> <a href="M2-39_Sehbehinderung_Praxis.html" class="karten-link" target="_blank">→ M2-39 Sehbehinderung Praxis</a> <a href="M2-40_Gehoerlosigkeit_Grundlagen.html" class="karten-link" target="_blank">→ M2-40 Gehoerlosigkeit Grundlagen</a> <a href="M2-41_Gehoerlosigkeit_Praxis.html" class="karten-link" target="_blank">→ M2-41 Gehoerlosigkeit Praxis</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w11-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w11-ref');updateW('w11')"></textarea>
+  <button class="save-btn" onclick="saveR('w11-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 11</div>
+    <div class="wp-bar"><div class="wp-fill" id="w11-fill" style="width:0%;background:#3B8A68;"></div></div>
+    <div class="wp-pct" id="w11-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+<!-- ===== WOCHE 12 ===== -->
+<div class="woche" id="woche-12">
+<div class="woche-header" onclick="toggleW('w12')">
+  <div class="woche-nr-box" style="background:#1B3A4B;">12</div>
+  <div class="woche-info">
+    <div class="woche-titel">Krisen & Feuerwehr-Protokoll</div>
+    <div class="woche-sub">Eskalation · Akute Krisen · Nachsorge · Dokumentation</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="w12-pct" style="font-size:11px;color:#7A7060;">0%</div>
+    <div class="woche-chevron" id="w12-chev">▼</div>
+  </div>
+</div>
+<div class="woche-body" id="w12-body">
+  <div class="woche-ziel"><strong>Lernziel:</strong> Du behältst in akuten Krisen den Kopf — und weißt danach wie du dich und das Kind schützt.</div>
+  <div class="aufgabe" id="w12-a1" onclick="toggleTask('w12-a1');updateW('w12')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">FK-Karten alle lesen</div><div class="aufgabe-desc">Alle 6 Feuerwehr-Karten durcharbeiten</div></div>
+  </div>
+  <div class="aufgabe" id="w12-a2" onclick="toggleTask('w12-a2');updateW('w12')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">M6-01 lesen</div><div class="aufgabe-desc">Krisen-Definition — was ist eine echte Krise?</div></div>
+  </div>
+  <div class="aufgabe" id="w12-a3" onclick="toggleTask('w12-a3');updateW('w12')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Notfallplan erstellen</div><div class="aufgabe-desc">Für deinen Einsatzort: Wer ist zuständig? Wohin?</div></div>
+  </div>
+  <div class="aufgabe" id="w12-a4" onclick="toggleTask('w12-a4');updateW('w12')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Abschluss-Reflexion</div><div class="aufgabe-desc">Was nimmst du aus dem Erweiterungskurs mit?</div></div>
+  </div>
+
+  <div style="margin:.5rem 0;">
+    <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="FK-01.html" class="karten-link" target="_blank">→ FK-01</a> <a href="M6-01.html" class="karten-link" target="_blank">→ M6-01</a> </div>
+  </div>
+  <div class="ref-label">Meine Reflexion</div>
+  <textarea id="w12-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w12-ref');updateW('w12')"></textarea>
+  <button class="save-btn" onclick="saveR('w12-ref')">Speichern</button>
+  <div class="wp-row">
+    <div class="wp-label">Fortschritt Woche 12</div>
+    <div class="wp-bar"><div class="wp-fill" id="w12-fill" style="width:0%;background:#1B3A4B;"></div></div>
+    <div class="wp-pct" id="w12-wpct">0%</div>
+  </div>
+</div>
+</div>
+
+
+  <!-- ABSCHLUSS -->
+  <div class="abschluss">
+    <img src="brainy.png" alt="Brainy">
+    <div class="abschluss-text">
+      <div class="abschluss-titel">12 Wochen. Ein Lernpfad. Eine Praxis.</div>
+      <div class="abschluss-sub">Du hast dir das Wissen erarbeitet das du brauchst — nicht als Theorie, sondern als Werkzeug. Klar. Warm. Menschlich.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FABs -->
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD-M3.html" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;">🎯</a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+// ── DATEN ───────────────────────────────────────────────
+const WEEKS = ['w1','w2','w3','w4','w5','w6','w7','w8','w9','w10','w11','w12'];
+const TASKS = {w1:4,w2:4,w3:4,w4:4,w5:4,w6:4,w7:4,w8:4,w9:4,w10:4,w11:4,w12:4};
+
+// ── STORE ────────────────────────────────────────────────
+function getStore(){try{return JSON.parse(localStorage.getItem('klartext_lernpfad')||'{}');}catch(e){return{};}}
+function setStore(d){try{localStorage.setItem('klartext_lernpfad',JSON.stringify(d));}catch(e){}}
+
+// ── TASK TOGGLE ──────────────────────────────────────────
+function toggleTask(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.classList.toggle('done');
+  var d=getStore();
+  d[id]=el.classList.contains('done');
+  setStore(d);
+}
+
+// ── WOCHE UPDATE ─────────────────────────────────────────
+function updateW(wid){
+  var total=TASKS[wid]||4;
+  var done=document.querySelectorAll('#'+wid+'-body .aufgabe.done').length;
+  var pct=Math.round(done/total*100);
+  var fill=document.getElementById(wid+'-fill');
+  var pctEl=document.getElementById(wid+'-pct');
+  var wpct=document.getElementById(wid+'-wpct');
+  if(fill)fill.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=pct+'%';
+  if(wpct)wpct.textContent=pct+'%';
+  updateGesamt();
+}
+
+// ── GESAMT UPDATE ────────────────────────────────────────
+function updateGesamt(){
+  var total=0,done=0;
+  WEEKS.forEach(function(wid){
+    total+=(TASKS[wid]||4);
+    done+=document.querySelectorAll('#'+wid+'-body .aufgabe.done').length;
+  });
+  var pct=total>0?Math.round(done/total*100):0;
+  var fill=document.getElementById('gesamt-fill');
+  var pctEl=document.getElementById('gesamt-pct');
+  if(fill)fill.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=pct+'%';
+}
+
+// ── WOCHE TOGGLE ─────────────────────────────────────────
+function toggleW(wid){
+  var body=document.getElementById(wid+'-body');
+  var chev=document.getElementById(wid+'-chev');
+  var woche=body?body.closest('.woche'):null;
+  if(!body)return;
+  var open=body.style.display==='block';
+  body.style.display=open?'none':'block';
+  if(chev)chev.style.transform=open?'':'rotate(180deg)';
+  if(woche)woche.classList.toggle('open',!open);
+}
+
+// ── REFLEXION SPEICHERN ──────────────────────────────────
+function saveR(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var d=getStore();
+  d['ref_'+id]=el.value;
+  setStore(d);
+}
+
+// ── LADEN ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',function(){
+  var d=getStore();
+  // Aufgaben
+  Object.keys(d).forEach(function(k){
+    if(k.startsWith('ref_'))return;
+    var el=document.getElementById(k);
+    if(el&&d[k]){el.classList.add('done');}
+  });
+  // Reflexionen
+  Object.keys(d).forEach(function(k){
+    if(!k.startsWith('ref_'))return;
+    var el=document.getElementById(k.replace('ref_',''));
+    if(el)el.value=d[k]||'';
+  });
+  // Progress aktualisieren
+  WEEKS.forEach(function(wid){updateW(wid);});
+});
+</script>
+</body>
+</html>

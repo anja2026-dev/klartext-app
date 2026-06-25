@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT E-Learning · M2 · Kinder verstehen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#3B8A68;--ml:#EEF7F2;--accent:#6EC6A0;--paper:#F5F0E8;--ink:#2D2D2D;--muted:#7A7060;--surface:#fff;--border:#DDD8CE;--r:12px;--kt:#1B3A4B;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;}
+.kt-header{background:var(--kt);padding:0 clamp(1rem,4vw,2rem);height:72px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--accent);}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.6rem;color:var(--accent);letter-spacing:.14em;display:block;margin-top:1px;}
+.header-badge{background:var(--m);border:1.5px solid var(--accent);border-radius:20px;padding:.25rem .8rem;font-size:.7rem;font-weight:700;color:#fff;letter-spacing:.06em;}
+.global-progress{background:#112233;padding:.6rem clamp(1rem,4vw,2rem);display:flex;align-items:center;gap:1rem;}
+.gp-label{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;}
+.gp-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;}
+.gp-fill{height:100%;background:var(--accent);border-radius:10px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.gp-pct{font-size:.75rem;font-weight:700;color:var(--accent);min-width:2.5rem;text-align:right;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,color-mix(in srgb,var(--m) 70%,#000) 100%);padding:clamp(2rem,5vw,3rem) clamp(1rem,4vw,2rem);text-align:center;}
+.hero-modul{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;margin-bottom:.6rem;}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:500px;margin:0 auto 1.2rem;}
+.hero-meta{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.hero-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.25rem .75rem;font-size:.7rem;color:rgba(255,255,255,.7);}
+.hero-pill b{color:var(--accent);}
+.shell{max-width:820px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 6rem;}
+.nav-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.nav-pill{font-size:.72rem;font-weight:600;padding:.3rem .75rem;border-radius:20px;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;}
+.nav-pill:hover,.nav-pill.aktiv{background:var(--m);border-color:var(--m);color:#fff;}
+.modul-progress{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem;margin-bottom:1.5rem;}
+.mp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;}
+.mp-titel{font-size:.78rem;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:.08em;}
+.mp-pct{font-size:.78rem;font-weight:700;color:var(--accent);}
+.mp-bar{height:8px;background:#F0EDE8;border-radius:10px;overflow:hidden;}
+.mp-fill{height:100%;background:linear-gradient(90deg,var(--m) 0%,var(--accent) 100%);border-radius:10px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.mp-steps{display:flex;gap:.5rem;margin-top:.75rem;}
+.mp-step{flex:1;height:4px;border-radius:4px;background:#F0EDE8;transition:background .3s;}
+.mp-step.done{background:var(--accent);}
+.mp-step.active{background:var(--m);}
+.lektion{background:var(--surface);border-radius:var(--r);border:1.5px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.07);margin-bottom:1.25rem;overflow:hidden;transition:box-shadow .2s;}
+.lektion-header{padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;user-select:none;}
+.lektion-num{width:36px;height:36px;border-radius:50%;background:var(--ml);border:2px solid var(--m);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--m);flex-shrink:0;transition:all .2s;}
+.lektion.done .lektion-num{background:var(--accent);border-color:var(--accent);color:#fff;}
+.lektion-num svg{width:14px;height:14px;stroke:#fff;stroke-width:2.5;fill:none;}
+.lektion-info{flex:1;}
+.lektion-titel{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--kt);}
+.lektion-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.lektion-status{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .6rem;border-radius:20px;background:var(--ml);color:var(--m);flex-shrink:0;}
+.lektion.done .lektion-status{background:#E8F8F1;color:#2D6A4F;}
+.lektion-chevron{color:var(--muted);font-size:.7rem;transition:transform .25s;}
+.lektion-header[aria-expanded="true"] .lektion-chevron{transform:rotate(180deg);}
+.lektion-body{display:none;border-top:1.5px solid #F0EDE8;}
+.lektion-body.active{display:block;}
+.wissen-block{padding:1.4rem 1.4rem 1rem;}
+.block-label{font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--m);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+.block-label::before{content:"";width:18px;height:2px;background:var(--m);display:block;}
+.wissen-text{font-size:.9rem;color:var(--ink);line-height:1.75;}
+.karte-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;font-size:.78rem;font-weight:600;color:var(--m);text-decoration:none;border:1.5px solid var(--m);border-radius:20px;padding:.3rem .8rem;transition:all .15s;}
+.karte-link:hover{background:var(--m);color:#fff;}
+.karte-link svg{width:12px;height:12px;}
+.fall-block{margin:0 1.4rem;background:var(--ml);border-radius:8px;padding:1rem 1.2rem;border-left:3px solid var(--m);}
+.fall-szenario{font-size:.87rem;color:#4A4A4A;line-height:1.75;font-style:italic;}
+.fall-frage{font-size:.85rem;font-weight:600;color:var(--m);margin-top:.6rem;}
+.antworten{padding:1rem 1.4rem;display:flex;flex-direction:column;gap:.5rem;}
+.antwort-btn{display:flex;align-items:flex-start;gap:.75rem;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);cursor:pointer;text-align:left;font-family:"DM Sans",sans-serif;font-size:.87rem;color:var(--ink);line-height:1.5;transition:all .15s;width:100%;}
+.antwort-btn:hover:not(:disabled){border-color:var(--m);background:var(--ml);}
+.antwort-btn:disabled{cursor:default;}
+.antwort-btn.richtig{background:#E8F8F1;border-color:#6EC6A0;color:#1A4A2E;}
+.antwort-btn.falsch{background:#FDF0F0;border-color:#E8A0A0;color:#7A1A1A;}
+.antwort-mark{width:22px;height:22px;border-radius:50%;border:2px solid #E0D8D0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;color:var(--muted);}
+.antwort-btn.richtig .antwort-mark{background:var(--accent);border-color:var(--accent);color:#fff;}
+.antwort-btn.falsch .antwort-mark{background:#E8A0A0;border-color:#E8A0A0;color:#fff;}
+.feedback{margin:0 1.4rem 1rem;border-radius:8px;padding:.9rem 1.1rem;display:none;font-size:.85rem;line-height:1.6;}
+.feedback.show{display:block;}
+.feedback.gut{background:#E8F8F1;border:1px solid #A8DFC0;color:#1A4A2E;}
+.feedback.schlecht{background:#FDF0F0;border:1px solid #E8A0A0;color:#7A1A1A;}
+.feedback strong{display:block;margin-bottom:.25rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;}
+.reflexion-block{padding:.5rem 1.4rem 1.2rem;}
+.reflexion-label{font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;}
+.reflexion-label::before{content:"";width:18px;height:2px;background:var(--muted);display:block;}
+.reflexion-frage{font-size:.87rem;color:var(--ink);margin-bottom:.6rem;line-height:1.6;}
+.reflexion-area{width:100%;min-height:80px;padding:.7rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.87rem;color:var(--ink);background:var(--paper);resize:vertical;outline:none;transition:border-color .15s;line-height:1.65;}
+.reflexion-area:focus{border-color:var(--m);}
+.reflexion-area::placeholder{color:#B0A898;}
+.weiter-wrap{padding:.5rem 1.4rem 1.4rem;}
+.weiter-btn{width:100%;padding:.85rem;background:var(--m);color:#fff;border:none;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.87rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .2s;opacity:.4;pointer-events:none;}
+.weiter-btn.aktiv{opacity:1;pointer-events:auto;}
+.weiter-btn.aktiv:hover{opacity:.85;transform:translateY(-1px);}
+.weiter-btn svg{width:16px;height:16px;}
+.zert-section{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-top:1.5rem;text-align:center;display:none;}
+.zert-section.show{display:block;animation:fadeIn .5s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.zert-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.zert-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:var(--kt);margin-bottom:.4rem;}
+.zert-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.25rem;}
+.zert-name-input{border:1.5px solid var(--border);border-radius:8px;padding:.6rem 1rem;font-family:"DM Sans",sans-serif;font-size:.9rem;width:100%;max-width:300px;margin-bottom:1rem;outline:none;}
+.zert-name-input:focus{border-color:var(--m);}
+.zert-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--m);color:#fff;padding:.75rem 1.5rem;border-radius:8px;font-size:.87rem;font-weight:600;border:none;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .2s;}
+.zert-btn:hover{opacity:.85;}
+.dash-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;color:var(--m);font-size:.82rem;font-weight:600;text-decoration:none;border:1.5px solid var(--m);border-radius:20px;padding:.35rem .9rem;transition:all .15s;}
+.dash-link:hover{background:var(--m);color:#fff;}
+@media(max-width:600px){
+  .wissen-block,.antworten,.reflexion-block,.weiter-wrap{padding-left:1rem;padding-right:1rem;}
+  .fall-block,.feedback{margin-left:1rem;margin-right:1rem;}
+}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <a class="logo" href="EL_Dashboard.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT</div><span class="logo-sub">E-Learning</span></div>
+  </a>
+  <div class="header-badge">M2</div>
+</header>
+<div class="global-progress">
+  <span class="gp-label">Fortschritt</span>
+  <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+  <span class="gp-pct" id="gp-pct">0%</span>
+</div>
+<div class="hero">
+  <div class="hero-modul">M2 · E-Learning</div>
+  <h1 class="hero-titel">Kinder verstehen</h1>
+  <p class="hero-sub">5 Lerneinheiten mit Fallbeispielen, Wissenscheck und Reflexion.</p>
+  <div class="hero-meta">
+    <div class="hero-pill">⏱ <b>ca. 20 Minuten</b></div>
+    <div class="hero-pill">📋 <b>5 Lerneinheiten</b></div>
+    <div class="hero-pill">🎓 Zertifikat am Ende</div>
+  </div>
+</div>
+<div class="shell">
+  <div class="nav-pills">
+  <span class="nav-pill aktiv" onclick="scrollToLektion(0)" id="np-0">LE 1 · Stressmodi</span>
+  <span class="nav-pill" onclick="scrollToLektion(1)" id="np-1">LE 2 · Trauma-Basics</span>
+  <span class="nav-pill" onclick="scrollToLektion(2)" id="np-2">LE 3 · Bindung</span>
+  <span class="nav-pill" onclick="scrollToLektion(3)" id="np-3">LE 4 · Neurodivergenz</span>
+  <span class="nav-pill" onclick="scrollToLektion(4)" id="np-4">LE 5 · Stresssignale</span>
+    <span class="nav-pill" onclick="scrollToLektion(5)" id="np-5">LE 6 · Bindungstrauma</span>
+    <span class="nav-pill" onclick="scrollToLektion(6)" id="np-6">LE 7 · Hochkonflikt</span>
+    <span class="nav-pill" onclick="scrollToLektion(7)" id="np-7">LE 8 · Essstörungen</span>
+  </div>
+  <div class="modul-progress">
+    <div class="mp-header">
+      <span class="mp-titel">M2 · Dein Fortschritt</span>
+      <span class="mp-pct" id="mp-pct">0 / 8</span>
+    </div>
+    <div class="mp-bar"><div class="mp-fill" id="mp-fill" style="width:0%"></div></div>
+    <div class="mp-steps">
+      <div class="mp-step active" id="step-0"></div>
+      <div class="mp-step " id="step-1"></div>
+      <div class="mp-step " id="step-2"></div>
+      <div class="mp-step " id="step-3"></div>
+      <div class="mp-step " id="step-4"></div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-0">
+    <div class="lektion-header" onclick="toggleLektion(0)" aria-expanded="true">
+      <div class="lektion-num" id="num-0">1</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Die vier Stressmodi</div>
+        <div class="lektion-sub">Fight · Flight · Freeze · Fawn</div>
+      </div>
+      <span class="lektion-status" id="status-0">Offen</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body active" id="body-0">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Wenn das Nervensystem Bedrohung registriert, schaltet es in einen von vier Modi: <strong>Fight</strong> (kämpfen), <strong>Flight</strong> (fliehen), <strong>Freeze</strong> (einfrieren), <strong>Fawn</strong> (anpassen). Diese Reaktionen sind <strong>biologisch automatisch</strong> — keine Entscheidung. Das Kind kann im Moment des Stresses nicht anders. Erkennen welcher Modus aktiv ist, bestimmt die richtige Reaktion von INGRA.</div>
+        <a class="karte-link" href="M2-04_Fight-Flight-Freeze-Fawn.html">→ M2-04 Stressmodi</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Finn (9) sitzt seit 10 Minuten vollkommen still, starrt auf sein Heft und reagiert nicht auf Ansprache. Die Lehrkraft denkt, er sei faul.</div>
+        <div class="fall-frage">In welchem Stressmodus ist Finn wahrscheinlich?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(0,'A','falsch')" id="a0-A">
+          <span class="antwort-mark">A</span>
+          Fight — er kämpft innerlich gegen die Aufgabe.
+        </button>
+        <button class="antwort-btn" onclick="antwort(0,'B','richtig')" id="a0-B">
+          <span class="antwort-mark">B</span>
+          Freeze — er ist eingefroren, nicht faul.
+        </button>
+        <button class="antwort-btn" onclick="antwort(0,'C','falsch')" id="a0-C">
+          <span class="antwort-mark">C</span>
+          Fawn — er passt sich an um Aufmerksamkeit zu vermeiden.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-0-richtig"><strong>✓ Richtig</strong> Freeze sieht von außen wie Gleichgültigkeit oder Sturheit aus — ist aber maximaler Stress. Das Nervensystem hat auf Totstellreflex geschaltet. Die richtige Reaktion: sanft nähern, keine Forderungen, keine Fragen, einfach da sein.</div>
+      <div class="feedback schlecht" id="fb-0-falsch"><strong>✗ Nicht ganz</strong> Keine Reaktion + starrer Blick + nicht ansprechbar = Freeze. Das Gehirn ist überwältigt und hat abgeschaltet. Wer im Freeze ist, kann nicht einfach 'wollen'.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Erkennst du bei einem Kind das du begleitest typische Stressmodi? Welcher taucht am häufigsten auf — und wie reagierst du darauf?</div>
+        <textarea class="reflexion-area" id="ref-0" placeholder="Deine Antwort hier …" oninput="checkWeiter(0)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-0" onclick="lektionAbschliessen(0)">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-1">
+    <div class="lektion-header" onclick="toggleLektion(1)" aria-expanded="false">
+      <div class="lektion-num" id="num-1">2</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Trauma verstehen ohne Diagnose</div>
+        <div class="lektion-sub">Was Trauma im Körper macht</div>
+      </div>
+      <span class="lektion-status" id="status-1">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-1">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Trauma ist eine <strong>überwältigende Erfahrung die das Nervensystem übersteigt</strong>. Trauma verändert messbar Hirnstruktur und -funktion — besonders Amygdala und Hippocampus. Im Schulalltag: Traumatisierte Kinder reagieren auf Trigger als wäre die Situation gerade jetzt real. Sie wollen nicht provozieren — ihr Nervensystem schaltet automatisch in den Überlebensmodus.</div>
+        <a class="karte-link" href="M2-05_Trauma-Basics.html">→ M2-05 Trauma-Basics</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Sara (11) gerät in Panik als INGRA plötzlich laut 'Stopp!' ruft. Sara zittert, kann nicht sprechen. Vorhin war alles ruhig.</div>
+        <div class="fall-frage">Was ist wahrscheinlich passiert?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(1,'A','falsch')" id="a1-A">
+          <span class="antwort-mark">A</span>
+          Sara will Aufmerksamkeit und übertreibt.
+        </button>
+        <button class="antwort-btn" onclick="antwort(1,'B','richtig')" id="a1-B">
+          <span class="antwort-mark">B</span>
+          Das laute 'Stopp!' hat einen Trigger ausgelöst — Saras Nervensystem ist in den Alarmzustand geschaltet.
+        </button>
+        <button class="antwort-btn" onclick="antwort(1,'C','falsch')" id="a1-C">
+          <span class="antwort-mark">C</span>
+          Sara hat Angst vor Konsequenzen und spielt auf Zeit.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-1-richtig"><strong>✓ Richtig</strong> Trigger können Geräusche, Worte, Situationen sein die unbewusst an traumatische Erfahrungen erinnern. Das Nervensystem reagiert sofort — ohne Nachdenken. INGRA reagiert mit: ruhige Stimme, Orientierung, körperliche Sicherheit, keine Fragen.</div>
+      <div class="feedback schlecht" id="fb-1-falsch"><strong>✗ Nicht ganz</strong> Traumatische Reaktionen sehen manchmal wie Überreagieren aus — sind aber neurologisch echte Alarmsignale. Trigger lösen automatische Überlebensmechanismen aus die das Kind nicht kontrollieren kann.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Gibt es Situationen im Schulalltag die du jetzt mit dem Traumawissen anders einschätzen würdest? Was würdest du beim nächsten Mal anders machen?</div>
+        <textarea class="reflexion-area" id="ref-1" placeholder="Deine Antwort hier …" oninput="checkWeiter(1)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-1" onclick="lektionAbschliessen(1)">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-2">
+    <div class="lektion-header" onclick="toggleLektion(2)" aria-expanded="false">
+      <div class="lektion-num" id="num-2">3</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Bindung & Beziehung</div>
+        <div class="lektion-sub">Warum Beziehung vor Inhalt kommt</div>
+      </div>
+      <span class="lektion-status" id="status-2">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-2">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Sichere Bindung ist die Voraussetzung für Lernen. Kinder die sich nicht sicher fühlen, können nicht lernen — ihr Gehirn ist mit Überleben beschäftigt. <strong>Beziehung vor Inhalt</strong> ist kein pädagogischer Luxus, sondern neurobiologische Notwendigkeit. Jeder kleine Vertrauensmoment mit INGRA ist ein Beitrag zur sicheren Basis.</div>
+        <a class="karte-link" href="M2-06_Bindung-Beziehung.html">→ M2-06 Bindung & Beziehung</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Max (8) lehnt jede Hilfe von INGRA ab: 'Ich brauch dich nicht!' Nach drei Wochen versucht er zum ersten Mal, INGRA einen selbst gemalten Sticker zu schenken.</div>
+        <div class="fall-frage">Was zeigt dieses Verhalten?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(2,'A','richtig')" id="a2-A">
+          <span class="antwort-mark">A</span>
+          Max hat INGRA jetzt akzeptiert — der Sticker ist ein Beziehungsangebot.
+        </button>
+        <button class="antwort-btn" onclick="antwort(2,'B','falsch')" id="a2-B">
+          <span class="antwort-mark">B</span>
+          Max will etwas von INGRA und manipuliert deshalb.
+        </button>
+        <button class="antwort-btn" onclick="antwort(2,'C','falsch')" id="a2-C">
+          <span class="antwort-mark">C</span>
+          Der Sticker ist zufällig — das Ablehnen war das echte Signal.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-2-richtig"><strong>✓ Richtig</strong> Kinder mit Bindungsunsicherheit brauchen lange bis sie Vertrauen zeigen. Ein Sticker nach drei Wochen ist ein riesiger Schritt. INGRA nimmt ihn ernst, ohne zu überwältigen — einfach annehmen und dankbar sein.</div>
+      <div class="feedback schlecht" id="fb-2-falsch"><strong>✗ Nicht ganz</strong> Beziehungsaufbau ist langsam und nichtlinear. Kleine Gesten wie ein Sticker sind echte Vertrauensmomente — kein Zufall und keine Manipulation.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Wann hast du bei einem Kind einen kleinen Vertrauensmoment erlebt? Wie hast du reagiert — und was hättest du vielleicht noch tun können?</div>
+        <textarea class="reflexion-area" id="ref-2" placeholder="Deine Antwort hier …" oninput="checkWeiter(2)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-2" onclick="lektionAbschliessen(2)">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-3">
+    <div class="lektion-header" onclick="toggleLektion(3)" aria-expanded="false">
+      <div class="lektion-num" id="num-3">4</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">ADHS & Autismus im Schulalltag</div>
+        <div class="lektion-sub">Anders — nicht weniger</div>
+      </div>
+      <span class="lektion-status" id="status-3">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-3">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">ADHS und Autismus-Spektrum sind neurologische Entwicklungsbesonderheiten — <strong>keine Charakterschwächen</strong>. ADHS: Schwierigkeiten mit Exekutivfunktionen (starten, durchhalten, stoppen, planen). Autismus: anderer Wahrnehmungsstil — sensorische Reizverarbeitung, implizite Sozialregeln, Ironie. Beide brauchen Struktur, Verlässlichkeit und Vorhersehbarkeit.</div>
+        <a class="karte-link" href="M2-07_Neurodivergenz.html">→ M2-07 Neurodivergenz</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">INGRA sagt ironisch: 'Na klar, das war bestimmt nicht absichtlich!' Jonas (10, Autismus) nimmt das wörtlich und entschuldigt sich aufgeregt für etwas das gar nicht passiert ist.</div>
+        <div class="fall-frage">Was ist hier passiert?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(3,'A','falsch')" id="a3-A">
+          <span class="antwort-mark">A</span>
+          Jonas war unaufmerksam und hat nicht richtig zugehört.
+        </button>
+        <button class="antwort-btn" onclick="antwort(3,'B','richtig')" id="a3-B">
+          <span class="antwort-mark">B</span>
+          Jonas hat die Ironie wörtlich verstanden — bei Autismus häufig.
+        </button>
+        <button class="antwort-btn" onclick="antwort(3,'C','falsch')" id="a3-C">
+          <span class="antwort-mark">C</span>
+          Jonas übertreibt seine Reaktion um Mitleid zu erzeugen.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-3-richtig"><strong>✓ Richtig</strong> Ironie, Sarkasmus und Doppeldeutigkeiten werden von vielen Kindern mit Autismus wörtlich gelesen. Das ist keine Aufmerksamkeitsschwäche — das Gehirn verarbeitet Sprache anders. INGRA kommuniziert klar und direkt.</div>
+      <div class="feedback schlecht" id="fb-3-falsch"><strong>✗ Nicht ganz</strong> Wörtliches Verstehen von Ironie ist typisch für Autismus. Es ist keine Schwäche oder Absicht — sondern ein anderer Wahrnehmungsstil der direktes Sprechen braucht.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Wie kommunizierst du mit dem Kind das du begleitest? Gibt es Formulierungen die du anpassen könntest um klarer zu sein?</div>
+        <textarea class="reflexion-area" id="ref-3" placeholder="Deine Antwort hier …" oninput="checkWeiter(3)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-3" onclick="lektionAbschliessen(3)">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-4">
+    <div class="lektion-header" onclick="toggleLektion(4)" aria-expanded="false">
+      <div class="lektion-num" id="num-4">5</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Körpersprache & Signale lesen</div>
+        <div class="lektion-sub">Was der Körper sagt bevor Worte kommen</div>
+      </div>
+      <span class="lektion-status" id="status-4">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-4">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Kinder zeigen Stress im Körper — <strong>lange bevor sie explodieren</strong>. Frühwarnzeichen: zitternde Hände, hochgezogene Schultern, leerer Blick, Appetitlosigkeit, Rückzug, schnelleres Atmen, Zappeln. INGRA die diese Signale früh erkennt kann auf Gelb reagieren — statt auf Rot zu warten.</div>
+        <a class="karte-link" href="M2-18_Koerpersprache.html">→ M2-18 Körpersprache lesen</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Seit dem Frühstück zappelt Kira (9) mehr als sonst, isst kaum und schaut immer wieder zur Tür. Die erste Unterrichtsstunde beginnt gleich.</div>
+        <div class="fall-frage">Was sollte INGRA tun?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(4,'A','falsch')" id="a4-A">
+          <span class="antwort-mark">A</span>
+          Abwarten ob Kira sich beruhigt — vielleicht ist sie nur müde.
+        </button>
+        <button class="antwort-btn" onclick="antwort(4,'B','richtig')" id="a4-B">
+          <span class="antwort-mark">B</span>
+          Barometer-Check vor dem Unterricht: kurz fragen wie Kira sich fühlt und ggf. regulieren.
+        </button>
+        <button class="antwort-btn" onclick="antwort(4,'C','falsch')" id="a4-C">
+          <span class="antwort-mark">C</span>
+          Die Lehrkraft bitten, Kira heute zu schonen.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-4-richtig"><strong>✓ Richtig</strong> Zappeln, kaum essen, Blick zur Tür sind Körpersignale für erhöhte Anspannung. Ein kurzer Check-in vor dem Unterricht kann die Eskalation verhindern. Früh auf Gelb reagieren ist immer besser als auf Rot warten.</div>
+      <div class="feedback schlecht" id="fb-4-falsch"><strong>✗ Nicht ganz</strong> Das Ziel ist früh reagieren — nicht warten bis es eskaliert. Die Signale sind deutlich genug für eine kurze Check-in Intervention.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Welche spezifischen Körpersignale zeigt das Kind das du begleitest wenn es gestresst ist? Hast du eine innere Checkliste dafür entwickelt?</div>
+        <textarea class="reflexion-area" id="ref-4" placeholder="Deine Antwort hier …" oninput="checkWeiter(4)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-4" onclick="lektionAbschliessen(4)">
+          Modul abschließen
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lektion" id="lektion-5">
+    <div class="lektion-header" onclick="toggleLektion(5)" aria-expanded="false">
+      <div class="lektion-num" id="num-5">6</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Bindungstrauma & Pflegekinder</div>
+        <div class="lektion-sub">Bindungslogik · Überlebensstrategien · Loyalität</div>
+      </div>
+      <span class="lektion-status" id="status-5">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-5">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Bindungstrauma entsteht wenn Kinder keine sichere Bezugsperson hatten, Gewalt oder häufige Beziehungsabbrüche erlebt haben. Was INGRA als Trotz, Manipulation oder Unberechenbarkeit erlebt, ist in Wahrheit <strong>Bindungslogik</strong>: Das Kind schützt sich. Es testet Sicherheit. Es erwartet Abbruch. INGRA ist oft die <strong>stabilste Bezugsperson</strong> im Alltag von Pflegekindern — eine große Verantwortung und eine große Chance.</div>
+        <a class="karte-link" href="M2-31_Bindungstrauma_Pflegekinder.html">→ M2-31 Bindungstrauma</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Leon (9) wohnt seit 6 Monaten in einer Pflegefamilie. Er klammert sich jeden Morgen an INGRA, weint beim Abschied — und ignoriert sie in der Pause völlig. Die Lehrkraft sagt: "Leon ist unberechenbar."</div>
+        <div class="fall-frage">Was beschreibt Leons Verhalten am besten?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(5,'A','falsch')" id="a5-A"><span class="antwort-mark">A</span>Leon will Aufmerksamkeit und übertreibt seine Reaktionen.</button>
+        <button class="antwort-btn" onclick="antwort(5,'B','richtig')" id="a5-B"><span class="antwort-mark">B</span>Leon zeigt klassisches Bindungsverhalten — extreme Nähe und Distanz sind Überlebensstrategien, keine Manipulation.</button>
+        <button class="antwort-btn" onclick="antwort(5,'C','falsch')" id="a5-C"><span class="antwort-mark">C</span>Leon hat sich noch nicht an die Pflegefamilie gewöhnt — das gibt sich mit der Zeit.</button>
+      </div>
+      <div class="feedback gut" id="fb-5-richtig"><strong>✓ Richtig</strong> Extreme Nähe und extreme Distanz sind zwei Seiten derselben Bindungsangst. Leon testet: "Bist du noch da wenn ich dich wegstoße?" INGRA bleibt verlässlich — das ist die wirksamste Intervention.</div>
+      <div class="feedback schlecht" id="fb-5-falsch"><strong>✗ Nicht ganz</strong> Bindungsverhalten bei Pflegekindern ist selten Absicht. Es ist Neurobiologie — das Nervensystem reagiert auf frühere Erfahrungen. "Gewöhnen" allein reicht nicht.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Gibt es ein Kind das du begleitest und das ähnliche Muster zeigt? Was könnte Bindungslogik dahinter sein?</div>
+        <textarea class="reflexion-area" id="ref-5" placeholder="Deine Antwort hier …" oninput="checkWeiter(5)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-5" onclick="lektionAbschliessen(5)">Weiter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lektion" id="lektion-6">
+    <div class="lektion-header" onclick="toggleLektion(6)" aria-expanded="false">
+      <div class="lektion-num" id="num-6">7</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Hochkonflikt-Eltern & SB-Schutz</div>
+        <div class="lektion-sub">Grenzen · Kommunikation · professionelle Distanz</div>
+      </div>
+      <span class="lektion-status" id="status-6">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-6">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Hochkonflikt-Eltern sind nicht böse — sie sind überlastet, misstrauisch oder emotional instabil. INGRA schützt sich durch <strong>professionelle Distanz</strong>: keine private Nummer, kein WhatsApp, keine Diagnosen, keine Parteinahme. Bei Aggression: Gespräch abbrechen, TK informieren, dokumentieren. Alle Vorfälle werden sachlich protokolliert.</div>
+        <a class="karte-link" href="M2-33_Hochkonflikt_Eltern.html">→ M2-33 Hochkonflikt-Eltern</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Eine Mutter spricht INGRA beim Abholen an: "Ich weiß, dass Sie meiner Tochter erzählt haben, ich sei schuld an ihren Problemen. Das stimmt nicht und ich werde das melden." INGRA hat nichts dergleichen gesagt.</div>
+        <div class="fall-frage">Wie reagiert INGRA professionell?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(6,'A','falsch')" id="a6-A"><span class="antwort-mark">A</span>INGRA erklärt ausführlich was wirklich gesagt wurde.</button>
+        <button class="antwort-btn" onclick="antwort(6,'B','richtig')" id="a6-B"><span class="antwort-mark">B</span>"Ich kann das nicht bestätigen. Bitte wenden Sie sich an den Träger." — dann Gespräch beenden und TK informieren.</button>
+        <button class="antwort-btn" onclick="antwort(6,'C','falsch')" id="a6-C"><span class="antwort-mark">C</span>INGRA entschuldigt sich um die Situation zu deeskalieren.</button>
+      </div>
+      <div class="feedback gut" id="fb-6-richtig"><strong>✓ Richtig</strong> Rechtfertigung gibt der Aussage Gewicht. INGRA verweist auf den Träger — das ist die einzig richtige Reaktion. Sofort dokumentieren: Datum, Uhrzeit, wörtliche Aussage, Reaktion von INGRA.</div>
+      <div class="feedback schlecht" id="fb-6-falsch"><strong>✗ Nicht ganz</strong> Erklären und Entschuldigen können als Schuldeingeständnis gewertet werden. Professionelle Distanz bedeutet: kurze klare Aussage, Verweis auf TK, Gespräch beenden.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Gab es schon eine Situation mit schwierigen Eltern? Was hättest du anders gemacht — und was war richtig?</div>
+        <textarea class="reflexion-area" id="ref-6" placeholder="Deine Antwort hier …" oninput="checkWeiter(6)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-6" onclick="lektionAbschliessen(6)">Weiter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lektion" id="lektion-7">
+    <div class="lektion-header" onclick="toggleLektion(7)" aria-expanded="false">
+      <div class="lektion-num" id="num-7">8</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Essstörungen — Erkennen & Abgrenzen</div>
+        <div class="lektion-sub">Frühwarnsignale · Darf/darf nicht · Dokumentation</div>
+      </div>
+      <span class="lektion-status" id="status-7">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-7">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Essstörungen sind <strong>keine Phase</strong>, kein Trotz, keine Aufmerksamkeitssuche. INGRA stellt keine Diagnosen — erkennt aber Muster: eingeschränkte Nahrungsaufnahme, Essrituale, Rückzug in Pausen, Kreislaufprobleme, extremer Perfektionismus. INGRA beobachtet, dokumentiert sachlich und gibt weiter. <strong>Nie:</strong> Essen kommentieren, Gewicht ansprechen, Diagnosen äußern, Eltern direkt beraten.</div>
+        <a class="karte-link" href="M2-34_Esstoerungen_Schulbegleitung.html">→ M2-34 Essstörungen</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#3B8A68;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Jana (13) isst seit Wochen in der Pause nichts. Sie gibt ihr Brot weg oder lässt es liegen. Sie friert oft, wirkt erschöpft und meidet die Cafeteria. INGRA macht sich Sorgen.</div>
+        <div class="fall-frage">Was ist die richtige Reaktion von INGRA?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(7,'A','falsch')" id="a7-A"><span class="antwort-mark">A</span>INGRA spricht Jana direkt an: "Ich mache mir Sorgen, du isst zu wenig."</button>
+        <button class="antwort-btn" onclick="antwort(7,'B','falsch')" id="a7-B"><span class="antwort-mark">B</span>INGRA informiert die Eltern direkt beim nächsten Kontakt.</button>
+        <button class="antwort-btn" onclick="antwort(7,'C','richtig')" id="a7-C"><span class="antwort-mark">C</span>INGRA dokumentiert die Beobachtungen sachlich über mehrere Tage und gibt sie an TK und Lehrkraft weiter.</button>
+      </div>
+      <div class="feedback gut" id="fb-7-richtig"><strong>✓ Richtig</strong> Sachliche Dokumentation über Zeit ist das Wichtigste. "Jana hat in der Pause 4 von 5 Tagen nicht gegessen. Sie wirkt müde und friert." — dann TK. Nicht: Essen ansprechen, Gewicht kommentieren, Eltern direkt kontaktieren.</div>
+      <div class="feedback schlecht" id="fb-7-falsch"><strong>✗ Nicht ganz</strong> Direktes Ansprechen kann Essstörungen verstärken. Eltern direkt informieren ist Aufgabe der TK — nicht von INGRA allein. Beobachten, dokumentieren, weitergeben.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Was wäre für dich persönlich schwierig: nicht einzugreifen wenn du Essstörungsmuster siehst? Welche Grenze hilft dir dabei?</div>
+        <textarea class="reflexion-area" id="ref-7" placeholder="Deine Antwort hier …" oninput="checkWeiter(7)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-7" onclick="lektionAbschliessen(7)">Modul abschließen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="zert-section" id="zert-section">
+    <div class="zert-icon">🎓</div>
+    <div class="zert-titel">M2 · Kinder verstehen abgeschlossen!</div>
+    <div class="zert-sub">Du hast alle 5 Lerneinheiten bearbeitet.</div>
+    <input class="zert-name-input" type="text" id="zert-name" placeholder="Dein Name für das Zertifikat …">
+    <br>
+    <button class="zert-btn" onclick="druckeZertifikat()">🖨️ Zertifikat drucken</button>
+    <br>
+    <a class="dash-link" href="EL_Dashboard.html">← Zurück zum E-Learning Dashboard</a>
+  </div>
+</div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="EL_Dashboard.html" title="E-Learning Dashboard" style="width:48px;height:48px;border-radius:50%;background:#3B8A68;border:2px solid #fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);font-size:1.2rem;">🎓</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<script>
+const store={_d:{},set(k,v){this._d[k]=v;try{sessionStorage.setItem("el_"+k,v);}catch(e){}},get(k){try{return sessionStorage.getItem("el_"+k)||this._d[k]||null;}catch(e){return this._d[k]||null;}}};
+const TOTAL=8,MODUL="M2";
+const done=new Array(TOTAL).fill(false);
+const answered=new Array(TOTAL).fill(false);
+function toggleLektion(idx){const body=document.getElementById("body-"+idx);const header=body.previousElementSibling;const isActive=body.classList.contains("active");body.classList.toggle("active",!isActive);header.setAttribute("aria-expanded",!isActive);}
+function antwort(lIdx,letter,typ){if(answered[lIdx])return;answered[lIdx]=true;["A","B","C"].forEach(l=>{const btn=document.getElementById("a"+lIdx+"-"+l);if(btn)btn.disabled=true;});const chosen=document.getElementById("a"+lIdx+"-"+letter);chosen.classList.add(typ);chosen.querySelector(".antwort-mark").textContent=typ==="richtig"?"✓":"✗";document.getElementById("fb-"+lIdx+"-"+(typ==="richtig"?"richtig":"falsch")).classList.add("show");checkWeiter(lIdx);}
+function checkWeiter(idx){const ref=document.getElementById("ref-"+idx);const weiter=document.getElementById("weiter-"+idx);if(answered[idx]&&ref&&ref.value.trim().length>10)weiter.classList.add("aktiv");}
+function lektionAbschliessen(idx){if(done[idx])return;done[idx]=true;store.set(MODUL+"-done-"+idx,"1");document.getElementById("lektion-"+idx).classList.add("done");const numEl=document.getElementById("num-"+idx);numEl.innerHTML="<svg viewBox='0 0 12 10' fill='none'><path d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>";document.getElementById("status-"+idx).textContent="✓ Abgeschlossen";const stepEl=document.getElementById("step-"+idx);if(stepEl){stepEl.classList.remove("active");stepEl.classList.add("done");}if(idx+1<TOTAL){document.getElementById("status-"+(idx+1)).textContent="Offen";const nextStep=document.getElementById("step-"+(idx+1));if(nextStep)nextStep.classList.add("active");const np=document.getElementById("np-"+(idx+1));if(np)np.classList.add("aktiv");setTimeout(()=>{const nextBody=document.getElementById("body-"+(idx+1));nextBody.classList.add("active");document.getElementById("lektion-"+(idx+1)).scrollIntoView({behavior:"smooth",block:"start"});const nextHeader=nextBody.previousElementSibling;nextHeader.setAttribute("aria-expanded","true");},400);}updateProgress();if(done.every(Boolean)){store.set(MODUL+"-abgeschlossen","1");setTimeout(()=>{const zs=document.getElementById("zert-section");zs.classList.add("show");zs.scrollIntoView({behavior:"smooth"});},600);}};
+function updateProgress(){const count=done.filter(Boolean).length;const pct=Math.round((count/TOTAL)*100);document.getElementById("gp-fill").style.width=pct+"%";document.getElementById("gp-pct").textContent=pct+"%";document.getElementById("mp-fill").style.width=pct+"%";document.getElementById("mp-pct").textContent=count+" / "+TOTAL;}
+function scrollToLektion(idx){document.getElementById("lektion-"+idx).scrollIntoView({behavior:"smooth"});}
+function druckeZertifikat(){const name=document.getElementById("zert-name").value.trim()||"INGRA-Schulbegleiter:in";const datum=new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});const win=window.open("","_blank");win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Zertifikat M2</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"><style>body{font-family:"DM Sans",sans-serif;background:#F5F0E8;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:2rem;}  .c{background:white;max-width:640px;width:100%;border:3px solid #3B8A68;border-radius:16px;padding:3rem;text-align:center;}.logo{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:#1B3A4B;}.sub{font-size:.7rem;color:#6EC6A0;letter-spacing:.2em;text-transform:uppercase;margin-bottom:2rem;}.cl{font-size:.75rem;color:#7A7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}.name{font-family:"Playfair Display",serif;font-size:2rem;font-weight:700;color:#1B3A4B;margin-bottom:1rem;}.t{font-size:.9rem;color:#4A4A4A;line-height:1.75;margin-bottom:1.5rem;}.m{background:#EEF7F2;border-radius:8px;padding:.75rem 1.5rem;display:inline-block;margin-bottom:1.5rem;}.mn{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#3B8A68;}.d{font-size:.8rem;color:#7A7060;margin-top:1.5rem;}@media print{body{background:white;padding:0;}.c{border:3px solid #3B8A68;}}</style></head><body><div class="c"><div class="logo">KLARTEXT</div><div class="sub">Mentoring-System · E-Learning</div><div class="cl">Zertifikat für</div><div class="name">${name}</div><div class="t">hat das E-Learning-Modul erfolgreich abgeschlossen.</div><div class="m"><div style="font-size:.65rem;color:#7A7060;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem;">Modul</div><div class="mn">M2 · Kinder verstehen</div><div style="font-size:.8rem;color:#7A7060;margin-top:.25rem;">5 Lerneinheiten abgeschlossen</div></div><div class="d">Abgeschlossen am ${datum}</div></div><script>window.onload=()=>window.print();<\/script></body></html>`);}
+window.addEventListener("DOMContentLoaded",()=>{for(let i=0;i<TOTAL;i++){if(store.get(MODUL+"-done-"+i)==="1"){done[i]=true;answered[i]=true;}}updateProgress();});
+</script>
+</body>
+</html>

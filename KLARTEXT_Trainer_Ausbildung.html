@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Trainer-Ausbildung</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:860px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+
+.hero{background:#1B3A4B;border-radius:14px;padding:1.75rem 2rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.35rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:.75rem;}
+.hero-stats{display:flex;gap:.5rem;flex-wrap:wrap;}
+.h-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:.35rem .75rem;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600;}
+
+/* PHASEN */
+.phase{margin-bottom:1.75rem;}
+.phase-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;padding:.75rem 1rem;background:#fff;border-radius:10px;border:1.5px solid #DDD8CE;border-left:5px solid;}
+.phase-nr{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;}
+.phase-info .phase-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#1B3A4B;}
+.phase-info .phase-sub{font-size:.75rem;color:#6A6878;margin-top:.1rem;}
+.phase-dauer{margin-left:auto;font-size:.68rem;font-weight:700;color:#6A6878;white-space:nowrap;}
+
+/* WOCHEN */
+.woche-block{background:#fff;border-radius:10px;border:1.5px solid #DDD8CE;overflow:hidden;margin-bottom:.5rem;}
+.woche-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;cursor:pointer;transition:background .15s;}
+.woche-header:hover{background:#F5F0E8;}
+.woche-nr{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.85rem;flex-shrink:0;}
+.woche-info{flex:1;}
+.woche-titel{font-size:.9rem;font-weight:700;color:#1A1A2E;}
+.woche-sub{font-size:.72rem;color:#6A6878;margin-top:.1rem;}
+.woche-chev{font-size:.75rem;color:#6A6878;transition:transform .2s;margin-left:auto;}
+.woche-block.open .woche-chev{transform:rotate(180deg);}
+.woche-body{display:none;padding:.85rem 1rem 1rem;border-top:1.5px solid #DDD8CE;}
+.woche-block.open .woche-body{display:block;}
+
+/* CONTENT */
+.ziel-box{background:#EAF5F0;border-left:3px solid #6EC6A0;border-radius:0 8px 8px 0;padding:.6rem .9rem;margin-bottom:.75rem;font-size:.82rem;color:#1A3A2A;line-height:1.75;}
+.aufgaben-liste{list-style:none;padding:0;margin-bottom:.65rem;}
+.aufgaben-liste li{display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;border-bottom:1px solid #F0EBE3;font-size:.82rem;line-height:1.6;}
+.aufgaben-liste li:last-child{border-bottom:none;}
+.aufgaben-liste li::before{content:"→";color:#1B3A4B;font-weight:700;flex-shrink:0;}
+.check-box{background:#EAF5F0;border:1.5px solid #6EC6A0;border-radius:6px;padding:.5rem .85rem;font-size:.8rem;color:#1A3A2A;margin:.35rem 0;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:background .15s;}
+.check-box:hover{background:#D5EFE3;}
+.check-box.done{background:#2E7D47;border-color:#2E7D47;color:#fff;}
+.check-box input{display:none;}
+.check-icon{width:18px;height:18px;border-radius:4px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.7rem;}
+.lern-material{display:flex;flex-wrap:wrap;gap:.3rem;margin:.4rem 0;}
+.lm-chip{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .55rem;border-radius:20px;font-size:.68rem;font-weight:700;}
+.lm-karte{background:#EAF0F4;color:#1B3A4B;}
+.lm-praxis{background:#FBF4E8;color:#7A5318;}
+.lm-reflexion{background:#F3EDF3;color:#4A148C;}
+.kriterien{background:#FAFAFA;border:1.5px solid #DDD8CE;border-radius:8px;padding:.65rem .9rem;margin-top:.5rem;}
+.kriterien-titel{font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem;}
+.kriterien li{font-size:.78rem;color:#3A3A4A;line-height:1.65;margin-bottom:.15rem;}
+
+/* ABSCHLUSS */
+.abschluss-karte{background:#1B3A4B;border-radius:12px;padding:1.25rem 1.5rem;margin-top:1.5rem;display:flex;align-items:center;gap:1rem;}
+.abschluss-karte img{width:64px;flex-shrink:0;}
+.abschluss-text .titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.25rem;}
+.abschluss-text .sub{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.7;}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Trainer-Ausbildung</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">KLARTEXT Trainer-Ausbildung</div>
+  <div class="hero-sub">Schritt-für-Schritt-Plan zum/zur zertifizierten KLARTEXT-Trainer:in — im Selbststudium, in deinem Tempo. Drei Phasen, klare Kriterien, wörtliche Moderationsanleitungen.</div>
+  <div class="hero-stats">
+    <span class="h-stat">📅 8–10 Wochen</span>
+    <span class="h-stat">3 Phasen</span>
+    <span class="h-stat">✅ Zertifizierung</span>
+    <span class="h-stat">🎓 Selbststudium</span>
+  </div>
+</div>
+
+<!-- ══ PHASE 1 ══════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header" style="border-left-color:#1B3A4B;">
+    <div class="phase-nr" style="color:#1B3A4B;">1</div>
+    <div class="phase-info">
+      <div class="phase-titel">Fundament — Das System verstehen</div>
+      <div class="phase-sub">KLARTEXT komplett kennenlernen · Inhalte durcharbeiten · Eigene Erfahrung sammeln</div>
+    </div>
+    <div class="phase-dauer">Wochen 1–3</div>
+  </div>
+
+  <!-- Woche 1 -->
+  <div class="woche-block" id="wb1">
+    <div class="woche-header" onclick="toggleW('wb1')">
+      <div class="woche-nr" style="background:#1B3A4B;">1</div>
+      <div class="woche-info">
+        <div class="woche-titel">Das System von innen kennenlernen</div>
+        <div class="woche-sub">Dashboard · Alle Module · Navigation · Eigene Erkundung</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du kennst KLARTEXT so gut dass du jede Karte findest und jeden Bereich erklären kannst — ohne nachzudenken.</div>
+      <ul class="aufgaben-liste">
+        <li>Alle Module M0–M8 öffnen und Titelkarten lesen</li>
+        <li>Barometer INGRA + Kind: Beide vollständig durchklicken, alle 5 Zustände ausprobieren</li>
+        <li>M3 "Was tue ich jetzt?": Alle 8 Situationen + 12 Werkzeuge lesen</li>
+        <li>Feuerwehr-Karten: Alle 6 lesen</li>
+        <li>Lernhandbuch: Einleitung + 2 Kapitel deiner Wahl</li>
+        <li>Zeitkonto + Krankmeldung: Beide Funktionen ausprobieren</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-karte">📋 Dashboard komplett</span>
+        <span class="lm-chip lm-karte">🌡️ Barometer INGRA + Kind</span>
+        <span class="lm-chip lm-karte">🎯 M3 vollständig</span>
+        <span class="lm-chip lm-reflexion">✏️ Reflexion: Was überrascht mich?</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Woche abgeschlossen wenn:</div>
+        <ul class="kriterien">
+          <li>Du kannst das System ohne Hilfe erklären</li>
+          <li>Du weißt wo jede Sektion ist</li>
+          <li>Du hast mindestens 3 Dinge notiert die dich überrascht haben</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Woche 2 -->
+  <div class="woche-block" id="wb2">
+    <div class="woche-header" onclick="toggleW('wb2')">
+      <div class="woche-nr" style="background:#2E5E8A;">2</div>
+      <div class="woche-info">
+        <div class="woche-titel">Inhalte vertiefen — Module 1–4</div>
+        <div class="woche-sub">Rolle · Barometer · Kinder verstehen · Kommunikation</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du kannst alle Kernkonzepte der Module 1–4 mit eigenen Worten erklären und konkrete Beispiele nennen.</div>
+      <ul class="aufgaben-liste">
+        <li>M1 komplett: Alle 10 Karten lesen, Pflichtdreieck skizzieren</li>
+        <li>M2: Mindestens 10 Karten lesen — Schwerpunkt Neurobiologie + 3 Diagnosen</li>
+        <li>M4: Alle 16 Kommunikations-Karten lesen</li>
+        <li>kLAR-Modell: Auswendig können — die 4 Schritte ohne Nachschauen</li>
+        <li>Workbook: Modul 1 + 2 Reflexionsfragen beantworten</li>
+        <li>Quellenverzeichnis: 10 Quellen anschauen — Hintergrund verstehen</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-karte">📋 M1–M4 komplett</span>
+        <span class="lm-chip lm-karte">📖 Lernhandbuch Kapitel 2–4</span>
+        <span class="lm-chip lm-reflexion">✏️ Workbook M1+M2</span>
+        <span class="lm-chip lm-praxis">🎯 kLAR auswendig</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Woche abgeschlossen wenn:</div>
+        <ul class="kriterien">
+          <li>kLAR sitzt — du kannst es ohne Karte erklären</li>
+          <li>Du kannst das Pflichtdreieck in 2 Minuten erklären</li>
+          <li>Du kennst mindestens 5 Diagnosen und ihre Schulalltag-Auswirkungen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Woche 3 -->
+  <div class="woche-block" id="wb3">
+    <div class="woche-header" onclick="toggleW('wb3')">
+      <div class="woche-nr" style="background:#3B8A68;">3</div>
+      <div class="woche-info">
+        <div class="woche-titel">Inhalte vertiefen — Module 5–8 + Spezialthemen</div>
+        <div class="woche-sub">Krisen · Praxis · Selbstfürsorge · Kinderschutz</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du kennst alle Module inkl. Spezialthemen. Du weißt was du als Trainer:in besonders betonen willst.</div>
+      <ul class="aufgaben-liste">
+        <li>M5 + M6: Schwierige Situationen + Krisen komplett lesen</li>
+        <li>M7: Alle 20 Praxissituationen überfliegen — 5 davon tief lesen</li>
+        <li>M8: Selbstfürsorge komplett — eigenen Warnsignal-Plan erstellen</li>
+        <li>M2-35 bis M2-41: Kinderschutz + Sinnesbehinderungen — alle 7 Karten</li>
+        <li>Fachbuch: 2 Kapitel deiner Wahl lesen</li>
+        <li>Reflexion: Was sind meine 3 Kernthemen als Trainer:in?</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-karte">📋 M5–M8 + M2-35-41</span>
+        <span class="lm-chip lm-karte">📚 Fachbuch</span>
+        <span class="lm-chip lm-reflexion">✏️ Persönlicher Warnsignal-Plan</span>
+        <span class="lm-chip lm-reflexion">🎯 3 Kernthemen definieren</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Woche abgeschlossen wenn:</div>
+        <ul class="kriterien">
+          <li>Du hast alle Module mindestens einmal komplett durchgearbeitet</li>
+          <li>Du kennst den Unterschied zwischen Basis- und Erweiterungskurs</li>
+          <li>Du hast deine 3 persönlichen Schwerpunkte als Trainer:in definiert</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 2 ══════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header" style="border-left-color:#B07D2A;">
+    <div class="phase-nr" style="color:#B07D2A;">2</div>
+    <div class="phase-info">
+      <div class="phase-titel">Methodik — Moderieren lernen</div>
+      <div class="phase-sub">Moderationsanleitungen studieren · Üben · Erste Probe-Moderation</div>
+    </div>
+    <div class="phase-dauer">Wochen 4–6</div>
+  </div>
+
+  <!-- Woche 4 -->
+  <div class="woche-block" id="wb4">
+    <div class="woche-header" onclick="toggleW('wb4')">
+      <div class="woche-nr" style="background:#B07D2A;">4</div>
+      <div class="woche-info">
+        <div class="woche-titel">Moderationsleitfäden studieren</div>
+        <div class="woche-sub">Wörtliche Rede · Einstieg · Barometer · kLAR</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du hast alle Moderationsleitfäden gelesen und verstehst warum jeder Satz so formuliert ist wie er formuliert ist.</div>
+      <ul class="aufgaben-liste">
+        <li>Moderationsleitfaden Kurzeinweisung (90 Min) komplett lesen</li>
+        <li>Moderationsleitfaden Workshop 1 Tag komplett lesen</li>
+        <li>Moderationsleitfaden Workshop 2 Tage komplett lesen</li>
+        <li>Einstiegssequenz laut vorlesen — wie klingt das in deiner Stimme?</li>
+        <li>3 Stellen markieren wo du anders formulieren würdest — warum?</li>
+        <li>Trainer-Curriculum 15 Wochen lesen</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-karte">📋 Alle Moderationsleitfäden</span>
+        <span class="lm-chip lm-karte">📅 Trainer-Curriculum</span>
+        <span class="lm-chip lm-reflexion">✏️ Eigene Formulierungen notieren</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Woche abgeschlossen wenn:</div>
+        <ul class="kriterien">
+          <li>Alle 3 Leitfäden gelesen</li>
+          <li>Einstieg kann frei gesprochen werden (nicht wörtlich, aber inhaltlich)</li>
+          <li>Du weißt wo deine persönlichen Stärken als Moderat:or liegen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Woche 5 -->
+  <div class="woche-block" id="wb5">
+    <div class="woche-header" onclick="toggleW('wb5')">
+      <div class="woche-nr" style="background:#B07D2A;">5</div>
+      <div class="woche-info">
+        <div class="woche-titel">Üben, üben, üben</div>
+        <div class="woche-sub">Solo-Probe · Spiegel · Aufnahme · Feedback</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du hast die Kurzeinweisung (90 Min) mindestens 2× komplett geübt — einmal solo, einmal vor einer Person.</div>
+      <ul class="aufgaben-liste">
+        <li>Tag 1–2: Kurzeinweisung komplett solo üben (vor dem Spiegel oder aufnehmen)</li>
+        <li>Tag 3: Aufnahme anhören — was fällt auf? Tempo? Pausen? Energie?</li>
+        <li>Tag 4–5: Kurzeinweisung vor einer Vertrauensperson üben (Freundin, Partner, Kollegin)</li>
+        <li>Feedback einholen: Was war klar? Was war verwirrend? Was hat Energie gegeben?</li>
+        <li>Anpassungen notieren und einarbeiten</li>
+        <li>kLAR-Rollenspiel: Einmal als "Kind", einmal als "INGRA" durchspielen</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-praxis">🎭 Solo-Probe</span>
+        <span class="lm-chip lm-praxis">📱 Aufnahme</span>
+        <span class="lm-chip lm-praxis">👥 Probe vor Person</span>
+        <span class="lm-chip lm-reflexion">✏️ Feedback dokumentieren</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Woche abgeschlossen wenn:</div>
+        <ul class="kriterien">
+          <li>Kurzeinweisung 2× komplett geübt</li>
+          <li>Feedback von mindestens einer Person eingeholt</li>
+          <li>kLAR-Rollenspiel sicher beherrscht</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Woche 6 -->
+  <div class="woche-block" id="wb6">
+    <div class="woche-header" onclick="toggleW('wb6')">
+      <div class="woche-nr" style="background:#B07D2A;">6</div>
+      <div class="woche-info">
+        <div class="woche-titel">Erste echte Probe-Moderation</div>
+        <div class="woche-sub">Kurzeinweisung mit echten INGRAs oder Testgruppe</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du hast die Kurzeinweisung einmal mit einer echten Gruppe durchgeführt — und weißt was du beim nächsten Mal anders machst.</div>
+      <ul class="aufgaben-liste">
+        <li>Testgruppe organisieren: 2–4 Personen die die Rolle von INGRAs übernehmen</li>
+        <li>Kurzeinweisung vollständig durchführen — nicht unterbrechen lassen</li>
+        <li>Nach der Moderation: Strukturiertes Feedback einholen (Formular)</li>
+        <li>Selbst-Reflexion: Was lief gut? Was war schwierig? Was nehme ich mit?</li>
+        <li>3 konkrete Verbesserungen für die nächste Moderation definieren</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-praxis">👥 Testgruppe 2–4 Personen</span>
+        <span class="lm-chip lm-praxis">📋 Feedback-Formular</span>
+        <span class="lm-chip lm-reflexion">✏️ Selbst-Reflexion</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Woche abgeschlossen wenn:</div>
+        <ul class="kriterien">
+          <li>Erste echte Probe-Moderation durchgeführt</li>
+          <li>Strukturiertes Feedback dokumentiert</li>
+          <li>3 konkrete Verbesserungen definiert</li>
+          <li>Du willst die nächste Moderation machen — das ist das wichtigste Zeichen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 3 ══════════════════════════════════════════════ -->
+<div class="phase">
+  <div class="phase-header" style="border-left-color:#6B3F6B;">
+    <div class="phase-nr" style="color:#6B3F6B;">3</div>
+    <div class="phase-info">
+      <div class="phase-titel">Zertifizierung — Trainer:in werden</div>
+      <div class="phase-sub">Workshop durchführen · Zertifikat · Lizenz</div>
+    </div>
+    <div class="phase-dauer">Wochen 7–10</div>
+  </div>
+
+  <!-- Woche 7-8 -->
+  <div class="woche-block" id="wb7">
+    <div class="woche-header" onclick="toggleW('wb7')">
+      <div class="woche-nr" style="background:#6B3F6B;">7–8</div>
+      <div class="woche-info">
+        <div class="woche-titel">Workshop 1 Tag vorbereiten & durchführen</div>
+        <div class="woche-sub">Vollständige Vorbereitung · Material · Erster echter Workshop</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du führst deinen ersten 1-Tages-Workshop durch — vollständig, professionell, mit Feedback.</div>
+      <ul class="aufgaben-liste">
+        <li>Woche 7: Workshop-Vorbereitung komplett — Material drucken, Raum planen, Ablauf durchgehen</li>
+        <li>Woche 7: Moderationsleitfaden 1 Tag nochmal laut lesen</li>
+        <li>Woche 8: Workshop durchführen — Anja Jolk informieren (Begleitung/Feedback möglich)</li>
+        <li>Nach Workshop: Teilnehmer-Feedback auswerten</li>
+        <li>Reflexionsgespräch mit Anja Jolk (per Video oder vor Ort)</li>
+        <li>Zertifizierungs-Kriterien prüfen</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-praxis">📋 Vollständige Vorbereitung</span>
+        <span class="lm-chip lm-praxis">🎓 Erster echter Workshop</span>
+        <span class="lm-chip lm-reflexion">📞 Reflexionsgespräch</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Bereit für Zertifizierung wenn:</div>
+        <ul class="kriterien">
+          <li>Erster 1-Tages-Workshop erfolgreich durchgeführt</li>
+          <li>Teilnehmer-Feedback überwiegend positiv</li>
+          <li>Reflexionsgespräch geführt</li>
+          <li>Du bist dir sicher: Ich kann das</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Woche 9-10 -->
+  <div class="woche-block" id="wb9">
+    <div class="woche-header" onclick="toggleW('wb9')">
+      <div class="woche-nr" style="background:#6B3F6B;">9–10</div>
+      <div class="woche-info">
+        <div class="woche-titel">Zertifizierung & Lizenz</div>
+        <div class="woche-sub">Abschluss · Zertifikat · Lizenzvertrag · Ausblick</div>
+      </div>
+      <span class="woche-chev">▼</span>
+    </div>
+    <div class="woche-body">
+      <div class="ziel-box">Ziel: Du bist zertifizierte KLARTEXT-Trainer:in mit Lizenz zur eigenständigen Durchführung aller KLARTEXT-Kurse.</div>
+      <ul class="aufgaben-liste">
+        <li>Abschluss-Reflexion: Was hat sich in 10 Wochen verändert?</li>
+        <li>Zertifikat erhalten: "Zertifizierte KLARTEXT-Trainer:in"</li>
+        <li>Lizenzvertrag besprechen und unterzeichnen</li>
+        <li>Eigenen Kursplan erstellen: Wann führe ich meinen ersten eigenständigen Kurs durch?</li>
+        <li>KLARTEXT-Trainer-Netzwerk: Kontakt zu anderen Trainer:innen aufbauen</li>
+        <li>Fortbildung: Jährliche Auffrischung vereinbaren</li>
+      </ul>
+      <div class="lern-material">
+        <span class="lm-chip lm-praxis">🎓 Zertifikat</span>
+        <span class="lm-chip lm-praxis">📄 Lizenzvertrag</span>
+        <span class="lm-chip lm-reflexion">📅 Eigener Kursplan</span>
+      </div>
+      <div class="kriterien">
+        <div class="kriterien-titel">✅ Zertifiziert als KLARTEXT-Trainer:in wenn:</div>
+        <ul class="kriterien">
+          <li>Alle 3 Phasen abgeschlossen</li>
+          <li>Mindestens 1 Workshop erfolgreich durchgeführt</li>
+          <li>Reflexionsgespräch mit Anja Jolk positiv abgeschlossen</li>
+          <li>Lizenzvertrag unterzeichnet</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="abschluss-karte">
+  <img src="brainy.png" alt="Brainy">
+  <div class="abschluss-text">
+    <div class="titel">10 Wochen. Eine Ausbildung. Eine neue Rolle.</div>
+    <div class="sub">Gute Trainer:innen sind zuerst gute Lernende. Dieser Plan gibt dir die Struktur — deine Erfahrung gibt dir die Tiefe. Klar. Warm. Menschlich.</div>
+  </div>
+</div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+function toggleW(id){
+  var el=document.getElementById(id);
+  if(el)el.classList.toggle('open');
+}
+</script>
+</body>
+</html>

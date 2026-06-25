@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Präsenzkurs Zertifikat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#B8922A; --gold-l:#F5E9C8; --gold-d:#7A5F18;
+  --m:#1B3A4B; --ink:#1A1A2E; --paper:#FDFAF5;
+  --accent:#6EC6A0; --muted:#6A6A7A;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#E8E4DC;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:1.5rem;}
+
+/* STEUERLEISTE */
+.controls{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;justify-content:center;}
+.ctrl-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1.1rem;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;border:none;transition:all .15s;}
+.ctrl-primary{background:var(--m);color:#fff;}
+.ctrl-primary:hover{background:#0F2230;}
+.ctrl-secondary{background:var(--gold);color:#fff;}
+.ctrl-secondary:hover{background:var(--gold-d);}
+.ctrl-outline{background:#fff;color:var(--m);border:1.5px solid var(--m);}
+.ctrl-outline:hover{background:var(--m);color:#fff;}
+.name-input{padding:.5rem .9rem;border:1.5px solid #C0B8A8;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.88rem;color:var(--ink);width:220px;outline:none;background:#fff;}
+.name-input:focus{border-color:var(--gold);}
+.datum-input{padding:.5rem .9rem;border:1.5px solid #C0B8A8;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.88rem;color:var(--ink);width:160px;outline:none;background:#fff;}
+
+/* ZERTIFIKAT */
+.zert-wrap{width:297mm;max-width:100%;background:var(--paper);position:relative;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+
+/* Äußerer Rahmen */
+.rahmen-aussen{position:absolute;inset:8px;border:1.5px solid var(--gold);pointer-events:none;z-index:1;}
+.rahmen-innen{position:absolute;inset:14px;border:.5px solid var(--gold-l);pointer-events:none;z-index:1;}
+
+/* Eck-Ornamente */
+.eck{position:absolute;width:32px;height:32px;z-index:2;}
+.eck svg{width:32px;height:32px;}
+.eck.tl{top:4px;left:4px;}
+.eck.tr{top:4px;right:4px;transform:scaleX(-1);}
+.eck.bl{bottom:4px;left:4px;transform:scaleY(-1);}
+.eck.br{bottom:4px;right:4px;transform:scale(-1);}
+
+/* Hintergrund-Muster */
+.bg-pattern{position:absolute;inset:0;opacity:.025;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:20px 20px;z-index:0;}
+
+/* Inhalt */
+.zert-inner{position:relative;z-index:3;padding:48px 56px;}
+
+/* Header */
+.zert-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--gold-l);}
+.logo-block{display:flex;align-items:center;gap:12px;}
+.logo-marke{width:44px;height:44px;border:2px solid var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--m);}
+.logo-marke span{font-family:"Playfair Display",serif;font-size:16px;font-weight:700;color:#fff;}
+.logo-text-block .wort{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:var(--m);display:block;}
+.logo-text-block .sub{font-size:.62rem;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;}
+.traeger-block{text-align:right;}
+.traeger-label{font-size:.58rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.traeger-logo{width:80px;height:36px;border:1px dashed #C0B8A8;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-left:auto;}
+.traeger-logo span{font-size:.65rem;color:#C0B8A8;text-align:center;line-height:1.3;}
+
+/* Titel-Block */
+.zert-typ{font-size:.65rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:8px;}
+.zert-haupttitel{font-family:"Playfair Display",serif;font-size:2.4rem;font-weight:700;color:var(--m);text-align:center;line-height:1.15;margin-bottom:6px;}
+.zert-untertitel{font-family:"IM Fell English",serif;font-size:.95rem;font-style:italic;color:var(--muted);text-align:center;margin-bottom:28px;}
+
+/* Trennlinie */
+.ornament-line{display:flex;align-items:center;gap:12px;margin:0 auto 28px;max-width:400px;}
+.ornament-line .linie{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.ornament-line .raute{width:8px;height:8px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;}
+
+/* Name */
+.verliehen-an{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:6px;}
+.empfaenger-name{font-family:"Playfair Display",serif;font-size:2rem;font-style:italic;color:var(--m);text-align:center;min-height:2.5rem;border-bottom:1.5px solid var(--gold);padding-bottom:4px;max-width:440px;margin:0 auto 6px;}
+.empfaenger-placeholder{font-size:.72rem;color:#C0B8A8;text-align:center;margin-bottom:24px;}
+
+/* Beschreibungstext */
+.zert-text{font-size:.88rem;color:var(--ink);line-height:1.85;text-align:center;max-width:480px;margin:0 auto 24px;}
+
+/* Module-Badge-Reihe */
+.module-reihe{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:24px;}
+.modul-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.65rem;font-weight:700;letter-spacing:.06em;}
+
+/* Stunden-Info */
+.stunden-reihe{display:flex;justify-content:center;gap:24px;margin-bottom:28px;}
+.stunden-item{text-align:center;}
+.stunden-zahl{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:var(--gold);}
+.stunden-label{font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+
+/* Unterschriften */
+.unterschrift-reihe{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:20px;}
+.unterschrift-block{text-align:center;}
+.unterschrift-linie{height:1px;background:var(--m);margin-bottom:6px;}
+.unterschrift-name{font-size:.75rem;font-weight:600;color:var(--m);margin-bottom:2px;min-height:1rem;}
+.unterschrift-rolle{font-size:.62rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+
+/* Footer */
+.zert-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--gold-l);}
+.datum-block{}
+.datum-label{font-size:.58rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px;}
+.datum-wert{font-size:.82rem;font-weight:600;color:var(--m);}
+.zert-nr{font-size:.65rem;color:var(--muted);}
+.qr-block{text-align:center;}
+.qr-placeholder{width:56px;height:56px;border:1.5px solid var(--gold-l);border-radius:6px;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;}
+.qr-label{font-size:.55rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.siegel{width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.siegel-k{font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:var(--gold);}
+.siegel-text{font-size:.42rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);}
+
+@media print{
+  body{background:white;padding:0;}
+  .controls{display:none;}
+  .zert-wrap{box-shadow:none;width:100%;}
+  @page{size:A4 landscape;margin:0;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<div class="controls">
+  <input class="name-input" type="text" id="name-input" placeholder="Name der/des INGRA …" oninput="updateName(this.value)">
+  <input class="datum-input" type="text" id="datum-input" placeholder="Datum" oninput="updateDatum(this.value)">
+  <button class="ctrl-btn ctrl-secondary" onclick="window.print()">🖨️ Drucken / Speichern als PDF</button>
+  <a class="ctrl-btn ctrl-outline" href="DASHBOARD.html">← Dashboard</a>
+</div>
+
+<div class="zert-wrap" id="zertifikat">
+  <div class="bg-pattern"></div>
+  <div class="rahmen-aussen"></div>
+  <div class="rahmen-innen"></div>
+
+  <!-- Eck-Ornamente -->
+  <div class="eck tl"><svg viewBox="0 0 32 32" fill="none"><path d="M2 30 L2 2 L30 2" stroke="#B8922A" stroke-width="1.5"/><path d="M2 2 L10 10" stroke="#B8922A" stroke-width=".8" opacity=".5"/><rect x="1" y="1" width="6" height="6" fill="none" stroke="#B8922A" stroke-width=".8" opacity=".4"/></svg></div>
+  <div class="eck tr"><svg viewBox="0 0 32 32" fill="none"><path d="M2 30 L2 2 L30 2" stroke="#B8922A" stroke-width="1.5"/><path d="M2 2 L10 10" stroke="#B8922A" stroke-width=".8" opacity=".5"/><rect x="1" y="1" width="6" height="6" fill="none" stroke="#B8922A" stroke-width=".8" opacity=".4"/></svg></div>
+  <div class="eck bl"><svg viewBox="0 0 32 32" fill="none"><path d="M2 30 L2 2 L30 2" stroke="#B8922A" stroke-width="1.5"/><path d="M2 2 L10 10" stroke="#B8922A" stroke-width=".8" opacity=".5"/><rect x="1" y="1" width="6" height="6" fill="none" stroke="#B8922A" stroke-width=".8" opacity=".4"/></svg></div>
+  <div class="eck br"><svg viewBox="0 0 32 32" fill="none"><path d="M2 30 L2 2 L30 2" stroke="#B8922A" stroke-width="1.5"/><path d="M2 2 L10 10" stroke="#B8922A" stroke-width=".8" opacity=".5"/><rect x="1" y="1" width="6" height="6" fill="none" stroke="#B8922A" stroke-width=".8" opacity=".4"/></svg></div>
+
+  <div class="zert-inner">
+
+    <!-- Header -->
+    <div class="zert-header">
+      <div class="logo-block">
+        <div class="logo-marke"><span>K</span></div>
+        <img src="brainy.png" alt="Brainy" style="width:32px;height:32px;object-fit:contain;">
+        <div class="logo-text-block">
+          <span class="wort">KLARTEXT</span>
+          <span class="sub">Mentoring-System</span>
+        </div>
+      </div>
+      <div class="traeger-block">
+        <div class="traeger-label">Ausgestellt durch</div>
+        <div class="traeger-logo"><span>Logo<br>Träger</span></div>
+      </div>
+    </div>
+
+    <!-- Titel -->
+    <div class="zert-typ">Teilnahmezertifikat</div>
+    <div class="zert-haupttitel">Schulbegleitung KLARTEXT</div>
+    <div class="zert-untertitel">Präsenzkurs · 12 Wochen · KLARTEXT Schulbegleitung</div>
+
+    <div class="ornament-line">
+      <div class="linie"></div>
+      <div class="raute"></div>
+      <div class="linie"></div>
+    </div>
+
+    <!-- Name -->
+    <div class="verliehen-an">Verliehen an</div>
+    <div class="empfaenger-name" id="name-feld">Vorname Nachname</div>
+    <div class="empfaenger-placeholder">Name der/des Schulbegleiter:in</div>
+
+    <!-- Text -->
+    <div class="zert-text">
+      hat den KLARTEXT Schulbegleitungskurs erfolgreich abgeschlossen. Der Kurs umfasste 12 Wochen Präsenztraining, praktische Übungen, Fallsupervision und alle Kernmodule des KLARTEXT Mentoring-Systems.
+    </div>
+
+    <!-- Module -->
+    <div class="module-reihe">
+      <span class="modul-badge" style="background:#EAF0F4;color:#1B3A4B;">Seminar 1: Grundlagen</span>
+      <span class="modul-badge" style="background:#EEF7F2;color:#3B8A68;">Seminar 2: Kinder verstehen</span>
+      <span class="modul-badge" style="background:#FBF4E8;color:#B07D2A;">Seminar 3: Werkzeuge</span>
+      <span class="modul-badge" style="background:#F3EEF9;color:#5D3A7A;">Seminar 4: Kommunikation</span>
+      <span class="modul-badge" style="background:#FBF0EA;color:#B7500A;">Seminar 5: Dokumentation</span>
+      <span class="modul-badge" style="background:#FDE8F1;color:#D81B60;">Seminar 6: Krise &amp; Schutz</span>
+      <span class="modul-badge" style="background:#F7EFED;color:#8B4A38;">Praxissupervision</span>
+      <span class="modul-badge" style="background:#F3EDF3;color:#6B3F6B;">Selbstfürsorge</span>
+      <span class="modul-badge" style="background:#FDF4E3;color:#C47A00;">Abschlusskolloquium</span>
+    </div>
+
+    <!-- Stunden -->
+    <div class="stunden-reihe">
+      <div class="stunden-item">
+        <div class="stunden-zahl">12</div>
+        <div class="stunden-label">Wochen</div>
+      </div>
+      <div class="stunden-item">
+        <div class="stunden-zahl">6</div>
+        <div class="stunden-label">Seminare</div>
+      </div>
+      <div class="stunden-item">
+        <div class="stunden-zahl">72h</div>
+        <div class="stunden-label">Präsenzzeit</div>
+      </div>
+    </div>
+
+    <!-- Unterschriften -->
+    <div class="unterschrift-reihe">
+      <div class="unterschrift-block">
+        <div class="unterschrift-linie"></div>
+        <div class="unterschrift-name" contenteditable="true" style="outline:none;" title="Klicken zum Bearbeiten">____________________</div>
+        <div class="unterschrift-rolle">Teamkoordination</div>
+      </div>
+      <div class="unterschrift-block">
+        <div class="unterschrift-linie"></div>
+        <div class="unterschrift-name" contenteditable="true" style="outline:none;" title="Klicken zum Bearbeiten">____________________</div>
+        <div class="unterschrift-rolle">Trägerleitung</div>
+      </div>
+      <div class="unterschrift-block">
+        <div class="unterschrift-linie"></div>
+        <div class="unterschrift-name" contenteditable="true" style="outline:none;" title="Klicken zum Bearbeiten">____________________</div>
+        <div class="unterschrift-rolle">INGRA-Kursleitung</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="zert-footer">
+      <div class="datum-block">
+        <div class="datum-label">Ausgestellt am</div>
+        <div class="datum-wert" id="datum-feld">TT.MM.JJJJ</div>
+      </div>
+      <div class="siegel">
+        <div class="siegel-k">K</div>
+        <div class="siegel-text">KLARTEXT</div>
+      </div>
+      <div class="qr-block">
+        <div class="qr-placeholder">
+          <svg viewBox="0 0 40 40" width="40" height="40">
+            <rect x="2" y="2" width="14" height="14" fill="none" stroke="#C0B8A8" stroke-width="1.5"/>
+            <rect x="5" y="5" width="8" height="8" fill="#C0B8A8" opacity=".4"/>
+            <rect x="24" y="2" width="14" height="14" fill="none" stroke="#C0B8A8" stroke-width="1.5"/>
+            <rect x="27" y="5" width="8" height="8" fill="#C0B8A8" opacity=".4"/>
+            <rect x="2" y="24" width="14" height="14" fill="none" stroke="#C0B8A8" stroke-width="1.5"/>
+            <rect x="5" y="27" width="8" height="8" fill="#C0B8A8" opacity=".4"/>
+            <rect x="20" y="20" width="4" height="4" fill="#C0B8A8" opacity=".4"/>
+            <rect x="26" y="20" width="4" height="4" fill="#C0B8A8" opacity=".4"/>
+            <rect x="32" y="20" width="6" height="4" fill="#C0B8A8" opacity=".4"/>
+            <rect x="20" y="26" width="4" height="4" fill="#C0B8A8" opacity=".4"/>
+            <rect x="26" y="26" width="4" height="4" fill="#C0B8A8" opacity=".4"/>
+            <rect x="20" y="32" width="4" height="6" fill="#C0B8A8" opacity=".4"/>
+            <rect x="28" y="32" width="10" height="4" fill="#C0B8A8" opacity=".4"/>
+          </svg>
+        </div>
+        <div class="qr-label">Verifikation</div>
+      </div>
+      <div>
+        <div class="datum-label" style="text-align:right;">Zertifikat-Nr.</div>
+        <div class="zert-nr" id="zert-nr">EL-2026-001</div>
+      </div>
+    </div>
+
+  </div><!-- /zert-inner -->
+</div><!-- /zert-wrap -->
+
+<script>
+function updateName(val) {
+  document.getElementById('name-feld').textContent = val || 'Vorname Nachname';
+}
+function updateDatum(val) {
+  document.getElementById('datum-feld').textContent = val || 'TT.MM.JJJJ';
+}
+// Zertifikat-Nummer generieren
+const d = new Date();
+document.getElementById('zert-nr').textContent =
+  'PK-' + d.getFullYear() + '-' + String(Math.floor(Math.random()*900)+100);
+// Datum vorbelegen
+const heute = d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+document.getElementById('datum-input').value = heute;
+document.getElementById('datum-feld').textContent = heute;
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Kurzanleitung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--kt:#1B3A4B;--acc:#6EC6A0;--gold:#C47A00;--rot:#C62828;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#1A1A2E;--muted:#6A6878;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);max-width:780px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+/* HEADER */
+.doc-header{background:var(--kt);border-radius:14px;padding:1.75rem 2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.25rem;}
+.doc-logo-mark{width:48px;height:48px;border:2px solid var(--acc);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 7px;flex-shrink:0;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:17px;font-weight:700;color:#fff;line-height:1;}
+.lm-bars{display:flex;flex-direction:column;gap:2.5px;width:100%;}
+.lm-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
+.doc-header-text .titel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:#fff;display:block;}
+.doc-header-text .sub{font-size:.78rem;color:var(--acc);margin-top:.2rem;display:block;letter-spacing:.1em;}
+.doc-header-text .desc{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.15rem;display:block;}
+
+/* INTRO */
+.intro{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.75rem;border-left:4px solid var(--acc);}
+.intro p{font-size:.9rem;line-height:1.8;color:#3A3A4A;}
+.intro strong{color:var(--kt);}
+
+/* SEKTIONEN */
+.sek{margin-bottom:2rem;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--kt);margin-bottom:1rem;padding-bottom:.4rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:.5rem;}
+.sek-nr{width:28px;height:28px;border-radius:50%;background:var(--kt);color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ELEMENT-KARTEN */
+.elem{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:.6rem;display:flex;gap:.9rem;align-items:flex-start;}
+.elem-icon{font-size:1.4rem;flex-shrink:0;width:36px;text-align:center;}
+.elem-body{}
+.elem-name{font-size:.88rem;font-weight:700;color:var(--kt);margin-bottom:.2rem;}
+.elem-desc{font-size:.81rem;color:#3A3A4A;line-height:1.7;}
+.elem-hint{font-size:.73rem;color:var(--muted);margin-top:.2rem;font-style:italic;}
+
+/* ZUGÄNGE */
+.zugang-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.zugang{border-radius:9px;padding:.75rem 1rem;border:1.5px solid;}
+.zugang-rolle{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem;}
+.zugang-pw{font-family:monospace;font-size:.85rem;font-weight:700;}
+.zugang-was{font-size:.72rem;color:var(--muted);margin-top:.2rem;line-height:1.5;}
+
+/* TIPPS */
+.tipp-liste{list-style:none;padding:0;}
+.tipp-liste li{font-size:.83rem;line-height:1.75;padding:.3rem 0 .3rem 1.2rem;position:relative;color:#3A3A4A;}
+.tipp-liste li::before{content:"→";position:absolute;left:0;color:var(--acc);font-weight:700;}
+
+/* FRAGEN */
+.frage-box{background:#EAF0F4;border:1.5px solid #9BB5C4;border-radius:10px;padding:1rem 1.25rem;margin-top:1.5rem;}
+.frage-box-titel{font-size:.65rem;font-weight:700;color:var(--kt);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.frage{font-size:.83rem;color:#1A2A3A;line-height:1.75;padding:.2rem 0 .2rem .9rem;position:relative;}
+.frage::before{content:"?";position:absolute;left:0;color:var(--kt);font-weight:700;font-size:.75rem;}
+
+@media(max-width:540px){.zugang-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div class="doc-logo-mark">
+    <div class="lm-k"></div>
+    <div class="lm-bars"><span></span><span></span><span></span></div>
+  </div>
+  <div class="doc-header-text">
+    <span class="titel">KLARTEXT</span>
+    <span class="sub">Klar. Warm. Menschlich.</span>
+    <span class="desc">Kurzanleitung · Digitales Mentoring-System für Schulbegleitung</span>
+  </div>
+</div>
+
+<div class="intro">
+  <p>KLARTEXT ist ein <strong>browserbasiertes Mentoring-System</strong> für Schulbegleiter:innen (INGRAs) und ihre Umgebung. Es läuft direkt im Browser — <strong>keine App, keine Installation nötig.</strong> Einfach den Link öffnen, Bereich wählen, Passwort eingeben — fertig.</p>
+</div>
+<div style="background:#1B3A4B;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.75rem;display:flex;align-items:center;gap:1rem;">
+  <div style="font-size:1.5rem;">🔗</div>
+  <div>
+    <div style="font-size:.62rem;font-weight:700;color:#6EC6A0;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem;">Systemadresse</div>
+    <a href="https://klartext-ingra.h9cyz7d9pj.workers.dev" target="_blank" style="font-size:1rem;font-weight:700;color:#fff;text-decoration:none;word-break:break-all;">https://klartext-ingra.h9cyz7d9pj.workers.dev</a>
+    <div style="font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.2rem;">Im Browser öffnen · Bereich wählen · Passwort eingeben</div>
+  </div>
+</div>
+
+
+<!-- 1. LOGIN -->
+<div class="sek">
+  <div class="sek-titel"><div class="sek-nr">1</div> Der Einstieg — Login & Bereiche</div>
+  <div class="elem">
+    <div class="elem-icon">🔐</div>
+    <div class="elem-body">
+      <div class="elem-name">Login-Seite</div>
+      <div class="elem-desc">Nach dem Öffnen des Links erscheint die Login-Seite. Hier wählt man zuerst den eigenen <strong>Bereich</strong> (z.B. INGRA, Lehrkraft, Teamkoordination) und gibt dann das zugehörige Passwort ein. Jeder Bereich sieht nur die für ihn relevanten Inhalte.</div>
+      <div class="elem-hint">Tipp: Admin-Zugang zeigt alle Bereiche auf einmal — ideal für einen ersten Überblick.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. HEADER -->
+<div class="sek">
+  <div class="sek-titel"><div class="sek-nr">2</div> Der Header — immer oben sichtbar</div>
+  <div class="elem">
+    <div class="elem-icon">🔵</div>
+    <div class="elem-body">
+      <div class="elem-name">KLARTEXT-Logo (links)</div>
+      <div class="elem-desc">Immer sichtbar oben links. Klick darauf führt zurück zum Dashboard.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🐙</div>
+    <div class="elem-body">
+      <div class="elem-name">Brainy (Mitte)</div>
+      <div class="elem-desc"><strong>Das Maskottchen des Systems.</strong> Brainy erscheint auf jeder Karte mit einem kurzen, persönlichen Merksatz — der wichtigste Gedanke der Karte, auf den Punkt gebracht. Kinder wie Erwachsene erkennen Brainy wieder.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🌡️</div>
+    <div class="elem-body">
+      <div class="elem-name">Barometer (rechts oben)</div>
+      <div class="elem-desc"><strong>Das Herzstück der Selbstregulation.</strong> Der farbige Kreis oben rechts zeigt den aktuellen Barometer-Status: Grün · Gelb · Orange · Rot · Grau. Klick darauf öffnet das Barometer — INGRA wählt wie es ihr gerade geht und bekommt sofort konkrete Empfehlungen was jetzt hilft.</div>
+      <div class="elem-hint">Wissenschaftlich fundiert auf Basis der Polyvagal-Theorie (Porges). Nicht Wellness — sondern Professionalisierung.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🌡️</div>
+    <div class="elem-body">
+      <div class="elem-name">Barometer Kind (separate Seite)</div>
+      <div class="elem-desc">Zusätzlich gibt es ein eigenes <strong>Barometer für das begleitete Kind</strong> — erkennbar am 🌡️-Symbol, erreichbar über das Dashboard. INGRA schätzt ein wie das Kind gerade reguliert ist: Grün · Gelb · Orange · Rot · Grau. Das hilft bei der Entscheidung welche Intervention jetzt sinnvoll ist.</div>
+      <div class="elem-hint">Beide Barometer nutzen dasselbe Farbsystem — INGRA und Kind können sich gegenseitig einschätzen und regulieren.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. DASHBOARD -->
+<div class="sek">
+  <div class="sek-titel"><div class="sek-nr">3</div> Das Dashboard — Übersicht & Navigation</div>
+  <div class="elem">
+    <div class="elem-icon">🎯</div>
+    <div class="elem-body">
+      <div class="elem-name">„Was tue ich jetzt?" — goldener Banner im Dashboard</div>
+      <div class="elem-desc"><strong>Der wichtigste Schnellzugriff.</strong> Direkt unterhalb des Headers — als erster Inhalt im Dashboard, gut sichtbar in Gold. Führt zu Modul 3 — dem Sofort-Hilfe-Bereich für den laufenden Unterricht: 8 Situationen (z.B. Wutausbruch, Rückzug, Überreizung) und 12 Werkzeuge (z.B. kLAR-Modell, Joker, Barometer) — direkt abrufbar.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🔍</div>
+    <div class="elem-body">
+      <div class="elem-name">Suchfeld</div>
+      <div class="elem-desc">Oben im Dashboard: Stichwortsuche durch alle Karten. Wer z.B. „Wutausbruch" oder „Demenz" eingibt, findet sofort die passenden Karten.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🃏</div>
+    <div class="elem-body">
+      <div class="elem-name">Module M0–M8 + Zusatzmodule</div>
+      <div class="elem-desc">Die Kacheln im Dashboard führen zu den einzelnen Lernkarten. Jedes Modul hat eine eigene Farbe und ein eigenes Thema. Klick auf eine Kachel öffnet die Karte direkt.</div>
+      <div class="elem-hint">M0 Systemelemente · M1 Rolle & Recht · M2 Kinder verstehen · M3 Sofort-Werkzeuge · M4 Kommunikation · M5 Schwierige Situationen · M6 Krisen · M7 Praxissituationen · M8 Selbstfürsorge</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. KARTEN -->
+<div class="sek">
+  <div class="sek-titel"><div class="sek-nr">4</div> Die Lernkarten — Aufbau</div>
+  <div class="elem">
+    <div class="elem-icon">📋</div>
+    <div class="elem-body">
+      <div class="elem-name">Aufbau jeder Karte</div>
+      <div class="elem-desc">Oben: Modul-Zugehörigkeit + Titel + Tagline. Darunter: thematische Abschnitte mit konkreten Handlungsempfehlungen. Am Ende: <strong>Brainy-Block</strong> mit dem wichtigsten Merksatz. Navigation zur nächsten/vorherigen Karte unten.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🎯</div>
+    <div class="elem-body">
+      <div class="elem-name">Goldener FAB-Button auf jeder Karte</div>
+      <div class="elem-desc">Unten rechts auf jeder Karte: ein goldener 🎯-Button. Klick → direkt zu „Was tue ich jetzt?" (Modul 3). So ist die Sofort-Hilfe immer einen Klick entfernt — egal auf welcher Karte man gerade ist.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. WEITERE BEREICHE -->
+<div class="sek">
+  <div class="sek-titel"><div class="sek-nr">5</div> Weitere Bereiche im System</div>
+  <div class="elem">
+    <div class="elem-icon">⏱️</div>
+    <div class="elem-body">
+      <div class="elem-name">Zeitkonto</div>
+      <div class="elem-desc">Arbeitsstunden erfassen — Wochenansicht, Monatssaldo, CSV-Export für den Träger.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">🤒</div>
+    <div class="elem-body">
+      <div class="elem-name">Krankmeldung</div>
+      <div class="elem-desc">Zwei Flows: „Ich bin krank" und „Kind fehlt heute" — mit automatisch vorformulierter Nachricht an TK und Familie, die direkt kopiert werden kann.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">📖</div>
+    <div class="elem-body">
+      <div class="elem-name">Glossar & Quellenverzeichnis</div>
+      <div class="elem-desc">Alle Fachbegriffe erklärt. Wissenschaftliche Quellen im APA-Format — für alle Bereiche zugänglich.</div>
+    </div>
+  </div>
+  <div class="elem">
+    <div class="elem-icon">✏️</div>
+    <div class="elem-body">
+      <div class="elem-name">Workbook</div>
+      <div class="elem-desc">Reflexionsfragen zu jedem Modul — zum Nachdenken, Schreiben, Vertiefen. Antworten werden lokal gespeichert.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. ZUGANGSDATEN -->
+<div class="sek">
+  <div class="sek-titel"><div class="sek-nr">6</div> Zugangsdaten — alle Bereiche</div>
+  <div class="zugang-grid">
+    <div class="zugang" style="border-color:#3B8A68;background:#EEF7F2;">
+      <div class="zugang-rolle" style="color:#3B8A68;">INGRA · Schulbegleitung</div>
+      <div class="zugang-pw" style="color:#3B8A68;">ingra2026</div>
+      <div class="zugang-was">Module M0–M8, Werkzeuge, Barometer, Zeitkonto, Krankmeldung</div>
+    </div>
+    <div class="zugang" style="border-color:#1565C0;background:#EAF1F8;">
+      <div class="zugang-rolle" style="color:#1565C0;">Lehrkraft</div>
+      <div class="zugang-pw" style="color:#1565C0;">lehrerkraft</div>
+      <div class="zugang-was">LK-Kurs + 5 Lehrkraft-Karten</div>
+    </div>
+    <div class="zugang" style="border-color:#AD1457;background:#FCE4EC;">
+      <div class="zugang-rolle" style="color:#AD1457;">Eltern</div>
+      <div class="zugang-pw" style="color:#AD1457;">elternkurs</div>
+      <div class="zugang-was">Eltern-Kurs + 6 Eltern-Karten</div>
+    </div>
+    <div class="zugang" style="border-color:#4A148C;background:#F3E5F5;">
+      <div class="zugang-rolle" style="color:#4A148C;">Teamkoordination</div>
+      <div class="zugang-pw" style="color:#4A148C;">teamleitung</div>
+      <div class="zugang-was">6 TK-Karten für Koordinator:innen</div>
+    </div>
+    <div class="zugang" style="border-color:#B07D2A;background:#FBF4E8;">
+      <div class="zugang-rolle" style="color:#B07D2A;">Trainer:in</div>
+      <div class="zugang-pw" style="color:#B07D2A;">trainer2026</div>
+      <div class="zugang-was">Dashboard + E-Learning + Curriculum + Fachbuch</div>
+    </div>
+    <div class="zugang" style="border-color:#1B3A4B;background:#EAF0F4;">
+      <div class="zugang-rolle" style="color:#1B3A4B;">Admin · Alles sichtbar</div>
+      <div class="zugang-pw" style="color:#1B3A4B;">klartext2026</div>
+      <div class="zugang-was">Vollzugriff — ideal für ersten Überblick</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK -->
+<div class="frage-box">
+  <div class="frage-box-titel">Leitfragen für Ihr Feedback</div>
+  <div class="frage">Ist die Navigation intuitiv — findet INGRA was sie im Unterricht braucht?</div>
+  <div class="frage">Welche Inhalte sind besonders relevant für Ihren Alltag bei den Maltesern?</div>
+  <div class="frage">Was fehlt noch — welche Situationen oder Themen kommen in Ihrer Praxis vor?</div>
+  <div class="frage">Was würden Sie sich für eine Malteser-spezifische Anpassung wünschen?</div>
+  <div class="frage">Wie erleben INGRAs das System — verständlich, zu komplex, zu wenig, zu viel?</div>
+</div>
+
+<div style="text-align:center;margin-top:2rem;font-size:.72rem;color:var(--muted);">
+  KLARTEXT · Version 2.0 · Mai 2026 · Anja Jolk · anja.jolk@gmx.de
+</div>
+
+</body>
+</html>

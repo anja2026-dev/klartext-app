@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Krankmeldung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<style>
+:root{--m:#1B3A4B;--acc:#6EC6A0;--rot:#C62828;--rotl:#FDEAEA;--gold:#C47A00;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#1A1A2E;--muted:#6A6878;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
+.kt-header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid var(--acc);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .claim{font-size:.6rem;color:var(--acc);letter-spacing:.14em;display:block;margin-top:2px;}
+.kt-logo-text .sub{font-size:.55rem;color:rgba(255,255,255,.4);letter-spacing:.16em;text-transform:uppercase;display:block;margin-top:1px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:780px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+
+/* TAB-SWITCH */
+.tab-switch{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:1.25rem;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.35rem;}
+.tab-btn{padding:.55rem;border-radius:9px;border:none;background:none;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s;text-align:center;}
+.tab-btn.active{background:var(--m);color:#fff;box-shadow:0 2px 8px rgba(27,58,75,.25);}
+
+/* FLOW-KARTE */
+.flow-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:1rem;}
+.flow-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);margin-bottom:.15rem;}
+.flow-sub{font-size:.75rem;color:var(--muted);margin-bottom:.85rem;}
+
+/* SCHRITTE */
+.schritt{display:flex;gap:.75rem;margin-bottom:.75rem;align-items:flex-start;}
+.schritt-nr{width:28px;height:28px;border-radius:50%;background:var(--m);color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.schritt-nr.rot{background:var(--rot);}
+.schritt-body{flex:1;}
+.schritt-titel{font-size:.85rem;font-weight:700;margin-bottom:.2rem;}
+.schritt-txt{font-size:.8rem;color:var(--muted);line-height:1.65;}
+.schritt-aktion{margin-top:.35rem;}
+
+/* BUTTONS */
+.aktion-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:7px;font-family:"DM Sans",sans-serif;font-size:.75rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;margin-right:.3rem;margin-top:.2rem;}
+.ab-tel{background:#E8F5EE;color:#2E7D47;}
+.ab-msg{background:var(--tll,#EAF0F4);color:var(--m);}
+.ab-copy{background:var(--paper);color:var(--muted);border:1.5px solid var(--border);}
+.ab-rot{background:var(--rotl);color:var(--rot);}
+
+/* FORMULAR */
+.meld-form{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:1rem;}
+.form-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);margin-bottom:.75rem;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.45rem;}
+.fr.s1{grid-template-columns:1fr;}
+.fg label{font-size:.58rem;font-weight:700;color:var(--m);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.22rem;}
+.fi,.fsel,.fta{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:.45rem .65rem;font-family:"DM Sans",sans-serif;font-size:.82rem;color:var(--ink);background:var(--surface);outline:none;}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--m);}
+.fta{resize:none;height:64px;line-height:1.5;}
+.btn-sp{padding:.5rem 1.2rem;border-radius:7px;background:var(--m);color:#fff;border:none;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;}
+.btn-sp.rot{background:var(--rot);}
+
+/* MSG-PREVIEW */
+.msg-preview{background:#E8F0F4;border:1.5px solid #9BB5C4;border-radius:8px;padding:.75rem .9rem;font-size:.8rem;line-height:1.7;color:#1A2A3A;margin-top:.6rem;white-space:pre-wrap;font-family:monospace;}
+
+/* LISTE */
+.meldungen{display:flex;flex-direction:column;gap:.45rem;margin-top:.5rem;}
+.meldung{background:var(--surface);border:1.5px solid var(--border);border-radius:9px;padding:.65rem .85rem;border-left:4px solid;}
+.m-hdr{display:flex;align-items:center;gap:.55rem;margin-bottom:.25rem;}
+.m-icon{font-size:1rem;flex-shrink:0;}
+.m-name{font-size:.87rem;font-weight:600;flex:1;}
+.m-dat{font-size:.67rem;color:var(--muted);}
+.m-del{background:none;border:none;color:var(--border);cursor:pointer;}
+.m-del:hover{color:var(--rot);}
+.m-typ{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;}
+.m-txt{font-size:.77rem;color:var(--muted);line-height:1.6;}
+.leer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.85rem;}
+
+/* STATUS-CHIPS */
+.status-wrap{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.45rem;}
+.s-chip{padding:.22rem .55rem;border-radius:20px;border:1.5px solid var(--border);font-size:.72rem;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .15s;background:var(--surface);color:var(--muted);}
+.s-chip.ak{color:#fff;border-color:transparent;}
+
+@media(max-width:480px){.fr{grid-template-columns:1fr;}}
+</style>
+<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Krankmeldung</span><span class="sub">INGRA · Kind krank · Ausfall</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="tab-switch">
+    <button class="tab-btn active" id="tab-ingra" onclick="switchTab('ingra')">🤒 Ich bin krank</button>
+    <button class="tab-btn" id="tab-kind" onclick="switchTab('kind')">🧒 Kind fehlt heute</button>
+  </div>
+
+  <!-- ══ INGRA KRANK ══ -->
+  <div id="view-ingra">
+
+    <div class="flow-card">
+      <div class="flow-titel">🤒 Du bist krank — was jetzt?</div>
+      <div class="flow-sub">Schritt für Schritt — so früh wie möglich, spätestens vor Dienstbeginn</div>
+
+      <div class="schritt">
+        <div class="schritt-nr">1</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">TK / Einsatzleitung anrufen</div>
+          <div class="schritt-txt">So früh wie möglich — idealerweise vor 7:30 Uhr. Nicht per WhatsApp zuerst — immer Anruf. Wenn nicht erreichbar: Nachricht + Kollegin informieren.</div>
+          <div class="schritt-aktion">
+            <button class="aktion-btn ab-tel" onclick="telTK()">📞 TK anrufen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="schritt">
+        <div class="schritt-nr">2</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">Schule / Familie des Kindes informieren</div>
+          <div class="schritt-txt">Direkt danach — Schule anrufen und Familie des begleiteten Kindes. Klare Ansage: wer kommt stattdessen? (TK koordiniert Vertretung).</div>
+          <div class="schritt-aktion">
+            <button class="aktion-btn ab-msg" onclick="showMsgIngra()">✏️ Nachricht vorformulieren</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="schritt">
+        <div class="schritt-nr">3</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">Attest — wann?</div>
+          <div class="schritt-txt">Ab dem 1. Tag wenn der Träger das verlangt (immer klären!). Spätestens ab dem 3. Tag Krankentag. Scan oder Foto an TK schicken.</div>
+        </div>
+      </div>
+
+      <div class="schritt">
+        <div class="schritt-nr">4</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">Rückkehr melden</div>
+          <div class="schritt-txt">Wenn du wieder fit bist: TK einen Tag vorher informieren damit Vertretung abgesagt werden kann.</div>
+        </div>
+      </div>
+
+      <div id="msg-ingra-wrap" style="display:none;">
+        <div style="font-size:.65rem;font-weight:700;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin:.65rem 0 .3rem;">✏️ Nachricht an TK vorformulieren</div>
+        <input class="fi" type="text" id="ingra-name" placeholder="Mein Name" style="margin-bottom:.35rem;">
+        <input class="fi" type="text" id="ingra-kind" placeholder="Name des Kindes" style="margin-bottom:.35rem;">
+        <input class="fi" type="text" id="ingra-schule" placeholder="Schule" style="margin-bottom:.35rem;">
+        <select class="fsel" id="ingra-dauer" style="margin-bottom:.5rem;">
+          <option value="heute">Nur heute</option>
+          <option value="1-2">Voraussichtlich 1-2 Tage</option>
+          <option value="rest-woche">Voraussichtlich bis Ende der Woche</option>
+          <option value="offen">Dauer noch offen</option>
+        </select>
+        <button class="btn-sp" onclick="genMsgIngra()" style="margin-bottom:.5rem;">Nachricht generieren</button>
+        <div id="msg-ingra-preview" class="msg-preview" style="display:none;"></div>
+        <button class="aktion-btn ab-copy" id="copy-ingra-btn" style="display:none;" onclick="copyMsg('msg-ingra-preview')">📋 Kopieren</button>
+      </div>
+    </div>
+
+    <!-- INGRA MELDUNG ERFASSEN -->
+    <div class="meld-form">
+      <div class="form-titel">📋 Kranktag erfassen</div>
+      <div class="fr">
+        <div class="fg"><label>Von</label><input class="fi" type="date" id="ik-von"></div>
+        <div class="fg"><label>Bis (voraussichtlich)</label><input class="fi" type="date" id="ik-bis"></div>
+      </div>
+      <div class="fr s1"><div class="fg"><label>Notiz</label><textarea class="fta" id="ik-notiz" placeholder="Attest eingereicht? Vertretung geklärt?"></textarea></div></div>
+      <button class="btn-sp" onclick="speichKrank('ingra')">+ Kranktag speichern</button>
+    </div>
+
+    <div style="font-size:.8rem;font-weight:700;color:var(--m);margin-bottom:.5rem;">📋 Meine Krankmeldungen</div>
+    <div class="meldungen" id="liste-ingra"></div>
+
+  </div>
+
+  <!-- ══ KIND FEHLT ══ -->
+  <div id="view-kind" style="display:none;">
+
+    <div class="flow-card">
+      <div class="flow-titel">🧒 Das Kind fehlt heute — was tun?</div>
+      <div class="flow-sub">Sobald du es weißt — nicht warten bis du an der Schule stehst</div>
+
+      <div class="schritt">
+        <div class="schritt-nr rot">1</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">TK sofort informieren</div>
+          <div class="schritt-txt">Anruf — nicht nur Nachricht. TK muss wissen ob du heute anderweitig eingesetzt wirst oder Ausfalltag hast.</div>
+          <div class="schritt-aktion">
+            <button class="aktion-btn ab-tel" onclick="telTK()">📞 TK anrufen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="schritt">
+        <div class="schritt-nr rot">2</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">Woher kommt die Info?</div>
+          <div class="schritt-txt"><strong>Familie meldet sich:</strong> OK — direkt an TK weitergeben.<br><strong>Schule meldet:</strong> OK — TK informieren.<br><strong>Du stehst an der Schule und Kind ist nicht da:</strong> Schule fragen, dann TK. Nie einfach nach Hause fahren ohne Rückmeldung.</div>
+        </div>
+      </div>
+
+      <div class="schritt">
+        <div class="schritt-nr rot">3</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">Was passiert mit deiner Zeit?</div>
+          <div class="schritt-txt">Das hängt vom Träger ab — immer mit TK klären:<br>• Ausfalltag wird nicht bezahlt? → TK muss informiert sein<br>• Vertretungseinsatz möglich? → TK koordiniert<br>• Nachholzeit vereinbart? → dokumentieren</div>
+        </div>
+      </div>
+
+      <div class="schritt">
+        <div class="schritt-nr rot">4</div>
+        <div class="schritt-body">
+          <div class="schritt-titel">Nachricht an Familie formulieren</div>
+          <div class="schritt-txt">Wenn Kind länger fehlt — kurze Nachricht an Familie: Genesungswünsche, Frage wann Rückkehr erwartet.</div>
+          <div class="schritt-aktion">
+            <button class="aktion-btn ab-msg" onclick="showMsgKind()">✏️ Nachricht vorformulieren</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="msg-kind-wrap" style="display:none;">
+        <div style="font-size:.65rem;font-weight:700;color:var(--m);letter-spacing:.1em;text-transform:uppercase;margin:.65rem 0 .3rem;">✏️ Nachricht an Familie</div>
+        <input class="fi" type="text" id="kind-name" placeholder="Name des Kindes" style="margin-bottom:.35rem;">
+        <input class="fi" type="text" id="kind-ingra" placeholder="Mein Name (INGRA)" style="margin-bottom:.5rem;">
+        <button class="btn-sp" onclick="genMsgKind()" style="margin-bottom:.5rem;">Nachricht generieren</button>
+        <div id="msg-kind-preview" class="msg-preview" style="display:none;"></div>
+        <button class="aktion-btn ab-copy" id="copy-kind-btn" style="display:none;" onclick="copyMsg('msg-kind-preview')">📋 Kopieren</button>
+      </div>
+    </div>
+
+    <!-- KIND-AUSFALL ERFASSEN -->
+    <div class="meld-form">
+      <div class="form-titel">📋 Ausfall erfassen</div>
+      <div class="fr">
+        <div class="fg"><label>Kind</label><select class="fi" id="ka-kind"><option value="">Bitte wählen …</option></select></div>
+        <div class="fg"><label>Datum</label><input class="fi" type="date" id="ka-datum"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Grund</label><select class="fsel" id="ka-grund">
+          <option value="krank">Kind krank</option>
+          <option value="ferien">Ferien / Schulausfall</option>
+          <option value="termin">Arzttermin / Therapie</option>
+          <option value="sonstiges">Sonstiges</option>
+        </select></div>
+        <div class="fg"><label>Meine Zeit</label><select class="fsel" id="ka-zeit">
+          <option value="ausfall">Ausfalltag</option>
+          <option value="vertretung">Vertretungseinsatz</option>
+          <option value="nachgeholt">Zeit nachgeholt</option>
+          <option value="bezahlt">Bezahlter Ausfall</option>
+        </select></div>
+      </div>
+      <div class="fr s1"><div class="fg"><label>Notiz</label><textarea class="fta" id="ka-notiz" placeholder="TK informiert? Vertretung? Besonderheiten?"></textarea></div></div>
+      <button class="btn-sp rot" onclick="speichKrank('kind')">+ Ausfall speichern</button>
+    </div>
+
+    <div style="font-size:.8rem;font-weight:700;color:var(--m);margin-bottom:.5rem;">📋 Kind-Ausfälle</div>
+    <div class="meldungen" id="liste-kind"></div>
+
+  </div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:var(--m);border:2px solid var(--acc);display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+// ══ TABS
+function switchTab(t){
+  document.getElementById('view-ingra').style.display=t==='ingra'?'block':'none';
+  document.getElementById('view-kind').style.display=t==='kind'?'block':'none';
+  document.getElementById('tab-ingra').classList.toggle('active',t==='ingra');
+  document.getElementById('tab-kind').classList.toggle('active',t==='kind');
+}
+
+// ══ TK ANRUFEN (Platzhalter)
+function telTK(){
+  const nr=prompt('Telefonnummer der TK / Einsatzleitung:','');
+  if(nr){window.location.href='tel:'+nr.replace(/\s/g,'');}
+}
+
+// ══ NACHRICHT INGRA
+function showMsgIngra(){
+  const w=document.getElementById('msg-ingra-wrap');
+  w.style.display=w.style.display==='none'?'block':'none';
+}
+function genMsgIngra(){
+  const name=document.getElementById('ingra-name').value||'[Name]';
+  const kind=document.getElementById('ingra-kind').value||'[Kind]';
+  const schule=document.getElementById('ingra-schule').value||'[Schule]';
+  const dauer={'heute':'nur heute','1-2':'voraussichtlich 1-2 Tage','rest-woche':'voraussichtlich bis Ende der Woche','offen':'voraussichtlich noch offen'}[document.getElementById('ingra-dauer').value];
+  const heute=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit'});
+  const msg=`Guten Morgen,
+
+ich melde mich krank — ich werde ${heute} und ${dauer} nicht da sein können.
+
+Betroffen: Schulbegleitung von ${kind} an der ${schule}.
+
+Bitte Vertretung koordinieren. Ich melde mich sobald ich wieder fit bin.
+
+Viele Grüße
+${name}`;
+  const el=document.getElementById('msg-ingra-preview');
+  el.style.display='block';el.textContent=msg;
+  document.getElementById('copy-ingra-btn').style.display='inline-flex';
+}
+
+// ══ NACHRICHT KIND
+function showMsgKind(){
+  const w=document.getElementById('msg-kind-wrap');
+  w.style.display=w.style.display==='none'?'block':'none';
+}
+function genMsgKind(){
+  const kind=document.getElementById('kind-name').value||'[Kind]';
+  const ingra=document.getElementById('kind-ingra').value||'[Name]';
+  const msg=`Guten Tag,
+
+hier ist ${ingra}, die Schulbegleitung von ${kind}.
+
+Ich wollte kurz nachfragen wie es ${kind} geht und wann eine Rückkehr in die Schule geplant ist — damit wir uns hier entsprechend koordinieren können.
+
+Ich wünsche ${kind} gute Besserung!
+
+Viele Grüße
+${ingra}`;
+  const el=document.getElementById('msg-kind-preview');
+  el.style.display='block';el.textContent=msg;
+  document.getElementById('copy-kind-btn').style.display='inline-flex';
+}
+
+// ══ KOPIEREN
+function copyMsg(id){
+  const txt=document.getElementById(id).textContent;
+  navigator.clipboard.writeText(txt).then(()=>alert('Nachricht kopiert!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Nachricht kopiert!');
+  });
+}
+
+// ══ SPEICHERN / LADEN
+function ladeMeld(){try{return JSON.parse(localStorage.getItem('kz_meldungen')||'[]');}catch(e){return[];}}
+function speichKrank(typ){
+  let e;
+  if(typ==='ingra'){
+    const von=document.getElementById('ik-von').value;
+    if(!von){alert('Bitte Datum angeben.');return;}
+    const bis=document.getElementById('ik-bis').value;
+    const notiz=document.getElementById('ik-notiz').value;
+    e={id:Date.now(),typ:'ingra',von,bis,notiz,datum:new Date().toISOString().split('T')[0]};
+    document.getElementById('ik-notiz').value='';
+
+    // Firebase-Speichern + Weiterleitung (Etappe 6.2)
+    try {
+      db.ref('sick_note_ingra').push({
+        typ: 'ingra',
+        von: von,
+        bis: bis,
+        notiz: notiz,
+        timestamp: Date.now(),
+        createdBy: 'ingra',
+        role: 'ingra'
+      });
+
+      sendForward({
+        context: 'sick_note_ingra',
+        type: 'sick_note_ingra',
+        text: 'Krankmeldung INGRA: ' + von + (bis ? (' bis ' + bis) : '')
+      }).then(function(ref) {
+        kzLetzteForwardId = ref.key;
+        kzZeigeErfolg('Krankmeldung gespeichert');
+      }).catch(function(error) {
+        console.error('Weiterleitung fehlgeschlagen:', error);
+      });
+    } catch(err) {
+      console.error('Firebase-Speicherung fehlgeschlagen:', err);
+    }
+
+  }else{
+    const kindSelect=document.getElementById('ka-kind');
+    const childId=kindSelect.value;
+    const kindName=childId && window.kzKinderDaten && window.kzKinderDaten[childId] ? window.kzKinderDaten[childId].name : '';
+    const datum=document.getElementById('ka-datum').value;
+    if(!childId||!datum){alert('Bitte Kind und Datum angeben.');return;}
+    const grund=document.getElementById('ka-grund').value;
+    const zeit=document.getElementById('ka-zeit').value;
+    const notiz=document.getElementById('ka-notiz').value;
+    // e.kind bleibt lesbarer Name (für unveränderte lokale Anzeige), e.childId zusätzlich für Firebase-Bezug
+    e={id:Date.now(),typ:'kind',kind:kindName,childId:childId,datum,grund,zeit,notiz};
+    document.getElementById('ka-kind').value='';document.getElementById('ka-notiz').value='';
+
+    // Firebase-Speichern + Weiterleitung (Etappe 6.2)
+    try {
+      db.ref('sick_note/' + childId).push({
+        typ: 'kind',
+        childId: childId,
+        childName: kindName,
+        datum: datum,
+        grund: grund,
+        zeit: zeit,
+        notiz: notiz,
+        timestamp: Date.now(),
+        createdBy: 'ingra',
+        role: 'ingra'
+      });
+
+      sendForward({
+        context: 'sick_note',
+        type: 'sick_note',
+        childId: childId,
+        text: 'Kind fehlt: ' + kindName + ' am ' + datum + ' – Grund: ' + grund
+      }).then(function(ref) {
+        kzLetzteForwardId = ref.key;
+        kzZeigeErfolg('Ausfall gespeichert');
+      }).catch(function(error) {
+        console.error('Weiterleitung fehlgeschlagen:', error);
+      });
+    } catch(err) {
+      console.error('Firebase-Speicherung fehlgeschlagen:', err);
+    }
+  }
+  const l=ladeMeld();l.unshift(e);
+  try{localStorage.setItem('kz_meldungen',JSON.stringify(l));}catch(e){}
+  renderListen();
+}
+
+function delMeld(id){if(!confirm('Eintrag löschen?'))return;localStorage.setItem('kz_meldungen',JSON.stringify(ladeMeld().filter(e=>e.id!==id)));renderListen();}
+
+const GRUND_L={krank:'Kind krank',ferien:'Ferien/Schulausfall',termin:'Arzttermin/Therapie',sonstiges:'Sonstiges'};
+const ZEIT_L={ausfall:'Ausfalltag',vertretung:'Vertretungseinsatz',nachgeholt:'Zeit nachgeholt',bezahlt:'Bezahlter Ausfall'};
+
+function renderListen(){
+  const l=ladeMeld();
+  // INGRA
+  const ingra=l.filter(e=>e.typ==='ingra');
+  const el_i=document.getElementById('liste-ingra');
+  el_i.innerHTML=ingra.length?ingra.map(e=>`
+    <div class="meldung" style="border-left-color:#C49A00;">
+      <div class="m-hdr"><div class="m-icon">🤒</div><div class="m-name">Ich krank</div><div class="m-dat">${e.von}${e.bis&&e.bis!==e.von?' – '+e.bis:''}</div><button class="m-del" onclick="delMeld(${e.id})">✕</button></div>
+      ${e.notiz?`<div class="m-txt">${e.notiz}</div>`:''}
+    </div>`).join(''):'<div class="leer">Noch keine Kranktage erfasst.</div>';
+  // KIND
+  const kind=l.filter(e=>e.typ==='kind');
+  const el_k=document.getElementById('liste-kind');
+  el_k.innerHTML=kind.length?kind.map(e=>`
+    <div class="meldung" style="border-left-color:#C62828;">
+      <div class="m-hdr"><div class="m-icon">🧒</div><div class="m-name">${e.kind}</div><div class="m-dat">${e.datum}</div><button class="m-del" onclick="delMeld(${e.id})">✕</button></div>
+      <div class="m-txt">${GRUND_L[e.grund]||e.grund} · ${ZEIT_L[e.zeit]||e.zeit}${e.notiz?' · '+e.notiz:''}</div>
+    </div>`).join(''):'<div class="leer">Noch keine Ausfälle erfasst.</div>';
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const h=new Date().toISOString().split('T')[0];
+  document.getElementById('ik-von').value=h;
+  document.getElementById('ka-datum').value=h;
+  renderListen();
+
+  // Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.2)
+  try {
+    db.ref('children').once('value').then(function(snapshot) {
+      const kinder = snapshot.val() || {};
+      const select = document.getElementById('ka-kind');
+      Object.keys(kinder).forEach(function(childId) {
+        const kind = kinder[childId];
+        if (kind.active === false) return;
+        const option = document.createElement('option');
+        option.value = childId;
+        option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+        select.appendChild(option);
+      });
+      window.kzKinderDaten = kinder; // für Namensauflösung beim Speichern
+    });
+  } catch(e) {}
+});
+</script>
+
+<!-- ERFOLGS-OVERLAY (Etappe 6.2) -->
+<style>
+.kz-erfolg-overlay{position:fixed;inset:0;background:rgba(27,58,75,.85);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;}
+.kz-erfolg-overlay.zeigen{display:flex;}
+.kz-erfolg-karte{background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:380px;text-align:center;}
+.kz-erfolg-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.kz-erfolg-titel{font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
+.kz-erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
+.kz-erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin:.25rem;}
+.kz-erfolg-btn.link-btn{background:#C47A00;width:100%;margin:.5rem 0 0;}
+.kz-link-bestaetigung{font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.5rem;opacity:0;transition:opacity .25s;}
+.kz-link-bestaetigung.zeigen{opacity:1;}
+</style>
+<div class="kz-erfolg-overlay" id="kz-erfolg-overlay">
+  <div class="kz-erfolg-karte">
+    <div class="kz-erfolg-icon">✅</div>
+    <div class="kz-erfolg-titel" id="kz-erfolg-titel">Gespeichert</div>
+    <div class="kz-erfolg-text">Die Meldung wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
+    <button class="kz-erfolg-btn link-btn" id="kz-btn-link-kopieren" onclick="kzLeselinkKopieren()">🔗 Leselink kopieren</button>
+    <div class="kz-link-bestaetigung" id="kz-link-bestaetigung">Link kopiert!</div>
+    <div style="margin-top:1rem;">
+      <button class="kz-erfolg-btn" onclick="document.getElementById('kz-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
+    </div>
+  </div>
+</div>
+<script>
+// Merkt sich die forwardId der zuletzt erzeugten Krankmeldungs-Weiterleitung
+let kzLetzteForwardId = null;
+
+function kzZeigeErfolg(titel) {
+  document.getElementById('kz-erfolg-titel').textContent = titel;
+  document.getElementById('kz-erfolg-overlay').classList.add('zeigen');
+}
+
+function kzLeselinkKopieren() {
+  if (!kzLetzteForwardId) return;
+  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + kzLetzteForwardId;
+
+  navigator.clipboard.writeText(leseLink).then(function() {
+    const bestaetigung = document.getElementById('kz-link-bestaetigung');
+    bestaetigung.classList.add('zeigen');
+    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
+  }).catch(function() {
+    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
+  });
+}
+</script>
+</body>
+</html>

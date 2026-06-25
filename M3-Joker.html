@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M3-Joker · Notfallsignal – KLARTEXT</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+:root{--m:#B07D2A;--ml:#FBF4E8;}
+.warn{background:#FBF4E8;border-left:3px solid #C47A00;border-radius:0 8px 8px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.82rem;color:#5A3A00;line-height:1.75;}
+.gruen{background:#EAF5F0;border-left:3px solid #6EC6A0;border-radius:0 8px 8px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.82rem;color:#1A3A2A;line-height:1.75;}
+.vereinbarung{background:#fff;border:1.5px solid #DDD8CE;border-radius:10px;padding:.85rem 1rem;margin:.5rem 0;}
+.ver-titel{font-size:.62rem;font-weight:700;color:#B07D2A;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}
+.ver-zeile{display:flex;gap:.5rem;align-items:flex-start;font-size:.83rem;line-height:1.75;color:#3A3A4A;padding:.2rem 0;border-bottom:1px solid #F0EBE3;}
+.ver-zeile:last-child{border-bottom:none;}
+.ver-nr{width:20px;font-weight:700;color:#B07D2A;flex-shrink:0;}
+</style>
+</head>
+<body>
+<header class="kt-header"><div class="kt-header-inner">
+  <a class="kt-back-btn" href="DASHBOARD-M3.html"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>M3-Übersicht</a>
+  <a class="kt-logo" href="DASHBOARD.html">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+  </a>
+  <a class="kt-home-btn" href="DASHBOARD.html"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg><span>Dashboard</span></a>
+</div></header>
+
+<div class="kt-context">KLARTEXT · Modul 3 · Was tue ich jetzt?</div>
+
+<main><article class="karte">
+  <div class="karte-stripe" style="background:#B07D2A;"></div>
+  <div class="karte-header" style="border-bottom-color:#E0C88A;">
+    <div class="karte-meta-wrap">
+      <div class="modul-tag" style="color:#B07D2A;border-color:#E0C88A;">MODUL 3 · WERKZEUG</div>
+      <h1 class="karte-titel">🃏 Der Joker</h1>
+      <p class="karte-tagline">Dein Notfallsignal — wenn du sofort Unterstützung brauchst</p>
+    </div>
+    <div class="karte-icon-wrap" style="background:#FBF4E8;border-color:#E0C88A;">🃏</div>
+  </div>
+
+  <div class="karte-lead" style="background:#FBF4E8;border-color:#B07D2A;">
+    Der Joker ist kein Versagen — er ist Professionalität. Du erkennst, dass die Situation größer ist als du allein bewältigen kannst. Und du handelst.
+  </div>
+
+  <div class="karte-body">
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#B07D2A;">Was ist der Joker?</div>
+      <p>Der Joker ist ein <strong>vorher vereinbartes Notfallsignal</strong> zwischen dir und der Lehrkraft. Wenn du ihn einsetzt, weiß die Lehrkraft sofort: INGRA braucht jetzt Unterstützung — ohne Erklärung, ohne Diskussion, sofort.</p>
+      <p>Er funktioniert nur, wenn er <strong>vorher besprochen</strong> wurde. Den Joker im Notfall zu erklären ist zu spät.</p>
+      <div class="warn">⚠️ Den Joker nicht zu oft einsetzen — sonst verliert er seine Wirkung. Und nicht zu selten — dann trägst du zu viel allein.</div>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#B07D2A;">Wann setzt du den Joker ein?</div>
+      <ul class="karte-liste">
+        <li>Das Kind eskaliert und du kommst allein nicht mehr an es heran</li>
+        <li>Du selbst bist so dysreguliert dass du nicht mehr klar handeln kannst</li>
+        <li>Es besteht Gefahr für das Kind oder andere — aber kein akuter Notfall (dann: Feuerwehr-Protokoll)</li>
+        <li>Du brauchst eine kurze Auszeit um dich zu regulieren</li>
+        <li>Die Situation hat sich so entwickelt dass ein Erwachsener mehr gebraucht wird</li>
+      </ul>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#B07D2A;">Wie vereinbart ihr den Joker?</div>
+      <p>Sprich <strong>vor dem Unterricht</strong> mit der Lehrkraft — am besten in der ersten Woche. Klärt:</p>
+      <div class="vereinbarung">
+        <div class="ver-titel">Unsere Joker-Vereinbarung</div>
+        <div class="ver-zeile"><span class="ver-nr">1</span><span><strong>Signal:</strong> Was ist unser vereinbartes Zeichen? (z.B. Hand heben, bestimmtes Wort, Blickkontakt + Nicken)</span></div>
+        <div class="ver-zeile"><span class="ver-nr">2</span><span><strong>Reaktion Lehrkraft:</strong> Was tut die Lehrkraft, wenn sie das Signal sieht? (z.B. kurz zur Tür kommen, Klasse beschäftigen)</span></div>
+        <div class="ver-zeile"><span class="ver-nr">3</span><span><strong>Was INGRA dann tut:</strong> Mit Kind raus? Kurze Pause? TK anrufen?</span></div>
+        <div class="ver-zeile"><span class="ver-nr">4</span><span><strong>Wer wird informiert:</strong> TK immer noch am selben Tag</span></div>
+      </div>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#B07D2A;">Mögliche Joker-Signale</div>
+      <ul class="karte-liste">
+        <li><strong>Hand heben</strong> — einfach, unauffällig, klar</li>
+        <li><strong>Bestimmtes Wort</strong> — z.B. "Ich brauche kurz Hilfe" — direkt und eindeutig</li>
+        <li><strong>Zettel auf den Tisch legen</strong> — wenn Worte gerade nicht gehen</li>
+        <li><strong>Blickkontakt + bestimmte Geste</strong> — nur ihr beiden kennt die Bedeutung</li>
+      </ul>
+      <div class="gruen">✅ Das beste Signal ist das, das ihr beide problemlos im Unterrichtsalltag erkennt — ohne dass die Klasse es bemerkt.</div>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#B07D2A;">Nach dem Joker — was dann?</div>
+      <ul class="karte-liste">
+        <li>TK informieren — noch am selben Tag, kurze Nachricht reicht</li>
+        <li>Situation dokumentieren — Datum, Auslöser, was passiert ist, was geholfen hat</li>
+        <li>Reflexion: War der Joker-Einsatz richtig? Was würde ich beim nächsten Mal früher tun?</li>
+        <li>Wenn der Joker regelmäßig nötig ist: Gespräch mit TK suchen — etwas in der Struktur muss sich ändern</li>
+      </ul>
+    </div>
+
+    <div class="brainy-block" style="background:#FBF4E8;border-color:#B07D2A;">
+      <img src="brainy.png" alt="Brainy">
+      <div class="brainy-block-text"><strong>Brainy erinnert:</strong> Den Joker einzusetzen ist keine Schwäche. Es ist Professionalität. Wer weiß, wann er Hilfe braucht, schützt sich — und das Kind.</div>
+    </div>
+
+  </div>
+
+  <nav class="karte-nav">
+    <a class="nav-prev" href="DASHBOARD-M3.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg>M3-Übersicht</a>
+    <span class="spacer"></span>
+    <span></span>
+  </nav>
+  <div class="karte-footer"><span class="footer-links">Joker · <a href="DASHBOARD-M3.html">M3-Übersicht</a> · <a href="DASHBOARD.html">Dashboard</a></span></div>
+</article></main>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD-M3.html" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;">🎯</a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<footer><strong>KLARTEXT</strong> · M3 · Joker<span class="footer-copy">Alle Rechte vorbehalten</span></footer>
+</body>
+</html>

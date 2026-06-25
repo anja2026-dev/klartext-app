@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LK-09 bis LK-15 · KLARTEXT Lehrkraft-Karten</title>
+<style>
+  :root {
+    --navy:     #1a2e44;
+    --lk:       #4f7b95;
+    --lk-mid:   #3d6277;
+    --lk-light: rgba(79,123,149,.10);
+    --paper:    #F5F0E8;
+    --white:    #ffffff;
+    --accent:   #6EC6A0;
+    --text:     #2a2a2a;
+    --muted:    #6b7280;
+    --border:   #d6cfc4;
+    --red:      #c62828;
+    --red-bg:   #fdeaea;
+    --orange:   #e65100;
+    --orange-bg:#fff3e0;
+    --green:    #2e7d32;
+    --green-bg: #e8f5e9;
+    --radius:   14px;
+    --shadow:   0 4px 24px rgba(26,46,68,.18);
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    background:#e8e2d8; font-family:'DM Sans',system-ui,sans-serif;
+    font-size:15px; display:flex; flex-direction:column;
+    align-items:center; padding:32px 16px 80px; gap:20px;
+  }
+
+  /* ── Card ── */
+  .card { width:420px; max-width:100%; background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+
+  /* ── Header ── */
+  .card-header { background:var(--lk); padding:20px 22px 18px; position:relative; overflow:hidden; }
+  .card-header::before { content:''; position:absolute; top:0; left:0; border-style:solid; border-width:48px 48px 0 0; border-color:var(--navy) transparent transparent transparent; opacity:.55; }
+  .card-header::after  { content:''; position:absolute; bottom:0; right:0; border-style:solid; border-width:0 0 38px 145px; border-color:transparent transparent var(--navy) transparent; opacity:.45; }
+  .header-inner { position:relative; z-index:1; }
+  .series-badge { display:inline-block; background:rgba(255,255,255,.18); color:#fff; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:2px 8px; border-radius:4px; margin-bottom:8px; }
+  .card-title { font-family:'Playfair Display',Georgia,serif; font-size:19px; font-weight:700; color:#fff; line-height:1.25; margin-bottom:4px; }
+  .card-subtitle { font-size:11.5px; color:rgba(255,255,255,.78); font-weight:500; letter-spacing:.02em; }
+  .brainy { position:absolute; bottom:-28px; right:-4px; opacity:.42; font-size:58px; line-height:1; pointer-events:none; }
+
+  /* ── Alert-Header (für sensible Karten) ── */
+  .card-header.alert { background:var(--red); }
+  .card-header.alert::after { border-color:transparent transparent #7a0000 transparent; }
+  .card-header.alert::before { border-color:#7a0000 transparent transparent transparent; }
+
+  /* ── Body ── */
+  .card-body { padding:18px 20px 12px; }
+  .intro { font-size:12.5px; color:var(--muted); line-height:1.55; border-left:3px solid var(--lk); padding-left:10px; margin-bottom:16px; font-style:italic; }
+  .intro.alert { border-color:var(--red); }
+  .section-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--lk); margin-bottom:8px; margin-top:14px; }
+  .section-label.red { color:var(--red); }
+
+  /* Checklist */
+  .checklist { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .checklist li { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:var(--text); line-height:1.45; cursor:pointer; user-select:none; }
+  .box { flex-shrink:0; width:18px; height:18px; border-radius:4px; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; color:transparent; transition:all .15s; margin-top:1px; }
+  .checklist li.checked .box { background:var(--lk); border-color:var(--lk); color:#fff; }
+  .checklist li.checked > span { text-decoration:line-through; color:var(--muted); }
+
+  /* Zweispaltig */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; }
+  .col-block { border-radius:8px; padding:9px 11px; }
+  .col-block.green { background:var(--green-bg); border:1px solid #a5d6a7; }
+  .col-block.red-col { background:var(--red-bg); border:1px solid #ef9a9a; }
+  .col-title { font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:5px; }
+  .col-block.green .col-title { color:var(--green); }
+  .col-block.red-col .col-title { color:var(--red); }
+  .col-block ul { list-style:none; }
+  .col-block li { font-size:11.5px; line-height:1.5; display:flex; gap:5px; margin-bottom:3px; }
+  .col-block.green li::before { content:"✓"; color:var(--green); font-weight:700; flex-shrink:0; }
+  .col-block.red-col li::before { content:"✗"; color:var(--red); font-weight:700; flex-shrink:0; }
+
+  /* Diagnose-Grid */
+  .diag-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; }
+  .diag-chip { background:var(--lk-light); border:1.5px solid rgba(79,123,149,.25); border-radius:10px; padding:9px 11px; }
+  .diag-name { font-size:11px; font-weight:700; color:var(--lk-mid); margin-bottom:4px; letter-spacing:.03em; }
+  .diag-text { font-size:11px; color:var(--text); line-height:1.45; }
+  .diag-text em { color:var(--muted); font-size:10.5px; }
+
+  /* Stufenplan */
+  .step-list { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+  .step-item { display:flex; gap:10px; align-items:flex-start; background:var(--lk-light); border-radius:8px; padding:9px 11px; }
+  .step-item.danger { background:var(--red-bg); }
+  .step-num { flex-shrink:0; width:22px; height:22px; border-radius:4px; background:var(--lk); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+  .step-item.danger .step-num { background:var(--red); }
+  .step-text { font-size:12.5px; color:var(--text); line-height:1.4; }
+  .step-text em { color:var(--muted); font-size:11px; display:block; margin-top:2px; }
+
+  /* Info-Boxen */
+  .tip-box { background:var(--lk-light); border-radius:8px; padding:10px 12px; font-size:12px; color:var(--text); line-height:1.5; margin-top:14px; }
+  .tip-box strong { color:var(--lk); font-size:10px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .warn-box { background:var(--orange-bg); border-left:3px solid #ff9800; border-radius:0 8px 8px 0; padding:10px 12px; font-size:12px; color:var(--text); line-height:1.5; margin-top:14px; }
+  .warn-box strong { color:var(--orange); font-size:10px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .danger-box { background:var(--red-bg); border-left:3px solid var(--red); border-radius:0 8px 8px 0; padding:10px 12px; font-size:12px; color:#4a0000; line-height:1.5; margin-top:14px; font-weight:500; }
+  .danger-box strong { color:var(--red); font-size:10px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .green-box { background:var(--green-bg); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:10px 12px; font-size:12px; color:var(--text); line-height:1.5; margin-top:14px; }
+  .green-box strong { color:#2e7d55; font-size:10px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:4px; }
+
+  /* Notizfeld */
+  .note-field { border:1.5px dashed var(--border); border-radius:8px; padding:10px 12px; font-size:12px; color:var(--muted); min-height:48px; margin-top:12px; outline:none; font-family:inherit; line-height:1.5; resize:none; width:100%; background:transparent; }
+  .note-field:focus { border-color:var(--lk); color:var(--text); }
+
+  /* Barometer */
+  .divider { border:none; border-top:1px solid var(--border); margin:14px 0; }
+  .barometer-label { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .barometer { display:flex; gap:6px; }
+  .barometer input[type=radio] { display:none; }
+  .barometer label { flex:1; height:22px; border-radius:5px; cursor:pointer; opacity:.3; border:2px solid transparent; transition:opacity .15s,transform .1s; }
+  .barometer input[type=radio]:checked + label { opacity:1; transform:scaleY(1.12); border-color:var(--navy); }
+  .baro-1{background:#4caf50} .baro-2{background:#8bc34a} .baro-3{background:#ffc107} .baro-4{background:#ff9800} .baro-5{background:#f44336}
+  .baro-legend { display:flex; justify-content:space-between; font-size:9.5px; color:var(--muted); margin-top:4px; }
+
+  /* Footer */
+  .card-footer { background:var(--navy); padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
+  .card-id { font-size:10px; font-weight:700; letter-spacing:.14em; color:rgba(255,255,255,.55); text-transform:uppercase; }
+  .btn-icon { background:rgba(255,255,255,.1); border:none; border-radius:6px; color:rgba(255,255,255,.75); font-size:13px; padding:4px 8px; cursor:pointer; transition:background .15s; }
+  .btn-icon:hover { background:rgba(255,255,255,.22); }
+
+  @media print { body{background:white;padding:0;gap:40px;} .card{box-shadow:none;page-break-inside:avoid;} .btn-icon{display:none;} }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+(function(){
+  try{
+    var login=sessionStorage.getItem('klartext_login');
+    var role=sessionStorage.getItem('klartext_role')||'';
+    if(login!=='true'){window.location.href='KLARTEXT_Login.html';return;}
+    if(!['lk','admin','ingra','trainer'].includes(role))window.location.href='KLARTEXT_Login.html';
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     LK-09: Häufige Diagnosen — was bedeutet das für mich?
+     ══════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-header">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">Häufige Diagnosen —<br>was bedeutet das für mich?</div>
+      <div class="card-subtitle">ADHS · Autismus · ESE · Lernen · Körperlich</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+  <div class="card-body">
+    <p class="intro">Keine Diagnose ist ein Rezept für Unterricht — aber Grundwissen hilft, Verhalten zu verstehen statt es zu bewerten. Diese Karte ist eine erste Orientierung, kein Fachgutachten.</p>
+
+    <div class="section-label">Die fünf häufigsten Förderschwerpunkte</div>
+    <div class="diag-grid">
+      <div class="diag-chip">
+        <div class="diag-name">ADHS</div>
+        <div class="diag-text">Unaufmerksamkeit, Impulsivität, Hyperaktivität. <em>Kein böser Wille — Selbststeuerung ist neurobiologisch erschwert.</em></div>
+      </div>
+      <div class="diag-chip">
+        <div class="diag-name">Autismus-Spektrum</div>
+        <div class="diag-text">Soziale Kommunikation und sensorische Verarbeitung anders. <em>Routinen und Vorhersehbarkeit sind Sicherheit.</em></div>
+      </div>
+      <div class="diag-chip">
+        <div class="diag-name">Emot. & soziale Entw.</div>
+        <div class="diag-text">Starke Gefühle, schwache Regulierung — oft mit Trauma-Hintergrund. <em>Beziehung vor Leistung.</em></div>
+      </div>
+      <div class="diag-chip">
+        <div class="diag-name">Lernen</div>
+        <div class="diag-text">Kognitive Verarbeitung verlangsamt oder punktuell eingeschränkt. <em>Kleinschrittigkeit und Erfolgserlebnisse helfen.</em></div>
+      </div>
+      <div class="diag-chip">
+        <div class="diag-name">Körper & Motorik</div>
+        <div class="diag-text">Körperliche Einschränkungen, Hilfsmittel, Pflege. <em>INGRA kennt den Umgang — mich einweisen lassen.</em></div>
+      </div>
+      <div class="diag-chip">
+        <div class="diag-name">Sprache</div>
+        <div class="diag-text">Sprachverständnis und/oder -produktion eingeschränkt. <em>Langsam sprechen, visualisieren, bestätigen lassen.</em></div>
+      </div>
+    </div>
+
+    <div class="section-label">Was mir in jeder Diagnose hilft</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Die INGRA kennt das Kind besser als jede Diagnose — ich frage <strong>sie</strong>, nicht die Akte.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Klare Struktur, kurze Aufgaben, Visualisierungen: helfen bei fast allen Förderbedarfen.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Verhalten ist Kommunikation — bevor ich reagiere, frage ich: <em>Was braucht das Kind gerade?</em></span></li>
+    </ul>
+
+    <div class="tip-box">
+      <strong>Wichtige Abgrenzung</strong>
+      Ich stelle keine Diagnosen und ziehe aus einer Diagnose keine starren Schlüsse. Zwei Kinder mit derselben Diagnose können im Unterricht völlig unterschiedliche Bedarfe haben.
+    </div>
+
+    <div class="tip-box">
+      <strong>Weiterführend im KLARTEXT-System</strong>
+      M2-08 ADHS · M2-09 Autismus · M2-10 Emotionale Entwicklung · M2-29 Entwicklungsverzögerungen
+    </div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher fühle ich mich im Umgang mit Diagnosen?</div>
+    <div class="barometer">
+      <input type="radio" name="b9" id="b9-1"><label for="b9-1" class="baro-1"></label>
+      <input type="radio" name="b9" id="b9-2"><label for="b9-2" class="baro-2"></label>
+      <input type="radio" name="b9" id="b9-3"><label for="b9-3" class="baro-3"></label>
+      <input type="radio" name="b9" id="b9-4"><label for="b9-4" class="baro-4"></label>
+      <input type="radio" name="b9" id="b9-5"><label for="b9-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer"><div class="card-id">LK-09 · KLARTEXT</div><button class="btn-icon" onclick="window.print()">🖨</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LK-10: Rechtliche Grundlagen in 5 Minuten
+     ══════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-header">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">Rechtliche Grundlagen<br>in 5 Minuten</div>
+      <div class="card-subtitle">Wer bewilligt · Wer zahlt · Wer ist zuständig</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+  <div class="card-body">
+    <p class="intro">Schulbegleitung ist eine Rechtsleistung — kein Goodwill der Schule. Wer die Strukturen kennt, kann Elternfragen klar beantworten und sich sauber abgrenzen.</p>
+
+    <div class="section-label">Das System in 4 Zeilen</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Eltern beantragen</strong> Schulbegleitung beim Jugendamt (SGB VIII § 35a: seelische Behinderung) oder Sozialamt (SGB IX: körperliche/geistige Behinderung).<em>Ich bin daran nicht beteiligt.</em></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Kostenträger bewilligt</strong> Stunden und erstellt einen Hilfeplan.<em>Stundenzahl, Verlängerung, Änderung — alles beim Kostenträger, nicht bei mir.</em></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Träger stellt INGRA ein</strong> und entsendet sie in die Schule.<em>Die INGRA ist Mitarbeiterin des Trägers — nicht der Schule, nicht von mir weisungsgebunden.</em></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Schule / Lehrkraft</strong> kooperiert pädagogisch — ohne Arbeitgeberrolle für die INGRA.<em>Ich kann Absprachen einfordern, aber keine Anweisungen erteilen.</em></div>
+      </div>
+    </div>
+
+    <div class="section-label">Wer ist wofür zuständig?</div>
+    <div class="two-col">
+      <div class="col-block green">
+        <div class="col-title">Meine Zuständigkeit</div>
+        <ul>
+          <li>Unterricht & Lernziele</li>
+          <li>Klassenführung</li>
+          <li>Aufsichtspflicht</li>
+          <li>Pädagogische Kooperation</li>
+          <li>Elterngespräche zu Schule</li>
+        </ul>
+      </div>
+      <div class="col-block red-col">
+        <div class="col-title">Nicht meine Zuständigkeit</div>
+        <ul>
+          <li>Stundenbewilligung</li>
+          <li>INGRA-Personalfragen</li>
+          <li>Hilfeplangespräche</li>
+          <li>Trägerkommunikation</li>
+          <li>Kostenfragen</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>Rechtliche Grundlagen</strong>
+      SGB VIII § 35a (seelische Behinderung) · SGB IX § 90 ff. (Eingliederungshilfe) · UN-BRK Art. 24 (Inklusion) · AO-SF NRW (Feststellung Förderbedarf)
+    </div>
+
+    <div class="warn-box">
+      <strong>Häufiges Missverständnis</strong>
+      Eltern richten Fragen zur Schulbegleitung oft an die Lehrkraft. Klare Antwort: „Das liegt beim Träger bzw. Jugendamt — ich gebe Ihnen gern den Kontakt."
+    </div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher bin ich in rechtlichen Fragen?</div>
+    <div class="barometer">
+      <input type="radio" name="b10" id="b10-1"><label for="b10-1" class="baro-1"></label>
+      <input type="radio" name="b10" id="b10-2"><label for="b10-2" class="baro-2"></label>
+      <input type="radio" name="b10" id="b10-3"><label for="b10-3" class="baro-3"></label>
+      <input type="radio" name="b10" id="b10-4"><label for="b10-4" class="baro-4"></label>
+      <input type="radio" name="b10" id="b10-5"><label for="b10-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer"><div class="card-id">LK-10 · KLARTEXT</div><button class="btn-icon" onclick="window.print()">🖨</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LK-11: Sexuelle Gewalt & häusliche Gewalt erkennen
+     ══════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-header alert">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">Sexuelle & häusliche<br>Gewalt erkennen</div>
+      <div class="card-subtitle">Wahrnehmen · Dokumentieren · Richtig handeln</div>
+    </div>
+    <div class="brainy">🔒</div>
+  </div>
+  <div class="card-body">
+    <p class="intro alert">Lehrkräfte verbringen täglich Zeit mit Kindern — und sehen Signale, die andere nicht sehen. Ich muss keine Diagnose stellen. Ich muss wahrnehmen, dokumentieren und weitergeben.</p>
+
+    <div class="section-label red">Mögliche Warnsignale — kein Beweis, aber Aufmerksamkeit</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Plötzliche Verhaltensveränderungen: Rückzug, Aggressivität, Erschöpfung ohne Erklärung</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Altersuntypisch sexualisierte Sprache, Zeichnungen oder Spiele</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Angst vor bestimmten Personen oder vor dem Nachhausegehen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Verletzungen an ungewöhnlichen Stellen oder häufige unerklärte Blessuren</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Andeutungen, die das Kind dann abbricht: „Bei mir zu Hause …"</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Regression: Einnässen, Daumenlutschen, übermäßiges Klammern</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Kein Frühstück, ungepflegte Kleidung, mangelnde Grundversorgung (Vernachlässigung)</span></li>
+    </ul>
+
+    <div class="section-label">Wenn ein Kind sich mir anvertraut</div>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Ruhig bleiben</strong> — keine Erschrockenheit zeigen. Das signalisiert: Es ist richtig, dass du sprichst.<em>Nicht unterbrechen, nicht nachfragen, nicht werten.</em></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Zuhören, nicht nachbohren</strong> — „Ich höre dir zu. Du hast nichts falsch gemacht."<em>Keine Leitfragen: „Hat dich jemand angefasst?" — das kann Aussagen unbrauchbar machen.</em></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Sofort dokumentieren</strong> — wörtliche Aussagen des Kindes in Anführungszeichen, Datum, Uhrzeit, Kontext.<em>Keine Interpretationen, keine Täternennungen.</em></div>
+      </div>
+      <div class="step-item danger">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Schulleitung & Kinderschutzfachkraft (§ 8a)</strong> noch am selben Tag informieren.<em>Nicht warten. Nicht allein entscheiden. Nicht die Eltern zuerst ansprechen.</em></div>
+      </div>
+    </div>
+
+    <div class="danger-box">
+      <strong>Was ich nie tun darf</strong>
+      Dem Kind versprechen: „Ich behalte das für mich." · Eltern ansprechen, bevor die Schulleitung informiert ist (Täter können im Haushalt sein). · Allein handeln ohne Kinderschutzfachkraft.
+    </div>
+
+    <div class="tip-box">
+      <strong>Rechtlicher Rahmen</strong>
+      § 8a SGB VIII: Schutzauftrag bei Kindeswohlgefährdung. Lehrkräfte sind zur Weitergabe verpflichtet — Schweigepflicht tritt zurück. Anonymisierte Beratung beim Jugendamt jederzeit möglich.
+    </div>
+
+    <div class="section-label">INGRA einbeziehen</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>INGRA informieren, dass ich Beobachtungen mache — sie dokumentiert parallel.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Beobachtungen zusammenführen — aber: Meldung läuft über Schulleitung, nicht über Träger.</span></li>
+    </ul>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher fühle ich mich in dieser Situation?</div>
+    <div class="barometer">
+      <input type="radio" name="b11" id="b11-1"><label for="b11-1" class="baro-1"></label>
+      <input type="radio" name="b11" id="b11-2"><label for="b11-2" class="baro-2"></label>
+      <input type="radio" name="b11" id="b11-3"><label for="b11-3" class="baro-3"></label>
+      <input type="radio" name="b11" id="b11-4"><label for="b11-4" class="baro-4"></label>
+      <input type="radio" name="b11" id="b11-5"><label for="b11-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer"><div class="card-id">LK-11 · KLARTEXT</div><button class="btn-icon" onclick="window.print()">🖨</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LK-12: Trauma erkennen und damit umgehen
+     ══════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-header">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">Trauma erkennen<br>und damit umgehen</div>
+      <div class="card-subtitle">Verstehen · Stabilisieren · Nicht retraumatisieren</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+  <div class="card-body">
+    <p class="intro">Traumatisierte Kinder verhalten sich manchmal so, als würden sie absichtlich stören. Meistens kämpft ihr Nervensystem um Überleben. Diese Karte hilft mir, den Unterschied zu erkennen.</p>
+
+    <div class="section-label">Was ist Trauma — in einem Satz</div>
+    <div class="tip-box" style="margin-top:6px;">
+      <strong>Definition</strong>
+      Trauma ist eine überwältigende Erfahrung, die das Nervensystem dauerhaft in Alarmbereitschaft versetzt — auch wenn die Gefahr längst vorbei ist. Das Kind reagiert nicht auf die Gegenwart, sondern auf eine gespeicherte Bedrohung.
+    </div>
+
+    <div class="section-label">Mögliche Signale im Unterricht</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Starke Reaktionen auf scheinbar kleine Auslöser (Lärm, Berührung, Stimme)</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Einfrieren, Dissoziieren — Kind „weg" ohne Ohnmacht</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Explosives Verhalten, das schnell vorbei ist — danach keine Erinnerung</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Extreme Kontrolle oder extreme Unterwerfung</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Schwierigkeiten mit Zeitgefühl, Vergangenheit/Gegenwart verwechseln</span></li>
+    </ul>
+
+    <div class="section-label">Was hilft — traumasensibles Unterrichten</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Vorhersehbarkeit</strong> — gleiche Abläufe, klare Ankündigungen, keine Überraschungen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Wahlmöglichkeiten</strong> geben — Kontrolle zurückgeben: „Möchtest du sitzen oder stehen?"</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Ruhige Stimme und Körpersprache</strong> — ich bin der Anker, nicht die Eskalation</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Rückzugsort</strong> ermöglichen — ohne Strafe, ohne Erklärung verlangen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Beziehung</strong> — ein verlässlicher Erwachsener ist therapeutischer als jede Methode</span></li>
+    </ul>
+
+    <div class="section-label">Was ich vermeiden sollte</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Öffentliche Bloßstellung — Scham verstärkt Trauma</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>„Reiß dich zusammen" — das Kind kann es gerade buchstäblich nicht</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Nach Details des Traumas fragen — das ist Aufgabe von Therapeuten</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Unerwartete körperliche Berührung — immer ankündigen</span></li>
+    </ul>
+
+    <div class="tip-box">
+      <strong>Mit INGRA koordinieren</strong>
+      Die INGRA kennt oft die Auslöser (Trigger) des Kindes. Ich frage: „Was sollte ich wissen? Was hilft, wenn es eskaliert?" — und halte das fest.
+    </div>
+
+    <div class="tip-box">
+      <strong>Weiterführend</strong>
+      M2-05 Trauma-Basics · M2-30 Bindungsstörungen · M2-31 Bindungstrauma Pflegekinder
+    </div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher fühle ich mich mit traumatisierten Kindern?</div>
+    <div class="barometer">
+      <input type="radio" name="b12" id="b12-1"><label for="b12-1" class="baro-1"></label>
+      <input type="radio" name="b12" id="b12-2"><label for="b12-2" class="baro-2"></label>
+      <input type="radio" name="b12" id="b12-3"><label for="b12-3" class="baro-3"></label>
+      <input type="radio" name="b12" id="b12-4"><label for="b12-4" class="baro-4"></label>
+      <input type="radio" name="b12" id="b12-5"><label for="b12-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer"><div class="card-id">LK-12 · KLARTEXT</div><button class="btn-icon" onclick="window.print()">🖨</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LK-13: DAZ — Deutsch als Zweitsprache & Einfache Sprache
+     ══════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-header">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">DAZ & Einfache Sprache<br>im Unterricht</div>
+      <div class="card-subtitle">Verständlich sprechen · Teilhabe ermöglichen · Alle mitnehmen</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+  <div class="card-body">
+    <p class="intro">DAZ-Prinzipien helfen nicht nur Kindern mit Migrationshintergrund — sie helfen Kindern mit ADHS, Verarbeitungsschwäche, Trauma und Förderbedarf Lernen. Gute DAZ-Sprache ist guter Unterricht.</p>
+
+    <div class="section-label">Sprechen — sofort umsetzbar</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Langsam und deutlich</strong> sprechen — Pausen lassen, nicht wiederholen ohne Pause</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Kurze Sätze</strong> — ein Gedanke pro Satz. Nicht: „Mach das auf und dann blätter auf Seite 12 und lies den zweiten Absatz."</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Einfache Wörter</strong> — Fachbegriffe erklären, wenn sie nötig sind. Nicht ersetzen, sondern einführen.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Verständnis prüfen</strong> — „Was machst du als erstes?" statt „Hast du verstanden?"</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Visualisieren</strong> — Tafelbild, Piktogramme, Handzeichen, Mengen zeigen</span></li>
+    </ul>
+
+    <div class="section-label">Texte & Aufgaben anpassen</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Aufgabenstellungen in <strong>einfacher Sprache</strong> formulieren: Aktiv, kurz, konkret</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Schlüsselwörter <strong>hervorheben</strong> oder unterstreichen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Aufgaben in <strong>Schritt-für-Schritt-Karten</strong> aufteilen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Bilder, Symbole und Farben als Unterstützungssystem nutzen</span></li>
+    </ul>
+
+    <div class="two-col" style="margin-top:10px;">
+      <div class="col-block red-col">
+        <div class="col-title">Vermeiden</div>
+        <ul>
+          <li>Ironie & Redewendungen</li>
+          <li>Doppelte Verneinungen</li>
+          <li>Indirekte Aufforderungen</li>
+          <li>Lange Satzgefüge</li>
+          <li>Lautes Korrigieren</li>
+        </ul>
+      </div>
+      <div class="col-block green">
+        <div class="col-title">Besser so</div>
+        <ul>
+          <li>Direkte Aussagen</li>
+          <li>„Ich möchte, dass …"</li>
+          <li>Konkrete Handlungen</li>
+          <li>Hauptsätze</li>
+          <li>Leise, sachliche Korrektur</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>INGRA als DAZ-Partner</strong>
+      Die INGRA kann Aufgaben in einfacher Sprache parallel erklären — wenn wir das vorher absprechen. 5 Minuten Vorbereitung vor der Stunde machen den Unterschied.
+    </div>
+
+    <div class="tip-box">
+      <strong>Weiterführend</strong>
+      M4-04 DAZ-freundliche Sprache (INGRA-Perspektive) · M4-03 Klarheit und Kürze
+    </div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie konsequent nutze ich DAZ-Prinzipien?</div>
+    <div class="barometer">
+      <input type="radio" name="b13" id="b13-1"><label for="b13-1" class="baro-1"></label>
+      <input type="radio" name="b13" id="b13-2"><label for="b13-2" class="baro-2"></label>
+      <input type="radio" name="b13" id="b13-3"><label for="b13-3" class="baro-3"></label>
+      <input type="radio" name="b13" id="b13-4"><label for="b13-4" class="baro-4"></label>
+      <input type="radio" name="b13" id="b13-5"><label for="b13-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Immer</span><span>Selten</span></div>
+  </div>
+  <div class="card-footer"><div class="card-id">LK-13 · KLARTEXT</div><button class="btn-icon" onclick="window.print()">🖨</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     LK-14: Migration — Hintergründe & Lösungen
+     ══════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-header">
+    <div class="header-inner">
+      <div class="series-badge">LK-Serie · Für Lehrkräfte</div>
+      <div class="card-title">Migration — Hintergründe<br>verstehen & handeln</div>
+      <div class="card-subtitle">Kontext kennen · Ressourcen sehen · Brücken bauen</div>
+    </div>
+    <div class="brainy">🧠</div>
+  </div>
+  <div class="card-body">
+    <p class="intro">Kinder mit Migrationsgeschichte bringen unterschiedliche Erfahrungen mit — Stärken und Belastungen. Diese Karte hilft, Verhalten zu kontextualisieren statt zu pathologisieren.</p>
+
+    <div class="section-label">Was Kinder mit Flucht-/Migrationsgeschichte mitbringen können</div>
+    <div class="two-col">
+      <div class="col-block green">
+        <div class="col-title">Ressourcen</div>
+        <ul>
+          <li>Resilienz & Anpassungsfähigkeit</li>
+          <li>Mehrsprachigkeit</li>
+          <li>Familienzusammenhalt</li>
+          <li>Lebensklugheit & Pragmatismus</li>
+          <li>Kulturelle Vielfalt</li>
+        </ul>
+      </div>
+      <div class="col-block red-col">
+        <div class="col-title">Mögliche Belastungen</div>
+        <ul>
+          <li>Traumatische Erlebnisse</li>
+          <li>Unsicherer Aufenthaltsstatus</li>
+          <li>Sprachbarriere</li>
+          <li>Unterbrochene Bildungsbiografie</li>
+          <li>Beengter Wohnraum</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-label">Häufige Herausforderungen & was hilft</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Schulabsenzen:</strong> Oft nicht Desinteresse, sondern Behördentermine, Familienpflichten, Unsicherheit. → Verständnisvoll nachfragen, keine Strafe als erste Reaktion.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Passivität im Unterricht:</strong> Viele Schulsysteme sind lehrergesteuert — Mitarbeit ist ungewohnt, nicht Gleichgültigkeit.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Eltern schlecht erreichbar:</strong> Sprachbarriere, Schichtarbeit, Misstrauen gegenüber Behörden. → Übersetzer, kurze schriftliche Infos, Vertrauensaufbau.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Traumasignale</strong> (Rückzug, Flashbacks) nach Nachrichten aus dem Herkunftsland. → LK-12 beachten, INGRA informieren.</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span><strong>Kulturelle Missverständnisse:</strong> Geschlechterrollen, Autoritätsverständnis, Körperkontakt. → Fragen statt annehmen, neugierig statt urteilend.</span></li>
+    </ul>
+
+    <div class="section-label">Praktische Brücken</div>
+    <ul class="checklist">
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Bildwörterbücher, mehrsprachige Glossare und Piktogramme einsetzen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Mitschüler:innen als Sprachbrücke — bewusst, nicht als Dauerlösung</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Stärken sichtbar machen — Mehrsprachigkeit als Kompetenz benennen</span></li>
+      <li onclick="toggle(this)"><div class="box">✓</div><span>Schulsozialdienst und Beratungsstellen kennen und einbeziehen</span></li>
+    </ul>
+
+    <div class="green-box">
+      <strong>Grundhaltung</strong>
+      Migration ist kein Defizit — sie ist eine Erfahrung. Mein Blick auf das Kind entscheidet, ob es sich gesehen oder beschriftet fühlt.
+    </div>
+
+    <div class="note-field" contenteditable="true" placeholder="Notizen zu meiner Klasse · Ressourcen im Ort · Kontakte …"></div>
+
+    <hr class="divider">
+    <div class="barometer-label">Wie sicher fühle ich mich im Umgang mit Migrationsthemen?</div>
+    <div class="barometer">
+      <input type="radio" name="b14" id="b14-1"><label for="b14-1" class="baro-1"></label>
+      <input type="radio" name="b14" id="b14-2"><label for="b14-2" class="baro-2"></label>
+      <input type="radio" name="b14" id="b14-3"><label for="b14-3" class="baro-3"></label>
+      <input type="radio" name="b14" id="b14-4"><label for="b14-4" class="baro-4"></label>
+      <input type="radio" name="b14" id="b14-5"><label for="b14-5" class="baro-5"></label>
+    </div>
+    <div class="baro-legend"><span>Sehr sicher</span><span>Unsicher</span></div>
+  </div>
+  <div class="card-footer"><div class="card-id">LK-14 · KLARTEXT</div><button class="btn-icon" onclick="window.print()">🖨</button></div>
+</div>
+
+<script>
+  function toggle(li) { li.classList.toggle('checked'); }
+</script>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Fachbuch · Mobbing, Cybermobbing &amp; soziale Dynamiken</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;--m6:#D81B60;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:800px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.fb-kapitel-header{border-bottom:2px solid #fff;padding-bottom:1rem;margin-bottom:1.25rem;}
+.fb-kapitel-badge{display:inline-block;background:var(--m6);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:12px;margin-bottom:.5rem;}
+.fb-kapitel-header h2{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--navy);}
+.fb-kapitel-meta{font-size:.74rem;color:var(--muted);margin-top:.35rem;}
+.fb-karte-link{color:var(--acc);text-decoration:none;font-weight:700;}
+.fb-h3{font-family:"Playfair Display",serif;font-size:1.02rem;color:var(--navy);margin:1.5rem 0 .75rem;}
+.fb-p{font-size:.88rem;line-height:1.75;color:#2D2D2D;margin-bottom:1rem;}
+.fb-leitsatz{background:var(--navy);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.25rem;text-align:center;}
+.fb-leitsatz p{color:#fff;font-family:"Playfair Display",serif;font-style:italic;font-size:1.05rem;}
+.fb-abschnitt{background:var(--surface);border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:1rem;border-left:4px solid var(--m6);}
+.fb-abschnitt-titel{font-family:"Playfair Display",serif;font-size:1rem;color:var(--m6);margin-bottom:.65rem;}
+.fb-zitat-klein{background:#FCE4EC;border-radius:8px;padding:.6rem .9rem;font-size:.82rem;font-style:italic;color:#8B1A4A;margin:.6rem 0;}
+.fb-liste{list-style:none;margin-bottom:.5rem;}
+.fb-liste li{font-size:.83rem;color:#2D2D2D;padding:.25rem 0 .25rem 1.2rem;position:relative;}
+.fb-liste li::before{content:"→";position:absolute;left:0;color:var(--m6);font-weight:700;}
+.fb-nie-immer{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.25rem;}
+@media(max-width:600px){.fb-nie-immer{grid-template-columns:1fr;}}
+.fb-nie{background:#FFEBEE;border:1.5px solid #C62828;border-radius:10px;padding:.9rem 1rem;}
+.fb-immer{background:#EAF7EF;border:1.5px solid #3B8A68;border-radius:10px;padding:.9rem 1rem;}
+.fb-nie-titel{font-weight:800;font-size:.85rem;color:#8B1A1A;margin-bottom:.5rem;}
+.fb-immer-titel{font-weight:800;font-size:.85rem;color:#1B5E2E;margin-bottom:.5rem;}
+.fb-nie ul, .fb-immer ul{list-style:none;}
+.fb-nie li, .fb-immer li{font-size:.76rem;padding:.15rem 0;}
+.fb-beispiel-box{background:#EAF1F8;border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1.25rem;}
+.fb-beispiel-label{font-size:.62rem;font-weight:700;color:#1565C0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem;}
+.fb-beispiel-box p{font-size:.85rem;font-style:italic;color:#1A1A2E;}
+.fb-rollen{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem;}
+.fb-rolle-chip{background:var(--paper);border-radius:20px;padding:.4rem 1rem;font-size:.78rem;font-weight:600;color:var(--navy);}
+.fb-brainy{display:flex;gap:.85rem;align-items:center;background:var(--surface);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
+.fb-brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+.fb-brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Fachbuch · Systemkapitel</span></div>
+  <a class="back-btn" href="KLARTEXT_Fachbuch_Neu.html">← Zum Fachbuch</a>
+</header>
+
+<div class="shell">
+
+<div class="fb-kapitel-header">
+  <span class="fb-kapitel-badge">Systemkapitel</span>
+  <h2>Mobbing, Cybermobbing & soziale Dynamiken</h2>
+  <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: M6-Modul · <a href="M6_Geschichtenkarten_Galerie.html" class="fb-karte-link">↗ Brainy-Geschichtenkarten</a></div>
+</div>
+
+<div class="fb-leitsatz"><p>Mobbing ist kein Konflikt.</p></div>
+
+<p class="fb-p">Mobbing ist ein systematischer Prozess, bei dem ein Kind wiederholt, über längere Zeit und in einem Machtungleichgewicht verletzt, ausgegrenzt oder herabgesetzt wird. Schulbegleitung spielt eine zentrale Rolle: Sie beobachtet, erkennt Muster, schützt das Kind und hält die Meldekette ein.</p>
+<p class="fb-p">Dieses Kapitel beschreibt Mobbing aus drei Perspektiven: das Kind als Betroffener, das Kind als Beteiligter oder Ausübender, und digitale Formen. Es geht nicht darum, Schuld zuzuweisen, sondern Dynamiken zu verstehen und professionell zu handeln.</p>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">1. Das Kind als Betroffener von Mobbing</div>
+  <p class="fb-p">Kinder, die gemobbt werden, zeigen oft subtile Signale: Rückzug, Bauchschmerzen, Angst vor Pausen, Leistungsabfall, Gereiztheit oder plötzliche Überanpassung. Viele sprechen nicht darüber, weil sie sich schämen oder Angst haben, dass es schlimmer wird.</p>
+  <div class="fb-zitat-klein">„Du bist nicht schuld. Du bist nicht allein. Ich nehme dich ernst."</div>
+  <p class="fb-p">Schulbegleitung führt <b>keine</b> Gespräche mit Täterkindern, Eltern oder Gruppen. Sie bleibt neutral und professionell — sie hört zu, dokumentiert und informiert die Lehrkraft oder Einsatzleitung.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">2. Das Kind als Ausübender von Mobbing</div>
+  <p class="fb-p">Kinder, die mobben, sind nicht „böse". Sie handeln aus Unsicherheit, Gruppendruck, Überforderung oder dem Bedürfnis nach Kontrolle. Schulbegleitung sieht Verhalten, nicht Charakter.</p>
+  <div class="fb-zitat-klein">„Ich sehe, was du tust — und ich begleite dich, ohne dich abzuwerten."</div>
+  <p class="fb-p">Schulbegleitung schützt das betroffene Kind, ohne das andere Kind zu stigmatisieren. Sie führt <b>keine</b> Sanktionen durch — sie begleitet, beobachtet und stabilisiert.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">3. Cybermobbing & digitale Dynamiken</div>
+  <p class="fb-p">Cybermobbing ist besonders belastend, weil es rund um die Uhr stattfindet, sich schnell verbreitet, anonym wirken kann und kaum Rückzugsräume lässt. Kinder erleben digitale Angriffe oft als existenziell bedrohlich.</p>
+  <div class="fb-zitat-klein">„Danke, dass du es mir sagst." — nicht: „Warum hast du das nicht gesagt?"</div>
+  <p class="fb-p">Schulbegleitung ermittelt nicht, sammelt keine Beweise und spricht nicht mit Eltern anderer Kinder. Sie hält die Meldekette ein.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">4. Soziale Dynamiken verstehen</div>
+  <p class="fb-p">Mobbing entsteht selten durch ein einzelnes Kind — es ist ein Gruppengeschehen. Typische Rollen:</p>
+  <div class="fb-rollen">
+    <span class="fb-rolle-chip">Anführer</span>
+    <span class="fb-rolle-chip">Mitläufer</span>
+    <span class="fb-rolle-chip">Verstärker</span>
+    <span class="fb-rolle-chip">Zuschauer</span>
+    <span class="fb-rolle-chip">Betroffener</span>
+  </div>
+  <p class="fb-p">Schulbegleitung beobachtet diese Rollen, ohne sie zu benennen. Sie erkennt Muster und schützt das Kind, ohne das System zu destabilisieren.</p>
+</div>
+
+<h3 class="fb-h3">5–6. Niemals / Immer</h3>
+<div class="fb-nie-immer">
+  <div class="fb-nie">
+    <div class="fb-nie-titel">✗ Niemals</div>
+    <ul><li>Täter benennen</li><li>Schuld zuweisen</li><li>Eltern anderer Kinder ansprechen</li><li>eigene Ermittlungen starten</li><li>Kinder gegeneinander ausspielen</li><li>Versprechen machen</li><li>Chats privat speichern</li></ul>
+  </div>
+  <div class="fb-immer">
+    <div class="fb-immer-titel">✓ Immer</div>
+    <ul><li>zuhören</li><li>ernst nehmen</li><li>dokumentieren</li><li>Meldekette einhalten</li><li>Kind stabilisieren</li><li>Übergänge begleiten</li><li>Selbstwert stärken</li></ul>
+  </div>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">7. Pädagogische Interventionen im Alltag</div>
+  <ul class="fb-liste">
+    <li>Sichere Sitzplätze</li><li>Ruhige Pausenräume</li><li>Begleitung in Übergängen</li>
+    <li>Stärkung sozialer Kompetenzen</li><li>Klare Sprache</li><li>Positive Rollenangebote</li>
+    <li>Entschärfung von Gruppendruck</li><li>Förderung von Selbstwirksamkeit</li>
+  </ul>
+  <p class="fb-p">Sie arbeitet nicht gegen Kinder, sondern für Sicherheit.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">4b. Soziale Ausgrenzung trotz Integration</div>
+  <p class="fb-p">Viele Kinder sind körperlich in der Regelschule integriert, aber sozial isoliert. Sie sitzen im selben Raum, aber gehören nicht dazu. Sie erleben: keine Einladungen, keine Verabredungen, keine Peer-Group, keine echten Freundschaften.</p>
+  <div class="fb-zitat-klein">Die Schulbegleitung kann diese Isolation ungewollt verstärken — nicht, weil sie etwas falsch macht, sondern weil Mitschüler das Kind als „anders" wahrnehmen, wenn immer ein Erwachsener daneben sitzt.</div>
+
+  <p class="fb-p" style="font-weight:700;color:var(--navy);margin-top:1rem;">Warum Kinder auf Regelschulen oft isoliert bleiben</p>
+  <ul class="fb-liste">
+    <li>Sie passen nicht in die sozialen Codes der Klasse</li>
+    <li>Sie sind langsamer, impulsiver oder reizempfindlicher</li>
+    <li>Sie werden als „Kind mit Begleitung" markiert</li>
+    <li>Sie sind nicht spontan verabredbar</li>
+    <li>Die Klasse ist nicht auf Vielfalt vorbereitet</li>
+  </ul>
+  <p class="fb-p">Das ist kein individuelles Problem — das ist ein <b>Systemproblem</b>.</p>
+
+  <p class="fb-p" style="font-weight:700;color:var(--navy);margin-top:1rem;">Wie echte soziale Teilhabe gelingen kann</p>
+  <ul class="fb-liste">
+    <li><b>Sicherheit:</b> mindestens eine ruhige, klare, verlässliche Person</li>
+    <li><b>Struktur:</b> vorhersehbare Abläufe, klare Übergänge</li>
+    <li><b>Reizregulation:</b> ein Sitzplatz, der schützt, Pausen, die entlasten</li>
+    <li><b>Soziale Brücken:</b> gezielte Unterstützung bei Kontaktaufnahme, Gruppenarbeit, Konflikten</li>
+    <li><b>Peer-Arbeit:</b> nicht „Sei nett zu ihm", sondern „Wie können wir gemeinsam arbeiten?"</li>
+  </ul>
+
+  <p class="fb-p" style="font-weight:700;color:var(--navy);margin-top:1rem;">Fazit</p>
+  <div class="fb-zitat-klein">Integration ist kein Ort. Integration ist eine Haltung. Sie gelingt, wenn das Kind sicher ist, gesehen wird, dazugehört und echte soziale Erfahrungen machen kann.</div>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">8. Nachsorge & Stabilisierung</div>
+  <p class="fb-p">Kinder brauchen nach Mobbing: Ruhe, Orientierung, klare Strukturen, positive Erfahrungen, Erfolgserlebnisse und sichere Beziehungen. Schulbegleitung begleitet diesen Prozess ruhig und geduldig.</p>
+</div>
+
+<div class="fb-beispiel-box">
+  <div class="fb-beispiel-label">9. Dokumentationsbeispiel</div>
+  <p>„10:40 — X berichtet, Mitschüler hätten ihn ‚ausgelacht'. Wirkt belastet. Ich höre zu, sichere Weitergabe an Lehrkraft zu."</p>
+</div>
+<p class="fb-p" style="font-size:.78rem;color:var(--muted);">Keine Bewertungen. Keine Diagnosen. Keine Schuldzuweisungen.</p>
+
+<div class="fb-leitsatz">
+  <p>„Ich schütze, ohne zu kämpfen.<br>Ich begleite, ohne zu bewerten.<br>Ich bleibe klar, auch wenn es schwierig wird."</p>
+</div>
+
+<div class="fb-brainy">
+  <img src="brainy-m6.png" alt="Brainy">
+  <div><strong>Brainy erinnert:</strong> Schau dir auch unsere 30 Brainy-Geschichtenkarten an — sie helfen, Mobbing-Themen kindgerecht zu besprechen.</div>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Listen</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--rot:#C62828;--gruen:#388E3C;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+
+.shell{max-width:680px;margin:0 auto;padding:1.5rem 1rem 5rem;}
+
+/* Tabs */
+.tab-nav{display:flex;gap:0;background:#E8E4DC;border-radius:12px;padding:.3rem;margin-bottom:1.5rem;}
+.tab-btn{flex:1;padding:.6rem;border:none;background:none;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;border-radius:8px;transition:all .15s;}
+.tab-btn.aktiv{background:var(--surface);color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.tab-inhalt{display:none;}
+.tab-inhalt.aktiv{display:block;}
+
+/* Karte */
+.karte{background:var(--surface);border-radius:14px;padding:1.25rem;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:1rem;}
+.karte-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1rem;}
+
+/* Eingabe */
+.eingabe-zeile{display:flex;gap:.5rem;margin-bottom:1.1rem;}
+.eingabe-feld{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:.6rem .85rem;font-family:"DM Sans",sans-serif;font-size:.85rem;background:#FAFAFA;}
+.eingabe-feld:focus{outline:none;border-color:var(--navy);}
+.hinzufuegen-btn{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:.6rem 1rem;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+.hinzufuegen-btn:hover{background:#0F2230;}
+
+/* Zähler */
+.liste-kopf{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.liste-info{font-size:.72rem;color:var(--muted);}
+.alles-loeschen-btn{background:none;border:none;font-size:.7rem;color:var(--muted);cursor:pointer;text-decoration:underline;padding:0;}
+.alles-loeschen-btn:hover{color:var(--rot);}
+
+/* Einträge */
+.liste-leer{text-align:center;padding:1.75rem 1rem;color:var(--muted);font-size:.84rem;border:1.5px dashed var(--border);border-radius:10px;}
+.eintrag{display:flex;align-items:center;gap:.65rem;padding:.65rem .75rem;border-bottom:1px solid var(--border);transition:background .1s;}
+.eintrag:last-child{border-bottom:none;}
+.eintrag:hover{background:#FAFAF5;}
+.eintrag.erledigt .eintrag-text{text-decoration:line-through;color:var(--muted);}
+.checkbox{width:20px;height:20px;border:2px solid var(--border);border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.checkbox.checked{background:var(--gruen);border-color:var(--gruen);}
+.checkbox.checked::after{content:'✓';color:#fff;font-size:.75rem;font-weight:700;}
+.eintrag-text{flex:1;font-size:.84rem;line-height:1.4;word-break:break-word;cursor:pointer;}
+.loeschen-btn{background:none;border:none;color:#B0A898;font-size:1rem;cursor:pointer;padding:.1rem .3rem;border-radius:4px;flex-shrink:0;line-height:1;}
+.loeschen-btn:hover{color:var(--rot);background:#FFEBEE;}
+
+/* Fortschritt */
+.fortschritt-wrap{margin-bottom:.75rem;}
+.fortschritt-bar{height:4px;background:#E8E4DC;border-radius:2px;overflow:hidden;}
+.fortschritt-fill{height:100%;background:var(--acc);border-radius:2px;transition:width .3s;}
+
+@media(max-width:480px){
+  .eingabe-zeile{flex-wrap:wrap;}
+  .hinzufuegen-btn{width:100%;}
+}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Listen</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="tab-nav" style="pointer-events:none;cursor:default;">
+    <button class="tab-btn aktiv" style="cursor:default;">✅ To-do-Liste</button>
+  </div>
+
+  <!-- TO-DO -->
+  <div id="tab-todo" class="tab-inhalt aktiv">
+    <div class="karte">
+      <div class="karte-titel">✅ To-do-Liste</div>
+      <div class="eingabe-zeile">
+        <input class="eingabe-feld" id="todo-eingabe" type="text" placeholder="Neuer Punkt …" maxlength="200"
+          onkeydown="if(event.key==='Enter')hinzufuegen('todo')">
+        <button class="hinzufuegen-btn" onclick="hinzufuegen('todo')">+ Hinzufügen</button>
+      </div>
+      <div class="fortschritt-wrap" id="todo-fortschritt-wrap" style="display:none;">
+        <div class="fortschritt-bar"><div class="fortschritt-fill" id="todo-fill"></div></div>
+      </div>
+      <div class="liste-kopf">
+        <span class="liste-info" id="todo-info"></span>
+        <button class="alles-loeschen-btn" onclick="alleErledigtenLoeschen('todo')">Erledigte löschen</button>
+      </div>
+      <div id="todo-liste"></div>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+// ── KEYS ──────────────────────────────────────────────────
+const KEYS = {
+  todo:    'klartext_todo_list'
+};
+
+// ── TABS ──────────────────────────────────────────────────
+function tab(id) {
+  document.getElementById('tab-todo').classList.add('aktiv');
+}
+
+// ── STORAGE ───────────────────────────────────────────────
+function laden(key) {
+  try { return JSON.parse(localStorage.getItem(KEYS[key]) || '[]'); }
+  catch(e) { return []; }
+}
+
+function speichern(key, liste) {
+  try { localStorage.setItem(KEYS[key], JSON.stringify(liste)); }
+  catch(e) {}
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function render(key) {
+  const liste = laden(key);
+  const container = document.getElementById(key + '-liste');
+  const info = document.getElementById(key + '-info');
+  const fill = document.getElementById(key + '-fill');
+  const fwrap = document.getElementById(key + '-fortschritt-wrap');
+
+  const gesamt = liste.length;
+  const erledigt = liste.filter(function(e){ return e.done; }).length;
+
+  // Fortschrittsbalken
+  if (gesamt > 0) {
+    fwrap.style.display = 'block';
+    fill.style.width = Math.round((erledigt / gesamt) * 100) + '%';
+  } else {
+    fwrap.style.display = 'none';
+  }
+
+  // Zähler
+  info.textContent = gesamt === 0 ? '' : erledigt + ' von ' + gesamt + ' erledigt';
+
+  // Leer-Hinweis
+  if (gesamt === 0) {
+    container.innerHTML = '<div class="liste-leer">Noch keine Einträge.</div>';
+    return;
+  }
+
+  // Einträge rendern
+  container.innerHTML = liste.map(function(eintrag) {
+    const erledigt_klasse = eintrag.done ? ' erledigt' : '';
+    const checkbox_klasse = eintrag.done ? ' checked' : '';
+    // Text HTML-escapen
+    const sichererText = eintrag.text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return '<div class="eintrag' + erledigt_klasse + '" id="e-' + eintrag.id + '">'
+      + '<div class="checkbox' + checkbox_klasse + '" onclick="toggleDone(\'' + key + '\',\'' + eintrag.id + '\')"></div>'
+      + '<span class="eintrag-text" onclick="toggleDone(\'' + key + '\',\'' + eintrag.id + '\')">' + sichererText + '</span>'
+      + '<button class="loeschen-btn" onclick="loeschen(\'' + key + '\',\'' + eintrag.id + '\')" title="Löschen">✕</button>'
+      + '</div>';
+  }).join('');
+}
+
+// ── AKTIONEN ──────────────────────────────────────────────
+function hinzufuegen(key) {
+  const feld = document.getElementById(key + '-eingabe');
+  const text = feld.value.trim();
+  if (!text) { feld.focus(); return; }
+
+  const liste = laden(key);
+  liste.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), text: text, done: false });
+  speichern(key, liste);
+  feld.value = '';
+  feld.focus();
+  render(key);
+}
+
+function toggleDone(key, id) {
+  const liste = laden(key);
+  const eintrag = liste.find(function(e){ return e.id === id; });
+  if (eintrag) { eintrag.done = !eintrag.done; }
+  speichern(key, liste);
+  render(key);
+}
+
+function loeschen(key, id) {
+  const liste = laden(key).filter(function(e){ return e.id !== id; });
+  speichern(key, liste);
+  render(key);
+}
+
+function alleErledigtenLoeschen(key) {
+  const liste = laden(key).filter(function(e){ return !e.done; });
+  speichern(key, liste);
+  render(key);
+}
+
+// ── INIT ─────────────────────────────────────────────────
+render('todo');
+</script>
+</body>
+</html>

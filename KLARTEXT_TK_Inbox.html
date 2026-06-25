@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · TK-Inbox</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;--tk:#4A148C;--tk-l:#F3E5FF;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:680px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+
+.hero{background:var(--tk);border-radius:16px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.65);}
+.hero-zaehler{background:rgba(255,255,255,.15);color:#fff;font-size:.75rem;font-weight:700;padding:.4rem .9rem;border-radius:20px;flex-shrink:0;}
+
+.leer-hinweis{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.85rem;background:#fff;border-radius:14px;}
+
+.eintrag{background:var(--surface);border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:.75rem;box-shadow:0 1px 6px rgba(0,0,0,.05);border-left:4px solid var(--tk);}
+.eintrag-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;margin-bottom:.6rem;flex-wrap:wrap;}
+.eintrag-kind{font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:.95rem;}
+.eintrag-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.eintrag-typ{font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:12px;text-transform:uppercase;letter-spacing:.04em;}
+.typ-uebergabe{background:#EAF1F8;color:#1565C0;}
+.typ-barometer{background:#FFF3E0;color:#B7500A;}
+.typ-hinweis{background:#F3E5FF;color:#4A148C;}
+.eintrag-zeit{font-size:.7rem;color:var(--muted);}
+.eintrag-text{font-size:.84rem;color:#2D2D2D;line-height:1.6;}
+.eintrag-von{font-size:.68rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.eintrag-aktionen{display:flex;align-items:center;gap:.6rem;margin-top:.75rem;padding-top:.6rem;border-top:1px solid var(--paper);flex-wrap:wrap;}
+.link-kopieren-btn{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.4rem .8rem;font-family:"DM Sans",sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;}
+.link-bestaetigung{font-size:.72rem;color:#1B5E2E;font-weight:700;opacity:0;transition:opacity .25s;}
+.link-bestaetigung.zeigen{opacity:1;}
+.id-toggle-btn{background:none;border:none;color:var(--muted);font-size:.7rem;cursor:pointer;text-decoration:underline;padding:0;}
+.id-anzeige{font-size:.68rem;color:var(--muted);font-family:"Courier New",monospace;margin-top:.4rem;background:var(--paper);border-radius:6px;padding:.4rem .6rem;display:none;word-break:break-all;}
+.id-anzeige.zeigen{display:block;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>TK-Inbox</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+  <div class="hero">
+    <div>
+      <div class="hero-titel">Eingegangene Weiterleitungen</div>
+      <div class="hero-sub">Live-Übersicht aller an die Teamkoordination gesendeten Informationen</div>
+    </div>
+    <div class="hero-zaehler" id="zaehler">0 Einträge</div>
+  </div>
+
+  <div id="inbox-liste">
+    <div class="leer-hinweis">Lade Einträge …</div>
+  </div>
+
+</div>
+
+<script>
+const TYP_KLASSEN = {
+  'Übergabe': 'typ-uebergabe',
+  'Barometer': 'typ-barometer',
+  'Hinweis': 'typ-hinweis'
+};
+
+// Kinder-Namen zwischenspeichern, damit wir childId -> Name auflösen können
+let kinderNamen = {};
+
+function formatZeit(timestamp) {
+  if (!timestamp) return '';
+  const datum = new Date(timestamp);
+  return datum.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'}) +
+         ' · ' + datum.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+}
+
+function renderInbox(eintraege) {
+  const liste = document.getElementById('inbox-liste');
+  const zaehler = document.getElementById('zaehler');
+
+  const ids = Object.keys(eintraege || {});
+  zaehler.textContent = ids.length + (ids.length === 1 ? ' Eintrag' : ' Einträge');
+
+  if (ids.length === 0) {
+    liste.innerHTML = '<div class="leer-hinweis">Noch keine Weiterleitungen eingegangen.</div>';
+    return;
+  }
+
+  // Neueste zuerst
+  ids.sort(function(a, b) {
+    return (eintraege[b].timestamp || 0) - (eintraege[a].timestamp || 0);
+  });
+
+  liste.innerHTML = ids.map(function(id) {
+    const e = eintraege[id];
+    const kindName = kinderNamen[e.childId] || e.childId || 'Unbekanntes Kind';
+    const typKlasse = TYP_KLASSEN[e.type] || 'typ-hinweis';
+    return `<div class="eintrag">
+      <div class="eintrag-head">
+        <span class="eintrag-kind">${kindName}</span>
+        <div class="eintrag-meta">
+          <span class="eintrag-typ ${typKlasse}">${e.type || '—'}</span>
+          <span class="eintrag-zeit">${formatZeit(e.timestamp)}</span>
+        </div>
+      </div>
+      <div class="eintrag-text">${e.text || ''}</div>
+      <div class="eintrag-von">Von: ${e.fromRole || '?'}</div>
+      <div class="eintrag-aktionen">
+        <button class="link-kopieren-btn" onclick="linkKopieren('${id}', this)">🔗 Link kopieren</button>
+        <span class="link-bestaetigung" id="bestaetigung-${id}">Link kopiert!</span>
+        <button class="id-toggle-btn" onclick="idAnzeigeUmschalten('${id}')">ID anzeigen</button>
+      </div>
+      <div class="id-anzeige" id="id-anzeige-${id}">${id}</div>
+    </div>`;
+  }).join('');
+}
+
+function linkKopieren(forwardId, button) {
+  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + forwardId;
+
+  navigator.clipboard.writeText(leseLink).then(function() {
+    const bestaetigung = document.getElementById('bestaetigung-' + forwardId);
+    bestaetigung.classList.add('zeigen');
+    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
+  }).catch(function() {
+    // Fallback falls Clipboard-API nicht verfügbar ist
+    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
+  });
+}
+
+function idAnzeigeUmschalten(forwardId) {
+  document.getElementById('id-anzeige-' + forwardId).classList.toggle('zeigen');
+}
+
+// Erst Kinder-Namen laden, dann Inbox live abonnieren
+db.ref('children').once('value').then(function(snapshot) {
+  const kinder = snapshot.val() || {};
+  Object.keys(kinder).forEach(function(childId) {
+    kinderNamen[childId] = kinder[childId].name;
+  });
+  // getInbox liefert live Updates über callback
+  getInbox('tk', renderInbox);
+}).catch(function(error) {
+  document.getElementById('inbox-liste').innerHTML =
+    '<div class="leer-hinweis">Fehler beim Laden: ' + error.message + '</div>';
+});
+</script>
+</body>
+</html>

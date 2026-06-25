@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – M-00 · Systemelemente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B; --kt-accent:#6EC6A0; --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D; --kt-muted:#7A7060; --kt-surface:#FFFFFF; --kt-border:#DDD8CE;
+  --color-m0:#78909C; --color-kind:#0097A7; --color-m3:#B07D2A;
+  --color-el:#1E3A5F; --color-m4:#3949AB; --color-l:#3D6B4F; --color-m5:#689F38;
+  --status-green:#4CAF50; --status-yellow:#FF9800;
+  --status-orange:#FF5722; --status-magenta:#E91E63; --status-gray:#9E9E9E;
+  --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:24px;
+  --shadow:0 2px 12px rgba(27,58,75,.08); --shadow-lg:0 6px 28px rgba(27,58,75,.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;}
+
+/* HEADER */
+.kt-header{background:var(--color-m0);border-bottom:4px solid var(--kt-accent);position:sticky;top:0;z-index:300;box-shadow:var(--shadow-lg);}
+.kt-header-inner{max-width:900px;margin:0 auto;padding:0 1.25rem;height:68px;display:flex;align-items:center;gap:1rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo img{height:36px;width:auto;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;letter-spacing:.06em;color:#fff;display:block;line-height:1;}
+.kt-logo-text .claim{font-size:.68rem;color:var(--kt-accent);letter-spacing:.14em;display:block;margin-top:2px;}
+.kt-header-right{margin-left:auto;display:flex;align-items:center;gap:.6rem;}
+.kt-badge{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .65rem;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);white-space:nowrap;border:1px solid rgba(255,255,255,.25);}
+.kt-back-btn{display:flex;align-items:center;gap:4px;color:rgba(255,255,255,.8);text-decoration:none;font-size:.82rem;font-weight:500;padding:.3rem .65rem;border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-sm);transition:all .15s;}
+.kt-back-btn:hover{color:#fff;border-color:rgba(255,255,255,.6);}
+.kt-back-btn svg{stroke:currentColor;fill:none;stroke-width:2;}
+@media(max-width:600px){.kt-badge{display:none;}}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--kt-primary) 0%,var(--color-m0) 100%);color:#fff;padding:3.5rem 1.25rem 3rem;text-align:center;}
+.hero-badge{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--kt-accent);margin-bottom:.75rem;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.2;margin-bottom:.75rem;}
+.hero p{font-size:1.05rem;color:rgba(255,255,255,.8);max-width:560px;margin:0 auto 2rem;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;}
+.hero-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:.3rem .9rem;font-size:.78rem;color:rgba(255,255,255,.9);text-decoration:none;transition:background .15s;}
+.hero-pill:hover{background:rgba(255,255,255,.22);}
+
+/* LAYOUT */
+.page-wrap{max-width:900px;margin:0 auto;padding:2rem 1.25rem 6rem;display:grid;grid-template-columns:220px 1fr;gap:2rem;align-items:start;}
+@media(max-width:720px){.page-wrap{grid-template-columns:1fr;}.sidebar{display:none;}}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:88px;}
+.nav-card{background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);}
+.nav-card-head{background:var(--color-m0);color:#fff;padding:.75rem 1rem;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+.nav-list{list-style:none;}
+.nav-list li a{display:flex;align-items:center;gap:.65rem;padding:.6rem 1rem;font-size:.82rem;color:var(--kt-ink);text-decoration:none;border-bottom:1px solid var(--kt-border);transition:background .12s,color .12s;}
+.nav-list li:last-child a{border-bottom:none;}
+.nav-list li a:hover{background:var(--kt-paper);color:var(--color-m0);}
+.nav-list li a .nav-nr{font-size:.65rem;font-weight:700;color:var(--kt-muted);min-width:18px;}
+.nav-list li a svg{width:14px;height:14px;flex-shrink:0;stroke:var(--color-m0);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* SECTIONS */
+.content{min-width:0;}
+.section{background:var(--kt-surface);border-radius:var(--radius-xl);border:1px solid var(--kt-border);box-shadow:var(--shadow);overflow:hidden;margin-bottom:1.5rem;scroll-margin-top:88px;}
+.section-stripe{height:4px;background:var(--color-m0);}
+.section-head{padding:1.5rem 1.75rem 1.25rem;border-bottom:1px solid var(--kt-border);}
+.section-nr{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--color-m0);margin-bottom:.3rem;}
+.section-head h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--kt-primary);line-height:1.25;}
+.section-body{padding:1.5rem 1.75rem;}
+@media(max-width:600px){.section-head,.section-body{padding:1.25rem;}}
+p{margin-bottom:1rem;}
+p:last-child{margin-bottom:0;}
+h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--kt-primary);margin:1.5rem 0 .6rem;}
+
+/* BRAINY BOX */
+.brainy-box{background:rgba(120,144,156,.08);border-left:4px solid var(--color-m0);border-radius:0 var(--radius-md) var(--radius-md) 0;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;margin:1.25rem 0;}
+.brainy-box img{height:48px;width:auto;flex-shrink:0;}
+.brainy-box p{margin:0;font-style:italic;font-size:.93rem;line-height:1.6;}
+.brainy-box strong{font-style:normal;color:var(--color-m0);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.2rem;}
+
+/* BAROMETER TABELLE */
+.baro-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:1rem 0;}
+.baro-table th{font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);padding:.5rem .75rem;border-bottom:2px solid var(--kt-border);text-align:left;}
+.baro-table td{padding:.8rem .75rem;vertical-align:top;border-bottom:1px solid var(--kt-border);line-height:1.5;}
+.baro-table tr:last-child td{border-bottom:none;}
+.baro-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff;flex-shrink:0;}
+.baro-row{display:flex;align-items:center;gap:.6rem;}
+.baro-name{font-weight:600;font-size:.88rem;}
+.baro-tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.06em;padding:.15rem .55rem;border-radius:20px;margin-top:.25rem;}
+
+/* BAROMETER KACHELN (mobile-friendly) */
+.baro-cards{display:flex;flex-direction:column;gap:.75rem;margin:1rem 0;}
+.baro-card{border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--kt-border);}
+.baro-card-head{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;}
+.baro-card-head .baro-dot{width:36px;height:36px;font-size:.82rem;flex-shrink:0;}
+.baro-card-head .baro-title{font-weight:600;font-size:.95rem;line-height:1.2;}
+.baro-card-head .baro-sub{font-size:.78rem;color:var(--kt-muted);line-height:1.3;}
+.baro-card-body{padding:.6rem 1rem .75rem;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+@media(max-width:480px){.baro-card-body{grid-template-columns:1fr;}}
+.baro-card-col-label{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);margin-bottom:.25rem;}
+.baro-card-col-text{font-size:.84rem;line-height:1.5;color:var(--kt-ink);}
+.baro-action{font-size:.82rem;font-weight:500;padding:.2rem .6rem;border-radius:20px;display:inline-flex;align-items:center;gap:.35rem;}
+
+/* kLAR STEPS */
+.klar-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin:1rem 0;}
+@media(max-width:500px){.klar-steps{grid-template-columns:1fr;}}
+.klar-step{background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--radius-md);padding:1rem;}
+.klar-letter{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--color-m0);line-height:1;margin-bottom:.35rem;}
+.klar-title{font-weight:500;font-size:.88rem;color:var(--kt-primary);margin-bottom:.3rem;}
+.klar-desc{font-size:.82rem;color:var(--kt-muted);line-height:1.5;}
+.klar-when{display:inline-block;font-size:.68rem;font-weight:600;margin-top:.4rem;padding:.15rem .55rem;border-radius:20px;}
+
+/* ROLLEN GRID */
+.rollen-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0;}
+@media(max-width:500px){.rollen-grid{grid-template-columns:1fr;}}
+.rollen-card{border-radius:var(--radius-md);padding:1rem 1.1rem;border:1px solid var(--kt-border);}
+.rollen-card.ja{background:rgba(76,175,80,.06);border-color:rgba(76,175,80,.3);}
+.rollen-card.nein{background:rgba(233,30,99,.06);border-color:rgba(233,30,99,.3);}
+.rollen-card-head{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.rollen-card.ja .rollen-card-head{color:#2E7D32;}
+.rollen-card.nein .rollen-card-head{color:#AD1457;}
+.rollen-card ul{list-style:none;}
+.rollen-card ul li{font-size:.85rem;padding:.2rem 0;display:flex;gap:.5rem;}
+.rollen-card.ja ul li::before{content:'✓';color:#2E7D32;font-weight:700;}
+.rollen-card.nein ul li::before{content:'✕';color:#AD1457;font-weight:700;}
+
+/* HALTUNG */
+.haltung-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1rem 0;}
+@media(max-width:480px){.haltung-trio{grid-template-columns:1fr;}}
+.haltung-card{text-align:center;background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--radius-md);padding:1.25rem .75rem;}
+.haltung-icon{font-size:1.8rem;margin-bottom:.5rem;}
+.haltung-word{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--kt-primary);display:block;margin-bottom:.25rem;}
+.haltung-sub{font-size:.78rem;color:var(--kt-muted);line-height:1.4;}
+
+/* SYSTEM */
+.system-ring{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0;justify-content:center;}
+.sys-node{border-radius:var(--radius-md);padding:.6rem 1rem;font-size:.82rem;font-weight:500;text-align:center;min-width:100px;}
+
+/* CTA */
+.cta-zone{background:linear-gradient(135deg,var(--kt-primary),var(--color-m0));border-radius:var(--radius-xl);padding:2.5rem 2rem;text-align:center;color:#fff;margin-top:2rem;}
+.cta-zone h2{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:.5rem;}
+.cta-zone p{color:rgba(255,255,255,.8);margin-bottom:1.75rem;max-width:480px;margin-left:auto;margin-right:auto;}
+.cta-btns{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;}
+.cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--kt-accent);color:var(--kt-primary);padding:.85rem 1.75rem;border-radius:var(--radius-md);text-decoration:none;font-weight:700;font-size:.9rem;letter-spacing:.04em;transition:all .2s;box-shadow:0 4px 14px rgba(110,198,160,.35);}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(110,198,160,.4);background:#fff;}
+.cta-btn.secondary{background:rgba(255,255,255,.15);color:#fff;box-shadow:none;border:1px solid rgba(255,255,255,.3);}
+.cta-btn.secondary:hover{background:rgba(255,255,255,.25);}
+
+/* FABs */
+.kt-fab-group{position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:200;}
+.kt-fab{width:46px;height:46px;border-radius:50%;background:var(--kt-primary);border:2px solid var(--kt-accent);display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.25);transition:transform .15s;}
+.kt-fab:hover{transform:scale(1.07);}
+.kt-fab svg{width:18px;height:18px;stroke:var(--kt-accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.kt-fab--home svg{fill:var(--kt-accent);stroke:none;}
+
+/* FOOTER */
+footer{background:var(--kt-primary);color:rgba(255,255,255,.5);text-align:center;padding:1.5rem 1rem;font-size:.75rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--kt-border);margin:1.25rem 0;}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="DASHBOARD.html"
+       onclick="if(document.referrer&&document.referrer.includes(window.location.hostname)){window.history.back();return false;}">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>Zurück</span>
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html">
+      <img src="brainy.png" alt="Brainy">
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Klar. Warm. Menschlich.</span>
+      </div>
+    </a>
+    <div class="kt-header-right">
+      <span class="kt-badge">M-00 · Systemelemente</span>
+      <a class="kt-back-btn" href="DASHBOARD.html">Dashboard</a>
+    </div>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Modul 0 · Das Fundament</div>
+  <h1>Systemelemente</h1>
+  <p>Neun Bausteine, die das KLARTEXT-System tragen. Verstehe sie – und der Alltag als INGRA wird klarer.</p>
+  <div class="hero-pills">
+    <a href="#barometer" class="hero-pill">🌡️ Barometer</a>
+    <a href="#klar" class="hero-pill">💬 kLAR-Modell</a>
+    <a href="#joker" class="hero-pill">🃏 Joker</a>
+    <a href="#brainy" class="hero-pill">🧠 Brainy</a>
+    <a href="#feuerwehr" class="hero-pill">🚒 Feuerwehr</a>
+    <a href="#rollen" class="hero-pill">👥 Rollen</a>
+    <a href="#humor" class="hero-pill">😄 Humor</a>
+    <a href="#abgrenzung" class="hero-pill">⚖️ Abgrenzung</a>
+    <a href="#system" class="hero-pill">🔗 System</a>
+  </div>
+</section>
+
+<!-- PAGE WRAP -->
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav class="nav-card">
+      <div class="nav-card-head">Inhalt</div>
+      <ul class="nav-list">
+        <li><a href="#barometer"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span class="nav-nr">01</span>Barometer</a></li>
+        <li><a href="#klar"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nav-nr">02</span>kLAR-Modell</a></li>
+        <li><a href="#joker"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg><span class="nav-nr">03</span>Joker</a></li>
+        <li><a href="#brainy"><svg viewBox="0 0 24 24"><path d="M9.5 2a6.5 6.5 0 0 1 5 10.5M9.5 2A6.5 6.5 0 0 0 3 8.5c0 3.6 2.9 6.5 6.5 6.5"/></svg><span class="nav-nr">04</span>Brainy</a></li>
+        <li><a href="#feuerwehr"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 8v4l3 3"/></svg><span class="nav-nr">05</span>Feuerwehr</a></li>
+        <li><a href="#rollen"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="nav-nr">06</span>Rollen</a></li>
+        <li><a href="#humor"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span class="nav-nr">07</span>Humor</a></li>
+        <li><a href="#abgrenzung"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="nav-nr">08</span>Abgrenzung</a></li>
+        <li><a href="#system"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg><span class="nav-nr">09</span>Systemübersicht</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- 01 BAROMETER -->
+    <section class="section" id="barometer">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">01 · Stimmungsanzeiger</div>
+        <h2>🌡️ Das Barometer</h2>
+      </div>
+      <div class="section-body">
+        <p>Das Barometer ist das zentrale Kommunikationswerkzeug im KLARTEXT-System. Fünf Farben zeigen den Regulationszustand des Kindes – und bestimmen, welches Werkzeug INGRA als nächstes einsetzt.</p>
+
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Das Barometer gibt dem Kind eine Stimme ohne Worte. Und INGRA weiß sofort: welches Werkzeug jetzt passt – und welches nicht.</p>
+        </div>
+
+        <div style="margin:1.25rem 0;text-align:center;">
+          <img src="brainy-barometer-uebersicht.jpg" alt="Brainy Barometer Übersicht — Kind und Erwachsene" style="max-width:100%;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.1);">
+          <p style="font-size:.7rem;color:var(--kt-muted);margin-top:.5rem;">Brainy zeigt alle fünf Zustände — für Kind-Barometer und INGRA-Barometer im direkten Vergleich.</p>
+        </div>
+
+        <div class="baro-cards">
+
+          <!-- GRÜN -->
+          <div class="baro-card">
+            <div class="baro-card-head" style="background:rgba(76,175,80,.08);">
+              <div class="baro-dot" style="background:var(--status-green);">G</div>
+              <div>
+                <div class="baro-title">Grün · Stabil</div>
+                <div class="baro-sub">Gut reguliert, kooperativ, aufnahmebereit</div>
+              </div>
+            </div>
+            <div class="baro-card-body">
+              <div>
+                <div class="baro-card-col-label">Signale</div>
+                <div class="baro-card-col-text">Entspannt, konzentriert, gesprächsbereit, lernbereit</div>
+              </div>
+              <div>
+                <div class="baro-card-col-label">INGRA handelt</div>
+                <div class="baro-card-col-text"><span class="baro-action" style="background:rgba(76,175,80,.12);color:#2E7D32;">✓ Normaler Alltag, Lernphasen aktiv nutzen</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GELB -->
+          <div class="baro-card">
+            <div class="baro-card-head" style="background:rgba(255,152,0,.08);">
+              <div class="baro-dot" style="background:var(--status-yellow);">G</div>
+              <div>
+                <div class="baro-title">Gelb · Angespannt</div>
+                <div class="baro-sub">Erste Stresszeichen, Unruhe, Ablenkbarkeit</div>
+              </div>
+            </div>
+            <div class="baro-card-body">
+              <div>
+                <div class="baro-card-col-label">Signale</div>
+                <div class="baro-card-col-text">Zappeln, kurze Antworten, Ablenkung, leichte Gereiztheit</div>
+              </div>
+              <div>
+                <div class="baro-card-col-label">INGRA handelt</div>
+                <div class="baro-card-col-text"><span class="baro-action" style="background:rgba(255,152,0,.12);color:#E65100;">→ Sanfte Ansprache, Joker anbieten</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ORANGE -->
+          <div class="baro-card">
+            <div class="baro-card-head" style="background:rgba(255,87,34,.08);">
+              <div class="baro-dot" style="background:var(--status-orange);">O</div>
+              <div>
+                <div class="baro-title">Orange · Belastet</div>
+                <div class="baro-sub">Deutliche Dysregulation, aggressiv, weinend oder erstarrt</div>
+              </div>
+            </div>
+            <div class="baro-card-body">
+              <div>
+                <div class="baro-card-col-label">Signale</div>
+                <div class="baro-card-col-text">Weinen, Aggressivität, Starre, Blockade, kein Zugang möglich</div>
+              </div>
+              <div>
+                <div class="baro-card-col-label">INGRA handelt</div>
+                <div class="baro-card-col-text"><span class="baro-action" style="background:rgba(255,87,34,.12);color:#BF360C;">→ Aktive Begleitung, kLAR einleiten, Brainy nutzen</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ROT -->
+          <div class="baro-card">
+            <div class="baro-card-head" style="background:rgba(233,30,99,.08);">
+              <div class="baro-dot" style="background:var(--status-magenta);">R</div>
+              <div>
+                <div class="baro-title">Rot · Akute Krise</div>
+                <div class="baro-sub">Gefahr, Panik, totale Blockade, Dissoziation</div>
+              </div>
+            </div>
+            <div class="baro-card-body">
+              <div>
+                <div class="baro-card-col-label">Signale</div>
+                <div class="baro-card-col-text">Ausbruch, Panik, Flucht, Dissoziation, Eigengefährdung</div>
+              </div>
+              <div>
+                <div class="baro-card-col-label">INGRA handelt</div>
+                <div class="baro-card-col-text"><span class="baro-action" style="background:rgba(233,30,99,.12);color:#880E4F;">🚒 Feuerwehr-Protokoll · TK sofort informieren</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GRAU -->
+          <div class="baro-card">
+            <div class="baro-card-head" style="background:rgba(158,158,158,.08);">
+              <div class="baro-dot" style="background:var(--status-gray);">?</div>
+              <div>
+                <div class="baro-title">Grau · Erschöpft</div>
+                <div class="baro-sub">Leer, ausgebrannt — kann auch unklar/schwer einschätzbar wirken</div>
+              </div>
+            </div>
+            <div class="baro-card-body">
+              <div>
+                <div class="baro-card-col-label">Signale</div>
+                <div class="baro-card-col-text">Erschöpfung, Leere, Rückzug — manchmal begleitet von starkem Schweigen, das den Zustand schwer einschätzbar macht</div>
+              </div>
+              <div>
+                <div class="baro-card-col-label">INGRA handelt</div>
+                <div class="baro-card-col-text"><span class="baro-action" style="background:rgba(158,158,158,.15);color:#424242;">→ Beobachten, nicht drängen, TK informieren</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.baro-cards -->
+
+        <div style="background:rgba(120,144,156,.06);border:1px solid rgba(120,144,156,.2);border-radius:var(--radius-md);padding:.85rem 1rem;font-size:.82rem;margin-top:.5rem;">
+          <strong style="color:var(--color-m0);">Wichtige Logik:</strong> kLAR-Modell gilt für <span style="color:#E65100;font-weight:600;">Gelb &amp; Orange</span>. Ab <span style="color:#880E4F;font-weight:600;">Rot</span> gilt ausschließlich das <strong>Feuerwehr-Protokoll</strong>. TK = Teamkoordination.
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 kLAR -->
+    <section class="section" id="klar">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">02 · Gesprächsstruktur · für Gelb &amp; Orange</div>
+        <h2>💬 Das kLAR-Modell</h2>
+      </div>
+      <div class="section-body">
+        <p>kLAR ist die verbindliche Interventionsstruktur für <strong>Gelb und Orange</strong>. Vier Schritte – immer in dieser Reihenfolge. Ab Rot gilt das Feuerwehr-Protokoll (→ Element 05).</p>
+
+        <div class="klar-steps">
+          <div class="klar-step">
+            <div class="klar-letter">k</div>
+            <div class="klar-title">Kontakt &amp; Körperliche Sicherheit</div>
+            <div class="klar-desc">Auf Augenhöhe gehen. Ruhige Stimme, Blickkontakt anbieten. Körperliche und räumliche Sicherheit zuerst herstellen.</div>
+            <span class="klar-when" style="background:rgba(255,152,0,.12);color:#E65100;">Gelb &amp; Orange</span>
+          </div>
+          <div class="klar-step">
+            <div class="klar-letter">L</div>
+            <div class="klar-title">Leise &amp; Langsam</div>
+            <div class="klar-desc">Stimme senken, Tempo herausnehmen. Keine langen Sätze. Pausen aushalten – nicht füllen.</div>
+            <span class="klar-when" style="background:rgba(255,152,0,.12);color:#E65100;">Gelb &amp; Orange</span>
+          </div>
+          <div class="klar-step">
+            <div class="klar-letter">A</div>
+            <div class="klar-title">Anerkennung &amp; Atmen</div>
+            <div class="klar-desc">Das Erleben anerkennen: „Ich sehe, dass das schwer ist." Gemeinsam bewusst durchatmen – Brainy einsetzen.</div>
+            <span class="klar-when" style="background:rgba(255,152,0,.12);color:#E65100;">Gelb &amp; Orange</span>
+          </div>
+          <div class="klar-step">
+            <div class="klar-letter">R</div>
+            <div class="klar-title">Reizreduktion &amp; Rückzug</div>
+            <div class="klar-desc">Reize reduzieren: Lärm, Menschen, Aufgaben. Rückzug ermöglichen wenn nötig – Raum geben, nicht drängen.</div>
+            <span class="klar-when" style="background:rgba(255,152,0,.12);color:#E65100;">Gelb &amp; Orange</span>
+          </div>
+        </div>
+
+        <div style="background:rgba(233,30,99,.06);border:1px solid rgba(233,30,99,.2);border-radius:var(--radius-md);padding:.85rem 1rem;font-size:.82rem;margin:.5rem 0;">
+          <strong style="color:#880E4F;">Ab Rot gilt kLAR NICHT mehr.</strong> Bei akuter Krise (Rot) sofort das Feuerwehr-Protokoll aktivieren und TK informieren.
+        </div>
+
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> kLAR wirkt nur in Reihenfolge. Wer bei A anfängt, überspringt die Sicherheit – und das spürt das Kind sofort.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 JOKER -->
+    <section class="section" id="joker">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">03 · Notfall-Signal · bei Gelb</div>
+        <h2>🃏 Der Joker</h2>
+      </div>
+      <div class="section-body">
+        <p>Der Joker ist das persönliche Notfall-Signal des Kindes. Ein individuell vereinbartes Zeichen, das ohne Worte sagt: „Ich kann gerade nicht mehr." Es wird <strong>bei Gelb angeboten</strong> – bevor Orange erreicht wird.</p>
+        <p>Das Zeichen kann eine Karte, ein Handzeichen oder ein Gegenstand sein. Die Lehrkraft wird eingeweiht, damit das Signal schulweit gilt.</p>
+        <p><strong>Nach dem Joker:</strong> kein Druck, keine Fragen, kein Erklären müssen. Erst regulieren – dann (viel später) besprechen.</p>
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Der Joker ist ein Sicherheitsnetz – kein Privileg. Er darf niemals als Druckmittel eingesetzt werden.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 BRAINY -->
+    <section class="section" id="brainy">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">04 · Gehirn-Modell · bei Orange</div>
+        <h2>🧠 Brainy</h2>
+      </div>
+      <div class="section-body">
+        <p>Brainy ist die pädagogische Figur des Systems. Er erklärt Kindern kindgerecht, warum ihr Gehirn manchmal „ausrastet" – und was das mit Alarm zu tun hat. Brainy wird besonders <strong>bei Orange</strong> eingesetzt, um dem Kind sein Erleben zu erklären.</p>
+        <h3>Brainy-online vs. Brainy-offline</h3>
+        <p><strong>Brainy online (Grün):</strong> Das Kind kann denken, planen, lernen und Entscheidungen treffen.</p>
+        <p><strong>Brainy offline (Orange/Rot):</strong> Bei Stress übernimmt das Gefühls-Zentrum. Denken und Lernen sind kaum möglich. Das ist normal – nicht böse.</p>
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Wenn ich im Alarm bin, brauche ich zuerst Ruhe – dann kann ich wieder denken. Kinder, die das verstehen, entwickeln weniger Scham.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 FEUERWEHR -->
+    <section class="section" id="feuerwehr">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">05 · Krisen-Protokoll · nur bei Rot</div>
+        <h2>🚒 Die Feuerwehr</h2>
+      </div>
+      <div class="section-body">
+        <p>Das Feuerwehr-Protokoll gilt <strong>ausschließlich bei Rot</strong> – bei akuter Krise, Panik, Dissoziation oder Gefahr. Es ersetzt dann vollständig das kLAR-Modell.</p>
+
+        <div class="rollen-grid" style="margin:1rem 0;">
+          <div style="background:rgba(255,152,0,.06);border:1px solid rgba(255,152,0,.25);border-radius:var(--radius-md);padding:1rem;">
+            <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#E65100;margin-bottom:.6rem;">Gelb &amp; Orange → kLAR</div>
+            <ul style="list-style:none;font-size:.85rem;">
+              <li style="padding:.2rem 0;">→ kLAR-Modell anwenden</li>
+              <li style="padding:.2rem 0;">→ Joker anbieten (Gelb)</li>
+              <li style="padding:.2rem 0;">→ Brainy einsetzen (Orange)</li>
+              <li style="padding:.2rem 0;">→ Gespräch möglich</li>
+            </ul>
+          </div>
+          <div style="background:rgba(233,30,99,.06);border:1px solid rgba(233,30,99,.25);border-radius:var(--radius-md);padding:1rem;">
+            <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#AD1457;margin-bottom:.6rem;">Rot → Feuerwehr</div>
+            <ul style="list-style:none;font-size:.85rem;">
+              <li style="padding:.2rem 0;">🚒 Feuerwehr-Protokoll</li>
+              <li style="padding:.2rem 0;">→ TK sofort informieren</li>
+              <li style="padding:.2rem 0;">→ Sicherheit &amp; Regulation</li>
+              <li style="padding:.2rem 0;">→ Kein Erklären, kein Druck</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Das Feuerwehr-Protokoll (5 Schritte)</h3>
+        <ol style="padding-left:1.2rem;font-size:.9rem;">
+          <li style="margin-bottom:.5rem;"><strong>Sicherheit herstellen</strong> – Abstand zur Gruppe, ruhigen Ort aufsuchen, körperliche Sicherheit prüfen.</li>
+          <li style="margin-bottom:.5rem;"><strong>Kontakt halten</strong> – Ruhige Stimme, wenig Worte. „Ich bin hier. Du bist sicher."</li>
+          <li style="margin-bottom:.5rem;"><strong>Regulieren lassen</strong> – Kein Erklären, kein Diskutieren. Körper regulieren lassen.</li>
+          <li style="margin-bottom:.5rem;"><strong>TK informieren</strong> – Teamkoordination sofort in Kenntnis setzen.</li>
+          <li style="margin-bottom:.5rem;"><strong>Nachgespräch (viel später)</strong> – Erst wenn das Kind vollständig reguliert ist.</li>
+        </ol>
+
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Erst regulieren, dann reden. Wer im Alarm ist, kann keine Erklärungen verarbeiten – egal wie gut gemeint.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 ROLLEN -->
+    <section class="section" id="rollen">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">06 · INGRA-Haltung</div>
+        <h2>👥 Rollen &amp; Haltung</h2>
+      </div>
+      <div class="section-body">
+        <p>INGRA ist keine therapeutische Rolle. Drei Prinzipien bilden den Kompass für alle Situationen.</p>
+        <div class="haltung-trio">
+          <div class="haltung-card">
+            <div class="haltung-icon">🧠</div>
+            <span class="haltung-word">Klarheit</span>
+            <div class="haltung-sub">Die eigene Rolle kennen und halten – auch unter Druck.</div>
+          </div>
+          <div class="haltung-card">
+            <div class="haltung-icon">❤️</div>
+            <span class="haltung-word">Wärme</span>
+            <div class="haltung-sub">Echtes Wohlwollen zeigen – ohne Mitleid oder Überidentifikation.</div>
+          </div>
+          <div class="haltung-card">
+            <div class="haltung-icon">🤝</div>
+            <span class="haltung-word">Menschlichkeit</span>
+            <div class="haltung-sub">Realistisch bleiben. Das Kind sehen, nicht das Verhalten.</div>
+          </div>
+        </div>
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Rollenklarheit schützt dich und das Kind. Unscharfe Grenzen erzeugen Stress auf beiden Seiten.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 HUMOR -->
+    <section class="section" id="humor">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">07 · Spirit</div>
+        <h2>😄 Humor &amp; Leichtigkeit</h2>
+      </div>
+      <div class="section-body">
+        <p>Humor ist kein Zusatz – er ist ein echter Regulationsmechanismus im KLARTEXT-System. Richtig eingesetzt verbindet er, löst Spannung und gibt schwierigen Momenten ein menschliches Gesicht.</p>
+        <div class="rollen-grid">
+          <div class="rollen-card ja">
+            <div class="rollen-card-head">Verbindender Humor</div>
+            <ul>
+              <li>Über die Situation lachen</li>
+              <li>Selbstironie zeigen</li>
+              <li>Absurdes gemeinsam benennen</li>
+              <li>Leichtigkeit in schwere Momente</li>
+            </ul>
+          </div>
+          <div class="rollen-card nein">
+            <div class="rollen-card-head">Verletzender Humor</div>
+            <ul>
+              <li>Über das Kind lachen</li>
+              <li>Sarkasmus als Waffe</li>
+              <li>Kleinmachen als Witz</li>
+              <li>Humor erzwingen</li>
+            </ul>
+          </div>
+        </div>
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Humor verbindet – aber nur, wenn er warm ist. Kälte als Witz verpackt bleibt Kälte.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 ABGRENZUNG -->
+    <section class="section" id="abgrenzung">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">08 · Verantwortlichkeiten</div>
+        <h2>⚖️ Abgrenzung</h2>
+      </div>
+      <div class="section-body">
+        <p>Klare Verantwortlichkeiten schützen alle Beteiligten. INGRA ist nicht Therapeutin, nicht Lehrerin, nicht Sozialarbeiterin.</p>
+        <div class="rollen-grid">
+          <div class="rollen-card ja">
+            <div class="rollen-card-head">INGRA-Aufgaben</div>
+            <ul>
+              <li>Begleitung im Schulalltag</li>
+              <li>Regulation &amp; Krisenintervention</li>
+              <li>Brücke zum Lernen bauen</li>
+              <li>Kommunikation im Team</li>
+              <li>Sicherheit geben</li>
+            </ul>
+          </div>
+          <div class="rollen-card nein">
+            <div class="rollen-card-head">Nicht INGRA-Aufgaben</div>
+            <ul>
+              <li>Unterricht gestalten</li>
+              <li>Noten vergeben</li>
+              <li>Diagnosen stellen</li>
+              <li>Elterngespräche führen</li>
+              <li>Therapie durchführen</li>
+            </ul>
+          </div>
+        </div>
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Wenn unklar ist, ob etwas deine Aufgabe ist – frag im Team. Unklar ist kein Vorwurf, Unklar ist Information.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 SYSTEM -->
+    <section class="section" id="system">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">09 · Zusammenwirken</div>
+        <h2>🔗 Systemübersicht</h2>
+      </div>
+      <div class="section-body">
+        <p>Das KLARTEXT-System lebt vom Zusammenwirken aller Beteiligten – mit klar verteilten Rollen und einem gemeinsamen Ziel: dem Kind Stabilität geben.</p>
+        <div class="system-ring">
+          <div class="sys-node" style="background:rgba(120,144,156,.12);border:1px solid rgba(120,144,156,.3);color:var(--color-m0);">🧒 Kind</div>
+          <div class="sys-node" style="background:rgba(120,144,156,.18);border:1.5px solid var(--color-m0);color:var(--color-m0);font-weight:600;">🤲 INGRA</div>
+          <div class="sys-node" style="background:rgba(61,107,79,.1);border:1px solid rgba(61,107,79,.3);color:var(--color-l);">📚 Lehrkraft</div>
+          <div class="sys-node" style="background:rgba(30,58,95,.1);border:1px solid rgba(30,58,95,.3);color:var(--color-el);">🏫 TK / Leitung</div>
+          <div class="sys-node" style="background:rgba(0,151,167,.1);border:1px solid rgba(0,151,167,.3);color:var(--color-kind);">👨‍👩‍👧 Eltern</div>
+          <div class="sys-node" style="background:rgba(57,73,171,.1);border:1px solid rgba(57,73,171,.3);color:var(--color-m4);">🏛️ Träger</div>
+        </div>
+        <p>INGRA steht im Zentrum dieses Netzwerks – vernetzt, nicht allein. Supervision, Teamgespräche und Beratung sind keine Extras, sondern System-Bestandteile.</p>
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Kein Mensch und kein System funktioniert allein. INGRA ist das Bindeglied – und das bedeutet: nach beiden Seiten verbunden sein.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-zone">
+      <h2>Wissen prüfen &amp; reflektieren</h2>
+      <p>Hast du die neun Systemelemente verstanden? Dann starte jetzt deine persönliche Reflexion.</p>
+      <div class="cta-btns">
+        <a href="M0-01_Selbstcheck.html" class="cta-btn">📊 M0-1 Selbstcheck starten</a>
+        <a href="M0-02_Rollenreflexion.html" class="cta-btn">🔄 M0-2 Reflexion öffnen</a>
+        <a href="DASHBOARD.html" class="cta-btn secondary">← Dashboard</a>
+      </div>
+    </div>
+
+  </div><!-- /.content -->
+</div><!-- /.page-wrap -->
+
+<!-- FABs -->
+<div class="kt-fab-group">
+  <a class="kt-fab" href="DASHBOARD.html#search" aria-label="Suche">
+    <svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a class="kt-fab kt-fab--home" href="DASHBOARD.html" aria-label="Dashboard">
+    <svg viewBox="0 0 16 16"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<footer>
+  <strong>KLARTEXT</strong> Mentoring-System · Modul 0 · Systemelemente · Das Fundament
+  <br><span style="opacity:.5">Alle Rechte vorbehalten · KLARTEXT-Mentoring-System</span>
+</footer>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

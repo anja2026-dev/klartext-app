@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT E-Learning · M6 · Krise & Mobbing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#D81B60;--ml:#FDE8F1;--accent:#6EC6A0;--paper:#F5F0E8;--ink:#2D2D2D;--muted:#7A7060;--surface:#fff;--border:#DDD8CE;--r:12px;--kt:#1B3A4B;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;}
+.kt-header{background:var(--kt);padding:0 clamp(1rem,4vw,2rem);height:72px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--accent);}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:34px;height:34px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.6rem;color:var(--accent);letter-spacing:.14em;display:block;margin-top:1px;}
+.header-badge{background:var(--m);border:1.5px solid var(--accent);border-radius:20px;padding:.25rem .8rem;font-size:.7rem;font-weight:700;color:#fff;letter-spacing:.06em;}
+.global-progress{background:#112233;padding:.6rem clamp(1rem,4vw,2rem);display:flex;align-items:center;gap:1rem;}
+.gp-label{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;}
+.gp-bar{flex:1;height:6px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;}
+.gp-fill{height:100%;background:var(--accent);border-radius:10px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.gp-pct{font-size:.75rem;font-weight:700;color:var(--accent);min-width:2.5rem;text-align:right;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,color-mix(in srgb,var(--m) 70%,#000) 100%);padding:clamp(2rem,5vw,3rem) clamp(1rem,4vw,2rem);text-align:center;}
+.hero-modul{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;color:#fff;margin-bottom:.6rem;}
+.hero-sub{font-size:.88rem;color:rgba(255,255,255,.55);max-width:500px;margin:0 auto 1.2rem;}
+.hero-meta{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.hero-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:.25rem .75rem;font-size:.7rem;color:rgba(255,255,255,.7);}
+.hero-pill b{color:var(--accent);}
+.shell{max-width:820px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 6rem;}
+.nav-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.nav-pill{font-size:.72rem;font-weight:600;padding:.3rem .75rem;border-radius:20px;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;}
+.nav-pill:hover,.nav-pill.aktiv{background:var(--m);border-color:var(--m);color:#fff;}
+.modul-progress{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.2rem 1.4rem;margin-bottom:1.5rem;}
+.mp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;}
+.mp-titel{font-size:.78rem;font-weight:700;color:var(--m);text-transform:uppercase;letter-spacing:.08em;}
+.mp-pct{font-size:.78rem;font-weight:700;color:var(--accent);}
+.mp-bar{height:8px;background:#F0EDE8;border-radius:10px;overflow:hidden;}
+.mp-fill{height:100%;background:linear-gradient(90deg,var(--m) 0%,var(--accent) 100%);border-radius:10px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+.mp-steps{display:flex;gap:.5rem;margin-top:.75rem;}
+.mp-step{flex:1;height:4px;border-radius:4px;background:#F0EDE8;transition:background .3s;}
+.mp-step.done{background:var(--accent);}
+.mp-step.active{background:var(--m);}
+.lektion{background:var(--surface);border-radius:var(--r);border:1.5px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.07);margin-bottom:1.25rem;overflow:hidden;transition:box-shadow .2s;}
+.lektion-header{padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1rem;cursor:pointer;user-select:none;}
+.lektion-num{width:36px;height:36px;border-radius:50%;background:var(--ml);border:2px solid var(--m);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--m);flex-shrink:0;transition:all .2s;}
+.lektion.done .lektion-num{background:var(--accent);border-color:var(--accent);color:#fff;}
+.lektion-num svg{width:14px;height:14px;stroke:#fff;stroke-width:2.5;fill:none;}
+.lektion-info{flex:1;}
+.lektion-titel{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--kt);}
+.lektion-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.lektion-status{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .6rem;border-radius:20px;background:var(--ml);color:var(--m);flex-shrink:0;}
+.lektion.done .lektion-status{background:#E8F8F1;color:#2D6A4F;}
+.lektion-chevron{color:var(--muted);font-size:.7rem;transition:transform .25s;}
+.lektion-header[aria-expanded="true"] .lektion-chevron{transform:rotate(180deg);}
+.lektion-body{display:none;border-top:1.5px solid #F0EDE8;}
+.lektion-body.active{display:block;}
+.wissen-block{padding:1.4rem 1.4rem 1rem;}
+.block-label{font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--m);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+.block-label::before{content:"";width:18px;height:2px;background:var(--m);display:block;}
+.wissen-text{font-size:.9rem;color:var(--ink);line-height:1.75;}
+.karte-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;font-size:.78rem;font-weight:600;color:var(--m);text-decoration:none;border:1.5px solid var(--m);border-radius:20px;padding:.3rem .8rem;transition:all .15s;}
+.karte-link:hover{background:var(--m);color:#fff;}
+.karte-link svg{width:12px;height:12px;}
+.fall-block{margin:0 1.4rem;background:var(--ml);border-radius:8px;padding:1rem 1.2rem;border-left:3px solid var(--m);}
+.fall-szenario{font-size:.87rem;color:#4A4A4A;line-height:1.75;font-style:italic;}
+.fall-frage{font-size:.85rem;font-weight:600;color:var(--m);margin-top:.6rem;}
+.antworten{padding:1rem 1.4rem;display:flex;flex-direction:column;gap:.5rem;}
+.antwort-btn{display:flex;align-items:flex-start;gap:.75rem;padding:.8rem 1rem;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);cursor:pointer;text-align:left;font-family:"DM Sans",sans-serif;font-size:.87rem;color:var(--ink);line-height:1.5;transition:all .15s;width:100%;}
+.antwort-btn:hover:not(:disabled){border-color:var(--m);background:var(--ml);}
+.antwort-btn:disabled{cursor:default;}
+.antwort-btn.richtig{background:#E8F8F1;border-color:#6EC6A0;color:#1A4A2E;}
+.antwort-btn.falsch{background:#FDF0F0;border-color:#E8A0A0;color:#7A1A1A;}
+.antwort-mark{width:22px;height:22px;border-radius:50%;border:2px solid #E0D8D0;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;color:var(--muted);}
+.antwort-btn.richtig .antwort-mark{background:var(--accent);border-color:var(--accent);color:#fff;}
+.antwort-btn.falsch .antwort-mark{background:#E8A0A0;border-color:#E8A0A0;color:#fff;}
+.feedback{margin:0 1.4rem 1rem;border-radius:8px;padding:.9rem 1.1rem;display:none;font-size:.85rem;line-height:1.6;}
+.feedback.show{display:block;}
+.feedback.gut{background:#E8F8F1;border:1px solid #A8DFC0;color:#1A4A2E;}
+.feedback.schlecht{background:#FDF0F0;border:1px solid #E8A0A0;color:#7A1A1A;}
+.feedback strong{display:block;margin-bottom:.25rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;}
+.reflexion-block{padding:.5rem 1.4rem 1.2rem;}
+.reflexion-label{font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem;}
+.reflexion-label::before{content:"";width:18px;height:2px;background:var(--muted);display:block;}
+.reflexion-frage{font-size:.87rem;color:var(--ink);margin-bottom:.6rem;line-height:1.6;}
+.reflexion-area{width:100%;min-height:80px;padding:.7rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.87rem;color:var(--ink);background:var(--paper);resize:vertical;outline:none;transition:border-color .15s;line-height:1.65;}
+.reflexion-area:focus{border-color:var(--m);}
+.reflexion-area::placeholder{color:#B0A898;}
+.weiter-wrap{padding:.5rem 1.4rem 1.4rem;}
+.weiter-btn{width:100%;padding:.85rem;background:var(--m);color:#fff;border:none;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.87rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .2s;opacity:.4;pointer-events:none;}
+.weiter-btn.aktiv{opacity:1;pointer-events:auto;}
+.weiter-btn.aktiv:hover{opacity:.85;transform:translateY(-1px);}
+.weiter-btn svg{width:16px;height:16px;}
+.zert-section{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-top:1.5rem;text-align:center;display:none;}
+.zert-section.show{display:block;animation:fadeIn .5s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.zert-icon{font-size:2.5rem;margin-bottom:.75rem;}
+.zert-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:var(--kt);margin-bottom:.4rem;}
+.zert-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.25rem;}
+.zert-name-input{border:1.5px solid var(--border);border-radius:8px;padding:.6rem 1rem;font-family:"DM Sans",sans-serif;font-size:.9rem;width:100%;max-width:300px;margin-bottom:1rem;outline:none;}
+.zert-name-input:focus{border-color:var(--m);}
+.zert-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--m);color:#fff;padding:.75rem 1.5rem;border-radius:8px;font-size:.87rem;font-weight:600;border:none;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .2s;}
+.zert-btn:hover{opacity:.85;}
+.dash-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;color:var(--m);font-size:.82rem;font-weight:600;text-decoration:none;border:1.5px solid var(--m);border-radius:20px;padding:.35rem .9rem;transition:all .15s;}
+.dash-link:hover{background:var(--m);color:#fff;}
+@media(max-width:600px){
+  .wissen-block,.antworten,.reflexion-block,.weiter-wrap{padding-left:1rem;padding-right:1rem;}
+  .fall-block,.feedback{margin-left:1rem;margin-right:1rem;}
+}
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <a class="logo" href="EL_Dashboard.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT</div><span class="logo-sub">E-Learning</span></div>
+  </a>
+  <div class="header-badge">M6</div>
+</header>
+<div class="global-progress">
+  <span class="gp-label">Fortschritt</span>
+  <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+  <span class="gp-pct" id="gp-pct">0%</span>
+</div>
+<div class="hero">
+  <div class="hero-modul">M6 · E-Learning</div>
+  <h1 class="hero-titel">Krise & Mobbing</h1>
+  <p class="hero-sub">3 Lerneinheiten mit Fallbeispielen, Wissenscheck und Reflexion.</p>
+  <div class="hero-meta">
+    <div class="hero-pill">⏱ <b>ca. 12 Minuten</b></div>
+    <div class="hero-pill">📋 <b>3 Lerneinheiten</b></div>
+    <div class="hero-pill">🎓 Zertifikat am Ende</div>
+  </div>
+</div>
+<div class="shell">
+  <div class="nav-pills">
+  <span class="nav-pill aktiv" onclick="scrollToLektion(0)" id="np-0">LE 1 · Mobbing erkennen</span>
+  <span class="nav-pill" onclick="scrollToLektion(1)" id="np-1">LE 2 · INGRAs Rolle</span>
+  <span class="nav-pill" onclick="scrollToLektion(2)" id="np-2">LE 3 · Cybermobbing</span>
+  </div>
+  <div class="modul-progress">
+    <div class="mp-header">
+      <span class="mp-titel">M6 · Dein Fortschritt</span>
+      <span class="mp-pct" id="mp-pct">0 / 3</span>
+    </div>
+    <div class="mp-bar"><div class="mp-fill" id="mp-fill" style="width:0%"></div></div>
+    <div class="mp-steps">
+      <div class="mp-step active" id="step-0"></div>
+      <div class="mp-step " id="step-1"></div>
+      <div class="mp-step " id="step-2"></div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-0">
+    <div class="lektion-header" onclick="toggleLektion(0)" aria-expanded="true">
+      <div class="lektion-num" id="num-0">1</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Mobbing erkennen — nicht verwechseln</div>
+        <div class="lektion-sub">Drei Kriterien die entscheiden</div>
+      </div>
+      <span class="lektion-status" id="status-0">Offen</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body active" id="body-0">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Mobbing hat drei Definitionskriterien: <strong>Wiederholung</strong> (nicht einmalig), <strong>Machtungleichgewicht</strong> (Opfer kann sich nicht schützen), <strong>Absicht</strong> (zielgerichtet). Ein Streit ist kein Mobbing. Mobbing ist ein Gruppenprozess — kein Zweier-Konflikt. INGRA erkennt Muster über Zeit — nicht einzelne Momente.</div>
+        <a class="karte-link" href="M6-01_Mobbing_erkennen.html">→ M6-01 Mobbing erkennen</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#D81B60;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Zwei Schüler streiten laut auf dem Schulhof. Beide brüllen sich an, beide stoßen sich. Das ist das erste Mal.</div>
+        <div class="fall-frage">Ist das Mobbing?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(0,'A','falsch')" id="a0-A">
+          <span class="antwort-mark">A</span>
+          Ja — körperliche Auseinandersetzungen sind immer Mobbing.
+        </button>
+        <button class="antwort-btn" onclick="antwort(0,'B','richtig')" id="a0-B">
+          <span class="antwort-mark">B</span>
+          Nein — ein einmaliger Konflikt unter Gleichgestellten erfüllt die Mobbing-Kriterien nicht.
+        </button>
+        <button class="antwort-btn" onclick="antwort(0,'C','falsch')" id="a0-C">
+          <span class="antwort-mark">C</span>
+          Vielleicht — INGRA muss erst die TK fragen.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-0-richtig"><strong>✓ Richtig</strong> Mobbing braucht Wiederholung, Machtungleichgewicht und Absicht. Ein einmaliger gegenseitiger Streit ist ein Konflikt — der trotzdem begleitet werden muss, aber andere Interventionen braucht als Mobbing.</div>
+      <div class="feedback schlecht" id="fb-0-falsch"><strong>✗ Nicht ganz</strong> Nicht jede Auseinandersetzung ist Mobbing. Die Unterscheidung ist wichtig, weil die Interventionen sich grundlegend unterscheiden.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Hast du schon Situationen beobachtet die du jetzt als Mobbing oder als Konflikt einordnen würdest? Was war der Unterschied?</div>
+        <textarea class="reflexion-area" id="ref-0" placeholder="Deine Antwort hier …" oninput="checkWeiter(0)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-0" onclick="lektionAbschliessen(0)">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-1">
+    <div class="lektion-header" onclick="toggleLektion(1)" aria-expanded="false">
+      <div class="lektion-num" id="num-1">2</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Was INGRA bei Mobbing tut — und was nicht</div>
+        <div class="lektion-sub">Klare Rollenklarheit schützt alle</div>
+      </div>
+      <span class="lektion-status" id="status-1">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-1">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">INGRA beobachtet, dokumentiert und meldet — <strong>ermittelt und interveniert nicht allein</strong>. Keine Konfrontation mit Täterkindern, keine Elterngespräche anderer Kinder, keine eigenständige Klassenintervention. Meldekette: INGRA → Lehrkraft → TK → Schulleitung. Mobbing ist ein Systemphänomen — individuelle Interventionen ohne Systemsicht können die Situation verschlimmern.</div>
+        <a class="karte-link" href="M6-02_Was_tue_ich_jetzt.html">→ M6-02 Was tue ich jetzt?</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#D81B60;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">INGRA beobachtet mehrfach wie eine Gruppe Kinder Leon ausschließt. INGRA spricht die Gruppe direkt an: 'Das ist nicht in Ordnung — Leon gehört dazu.'</div>
+        <div class="fall-frage">Was ist an dieser Intervention problematisch?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(1,'A','falsch')" id="a1-A">
+          <span class="antwort-mark">A</span>
+          Nichts — INGRA schützt Leon.
+        </button>
+        <button class="antwort-btn" onclick="antwort(1,'B','richtig')" id="a1-B">
+          <span class="antwort-mark">B</span>
+          Ohne TK und Lehrkraft kann eigenständige Gruppenintervention die Situation für Leon verschlimmern.
+        </button>
+        <button class="antwort-btn" onclick="antwort(1,'C','falsch')" id="a1-C">
+          <span class="antwort-mark">C</span>
+          INGRA hätte lauter sprechen sollen.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-1-richtig"><strong>✓ Richtig</strong> Gut gemeint — aber Mobbing-Interventionen ohne Systemsicht können Täterverhalten intensivieren. Mobbing-Opfer werden oft nach Interventionen stärker bestraft. Richtig: Beobachten, dokumentieren, TK und Lehrkraft informieren.</div>
+      <div class="feedback schlecht" id="fb-1-falsch"><strong>✗ Nicht ganz</strong> Eigeninitiative bei Mobbing kann Leo gefährden. Die Gruppenintervention gehört zu Lehrkraft und TK — koordiniert, nicht spontan.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Wie würdest du jetzt reagieren wenn du Mobbing beobachtest? Schreib die konkreten Schritte auf.</div>
+        <textarea class="reflexion-area" id="ref-1" placeholder="Deine Antwort hier …" oninput="checkWeiter(1)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-1" onclick="lektionAbschliessen(1)">
+          Weiter
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="lektion" id="lektion-2">
+    <div class="lektion-header" onclick="toggleLektion(2)" aria-expanded="false">
+      <div class="lektion-num" id="num-2">3</div>
+      <div class="lektion-info">
+        <div class="lektion-titel">Cybermobbing — digital ist real</div>
+        <div class="lektion-sub">Besonderheiten und was INGRA tut</div>
+      </div>
+      <span class="lektion-status" id="status-2">Gesperrt</span>
+      <span class="lektion-chevron">▼</span>
+    </div>
+    <div class="lektion-body" id="body-2">
+      <div class="wissen-block">
+        <div class="block-label">Wissen</div>
+        <div class="wissen-text">Cybermobbing kennt keine Rückzugsräume — es passiert 24/7. Besonderheiten: schnelle Verbreitung, Anonymität, Screenshots als Beweis. <strong>Was INGRA tut:</strong> Kind emotional stabilisieren, Screenshots sichern, TK informieren. <strong>Was INGRA nicht tut:</strong> selbst bei Plattformen melden, Tätereltern ansprechen, auf Chatverläufen rumsuchen.</div>
+        <a class="karte-link" href="M6-03_Cybermobbing.html">→ M6-03 Cybermobbing</a>
+      </div>
+      <div class="fall-block">
+        <div class="block-label" style="font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#D81B60;margin-bottom:.5rem;">Fallbeispiel</div>
+        <div class="fall-szenario">Mia (12) zeigt INGRA beleidigende Nachrichten über sie in einer Klassen-Gruppe. Sie bittet INGRA, es geheim zu halten.</div>
+        <div class="fall-frage">Wie reagiert INGRA?</div>
+      </div>
+      <div class="antworten">
+        <button class="antwort-btn" onclick="antwort(2,'A','falsch')" id="a2-A">
+          <span class="antwort-mark">A</span>
+          Das Versprechen geben — Mia soll INGRA vertrauen können.
+        </button>
+        <button class="antwort-btn" onclick="antwort(2,'B','richtig')" id="a2-B">
+          <span class="antwort-mark">B</span>
+          Keine Geheimhaltung versprechen: 'Ich kann das nicht für mich behalten — ich muss es weitergeben. Aber ich bin bei dir.'
+        </button>
+        <button class="antwort-btn" onclick="antwort(2,'C','falsch')" id="a2-C">
+          <span class="antwort-mark">C</span>
+          Die Nachrichten ignorieren — Kinder übertreiben oft.
+        </button>
+      </div>
+      <div class="feedback gut" id="fb-2-richtig"><strong>✓ Richtig</strong> Geheimhaltung bei Cybermobbing ist nie möglich — das Kind muss das wissen. INGRA verspricht Unterstützung und Begleitung — aber keine Geheimhaltung. Klartext-Satz: 'Du hast nichts falsch gemacht. Ich bin bei dir. Aber ich muss es weitergeben.'</div>
+      <div class="feedback schlecht" id="fb-2-falsch"><strong>✗ Nicht ganz</strong> Geheimhaltungsversprechen schützen das Kind nicht — sie verhindern Hilfe. Cybermobbing immer melden.</div>
+      <div class="reflexion-block">
+        <div class="reflexion-label">Reflexion</div>
+        <div class="reflexion-frage">Was würdest du fühlen wenn ein Kind dich um Geheimhaltung bittet? Wie kannst du trotzdem Vertrauen aufbauen ohne falsche Versprechen zu machen?</div>
+        <textarea class="reflexion-area" id="ref-2" placeholder="Deine Antwort hier …" oninput="checkWeiter(2)"></textarea>
+      </div>
+      <div class="weiter-wrap">
+        <button class="weiter-btn" id="weiter-2" onclick="lektionAbschliessen(2)">
+          Modul abschließen
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="zert-section" id="zert-section">
+    <div class="zert-icon">🎓</div>
+    <div class="zert-titel">M6 · Krise & Mobbing abgeschlossen!</div>
+    <div class="zert-sub">Du hast alle 3 Lerneinheiten bearbeitet.</div>
+    <input class="zert-name-input" type="text" id="zert-name" placeholder="Dein Name für das Zertifikat …">
+    <br>
+    <button class="zert-btn" onclick="druckeZertifikat()">🖨️ Zertifikat drucken</button>
+    <br>
+    <a class="dash-link" href="EL_Dashboard.html">← Zurück zum E-Learning Dashboard</a>
+  </div>
+</div>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="EL_Dashboard.html" title="E-Learning Dashboard" style="width:48px;height:48px;border-radius:50%;background:#D81B60;border:2px solid #fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.3);font-size:1.2rem;">🎓</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<script>
+const store={_d:{},set(k,v){this._d[k]=v;try{sessionStorage.setItem("el_"+k,v);}catch(e){}},get(k){try{return sessionStorage.getItem("el_"+k)||this._d[k]||null;}catch(e){return this._d[k]||null;}}};
+const TOTAL=3,MODUL="M6";
+const done=new Array(TOTAL).fill(false);
+const answered=new Array(TOTAL).fill(false);
+function toggleLektion(idx){const body=document.getElementById("body-"+idx);const header=body.previousElementSibling;const isActive=body.classList.contains("active");body.classList.toggle("active",!isActive);header.setAttribute("aria-expanded",!isActive);}
+function antwort(lIdx,letter,typ){if(answered[lIdx])return;answered[lIdx]=true;["A","B","C"].forEach(l=>{const btn=document.getElementById("a"+lIdx+"-"+l);if(btn)btn.disabled=true;});const chosen=document.getElementById("a"+lIdx+"-"+letter);chosen.classList.add(typ);chosen.querySelector(".antwort-mark").textContent=typ==="richtig"?"✓":"✗";document.getElementById("fb-"+lIdx+"-"+(typ==="richtig"?"richtig":"falsch")).classList.add("show");checkWeiter(lIdx);}
+function checkWeiter(idx){const ref=document.getElementById("ref-"+idx);const weiter=document.getElementById("weiter-"+idx);if(answered[idx]&&ref&&ref.value.trim().length>10)weiter.classList.add("aktiv");}
+function lektionAbschliessen(idx){if(done[idx])return;done[idx]=true;store.set(MODUL+"-done-"+idx,"1");document.getElementById("lektion-"+idx).classList.add("done");const numEl=document.getElementById("num-"+idx);numEl.innerHTML="<svg viewBox='0 0 12 10' fill='none'><path d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>";document.getElementById("status-"+idx).textContent="✓ Abgeschlossen";const stepEl=document.getElementById("step-"+idx);if(stepEl){stepEl.classList.remove("active");stepEl.classList.add("done");}if(idx+1<TOTAL){document.getElementById("status-"+(idx+1)).textContent="Offen";const nextStep=document.getElementById("step-"+(idx+1));if(nextStep)nextStep.classList.add("active");const np=document.getElementById("np-"+(idx+1));if(np)np.classList.add("aktiv");setTimeout(()=>{const nextBody=document.getElementById("body-"+(idx+1));nextBody.classList.add("active");document.getElementById("lektion-"+(idx+1)).scrollIntoView({behavior:"smooth",block:"start"});const nextHeader=nextBody.previousElementSibling;nextHeader.setAttribute("aria-expanded","true");},400);}updateProgress();if(done.every(Boolean)){store.set(MODUL+"-abgeschlossen","1");setTimeout(()=>{const zs=document.getElementById("zert-section");zs.classList.add("show");zs.scrollIntoView({behavior:"smooth"});},600);}};
+function updateProgress(){const count=done.filter(Boolean).length;const pct=Math.round((count/TOTAL)*100);document.getElementById("gp-fill").style.width=pct+"%";document.getElementById("gp-pct").textContent=pct+"%";document.getElementById("mp-fill").style.width=pct+"%";document.getElementById("mp-pct").textContent=count+" / "+TOTAL;}
+function scrollToLektion(idx){document.getElementById("lektion-"+idx).scrollIntoView({behavior:"smooth"});}
+function druckeZertifikat(){const name=document.getElementById("zert-name").value.trim()||"INGRA-Schulbegleiter:in";const datum=new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});const win=window.open("","_blank");win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Zertifikat M6</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"><style>body{font-family:"DM Sans",sans-serif;background:#F5F0E8;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:2rem;}  .c{background:white;max-width:640px;width:100%;border:3px solid #D81B60;border-radius:16px;padding:3rem;text-align:center;}.logo{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:#1B3A4B;}.sub{font-size:.7rem;color:#6EC6A0;letter-spacing:.2em;text-transform:uppercase;margin-bottom:2rem;}.cl{font-size:.75rem;color:#7A7060;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;}.name{font-family:"Playfair Display",serif;font-size:2rem;font-weight:700;color:#1B3A4B;margin-bottom:1rem;}.t{font-size:.9rem;color:#4A4A4A;line-height:1.75;margin-bottom:1.5rem;}.m{background:#FDE8F1;border-radius:8px;padding:.75rem 1.5rem;display:inline-block;margin-bottom:1.5rem;}.mn{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#D81B60;}.d{font-size:.8rem;color:#7A7060;margin-top:1.5rem;}@media print{body{background:white;padding:0;}.c{border:3px solid #D81B60;}}</style></head><body><div class="c"><div class="logo">KLARTEXT</div><div class="sub">Mentoring-System · E-Learning</div><div class="cl">Zertifikat für</div><div class="name">${name}</div><div class="t">hat das E-Learning-Modul erfolgreich abgeschlossen.</div><div class="m"><div style="font-size:.65rem;color:#7A7060;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem;">Modul</div><div class="mn">M6 · Krise & Mobbing</div><div style="font-size:.8rem;color:#7A7060;margin-top:.25rem;">3 Lerneinheiten abgeschlossen</div></div><div class="d">Abgeschlossen am ${datum}</div></div><script>window.onload=()=>window.print();<\/script></body></html>`);}
+window.addEventListener("DOMContentLoaded",()=>{for(let i=0;i<TOTAL;i++){if(store.get(MODUL+"-done-"+i)==="1"){done[i]=true;answered[i]=true;}}updateProgress();});
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Feedback Koordination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:760px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:#1B3A4B;border-radius:14px;padding:1.5rem 1.75rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.75;}
+.sektion{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#1B3A4B;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1.5px solid #DDD8CE;display:flex;align-items:center;gap:.5rem;}
+.frage{margin-bottom:1rem;}
+.frage label{font-size:.78rem;font-weight:700;color:#1B3A4B;display:block;margin-bottom:.35rem;}
+.frage-sub{font-size:.7rem;color:#6A6878;margin-bottom:.35rem;display:block;}
+textarea{width:100%;border:1.5px solid #DDD8CE;border-radius:8px;padding:.55rem .75rem;font-family:"DM Sans",sans-serif;font-size:.82rem;color:#1A1A2E;background:#FAFAFA;resize:none;outline:none;line-height:1.6;}
+textarea:focus{border-color:#1B3A4B;}
+input[type="text"]{width:100%;border:1.5px solid #DDD8CE;border-radius:8px;padding:.45rem .75rem;font-family:"DM Sans",sans-serif;font-size:.85rem;color:#1A1A2E;background:#FAFAFA;outline:none;}
+input[type="text"]:focus{border-color:#1B3A4B;}
+.sterne{display:flex;gap:.4rem;margin-bottom:.35rem;}
+.stern{font-size:1.6rem;cursor:pointer;color:#DDD8CE;transition:color .1s;}
+.stern.aktiv{color:#C47A00;}
+.radio-gruppe{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.35rem;}
+.radio-btn{padding:.3rem .8rem;border-radius:20px;border:1.5px solid #DDD8CE;background:#FAFAFA;font-size:.78rem;cursor:pointer;color:#3A3A4A;transition:all .1s;user-select:none;}
+.radio-btn.aktiv{background:#1B3A4B;border-color:#1B3A4B;color:#fff;}
+.speichern-btn{background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.55rem 1.25rem;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;display:block;margin-top:1.25rem;}
+.speichern-btn:hover{background:#2A4A5B;}
+.export-btn{background:#C47A00;color:#fff;border:none;border-radius:8px;padding:.55rem 1.25rem;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;display:inline-block;margin-top:.5rem;}
+.status{font-size:.75rem;color:#2E7D47;margin-top:.5rem;display:none;}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Feedback · Koordination</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<div class="hero">
+  <div class="hero-titel">Feedback-Protokoll · Koordination</div>
+  <div class="hero-sub">Strukturierte Auswertung der Testphase — für Katharina Elben und Tim Mehringskötter. Bitte nach Abschluss der Testphase ausfüllen.</div>
+</div>
+
+<!-- RAHMEN -->
+<div class="sektion">
+  <div class="sek-titel">📋 Testphase — Rahmen</div>
+  <div class="frage">
+    <label>Zeitraum der Testphase</label>
+    <input type="text" id="f-zeitraum" placeholder="z.B. 09.06. – 27.06.2026">
+  </div>
+  <div class="frage">
+    <label>Anzahl Testpersonen</label>
+    <div class="radio-gruppe" id="rg-anzahl">
+      <div class="radio-btn" onclick="selectRadio('rg-anzahl',this)">2</div>
+      <div class="radio-btn" onclick="selectRadio('rg-anzahl',this)">3</div>
+      <div class="radio-btn" onclick="selectRadio('rg-anzahl',this)">4</div>
+      <div class="radio-btn" onclick="selectRadio('rg-anzahl',this)">Mehr</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Wurde eine Einweisung durchgeführt?</label>
+    <div class="radio-gruppe" id="rg-einweisung">
+      <div class="radio-btn" onclick="selectRadio('rg-einweisung',this)">Ja, vor Ort</div>
+      <div class="radio-btn" onclick="selectRadio('rg-einweisung',this)">Ja, per Video</div>
+      <div class="radio-btn" onclick="selectRadio('rg-einweisung',this)">Nur Anleitung</div>
+      <div class="radio-btn" onclick="selectRadio('rg-einweisung',this)">Keine</div>
+    </div>
+  </div>
+</div>
+
+<!-- NUTZUNG -->
+<div class="sektion">
+  <div class="sek-titel">📊 Nutzung durch die INGRAs</div>
+  <div class="frage">
+    <label>Wie aktiv wurde das System genutzt?</label>
+    <div class="radio-gruppe" id="rg-nutzung">
+      <div class="radio-btn" onclick="selectRadio('rg-nutzung',this)">Sehr aktiv — täglich</div>
+      <div class="radio-btn" onclick="selectRadio('rg-nutzung',this)">Regelmäßig — mehrmals/Woche</div>
+      <div class="radio-btn" onclick="selectRadio('rg-nutzung',this)">Gelegentlich</div>
+      <div class="radio-btn" onclick="selectRadio('rg-nutzung',this)">Kaum genutzt</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Welche Funktionen wurden am meisten genutzt?</label>
+    <textarea id="f-funktionen" rows="2" placeholder="Barometer · Situationskarten · Zeitkonto · Krankmeldung..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Gab es technische Probleme oder Hürden beim Zugang?</label>
+    <div class="radio-gruppe" id="rg-techprob">
+      <div class="radio-btn" onclick="selectRadio('rg-techprob',this)">Keine</div>
+      <div class="radio-btn" onclick="selectRadio('rg-techprob',this)">Kleinere</div>
+      <div class="radio-btn" onclick="selectRadio('rg-techprob',this)">Größere</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Falls Probleme — welche?</label>
+    <textarea id="f-techprob" rows="2" placeholder="Login-Probleme, Darstellungsfehler, Handy-Verweigerung..."></textarea>
+  </div>
+</div>
+
+<!-- RÜCKMELDUNGEN -->
+<div class="sektion">
+  <div class="sek-titel">💬 Rückmeldungen der INGRAs</div>
+  <div class="frage">
+    <label>Was wurde von den INGRAs besonders gelobt?</label>
+    <textarea id="f-lob" rows="3" placeholder="Konkrete Aussagen oder allgemeine Tendenz..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Was wurde kritisiert oder als fehlend genannt?</label>
+    <textarea id="f-kritik" rows="3" placeholder="Was fehlt? Was war unklar? Was wurde nicht genutzt?"></textarea>
+  </div>
+  <div class="frage">
+    <label>Wie war die Bereitschaft das System dauerhaft zu nutzen?</label>
+    <div class="radio-gruppe" id="rg-bereitschaft">
+      <div class="radio-btn" onclick="selectRadio('rg-bereitschaft',this)">Sehr hoch</div>
+      <div class="radio-btn" onclick="selectRadio('rg-bereitschaft',this)">Eher hoch</div>
+      <div class="radio-btn" onclick="selectRadio('rg-bereitschaft',this)">Gemischt</div>
+      <div class="radio-btn" onclick="selectRadio('rg-bereitschaft',this)">Eher gering</div>
+    </div>
+  </div>
+</div>
+
+<!-- ORGANISATION -->
+<div class="sektion">
+  <div class="sek-titel">🏢 Organisatorische Perspektive</div>
+  <div class="frage">
+    <label>Sehen Sie KLARTEXT als sinnvolle Ergänzung für Ihre INGRAs?</label>
+    <div class="radio-gruppe" id="rg-sinnvoll">
+      <div class="radio-btn" onclick="selectRadio('rg-sinnvoll',this)">Ja, klar</div>
+      <div class="radio-btn" onclick="selectRadio('rg-sinnvoll',this)">Eher ja</div>
+      <div class="radio-btn" onclick="selectRadio('rg-sinnvoll',this)">Bin unsicher</div>
+      <div class="radio-btn" onclick="selectRadio('rg-sinnvoll',this)">Eher nicht</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Datenschutz — gab es Bedenken oder Rückfragen?</label>
+    <textarea id="f-datenschutz" rows="2" placeholder="Rückmeldungen zum Datenschutz, DSGVO-Fragen..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Handy-Nutzung — war die Bereitschaft ein Problem?</label>
+    <div class="radio-gruppe" id="rg-handy">
+      <div class="radio-btn" onclick="selectRadio('rg-handy',this)">Kein Problem</div>
+      <div class="radio-btn" onclick="selectRadio('rg-handy',this)">Vereinzelte Bedenken</div>
+      <div class="radio-btn" onclick="selectRadio('rg-handy',this)">Mehrere Verweigerer</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Wären Sie bereit KLARTEXT für alle INGRAs einzuführen?</label>
+    <div class="radio-gruppe" id="rg-einfuehrung">
+      <div class="radio-btn" onclick="selectRadio('rg-einfuehrung',this)">Ja</div>
+      <div class="radio-btn" onclick="selectRadio('rg-einfuehrung',this)">Ja, mit Anpassungen</div>
+      <div class="radio-btn" onclick="selectRadio('rg-einfuehrung',this)">Noch unsicher</div>
+      <div class="radio-btn" onclick="selectRadio('rg-einfuehrung',this)">Nein</div>
+    </div>
+  </div>
+  <div class="frage">
+    <label>Falls Anpassungen gewünscht — welche?</label>
+    <textarea id="f-anpassungen" rows="3" placeholder="Konkrete Wünsche, fehlende Inhalte, organisatorische Anforderungen..."></textarea>
+  </div>
+</div>
+
+<!-- NÄCHSTE SCHRITTE -->
+<div class="sektion">
+  <div class="sek-titel">🚀 Nächste Schritte</div>
+  <div class="frage">
+    <label>Was sind aus Ihrer Sicht die wichtigsten nächsten Schritte?</label>
+    <textarea id="f-naechste" rows="3" placeholder="Erweiterung der Testphase · Lizenzgespräch · Workshop planen..."></textarea>
+  </div>
+  <div class="frage">
+    <label>Gibt es einen gewünschten Termin für ein Folgegespräch?</label>
+    <input type="text" id="f-termin" placeholder="z.B. KW 27 · Juli 2026 · nach den Ferien...">
+  </div>
+  <div class="frage">
+    <label>Sonstige Anmerkungen</label>
+    <textarea id="f-sonstiges" rows="3" placeholder="Alles was noch wichtig ist..."></textarea>
+  </div>
+</div>
+
+<button class="speichern-btn" onclick="speichern()">💾 Protokoll speichern</button>
+<button class="export-btn" onclick="exportTxt()" style="margin-left:.5rem;">📤 Als Text exportieren</button>
+<div class="status" id="status">✅ Gespeichert!</div>
+
+</div>
+
+<script>
+function selectRadio(gruppeId, el) {
+  document.querySelectorAll('#'+gruppeId+' .radio-btn').forEach(b=>b.classList.remove('aktiv'));
+  el.classList.add('aktiv');
+  speichern();
+}
+
+function getRadio(gruppeId) {
+  var aktiv = document.querySelector('#'+gruppeId+' .radio-btn.aktiv');
+  return aktiv ? aktiv.textContent : '';
+}
+
+function getData() {
+  return {
+    zeitraum: document.getElementById('f-zeitraum').value,
+    anzahl: getRadio('rg-anzahl'),
+    einweisung: getRadio('rg-einweisung'),
+    nutzung: getRadio('rg-nutzung'),
+    funktionen: document.getElementById('f-funktionen').value,
+    techprob_grad: getRadio('rg-techprob'),
+    techprob: document.getElementById('f-techprob').value,
+    lob: document.getElementById('f-lob').value,
+    kritik: document.getElementById('f-kritik').value,
+    bereitschaft: getRadio('rg-bereitschaft'),
+    sinnvoll: getRadio('rg-sinnvoll'),
+    datenschutz: document.getElementById('f-datenschutz').value,
+    handy: getRadio('rg-handy'),
+    einfuehrung: getRadio('rg-einfuehrung'),
+    anpassungen: document.getElementById('f-anpassungen').value,
+    naechste: document.getElementById('f-naechste').value,
+    termin: document.getElementById('f-termin').value,
+    sonstiges: document.getElementById('f-sonstiges').value,
+    datum: new Date().toLocaleDateString('de-DE')
+  };
+}
+
+function speichern() {
+  try {
+    localStorage.setItem('kt_feedback_koord', JSON.stringify(getData()));
+    var s = document.getElementById('status');
+    s.style.display='block';
+    setTimeout(()=>s.style.display='none', 2000);
+  } catch(e) {}
+}
+
+function exportTxt() {
+  var d = getData();
+  var txt = `KLARTEXT · Feedback-Protokoll Koordination
+Datum: ${d.datum}
+
+TESTPHASE
+Zeitraum: ${d.zeitraum}
+Anzahl Testpersonen: ${d.anzahl}
+Einweisung: ${d.einweisung}
+
+NUTZUNG
+Aktivität: ${d.nutzung}
+Meist genutzte Funktionen: ${d.funktionen}
+Technische Probleme: ${d.techprob_grad}
+Details: ${d.techprob}
+
+RÜCKMELDUNGEN
+Lob: ${d.lob}
+Kritik: ${d.kritik}
+Bereitschaft Dauerbetrieb: ${d.bereitschaft}
+
+ORGANISATION
+KLARTEXT sinnvoll: ${d.sinnvoll}
+Datenschutz-Bedenken: ${d.datenschutz}
+Handy-Bereitschaft: ${d.handy}
+Einführung für alle: ${d.einfuehrung}
+Gewünschte Anpassungen: ${d.anpassungen}
+
+NÄCHSTE SCHRITTE
+${d.naechste}
+Wunschtermin Folgegespräch: ${d.termin}
+Sonstiges: ${d.sonstiges}`;
+
+  var blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'KLARTEXT_Feedback_Koordination_' + d.datum.replace(/\./g,'-') + '.txt';
+  a.click();
+}
+
+document.querySelectorAll('textarea, input').forEach(el => {
+  el.addEventListener('change', speichern);
+});
+</script>
+</body>
+</html>

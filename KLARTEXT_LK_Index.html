@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LK-Serie · KLARTEXT für Lehrkräfte</title>
+<style>
+  :root {
+    --navy:     #1a2e44;
+    --lk:       #4f7b95;
+    --lk-mid:   #3d6277;
+    --lk-light: rgba(79,123,149,.10);
+    --lk-xlight:rgba(79,123,149,.05);
+    --paper:    #F5F0E8;
+    --white:    #ffffff;
+    --accent:   #6EC6A0;
+    --text:     #2a2a2a;
+    --muted:    #6b7280;
+    --border:   #d6cfc4;
+    --radius:   12px;
+    --shadow:   0 2px 16px rgba(26,46,68,.13);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e8e2d8;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 15px;
+    min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+    padding: 48px 32px 40px;
+  }
+  /* Dekorative Winkel */
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    border-style: solid;
+    border-width: 90px 90px 0 0;
+    border-color: var(--lk) transparent transparent transparent;
+    opacity: .6;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    border-style: solid;
+    border-width: 0 0 70px 220px;
+    border-color: transparent transparent var(--lk) transparent;
+    opacity: .35;
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 680px; margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.75);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 99px;
+    margin-bottom: 16px;
+  }
+  .hero-eyebrow span { color: var(--accent); }
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(26px, 5vw, 36px);
+    font-weight: 700; color: #fff;
+    line-height: 1.2; margin-bottom: 12px;
+  }
+  .hero-title em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-size: 14px; color: rgba(255,255,255,.68);
+    line-height: 1.6; max-width: 520px;
+    margin-bottom: 24px;
+  }
+  .hero-meta {
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11.5px; color: rgba(255,255,255,.6);
+  }
+  .meta-pill strong { color: rgba(255,255,255,.9); }
+
+  /* Brainy hero */
+  .hero-brainy {
+    position: absolute; bottom: -10px; right: 32px;
+    font-size: 90px; opacity: .12;
+    pointer-events: none;
+  }
+
+  /* ── Forschungsbox ── */
+  .research-bar {
+    background: var(--lk);
+    padding: 14px 32px;
+  }
+  .research-inner {
+    max-width: 680px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .research-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .research-text { font-size: 12px; color: rgba(255,255,255,.85); line-height: 1.55; }
+  .research-text strong { color: #fff; }
+
+  /* ── Haupt-Content ── */
+  .main {
+    max-width: 680px; margin: 0 auto;
+    padding: 32px 20px 64px;
+  }
+
+  /* Sektion */
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px; margin-top: 32px;
+  }
+  .section-header:first-child { margin-top: 0; }
+  .section-line {
+    flex: 1; height: 1px; background: var(--border);
+  }
+  .section-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--lk); white-space: nowrap;
+  }
+
+  /* Karten-Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 480px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Index-Karte */
+  .idx-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-decoration: none;
+    display: flex; flex-direction: column;
+    transition: transform .18s, box-shadow .18s;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+  }
+  .idx-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(26,46,68,.18);
+    border-color: var(--lk);
+  }
+  .idx-card-header {
+    background: var(--lk);
+    padding: 12px 14px 10px;
+    position: relative; overflow: hidden;
+  }
+  .idx-card-header::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    border-style: solid;
+    border-width: 0 0 24px 80px;
+    border-color: transparent transparent var(--navy) transparent;
+    opacity: .35;
+  }
+  .idx-card-id {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.6);
+    margin-bottom: 4px;
+  }
+  .idx-card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 14px; font-weight: 700;
+    color: #fff; line-height: 1.25;
+    position: relative; z-index: 1;
+  }
+  .idx-card-body { padding: 10px 14px 12px; flex: 1; }
+  .idx-card-desc {
+    font-size: 11.5px; color: var(--muted);
+    line-height: 1.5; margin-bottom: 10px;
+  }
+  .idx-card-tags {
+    display: flex; flex-wrap: wrap; gap: 4px;
+  }
+  .tag {
+    background: var(--lk-xlight);
+    color: var(--lk-mid);
+    font-size: 9.5px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 4px;
+    border: 1px solid rgba(79,123,149,.2);
+  }
+  .idx-card-footer {
+    padding: 8px 14px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end;
+    background: var(--paper);
+  }
+  .arrow-btn {
+    font-size: 11px; color: var(--lk);
+    font-weight: 700; letter-spacing: .06em;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* ── Für-wen-Box ── */
+  .audience-box {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-top: 32px;
+  }
+  .audience-header {
+    background: var(--lk);
+    padding: 14px 20px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px; font-weight: 700; color: #fff;
+  }
+  .audience-body { padding: 16px 20px; }
+  .audience-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  @media (max-width: 480px) { .audience-grid { grid-template-columns: 1fr; } }
+  .audience-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 12px;
+    background: var(--lk-xlight);
+    border-radius: 8px;
+  }
+  .audience-icon { font-size: 20px; flex-shrink: 0; }
+  .audience-text { font-size: 12px; color: var(--text); line-height: 1.45; }
+  .audience-text strong { color: var(--navy); display: block; margin-bottom: 2px; }
+
+  /* ── Download/Info-Leiste ── */
+  .info-strip {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 20px;
+    margin-top: 20px;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .info-strip-text { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .info-strip-text strong { color: var(--navy); }
+  .dl-btn {
+    background: var(--lk); color: #fff;
+    border: none; border-radius: 8px;
+    padding: 10px 18px; font-size: 12.5px; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: background .15s;
+  }
+  .dl-btn:hover { background: var(--lk-mid); }
+
+  /* ── KLARTEXT-Wordmark ── */
+  .wordmark {
+    text-align: center; margin-top: 40px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 13px; color: var(--muted);
+    letter-spacing: .08em;
+  }
+  .wordmark span { color: var(--lk); }
+
+  @media print {
+    body { background: white; }
+    .hero { background: var(--navy); }
+    .idx-card { box-shadow: none; border: 1px solid var(--border); break-inside: avoid; }
+    .dl-btn { display: none; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">KLARTEXT-Mentoring <span>·</span> LK-Serie</div>
+    <h1 class="hero-title">Schulbegleitung verstehen —<br><em>für Lehrkräfte</em></h1>
+    <p class="hero-sub">
+      8 praxisnahe Karten für den Alltag mit Schulbegleitungskindern.
+      Rollenklarheit, Zusammenarbeit, Übergänge, Konflikte — kompakt und direkt anwendbar.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-pill">📋 <strong>14 Karten</strong> in dieser Serie</div>
+      <div class="meta-pill">🎯 <strong>Für Regelschul-Lehrkräfte</strong></div>
+      <div class="meta-pill">🖨 <strong>Druckfertig & digital</strong></div>
+    </div>
+  </div>
+  <div class="hero-brainy">🧠</div>
+</div>
+
+<!-- ── Forschungshinweis ── -->
+<div class="research-bar">
+  <div class="research-inner">
+    <div class="research-icon">📖</div>
+    <div class="research-text">
+      <strong>Empirischer Hintergrund:</strong>
+      Studien zeigen, dass Lehrkräfte bisher weder ausreichende Kenntnisse noch etablierte Routinen im Umgang mit Schulbegleitung entwickelt haben — trotz wachsender Fallzahlen (Czempiel &amp; Kracke, 2019; Meyer, 2017). Diese Karten schließen diese Lücke praxisnah.
+    </div>
+  </div>
+</div>
+
+<!-- ── Hauptinhalt ── -->
+<div class="main">
+
+  <!-- Gruppe 1: Zusammenarbeit -->
+  <div class="section-header">
+    <div class="section-label">Zusammenarbeit &amp; Rollen</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="card-grid">
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-01_Zusammenarbeit-INGRA.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-01</div>
+        <div class="idx-card-title">Zusammenarbeit mit der INGRA</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Rollenklarheit im Unterricht, unauffällige Kommunikation, tägliche Absprachen.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Rollen</span>
+          <span class="tag">Alltag</span>
+          <span class="tag">Kommunikation</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-08_Nicht-stimmt.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-08</div>
+        <div class="idx-card-title">Wenn es zwischen uns nicht stimmt</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Spannungsquellen benennen, Stufenplan für Klärung, was ich vermeiden sollte.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Konflikt</span>
+          <span class="tag">Klärung</span>
+          <span class="tag">Stufenplan</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+  </div>
+
+  <!-- Gruppe 2: Unterricht & Kind -->
+  <div class="section-header">
+    <div class="section-label">Unterricht &amp; Kind</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="card-grid">
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-02_Herausforderndes-Verhalten.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-02</div>
+        <div class="idx-card-title">Herausforderndes Verhalten</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Verstehen vor Bewerten, Akutsituation strukturieren, vorbeugende Maßnahmen.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Verhalten</span>
+          <span class="tag">Akut</span>
+          <span class="tag">Deeskalation</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-04_Inklusion-planen.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-04</div>
+        <div class="idx-card-title">Inklusion planen — ohne Mehraufwand</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Stundenentwurf inklusiv denken, Methoden die allen helfen, INGRA sinnvoll einbinden.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Planung</span>
+          <span class="tag">Methodik</span>
+          <span class="tag">Inklusion</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-05_INGRA-fehlt.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-05</div>
+        <div class="idx-card-title">Wenn die INGRA fehlt</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Sofort-Check, Unterricht ohne Begleitung strukturieren, langfristig vorbeugen.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Ausfall</span>
+          <span class="tag">Notfall</span>
+          <span class="tag">Aufsicht</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+  </div>
+
+  <!-- Gruppe 3: Kommunikation nach außen -->
+  <div class="section-header">
+    <div class="section-label">Kommunikation nach außen</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="card-grid">
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-03_Elterngespräche.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-03</div>
+        <div class="idx-card-title">Elterngespräche mit Schulbegleitung</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Häufige Elternerwartungen und klare Antworten, Zuständigkeiten im Gespräch.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Eltern</span>
+          <span class="tag">Gespräch</span>
+          <span class="tag">Abgrenzung</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+  </div>
+
+  <!-- Gruppe 4: Übergänge & Phasen -->
+  <div class="section-header">
+    <div class="section-label">Übergänge &amp; Phasen</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="card-grid">
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-06_Schuljahresbeginn.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-06</div>
+        <div class="idx-card-title">Schuljahresbeginn mit neuer INGRA</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Erstes Gespräch strukturieren, Vier-Wochen-Eingewöhnung, stabil starten.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Start</span>
+          <span class="tag">Kennenlernen</span>
+          <span class="tag">Routine</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-07_Übergänge.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-07</div>
+        <div class="idx-card-title">Übergänge — Klassen- &amp; Schulwechsel</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Wissen weitergeben, Kind vorbereiten, Übergabegespräch führen.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Wechsel</span>
+          <span class="tag">Übergabe</span>
+          <span class="tag">Vorbereitung</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+  </div>
+
+  <!-- Gruppe 5: Wissen & Schutz -->
+  <div class="section-header">
+    <div class="section-label">Wissen &amp; Schutz</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="card-grid">
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-09.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-09</div>
+        <div class="idx-card-title">Häufige Diagnosen — was bedeutet das?</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">6 Förderschwerpunkte kompakt: ADHS, Autismus, ESE, Lernen, Körper, Sprache — aus Lehrkraft-Sicht.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Diagnosen</span>
+          <span class="tag">Wissen</span>
+          <span class="tag">Einordnung</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-10.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-10</div>
+        <div class="idx-card-title">Rechtliche Grundlagen in 5 Minuten</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Wer bewilligt, wer zahlt, wer ist zuständig — klare Zuständigkeitstabelle, keine Fachsprache.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Recht</span>
+          <span class="tag">SGB</span>
+          <span class="tag">Zuständigkeit</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-11.html')" style="border-color:rgba(198,40,40,.25);">
+      <div class="idx-card-header" style="background:#c62828;">
+        <div class="idx-card-id">LK-11</div>
+        <div class="idx-card-title">Sexuelle &amp; häusliche Gewalt erkennen</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Warnsignale, Handlungsschritte, Meldepflicht § 8a — was ich tun darf und was nicht.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Kinderschutz</span>
+          <span class="tag">§ 8a</span>
+          <span class="tag">Schutz</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-12.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-12</div>
+        <div class="idx-card-title">Trauma erkennen und damit umgehen</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Traumasignale im Unterricht, was hilft, was schadet — traumasensibles Unterrichten konkret.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Trauma</span>
+          <span class="tag">Stabilisierung</span>
+          <span class="tag">Haltung</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+  </div>
+
+  <!-- Gruppe 6: Sprache & Herkunft -->
+  <div class="section-header">
+    <div class="section-label">Sprache &amp; Herkunft</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="card-grid">
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-13.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-13</div>
+        <div class="idx-card-title">DAZ &amp; Einfache Sprache im Unterricht</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Sofort umsetzbare Sprachregeln, Dos/Don'ts-Tabelle — hilft allen Kindern mit Verarbeitungsschwäche.</div>
+        <div class="idx-card-tags">
+          <span class="tag">DAZ</span>
+          <span class="tag">Einfache Sprache</span>
+          <span class="tag">Unterricht</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+    <div class="idx-card" onclick="alert('→ Öffne LK-14.html')">
+      <div class="idx-card-header">
+        <div class="idx-card-id">LK-14</div>
+        <div class="idx-card-title">Migration — Hintergründe &amp; Lösungen</div>
+      </div>
+      <div class="idx-card-body">
+        <div class="idx-card-desc">Ressourcen und Belastungen kennen, häufige Missverständnisse lösen, Brücken bauen.</div>
+        <div class="idx-card-tags">
+          <span class="tag">Migration</span>
+          <span class="tag">Flucht</span>
+          <span class="tag">Ressourcen</span>
+        </div>
+      </div>
+      <div class="idx-card-footer"><span class="arrow-btn">Zur Karte →</span></div>
+    </div>
+
+  </div>
+
+  <!-- Für-wen-Box -->
+  <div class="audience-box">
+    <div class="audience-header">Für wen sind diese Karten?</div>
+    <div class="audience-body">
+      <div class="audience-grid">
+        <div class="audience-item">
+          <div class="audience-icon">👩‍🏫</div>
+          <div class="audience-text">
+            <strong>Regelschul-Lehrkräfte</strong>
+            Mit Schulbegleitungskindern in der Klasse — zum ersten Mal oder seit Jahren.
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">🏫</div>
+          <div class="audience-text">
+            <strong>Schulleitungen</strong>
+            Als Grundlage für schulinterne Fortbildung oder Teamentwicklung.
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">📚</div>
+          <div class="audience-text">
+            <strong>Referendare &amp; Studierende</strong>
+            Praxisvorbereitung auf inklusive Settings im Schulpraktikum.
+          </div>
+        </div>
+        <div class="audience-item">
+          <div class="audience-icon">🤝</div>
+          <div class="audience-text">
+            <strong>Träger &amp; Koordination</strong>
+            Als Gesprächsgrundlage für Schulkooperations- und Aufklärungsgespräche.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info-Leiste -->
+  <div class="info-strip">
+    <div class="info-strip-text">
+      <strong>KLARTEXT LK-Serie — 14 Karten</strong><br>
+      Alle Karten druckfertig und digital nutzbar · Barometer · Checklisten · Notizfelder · Quellenangaben
+    </div>
+    <button class="dl-btn" onclick="window.print()">🖨 Seite drucken</button>
+  </div>
+
+  <div class="wordmark">KLARTEXT<span>-Mentoring</span> · LK-Serie · © Anja Jolk</div>
+
+</div><!-- /main -->
+
+</body>
+</html>

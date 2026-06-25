@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FK-08 · Meltdown – KLARTEXT Feuerwehrkarte</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+:root{--fk:#C62828;--fkl:#FDEAEA;}
+.warn{background:#FFF3E0;border-left:3px solid #FF8F00;border-radius:0 8px 8px 0;padding:.6rem 1rem;margin:.4rem 0;font-size:.82rem;color:#5D3A00;line-height:1.75;}
+.nie{background:#FDEAEA;border-left:3px solid #C62828;border-radius:0 8px 8px 0;padding:.6rem 1rem;margin:.4rem 0;font-size:.82rem;font-weight:700;color:#7A0000;line-height:1.75;}
+.schritt{display:flex;gap:.75rem;align-items:flex-start;margin:.4rem 0;}
+.schritt-nr{width:28px;height:28px;border-radius:50%;background:#C62828;color:#fff;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.schritt-text{font-size:.83rem;line-height:1.75;color:#2A2A3A;}
+</style>
+</head>
+<body>
+<header class="kt-header"><div class="kt-header-inner">
+  <a class="kt-back-btn" href="DASHBOARD.html"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Dashboard</a>
+  <a class="kt-logo" href="DASHBOARD.html">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+  </a>
+  <a class="kt-home-btn" href="DASHBOARD.html"><svg viewBox="0 0 16 16"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg><span>Dashboard</span></a>
+</div></header>
+<div class="kt-context">KLARTEXT · Feuerwehr-Karten · Akute Krisen</div>
+<main><article class="karte">
+  <div class="karte-stripe" style="background:#C62828;"></div>
+  <div class="karte-header" style="border-bottom-color:#F4A0A0;">
+    <div class="karte-meta-wrap">
+      <div class="modul-tag" style="color:#C62828;border-color:#F4A0A0;">FEUERWEHR · FK-08</div>
+      <h1 class="karte-titel">Meltdown</h1>
+      <p class="karte-tagline">Totaler neurologischer Kontrollverlust — kein Wutanfall, kein Theater</p>
+    </div>
+    <div class="karte-icon-wrap" style="background:#FDEAEA;border-color:#F4A0A0;">🌋</div>
+  </div>
+  <div class="karte-lead" style="background:#FDEAEA;border-color:#C62828;">
+    <strong>Wichtig:</strong> Ein Meltdown ist KEIN Wutanfall und KEIN manipulatives Verhalten. Das Gehirn ist in einem echten neurologischen Notstand — das Kind kann nicht anders. Bestrafung, Erklärungen oder Forderungen in diesem Moment sind wirkungslos und schaden.
+  </div>
+  <div class="karte-body">
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#C62828">Was ist ein Meltdown?</div>
+      <ul class="karte-liste">
+        <li>Totaler Kontrollverlust durch sensorische oder emotionale Überlastung — häufig bei Autismus, aber nicht nur</li>
+        <li>Das Nervensystem ist vollständig überwältigt — kein "Können" mehr möglich</li>
+        <li>Kann sich zeigen als: Schreien, Weinen, Zittern, Schlagen, Beißen, Zusammenbrechen, Erstarren</li>
+        <li>Unterschied zu Wutanfall: kein Ziel, keine Kontrolle, keine Publikum-Orientierung</li>
+        <li>Dauer: Minuten bis Stunden — lässt sich nicht abkürzen, nur begleiten</li>
+      </ul>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#C62828">Sofort — in den ersten 60 Sekunden</div>
+      <div class="schritt"><div class="schritt-nr">1</div><div class="schritt-text"><strong>Sicherheit herstellen</strong> — andere Kinder aus dem Bereich bringen, gefährliche Gegenstände entfernen</div></div>
+      <div class="schritt"><div class="schritt-nr">2</div><div class="schritt-text"><strong>Reize reduzieren</strong> — Licht dimmen, Lärm minimieren, Menschenmenge auflösen</div></div>
+      <div class="schritt"><div class="schritt-nr">3</div><div class="schritt-text"><strong>Abstand geben</strong> — nicht anfassen, nicht festhalten (außer bei akuter Verletzungsgefahr)</div></div>
+      <div class="schritt"><div class="schritt-nr">4</div><div class="schritt-text"><strong>Ruhig bleiben</strong> — eigene Regulation zuerst. Dein Nervensystem reguliert das Kind mit</div></div>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#C62828">Während des Meltdowns</div>
+      <ul class="karte-liste">
+        <li>Niedrige ruhige Stimme — maximal 3–4 Worte: "Ich bin da." — "Du bist sicher."</li>
+        <li>Keine Fragen, keine Erklärungen, keine Konsequenzen ankündigen</li>
+        <li>Wenn das Kind sich selbst berührt/schaukelt — nicht stoppen, das ist Selbstregulation</li>
+        <li>Bei Fluchtversuch: ruhig begleiten, nicht aufhalten — außer Gefahr</li>
+        <li>Lehrkraft informieren: kurzes Signal reicht — "Meltdown, brauche Zeit"</li>
+      </ul>
+      <div class="nie">🚫 Nie: anfassen ohne Erlaubnis · erklären · bestrafen · "Beruhig dich" sagen · Blickkontakt erzwingen · in der Situation Konsequenzen ankündigen</div>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#C62828">Nach dem Meltdown — Recovery-Phase</div>
+      <ul class="karte-liste">
+        <li>Das Kind ist erschöpft — physisch und emotional. Das ist normal.</li>
+        <li>Stille und Rückzug ermöglichen — kein direkter Wiedereinstieg in den Unterricht</li>
+        <li>Kein Nachbesprechen in den ersten 30–60 Minuten</li>
+        <li>Wenn das Kind von sich aus Kontakt sucht: kurz, warm, ohne Bewertung</li>
+        <li>Dokumentieren: Auslöser, Dauer, Verlauf, was geholfen hat</li>
+        <li>TK informieren — noch am selben Tag</li>
+      </ul>
+      <div class="warn">⚠️ Die Recovery-Phase kann länger dauern als der Meltdown selbst. Kein Druck — das Kind entscheidet wann es wieder kann.</div>
+    </div>
+
+    <div class="ab">
+      <div class="ab-titel" style="color:#C62828">Prävention — Auslöser kennen</div>
+      <ul class="karte-liste">
+        <li>Sensorische Überlastung: Lärm, Licht, Gerüche, Berührungen, Temperaturen</li>
+        <li>Routinebrüche: Stundenplanänderung, Vertretung, anderer Raum</li>
+        <li>Soziale Überforderung: zu viele Menschen, unklare Erwartungen</li>
+        <li>Erschöpfung: schlechter Schlaf, Hunger, Krankheit</li>
+        <li>Auslöserprofil des Kindes kennen und mit TK besprechen</li>
+      </ul>
+    </div>
+
+    <div class="brainy-block" style="background:#FDEAEA;border-color:#C62828;">
+      <img src="brainy.png" alt="Brainy">
+      <div class="brainy-block-text"><strong>Brainy erinnert:</strong> Ein Meltdown ist kein Versagen des Kindes — und kein Versagen von INGRA. Es ist ein Nervensystem das seine Grenze erreicht hat. Deine Aufgabe: sicher halten und warten.</div>
+    </div>
+  </div>
+  <nav class="karte-nav">
+    <a class="nav-prev" href="FK-07.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> FK-07</a>
+    <span class="spacer"></span>
+    <span></span>
+  </nav>
+  <div class="karte-footer"><span class="footer-links">FK-08 · <a href="DASHBOARD.html">Dashboard</a></span></div>
+</article></main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD-M3.html" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;">🎯</a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<footer><strong>KLARTEXT</strong> · FK-08 · Meltdown<span class="footer-copy">Alle Rechte vorbehalten</span></footer>
+</body></html>

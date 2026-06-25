@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Workshop 2 Tage</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+.kt-header{background:#1B3A4B;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid #6EC6A0;position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid #6EC6A0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:#6EC6A0;letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid #6EC6A0;border-radius:20px;color:#6EC6A0;font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:860px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:#1B3A4B;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:.75rem;}
+.hero-stats{display:flex;gap:.5rem;flex-wrap:wrap;}
+.h-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:.35rem .75rem;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600;}
+.tag-header{display:flex;align-items:center;gap:.75rem;margin:1.5rem 0 .75rem;}
+.tag-badge{padding:.3rem .8rem;border-radius:20px;font-size:.72rem;font-weight:700;color:#fff;}
+.tag-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;}
+.tag-sub{font-size:.75rem;color:#6A6878;}
+.block{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;padding:1rem 1.25rem;margin-bottom:.65rem;}
+.block-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.block-zeit{background:#1B3A4B;color:#fff;border-radius:8px;padding:.3rem .7rem;font-size:.72rem;font-weight:700;white-space:nowrap;}
+.block-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#1B3A4B;}
+.block-sub{font-size:.75rem;color:#6A6878;}
+.block-body{font-size:.83rem;color:#3A3A4A;line-height:1.85;}
+.block-body ul{padding-left:1.1rem;margin:.3rem 0;}
+.block-body li{margin-bottom:.2rem;}
+.block-body strong{color:#1B3A4B;}
+.methode{display:inline-flex;align-items:center;gap:.25rem;background:#EAF0F4;border-radius:20px;padding:.18rem .55rem;font-size:.68rem;font-weight:700;color:#1B3A4B;margin:.15rem .1rem;}
+.material{display:inline-flex;align-items:center;gap:.25rem;background:#E8F5EE;border-radius:20px;padding:.18rem .55rem;font-size:.68rem;font-weight:700;color:#2E7D47;margin:.15rem .1rem;}
+.pause{background:#FBF4E8;border:1.5px dashed #C47A00;border-radius:10px;padding:.6rem 1rem;margin-bottom:.65rem;font-size:.8rem;color:#7A5318;font-weight:600;display:flex;align-items:center;gap:.5rem;}
+.trainer-box{background:#F3EDF3;border-left:3px solid #6B3F6B;border-radius:0 10px 10px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.8rem;color:#3A1A3A;line-height:1.75;}
+.ziel-box{background:#EAF5F0;border-left:3px solid #6EC6A0;border-radius:0 10px 10px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.82rem;color:#1A3A2A;line-height:1.75;}
+.abschluss{background:#1B3A4B;border-radius:12px;padding:1.25rem;margin-top:1.5rem;display:flex;align-items:center;gap:1rem;}
+.abschluss img{width:64px;flex-shrink:0;}
+.abschluss-text{color:#fff;}
+.abschluss-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;margin-bottom:.25rem;}
+.abschluss-sub{font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.7;}
+.mat-liste{background:#fff;border:1.5px solid #DDD8CE;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.mat-titel{font-size:.65rem;font-weight:700;color:#1B3A4B;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem;}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;}
+.mat-item{font-size:.8rem;color:#3A3A4A;padding:.3rem 0;border-bottom:1px solid #F0EBE3;display:flex;align-items:center;gap:.4rem;}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Workshop · 2 Tage</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+<div class="shell">
+
+  <div class="hero">
+    <div class="hero-titel">Einarbeitungs-Workshop · 2 Tage</div>
+    <div class="hero-sub">Intensive Einführung mit Vertiefung — 2 × 6 Stunden · Praxis-orientiert · Mit Übernachtungsoption</div>
+    <div class="hero-stats">
+      <span class="h-stat">⏱️ 2 × 6 Stunden</span>
+      <span class="h-stat">👥 4–15 Teilnehmende</span>
+      <span class="h-stat">📍 Präsenz</span>
+      <span class="h-stat">🎓 Zertifikat inklusive</span>
+    </div>
+  </div>
+
+  <!-- MATERIAL -->
+  <div class="mat-liste">
+    <div class="mat-titel">Vorbereitung & Material</div>
+    <div class="mat-grid">
+      <div class="mat-item">✅ Handout 2-tägig (1×/Person)</div>
+      <div class="mat-item">✅ KLARTEXT-Zugänge vorab</div>
+      <div class="mat-item">✅ Beamer + Screen</div>
+      <div class="mat-item">✅ Flipchart 2×</div>
+      <div class="mat-item">✅ Moderationskarten farbig</div>
+      <div class="mat-item">✅ Fallbeispiel-Karten (vorbereitet)</div>
+      <div class="mat-item">✅ Zertifikate vorgedruckt</div>
+      <div class="mat-item">✅ Namensschilder + Stifte</div>
+    </div>
+  </div>
+
+  <!-- TAG 1 -->
+  <div class="tag-header">
+    <span class="tag-badge" style="background:#1B3A4B;">Tag 1</span>
+    <div>
+      <div class="tag-titel">Grundlagen & Orientierung</div>
+      <div class="tag-sub">09:00 – 16:00 Uhr · System · Rolle · Regulation</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">09:00 – 09:45</span>
+      <div><div class="block-titel">Ankommen & Rahmen setzen</div><div class="block-sub">Kennenlernen · Erwartungen · Tagesüberblick</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Vertrauensvoller Rahmen ist gesetzt. Alle kennen sich und den Plan.</div>
+      <ul>
+        <li><strong>Check-in:</strong> Name · Wie lange INGRA · Mit wem arbeite ich?</li>
+        <li><strong>Erwartungsabfrage:</strong> "Was soll nach diesen 2 Tagen anders sein?"</li>
+        <li><strong>Überblick:</strong> Beide Tage vorstellen, Fragen willkommen</li>
+        <li><strong>KLARTEXT-Philosophie:</strong> Klar. Warm. Menschlich. — was bedeutet das?</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">💬 Vorstellungsrunde</span><span class="methode">📝 Erwartungskarten</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">09:45 – 11:00</span>
+      <div><div class="block-titel">Das KLARTEXT-System</div><div class="block-sub">Dashboard · Navigation · Alle Bereiche</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle sind sicher im System orientiert und haben es selbst erkundet.</div>
+      <ul>
+        <li><strong>Live-Demo:</strong> Login → Dashboard → Schnell-Buttons → Module</li>
+        <li><strong>Goldener Banner erklärt:</strong> M3 — die wichtigste Funktion</li>
+        <li><strong>Freie Exploration:</strong> 20 Minuten — jede:r erkundet allein</li>
+        <li><strong>Partner-Aufgabe:</strong> Zeig deiner Partnerin deine 3 wichtigsten Entdeckungen</li>
+        <li><strong>Plenum:</strong> Was hat überrascht? Was fehlt?</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">💻 Demo</span><span class="methode">🔍 Exploration</span><span class="methode">👥 Partner</span></div>
+      <div class="trainer-box">Trainer-Tipp: Mehr Zeit für Exploration als Tag 1 Workshop — die Gruppe hat einen Tag mehr.</div>
+    </div>
+  </div>
+
+  <div class="pause">☕ Pause 11:00 – 11:15 Uhr</div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">11:15 – 12:30</span>
+      <div><div class="block-titel">Meine Rolle & das Pflichtdreieck</div><div class="block-sub">M1 · Grenzen · Rollenfallen · Rechtliches</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle kennen ihre Rolle präzise — und die 3 häufigsten Fallen.</div>
+      <ul>
+        <li><strong>Input M1:</strong> Rollenprofil, Pflichtdreieck, rechtliche Grundlagen</li>
+        <li><strong>Rollenspiel:</strong> Elternteil fragt INGRA um Rat — wie reagiere ich?</li>
+        <li><strong>Gruppenarbeit:</strong> "Meine Grenzen" — jede:r schreibt 5 Grenzen auf Karten</li>
+        <li><strong>Galeriegang:</strong> Alle Karten hängen — Gemeinsamkeiten suchen</li>
+        <li><strong>Rechtlicher Rahmen:</strong> § 35a, § 8a — kurz und praxisnah</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">🎭 Rollenspiel</span><span class="methode">🖼️ Galeriegang</span><span class="material">📋 M1-Karten</span></div>
+    </div>
+  </div>
+
+  <div class="pause">🍽️ Mittagspause 12:30 – 13:30 Uhr</div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">13:30 – 15:00</span>
+      <div><div class="block-titel">Das Barometer & kLAR in der Tiefe</div><div class="block-sub">5 Zustände · Regulation · Praxis-Rollenspiel</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: kLAR sitzt. Alle haben es mindestens einmal im Rollenspiel angewendet.</div>
+      <ul>
+        <li><strong>Barometer:</strong> 5 Zustände — Körpersignale, Verhaltenszeichen, was hilft</li>
+        <li><strong>Fallbeispiele:</strong> 3 Situationen — welcher Zustand? Was tue ich?</li>
+        <li><strong>kLAR Rollenspiel:</strong> Dreiergruppen — Kind, INGRA, Beobachterin</li>
+        <li><strong>Reflexion:</strong> Was war leicht? Was war schwer?</li>
+        <li><strong>Eigenes Kind:</strong> Wo steht mein Kind heute auf dem Barometer?</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">🎭 Rollenspiel</span><span class="methode">🌡️ Barometer</span><span class="methode">💬 Reflexion</span></div>
+      <div class="trainer-box">Trainer-Tipp: Das Rollenspiel als Kind ist oft der emotionalste Moment — danach immer Debrief.</div>
+    </div>
+  </div>
+
+  <div class="pause">☕ Pause 15:00 – 15:15 Uhr</div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">15:15 – 16:00</span>
+      <div><div class="block-titel">Tag 1 Abschluss & Ausblick Tag 2</div><div class="block-sub">Reflexion · Übernacht-Aufgabe</div></div>
+    </div>
+    <div class="block-body">
+      <ul>
+        <li><strong>Blitzlicht:</strong> Mein wichtigster Satz vom heutigen Tag</li>
+        <li><strong>Übernacht-Aufgabe:</strong> Barometer heute Abend ausfüllen + eine Situation notieren</li>
+        <li><strong>Ausblick Tag 2:</strong> Was kommt morgen?</li>
+      </ul>
+      <div class="trainer-box">Übernacht-Aufgabe: "Beobachte heute Abend deinen eigenen Regulationszustand — und notiere eine Situation aus deiner Praxis die dich beschäftigt."</div>
+    </div>
+  </div>
+
+  <!-- TAG 2 -->
+  <div class="tag-header" style="margin-top:2rem;">
+    <span class="tag-badge" style="background:#6B3F6B;">Tag 2</span>
+    <div>
+      <div class="tag-titel">Vertiefung & Transfer</div>
+      <div class="tag-sub">09:00 – 16:00 Uhr · Praxis · Werkzeuge · Zertifikat</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">09:00 – 09:30</span>
+      <div><div class="block-titel">Check-in Tag 2</div><div class="block-sub">Übernacht-Aufgabe · Stimmung · Energie</div></div>
+    </div>
+    <div class="block-body">
+      <ul>
+        <li><strong>Barometer-Runde:</strong> Wo bin ich heute morgen?</li>
+        <li><strong>Übernacht-Aufgabe besprechen:</strong> Wer möchte teilen?</li>
+        <li><strong>Offene Fragen von gestern:</strong> Klären bevor wir weitermachen</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">09:30 – 11:00</span>
+      <div><div class="block-titel">Kinder verstehen — Modul 2</div><div class="block-sub">Neurobiologie · Diagnosen · Verhalten einordnen</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Verhalten von Kindern verstehen statt bewerten — konkret auf eigene Kinder anwenden.</div>
+      <ul>
+        <li><strong>Input Neurobiologie:</strong> Das Gehirn unter Stress — kurz und verständlich</li>
+        <li><strong>Diagnose-Karussell:</strong> ADHS · Autismus · Trauma · FAS — je 5 Minuten an Stationen</li>
+        <li><strong>Fallarbeit:</strong> Eigenes Kind anonymisiert — was verstehe ich jetzt anders?</li>
+        <li><strong>Zusammenführung:</strong> "Kann nicht anders" vs. "Will nicht"</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">🎠 Stationsarbeit</span><span class="methode">📖 M2-Karten</span><span class="methode">💬 Fallarbeit</span></div>
+    </div>
+  </div>
+
+  <div class="pause">☕ Pause 11:00 – 11:15 Uhr</div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">11:15 – 12:30</span>
+      <div><div class="block-titel">Kommunikation & schwierige Gespräche</div><div class="block-sub">M4 · Eltern · Lehrkräfte · Ich-Botschaften</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Klare, deeskalierende Kommunikation in schwierigen Situationen.</div>
+      <ul>
+        <li><strong>Input:</strong> Ich-Botschaften — warum und wie</li>
+        <li><strong>Übung:</strong> Du-Botschaften umformulieren</li>
+        <li><strong>Rollenspiel Elterngespräch:</strong> Mutter ist unzufrieden — was sage ich?</li>
+        <li><strong>Lehrkraft-Kommunikation:</strong> Kurze Absprachen, Beobachtungen weitergeben</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">🎭 Rollenspiel</span><span class="methode">✏️ Übung</span><span class="material">📋 M4-Karten</span></div>
+    </div>
+  </div>
+
+  <div class="pause">🍽️ Mittagspause 12:30 – 13:30 Uhr</div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">13:30 – 14:30</span>
+      <div><div class="block-titel">Selbstfürsorge & mein Lernpfad</div><div class="block-sub">M8 · Burnout-Prävention · Persönlicher Plan</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Jede INGRA hat einen konkreten Selbstfürsorge-Plan und kennt ihren Lernpfad.</div>
+      <ul>
+        <li><strong>Input M8:</strong> Warum Selbstfürsorge Professionalität ist</li>
+        <li><strong>Mein Warnsignal-Profil:</strong> Was zeigt mir dass es zu viel wird?</li>
+        <li><strong>Lernpfad aktivieren:</strong> Wochen 1–3 öffnen, Reflexion starten</li>
+        <li><strong>Peer-Paare:</strong> Lernpfad-Partnerin finden — gegenseitig unterstützen</li>
+      </ul>
+      <div style="margin-top:.5rem;"><span class="methode">🗺️ Lernpfad</span><span class="methode">👥 Peer-Paare</span><span class="material">📋 M8-Karten</span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">14:30 – 15:30</span>
+      <div><div class="block-titel">Praxis-Transfer & offene Fragen</div><div class="block-sub">Fallarbeit · Fragen · Nächste Schritte</div></div>
+    </div>
+    <div class="block-body">
+      <div class="ziel-box">Ziel: Alle gehen mit einem konkreten Plan für die nächste Woche nach Hause.</div>
+      <ul>
+        <li><strong>Offene Fälle:</strong> Wer hat eine konkrete Situation? — Gruppe berät</li>
+        <li><strong>Nächste Schritte:</strong> Was tue ich diese Woche konkret anders?</li>
+        <li><strong>TK-Kontakt:</strong> Wie erreiche ich meine Teamkoordination?</li>
+        <li><strong>Supervision:</strong> Wann und wie gibt es Unterstützung?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header">
+      <span class="block-zeit">15:30 – 16:00</span>
+      <div><div class="block-titel">Zertifikat & Abschluss</div><div class="block-sub">Reflexion · Feedback · Verabschiedung</div></div>
+    </div>
+    <div class="block-body">
+      <ul>
+        <li><strong>Abschlussrunde:</strong> Mein wichtigster Satz aus 2 Tagen</li>
+        <li><strong>Zertifikat-Übergabe:</strong> Teilnahmebestätigung 2-tägiger KLARTEXT-Workshop</li>
+        <li><strong>Feedback-Bogen:</strong> Für die Weiterentwicklung</li>
+        <li><strong>Ausblick Lernpfad:</strong> Wir sehen uns in Woche 4 zur Reflexion</li>
+        <li><strong>Herzliche Verabschiedung</strong></li>
+      </ul>
+      <div class="trainer-box">Trainer-Tipp: Zertifikat-Übergabe persönlich — jede:r kurz würdigen. Das bleibt in Erinnerung.</div>
+    </div>
+  </div>
+
+  <div class="abschluss">
+    <img src="brainy.png" alt="Brainy">
+    <div class="abschluss-text">
+      <div class="abschluss-titel">2 Tage. Ein Fundament. Eine Gemeinschaft.</div>
+      <div class="abschluss-sub">Der 2-Tages-Workshop gibt nicht nur Wissen — er gibt Sicherheit, Verbindung und einen Anfang der trägt.</div>
+    </div>
+  </div>
+
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;">
+  <a href="DASHBOARD-M3.html" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.1rem;">🎯</a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

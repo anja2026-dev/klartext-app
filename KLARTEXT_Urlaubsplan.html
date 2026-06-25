@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Urlaubsplan</title>
+<script>
+(function(){try{
+  if(window.location.protocol==='file:'){
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      sessionStorage.setItem('klartext_login','true');
+      sessionStorage.setItem('klartext_role','admin');
+    }return;
+  }
+  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#1B3A4B;--acc:#6EC6A0;--gold:#C47A00;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#1A1A2E;--muted:#6A6878;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
+.kt-header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid var(--acc);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:var(--acc);letter-spacing:.14em;display:block;margin-top:2px;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.72rem;font-weight:700;text-decoration:none;}
+.shell{max-width:900px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
+.hero{background:var(--m);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:.65rem;}
+.hero-stats{display:flex;gap:.4rem;flex-wrap:wrap;}
+.h-stat{background:rgba(255,255,255,.1);border-radius:8px;padding:.3rem .7rem;font-size:.7rem;color:rgba(255,255,255,.8);font-weight:600;}
+
+/* STEUERUNG */
+.steuerung{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1rem;margin-bottom:1rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:flex-end;}
+.fg label{font-size:.6rem;font-weight:700;color:var(--m);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.3rem;}
+.fi,.fsel{border:1.5px solid var(--border);border-radius:7px;padding:.4rem .65rem;font-family:"DM Sans",sans-serif;font-size:.82rem;color:var(--ink);background:var(--surface);outline:none;}
+.fi:focus,.fsel:focus{border-color:var(--m);}
+.btn{padding:.4rem 1rem;border-radius:7px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;border:none;cursor:pointer;}
+.btn-add{background:var(--m);color:#fff;}
+.btn-csv{background:var(--gold);color:#fff;}
+.btn-clear{background:#FDEAEA;color:#C62828;border:1.5px solid #F4A0A0;}
+
+/* LEGENDE */
+.legende{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem;}
+.leg-item{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted);}
+.leg-dot{width:14px;height:14px;border-radius:3px;}
+
+/* KALENDER */
+.kalender-wrap{overflow-x:auto;}
+.kalender{border-collapse:collapse;width:100%;min-width:700px;font-size:.75rem;}
+.kalender th{background:var(--m);color:#fff;padding:.45rem .3rem;text-align:center;font-weight:600;border:1px solid rgba(255,255,255,.1);position:sticky;top:64px;z-index:5;}
+.kalender th.monat{background:#2A4A5B;font-size:.65rem;letter-spacing:.08em;}
+.kalender td{padding:.35rem .25rem;text-align:center;border:1px solid var(--border);cursor:pointer;transition:all .1s;vertical-align:middle;min-width:28px;}
+.kalender td:hover{background:#EAF5F0;}
+.kalender td.urlaub{background:#6EC6A0;color:#fff;font-weight:700;}
+.kalender td.krank{background:#F4A0A0;color:#7A0000;font-weight:700;}
+.kalender td.schule-frei{background:#FBF4E8;color:#7A5318;}
+.kalender td.wochenende{background:#F5F0E8;color:var(--muted);}
+.kalender td.heute{outline:2.5px solid var(--m);outline-offset:-2px;}
+.kalender .ingra-name{background:#2A4A5B;color:var(--acc);font-size:.65rem;font-weight:700;padding:.3rem;text-align:left;}
+
+/* STATISTIK */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem;}
+.stat{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .75rem;text-align:center;}
+.stat-n{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:var(--m);display:block;}
+.stat-l{font-size:.62rem;color:var(--muted);}
+
+/* INGRAS VERWALTEN */
+.ingra-liste{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;margin-bottom:1rem;}
+.ingra-item{display:flex;align-items:center;gap:.5rem;padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.83rem;}
+.ingra-item:last-child{border-bottom:none;}
+.ingra-farbe{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+.ingra-del{background:none;border:none;color:var(--border);cursor:pointer;margin-left:auto;font-size:.85rem;}
+.ingra-del:hover{color:#C62828;}
+
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Urlaubsplan</span></div>
+  </div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+  <div class="hero">
+    <div class="hero-titel">🏖️ Urlaubsplan INGRA-Team</div>
+    <div class="hero-sub">Urlaub, Kranktage und schulfreie Tage auf einen Blick — für TK und Koordination.</div>
+    <div class="hero-stats">
+      <span class="h-stat" id="stat-jahr">2026</span>
+      <span class="h-stat">🟢 Urlaub</span>
+      <span class="h-stat">🔴 Krank</span>
+      <span class="h-stat">🟡 Schulfrei</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><span class="stat-n" id="s-urlaub">0</span><span class="stat-l">Urlaubstage gesamt</span></div>
+    <div class="stat"><span class="stat-n" id="s-krank">0</span><span class="stat-l">Kranktage gesamt</span></div>
+    <div class="stat"><span class="stat-n" id="s-frei">0</span><span class="stat-l">Schulfreie Tage</span></div>
+    <div class="stat"><span class="stat-n" id="s-ingras">0</span><span class="stat-l">INGRAs erfasst</span></div>
+  </div>
+
+  <!-- INGRA HINZUFÜGEN -->
+  <div class="steuerung">
+    <div class="fg">
+      <label>INGRA Name</label>
+      <input class="fi" type="text" id="ingra-name" placeholder="Name der INGRA" style="width:160px;">
+    </div>
+    <div class="fg">
+      <label>Farbe</label>
+      <input type="color" id="ingra-farbe" value="#3B8A68" style="height:34px;width:50px;border-radius:7px;border:1.5px solid var(--border);cursor:pointer;">
+    </div>
+    <button class="btn btn-add" onclick="addIngra()">+ INGRA hinzufügen</button>
+    <div class="fg" style="margin-left:auto;">
+      <label>Jahr</label>
+      <select class="fsel" id="jahr-select" onchange="renderKalender()">
+        <option value="2025">2025</option>
+        <option value="2026" selected>2026</option>
+        <option value="2027">2027</option>
+      </select>
+    </div>
+    <button class="btn btn-csv" onclick="exportCSV()">📥 Export CSV</button>
+    <button class="btn btn-clear" onclick="clearAll()">🗑️ Alle löschen</button>
+  </div>
+
+  <!-- INGRA LISTE -->
+  <div class="ingra-liste" id="ingra-liste">
+    <div style="font-size:.62rem;font-weight:700;color:var(--m);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;">INGRAs</div>
+    <div id="ingra-items"><div style="font-size:.8rem;color:var(--muted);">Noch keine INGRAs erfasst. Füge eine INGRA hinzu.</div></div>
+  </div>
+
+  <!-- LEGENDE -->
+  <div class="legende">
+    <span class="leg-item"><span class="leg-dot" style="background:#6EC6A0;"></span>Urlaub</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#F4A0A0;"></span>Krank</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#FBF4E8;border:1px solid #E0C88A;"></span>Schulfrei</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#F5F0E8;"></span>Wochenende</span>
+    <span class="leg-item" style="font-size:.72rem;color:var(--muted);">Klick auf Tag = Status wechseln</span>
+  </div>
+
+  <!-- KALENDER -->
+  <div class="kalender-wrap">
+    <table class="kalender" id="kalender"></table>
+  </div>
+</div>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;z-index:9999;">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<script>
+const MONATE = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const TAGE_LANG = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const STATUS = ['','urlaub','krank','schule-frei']; // leer = normal, dann rotieren
+
+function ladeD(){try{return JSON.parse(localStorage.getItem('up_data')||'{"ingras":[],"tage":{}}');}catch(e){return {"ingras":[],"tage":{}};}}
+function speichD(d){try{localStorage.setItem('up_data',JSON.stringify(d));}catch(e){}}
+
+function addIngra(){
+  var name=document.getElementById('ingra-name').value.trim();
+  var farbe=document.getElementById('ingra-farbe').value;
+  if(!name)return;
+  var d=ladeD();
+  d.ingras.push({id:Date.now(),name,farbe});
+  speichD(d);
+  document.getElementById('ingra-name').value='';
+  renderIngras();
+  renderKalender();
+  updateStats();
+}
+
+function delIngra(id){
+  if(!confirm('INGRA löschen?'))return;
+  var d=ladeD();
+  d.ingras=d.ingras.filter(i=>i.id!==id);
+  // Tage dieser INGRA löschen
+  Object.keys(d.tage).forEach(k=>{if(k.startsWith(id+'_'))delete d.tage[k];});
+  speichD(d);
+  renderIngras();
+  renderKalender();
+  updateStats();
+}
+
+function renderIngras(){
+  var d=ladeD();
+  var el=document.getElementById('ingra-items');
+  if(!d.ingras.length){el.innerHTML='<div style="font-size:.8rem;color:var(--muted);">Noch keine INGRAs erfasst.</div>';return;}
+  el.innerHTML=d.ingras.map(i=>`
+    <div class="ingra-item">
+      <span class="ingra-farbe" style="background:${i.farbe};"></span>
+      <span>${i.name}</span>
+      <button class="ingra-del" onclick="delIngra(${i.id})">✕</button>
+    </div>`).join('');
+  document.getElementById('s-ingras').textContent=d.ingras.length;
+}
+
+function toggleTag(ingraId, datum){
+  var d=ladeD();
+  var key=ingraId+'_'+datum;
+  var cur=STATUS.indexOf(d.tage[key]||'');
+  var next=STATUS[(cur+1)%STATUS.length];
+  if(next==='')delete d.tage[key];
+  else d.tage[key]=next;
+  speichD(d);
+  renderKalender();
+  updateStats();
+}
+
+function renderKalender(){
+  var d=ladeD();
+  var jahr=parseInt(document.getElementById('jahr-select').value);
+  var heute=new Date();
+  var tbl=document.getElementById('kalender');
+  if(!d.ingras.length){tbl.innerHTML='<tr><td style="padding:2rem;text-align:center;color:var(--muted);">Füge zuerst INGRAs hinzu.</td></tr>';return;}
+
+  // Header: Monate
+  var monatHeader='<tr><th style="min-width:80px;">INGRA</th>';
+  for(var m=0;m<12;m++){
+    var tageImMonat=new Date(jahr,m+1,0).getDate();
+    monatHeader+=`<th colspan="${tageImMonat}" class="monat">${MONATE[m]}</th>`;
+  }
+  monatHeader+='</tr>';
+
+  // Header: Tage
+  var tagHeader='<tr><th></th>';
+  for(var m=0;m<12;m++){
+    var tageImMonat=new Date(jahr,m+1,0).getDate();
+    for(var t=1;t<=tageImMonat;t++){
+      var d2=new Date(jahr,m,t);
+      var dow=d2.getDay();
+      tagHeader+=`<th style="${dow===0||dow===6?'background:#2E4A5B;':''} font-size:.6rem;padding:.2rem;">${t}</th>`;
+    }
+  }
+  tagHeader+='</tr>';
+
+  // INGRA Zeilen
+  var zeilen='';
+  d.ingras.forEach(ing=>{
+    zeilen+=`<tr><td class="ingra-name" style="background:${ing.farbe}22;color:${ing.farbe};border-left:3px solid ${ing.farbe};">${ing.name}</td>`;
+    for(var m=0;m<12;m++){
+      var tageImMonat=new Date(jahr,m+1,0).getDate();
+      for(var t=1;t<=tageImMonat;t++){
+        var d2=new Date(jahr,m,t);
+        var dow=d2.getDay();
+        var datum=`${jahr}-${String(m+1).padStart(2,'0')}-${String(t).padStart(2,'0')}`;
+        var isHeute=d2.toDateString()===heute.toDateString();
+        var status=d.tage[ing.id+'_'+datum]||'';
+        var cls=[status,dow===0||dow===6?'wochenende':'',isHeute?'heute':''].filter(Boolean).join(' ');
+        var sym=status==='urlaub'?'🌴':status==='krank'?'🤒':status==='schule-frei'?'☀️':'';
+        zeilen+=`<td class="${cls}" onclick="toggleTag(${ing.id},'${datum}')" title="${datum}">${sym}</td>`;
+      }
+    }
+    zeilen+='</tr>';
+  });
+
+  tbl.innerHTML=monatHeader+tagHeader+zeilen;
+}
+
+function updateStats(){
+  var d=ladeD();
+  var u=0,k=0,f=0;
+  Object.values(d.tage).forEach(v=>{
+    if(v==='urlaub')u++;
+    else if(v==='krank')k++;
+    else if(v==='schule-frei')f++;
+  });
+  document.getElementById('s-urlaub').textContent=u;
+  document.getElementById('s-krank').textContent=k;
+  document.getElementById('s-frei').textContent=f;
+  document.getElementById('s-ingras').textContent=d.ingras.length;
+}
+
+function exportCSV(){
+  var d=ladeD();
+  var rows=['INGRA,Datum,Status'];
+  Object.keys(d.tage).sort().forEach(k=>{
+    var [id,datum]=k.split('_');
+    var ing=d.ingras.find(i=>i.id==id);
+    if(ing)rows.push(`${ing.name},${datum},${d.tage[k]}`);
+  });
+  var blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='KLARTEXT_Urlaubsplan_'+new Date().getFullYear()+'.csv';a.click();
+}
+
+function clearAll(){
+  if(!confirm('Alle Daten löschen?'))return;
+  localStorage.removeItem('up_data');
+  renderIngras();renderKalender();updateStats();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderIngras();renderKalender();updateStats();
+});
+</script>
+</body>
+</html>

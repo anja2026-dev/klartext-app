@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Geheimschüler-Ausweis · KLARTEXT-Mentoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
+.nav{max-width:900px;margin:0 auto 10px;display:flex;gap:8px;}
+.nbtn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;background:white;border:1.5px solid #1a2e44;color:#1a2e44;text-decoration:none;}
+.dbtn{background:#7b5ea7;color:white;border:none;cursor:pointer;font-family:Arial;}
+.info{max-width:900px;margin:0 auto 14px;background:white;border-radius:10px;padding:10px 16px;font-size:12px;color:#555;display:flex;align-items:center;gap:10px;}
+.info img{width:32px;height:32px;object-fit:contain;flex-shrink:0;}
+.print-page{max-width:210mm;margin:0 auto;background:white;padding:8mm;display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;}
+.aus-karte{border:2px solid;border-radius:8px;padding:8mm 5mm;text-align:center;display:flex;flex-direction:column;align-items:center;page-break-inside:avoid;}
+.aus-brainy{width:46px;height:46px;object-fit:contain;margin-bottom:4mm;}
+.aus-titel{font-size:13px;font-weight:900;margin-bottom:3mm;}
+.aus-text{font-size:8.5px;line-height:1.5;color:#444;margin-bottom:3mm;flex:1;}
+.aus-linie{font-size:7.5px;color:#999;border-bottom:1px solid #ddd;width:90%;padding-bottom:2mm;margin-bottom:2mm;}
+.aus-badge{font-size:7px;font-weight:800;color:#fff;padding:1.5mm 3mm;border-radius:8px;margin-top:1mm;}
+@media print{.nav,.info{display:none!important;}body{background:white;padding:0;}.print-page{box-shadow:none;}@page{size:A4;margin:8mm;}}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+<div class="nav">
+  <a href="KLARTEXT_Downloads.html#kd" class="nbtn">← Downloads</a>
+  <button class="nbtn dbtn" onclick="window.print()">🖨 Drucken / PDF</button>
+</div>
+<div class="info"><img src="brainy.png" alt="Brainy"><span>🕵️ 12 Geheimschüler-Ausweise auf einer DIN A4-Seite — ausschneiden und bei Bedarf verteilen.</span></div>
+
+<div class="print-page">
+      <div class="aus-karte" style="border-color:#185fa5;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(200deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#185fa5;">Geheimschüler</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#185fa5;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#1d9e75;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(140deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#1d9e75;">Geheimschüler</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#1d9e75;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#7b5ea7;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(260deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#7b5ea7;">Geheimschülerin</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#7b5ea7;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#c8541a;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(20deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#c8541a;">Geheimschülerin</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#c8541a;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#185fa5;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(200deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#185fa5;">Geheimschüler</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#185fa5;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#1d9e75;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(140deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#1d9e75;">Geheimschüler</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#1d9e75;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#7b5ea7;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(260deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#7b5ea7;">Geheimschülerin</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#7b5ea7;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#c8541a;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(20deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#c8541a;">Geheimschülerin</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#c8541a;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#185fa5;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(200deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#185fa5;">Geheimschüler</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#185fa5;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#1d9e75;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(140deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#1d9e75;">Geheimschüler</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#1d9e75;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#7b5ea7;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(260deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#7b5ea7;">Geheimschülerin</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#7b5ea7;">Offizieller Ausweis</div>
+      </div>
+      <div class="aus-karte" style="border-color:#c8541a;">
+        <img src="brainy.png" class="aus-brainy" style="filter:hue-rotate(20deg) saturate(1.2);" alt="">
+        <div class="aus-titel" style="color:#c8541a;">Geheimschülerin</div>
+        <div class="aus-text">Ich habe heute alle Regeln befolgt, mich aktiv beteiligt und gut verhalten.<br><b>Meine INGRA ist stolz auf mich.</b></div>
+        <div class="aus-linie">Name: ________________</div>
+        <div class="aus-linie">Datum: ________________</div>
+        <div class="aus-badge" style="background:#c8541a;">Offizieller Ausweis</div>
+      </div>
+</div>
+
+</body>
+</html>

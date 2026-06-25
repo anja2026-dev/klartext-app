@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT MH Karte 06 Humor-Checkliste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root { --m3:#C47A00; --m3-dark:#7A4C00; --m3-light:#FDF4E3; --m3-border:#E8C878; }
+  .plain-list { list-style:none; display:flex; flex-direction:column; gap:.3rem; padding:0; }
+  .plain-list li { font-size:.88rem; color:var(--kt-muted); display:flex; align-items:flex-start; gap:.5rem; line-height:1.45; }
+  .plain-list li::before { content:"·"; font-weight:700; color:var(--m3); flex-shrink:0; }
+  .do-list,.dont-list { display:flex; flex-direction:column; gap:.3rem; }
+  .do-row,.dont-row { display:flex; gap:.5rem; font-size:.88rem; line-height:1.45; }
+  .do-row { color:var(--kt-muted); }
+  .dont-row { color:#9B2626; }
+  .ok-mark { color:#2D6A4F; font-weight:700; flex-shrink:0; }
+  .no-mark  { color:#C0392B; font-weight:700; flex-shrink:0; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:.85rem; }
+  .list-block { border-radius:var(--r-md); padding:.9rem 1rem; }
+  .list-block.gruen { background:#E8F5EE; border:1px solid #B7DFC9; }
+  .list-block.rot   { background:#FDECEA; border:1px solid #F1948A; }
+  .list-block-title { font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:.5rem; }
+  .list-block.gruen .list-block-title { color:#2D6A4F; }
+  .list-block.rot   .list-block-title { color:#C0392B; }
+  .list-block ul { list-style:none; display:flex; flex-direction:column; gap:.28rem; padding:0; }
+  .list-block li { font-size:.85rem; color:var(--kt-muted); display:flex; align-items:flex-start; gap:.45rem; line-height:1.4; }
+  .list-block.gruen li::before { content:"check"; color:#2D6A4F; font-weight:700; flex-shrink:0; }
+  .list-block.rot   li::before { content:"x"; color:#C0392B; font-weight:700; flex-shrink:0; }
+  .box-amber { background:var(--m3-light); border-left:4px solid var(--m3); }
+  .box-amber .box-text { color:var(--m3-dark); }
+  .beispiel-block { background:#F9F8F6; border:1px solid var(--kt-border); border-radius:var(--r-md); padding:.85rem 1rem; }
+  .beispiel-row { display:flex; flex-direction:column; gap:.45rem; }
+  .beispiel-item { font-size:.85rem; line-height:1.5; color:var(--kt-muted); display:flex; gap:.5rem; align-items:flex-start; }
+  .tag { font-size:.65rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.15rem .5rem; border-radius:4px; flex-shrink:0; margin-top:1px; }
+  .tag.ja    { background:#E8F5EE; color:#2D6A4F; border:1px solid #B7DFC9; }
+  .tag.nein  { background:#FDECEA; color:#C0392B; border:1px solid #F1948A; }
+  .tag.amber { background:var(--m3-light); color:var(--m3-dark); border:1px solid var(--m3-border); }
+  .checklist { list-style:none; display:flex; flex-direction:column; gap:.4rem; padding:0; }
+  .checklist li { font-size:.88rem; color:var(--kt-muted); line-height:1.45; display:flex; align-items:flex-start; gap:.6rem; }
+  .checklist li::before { content:"check-box"; font-size:.9rem; color:var(--m3); flex-shrink:0; margin-top:.05rem; }
+  .mikro-grid { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+  .mikro-tile { border:1.5px solid var(--m3-border); border-radius:var(--r-md); padding:.85rem 1rem; background:var(--m3-light); }
+  .mikro-tile.solo { grid-column:1/-1; }
+  .mikro-nr { font-size:.65rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--m3); margin-bottom:.25rem; }
+  .mikro-titel { font-size:.88rem; font-weight:500; color:var(--kt-ink); margin-bottom:.3rem; }
+  .mikro-desc { font-size:.82rem; color:var(--kt-muted); line-height:1.5; }
+  .notbremse-steps { display:flex; flex-direction:column; gap:0; }
+  .nb-step { display:flex; align-items:flex-start; gap:.75rem; }
+  .nb-left { display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:32px; }
+  .nb-kreis { width:28px; height:28px; border-radius:50%; background:var(--m3); color:#fff; font-size:.78rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .nb-linie { width:2px; min-height:18px; background:var(--m3-border); margin:2px 0; }
+  .nb-inhalt { padding-top:4px; padding-bottom:14px; }
+  .nb-inhalt strong { font-weight:500; font-size:.85rem; color:var(--m3-dark); display:block; margin-bottom:2px; }
+  .nb-inhalt span { font-size:.87rem; color:#333; line-height:1.5; }
+  .baro-matrix { display:flex; flex-direction:column; gap:.5rem; }
+  .baro-row { display:grid; grid-template-columns:auto 1fr 1fr; gap:.5rem .85rem; align-items:start; }
+  .baro-row-header { display:grid; grid-template-columns:auto 1fr 1fr; gap:.5rem .85rem; margin-bottom:.25rem; }
+  .baro-col-label { font-size:.65rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--kt-muted); }
+  .baro-dot-wrap { display:flex; align-items:center; gap:.5rem; padding-top:.2rem; }
+  .baro-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+  .baro-dot.gruen  { background:#2E7D47; }
+  .baro-dot.gelb   { background:#C49A00; }
+  .baro-dot.orange { background:#C45F1A; }
+  .baro-dot.rot    { background:#9B2626; }
+  .baro-dot.grau   { background:#6A6A6A; }
+  .baro-name { font-size:.78rem; font-weight:500; color:var(--kt-ink); }
+  .baro-cell { font-size:.82rem; color:var(--kt-muted); line-height:1.45; padding:.55rem .7rem; border-radius:var(--r-sm); }
+  .gruen-bg  { background:#E8F5EC; }
+  .gelb-bg   { background:#FDF8E1; }
+  .orange-bg { background:#FEF0E6; }
+  .rot-bg    { background:#FDECEA; }
+  .grau-bg   { background:#F2F2F2; }
+  @media(max-width:500px){ .two-col,.mikro-grid{ grid-template-columns:1fr; }
+    .baro-row,.baro-row-header{ grid-template-columns:auto 1fr; }
+    .baro-row .baro-cell:last-child,.baro-row-header .baro-col-label:last-child{ display:none; } }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()" aria-label="Zurueck">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Zurueck
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html" aria-label="KLARTEXT Dashboard">
+      <div class="kt-logo-mark" aria-hidden="true"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html" aria-label="Dashboard">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg><span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT &middot; Zusatzmodul &middot; Humor &amp; Leichtigkeit</div>
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">M-Humor</div>
+        <div class="karte-nr">Karte 06</div>
+        <h1 class="karte-titel" id="karte-titel">Humor-Checkliste</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">&#9989;</div>
+    </div>
+    <div class="karte-lead">Diese Checkliste hilft vor und nach dem Einsatz von Humor kurz innezuhalten.</div>
+    <div class="karte-body">
+      <div class="ab"><div class="ab-titel">Vor dem Einsatz kurz pruefen</div>
+      <ul class="checklist">
+        <li>Barometer des Kindes: gruen oder gelb?</li>
+        <li>Beziehung stabil, kein aktueller Konflikt?</li>
+        <li>Keine anderen Kinder die ausgeschlossen werden koennten?</li>
+        <li>Thema ist nicht sensibel: Familie, Diagnose, Koerper?</li>
+        <li>Ich selbst bin ruhig und nicht gestresst?</li>
+        <li>Ich lache ueber mich, nicht ueber das Kind?</li>
+      </ul></div>
+      <div class="ab"><div class="ab-titel">Nach dem Einsatz kurz reflektieren</div>
+      <ul class="checklist">
+        <li>Hat das Kind entspannt reagiert?</li>
+        <li>Hat die Situation sich positiv veraendert?</li>
+        <li>Habe ich eine Grenze ueberschritten? Wenn ja: Notbremse K4.</li>
+        <li>Was nehme ich fuer das naechste Mal mit?</li>
+      </ul></div>
+      <div class="box box-gruen" role="note"><div class="box-label">Merksatz</div>Wenn alle Punkte der Vor-Pruefung zutreffen ist Humor moeglich. Wenn auch nur einer fehlt: Pause. Leichtigkeit laesst sich nicht erzwingen.</div>
+      <div class="brainy-block">
+        <img src="brainy-mh.png" alt="Brainy">
+        <div class="brainy-block-text"><strong>Brainy erinnert:</strong> Guter Humor braucht keine Checkliste, aber Reflexion danach ist Gold wert.</div>
+      </div>
+    </div>
+    
+<nav class="karte-nav"><a class="nav-prev" href="MH-05_5_Mikro-Interventionen_mit_Humor.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 05</a><span class="spacer"></span><a class="nav-next" href="MH-07_Barometer-Matrix_Wann_passt_Humor.html">07 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
+<div class="karte-footer">
+      <span class="footer-links">Humor-Modul &middot; Karte 06 &middot; Notbremse K4</span>
+      <span class="footer-nr">06 / 8</span>
+    </div>
+  </article>
+</main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);" aria-label="Schnellnavigation">
+  <a href="DASHBOARD.html#search" aria-label="Suche" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" aria-label="Dashboard" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);-webkit-tap-highlight-color:transparent;">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

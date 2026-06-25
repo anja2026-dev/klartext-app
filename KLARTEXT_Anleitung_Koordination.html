@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Anleitung Koordination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;max-width:780px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.hero{background:#1B3A4B;border-radius:14px;padding:1.75rem 2rem;margin-bottom:1.75rem;display:flex;align-items:center;gap:1.25rem;}
+.logo-mark{width:52px;height:52px;border:2px solid #6EC6A0;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 7px;flex-shrink:0;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:18px;font-weight:700;color:#fff;line-height:1;}
+.lm-bars{display:flex;flex-direction:column;gap:2.5px;width:100%;}
+.lm-bars span{height:2px;border-radius:2px;background:#6EC6A0;display:block;}
+.hero-text .titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;color:#fff;display:block;}
+.hero-text .sub{font-size:.78rem;color:#6EC6A0;margin-top:.2rem;display:block;letter-spacing:.08em;}
+.hero-text .desc{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:.15rem;display:block;}
+
+/* LINK BOX */
+.link-box{background:#1B3A4B;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;}
+.link-box .icon{font-size:1.5rem;}
+.link-box .label{font-size:.6rem;font-weight:700;color:#6EC6A0;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem;}
+.link-box a{font-size:.95rem;font-weight:700;color:#fff;text-decoration:none;word-break:break-all;}
+.link-box .hint{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:.2rem;}
+
+/* ZUGÄNGE */
+.zugaenge{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem;}
+.zugang{background:#fff;border-radius:10px;border:1.5px solid #DDD8CE;padding:.85rem 1rem;}
+.zugang.tk{border-color:#7B1FA2;background:#F3E5F5;}
+.zugang.ingra{border-color:#6EC6A0;background:#EEF7F2;}
+.zugang-rolle{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;}
+.zugang-pw{font-size:1.1rem;font-weight:700;font-family:monospace;margin:.2rem 0;}
+.zugang-was{font-size:.72rem;color:#6A6878;line-height:1.6;margin-top:.3rem;}
+
+/* SEKTIONEN */
+.sek{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#1B3A4B;margin-bottom:.85rem;padding-bottom:.4rem;border-bottom:2px solid #DDD8CE;display:flex;align-items:center;gap:.5rem;}
+.sek-nr{width:26px;height:26px;border-radius:50%;background:#1B3A4B;color:#fff;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+p{font-size:.85rem;line-height:1.85;color:#3A3A4A;margin-bottom:.5rem;}
+p:last-child{margin-bottom:0;}
+ul{font-size:.85rem;line-height:1.85;color:#3A3A4A;padding-left:1.1rem;}
+ul li{margin-bottom:.2rem;}
+strong{color:#1B3A4B;}
+
+/* SCHRITTE */
+.schritt{display:flex;gap:.75rem;align-items:flex-start;margin:.4rem 0;}
+.schritt-nr{width:26px;height:26px;border-radius:50%;background:#C47A00;color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.schritt-text{font-size:.85rem;line-height:1.75;color:#2A2A3A;flex:1;}
+
+/* HINWEIS */
+.hinweis{background:#EAF5F0;border-left:3px solid #6EC6A0;border-radius:0 8px 8px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.82rem;color:#1A3A2A;line-height:1.75;}
+.warn{background:#FBF4E8;border-left:3px solid #C47A00;border-radius:0 8px 8px 0;padding:.65rem 1rem;margin:.5rem 0;font-size:.82rem;color:#5A3A00;line-height:1.75;}
+
+/* WAS SIEHT TK */
+.sicht-tabelle{width:100%;border-collapse:collapse;font-size:.82rem;margin:.5rem 0;}
+.sicht-tabelle th{background:#1B3A4B;color:#fff;padding:.45rem .75rem;text-align:left;font-size:.72rem;font-weight:700;}
+.sicht-tabelle td{padding:.4rem .75rem;border-bottom:1px solid #DDD8CE;color:#3A3A4A;vertical-align:top;}
+.sicht-tabelle tr:nth-child(even) td{background:#F5F0E8;}
+.check{color:#2E7D47;font-weight:700;}
+.kreuz{color:#C62828;font-weight:700;}
+
+.footer{text-align:center;font-size:.72rem;color:#9BB5C4;margin-top:2rem;padding-top:1rem;border-top:1px solid #DDD8CE;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo-mark"><div class="lm-k"></div><div class="lm-bars"><span></span><span></span><span></span></div></div>
+  <div class="hero-text">
+    <span class="titel">KLARTEXT · Anleitung</span>
+    <span class="sub">FÜR DIE KOORDINATION</span>
+    <span class="desc">Kathrin Elben · Leitung Schulbegleitdienst Ruhrgebiet-Hellweg</span>
+  </div>
+</div>
+
+<!-- LINK -->
+<div class="link-box">
+  <div class="icon">🔗</div>
+  <div>
+    <div class="label">Neuer Systemlink — bitte vormerken</div>
+    <a href="https://klartext-ingra.h9cyz7d9pj.workers.dev" target="_blank">
+      https://klartext-ingra.h9cyz7d9pj.workers.dev
+    </a>
+    <div class="hint">⚠️ Der alte Netlify-Link funktioniert nicht mehr — bitte diesen Link nutzen</div>
+  </div>
+</div>
+
+<!-- ZUGÄNGE -->
+<div class="sek">
+  <div class="sek-titel">🔑 Zugangsdaten</div>
+  <div class="zugaenge">
+    <div class="zugang tk">
+      <div class="zugang-rolle" style="color:#7B1FA2;">Teamkoordination (Dein Zugang)</div>
+      <div class="zugang-pw" style="color:#4A148C;">teamleitung</div>
+      <div class="zugang-was">Vollständiger Überblick · alle Module · Trainer-Materialien · Moderationsleitfäden · Urlaubsplan · Statistiken</div>
+    </div>
+    <div class="zugang ingra">
+      <div class="zugang-rolle" style="color:#2E7D47;">INGRA · Schulbegleitung</div>
+      <div class="zugang-pw" style="color:#1B4A2A;">ingra2026</div>
+      <div class="zugang-was">Dieses Passwort bekommen die Testpersonen — zum Weitergeben</div>
+    </div>
+  </div>
+  <div class="hinweis">Mit dem TK-Zugang siehst du alles was die INGRAs sehen — plus Trainer-Materialien, Moderationsleitfäden und Urlaubsplan. So kannst du die Testphase gut begleiten.</div>
+</div>
+
+<!-- WAS SIEHT TK -->
+<div class="sek">
+  <div class="sek-titel">👁️ Was siehst du im System?</div>
+  <table class="sicht-tabelle">
+    <tr><th>Bereich</th><th>TK</th><th>INGRA</th></tr>
+    <tr><td>Module M0–M8 (200+ Karten)</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>Barometer INGRA + Kind</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>8 Feuerwehr-Karten (Notfall)</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>Zeitkonto + Krankmeldung</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>Urlaubsplan (Team-Kalender)</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>Workbook + Lernhandbuch</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>Lernpfad INGRA (8+4 Wochen)</td><td class="check">✅</td><td class="check">✅</td></tr>
+    <tr><td>Workshop-Ablaufpläne</td><td class="check">✅</td><td class="kreuz">❌</td></tr>
+    <tr><td>Trainer-Ausbildung</td><td class="check">✅</td><td class="kreuz">❌</td></tr>
+    <tr><td>Moderationsleitfäden</td><td class="check">✅</td><td class="kreuz">❌</td></tr>
+    <tr><td>Fachbuch + Curriculum</td><td class="check">✅</td><td class="kreuz">❌</td></tr>
+  </table>
+</div>
+
+<!-- TESTPHASE -->
+<div class="sek">
+  <div class="sek-titel"><span class="sek-nr">1</span> So läuft die Testphase ab</div>
+  <div class="schritt">
+    <div class="schritt-nr">1</div>
+    <div class="schritt-text"><strong>Testpersonen benennen</strong> — 2–4 INGRAs die bereit sind das System auszuprobieren. Idealerweise unterschiedlich technikaffin.</div>
+  </div>
+  <div class="schritt">
+    <div class="schritt-nr">2</div>
+    <div class="schritt-text"><strong>Anja Jolk informiert</strong> — sie schickt jeder INGRA Zugangsdaten + persönliche E-Mail direkt.</div>
+  </div>
+  <div class="schritt">
+    <div class="schritt-nr">3</div>
+    <div class="schritt-text"><strong>Kurze Einweisung</strong> — Anja Jolk macht mit den INGRAs eine 30–45-minütige Einweisung (vor Ort oder per Video). Das erhöht die Qualität des Feedbacks deutlich.</div>
+  </div>
+  <div class="schritt">
+    <div class="schritt-nr">4</div>
+    <div class="schritt-text"><strong>Testphase 2–3 Wochen</strong> — INGRAs nutzen KLARTEXT im Schulalltag, wann immer es passt.</div>
+  </div>
+  <div class="schritt">
+    <div class="schritt-nr">5</div>
+    <div class="schritt-text"><strong>Feedback einsammeln</strong> — jede INGRA füllt das Feedback-Formular aus (ca. 10 Minuten). Liegt als PDF bei.</div>
+  </div>
+  <div class="schritt">
+    <div class="schritt-nr">6</div>
+    <div class="schritt-text"><strong>Auswertungsgespräch</strong> — Anja Jolk und Kathrin Elben besprechen die Ergebnisse und nächste Schritte.</div>
+  </div>
+</div>
+
+<!-- IHRE ROLLE -->
+<div class="sek">
+  <div class="sek-titel"><span class="sek-nr">2</span> Deine Rolle in der Testphase</div>
+  <ul>
+    <li><strong>Testpersonen benennen</strong> — das ist dein wichtigster Beitrag</li>
+    <li><strong>Intern kommunizieren</strong> — INGRAs wissen dass der Test mit deinem Segen läuft</li>
+    <li><strong>Offen bleiben für Rückmeldungen</strong> — wenn eine INGRA Fragen hat, darf sie sich auch an dich wenden</li>
+    <li><strong>Eigenen Zugang testen</strong> — schau gerne selbst rein, insbesondere Urlaubsplan und Übersicht</li>
+  </ul>
+  <div class="warn">Du musst nichts technisch einrichten, nichts installieren, nichts verwalten. KLARTEXT läuft komplett über den Browser — kein Aufwand für deine IT.</div>
+</div>
+
+<!-- DATENSCHUTZ -->
+<div class="sek">
+  <div class="sek-titel">🔒 Datenschutz — kurz erklärt</div>
+  <ul>
+    <li>KLARTEXT speichert <strong>keine personenbezogenen Daten</strong> auf Servern</li>
+    <li>Kein Nutzerkonto, kein Name, keine E-Mail nötig</li>
+    <li>Zeitkonto und Notizen bleiben <strong>nur auf dem Gerät der INGRA</strong></li>
+    <li>Hosting: Cloudflare Workers (EU-konform)</li>
+    <li>Vollständige Datenschutzerklärung im System unter "Impressum"</li>
+  </ul>
+  <div class="hinweis">KLARTEXT ist datenschutzärmer als eine normale Website mit Kontaktformular. Es gibt keinen Server der Nutzerdaten speichert.</div>
+</div>
+
+<!-- KONTAKT -->
+<div class="sek">
+  <div class="sek-titel">📬 Bei Fragen</div>
+  <p><strong>Anja Jolk</strong><br>
+  Systemische Beraterin und Coachin (SCGD/IHK)<br>
+  anja.jolk@gmx.de · +49 176 62311567</p>
+  <p style="margin-top:.5rem;">Bei technischen Fragen, Wünschen oder Anmerkungen — einfach melden. KLARTEXT wächst mit dem Feedback aus der Praxis.</p>
+</div>
+
+<div class="footer">
+  KLARTEXT Mentoring-System · © 2026 Anja Jolk · Schwerte<br>
+  https://klartext-ingra.h9cyz7d9pj.workers.dev
+</div>
+
+</body>
+</html>

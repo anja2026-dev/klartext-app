@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Träger-Präsentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --m:#1B3A4B;--m2:#2A5570;--accent:#6EC6A0;--gold:#B8922A;
+  --paper:#F5F0E8;--ink:#1A1A2E;--muted:#6A6878;--surface:#fff;
+  --border:#E0D8CC;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:#0F1923;color:var(--ink);}
+
+/* FOLIEN-CONTAINER */
+.slides{width:100%;max-width:960px;margin:0 auto;padding:1rem;}
+
+/* EINZELNE FOLIE */
+.slide{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin-bottom:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.5);position:relative;}
+
+/* NAV */
+.pres-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,25,35,.95);backdrop-filter:blur(10px);padding:.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);}
+.nav-logo{font-family:"Playfair Display",serif;font-size:.9rem;font-weight:700;color:var(--accent);}
+.nav-links{display:flex;gap:.5rem;}
+.nav-btn{padding:.3rem .7rem;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;border:none;font-family:"DM Sans",sans-serif;text-decoration:none;transition:all .15s;}
+.nav-print{background:var(--accent);color:var(--m);}
+.nav-back{background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);}
+
+/* FOLIE 1: COVER */
+.s1{background:linear-gradient(135deg,#0F2230 0%,#1B3A4B 50%,#2A5570 100%);display:flex;align-items:center;justify-content:center;padding:8%;}
+.s1-inner{text-align:center;position:relative;width:100%;}
+.s1-pre{font-size:.55rem;font-weight:700;color:var(--accent);letter-spacing:.3em;text-transform:uppercase;margin-bottom:.75rem;}
+.s1-titel{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:.5rem;}
+.s1-titel em{color:var(--accent);font-style:italic;}
+.s1-sub{font-size:clamp(.7rem,1.5vw,1rem);color:rgba(255,255,255,.5);margin-bottom:2rem;}
+.s1-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+.s1-stat{text-align:center;}
+.s1-stat-n{font-family:"Playfair Display",serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:700;color:var(--accent);display:block;}
+.s1-stat-l{font-size:.5rem;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;}
+.s1-deco{position:absolute;top:-10%;right:-5%;width:40%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(110,198,160,.08) 0%,transparent 70%);}
+
+/* FOLIE 2: PROBLEM */
+.s2{background:var(--paper);padding:6% 8%;display:flex;flex-direction:column;justify-content:center;}
+.slide-label{font-size:.5rem;font-weight:700;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem;}
+.slide-titel{font-family:"Playfair Display",serif;font-size:clamp(1.2rem,2.5vw,2rem);font-weight:700;color:var(--m);margin-bottom:1.2rem;line-height:1.2;}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.problem-item{background:#fff;border-radius:10px;padding:.85rem 1rem;border-left:3px solid #E57373;}
+.pi-titel{font-size:.72rem;font-weight:700;color:#C62828;margin-bottom:.25rem;}
+.pi-text{font-size:.65rem;color:var(--muted);line-height:1.6;}
+
+/* FOLIE 3: LÖSUNG */
+.s3{background:linear-gradient(135deg,var(--m) 0%,var(--m2) 100%);padding:6% 8%;display:flex;flex-direction:column;justify-content:center;}
+.loesung-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-top:.75rem;}
+.lg-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.85rem;}
+.lg-icon{font-size:1.2rem;margin-bottom:.4rem;}
+.lg-titel{font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.25rem;}
+.lg-text{font-size:.6rem;color:rgba(255,255,255,.5);line-height:1.5;}
+
+/* FOLIE 4: ZIELGRUPPEN */
+.s4{background:var(--surface);padding:6% 8%;display:flex;flex-direction:column;justify-content:center;}
+.zg-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-top:.75rem;}
+.zg-item{border-radius:10px;padding:.85rem .75rem;text-align:center;}
+.zg-emoji{font-size:1.5rem;display:block;margin-bottom:.4rem;}
+.zg-name{font-size:.65rem;font-weight:700;margin-bottom:.25rem;}
+.zg-desc{font-size:.58rem;color:var(--muted);line-height:1.5;}
+
+/* FOLIE 5: MODULE */
+.s5{background:var(--paper);padding:5% 8%;display:flex;flex-direction:column;justify-content:center;}
+.module-row{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-top:.75rem;}
+.mc{border-radius:8px;padding:.65rem .6rem;text-align:center;}
+.mc-id{font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.mc-name{font-size:.6rem;font-weight:600;color:var(--m);}
+
+/* FOLIE 6: LEISTUNGEN */
+.s6{background:linear-gradient(135deg,#1A2A3A 0%,var(--m) 100%);padding:6% 8%;display:flex;flex-direction:column;justify-content:center;}
+.leistung-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem;}
+.l-item{display:flex;gap:.65rem;align-items:flex-start;}
+.l-nr{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--m);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem;}
+.l-titel{font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.2rem;}
+.l-text{font-size:.6rem;color:rgba(255,255,255,.45);line-height:1.5;}
+
+/* FOLIE 7: ÜBER ANJA */
+.s7{background:var(--surface);padding:6% 8%;display:grid;grid-template-columns:160px 1fr;gap:5%;align-items:center;}
+.s7-foto{width:100%;aspect-ratio:3/4;border-radius:14px;object-fit:cover;object-position:center top;border:2px solid var(--accent);}
+.s7-foto-ph{width:100%;aspect-ratio:3/4;border-radius:14px;background:linear-gradient(135deg,var(--m),var(--m2));display:flex;align-items:center;justify-content:center;border:2px solid var(--accent);font-size:3rem;}
+.s7-name{font-family:"Playfair Display",serif;font-size:clamp(1rem,2vw,1.6rem);font-weight:700;color:var(--m);margin-bottom:.25rem;}
+.s7-rolle{font-size:.65rem;color:var(--muted);margin-bottom:.75rem;line-height:1.6;}
+.s7-wb{display:flex;flex-wrap:wrap;gap:.3rem;}
+.s7-tag{font-size:.55rem;padding:.15rem .45rem;border-radius:4px;background:var(--paper);color:var(--muted);border:1px solid var(--border);}
+
+/* FOLIE 8: KONTAKT */
+.s8{background:linear-gradient(135deg,var(--m) 0%,#0A1520 100%);display:flex;align-items:center;justify-content:center;padding:8%;text-align:center;}
+.s8-inner{}
+.s8-pre{font-size:.5rem;font-weight:700;color:var(--accent);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.5rem;}
+.s8-titel{font-family:"Playfair Display",serif;font-size:clamp(1.2rem,3vw,2.2rem);font-weight:700;color:#fff;margin-bottom:.5rem;}
+.s8-sub{font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:1.5rem;}
+.s8-kontakt{display:flex;flex-direction:column;gap:.5rem;align-items:center;}
+.s8-link{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border:1px solid rgba(110,198,160,.3);border-radius:6px;color:var(--accent);font-size:.72rem;font-weight:600;text-decoration:none;}
+
+/* FOLIE-NUMMER */
+.slide-nr{position:absolute;bottom:4%;right:4%;font-size:.5rem;color:rgba(255,255,255,.2);font-weight:600;}
+.slide-nr.dark{color:rgba(27,58,75,.25);}
+
+@media print{
+  body{background:white;}
+  .pres-nav{display:none!important;}
+  .slide{box-shadow:none;margin-bottom:0;page-break-after:always;border-radius:0;}
+  .slides{padding:0;max-width:100%;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<nav class="pres-nav">
+  <div class="nav-logo">KLARTEXT · Träger-Präsentation</div>
+  <div class="nav-links">
+    <button class="nav-btn nav-print" onclick="window.print()">🖨️ Drucken / PDF</button>
+    <a class="nav-btn nav-back" href="DASHBOARD.html">← Dashboard</a>
+  </div>
+</nav>
+
+<div style="height:52px;"></div>
+<div class="slides">
+
+<!-- FOLIE 1: COVER -->
+<div class="slide s1">
+  <div class="s1-deco"></div>
+  <div class="s1-inner">
+    <div class="s1-pre">Präsentation für Träger &amp; Bildungseinrichtungen</div>
+    <h1 class="s1-titel">KLARTEXT<br><em>Mentoring-System</em></h1>
+    <div class="s1-sub">Professionelle Schulbegleitung · Klar. Warm. Menschlich.</div>
+    <div class="s1-stats">
+      <div class="s1-stat"><span class="s1-stat-n">235+</span><span class="s1-stat-l">Lernkarten</span></div>
+      <div class="s1-stat"><span class="s1-stat-n">10</span><span class="s1-stat-l">E-Learning Module</span></div>
+      <div class="s1-stat"><span class="s1-stat-n">4</span><span class="s1-stat-l">Zielgruppen</span></div>
+      <div class="s1-stat"><span class="s1-stat-n">15+</span><span class="s1-stat-l">Jahre Erfahrung</span></div>
+    </div>
+  </div>
+  <div class="slide-nr">1 / 8</div>
+</div>
+
+<!-- FOLIE 2: PROBLEM -->
+<div class="slide s2">
+  <div class="slide-label">Ausgangssituation</div>
+  <h2 class="slide-titel">Was fehlt heute in der Schulbegleitung?</h2>
+  <div class="problem-grid">
+    <div class="problem-item">
+      <div class="pi-titel">Fehlende Standardisierung</div>
+      <div class="pi-text">Schulbegleitpersonen starten oft ohne einheitliche Ausbildung, ohne klare Werkzeuge — jede:r macht es anders.</div>
+    </div>
+    <div class="problem-item">
+      <div class="pi-titel">Hohe Fluktuation</div>
+      <div class="pi-text">Ohne professionelle Unterstützung und Struktur brennen viele Schulbegleitpersonen aus. Das belastet Kinder, Träger und Qualität.</div>
+    </div>
+    <div class="problem-item">
+      <div class="pi-titel">Kein gemeinsame Sprache</div>
+      <div class="pi-text">Schulbegleitung, Lehrkraft und Eltern arbeiten oft aneinander vorbei — klare Rollenabgrenzung fehlt.</div>
+    </div>
+    <div class="problem-item">
+      <div class="pi-titel">Wenig Reflexionskultur</div>
+      <div class="pi-text">Kaum strukturierte Supervision, Dokumentation oder Qualitätssicherung im Alltag.</div>
+    </div>
+  </div>
+  <div class="slide-nr dark">2 / 8</div>
+</div>
+
+<!-- FOLIE 3: LÖSUNG -->
+<div class="slide s3">
+  <div class="slide-label" style="color:var(--accent);">Die Lösung</div>
+  <h2 class="slide-titel" style="color:#fff;">KLARTEXT schließt diese Lücke</h2>
+  <div class="loesung-grid">
+    <div class="lg-item">
+      <div class="lg-icon">🧠</div>
+      <div class="lg-titel">Wissenschaftlich fundiert</div>
+      <div class="lg-text">Neurobiologie, Entwicklungspsychologie, Trauma-Pädagogik — alle Inhalte quellenbelegbar (73 Quellen, APA 7).</div>
+    </div>
+    <div class="lg-item">
+      <div class="lg-icon">🎯</div>
+      <div class="lg-titel">Praxisorientiert</div>
+      <div class="lg-text">Entwickelt aus 15+ Jahren direkter Arbeit mit Kindern mit besonderem Förderbedarf.</div>
+    </div>
+    <div class="lg-item">
+      <div class="lg-icon">📱</div>
+      <div class="lg-titel">Digital & flexibel</div>
+      <div class="lg-text">Lokal oder online nutzbar. Kein Abo, keine App — einfaches HTML-System das überall läuft.</div>
+    </div>
+    <div class="lg-item">
+      <div class="lg-icon">🔄</div>
+      <div class="lg-titel">Vollständig</div>
+      <div class="lg-text">Von der Einarbeitung bis zum Zertifikat — Schulung, E-Learning, Praxis-Tools und Nachschlagewerk in einem.</div>
+    </div>
+    <div class="lg-item">
+      <div class="lg-icon">👥</div>
+      <div class="lg-titel">Für alle Beteiligten</div>
+      <div class="lg-text">Eigene Materialien für INGRA, Lehrkräfte, Eltern und Teamkoordination.</div>
+    </div>
+    <div class="lg-item">
+      <div class="lg-icon">📜</div>
+      <div class="lg-titel">Zertifizierbar</div>
+      <div class="lg-text">Abschluss mit offiziellem KLARTEXT-Zertifikat für E-Learning und Präsenzkurs.</div>
+    </div>
+  </div>
+  <div class="slide-nr">3 / 8</div>
+</div>
+
+<!-- FOLIE 4: ZIELGRUPPEN -->
+<div class="slide s4">
+  <div class="slide-label">Zielgruppen</div>
+  <h2 class="slide-titel">KLARTEXT begleitet alle Beteiligten</h2>
+  <div class="zg-row">
+    <div class="zg-item" style="background:#EAF0F4;">
+      <span class="zg-emoji">🟢</span>
+      <div class="zg-name" style="color:#1B3A4B;">INGRA · Schulbegleitung</div>
+      <div class="zg-desc">10 Module · 40 Tools · E-Learning · Zertifikat</div>
+    </div>
+    <div class="zg-item" style="background:#E3F0FF;">
+      <span class="zg-emoji">🏫</span>
+      <div class="zg-name" style="color:#1565C0;">Lehrkräfte</div>
+      <div class="zg-desc">5-Kapitel-Kurs · Zuständigkeiten · Krise</div>
+    </div>
+    <div class="zg-item" style="background:#FCE4EC;">
+      <span class="zg-emoji">❤️</span>
+      <div class="zg-name" style="color:#AD1457;">Eltern</div>
+      <div class="zg-desc">6 Kapitel · Einfache Sprache · Rechte</div>
+    </div>
+    <div class="zg-item" style="background:#F3E5F5;">
+      <span class="zg-emoji">🗂️</span>
+      <div class="zg-name" style="color:#4A148C;">Teamkoordination</div>
+      <div class="zg-desc">6 TK-Karten · Koordination · § 8a</div>
+    </div>
+  </div>
+  <div class="slide-nr dark">4 / 8</div>
+</div>
+
+<!-- FOLIE 5: MODULE -->
+<div class="slide s5">
+  <div class="slide-label">Systemübersicht</div>
+  <h2 class="slide-titel">10 Module · 33 E-Learning Lerneinheiten · 235+ Karten</h2>
+  <div class="module-row">
+    <div class="mc" style="background:#EAF0F4;">
+      <div class="mc-id" style="color:#1B3A4B;">M-00</div>
+      <div class="mc-name">Systemelemente</div>
+    </div>
+    <div class="mc" style="background:#EAF1F8;">
+      <div class="mc-id" style="color:#2E5E8A;">M-01</div>
+      <div class="mc-name">Recht &amp; Rolle</div>
+    </div>
+    <div class="mc" style="background:#EEF7F2;">
+      <div class="mc-id" style="color:#3B8A68;">M-02</div>
+      <div class="mc-name">Kinder verstehen</div>
+    </div>
+    <div class="mc" style="background:#FBF4E8;">
+      <div class="mc-id" style="color:#B07D2A;">M-03</div>
+      <div class="mc-name">Werkzeugkasten</div>
+    </div>
+    <div class="mc" style="background:#F3EEF9;">
+      <div class="mc-id" style="color:#5D3A7A;">M-04</div>
+      <div class="mc-name">Kommunikation</div>
+    </div>
+    <div class="mc" style="background:#FBF0EA;">
+      <div class="mc-id" style="color:#B7500A;">M-05</div>
+      <div class="mc-name">Dokumentation</div>
+    </div>
+    <div class="mc" style="background:#FDE8F1;">
+      <div class="mc-id" style="color:#D81B60;">M-06</div>
+      <div class="mc-name">Krise &amp; Mobbing</div>
+    </div>
+    <div class="mc" style="background:#F7EFED;">
+      <div class="mc-id" style="color:#8B4A38;">M-07</div>
+      <div class="mc-name">Praxissituationen</div>
+    </div>
+    <div class="mc" style="background:#F3EDF3;">
+      <div class="mc-id" style="color:#6B3F6B;">M-08</div>
+      <div class="mc-name">Selbstfürsorge</div>
+    </div>
+    <div class="mc" style="background:#FDF4E3;">
+      <div class="mc-id" style="color:#C47A00;">M-H</div>
+      <div class="mc-name">Humor</div>
+    </div>
+  </div>
+  <div class="slide-nr dark">5 / 8</div>
+</div>
+
+<!-- FOLIE 6: LEISTUNGEN FÜR TRÄGER -->
+<div class="slide s6">
+  <div class="slide-label" style="color:var(--accent);">Für Träger</div>
+  <h2 class="slide-titel" style="color:#fff;">Was KLARTEXT Ihrer Einrichtung bietet</h2>
+  <div class="leistung-grid">
+    <div class="l-item">
+      <div class="l-nr">1</div>
+      <div><div class="l-titel">Standardisierte Einarbeitung</div><div class="l-text">Neue Schulbegleitpersonen starten mit demselben Wissensstand — strukturiert, dokumentiert, zertifiziert.</div></div>
+    </div>
+    <div class="l-item">
+      <div class="l-nr">2</div>
+      <div><div class="l-titel">Qualitätssicherung</div><div class="l-text">Einheitliche Werkzeuge, Dokumentationsstandards und ein gemeinsames Vokabular für das gesamte Team.</div></div>
+    </div>
+    <div class="l-item">
+      <div class="l-nr">3</div>
+      <div><div class="l-titel">Reduktion von Fluktuation</div><div class="l-text">Professionell begleitete Mitarbeitende bleiben länger. KLARTEXT stärkt Selbstwirksamkeit und Selbstfürsorge.</div></div>
+    </div>
+    <div class="l-item">
+      <div class="l-nr">4</div>
+      <div><div class="l-titel">Rechtssicherheit</div><div class="l-text">§ 8a, Schweigepflicht, Dokumentationspflichten — alles klar erklärt und im Alltag verankert.</div></div>
+    </div>
+    <div class="l-item">
+      <div class="l-nr">5</div>
+      <div><div class="l-titel">Lizenzierbar</div><div class="l-text">KLARTEXT kann als Lizenz für Ihre Einrichtung erworben werden — für beliebig viele Mitarbeitende.</div></div>
+    </div>
+    <div class="l-item">
+      <div class="l-nr">6</div>
+      <div><div class="l-titel">Anpassbar</div><div class="l-text">Das System kann auf Ihre Einrichtung zugeschnitten werden — Farben, Logo, spezifische Inhalte.</div></div>
+    </div>
+  </div>
+  <div class="slide-nr">6 / 8</div>
+</div>
+
+<!-- FOLIE 7: ÜBER ANJA -->
+<div class="slide s7">
+  <div>
+    <img src="anja.jpg" alt="Anja Jolk" class="s7-foto"
+         onerror="this.outerHTML='<div class=\'s7-foto-ph\'>👩</div>'">
+  </div>
+  <div>
+    <div class="slide-label">Die Trainerin</div>
+    <div class="s7-name">Anja Jolk</div>
+    <div class="s7-rolle">Trainerin · Systemische Beraterin und Coachin (SCGD/IHK) IHK · Lerntherapeutin<br>Konzeption &amp; Entwicklung KLARTEXT · Schwerte, NRW</div>
+    <div style="font-size:.65rem;color:var(--muted);line-height:1.75;margin-bottom:.75rem;">Über 15 Jahre direkte Arbeit mit Kindern mit besonderem Förderbedarf als Integrationskraft (Lebenshilfe), Vertretungslehrerin (Land NRW) und Koordinatorin. KLARTEXT entstand aus der Praxis — für die Praxis.</div>
+    <div class="s7-wb">
+      <span class="s7-tag">Systemische Beratung IHK</span>
+      <span class="s7-tag">Integrative Lerntherapie IFLW</span>
+      <span class="s7-tag">Kinderschutz Uni-Klinikum</span>
+      <span class="s7-tag">Fachkraft Integrationspädagogik</span>
+      <span class="s7-tag">Erwachsenenbildung IU</span>
+      <span class="s7-tag">Montessori-Pädagogik</span>
+      <span class="s7-tag">Body'n'Brain-Trainerin®</span>
+      <span class="s7-tag">GFK nach Rosenberg</span>
+    </div>
+  </div>
+  <div class="slide-nr dark">7 / 8</div>
+</div>
+
+<!-- FOLIE 8: KONTAKT -->
+<div class="slide s8">
+  <div class="s8-inner">
+    <div class="s8-pre">Jetzt Gespräch vereinbaren</div>
+    <h2 class="s8-titel">Interesse an KLARTEXT<br>für Ihre Einrichtung?</h2>
+    <div class="s8-sub">Ich freue mich auf Ihre Anfrage — per E-Mail oder Telefon.</div>
+    <div class="s8-kontakt">
+      <a class="s8-link" href="mailto:anja.jolk@gmx.de">✉️ anja.jolk@gmx.de</a>
+      <a class="s8-link" href="tel:+4917662311567">📞 +49 176 62311567</a>
+      <span style="font-size:.58rem;color:rgba(255,255,255,.2);margin-top:.5rem;">📍 Schwerte, Nordrhein-Westfalen</span>
+    </div>
+  </div>
+  <div class="slide-nr">8 / 8</div>
+</div>
+
+</div><!-- /slides -->
+</body>
+</html>

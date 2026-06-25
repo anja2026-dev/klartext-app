@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT LK-04 Elterngespräche gemeinsam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+:root{--m3:#1565C0;--m3-dark:#E3F0FF;--m3-light:#E3F0FF;--m3-border:#BBDEFB;}
+</style>
+
+
+<style>
+@media(max-width:600px){
+  .karte{border-radius:0;margin:0;}
+  .karte-header{padding:.9rem 1rem;}
+  .karte-titel{font-size:1.1rem;}
+  .karte-lead{font-size:.88rem;padding:.65rem 1rem;}
+  .karte-body{padding:.75rem 1rem;}
+  .ab{margin-bottom:.85rem;}
+  .ab-titel{font-size:.68rem;}
+  .ab ul li{font-size:.84rem;}
+  .karte-icon-wrap{font-size:1.8rem;width:44px;height:44px;}
+  .brainy-block{flex-direction:column;gap:.5rem;}
+  .brainy-block img{width:36px;height:36px;}
+  .karte-footer{padding:.5rem 1rem;font-size:.65rem;}
+  .karte-nav{padding:.3rem 1rem;}
+  .zwei-sp{grid-template-columns:1fr!important;}
+  .box{padding:.65rem .85rem;font-size:.82rem;}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header">
+  <div class="kt-header-inner">
+    <a class="kt-back-btn" href="javascript:history.back()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Zurück
+    </a>
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark" aria-hidden="true"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+    </a>
+    <a class="kt-home-btn" href="DASHBOARD.html">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg><span>Dashboard</span>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" style="font-size:.65rem;color:rgba(255,255,255,.5);text-decoration:none;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:20px;white-space:nowrap;flex-shrink:0;">⬅ Logout</a>
+  </div>
+</header>
+<div class="kt-context" aria-hidden="true">KLARTEXT &middot; Lehrkraft-Karten</div>
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">LK</div>
+        <div class="karte-nr">Karte 04</div>
+        <h1 class="karte-titel" id="karte-titel">Elterngespräche gemeinsam</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">👨‍👩‍👧</div>
+    </div>
+    <div class="karte-lead">Vorbereitung — Rollen — schwierige Momente — Elterngespräche bei Schulbegleitung sind komplexer als reguläre Gespräche. Klare Rollenverteilung schützt alle — und verhindert Widersprüche die Eltern verunsichern.</div>
+    <div class="karte-body">
+      <div class="ab"><div class="ab-titel">Wer spricht worüber?</div>
+      <ul><li><strong>Lehrkraft:</strong> Schulische Leistung, Noten, Verhalten in der Klasse</li>
+      <li><strong>INGRA:</strong> Beobachtungen aus der Begleitung, Barometer, eingesetzte Werkzeuge</li>
+      <li><strong>Gemeinsam:</strong> Krisenberichte, nächste Schritte</li>
+      <li><strong>Über TK:</strong> Hilfeplan, Kosten, Zuständigkeiten</li></ul></div>
+      <div class="ab"><div class="ab-titel">Vorbereitung</div>
+      <ul><li>Kurze Vorbesprechung mit INGRA vor dem Termin</li>
+      <li>Themen aufteilen — keine Überraschungen</li>
+      <li>Einheitliche Linie — kein Widerspruch vor Eltern</li>
+      <li>TK einbeziehen bei Hilfeplan-Themen</li></ul></div>
+      <div class="brainy-block">
+        <img src="brainy-lk.png" alt="Brainy">
+        <div class="brainy-block-text"><strong>Brainy erinnert:</strong> Was LK und INGRA gemeinsam sagen, muss vorher abgestimmt sein.</div>
+      </div>
+    </div>
+    <!-- VOR / ZURÜCK NAVIGATION -->
+<nav class="karte-nav"><a class="nav-prev" href="LK-03.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 03</a><span class="spacer"></span><a class="nav-next" href="LK-05.html">05 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
+<div class="karte-footer">
+      <span class="footer-links">LK &middot; Karte 04 &middot; <a href="DASHBOARD.html">Dashboard</a></span>
+      <span class="footer-nr">04 / 15</span>
+    </div>
+  </article>
+</main>
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html#search" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6EC6A0" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+  </a>
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+<footer role="contentinfo">
+  <strong>KLARTEXT</strong> &middot; Lehrkraft-Karten &middot; Karte 04 &middot; Elterngespräche gemeinsam
+  <span class="footer-copy">Alle Rechte vorbehalten &middot; KLARTEXT-Mentoring-System</span>
+</footer>
+
+<style>
+.logout-fab{display:none;}
+@media(max-width:768px){.logout-fab{display:flex!important;}}
+</style>
+<a class="logout-fab" 
+   href="KLARTEXT_Landing.html" 
+   onclick="try{sessionStorage.clear();}catch(e){}"
+   style="position:fixed;bottom:5.5rem;right:1rem;
+          align-items:center;justify-content:center;
+          width:44px;height:44px;border-radius:50%;
+          background:#C62828;color:#fff;
+          font-size:.85rem;font-weight:700;
+          text-decoration:none;
+          box-shadow:0 4px 16px rgba(198,40,40,.4);
+          z-index:9999;
+          -webkit-transform:translateZ(0);transform:translateZ(0);"
+   title="Logout">⬅</a>
+
+<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
+  <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+</body>
+</html>

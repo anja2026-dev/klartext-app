@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT LK-Karte ADHS und Ausbildungsreife für Lehrkräfte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root {
+    --lk:#1B3A4B; --lk-accent:#6EC6A0; --lk-light:#f0f9f5; --lk-border:#a8dcc5;
+    --kt-muted:#4a5568; --r-md:8px;
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:#f0f4f8; min-height:100vh; }
+
+  .kt-header { background:var(--lk); padding:.6rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+  .kt-back-btn { display:flex; align-items:center; gap:.3rem; color:rgba(255,255,255,.75); font-size:.72rem; font-weight:600; text-decoration:none; }
+  .kt-back-btn svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; }
+  .kt-logo-text .wort { font-family:'Playfair Display',serif; font-weight:700; color:#fff; font-size:.9rem; display:block; }
+  .kt-logo-text .claim { font-size:.6rem; color:rgba(255,255,255,.55); display:block; }
+  .kt-logo { display:flex; align-items:center; gap:.5rem; text-decoration:none; }
+  .kt-home-btn { display:flex; align-items:center; gap:.25rem; color:rgba(255,255,255,.65); font-size:.68rem; text-decoration:none; }
+  .kt-home-btn svg { width:14px; height:14px; fill:currentColor; }
+  .header-right { display:flex; align-items:center; gap:.35rem; }
+  .btn-small { padding:.22rem .55rem; border:1px solid rgba(255,255,255,.2); border-radius:20px; color:rgba(255,255,255,.65); font-size:.65rem; font-weight:600; text-decoration:none; }
+
+  .kt-context { background:var(--lk-light); border-bottom:1px solid var(--lk-border); padding:.3rem 1rem; font-size:.67rem; color:var(--lk); font-weight:600; letter-spacing:.04em; }
+
+  /* LK-Karten haben ein leicht anderes Layout — kompakt, direkt, weitergabefähig */
+  .karte { background:#fff; border-radius:10px; margin:.75rem auto; max-width:600px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.08); }
+  .karte-stripe { height:4px; background:var(--lk-accent); }
+
+  .karte-header { background:var(--lk); padding:.85rem 1rem .8rem; display:flex; align-items:flex-start; justify-content:space-between; gap:.75rem; }
+  .karte-meta-wrap { flex:1; }
+  .lk-tag { display:inline-block; background:var(--lk-accent); color:var(--lk); font-size:.65rem; font-weight:700; letter-spacing:.08em; padding:.15rem .55rem; border-radius:12px; margin-bottom:.35rem; }
+  .karte-nr { font-size:.68rem; color:rgba(255,255,255,.65); margin-bottom:.2rem; }
+  .karte-titel { font-family:'Playfair Display',serif; font-weight:700; font-size:1.1rem; color:#fff; line-height:1.25; }
+  .karte-untertitel { font-size:.78rem; color:rgba(255,255,255,.65); margin-top:.25rem; font-style:italic; }
+  .karte-icon-wrap { font-size:2rem; width:48px; height:48px; background:rgba(110,198,160,.15); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+  /* Weitergabe-Badge */
+  .weitergabe-badge { background:var(--lk-accent); color:var(--lk); font-size:.65rem; font-weight:700; padding:.18rem .6rem; border-radius:12px; display:inline-flex; align-items:center; gap:.3rem; margin:.5rem 1rem 0; }
+
+  .karte-body { padding:.85rem 1rem; display:flex; flex-direction:column; gap:.8rem; }
+
+  .ab { }
+  .ab-titel { font-size:.68rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--lk); margin-bottom:.4rem; border-bottom:1.5px solid var(--lk-border); padding-bottom:.25rem; }
+
+  /* Info-Box: was LK sieht */
+  .info-box { background:var(--lk-light); border:1px solid var(--lk-border); border-radius:var(--r-md); padding:.7rem .9rem; }
+  .info-box p { font-size:.86rem; color:#1B3A4B; line-height:1.55; }
+  .info-box strong { color:var(--lk); }
+
+  .plain-list { list-style:none; display:flex; flex-direction:column; gap:.3rem; }
+  .plain-list li { font-size:.86rem; color:var(--kt-muted); display:flex; align-items:flex-start; gap:.5rem; line-height:1.45; }
+  .plain-list li::before { content:"·"; font-weight:700; color:var(--lk-accent); flex-shrink:0; }
+
+  /* Beobachtungen */
+  .beob-grid { display:grid; grid-template-columns:1fr 1fr; gap:.45rem; }
+  .beob-pill { background:#f7f9fa; border:1px solid #dde3e8; border-radius:var(--r-md); padding:.5rem .7rem; }
+  .beob-pill .bp-icon { font-size:1rem; display:block; margin-bottom:.15rem; }
+  .beob-pill .bp-text { font-size:.81rem; color:var(--kt-muted); line-height:1.35; }
+
+  /* Handlungshinweis */
+  .hinweis-nr { display:flex; gap:.65rem; align-items:flex-start; margin-bottom:.4rem; }
+  .h-nr { width:22px; height:22px; background:var(--lk); color:#fff; border-radius:50%; font-size:.72rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:.05rem; }
+  .h-text { font-size:.86rem; color:var(--kt-muted); line-height:1.45; }
+  .h-text strong { color:var(--lk); }
+
+  /* Merksatz-Banner */
+  .merksatz-banner { background:var(--lk); padding:.85rem 1.25rem; }
+  .merksatz-banner p { font-size:.88rem; font-weight:700; color:#fff; line-height:1.35; font-style:italic; }
+  .merksatz-banner .mb-sub { font-size:.76rem; color:var(--lk-accent); font-weight:400; font-style:normal; margin-top:.3rem; display:block; }
+
+  /* Kontakt-Box */
+  .kontakt-box { background:var(--lk-light); border:1px solid var(--lk-border); border-radius:var(--r-md); padding:.65rem .9rem; }
+  .kontakt-box .k-label { font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lk); margin-bottom:.35rem; }
+  .kontakt-box ul { list-style:none; display:flex; flex-direction:column; gap:.28rem; }
+  .kontakt-box li { font-size:.83rem; color:var(--kt-muted); display:flex; align-items:flex-start; gap:.5rem; line-height:1.4; }
+  .kontakt-box li::before { content:"→"; color:var(--lk-accent); flex-shrink:0; font-weight:700; }
+
+  /* Quellen */
+  .quellen-block { border-top:1px solid var(--lk-border); padding-top:.55rem; }
+  .quellen-block .q-label { font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:.3rem; }
+  .quellen-block p { font-size:.72rem; color:#94a3b8; line-height:1.45; }
+
+  .karte-nav { display:flex; align-items:center; justify-content:space-between; padding:.4rem 1rem; background:var(--lk-light); border-top:1px solid var(--lk-border); }
+  .karte-nav a { font-size:.75rem; font-weight:700; color:var(--lk); text-decoration:none; display:flex; align-items:center; gap:.2rem; }
+  .karte-nav .spacer { flex:1; }
+  .karte-footer { display:flex; justify-content:space-between; align-items:center; padding:.35rem 1rem; background:var(--lk-light); font-size:.65rem; color:#94a3b8; }
+
+  .fab-group { position:fixed; bottom:1.25rem; right:1rem; display:flex; flex-direction:column; gap:.55rem; z-index:9999; }
+  .fab { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 4px 16px rgba(0,0,0,.2); }
+  .fab-lk { background:var(--lk); border:2px solid var(--lk-accent); }
+
+  footer[role=contentinfo] { text-align:center; padding:.75rem 1rem 4rem; font-size:.67rem; color:#94a3b8; line-height:1.6; }
+  .footer-copy { display:block; margin-top:.2rem; }
+
+  @media(max-width:500px){
+    .karte { border-radius:0; margin:0; }
+    .karte-body { padding:.75rem .9rem; }
+    .beob-grid { grid-template-columns:1fr; }
+  }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<header class="kt-header">
+  <a class="kt-back-btn" href="javascript:history.back()">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Zurück
+  </a>
+  <a class="kt-logo" href="DASHBOARD.html">
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+  </a>
+  <div class="header-right">
+    <a class="kt-home-btn" href="DASHBOARD.html">
+      <svg viewBox="0 0 16 16"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" class="btn-small">⬅ Logout</a>
+  </div>
+</header>
+
+<div class="kt-context">KLARTEXT · Lehrkraft-Karte · Weitergabefähig · Kein Login erforderlich</div>
+
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="lk-tag">🏫 Lehrkraft-Karte</div>
+        <div class="karte-nr">LK-17 · Übergang Schule → Beruf</div>
+        <h1 class="karte-titel" id="karte-titel">ADHS &amp; Ausbildungsreife</h1>
+        <div class="karte-untertitel">Was Sie wissen und tun können</div>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">👩‍🏫</div>
+    </div>
+
+    <div class="weitergabe-badge">📤 Zum Weitergeben — kein Login nötig</div>
+
+    <div class="karte-body">
+
+      <!-- Kurzinfo -->
+      <div class="ab">
+        <div class="ab-titel">Kurzinfo</div>
+        <div class="info-box">
+          <p>Jugendliche mit ADHS sind ausbildungsreif — aber oft nicht auf dem Weg, den das Notenbild zeigt. Die Hirnreifung verläuft bei ADHS mit einer <strong>Verzögerung von etwa 3 Jahren</strong> (Shaw et al., 2007): Was wie Unreife aussieht, ist oft ein Entwicklungsabstand, der sich schließt. Pünktlichkeit, Heftführung und Selbstorganisation sind nicht Ausdruck von Unwilligkeit, sondern von noch nicht vollständig gereiften Exekutivfunktionen. Diese Jugendlichen brauchen externe Unterstützung — bis die eigene Selbststeuerung greift (Barkley, 2012).</p>
+        </div>
+      </div>
+
+      <!-- Was LK sieht -->
+      <div class="ab">
+        <div class="ab-titel">Was Sie im Schulalltag sehen</div>
+        <div class="beob-grid">
+          <div class="beob-pill">
+            <span class="bp-icon">📋</span>
+            <span class="bp-text">Aufgaben, Materialien, Termine werden vergessen — obwohl das Kind es „weiß"</span>
+          </div>
+          <div class="beob-pill">
+            <span class="bp-icon">🔀</span>
+            <span class="bp-text">Manchmal stundenlang konzentriert — dann plötzlich gar nicht mehr</span>
+          </div>
+          <div class="beob-pill">
+            <span class="bp-icon">📄</span>
+            <span class="bp-text">Bewerbungsunterlagen kommen spät oder unvollständig</span>
+          </div>
+          <div class="beob-pill">
+            <span class="bp-icon">😶</span>
+            <span class="bp-text">Wirkt unmotiviert — ist es aber oft nicht</span>
+          </div>
+        </div>
+        <div class="info-box" style="margin-top:.5rem;">
+          <p>In der Ausbildungsphase verschieben sich die Herausforderungen hin zu Zeitmanagement, Prüfungsstress und sozialer Anpassung im Betrieb. <strong>Klare Strukturen und Mentoring wirken hier besonders gut.</strong></p>
+        </div>
+      </div>
+
+      <!-- Was LK tun kann -->
+      <div class="ab">
+        <div class="ab-titel">3 Dinge, die Sie konkret tun können</div>
+
+        <div class="hinweis-nr">
+          <div class="h-nr">1</div>
+          <div class="h-text"><strong>Stärken benennen</strong> — nicht nur Defizite dokumentieren. Welche Fähigkeit hat dieses Kind, die kein Zeugnis zeigt? Benennen Sie es — laut, im Zeugnis, im Gespräch mit Eltern und Ausbildungsbetrieb.</div>
+        </div>
+
+        <div class="hinweis-nr">
+          <div class="h-nr">2</div>
+          <div class="h-text"><strong>Struktur anbieten</strong> — Bewerbungsschritte visualisieren, Deadlines in Teilschritte zerlegen, Erinnerungssysteme gemeinsam aufbauen. Nicht: mahnend erinnern. Sondern: ein System bauen.</div>
+        </div>
+
+        <div class="hinweis-nr" style="margin-bottom:0;">
+          <div class="h-nr">3</div>
+          <div class="h-text"><strong>Systeme kennen und nutzen:</strong> Bei Jugendlichen mit individuellem Unterstützungsbedarf regt die Schule frühzeitig die Berufsberatung an (BASS NRW, 2020). KAoA-STAR steht Jugendlichen mit sonderpädagogischem Bedarf zur Verfügung. Bei ADHS-Diagnose: Reha-Beratung der Agentur für Arbeit frühzeitig einschalten.</div>
+        </div>
+      </div>
+
+      <!-- Kontaktpunkte -->
+      <div class="kontakt-box">
+        <div class="k-label">Wen einschalten?</div>
+        <ul>
+          <li>Schulbegleitung (INGRA) — kennt das Kind am besten, sprechen Sie sie an</li>
+          <li>Berufsberatung der Agentur für Arbeit — ab Klasse 9, Termin in der Schule möglich</li>
+          <li>KAoA-Koordinierungsstelle — für alle Fragen zum Übergangssystem NRW</li>
+          <li>Reha-Beratung der BA — wenn eine anerkannte Behinderung vorliegt oder beantragt werden soll</li>
+          <li>Integrationsfachdienst (IFD) — für KAoA-STAR-Zugang bei Förderbedarf</li>
+        </ul>
+      </div>
+
+      <!-- Quellen -->
+      <div class="quellen-block">
+        <div class="q-label">Quellen</div>
+        <p>Shaw, P. et al. (2007). ADHD is characterized by a delay in cortical maturation. PNAS, 104. · Barkley, R. A. (2012). Executive Functions. Guilford Press. · BASS NRW, Runderlass zur Beruflichen Orientierung (2020). · KAoA / MAGS NRW (2024).</p>
+      </div>
+
+    </div><!-- /karte-body -->
+
+    <div class="merksatz-banner">
+      <p>Kein böser Wille — Selbststeuerung neurobiologisch noch in Entwicklung.</p>
+      <span class="mb-sub">Sprechen Sie mit der Schulbegleitung (INGRA) — sie kennt das Kind von innen.</span>
+    </div>
+
+    <nav class="karte-nav">
+      <a href="LK-16.html">
+        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 3l-5 5 5 5"/></svg> LK-16
+      </a>
+      <span class="spacer"></span>
+      <a href="LK-18.html">
+        LK-18 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg>
+      </a>
+    </nav>
+    <div class="karte-footer">
+      <span>LK-Karte 17 · Weitergabefähig</span>
+      <span>17 / 17</span>
+    </div>
+  </article>
+</main>
+
+<div class="fab-group">
+  <a href="DASHBOARD.html" class="fab fab-lk" title="Dashboard">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<footer role="contentinfo">
+  <strong>KLARTEXT</strong> Mentoring-System · Lehrkraft-Karte 17<br>
+  ADHS &amp; Ausbildungsreife — Weitergabefähig
+  <span class="footer-copy">Alle Rechte vorbehalten · KLARTEXT-Mentoring-System · © Anja Jolk 2026</span>
+</footer>
+
+</body>
+</html>

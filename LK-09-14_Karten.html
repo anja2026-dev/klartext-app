@@ -700,6 +700,13 @@
 
 <script>
   function toggle(li) { li.classList.toggle('checked'); }
+  // Direkt zur LK-17 scrollen wenn per Anker aufgerufen
+  window.addEventListener('DOMContentLoaded', function(){
+    if(window.location.hash === '#lk17'){
+      var el = document.getElementById('lk17');
+      if(el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth'}); }, 100);
+    }
+  });
 </script>
 <div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
   <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>

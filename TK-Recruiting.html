@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TK-Recruiting – KLARTEXT Teamkoordination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --tk-color:#4A148C;
+  --tk-light:#F3E5FF;
+  --tk-mid:#7B1FA2;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.kt-header{
+  background:var(--kt-primary);
+  height:80px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,4vw,2rem);
+  border-bottom:4px solid var(--tk-color);
+  position:sticky;top:0;z-index:200;
+  box-shadow:var(--shadow-lg);
+}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{
+  background:rgba(74,20,140,.25);
+  border:1.5px solid rgba(206,147,216,.5);
+  color:#CE93D8;
+  font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .7rem;border-radius:20px;
+}
+.header-nav{display:flex;align-items:center;gap:.4rem;}
+.btn-back{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.28rem .75rem;border-radius:20px;
+  background:rgba(110,198,160,.12);
+  border:1px solid rgba(110,198,160,.3);
+  color:var(--kt-accent);
+  font-size:.72rem;font-weight:700;text-decoration:none;
+  transition:all .15s;
+}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+/* ── BRAINY-BANNER ────────────────────────────────── */
+.brainy-banner{
+  background:linear-gradient(135deg,#2D1B45,#4A148C);
+  border-bottom:2px solid rgba(206,147,216,.4);
+  padding:.65rem clamp(.75rem,3vw,1.5rem);
+  display:flex;align-items:flex-start;gap:.75rem;
+}
+.brainy-face{
+  width:42px;height:42px;flex-shrink:0;
+  background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#E1BEE7;}
+
+/* ── VIEWS: Start & Unterseite ────────────────────── */
+.view{display:none;}
+.view.aktiv{display:block;}
+
+/* ── START-KARTE (Übersicht) ──────────────────────── */
+.start-wrap{max-width:880px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.start-header{margin-bottom:1.4rem;}
+.start-modul-tag{
+  display:inline-block;
+  font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:.2rem .6rem;border-radius:4px;
+  background:var(--tk-light);color:var(--tk-color);
+  margin-bottom:.5rem;
+}
+.start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
+
+.btn-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
+  gap:.75rem;
+  margin-top:1.2rem;
+}
+.btn-kachel{
+  background:var(--kt-surface);
+  border:2px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  padding:.85rem 1rem;
+  cursor:pointer;
+  text-align:left;
+  display:flex;flex-direction:column;gap:.3rem;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+  box-shadow:var(--shadow);
+  text-decoration:none;
+  color:inherit;
+}
+.btn-kachel:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-lg);
+  border-color:var(--tk-color);
+}
+.btn-kachel-nr{
+  font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tk-color);
+}
+.btn-kachel-emoji{font-size:1.5rem;line-height:1;margin-bottom:.1rem;}
+.btn-kachel-titel{
+  font-family:'Playfair Display',serif;
+  font-size:.95rem;font-weight:700;
+  color:var(--kt-primary);line-height:1.25;
+}
+.btn-kachel-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;}
+.btn-kachel-stripe{height:3px;background:var(--tk-color);border-radius:3px;margin-top:.4rem;}
+
+/* ── UNTERSEITE ───────────────────────────────────── */
+.unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+
+.unter-breadcrumb{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.7rem;color:var(--kt-muted);margin-bottom:1rem;flex-wrap:wrap;
+}
+.unter-breadcrumb a{color:var(--tk-color);text-decoration:none;font-weight:600;}
+.unter-breadcrumb a:hover{text-decoration:underline;}
+.unter-breadcrumb span{opacity:.5;}
+
+.unter-header{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow);
+}
+.unter-header-stripe{height:4px;background:var(--tk-color);}
+.unter-header-inner{padding:.9rem 1.1rem .85rem;}
+.unter-nr{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.25rem;}
+.unter-titel{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;color:var(--kt-primary);line-height:1.2;}
+.unter-sub{font-size:.8rem;color:var(--kt-muted);margin-top:.2rem;}
+
+/* ── KARTEN (Inhaltskarten) ───────────────────────── */
+.karte{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:.7rem;
+  box-shadow:var(--shadow);
+}
+.karte-header{
+  background:var(--tk-light);
+  border-bottom:1px solid rgba(74,20,140,.12);
+  padding:.5rem .9rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.karte-header-icon{font-size:1rem;}
+.karte-header-titel{font-size:.78rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+.karte-body{padding:.75rem .9rem .85rem;}
+
+/* Stichwort-Listen */
+.stw-list{list-style:none;display:flex;flex-direction:column;gap:.28rem;}
+.stw-list li{
+  font-size:.82rem;color:var(--kt-ink);line-height:1.5;
+  padding-left:1.1rem;position:relative;
+}
+.stw-list li::before{
+  content:'▸';position:absolute;left:0;top:0;
+  color:var(--tk-color);font-size:.7rem;line-height:1.7;
+}
+.stw-list li strong{color:var(--kt-primary);}
+
+/* Schritt-Liste */
+.schritt-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;counter-reset:schritt;}
+.schritt-list li{
+  display:flex;align-items:flex-start;gap:.6rem;
+  font-size:.82rem;color:var(--kt-ink);line-height:1.5;
+  counter-increment:schritt;
+}
+.schritt-list li::before{
+  content:counter(schritt);
+  min-width:22px;height:22px;
+  background:var(--tk-color);color:#fff;
+  border-radius:50%;
+  font-size:.68rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:.15rem;
+}
+
+/* Ampel / Status-Reihe */
+.ampel{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem;}
+.ampel-chip{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.25rem .65rem;border-radius:20px;
+  font-size:.72rem;font-weight:600;
+}
+.ampel-chip.gruen{background:#E8F5E9;color:#2E7D32;}
+.ampel-chip.gelb{background:#FFF8E1;color:#F57F17;}
+.ampel-chip.rot{background:#FDEAEA;color:#C62828;}
+.ampel-chip.blau{background:#E3F2FD;color:#1565C0;}
+
+/* Hinweis-Box */
+.hinweis{
+  background:rgba(74,20,140,.07);
+  border-left:3px solid var(--tk-color);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;color:var(--kt-ink);line-height:1.55;
+  margin-top:.5rem;
+}
+.hinweis strong{color:var(--tk-color);}
+
+/* Brainy-Box (inline) */
+.brainy-box{
+  background:linear-gradient(135deg,rgba(74,20,140,.07),rgba(74,20,140,.03));
+  border:1.5px solid rgba(74,20,140,.18);
+  border-radius:var(--r-md);
+  padding:.7rem .9rem;
+  margin-top:.9rem;
+  display:flex;gap:.6rem;align-items:flex-start;
+}
+.brainy-box-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
+.brainy-box-content{}
+.brainy-box-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.2rem;display:block;}
+.brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
+.brainy-box-text em{font-style:italic;color:var(--kt-muted);}
+
+/* ── NAV-LEISTE (Unterseite) ──────────────────────── */
+.unter-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;
+}
+.unter-nav-btn{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.32rem .8rem;border-radius:20px;
+  border:1.5px solid var(--tk-color);
+  color:var(--tk-color);
+  background:var(--kt-surface);
+  font-size:.72rem;font-weight:700;
+  cursor:pointer;transition:all .15s;
+  text-decoration:none;
+}
+.unter-nav-btn:hover{background:var(--tk-color);color:#fff;}
+.unter-nav-btn.zurueck{border-color:var(--kt-muted);color:var(--kt-muted);}
+.unter-nav-btn.zurueck:hover{background:var(--kt-muted);color:#fff;}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{
+  background:var(--kt-primary);color:rgba(255,255,255,.55);
+  text-align:center;padding:1.2rem 1rem;
+  font-size:.72rem;line-height:1.9;
+}
+footer strong{color:var(--kt-accent);}
+
+@media(max-width:600px){
+  .btn-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Teamkoordination</span>
+      </div>
+    </a>
+    <div class="header-badge">TK-Recruiting</div>
+  </div>
+  <nav class="header-nav">
+    <a class="btn-back" href="DASHBOARD.html">← Dashboard</a>
+  </nav>
+</header>
+
+<!-- ══ BRAINY-BANNER ════════════════════════════════════════ -->
+<div class="brainy-banner">
+  <div class="brainy-face">🧠</div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Recruiting-Modus</span>
+    <p class="brainy-msg">
+      <strong>Brainy unterstützt TK</strong> mit Reflexionsfragen, Prozessschritten, Risiken und Weiterleitungen –
+      für jeden Schritt im Recruiting-Prozess direkt abrufbar.
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 0: STARTSEITE
+══════════════════════════════════════════════════════════ -->
+<div class="view aktiv" id="view-start">
+  <div class="start-wrap">
+    <div class="start-header">
+      <div class="start-modul-tag">TK · Recruiting</div>
+      <h1 class="start-titel">TK-Recruiting</h1>
+      <p class="start-lead">Alle 8 Prozessschritte des Recruiting-Workflows –<br>strukturiert, SAB-basiert, sofort einsetzbar.</p>
+    </div>
+
+    <div class="btn-grid">
+
+      <!-- 1 -->
+      <button class="btn-kachel" onclick="zeige('gespräch')">
+        <div class="btn-kachel-nr">TK-R · 01</div>
+        <div class="btn-kachel-emoji">💬</div>
+        <div class="btn-kachel-titel">Gespräch</div>
+        <div class="btn-kachel-sub">Erstgespräch vorbereiten & führen</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 2 -->
+      <button class="btn-kachel" onclick="zeige('matching')">
+        <div class="btn-kachel-nr">TK-R · 02</div>
+        <div class="btn-kachel-emoji">🎯</div>
+        <div class="btn-kachel-titel">Matching</div>
+        <div class="btn-kachel-sub">Person–Stelle–Schule abgleichen</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 3 -->
+      <button class="btn-kachel" onclick="zeige('risiko')">
+        <div class="btn-kachel-nr">TK-R · 03</div>
+        <div class="btn-kachel-emoji">⚠️</div>
+        <div class="btn-kachel-titel">Risiko-Check</div>
+        <div class="btn-kachel-sub">Risiken früh erkennen & einschätzen</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 4 -->
+      <button class="btn-kachel" onclick="zeige('entscheidung')">
+        <div class="btn-kachel-nr">TK-R · 04</div>
+        <div class="btn-kachel-emoji">✅</div>
+        <div class="btn-kachel-titel">Entscheidung</div>
+        <div class="btn-kachel-sub">Kriterien prüfen · Votum dokumentieren</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 5 -->
+      <button class="btn-kachel" onclick="zeige('weiterleitung')">
+        <div class="btn-kachel-nr">TK-R · 05</div>
+        <div class="btn-kachel-emoji">📤</div>
+        <div class="btn-kachel-titel">Weiterleitung</div>
+        <div class="btn-kachel-sub">Intern & extern richtig weitergeben</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 6 -->
+      <button class="btn-kachel" onclick="zeige('dokumentation')">
+        <div class="btn-kachel-nr">TK-R · 06</div>
+        <div class="btn-kachel-emoji">📋</div>
+        <div class="btn-kachel-titel">Dokumentation</div>
+        <div class="btn-kachel-sub">SAB-konform erfassen & ablegen</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 7 -->
+      <button class="btn-kachel" onclick="zeige('sab')">
+        <div class="btn-kachel-nr">TK-R · 07</div>
+        <div class="btn-kachel-emoji">🔍</div>
+        <div class="btn-kachel-titel">SAB-Selbstcheck</div>
+        <div class="btn-kachel-sub">Eigene Haltung & Prozesssicherheit</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+      <!-- 8 -->
+      <button class="btn-kachel" onclick="zeige('erinnerungen')">
+        <div class="btn-kachel-nr">TK-R · 08</div>
+        <div class="btn-kachel-emoji">🔔</div>
+        <div class="btn-kachel-titel">Erinnerungen & Pushs</div>
+        <div class="btn-kachel-sub">Fristen · Wiedervorlagen · Impulse</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 1: GESPRÄCH
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-gespräch">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 01 · Gespräch
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 01 · Gespräch</div>
+        <div class="unter-titel">Erstgespräch führen</div>
+        <div class="unter-sub">Vorbereitung · Ablauf · Signale erkennen</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📌</span><span class="karte-header-titel">Vor dem Gespräch</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Unterlagen prüfen:</strong> Bewerbung, Lebenslauf, Lücken im Lebenslauf notieren</li>
+          <li><strong>Stelle klären:</strong> Schulform, Einsatzzeiten, Aufgabenfeld, Teamstruktur</li>
+          <li><strong>Umgebung:</strong> ruhig, kein Zeitdruck, Wasser bereitstellen</li>
+          <li><strong>Fragen vorbereiten:</strong> offen, biografisch, situativ</li>
+          <li><strong>SAB-Kriterien im Kopf:</strong> Eignung, Belastbarkeit, Haltung, Teamfähigkeit</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🗣️</span><span class="karte-header-titel">Gesprächsablauf (5 Phasen)</span></div>
+      <div class="karte-body">
+        <ol class="schritt-list">
+          <li><strong>Ankommen</strong> – Small Talk, Struktur erklären, Zeitrahmen nennen</li>
+          <li><strong>Person vorstellen lassen</strong> – Werdegang, Motivation, Erwartungen</li>
+          <li><strong>Stelle erläutern</strong> – konkret, ehrlich, inklusive Belastungen</li>
+          <li><strong>Vertiefung</strong> – situative Fragen, Reaktionen, Grenzen ansprechen</li>
+          <li><strong>Abschluss</strong> – weiteres Vorgehen benennen, Frist kommunizieren</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔎</span><span class="karte-header-titel">Signale im Gespräch</span></div>
+      <div class="karte-body">
+        <div class="ampel">
+          <span class="ampel-chip gruen">✔ Klare Motivation</span>
+          <span class="ampel-chip gruen">✔ Selbstreflexion</span>
+          <span class="ampel-chip gruen">✔ Belastbarkeit benannt</span>
+          <span class="ampel-chip gelb">⚑ Unsichere Angaben</span>
+          <span class="ampel-chip gelb">⚑ Keine Vorerfahrung</span>
+          <span class="ampel-chip rot">✗ Desinteresse</span>
+          <span class="ampel-chip rot">✗ Unklare Erwartungen</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Reflexionsfragen</span>
+        <p class="brainy-box-text">
+          <em>„Was hat mich an dieser Person überrascht – positiv oder kritisch?"</em><br>
+          <em>„Habe ich die realen Belastungen der Stelle klar kommuniziert?"</em><br>
+          <em>„Welche Körpersprache / Reaktion hat mich nachdenklich gemacht?"</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Übersicht</button>
+      <button class="unter-nav-btn" onclick="zeige('matching')">02 Matching →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 2: MATCHING
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-matching">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 02 · Matching
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 02 · Matching</div>
+        <div class="unter-titel">Person – Stelle – Schule</div>
+        <div class="unter-sub">Passung prüfen · Risiken abwägen</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🎯</span><span class="karte-header-titel">Die 3 Matching-Ebenen</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Person → Stelle:</strong> Qualifikation, Erfahrung, Belastbarkeit, Arbeitszeiten</li>
+          <li><strong>Person → Schule:</strong> Schulform, Altersgruppe, Team, Leitung, Atmosphäre</li>
+          <li><strong>Person → SAB-Werte:</strong> Haltung, Rollenverständnis, systemisches Denken</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">⚖️</span><span class="karte-header-titel">Matching-Kriterien (SAB-basiert)</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Fachliche Eignung für inklusiven Kontext</li>
+          <li>Kommunikationsfähigkeit mit Lehrkräften & Eltern</li>
+          <li>Belastbarkeit bei verhaltensauffälligen Kindern</li>
+          <li>Flexibilität bei Vertretungssituationen</li>
+          <li>Teamfähigkeit im multiprofessionellen Team</li>
+          <li>Bereitschaft zur Dokumentation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🏫</span><span class="karte-header-titel">Schule & Team prüfen</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Schulklima: kooperativ oder schwierig?</li>
+          <li>Teamstruktur: gut eingespielt oder instabil?</li>
+          <li>Schulleitungsstil: unterstützend oder distanziert?</li>
+          <li>Vorherige Abgänge: warum? Muster erkennbar?</li>
+        </ul>
+        <div class="hinweis">⚠ Passung ist keine Einbahnstraße – auch die Stelle muss zur Person passen.</div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Reflexionsfragen</span>
+        <p class="brainy-box-text">
+          <em>„Passt die Person zur Schule – oder passt sie nur auf dem Papier?"</em><br>
+          <em>„Welche Risiken ignoriere ich gerade, weil wir dringend jemanden brauchen?"</em><br>
+          <em>„Was sagt mein Bauchgefühl – und was sagen die Fakten?"</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('gespräch')">← 01 Gespräch</button>
+      <button class="unter-nav-btn" onclick="zeige('risiko')">03 Risiko-Check →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 3: RISIKO-CHECK
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-risiko">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 03 · Risiko-Check
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 03 · Risiko-Check</div>
+        <div class="unter-titel">Risiken früh erkennen</div>
+        <div class="unter-sub">Warnsignale · Eskalationspfade · Entscheidungshilfe</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔴</span><span class="karte-header-titel">Risiken auf Personenseite</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Burnout-Geschichte:</strong> unverarbeitete frühere Stelle, Erschöpfung sichtbar</li>
+          <li><strong>Überforderungssignale:</strong> Schwierigkeiten benennen / Grenzen setzen</li>
+          <li><strong>Unrealistische Erwartungen:</strong> „Ich möchte den Kindern helfen" ohne Rollenklarheit</li>
+          <li><strong>Loyalitätskonflikte:</strong> starke eigene Haltungen, die Teamarbeit stören könnten</li>
+          <li><strong>Fehlzeiten:</strong> häufige Krankheit in vorheriger Stelle – Muster?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🏫</span><span class="karte-header-titel">Risiken auf Stellenseite</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Hohe Fluktuation in dieser Schule / Stelle bekannt</li>
+          <li>Schwieriges Kind / bekannte Bedarfsüberforderung</li>
+          <li>Kein stabiles Kollegium um die INGRA herum</li>
+          <li>Fehlende Einarbeitung / Ansprechperson vor Ort</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Ampeleinschätzung</span></div>
+      <div class="karte-body">
+        <div class="ampel">
+          <span class="ampel-chip gruen">✔ Grün: Einstieg empfehlen</span>
+          <span class="ampel-chip gelb">⚑ Gelb: Mit Begleitung starten</span>
+          <span class="ampel-chip rot">✗ Rot: Nicht besetzen / Rücksprache TK</span>
+        </div>
+        <div class="hinweis">Bei Gelb: Probezeit kürzer setzen, engmaschige TK-Begleitung vereinbaren.</div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Prozessschritt & Weiterleitung</span>
+        <p class="brainy-box-text">
+          <em>„Welche Risiken habe ich schon konkret erlebt – und was hat damals geholfen?"</em><br>
+          <em>„Bei Rot: Muss ich allein entscheiden – oder brauche ich jetzt Rücksprache?"</em><br>
+          Weiterleitung → TK-Leitung bei allen Rot-Bewertungen. SAB informieren bei systemischen Schul-Risiken.
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('matching')">← 02 Matching</button>
+      <button class="unter-nav-btn" onclick="zeige('entscheidung')">04 Entscheidung →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 4: ENTSCHEIDUNG
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-entscheidung">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 04 · Entscheidung
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 04 · Entscheidung</div>
+        <div class="unter-titel">Kriterien prüfen · Votum dokumentieren</div>
+        <div class="unter-sub">Structured Decision – nicht Bauchgefühl allein</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">✅</span><span class="karte-header-titel">Entscheidungsmatrix (SAB-basiert)</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Fachliche Eignung:</strong> ausreichend vorhanden? ja / nein / bedingt</li>
+          <li><strong>Rollenklarheit:</strong> versteht die Person, was INGRA bedeutet?</li>
+          <li><strong>Persönliche Stabilität:</strong> belastbar, ausgeglichen, reflexionsfähig?</li>
+          <li><strong>Schul-Passung:</strong> Risiko-Check abgeschlossen, Ampel grün/gelb?</li>
+          <li><strong>Zeitliche Verfügbarkeit:</strong> passt zu Stelle & Bedarf?</li>
+        </ul>
+        <div class="hinweis">Alle fünf Kriterien müssen mindestens „bedingt erfüllt" sein für ein Ja-Votum.</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📝</span><span class="karte-header-titel">Votum & Dokumentation</span></div>
+      <div class="karte-body">
+        <ol class="schritt-list">
+          <li>Entscheidung schriftlich festhalten (Ja / Nein / Bedingt)</li>
+          <li>Begründung in zwei bis drei Sätzen (SAB-Kriterien benennen)</li>
+          <li>Bedingungen notieren wenn „Bedingt" (z.B. Probezeit 4 Wochen)</li>
+          <li>An Sachbearbeitung SAB weiterleiten (Schritt 05)</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🚫</span><span class="karte-header-titel">Wenn die Entscheidung Nein ist</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Person zeitnah informieren – keine offenen Aussagen lassen</li>
+          <li>Begründung: sachlich, wertschätzend, kurz</li>
+          <li>Alternativen nennen wenn möglich (andere Stelle, späterer Zeitpunkt)</li>
+          <li>Keine Tür endgültig schließen – Nein bedeutet jetzt, nicht für immer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Reflexionsfragen</span>
+        <p class="brainy-box-text">
+          <em>„Entscheide ich aus Dringlichkeit – oder aus Überzeugung?"</em><br>
+          <em>„Was würde ich meiner Nachfolgerin über diese Person sagen?"</em><br>
+          <em>„Ist mein Nein begründet oder ist es Unsicherheit?"</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('risiko')">← 03 Risiko-Check</button>
+      <button class="unter-nav-btn" onclick="zeige('weiterleitung')">05 Weiterleitung →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 5: WEITERLEITUNG
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-weiterleitung">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 05 · Weiterleitung
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 05 · Weiterleitung</div>
+        <div class="unter-titel">Intern & extern richtig weitergeben</div>
+        <div class="unter-sub">Wer bekommt was – wann – in welcher Form</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🏢</span><span class="karte-header-titel">Interne Weiterleitungen</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>SAB-Sachbearbeitung:</strong> Votum + Stammdaten + Schulzuweisung</li>
+          <li><strong>TK-Leitung:</strong> bei Risiko-Gelb oder besonderen Bedingungen</li>
+          <li><strong>Personalakte:</strong> Gesprächsnotiz + Entscheidungsdokumentation ablegen</li>
+          <li><strong>Einsatzplanung:</strong> Startdatum, Schule, Ansprechperson vor Ort</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🏫</span><span class="karte-header-titel">Weiterleitung an Schule</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Schulleitungskontakt: Name, Startdatum, Aufgabenbereich</li>
+          <li>Ansprechperson benennen (Lehrkraft, Schulbegleitung-Koordination)</li>
+          <li>Einarbeitungsrahmen abstimmen (erster Tag, Einblick, Material)</li>
+          <li>Keine sensiblen Personendaten ohne Einwilligung weitergeben (DSGVO)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">👤</span><span class="karte-header-titel">Weiterleitung an Person</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Bestätigung: schriftlich, Vertrag vorbereiten</li>
+          <li>Onboarding-Informationen: Ansprechpersonen, Abläufe, KLARTEXT-Zugang</li>
+          <li>Probezeit-Regelung kommunizieren</li>
+          <li>Erste TK-Kontaktdaten (Telefon / Kanal) übergeben</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Prozessschritt</span>
+        <p class="brainy-box-text">
+          <em>„Habe ich alle drei Kanäle bedient – SAB, Schule, Person?"</em><br>
+          <em>„Was passiert, wenn jetzt nichts weitergeleitet wird – und in 2 Wochen ist Schulbeginn?"</em><br>
+          Checkliste: Votum ✓ | SAB ✓ | Schule ✓ | Person ✓ | Akte ✓
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('entscheidung')">← 04 Entscheidung</button>
+      <button class="unter-nav-btn" onclick="zeige('dokumentation')">06 Dokumentation →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 6: DOKUMENTATION
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-dokumentation">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 06 · Dokumentation
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 06 · Dokumentation</div>
+        <div class="unter-titel">SAB-konform erfassen & ablegen</div>
+        <div class="unter-sub">Was, wann, wie, wo – verbindlich</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Was muss dokumentiert werden?</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Gesprächsdatum & Teilnehmer</strong> (TK + Bewerber:in)</li>
+          <li><strong>Gesprächsinhalt:</strong> Kernaussagen, Reaktionen, Fragen der Person</li>
+          <li><strong>Matching-Einschätzung:</strong> Stärken, Bedenken, Risiko-Ampel</li>
+          <li><strong>Entscheidung & Begründung:</strong> Ja / Nein / Bedingt + Kriterien</li>
+          <li><strong>Weiterleitungen:</strong> Datum, Empfänger, Form (Mail/Tel/Akte)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔒</span><span class="karte-header-titel">DSGVO & Datenschutz</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Nur zweckbezogene Daten erfassen – keine Meinungen als Tatsachen</li>
+          <li>Keine Weitergabe ohne schriftliche Einwilligung (Ausnahme: interne SAB-Kette)</li>
+          <li>Speicherfristen beachten – nach Ablehnung max. 6 Monate aufbewahren</li>
+          <li>Zugriff beschränken: nur beteiligte TK + Sachbearbeitung</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">✔️</span><span class="karte-header-titel">Do's & Don'ts</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>✅ Sachlich, beobachtungsbasiert, zeitnah</li>
+          <li>✅ Kürzel / Vokabular konsistent nutzen (SAB-Standard)</li>
+          <li>✅ Datum immer eintragen</li>
+          <li>❌ Keine Wertungen wie „wirkte komisch" oder „war merkwürdig"</li>
+          <li>❌ Keine privaten Infos (gesundheitlich, familiär) ohne direkten Bezug</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Reflexionsfragen</span>
+        <p class="brainy-box-text">
+          <em>„Würde ich diese Dokumentation einer Prüfung standhalten lassen?"</em><br>
+          <em>„Ist mein Eintrag beobachtbar – oder ist es meine Interpretation?"</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('weiterleitung')">← 05 Weiterleitung</button>
+      <button class="unter-nav-btn" onclick="zeige('sab')">07 SAB-Selbstcheck →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 7: SAB-SELBSTCHECK
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-sab">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 07 · SAB-Selbstcheck
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 07 · SAB-Selbstcheck</div>
+        <div class="unter-titel">Eigene Haltung & Prozesssicherheit</div>
+        <div class="unter-sub">Reflexion vor und nach dem Recruiting-Gespräch</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔍</span><span class="karte-header-titel">Selbstcheck: Haltung</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Habe ich Sympathie und Eignung getrennt bewertet?</li>
+          <li>Habe ich den Druck des Personalmangels in meine Entscheidung einfließen lassen?</li>
+          <li>War ich offen genug für eine Person, die nicht „meinem Typ" entspricht?</li>
+          <li>Habe ich auch Stärken gesehen – nicht nur Risiken?</li>
+          <li>War ich ehrlich über die Belastungen der Stelle?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📊</span><span class="karte-header-titel">Selbstcheck: Prozesssicherheit</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Kenne ich alle aktuellen SAB-Vorgaben für diesen Stellentyp?</li>
+          <li>Weiß ich, wann ich weiterleiten muss – und an wen?</li>
+          <li>Habe ich das Gespräch vollständig dokumentiert?</li>
+          <li>Ist die Entscheidung nachvollziehbar begründet?</li>
+          <li>Habe ich Fristen kommuniziert – und eingehalten?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">💙</span><span class="karte-header-titel">Selbstcheck: Selbstfürsorge TK</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Habe ich heute schon eine Entscheidung getroffen, die mich selbst belastet?</li>
+          <li>Brauche ich Rücksprache – oder schaffe ich das alleine?</li>
+          <li>Wann war mein letzter echter Abstand vom Recruiting-Druck?</li>
+        </ul>
+        <div class="hinweis">Selbstcheck ist kein Verhör. Es ist Professionalität.</div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Impuls</span>
+        <p class="brainy-box-text">
+          <em>„Was möchte ich beim nächsten Gespräch bewusst anders machen?"</em><br>
+          <em>„Was hat heute gut funktioniert – und warum?"</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('dokumentation')">← 06 Dokumentation</button>
+      <button class="unter-nav-btn" onclick="zeige('erinnerungen')">08 Erinnerungen →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEW 8: ERINNERUNGEN & PUSHS
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-erinnerungen">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
+      <span>›</span> 08 · Erinnerungen & Pushs
+    </div>
+
+    <div class="unter-header">
+      <div class="unter-header-stripe"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">TK-R · 08 · Erinnerungen & Pushs</div>
+        <div class="unter-titel">Fristen · Wiedervorlagen · Impulse</div>
+        <div class="unter-sub">Was nicht erinnert wird, wird vergessen</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📅</span><span class="karte-header-titel">Fristenübersicht Recruiting</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Nach Gespräch:</strong> Notiz innerhalb 24h ablegen</li>
+          <li><strong>Votum:</strong> innerhalb 3 Werktagen kommunizieren</li>
+          <li><strong>Weiterleitung SAB:</strong> spätestens am Folgetag nach Entscheidung</li>
+          <li><strong>Schule informieren:</strong> mind. 5 Tage vor Startdatum</li>
+          <li><strong>Ablehnung DSGVO:</strong> Unterlagen nach 6 Monaten löschen</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔁</span><span class="karte-header-titel">Wiedervorlagen setzen</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Probezeit-Ende: Feedback-Gespräch einplanen (TK ↔ INGRA)</li>
+          <li>Bedingt-Votum: 4-Wochen-Rückmeldung von Schule einholen</li>
+          <li>Offene Bewerbung: alle 2 Wochen Status prüfen</li>
+          <li>Neue Stellenbedarfe: monatlich mit SAB abgleichen</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔔</span><span class="karte-header-titel">Push-Impulse für TK</span></div>
+      <div class="karte-body">
+        <div class="ampel">
+          <span class="ampel-chip blau">📬 Neue Bewerbung geprüft?</span>
+          <span class="ampel-chip blau">📋 Doku aktuell?</span>
+          <span class="ampel-chip blau">⏱ Fristen im Blick?</span>
+          <span class="ampel-chip blau">💙 SAB-Selbstcheck gemacht?</span>
+        </div>
+        <div class="hinweis" style="margin-top:.7rem;">
+          Push-Impulse sind keine Kontrolle – sie sind Prozessunterstützung für eine komplexe Aufgabe.
+        </div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Abschluss-Impuls</span>
+        <p class="brainy-box-text">
+          <em>„Was steht jetzt noch offen – und was kann ich heute noch schließen?"</em><br>
+          <em>„Welche Wiedervorlage ist überfällig?"</em><br>
+          <strong>Brainy erinnert</strong> – damit TK den Überblick behält und nichts verloren geht.
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('sab')">← 07 SAB-Selbstcheck</button>
+      <button class="unter-nav-btn" onclick="zeige('start')">↩ Zur Übersicht</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <strong>KLARTEXT</strong> · TK-Recruiting · Teamkoordination<br>
+  Klar. Warm. Menschlich. · SAB-basiert · mit Brainy
+</footer>
+
+
+<script>
+// ── Navigation ─────────────────────────────────────────────
+var views = {
+  'start':       'view-start',
+  'gespräch':    'view-gespräch',
+  'matching':    'view-matching',
+  'risiko':      'view-risiko',
+  'entscheidung':'view-entscheidung',
+  'weiterleitung':'view-weiterleitung',
+  'dokumentation':'view-dokumentation',
+  'sab':         'view-sab',
+  'erinnerungen':'view-erinnerungen'
+};
+
+function zeige(key) {
+  // Alle Views ausblenden
+  document.querySelectorAll('.view').forEach(function(v){
+    v.classList.remove('aktiv');
+  });
+  // Ziel-View aktivieren
+  var ziel = document.getElementById(views[key] || 'view-start');
+  if (ziel) {
+    ziel.classList.add('aktiv');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+</script>
+
+</body>
+</html>

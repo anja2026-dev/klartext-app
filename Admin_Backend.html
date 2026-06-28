@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Admin · Backend-Architektur</title>
+<meta name="robots" content="noindex, nofollow">
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || role !== 'admin') {
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt:     #1B3A4B;
+  --acc:    #6EC6A0;
+  --paper:  #F5F0E8;
+  --surface:#FFFFFF;
+  --border: #DDD8CE;
+  --ink:    #2D2D2D;
+  --muted:  #7A7060;
+  --teal:   #0F6E56;
+  --teal-l: #EAF5F2;
+  --lila:   #5D3A7A;
+  --lila-l: #F0EAF8;
+  --amber:  #B07D2A;
+  --amber-l:#FDF6E3;
+  --rot:    #8B1A1A;
+  --rot-l:  #FBE9E9;
+  --code-bg:#1E2328;
+  --code-fg:#D4D4D4;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "DM Sans", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; }
+
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 250px; flex-shrink: 0;
+  background: var(--kt);
+  position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; padding: 0 0 40px;
+  border-right: 3px solid var(--acc);
+}
+.sidebar-header {
+  background: rgba(0,0,0,.2);
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(110,198,160,.2);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-logo-mark {
+  width: 32px; height: 32px;
+  border: 2px solid var(--acc); border-radius: 6px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px; padding: 4px; flex-shrink: 0;
+}
+.sidebar-logo-mark::before {
+  content: "K";
+  font-family: "Playfair Display", serif;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.sidebar-brand {
+  font-family: "Playfair Display", serif;
+  font-size: 14px; font-weight: 700; color: #fff;
+  letter-spacing: .06em;
+}
+.sidebar-brand span {
+  display: block; font-family: "DM Sans", sans-serif;
+  font-size: 9px; color: var(--acc);
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-top: 1px;
+}
+.sidebar-nav-back {
+  display: flex; align-items: center; gap: 6px;
+  padding: 10px 20px;
+  font-size: 11px; font-weight: 700;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color .15s;
+}
+.sidebar-nav-back:hover { color: var(--acc); }
+.sidebar-section {
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .14em;
+  color: rgba(255,255,255,.3);
+  padding: 18px 20px 6px;
+}
+.sidebar a {
+  display: block; padding: 7px 20px;
+  font-size: 12px; color: rgba(255,255,255,.6);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all .15s;
+}
+.sidebar a:hover { color: #fff; background: rgba(255,255,255,.06); border-left-color: var(--acc); }
+.sidebar a.active { color: #fff; background: rgba(110,198,160,.1); border-left-color: var(--acc); }
+
+/* ── MAIN ── */
+.main { flex: 1; padding: 40px 52px; max-width: 960px; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--kt), #2A5570);
+  border-radius: 14px; padding: 36px 40px;
+  margin-bottom: 44px;
+  border-bottom: 3px solid var(--acc);
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(110,198,160,.15);
+  border: 1px solid rgba(110,198,160,.3);
+  color: var(--acc);
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .12em;
+  padding: 3px 10px; border-radius: 20px;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 28px; font-weight: 700; color: #fff;
+  margin-bottom: 8px; line-height: 1.2;
+}
+.hero p { font-size: 13px; color: rgba(255,255,255,.6); max-width: 540px; line-height: 1.6; }
+.hero-meta { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+.hero-meta-item { font-size: 11px; color: rgba(255,255,255,.45); display: flex; align-items: center; gap: 5px; }
+.hero-meta-item strong { color: rgba(255,255,255,.75); }
+
+/* ── SECTIONS ── */
+.section { margin-bottom: 56px; scroll-margin-top: 28px; }
+.section-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--muted); margin-bottom: 6px;
+}
+h2.sec-title {
+  font-family: "Playfair Display", serif;
+  font-size: 22px; font-weight: 700; color: var(--kt);
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+h3.sub-title { font-size: 14px; font-weight: 700; color: var(--teal); margin: 24px 0 8px; }
+h3.sub-title.lila { color: var(--lila); }
+h3.sub-title.amber { color: var(--amber); }
+h3.sub-title.rot { color: var(--rot); }
+p.lead { font-size: 13.5px; color: #444; line-height: 1.7; margin-bottom: 16px; }
+
+/* ── BOX ── */
+.box {
+  border-radius: 10px; padding: 16px 20px; margin: 14px 0;
+  border-left: 4px solid var(--teal);
+  background: var(--teal-l);
+  font-size: 13px; color: #1a3a32; line-height: 1.6;
+}
+.box.amber { border-color: var(--amber); background: var(--amber-l); color: #4a3000; }
+.box.lila  { border-color: var(--lila);  background: var(--lila-l);  color: #2a0a4a; }
+.box.rot   { border-color: var(--rot);   background: var(--rot-l);   color: #4a0a0a; }
+.box strong { font-weight: 700; }
+
+/* ── CODE ── */
+pre {
+  background: var(--code-bg); border-radius: 10px;
+  padding: 20px 22px; overflow-x: auto; margin: 12px 0;
+  border-top: 4px solid var(--teal);
+}
+pre code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px; color: var(--code-fg); line-height: 1.75;
+}
+.kw  { color: #569CD6; }
+.str { color: #CE9178; }
+.cmt { color: #608B4E; }
+.fn  { color: #DCDCAA; }
+.num { color: #B5CEA8; }
+.key { color: #9CDCFE; }
+
+/* ── TABLES ── */
+.tbl-wrap { overflow-x: auto; margin: 12px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+thead th {
+  background: var(--kt); color: #fff;
+  padding: 9px 13px; text-align: left;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+}
+tbody tr { border-bottom: 1px solid var(--border); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:nth-child(even) { background: #F7F4EE; }
+tbody td { padding: 8px 13px; color: #333; vertical-align: top; line-height: 1.5; }
+tbody td:first-child { font-weight: 600; color: var(--kt); }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block; padding: 2px 7px; border-radius: 10px;
+  font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+}
+.badge-get    { background: #D1FAE5; color: #065F46; }
+.badge-post   { background: #DBEAFE; color: #1E3A8A; }
+.badge-patch  { background: #FEF3C7; color: #92400E; }
+.badge-put    { background: #EDE9FE; color: #4C1D95; }
+.badge-delete { background: #FEE2E2; color: #991B1B; }
+.badge-auth   { background: #F3F4F6; color: #374151; }
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.step {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--surface); border-radius: 10px;
+  padding: 12px 16px; border: 1px solid var(--border);
+}
+.step-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.step-title { font-size: 12.5px; font-weight: 700; color: var(--kt); margin-bottom: 2px; }
+.step-text { font-size: 12px; color: #555; line-height: 1.5; }
+
+/* ── SCORE GRID ── */
+.score-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px; margin: 14px 0;
+}
+.score-card {
+  background: var(--surface); border-radius: 10px;
+  padding: 14px; border: 1px solid var(--border);
+  border-top: 4px solid var(--teal); text-align: center;
+}
+.score-card.lila { border-top-color: var(--lila); }
+.score-card.amber { border-top-color: var(--amber); }
+.score-card.rot { border-top-color: var(--rot); }
+.score-pts {
+  font-family: "Playfair Display", serif;
+  font-size: 26px; font-weight: 700; color: var(--kt); margin-bottom: 3px;
+}
+.score-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+
+/* ── FILTER CHAIN ── */
+.filter-chain { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin: 18px 0; }
+.filter-node {
+  background: var(--surface); border: 2px solid var(--border);
+  border-radius: 8px; padding: 9px 14px;
+  font-size: 11.5px; font-weight: 600; color: var(--kt); text-align: center; min-width: 110px;
+}
+.filter-node.active { border-color: var(--teal); color: var(--teal); background: var(--teal-l); }
+.filter-arrow { color: var(--muted); font-size: 1.1rem; padding: 0 4px; }
+
+/* ── TOC ── */
+.toc {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 24px; margin-bottom: 44px;
+}
+.toc-title {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--muted); margin-bottom: 12px;
+}
+.toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 36px; }
+.toc-list a {
+  font-size: 12.5px; color: var(--kt); text-decoration: none;
+  padding: 3px 0; display: flex; align-items: center; gap: 7px;
+  border-bottom: 1px dashed var(--border); transition: color .15s;
+}
+.toc-list a:hover { color: var(--teal); }
+.toc-num { font-size: 10px; color: var(--muted); font-weight: 600; min-width: 20px; }
+
+hr.divider { border: none; border-top: 2px solid var(--border); margin: 44px 0; }
+
+/* ── VERZEICHNIS ── */
+.dir-tree {
+  background: var(--code-bg); border-radius: 10px;
+  padding: 20px 22px; margin: 12px 0;
+  border-top: 4px solid var(--lila);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px; color: var(--code-fg); line-height: 1.8;
+  overflow-x: auto;
+}
+
+@media (max-width: 860px) {
+  .sidebar { display: none; }
+  .main { padding: 24px 18px; }
+  .toc-list { grid-template-columns: 1fr; }
+  .filter-chain { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo-mark"></div>
+    <div class="sidebar-brand">KLARTEXT<span>Admin · Backend</span></div>
+  </div>
+  <a class="sidebar-nav-back" href="TK_Landing.html">← TK-Bereich</a>
+  <a class="sidebar-nav-back" href="DASHBOARD.html" style="border-bottom:none;">⬅ Dashboard</a>
+
+  <div class="sidebar-section">Inhalt</div>
+  <a href="#ueberblick" class="active">1 · Überblick</a>
+  <a href="#datenmodelle">2 · Datenmodelle</a>
+  <a href="#logik">3 · Filterlogik</a>
+  <a href="#prozesskette">4 · Prozesskette</a>
+  <a href="#api">5 · API-Endpunkte</a>
+  <a href="#app">6 · App-Struktur & Stack</a>
+  <a href="#sicherheit">7 · Sicherheit & DSGVO</a>
+  <a href="#offen">8 · Offene Punkte</a>
+
+  <div class="sidebar-section" style="margin-top:16px;">Datenmodelle</div>
+  <a href="#dm-stamm">INGRA-Stammdaten</a>
+  <a href="#dm-verf">Verfügbarkeiten</a>
+  <a href="#dm-abw">Abwesenheiten</a>
+  <a href="#dm-schule">Schulen</a>
+  <a href="#dm-einsatz">Einsätze</a>
+  <a href="#dm-qual">Qualifikationen</a>
+  <a href="#dm-baro">Barometer</a>
+
+  <div class="sidebar-section" style="margin-top:16px;">API</div>
+  <a href="#api-uebersicht">Übersicht (12 Endpunkte)</a>
+  <a href="#api-abw">POST Abwesenheit</a>
+  <a href="#api-vert">GET Vorschläge</a>
+  <a href="#api-errors">Fehlerbehandlung</a>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Admin · Backend-Architektur · v1.0 · Vertraulich</div>
+    <h1>KLARTEXT · Backend</h1>
+    <p>Vollständige technische Spezifikation des Vertretungsassistenten: Datenmodelle, Filterlogik, Prozesskette, API-Endpunkte, App-Struktur, Sicherheit und offene Punkte.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">📦 <strong>7</strong> Datenmodelle</div>
+      <div class="hero-meta-item">⚙️ <strong>4</strong> Filterstufen</div>
+      <div class="hero-meta-item">🔗 <strong>12</strong> API-Endpunkte</div>
+      <div class="hero-meta-item">🪜 <strong>10</strong> Prozessschritte</div>
+      <div class="hero-meta-item">🔒 <strong>Admin-only</strong> · DSGVO-konform</div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Inhaltsverzeichnis</div>
+    <div class="toc-list">
+      <a href="#ueberblick"><span class="toc-num">1</span> Systemüberblick</a>
+      <a href="#api"><span class="toc-num">5</span> API-Endpunkte</a>
+      <a href="#datenmodelle"><span class="toc-num">2</span> Datenmodelle (JSON)</a>
+      <a href="#app"><span class="toc-num">6</span> App-Struktur & Tech-Stack</a>
+      <a href="#logik"><span class="toc-num">3</span> Filterlogik & Vertretungslogik</a>
+      <a href="#sicherheit"><span class="toc-num">7</span> Sicherheit & DSGVO</a>
+      <a href="#prozesskette"><span class="toc-num">4</span> Prozesskette</a>
+      <a href="#offen"><span class="toc-num">8</span> Offene Punkte & Roadmap</a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 1. ÜBERBLICK -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="ueberblick">
+    <div class="section-label">Kapitel 1</div>
+    <h2 class="sec-title">Systemüberblick</h2>
+    <p class="lead">Der KLARTEXT-Vertretungsassistent ist ein Backend-Modul, das bei Abwesenheit einer INGRA automatisch geeignete Vertretungen vorschlägt. Die Logik basiert auf Verfügbarkeit, Qualifikation, Einsatzort und Belastungszustand (Barometer).</p>
+    <div class="box">
+      <strong>Kernfunktionen:</strong><br>
+      Abwesenheitsmeldung erfassen · Verfügbare INGRAs filtern · Gewichteten Score berechnen · Priorisierte Vorschlagsliste an TK (Teamkoordination) senden · Alle Vorgänge revisionssicher protokollieren
+    </div>
+    <h3 class="sub-title">Beteiligte Akteure</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Akteur</th><th>Rolle</th><th>Rechte</th></tr></thead>
+        <tbody>
+          <tr><td>INGRA</td><td>Schulbegleitung – meldet eigene Abwesenheit</td><td>Eigene Daten lesen/schreiben, Barometer setzen</td></tr>
+          <tr><td>TK (Teamkoordination)</td><td>Teamkoordination – wählt Vertretung aus</td><td>Alle INGRAs sehen, Vorschläge bestätigen</td></tr>
+          <tr><td>Admin</td><td>Systemverwaltung – Stammdaten pflegen</td><td>Vollzugriff auf alle Daten</td></tr>
+          <tr><td>System</td><td>Backend – führt Filterlogik automatisch aus</td><td>Lesend auf alle, schreibend auf Vorschläge/Status</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 2. DATENMODELLE -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="datenmodelle">
+    <div class="section-label">Kapitel 2</div>
+    <h2 class="sec-title">Datenmodelle (JSON-Schemata)</h2>
+    <p class="lead">Alle 7 Kerntabellen des Systems. Jedes Modell ist als JSON-Schema dokumentiert und bildet direkt die Datenbankstruktur ab.</p>
+
+    <h3 class="sub-title" id="dm-stamm">2.1 INGRA-Stammdaten</h3>
+    <p class="lead">Zentrale Stammdaten jeder INGRA-Person. Wird bei Onboarding angelegt und gepflegt.</p>
+    <pre><code><span class="cmt">// Tabelle: ingras</span>
+{
+  <span class="key">"ingra_id"</span>:        <span class="str">"uuid-v4"</span>,           <span class="cmt">// Primärschlüssel</span>
+  <span class="key">"vorname"</span>:         <span class="str">"string"</span>,
+  <span class="key">"nachname"</span>:        <span class="str">"string"</span>,
+  <span class="key">"email"</span>:           <span class="str">"string · unique"</span>,
+  <span class="key">"telefon"</span>:         <span class="str">"string"</span>,
+  <span class="key">"qualifikationen"</span>: [<span class="str">"Erzieher"</span>, <span class="str">"Ersthelfer"</span>, <span class="str">"Sonderpädagogik"</span>],
+  <span class="key">"fuehrerschein"</span>:   <span class="kw">true</span>,
+  <span class="key">"fahrzeug"</span>:        <span class="kw">true</span>,
+  <span class="key">"wohnort_lat"</span>:     <span class="num">48.1234</span>,
+  <span class="key">"wohnort_lng"</span>:     <span class="num">11.5678</span>,
+  <span class="key">"aktiv"</span>:           <span class="kw">true</span>,
+  <span class="key">"erstellt_am"</span>:     <span class="str">"ISO-8601"</span>,
+  <span class="key">"aktualisiert_am"</span>: <span class="str">"ISO-8601"</span>
+}</code></pre>
+
+    <h3 class="sub-title" id="dm-verf">2.2 Verfügbarkeiten</h3>
+    <p class="lead">Wöchentlich wiederkehrende Verfügbarkeit plus tagesaktuelle Ausnahmen (z.B. Urlaub, eigene Abwesenheit).</p>
+    <pre><code><span class="cmt">// Tabelle: verfuegbarkeiten</span>
+{
+  <span class="key">"verfuegbarkeit_id"</span>: <span class="str">"uuid-v4"</span>,
+  <span class="key">"ingra_id"</span>:          <span class="str">"uuid-ref → ingras"</span>,
+  <span class="key">"typ"</span>:               <span class="str">"regulaer | ausnahme"</span>,
+  <span class="key">"wochentag"</span>:         <span class="str">"MO | DI | MI | DO | FR | SA | SO"</span>,
+  <span class="key">"datum"</span>:             <span class="str">"YYYY-MM-DD | null"</span>,   <span class="cmt">// nur bei typ=ausnahme</span>
+  <span class="key">"von"</span>:               <span class="str">"HH:MM"</span>,
+  <span class="key">"bis"</span>:               <span class="str">"HH:MM"</span>,
+  <span class="key">"verfuegbar"</span>:        <span class="kw">true</span>,               <span class="cmt">// false = explizit nicht verfügbar</span>
+  <span class="key">"notiz"</span>:             <span class="str">"string | null"</span>
+}</code></pre>
+
+    <h3 class="sub-title" id="dm-abw">2.3 Abwesenheiten</h3>
+    <p class="lead">Wird ausgelöst durch Eigenabmeldung der INGRA oder durch die Teamkoordination.</p>
+    <pre><code><span class="cmt">// Tabelle: abwesenheiten</span>
+{
+  <span class="key">"abwesenheit_id"</span>:  <span class="str">"uuid-v4"</span>,
+  <span class="key">"ingra_id"</span>:        <span class="str">"uuid-ref → ingras"</span>,
+  <span class="key">"kind_id"</span>:         <span class="str">"uuid-ref → kinder"</span>,
+  <span class="key">"schule_id"</span>:       <span class="str">"uuid-ref → schulen"</span>,
+  <span class="key">"von_datum"</span>:       <span class="str">"YYYY-MM-DD"</span>,
+  <span class="key">"von_uhrzeit"</span>:     <span class="str">"HH:MM"</span>,
+  <span class="key">"bis_datum"</span>:       <span class="str">"YYYY-MM-DD"</span>,
+  <span class="key">"bis_uhrzeit"</span>:     <span class="str">"HH:MM"</span>,
+  <span class="key">"grund"</span>:           <span class="str">"krank | urlaub | fortbildung | sonstiges"</span>,
+  <span class="key">"status"</span>:          <span class="str">"gemeldet | vertretung_gefunden | offen | abgeschlossen"</span>,
+  <span class="key">"gemeldet_am"</span>:     <span class="str">"ISO-8601"</span>,
+  <span class="key">"gemeldet_von"</span>:    <span class="str">"ingra_id | tk_id"</span>
+}</code></pre>
+
+    <h3 class="sub-title" id="dm-schule">2.4 Schulen & Einsatzorte</h3>
+    <p class="lead">Jede Schule als eigener Datensatz mit Geodaten für die Entfernungsberechnung (Haversine).</p>
+    <pre><code><span class="cmt">// Tabelle: schulen</span>
+{
+  <span class="key">"schule_id"</span>:   <span class="str">"uuid-v4"</span>,
+  <span class="key">"name"</span>:        <span class="str">"string"</span>,
+  <span class="key">"adresse"</span>:     <span class="str">"string"</span>,
+  <span class="key">"ort"</span>:         <span class="str">"string"</span>,
+  <span class="key">"plz"</span>:         <span class="str">"string"</span>,
+  <span class="key">"lat"</span>:         <span class="num">48.1234</span>,
+  <span class="key">"lng"</span>:         <span class="num">11.5678</span>,
+  <span class="key">"schultyp"</span>:    <span class="str">"grundschule | foerderschule | realschule | gymnasium | sonstige"</span>,
+  <span class="key">"kontakt"</span>:     <span class="str">"string"</span>,
+  <span class="key">"aktiv"</span>:       <span class="kw">true</span>
+}</code></pre>
+
+    <h3 class="sub-title" id="dm-einsatz">2.5 Laufende INGRA-Einsätze</h3>
+    <p class="lead">Welche INGRA ist aktuell welchem Kind und welcher Schule zugeordnet?</p>
+    <pre><code><span class="cmt">// Tabelle: einsaetze</span>
+{
+  <span class="key">"einsatz_id"</span>:  <span class="str">"uuid-v4"</span>,
+  <span class="key">"ingra_id"</span>:    <span class="str">"uuid-ref → ingras"</span>,
+  <span class="key">"kind_id"</span>:     <span class="str">"uuid-ref → kinder"</span>,
+  <span class="key">"schule_id"</span>:   <span class="str">"uuid-ref → schulen"</span>,
+  <span class="key">"von_datum"</span>:   <span class="str">"YYYY-MM-DD"</span>,
+  <span class="key">"bis_datum"</span>:   <span class="str">"YYYY-MM-DD | null"</span>,  <span class="cmt">// null = unbefristet</span>
+  <span class="key">"wochentage"</span>:  [<span class="str">"MO"</span>, <span class="str">"DI"</span>, <span class="str">"MI"</span>],
+  <span class="key">"von_uhrzeit"</span>: <span class="str">"HH:MM"</span>,
+  <span class="key">"bis_uhrzeit"</span>: <span class="str">"HH:MM"</span>,
+  <span class="key">"aktiv"</span>:       <span class="kw">true</span>
+}</code></pre>
+
+    <h3 class="sub-title" id="dm-qual">2.6 Qualifikationen (Lookup-Tabelle)</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Qualifikation</th><th>Beschreibung</th><th>Pflicht für</th></tr></thead>
+        <tbody>
+          <tr><td>Erzieher</td><td>Staatlich anerkannte Erzieherausbildung</td><td>Allgemeiner Einsatz</td></tr>
+          <tr><td>Sonderpädagogik</td><td>Fachausbildung Förderpädagogik</td><td>Förderschulen, Intensivbedarf</td></tr>
+          <tr><td>Ersthelfer</td><td>Aktuelle Erste-Hilfe-Zertifizierung</td><td>Alle Außeneinsätze</td></tr>
+          <tr><td>Deeskalation</td><td>Zertifiziertes Deeskalationstraining</td><td>Kinder mit Verhaltensauffälligkeiten</td></tr>
+          <tr><td>Systemische Beratung</td><td>IHK/BSG Zertifikat Systemischer Coach</td><td>Supervision, Teamberatung</td></tr>
+          <tr><td>DaZ</td><td>Deutsch als Zweitsprache</td><td>Kinder mit Migrationshintergrund</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title" id="dm-baro">2.7 Barometer-Werte</h3>
+    <p class="lead">Tagesaktuelle Selbsteinschätzung der INGRA. Optional – erhöht die Qualität der Priorisierung erheblich.</p>
+    <pre><code><span class="cmt">// Tabelle: barometer</span>
+{
+  <span class="key">"barometer_id"</span>: <span class="str">"uuid-v4"</span>,
+  <span class="key">"ingra_id"</span>:     <span class="str">"uuid-ref → ingras"</span>,
+  <span class="key">"datum"</span>:        <span class="str">"YYYY-MM-DD"</span>,
+  <span class="key">"uhrzeit"</span>:      <span class="str">"HH:MM"</span>,
+  <span class="key">"stufe"</span>:        <span class="num">1</span>,  <span class="cmt">// 1=sehr gut · 2=gut · 3=ok · 4=angestrengt · 5=belastet · 6=erschöpft</span>
+  <span class="key">"farbe"</span>:        <span class="str">"gruen | gelb | rot"</span>,
+  <span class="key">"notiz"</span>:        <span class="str">"string | null"</span>
+}</code></pre>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Stufe</th><th>Farbe</th><th>Bedeutung</th><th>Verwendung in Logik</th></tr></thead>
+        <tbody>
+          <tr><td>1 – 2</td><td>🟢 Grün</td><td>Voll einsatzbereit</td><td>Bevorzugt für Vertretung (+10 Punkte)</td></tr>
+          <tr><td>3 – 4</td><td>🟡 Gelb</td><td>Eingeschränkt einsatzbereit</td><td>Nur wenn kein Grün verfügbar (+5 Punkte)</td></tr>
+          <tr><td>5 – 6</td><td>🔴 Rot</td><td>Nicht empfohlen</td><td>Wird gefiltert, TK wird informiert</td></tr>
+          <tr><td>–</td><td>⚪ Unbekannt</td><td>Kein Eintrag heute</td><td>Neutral behandelt (+7 Punkte)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 3. FILTERLOGIK -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="logik">
+    <div class="section-label">Kapitel 3</div>
+    <h2 class="sec-title">Filterlogik & Vertretungslogik (Pseudocode)</h2>
+    <p class="lead">Die Vertretungssuche läuft in 5 Stufen: 4 aufeinander aufbauende Filter, gefolgt von der Score-Berechnung zur Priorisierung.</p>
+
+    <h3 class="sub-title">Filter-Kette (Übersicht)</h3>
+    <div class="filter-chain">
+      <div class="filter-node active">Alle INGRAs</div>
+      <div class="filter-arrow">→</div>
+      <div class="filter-node active">Verfügbarkeit</div>
+      <div class="filter-arrow">→</div>
+      <div class="filter-node active">Konflikte</div>
+      <div class="filter-arrow">→</div>
+      <div class="filter-node active">Qualifikation</div>
+      <div class="filter-arrow">→</div>
+      <div class="filter-node active">Barometer ≠ Rot</div>
+      <div class="filter-arrow">→</div>
+      <div class="filter-node active">Score & Ranking</div>
+    </div>
+
+    <h3 class="sub-title">3.1 Hauptfunktion</h3>
+    <pre><code><span class="fn">FUNCTION</span> <span class="fn">findVertretungen</span>(abwesenheit_id):
+
+  abwesenheit = DB.<span class="fn">getAbwesenheit</span>(abwesenheit_id)
+  kandidaten  = DB.<span class="fn">getAlleAktivenINGRAs</span>()
+
+  <span class="cmt">// STUFE 1: Zeitliche Verfügbarkeit prüfen</span>
+  kandidaten = <span class="fn">filterVerfuegbarkeit</span>(kandidaten, abwesenheit)
+
+  <span class="cmt">// STUFE 2: Laufende Einsatzkonflikte ausschließen</span>
+  kandidaten = <span class="fn">filterKonflikte</span>(kandidaten, abwesenheit)
+
+  <span class="cmt">// STUFE 3: Qualifikationsanforderungen des Kindes prüfen</span>
+  kandidaten = <span class="fn">filterQualifikation</span>(kandidaten, abwesenheit.kind_id)
+
+  <span class="cmt">// STUFE 4: Barometer-Rot ausschließen</span>
+  kandidaten = <span class="fn">filterBarometerRot</span>(kandidaten)
+
+  <span class="cmt">// STUFE 5: Score berechnen, sortieren, Vorschlagsliste bauen</span>
+  kandidaten = <span class="fn">berechneScore</span>(kandidaten, abwesenheit)
+  kandidaten = <span class="fn">sortByScore</span>(kandidaten, <span class="kw">DESC</span>)
+  vorschlaege = <span class="fn">buildVorschlaege</span>(kandidaten.top(<span class="num">5</span>), abwesenheit)
+
+  <span class="cmt">// STUFE 6: Speichern und TK (Teamkoordination) benachrichtigen</span>
+  DB.<span class="fn">saveVorschlaege</span>(vorschlaege)
+  notify.<span class="fn">sendToTK</span>(vorschlaege)
+
+  <span class="kw">RETURN</span> vorschlaege</code></pre>
+
+    <h3 class="sub-title">3.2 Filter 1 – Verfügbarkeit</h3>
+    <pre><code><span class="fn">FUNCTION</span> <span class="fn">filterVerfuegbarkeit</span>(kandidaten, abwesenheit):
+
+  result = []
+  <span class="kw">FOR EACH</span> ingra <span class="kw">IN</span> kandidaten:
+    zeitraum   = abwesenheit.von_datum <span class="kw">BIS</span> abwesenheit.bis_datum
+    verfuegbar = <span class="kw">true</span>
+
+    <span class="kw">FOR EACH</span> tag <span class="kw">IN</span> zeitraum:
+      wochentag = <span class="fn">getWochentag</span>(tag)
+
+      <span class="cmt">// Reguläre Verfügbarkeit prüfen</span>
+      regulaer = DB.<span class="fn">getVerfuegbarkeit</span>(ingra.id, wochentag)
+      <span class="kw">IF NOT</span> regulaer <span class="kw">OR NOT</span> zeitraum.<span class="fn">passt</span>(regulaer):
+        verfuegbar = <span class="kw">false</span>; <span class="kw">BREAK</span>
+
+      <span class="cmt">// Ausnahmen prüfen (eigener Urlaub, Krankheit etc.)</span>
+      ausnahme = DB.<span class="fn">getAusnahme</span>(ingra.id, tag)
+      <span class="kw">IF</span> ausnahme <span class="kw">AND NOT</span> ausnahme.verfuegbar:
+        verfuegbar = <span class="kw">false</span>; <span class="kw">BREAK</span>
+
+    <span class="kw">IF</span> verfuegbar:
+      result.<span class="fn">append</span>(ingra)
+
+  <span class="kw">RETURN</span> result</code></pre>
+
+    <h3 class="sub-title">3.3 Filter 2 – Einsatzkonflikte</h3>
+    <pre><code><span class="fn">FUNCTION</span> <span class="fn">filterKonflikte</span>(kandidaten, abwesenheit):
+
+  result = []
+  <span class="kw">FOR EACH</span> ingra <span class="kw">IN</span> kandidaten:
+    konflikte = DB.<span class="fn">getAktiveEinsaetze</span>(ingra.id, abwesenheit.zeitraum)
+
+    <span class="cmt">// INGRA nur wenn maximal 1 weiterer Einsatz im Zeitraum</span>
+    <span class="kw">IF</span> konflikte.count <= <span class="num">1</span>:
+      ingra.belastung = konflikte.count   <span class="cmt">// 0 = frei · 1 = teilbelegt</span>
+      result.<span class="fn">append</span>(ingra)
+
+  <span class="kw">RETURN</span> result</code></pre>
+
+    <h3 class="sub-title">3.4 Filter 3 – Qualifikation</h3>
+    <pre><code><span class="fn">FUNCTION</span> <span class="fn">filterQualifikation</span>(kandidaten, kind_id):
+
+  kind        = DB.<span class="fn">getKind</span>(kind_id)
+  pflichtQual = kind.benoetigte_qualifikationen   <span class="cmt">// z.B. ["Ersthelfer", "Sonderpaed"]</span>
+  mindestQual = kind.mindest_qualifikationen       <span class="cmt">// z.B. ["Erzieher"]</span>
+
+  result = []
+  <span class="kw">FOR EACH</span> ingra <span class="kw">IN</span> kandidaten:
+    hatPflicht = pflichtQual.<span class="fn">all</span>(q => ingra.qualifikationen.<span class="fn">includes</span>(q))
+    hatMindest = mindestQual.<span class="fn">any</span>(q => ingra.qualifikationen.<span class="fn">includes</span>(q))
+
+    <span class="kw">IF</span> hatPflicht <span class="kw">AND</span> hatMindest:
+      ingra.qualScore = <span class="fn">berechneQualScore</span>(ingra.qualifikationen, pflichtQual)
+      result.<span class="fn">append</span>(ingra)
+
+  <span class="kw">RETURN</span> result</code></pre>
+
+    <h3 class="sub-title">3.5 Filter 4 – Barometer Rot</h3>
+    <pre><code><span class="fn">FUNCTION</span> <span class="fn">filterBarometerRot</span>(kandidaten):
+
+  result = []
+  heute  = Date.<span class="fn">today</span>()
+
+  <span class="kw">FOR EACH</span> ingra <span class="kw">IN</span> kandidaten:
+    barometer = DB.<span class="fn">getBarometerAktuell</span>(ingra.id, heute)
+
+    <span class="kw">IF</span> barometer <span class="kw">IS NULL</span>:
+      ingra.barometerFarbe = <span class="str">"unbekannt"</span>    <span class="cmt">// neutral behandeln</span>
+      result.<span class="fn">append</span>(ingra)
+
+    <span class="kw">ELSE IF</span> barometer.farbe != <span class="str">"rot"</span>:
+      ingra.barometerFarbe = barometer.farbe
+      result.<span class="fn">append</span>(ingra)
+
+    <span class="kw">ELSE</span>:    <span class="cmt">// Rot → ausschließen, TK Warnung senden</span>
+      notify.<span class="fn">sendBarometerWarnung</span>(ingra, barometer)
+
+  <span class="kw">RETURN</span> result</code></pre>
+
+    <h3 class="sub-title">3.6 Score-Berechnung & Gewichtung</h3>
+    <pre><code><span class="fn">FUNCTION</span> <span class="fn">berechneScore</span>(ingra, abwesenheit):
+
+  score = <span class="num">0</span>
+
+  <span class="cmt">// Kriterium 1: Gleiche Schule (höchste Priorität)</span>
+  <span class="kw">IF</span> ingra.<span class="fn">hatEinsatzBei</span>(abwesenheit.schule_id):
+    score += <span class="num">40</span>
+
+  <span class="cmt">// Kriterium 2: Entfernung Wohnort → Schule (Haversine)</span>
+  entfernung = geo.<span class="fn">distanzKm</span>(ingra.wohnort, schule.standort)
+  <span class="kw">IF</span> entfernung <= <span class="num">5</span>:   score += <span class="num">30</span>
+  <span class="kw">ELIF</span> entfernung <= <span class="num">10</span>: score += <span class="num">20</span>
+  <span class="kw">ELIF</span> entfernung <= <span class="num">20</span>: score += <span class="num">10</span>
+  <span class="kw">ELSE</span>:                   score += <span class="num">0</span>
+
+  <span class="cmt">// Kriterium 3: Qualifikations-Match (0–20 Punkte)</span>
+  score += ingra.qualScore
+
+  <span class="cmt">// Kriterium 4: Barometer</span>
+  <span class="kw">IF</span>   ingra.barometerFarbe == <span class="str">"gruen"</span>:     score += <span class="num">10</span>
+  <span class="kw">ELIF</span> ingra.barometerFarbe == <span class="str">"gelb"</span>:      score += <span class="num">5</span>
+  <span class="kw">ELIF</span> ingra.barometerFarbe == <span class="str">"unbekannt"</span>: score += <span class="num">7</span>
+
+  <span class="cmt">// Kriterium 5: Geringe Belastung</span>
+  <span class="kw">IF</span>   ingra.belastung == <span class="num">0</span>: score += <span class="num">10</span>
+  <span class="kw">ELIF</span> ingra.belastung == <span class="num">1</span>: score += <span class="num">5</span>
+
+  <span class="kw">RETURN</span> score   <span class="cmt">// Maximal 110 Punkte</span></code></pre>
+
+    <h3 class="sub-title">Score-Gewichtung auf einen Blick</h3>
+    <div class="score-grid">
+      <div class="score-card"><div class="score-pts">40</div><div class="score-label">Gleiche Schule</div></div>
+      <div class="score-card lila"><div class="score-pts">30</div><div class="score-label">≤ 5 km Entfernung</div></div>
+      <div class="score-card amber"><div class="score-pts">20</div><div class="score-label">Qualifikations-Match</div></div>
+      <div class="score-card"><div class="score-pts">10</div><div class="score-label">Barometer Grün</div></div>
+      <div class="score-card rot"><div class="score-pts">10</div><div class="score-label">Keine Zusatzbelastung</div></div>
+      <div class="score-card lila"><div class="score-pts">110</div><div class="score-label">Maximum gesamt</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 4. PROZESSKETTE -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="prozesskette">
+    <div class="section-label">Kapitel 4</div>
+    <h2 class="sec-title">Prozesskette</h2>
+    <p class="lead">10 Schritte von der Abwesenheitsmeldung bis zur bestätigten Vertretung – inklusive Fallback bei keinem Ergebnis.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:var(--teal);">01</div>
+        <div class="step-body">
+          <div class="step-title">INGRA meldet Abwesenheit</div>
+          <div class="step-text">INGRA öffnet App → Formular: Datum, Uhrzeit, Grund, Kind, Schule → Absendet → Status wird auf <code>gemeldet</code> gesetzt</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--kt);">02</div>
+        <div class="step-body">
+          <div class="step-title">Validierung der Eingabe</div>
+          <div class="step-text">System prüft: Pflichtfelder vorhanden? Datum in Zukunft? Kind und Schule valide? → Bei Fehler: Fehlermeldung an INGRA, Abbruch</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--teal);">03</div>
+        <div class="step-body">
+          <div class="step-title">Abwesenheit wird gespeichert</div>
+          <div class="step-text"><code>DB.insertAbwesenheit()</code> → ID wird generiert → Status: <code>gemeldet</code> → Timestamp gesetzt</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--lila);">04</div>
+        <div class="step-body">
+          <div class="step-title">Trigger: Vertretungssuche starten</div>
+          <div class="step-text">Nach erfolgreichem Speichern → Event wird ausgelöst → Job wird in die Queue (BullMQ/Redis) eingestellt</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--lila);">05</div>
+        <div class="step-body">
+          <div class="step-title">Queue-Start</div>
+          <div class="step-text">BullMQ nimmt Job auf → Worker wird gestartet → Timeout: 30 Sekunden → Bei Überschreitung: QUEUE_TIMEOUT-Fehler</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--teal);">06</div>
+        <div class="step-body">
+          <div class="step-title">Worker-Ausführung: Filterlogik</div>
+          <div class="step-text"><code>findVertretungen(abwesenheit_id)</code> wird ausgeführt → Alle 4 Filter durchlaufen → Score berechnet → Top-5 Vorschläge erstellt</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--teal);">07</div>
+        <div class="step-body">
+          <div class="step-title">Vorschläge gespeichert</div>
+          <div class="step-text"><code>DB.saveVorschlaege()</code> → Vorschläge mit Score, Rang und Begründung in DB geschrieben → Audit-Log-Eintrag erstellt</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--amber);">08</div>
+        <div class="step-body">
+          <div class="step-title">TK (Teamkoordination) wird benachrichtigt</div>
+          <div class="step-text">Push-Notification via Firebase Cloud Messaging + E-Mail → TK sieht Vorschlagsliste im Dashboard</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--teal);">09</div>
+        <div class="step-body">
+          <div class="step-title">TK (Teamkoordination) wählt Vertretung aus</div>
+          <div class="step-text">TK bestätigt einen Vorschlag → Status: <code>vertretung_gefunden</code> → Gewählte INGRA erhält Push-Notification und E-Mail</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--rot);">10</div>
+        <div class="step-body">
+          <div class="step-title">Fallback: Kein Ergebnis nach Filterung</div>
+          <div class="step-text">0 Kandidaten vorhanden → TK erhält sofortige Alarmierung → Status: <code>offen</code> → Manuelle Suche erforderlich</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 5. API -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="api">
+    <div class="section-label">Kapitel 5</div>
+    <h2 class="sec-title">API-Endpunkte</h2>
+    <p class="lead">12 REST-Endpunkte. Alle Routen unter <code>/api/v1/</code>. Auth via JWT – Rollen: INGRA · TK (Teamkoordination) · Admin.</p>
+
+    <h3 class="sub-title" id="api-uebersicht">5.1 Endpunkte – Übersicht</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Endpunkt</th><th>Beschreibung</th><th>Auth</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code>/api/v1/abwesenheiten</code></td><td>Neue Abwesenheit melden</td><td><span class="badge badge-auth">INGRA</span></td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code>/api/v1/abwesenheiten/:id</code></td><td>Abwesenheit abrufen</td><td><span class="badge badge-auth">INGRA · TK</span></td></tr>
+          <tr><td><span class="badge badge-patch">PATCH</span></td><td><code>/api/v1/abwesenheiten/:id/status</code></td><td>Status aktualisieren</td><td><span class="badge badge-auth">TK</span></td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code>/api/v1/vertretungen/:abwesenheit_id</code></td><td>Vorschläge abrufen</td><td><span class="badge badge-auth">TK</span></td></tr>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code>/api/v1/vertretungen/:id/bestaetigen</code></td><td>Vertretung bestätigen</td><td><span class="badge badge-auth">TK</span></td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code>/api/v1/ingras</code></td><td>Alle INGRAs auflisten</td><td><span class="badge badge-auth">TK</span></td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code>/api/v1/ingras/:id/verfuegbarkeit</code></td><td>Verfügbarkeit abrufen</td><td><span class="badge badge-auth">TK · INGRA</span></td></tr>
+          <tr><td><span class="badge badge-put">PUT</span></td><td><code>/api/v1/ingras/:id/verfuegbarkeit</code></td><td>Verfügbarkeit aktualisieren</td><td><span class="badge badge-auth">INGRA</span></td></tr>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code>/api/v1/ingras/:id/barometer</code></td><td>Barometerwert eintragen</td><td><span class="badge badge-auth">INGRA</span></td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code>/api/v1/ingras/:id/barometer/heute</code></td><td>Heutiger Barometerwert</td><td><span class="badge badge-auth">TK</span></td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code>/api/v1/schulen</code></td><td>Alle Schulen auflisten</td><td><span class="badge badge-auth">TK</span></td></tr>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code>/api/v1/schulen</code></td><td>Neue Schule anlegen</td><td><span class="badge badge-auth">Admin</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title" id="api-abw">5.2 POST /api/v1/abwesenheiten</h3>
+    <pre><code><span class="cmt">// REQUEST BODY</span>
+{
+  <span class="key">"ingra_id"</span>:    <span class="str">"uuid"</span>,
+  <span class="key">"kind_id"</span>:     <span class="str">"uuid"</span>,
+  <span class="key">"schule_id"</span>:   <span class="str">"uuid"</span>,
+  <span class="key">"von_datum"</span>:   <span class="str">"2026-07-02"</span>,
+  <span class="key">"von_uhrzeit"</span>: <span class="str">"08:00"</span>,
+  <span class="key">"bis_datum"</span>:   <span class="str">"2026-07-02"</span>,
+  <span class="key">"bis_uhrzeit"</span>: <span class="str">"13:00"</span>,
+  <span class="key">"grund"</span>:       <span class="str">"krank"</span>
+}
+
+<span class="cmt">// RESPONSE 201 Created</span>
+{
+  <span class="key">"abwesenheit_id"</span>:             <span class="str">"uuid"</span>,
+  <span class="key">"status"</span>:                     <span class="str">"gemeldet"</span>,
+  <span class="key">"gemeldet_am"</span>:                <span class="str">"2026-07-01T07:42:00Z"</span>,
+  <span class="key">"vertretungssuche_gestartet"</span>: <span class="kw">true</span>
+}
+
+<span class="cmt">// RESPONSE 400 Validation Error</span>
+{
+  <span class="key">"error"</span>:  <span class="str">"VALIDATION_FAILED"</span>,
+  <span class="key">"fields"</span>: [<span class="str">"von_datum: muss in der Zukunft liegen"</span>]
+}</code></pre>
+
+    <h3 class="sub-title" id="api-vert">5.3 GET /api/v1/vertretungen/:abwesenheit_id</h3>
+    <pre><code><span class="cmt">// RESPONSE 200 OK</span>
+{
+  <span class="key">"abwesenheit_id"</span>: <span class="str">"uuid"</span>,
+  <span class="key">"vorschlaege"</span>: [
+    {
+      <span class="key">"rang"</span>:            <span class="num">1</span>,
+      <span class="key">"ingra_id"</span>:        <span class="str">"uuid"</span>,
+      <span class="key">"name"</span>:            <span class="str">"Vorname Nachname"</span>,
+      <span class="key">"score"</span>:           <span class="num">87</span>,
+      <span class="key">"schule"</span>:          <span class="str">"GS Aplerbeck"</span>,
+      <span class="key">"entfernung_km"</span>:   <span class="num">2.4</span>,
+      <span class="key">"qualifikationen"</span>: [<span class="str">"Erzieher"</span>, <span class="str">"Ersthelfer"</span>],
+      <span class="key">"barometer"</span>:       <span class="str">"gruen"</span>,
+      <span class="key">"belastung"</span>:       <span class="num">0</span>,
+      <span class="key">"begruendung"</span>:     <span class="str">"Gleiche Schule · 2,4 km · Barometer Grün · Keine Zusatzbelastung"</span>
+    }
+  ],
+  <span class="key">"erstellt_am"</span>:              <span class="str">"ISO-8601"</span>,
+  <span class="key">"anzahl_kandidaten_geprueft"</span>: <span class="num">12</span>,
+  <span class="key">"anzahl_nach_filterung"</span>:      <span class="num">3</span>
+}</code></pre>
+
+    <h3 class="sub-title rot" id="api-errors">5.4 Fehlerbehandlung</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Fehlercode</th><th>HTTP</th><th>Ursache</th><th>Reaktion</th></tr></thead>
+        <tbody>
+          <tr><td>VALIDATION_FAILED</td><td>400</td><td>Pflichtfelder fehlen oder ungültig</td><td>Feldliste an Client zurückgeben</td></tr>
+          <tr><td>INGRA_NOT_FOUND</td><td>404</td><td>ingra_id existiert nicht</td><td>Fehlermeldung</td></tr>
+          <tr><td>KIND_NOT_FOUND</td><td>404</td><td>kind_id existiert nicht</td><td>Fehlermeldung</td></tr>
+          <tr><td>SCHULE_NOT_FOUND</td><td>404</td><td>schule_id existiert nicht</td><td>Fehlermeldung</td></tr>
+          <tr><td>DATUM_IN_VERGANGENHEIT</td><td>400</td><td>von_datum liegt in der Vergangenheit</td><td>Hinweis an Client</td></tr>
+          <tr><td>NO_KANDIDATEN</td><td>200</td><td>Kein Kandidat nach Filterung</td><td>Leere Liste + TK-Alarm</td></tr>
+          <tr><td>QUEUE_TIMEOUT</td><td>503</td><td>Vertretungssuche > 30 Sekunden</td><td>Retry-Header + TK-Alarm</td></tr>
+          <tr><td>UNAUTHORIZED</td><td>401</td><td>Kein oder ungültiges JWT</td><td>Login erforderlich</td></tr>
+          <tr><td>FORBIDDEN</td><td>403</td><td>Rolle nicht berechtigt</td><td>Zugriff verweigert</td></tr>
+          <tr><td>DB_ERROR</td><td>500</td><td>Datenbankfehler</td><td>Fehler-ID + Logging + Alert</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 6. APP-STRUKTUR & TECH-STACK -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="app">
+    <div class="section-label">Kapitel 6</div>
+    <h2 class="sec-title">App-Struktur & Tech-Stack</h2>
+    <p class="lead">Empfohlene Projektstruktur für das Backend. Vollständig modular – jede Komponente ist unabhängig testbar und austauschbar.</p>
+
+    <h3 class="sub-title">6.1 Backend-Verzeichnisstruktur</h3>
+    <div class="dir-tree">klartext-vertretung/
+│
+├── src/
+│   ├── <span style="color:#DCDCAA;">api/</span>                     <span style="color:#608B4E;">// Express-Router</span>
+│   │   ├── abwesenheiten.js
+│   │   ├── vertretungen.js
+│   │   ├── ingras.js
+│   │   ├── barometer.js
+│   │   └── schulen.js
+│   │
+│   ├── <span style="color:#DCDCAA;">logic/</span>                   <span style="color:#608B4E;">// Kernlogik (business layer)</span>
+│   │   ├── findVertretungen.js
+│   │   ├── filterVerfuegbarkeit.js
+│   │   ├── filterKonflikte.js
+│   │   ├── filterQualifikation.js
+│   │   ├── filterBarometerRot.js
+│   │   └── berechneScore.js
+│   │
+│   ├── <span style="color:#DCDCAA;">db/</span>                      <span style="color:#608B4E;">// Datenbankzugriff (Repository-Pattern)</span>
+│   │   ├── ingras.repo.js
+│   │   ├── abwesenheiten.repo.js
+│   │   ├── verfuegbarkeiten.repo.js
+│   │   ├── einsaetze.repo.js
+│   │   ├── barometer.repo.js
+│   │   └── schulen.repo.js
+│   │
+│   ├── <span style="color:#DCDCAA;">queue/</span>                   <span style="color:#608B4E;">// BullMQ Job-Queue</span>
+│   │   ├── vertretungssuche.queue.js
+│   │   └── vertretungssuche.worker.js
+│   │
+│   ├── <span style="color:#DCDCAA;">notifications/</span>           <span style="color:#608B4E;">// Push & E-Mail</span>
+│   │   ├── fcm.js                   <span style="color:#608B4E;">// Firebase Cloud Messaging</span>
+│   │   └── email.js                 <span style="color:#608B4E;">// SMTP / Sendgrid</span>
+│   │
+│   ├── <span style="color:#DCDCAA;">middleware/</span>
+│   │   ├── auth.js                  <span style="color:#608B4E;">// JWT-Verifizierung</span>
+│   │   ├── roles.js                 <span style="color:#608B4E;">// Rollenprüfung</span>
+│   │   ├── validate.js              <span style="color:#608B4E;">// Joi-Schema-Validierung</span>
+│   │   └── errorHandler.js
+│   │
+│   ├── <span style="color:#DCDCAA;">utils/</span>
+│   │   ├── geo.js                   <span style="color:#608B4E;">// Haversine Entfernung</span>
+│   │   ├── datum.js                 <span style="color:#608B4E;">// Datum/Zeit-Helfer</span>
+│   │   └── logger.js                <span style="color:#608B4E;">// Winston structured logging</span>
+│   │
+│   └── app.js                       <span style="color:#608B4E;">// Express-App Bootstrap</span>
+│
+├── <span style="color:#DCDCAA;">tests/</span>
+│   ├── logic/
+│   └── api/
+│
+├── <span style="color:#DCDCAA;">migrations/</span>                  <span style="color:#608B4E;">// SQL-Datenbankmigrationen</span>
+├── .env.example
+├── package.json
+└── README.md</div>
+
+    <h3 class="sub-title">6.2 Tech-Stack</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Bereich</th><th>Technologie</th><th>Begründung</th></tr></thead>
+        <tbody>
+          <tr><td>Laufzeit</td><td>Node.js 20 LTS</td><td>Weit verbreitet, stabil, gutes Ökosystem</td></tr>
+          <tr><td>Framework</td><td>Express.js / Fastify</td><td>Leichtgewichtig, gut testbar, viele Middlewares</td></tr>
+          <tr><td>Datenbank</td><td>PostgreSQL 16</td><td>Relational, DSGVO-konform, UUID-Unterstützung</td></tr>
+          <tr><td>Queue</td><td>BullMQ (Redis)</td><td>Zuverlässige async Jobs, Retry-Mechanismus</td></tr>
+          <tr><td>Auth</td><td>JWT + Rollen</td><td>Stateless, einfach zu implementieren</td></tr>
+          <tr><td>Geo-Distanz</td><td>Haversine-Formel</td><td>Keine externe API nötig, schnell, präzise</td></tr>
+          <tr><td>Notifications</td><td>Firebase Cloud Messaging</td><td>Push auf iOS + Android + Web</td></tr>
+          <tr><td>Logging</td><td>Winston (JSON)</td><td>Strukturiert, durchsuchbar, DSGVO-kompatibel</td></tr>
+          <tr><td>Tests</td><td>Jest + Supertest</td><td>Unit + Integration in einem Tool</td></tr>
+          <tr><td>Validierung</td><td>Joi / Zod</td><td>Schema-basiert, lesbar, erweiterbar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 7. SICHERHEIT & DSGVO -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="sicherheit">
+    <div class="section-label">Kapitel 7</div>
+    <h2 class="sec-title">Sicherheit & Datenschutz</h2>
+    <p class="lead">Alle Maßnahmen zur technischen Absicherung und DSGVO-Konformität des Systems.</p>
+
+    <div class="box lila">
+      <strong>DSGVO-relevante Maßnahmen:</strong><br>
+      Alle Endpunkte HTTPS only · JWT Expiry: 8h · Barometer-Daten nur aggregiert für TK (Teamkoordination) sichtbar ·
+      Personendaten verschlüsselt in der DB · Löschfristen: 6 Monate nach Einsatzende ·
+      Audit-Log für alle schreibenden Aktionen · Rate-Limiting: 100 Req/Min pro IP ·
+      Input-Sanitization auf allen Feldern · Tägliche verschlüsselte Backups
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:16px;">
+      <table>
+        <thead><tr><th>Maßnahme</th><th>Umsetzung</th><th>Rechtsgrundlage</th></tr></thead>
+        <tbody>
+          <tr><td>HTTPS only</td><td>TLS 1.3, Redirect HTTP → HTTPS</td><td>Art. 32 DSGVO</td></tr>
+          <tr><td>JWT Expiry</td><td>8h Access Token, Refresh Token 7 Tage</td><td>Art. 32 DSGVO</td></tr>
+          <tr><td>Rate-Limiting</td><td>100 Req/Min pro IP via Express middleware</td><td>Technische Schutzmaßnahme</td></tr>
+          <tr><td>Input-Sanitization</td><td>Joi/Zod auf allen Eingabefeldern</td><td>Art. 25 DSGVO (Privacy by Design)</td></tr>
+          <tr><td>Datenverschlüsselung</td><td>AES-256 für Personendaten in der DB</td><td>Art. 32 DSGVO</td></tr>
+          <tr><td>Backups</td><td>Tägliche verschlüsselte Sicherung, 30 Tage Aufbewahrung</td><td>Art. 32 DSGVO</td></tr>
+          <tr><td>Audit-Log</td><td>Winston JSON-Log aller schreibenden Aktionen</td><td>Rechenschaftspflicht Art. 5 DSGVO</td></tr>
+          <tr><td>Löschfristen</td><td>Automatische Löschung 6 Monate nach Einsatzende</td><td>Art. 17 DSGVO</td></tr>
+          <tr><td>Zugriffskontrolle</td><td>Rollenbasiert: INGRA / TK / Admin per JWT-Claim</td><td>Art. 25 DSGVO</td></tr>
+          <tr><td>Barometer-Aggregation</td><td>TK sieht nur Ampelfarbe, nicht Rohwerte anderer</td><td>Datensparsamkeit Art. 5 DSGVO</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 8. OFFENE PUNKTE -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="section" id="offen">
+    <div class="section-label">Kapitel 8</div>
+    <h2 class="sec-title">Offene Punkte & Roadmap</h2>
+    <p class="lead">Folgende Entscheidungen müssen getroffen werden, bevor die Entwicklung startet.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Thema</th><th>Frage / Aufgabe</th><th>Priorität</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Datenbankschema</td><td>Finales Schema erstellen und Migrations-Skripte schreiben</td><td>🔴 Hoch</td></tr>
+          <tr><td>2</td><td>Auth-Flow</td><td>Eigene Auth oder Drittanbieter (Auth0, Firebase Auth, Cognito)?</td><td>🔴 Hoch</td></tr>
+          <tr><td>3</td><td>Notifications</td><td>Kanal festlegen: App-Push, WhatsApp Business API oder E-Mail?</td><td>🔴 Hoch</td></tr>
+          <tr><td>4</td><td>Kindstammdaten</td><td>Welche Felder? Welche Qualifikationsanforderungen pro Kind?</td><td>🟡 Mittel</td></tr>
+          <tr><td>5</td><td>TK-Dashboard</td><td>Welche Ansichten braucht die Teamkoordination? Welche Filter / Exporte?</td><td>🟡 Mittel</td></tr>
+          <tr><td>6</td><td>Datenschutz</td><td>Datenschutzkonzept mit Träger abstimmen – SGB XI / DSGVO</td><td>🔴 Hoch</td></tr>
+          <tr><td>7</td><td>API-Versionierung</td><td>Versioning-Strategie festlegen: /v1/, Header oder Query?</td><td>🟢 Niedrig</td></tr>
+          <tr><td>8</td><td>Hosting</td><td>Infrastruktur klären: On-Premise, Cloud (AWS/Azure), Managed?</td><td>🟡 Mittel</td></tr>
+          <tr><td>9</td><td>CI/CD</td><td>Pipeline aufbauen: GitHub Actions, Tests, automatisches Deployment</td><td>🟢 Niedrig</td></tr>
+          <tr><td>10</td><td>Mobile App</td><td>Native (React Native / Flutter) oder Progressive Web App?</td><td>🟡 Mittel</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box amber" style="margin-top:24px;">
+      <strong>Dieses Dokument ist die technische Grundlage für den Aufbau des Vertretungsassistenten.</strong><br>
+      Stand: 2026 · Version 1.0 · Admin-only · KLARTEXT-Mentoring · Vertraulich
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// Aktive Sidebar-Links beim Scrollen
+const sections = document.querySelectorAll('.section[id]');
+const links = document.querySelectorAll('.sidebar a[href^="#"]');
+function updateActive() {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  links.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', updateActive, { passive: true });
+updateActive();
+</script>
+</body>
+</html>

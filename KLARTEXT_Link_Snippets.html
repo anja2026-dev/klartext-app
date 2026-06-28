@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>KLARTEXT · Link-Snippets · Vertretungsassistent Architektur</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f0ebe1; color: #1a1a1a; padding: 32px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 22px; color: #1B3A4B; margin-bottom: 6px; }
+h2 { font-size: 16px; color: #0F6E56; margin: 28px 0 8px; border-bottom: 2px solid #ddd; padding-bottom: 6px; }
+p { font-size: 13px; color: #555; margin-bottom: 12px; line-height: 1.6; }
+pre { background: #1e2328; color: #d4d4d4; padding: 20px 24px; border-radius: 10px; font-size: 12.5px; font-family: 'Courier New', monospace; overflow-x: auto; line-height: 1.7; margin: 10px 0 20px; border-top: 4px solid #0F6E56; }
+.badge { display: inline-block; background: #1B3A4B; color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; margin-bottom: 10px; }
+.hint { background: #EAF5F2; border-left: 4px solid #0F6E56; padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 12.5px; color: #1a3a32; margin: 10px 0 20px; }
+</style>
+</head>
+<body>
+
+<h1>KLARTEXT · Link-Snippets</h1>
+<p>Diese Datei zeigt dir genau, welchen Code du wo einfügen musst, damit <strong>KLARTEXT_Vertretungsassistent_Architektur.html</strong> in deiner App erreichbar ist.</p>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<h2>1. Snippet für TK_Landing.html</h2>
+<div class="badge">Einfügen in: TK_Landing.html</div>
+<p>Suche in <code>TK_Landing.html</code> nach der Karte für <strong>TK-15_Vertretungsorganisation</strong> und füge direkt darunter (oder daneben) diesen Link ein:</p>
+<pre>&lt;!-- Vertretungsassistent Architektur – Link einfügen nach TK-15 --&gt;
+&lt;a href="KLARTEXT_Vertretungsassistent_Architektur.html"
+   class="tk-karte"
+   style="border-top: 4px solid #5D3A7A;"&gt;
+  &lt;div class="tk-karte-icon"&gt;⚙️&lt;/div&gt;
+  &lt;div class="tk-karte-titel"&gt;Vertretungsassistent&lt;/div&gt;
+  &lt;div class="tk-karte-sub"&gt;Backend-Architektur · Datenmodelle · API&lt;/div&gt;
+&lt;/a&gt;</pre>
+
+<div class="hint">💡 Falls deine TK_Landing.html andere Klassen verwendet (z.B. <code>card</code>, <code>modul-card</code> o.ä.), einfach die Klasse anpassen. Die <code>href</code> muss exakt so bleiben: <code>KLARTEXT_Vertretungsassistent_Architektur.html</code></div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<h2>2. Snippet für DASHBOARD.html</h2>
+<div class="badge">Einfügen in: DASHBOARD.html</div>
+<p>Suche im DASHBOARD nach dem Bereich <strong>Teamkoordination</strong> oder <strong>TK</strong> und füge dort diesen Eintrag hinzu:</p>
+<pre>&lt;!-- Vertretungsassistent Architektur – im DASHBOARD TK-Bereich --&gt;
+&lt;a href="KLARTEXT_Vertretungsassistent_Architektur.html"
+   class="dash-link"
+   style="color: #5D3A7A;"&gt;
+  ⚙️ Vertretungsassistent – Architektur
+&lt;/a&gt;</pre>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<h2>3. Header-Patch für KLARTEXT_Vertretungsassistent_Architektur.html</h2>
+<div class="badge">Einfügen am Anfang von: KLARTEXT_Vertretungsassistent_Architektur.html</div>
+<p>Die Architektur-Datei braucht einen KLARTEXT-Header mit Zurück-Button, damit sie sich wie der Rest der App anfühlt. Füge diesen Code direkt nach dem öffnenden <code>&lt;body&gt;</code>-Tag ein:</p>
+<pre>&lt;!-- KLARTEXT Navigation Header --&gt;
+&lt;div style="
+  background: #1B3A4B;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+"&gt;
+  &lt;a href="javascript:history.back()"
+     style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:13px;font-weight:600;font-family:Arial,sans-serif;"&gt;
+    &lt;svg viewBox="0 0 24 24" width="18" height="18" style="stroke:currentColor;fill:none;stroke-width:2;"&gt;
+      &lt;path d="M15 18l-6-6 6-6"/&gt;
+    &lt;/svg&gt;
+    Zurück
+  &lt;/a&gt;
+
+  &lt;a href="DASHBOARD.html"
+     style="font-family:Arial,sans-serif;font-size:15px;font-weight:700;color:white;text-decoration:none;letter-spacing:.06em;"&gt;
+    KLARTEXT
+    &lt;span style="font-size:10px;color:rgba(255,255,255,0.5);display:block;text-align:center;margin-top:-2px;letter-spacing:.04em;"&gt;Klar. Warm. Menschlich.&lt;/span&gt;
+  &lt;/a&gt;
+
+  &lt;a href="TK_Landing.html"
+     style="font-size:12px;color:rgba(255,255,255,0.7);text-decoration:none;font-family:Arial,sans-serif;font-weight:600;"&gt;
+    TK-Bereich
+  &lt;/a&gt;
+&lt;/div&gt;
+&lt;!-- Ende Header --&gt;</pre>
+
+<div class="hint">⚠️ <strong>Wichtig:</strong> Wenn deine bestehende Architektur-Datei bereits einen eigenen Sidebar-Header hat (die dunkle linke Leiste), musst du diesen Snippet <strong>nicht</strong> einfügen – sie hat schon Navigation. Nur einfügen wenn der Header komplett fehlt.</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<h2>4. Direkt-URL für Tests</h2>
+<p>Sobald die Datei im GitHub-Repo liegt und Cloudflare Pages neu deployed hat, erreichst du sie direkt unter:</p>
+<pre>https://klartext-app.pages.dev/KLARTEXT_Vertretungsassistent_Architektur.html
+
+# oder mit deiner eigenen Domain:
+https://[deine-domain]/KLARTEXT_Vertretungsassistent_Architektur.html</pre>
+
+<div class="hint">🚀 <strong>Cloudflare Pages deployed automatisch</strong> bei jedem Push auf den main-Branch. Nach dem Einfügen der Snippets: Dateien speichern → GitHub pushen → ca. 1–2 Minuten warten → fertig.</div>
+
+</body>
+</html>

@@ -512,8 +512,7 @@ body {
     <button class="login-btn" onclick="doLogin()">Zugang bestätigen</button>
     <div class="login-error" id="loginError">Falscher Zugangscode. Bitte erneut versuchen.</div>
     <div class="login-hint">Dieser Bereich ist ausschließlich für die Teamkoordination.<br>Andere Rollen haben keinen Zugang.</div>
-  </div>
-</div>
+    <a href="DASHBOARD.html" style="display:block;margin-top:16px;font-size:11px;color:var(--muted);text-decoration:none;text-align:center;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">← Zurück zum Dashboard</a>
 
 <!-- ══════════════════════════════════════════════════════════ -->
 <!-- APP – Nur nach TK-Login sichtbar -->
@@ -541,6 +540,7 @@ body {
     </div>
     <div class="topbar-right">
       <span class="tk-badge">TK · Vollzugriff</span>
+      <a href="DASHBOARD.html" class="back-link" style="font-size:11px;padding:5px 12px;border:1px solid var(--border);border-radius:16px;text-decoration:none;color:var(--muted);">🏠 Dashboard</a>
       <button class="logout-btn" onclick="doLogout()">Abmelden</button>
     </div>
   </div>
@@ -1267,9 +1267,8 @@ function doLogin() {
 
 function doLogout() {
   logAction('TK', 'Abgemeldet');
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('loginWall').style.display = 'flex';
-  document.getElementById('loginPw').value = '';
+  try { sessionStorage.clear(); } catch(e) {}
+  window.location.href = 'KLARTEXT_Login.html';
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────

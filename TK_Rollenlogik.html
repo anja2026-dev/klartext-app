@@ -1249,6 +1249,22 @@ body {
 // ── CONFIG ─────────────────────────────────────────────────
 const TK_PASSWORD = "TK2026";   // ← Hier dein echtes TK-Passwort setzen
 
+// ── AUTO-LOGIN via KLARTEXT-Session ────────────────────────
+(function(){
+  try {
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    var intern= sessionStorage.getItem('tk_internal_access');
+    if(login === 'true' && ['tk','admin'].includes(role) && intern === 'true'){
+      document.getElementById('loginWall').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      logAction('System', 'Auto-Login via KLARTEXT-Session · TK-Zugang bestätigt');
+      var el = document.getElementById('logTime0');
+      if(el) el.textContent = now();
+    }
+  } catch(e) {}
+})();
+
 // ── LOGIN ──────────────────────────────────────────────────
 function doLogin() {
   const pw = document.getElementById('loginPw').value;

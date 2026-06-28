@@ -346,6 +346,23 @@ footer strong{color:var(--kt-accent);}
 .kt-form-brainy{margin-top:.75rem;}
 .kt-form-disclaimer{font-size:.68rem;color:var(--kt-muted);margin-top:.5rem;font-style:italic;}
 
+/* Eigene Empfänger verwalten */
+.kt-empfaenger-verwaltung .kt-form-disclaimer{margin-top:.6rem;}
+.kt-empfaenger-liste{display:flex;flex-direction:column;gap:.35rem;margin-top:.6rem;}
+.kt-empfaenger-leer{font-size:.76rem;color:var(--kt-muted);font-style:italic;}
+.kt-empfaenger-row{
+  display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
+  padding:.4rem .6rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);
+  background:var(--kt-surface);
+}
+.kt-empfaenger-name{font-size:.78rem;font-weight:700;color:var(--kt-primary);}
+.kt-empfaenger-mail{font-size:.76rem;color:var(--kt-muted);flex:1;}
+.kt-btn-mini{
+  font-size:.68rem;font-weight:700;padding:.25rem .55rem;border-radius:14px;
+  border:1.5px solid #C62828;color:#C62828;background:var(--kt-surface);cursor:pointer;
+}
+.kt-btn-mini:hover{background:#C62828;color:#fff;}
+
 @media(max-width:600px){
   .kt-form-grid{grid-template-columns:1fr;}
   .kt-form-footer{flex-direction:column;align-items:stretch;}
@@ -1151,7 +1168,130 @@ function zeige(key) {
 <script>
 (function(){
 
-var ZIELE = ['HR','Hauptverwaltung','Socura','TK-Akte'];
+var ZIELE = ['HR','Hauptverwaltung','TK-Akte'];
+var EMPFAENGER_KEY = 'tk_custom_recipients';
+
+function ladeCustomEmpfaenger(){
+  try{ return JSON.parse(localStorage.getItem(EMPFAENGER_KEY)) || []; }
+  catch(e){ return []; }
+}
+function speichereCustomEmpfaenger(arr){
+  try{ localStorage.setItem(EMPFAENGER_KEY, JSON.stringify(arr)); }
+  catch(e){ /* localStorage nicht verfügbar – stilles Fehlschlagen */ }
+}
+
+function zielOptionsHTML(selectedValue){
+  var html = '<option value="">– Empfänger wählen –</option>';
+  html += '<optgroup label="Standard">';
+  ZIELE.forEach(function(z){
+    var sel = (z === selectedValue) ? ' selected' : '';
+    html += '<option value="'+z+'"'+sel+'>'+z+'</option>';
+  });
+  html += '</optgroup>';
+  var custom = ladeCustomEmpfaenger();
+  if(custom.length){
+    html += '<optgroup label="Eigene Empfänger">';
+    custom.forEach(function(e){
+      var val = 'custom:'+e.id;
+      var sel = (val === selectedValue) ? ' selected' : '';
+      var labelTxt = e.name + (e.rolle ? ' ('+e.rolle+')' : '');
+      html += '<option value="'+val+'"'+sel+'>'+labelTxt+'</option>';
+    });
+    html += '</optgroup>';
+  }
+  return html;
+}
+
+function aktualisiereZielSelects(){
+  FORM_DEFS.forEach(function(def){
+    var sel = document.getElementById('ziel_'+def.key);
+    if(sel){
+      var aktuell = sel.value;
+      sel.innerHTML = zielOptionsHTML(aktuell);
+    }
+  });
+}
+
+function empfaengerListeHTML(custom){
+  if(!custom.length) return '<div class="kt-empfaenger-leer">Noch keine eigenen Empfänger gespeichert.</div>';
+  var s = '';
+  custom.forEach(function(e){
+    s += '<div class="kt-empfaenger-row">';
+    s += '<span class="kt-empfaenger-name">'+e.name+(e.rolle ? ' · '+e.rolle : '')+'</span>';
+    s += '<span class="kt-empfaenger-mail">'+e.email+'</span>';
+    s += '<button type="button" class="kt-btn-mini" onclick="KT_FORM.empfaengerLoeschen(\''+e.id+'\')">🗑️ Löschen</button>';
+    s += '</div>';
+  });
+  return s;
+}
+
+function empfaengerVerwaltungHTML(){
+  var custom = ladeCustomEmpfaenger();
+  var s = '<div class="kt-form-section kt-empfaenger-verwaltung">';
+  s += '<div class="kt-form-section-titel">Eigene Empfänger anlegen</div>';
+  s += '<div class="kt-form-grid">';
+  s += '<div class="kt-field"><label for="neu_empf_name">Name<span class="req">*</span></label><input type="text" id="neu_empf_name" placeholder=" "></div>';
+  s += '<div class="kt-field"><label for="neu_empf_email">E-Mail<span class="req">*</span></label><input type="text" id="neu_empf_email" placeholder=" "></div>';
+  s += '<div class="kt-field"><label for="neu_empf_rolle">Rolle (optional)</label><input type="text" id="neu_empf_rolle" placeholder=" "></div>';
+  s += '</div>';
+  s += '<div class="kt-btn-row" style="margin-top:.5rem;">';
+  s += '<button type="button" class="kt-btn primary" onclick="KT_FORM.empfaengerSpeichern()">💾 Empfänger speichern</button>';
+  s += '</div>';
+  s += '<div class="kt-status" id="status_empfaenger"></div>';
+  s += '<div id="empfaenger_liste" class="kt-empfaenger-liste">'+empfaengerListeHTML(custom)+'</div>';
+  s += '<div class="kt-form-disclaimer">🧠 Brainy · Recruiting-Modus: „Neue Empfänger werden nur lokal gespeichert und sind nur für dich sichtbar."</div>';
+  s += '</div>';
+  return s;
+}
+
+function empfaengerSpeichern(){
+  var nameEl = document.getElementById('neu_empf_name');
+  var mailEl = document.getElementById('neu_empf_email');
+  var rolleEl = document.getElementById('neu_empf_rolle');
+  var statusEl = document.getElementById('status_empfaenger');
+  var name = nameEl.value.trim();
+  var email = mailEl.value.trim();
+  var rolle = rolleEl.value.trim();
+
+  if(!name || !email){
+    statusEl.textContent = '⚠ Bitte Name und E-Mail ausfüllen.';
+    statusEl.className = 'kt-status err';
+    return;
+  }
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRegex.test(email)){
+    statusEl.textContent = '⚠ Bitte eine gültige E-Mail-Adresse eingeben.';
+    statusEl.className = 'kt-status err';
+    return;
+  }
+
+  var liste = ladeCustomEmpfaenger();
+  liste.push({ id:'r'+Date.now(), name:name, email:email, rolle:rolle });
+  speichereCustomEmpfaenger(liste);
+
+  nameEl.value = ''; mailEl.value = ''; rolleEl.value = '';
+  var listeContainer = document.getElementById('empfaenger_liste');
+  if(listeContainer) listeContainer.innerHTML = empfaengerListeHTML(liste);
+  aktualisiereZielSelects();
+
+  statusEl.textContent = '✓ Empfänger „'+name+'" gespeichert.';
+  statusEl.className = 'kt-status ok';
+}
+
+function empfaengerLoeschen(id){
+  var liste = ladeCustomEmpfaenger().filter(function(e){ return e.id !== id; });
+  speichereCustomEmpfaenger(liste);
+
+  var listeContainer = document.getElementById('empfaenger_liste');
+  if(listeContainer) listeContainer.innerHTML = empfaengerListeHTML(liste);
+  aktualisiereZielSelects();
+
+  var statusEl = document.getElementById('status_empfaenger');
+  if(statusEl){
+    statusEl.textContent = '✓ Empfänger gelöscht.';
+    statusEl.className = 'kt-status ok';
+  }
+}
 
 var FORM_DEFS = [
 
@@ -1245,7 +1385,7 @@ var FORM_DEFS = [
     ]
   },
 
-  { key:'weiterleitung', nr:'TK-05', titel:'Weiterleitungs-Protokoll', icon:'📤',
+  { key:'weiterleitung', nr:'TK-05', titel:'Weiterleitungs-Protokoll', icon:'📤', customRecipients:true,
     intro:'Wer wurde informiert – und worüber? Checkliste statt Fließtext.',
     brainy:'Checkliste vor dem Absenden: Votum ✓ | SAB ✓ | Schule ✓ | Person ✓ | Akte ✓',
     sections:[
@@ -1372,13 +1512,16 @@ function formularHTML(def){
   });
   s += '</form>';
 
+  if(def.customRecipients){
+    s += empfaengerVerwaltungHTML();
+  }
+
   // Footer: Weiterleitung + Aktionen
   s += '<div class="kt-form-footer">';
   s += '<div class="kt-weiterleitung-block">';
   s += '<div><label>Weiterleiten an</label>';
   s += '<select id="ziel_'+def.key+'">';
-  s += '<option value="">– Empfänger wählen –</option>';
-  ZIELE.forEach(function(z){ s += '<option value="'+z+'">'+z+'</option>'; });
+  s += zielOptionsHTML('');
   s += '</select></div>';
   s += '<button type="button" class="kt-btn primary" onclick="KT_FORM.weiterleiten(\''+def.key+'\')">📤 Weiterleiten</button>';
   s += '</div>';
@@ -1500,8 +1643,8 @@ function weiterleiten(key){
   var def = FORM_DEFS.filter(function(d){return d.key===key;})[0];
   if(!def) return;
   var zielSelect = document.getElementById('ziel_'+key);
-  var ziel = zielSelect.value;
-  if(!ziel){
+  var zielWert = zielSelect.value;
+  if(!zielWert){
     statusSetzen(key, '⚠ Bitte zuerst ein Weiterleitungsziel wählen.', 'err');
     return;
   }
@@ -1510,22 +1653,38 @@ function weiterleiten(key){
     return;
   }
   var daten = sammeln(def);
-  if(ziel === 'TK-Akte'){
+
+  var zielLabel = zielWert;
+  var zielMail = '';
+
+  if(zielWert.indexOf('custom:') === 0){
+    var id = zielWert.slice(7);
+    var eintrag = ladeCustomEmpfaenger().filter(function(e){ return e.id === id; })[0];
+    if(!eintrag){
+      statusSetzen(key, '⚠ Empfänger nicht mehr gefunden – bitte neu auswählen.', 'err');
+      return;
+    }
+    zielLabel = eintrag.name;
+    zielMail = eintrag.email;
+  } else if(zielWert === 'TK-Akte'){
     statusSetzen(key, '✓ In TK-Akte vermerkt (intern, ohne Versand).', 'ok');
     return;
   }
-  var betreff = encodeURIComponent('KLARTEXT TK-Recruiting · '+def.nr+' · '+def.titel+' · an '+ziel);
-  var text = def.nr+' · '+def.titel+' · Weiterleitung an '+ziel+'\n\n';
+
+  var betreff = encodeURIComponent('KLARTEXT TK-Recruiting · '+def.nr+' · '+def.titel+' · an '+zielLabel);
+  var text = def.nr+' · '+def.titel+' · Weiterleitung an '+zielLabel+'\n\n';
   Object.keys(daten).forEach(function(label){ text += label+': '+(daten[label] || '–')+'\n'; });
   var body = encodeURIComponent(text);
-  window.location.href = 'mailto:?subject='+betreff+'&body='+body;
-  statusSetzen(key, '✓ Weiterleitung an '+ziel+' vorbereitet – E-Mail-Programm öffnet sich.', 'ok');
+  window.location.href = 'mailto:'+zielMail+'?subject='+betreff+'&body='+body;
+  statusSetzen(key, '✓ Weiterleitung an '+zielLabel+' vorbereitet – E-Mail-Programm öffnet sich.', 'ok');
 }
 
 window.KT_FORM = {
   drucken: function(key){ druckenOderPDF(key, 'Druck'); },
   pdf: function(key){ druckenOderPDF(key, 'PDF-Export'); },
-  weiterleiten: weiterleiten
+  weiterleiten: weiterleiten,
+  empfaengerSpeichern: empfaengerSpeichern,
+  empfaengerLoeschen: empfaengerLoeschen
 };
 
 renderForms();

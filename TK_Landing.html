@@ -4,157 +4,859 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>KLARTEXT · Teamkoordination</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Auth-Guard: nur TK/Admin -->
 <script>
-(function(){try{
-  if(window.location.protocol==='file:') return;
-  var login=sessionStorage.getItem('klartext_login');
-  var role=sessionStorage.getItem('klartext_role')||'';
-  if(login!=='true'){window.location.href='KLARTEXT_Login.html';return;}
-  if(!['tk','admin'].includes(role)){window.location.href='KLARTEXT_Login.html';}
-}catch(e){}})();
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true') { window.location.href='KLARTEXT_Login.html'; return; }
+    if(!['tk','admin'].includes(role)) { window.location.href='KLARTEXT_Login.html'; }
+  } catch(e) {}
+})();
 </script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
 <style>
-:root{--tk:#4A148C;--tkl:#F3E5F5;--tkb:#CE93D8;--kt:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#1A1A2E;--muted:#6A6878;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
-.kt-header{background:var(--kt);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
-.kt-left{display:flex;align-items:center;gap:.75rem;}
-.kt-logo-mark{width:36px;height:36px;border:2px solid var(--acc);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;flex-shrink:0;}
-.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
-.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
-.kt-logo-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
-.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
-.kt-logo-text .sub{font-size:.6rem;color:var(--acc);letter-spacing:.14em;display:block;margin-top:2px;}
-.logout-btn{padding:.28rem .7rem;border-radius:20px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);font-size:.68rem;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:none;}
-.logout-btn:hover{background:rgba(255,255,255,.18);}
-.shell{max-width:700px;margin:0 auto;padding:1.5rem clamp(1rem,3vw,2rem) 4rem;}
-.hero{background:linear-gradient(135deg,var(--tk),#7B1FA2);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
-.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.3rem;}
-.hero-sub{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.6;}
-.sek-titel{font-size:.62rem;font-weight:700;color:var(--tk);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.75rem;}
-.karten-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
-.tk-karte{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.85rem 1rem;text-decoration:none;transition:all .18s;display:block;border-left:4px solid var(--tk);}
-.tk-karte:hover{transform:translateX(3px);box-shadow:0 3px 12px rgba(74,20,140,.12);border-left-color:var(--tk);}
-.tk-nr{font-size:.58rem;font-weight:700;color:var(--tk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.2rem;}
-.tk-titel{font-size:.9rem;font-weight:700;color:var(--ink);margin-bottom:.15rem;line-height:1.3;}
-.tk-sub{font-size:.72rem;color:var(--muted);line-height:1.5;}
-@media(max-width:480px){.karten-grid{grid-template-columns:1fr;}}
+/* ── ROOT ─────────────────────────────────────────────────── */
+:root {
+  --kt:     #1B3A4B;
+  --acc:    #6EC6A0;
+  --paper:  #F5F0E8;
+  --surface:#FFFFFF;
+  --border: #DDD8CE;
+  --ink:    #2D2D2D;
+  --muted:  #7A7060;
+
+  /* TK-Farbe (Lila/Violett – TK-spezifisch) */
+  --tk:     #4A148C;
+  --tkl:    #F3E5F5;
+  --tkb:    #CE93D8;
+  --tk-gl:  rgba(74,20,140,.08);
+
+  /* Status */
+  --green:  #2E7D6E;
+  --amber:  #B8860B;
+  --red:    #B71C1C;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── HEADER ───────────────────────────────────────────────── */
+.kt-header {
+  background: var(--kt);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(.75rem, 3vw, 1.5rem);
+  border-bottom: 3px solid var(--acc);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.kt-left { display: flex; align-items: center; gap: .75rem; }
+.kt-logo-mark {
+  width: 36px; height: 36px;
+  border: 2px solid var(--acc);
+  border-radius: 6px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px; padding: 4px 5px; flex-shrink: 0;
+}
+.lm-k::before {
+  content: "K";
+  font-family: "Playfair Display", serif;
+  font-size: 13px; font-weight: 700;
+  color: #fff; line-height: 1;
+}
+.kt-logo-bars { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.kt-logo-bars span { height: 2px; border-radius: 2px; background: var(--acc); display: block; }
+.kt-logo-text .wort {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem; font-weight: 700; color: #fff; display: block;
+}
+.kt-logo-text .sub {
+  font-size: .6rem; color: var(--acc);
+  letter-spacing: .14em; display: block; margin-top: 2px;
+}
+.header-right { display: flex; align-items: center; gap: .6rem; }
+.tk-badge-pill {
+  background: var(--tk-gl);
+  border: 1.5px solid var(--tkb);
+  color: var(--tkb);
+  font-size: .6rem; font-weight: 700;
+  padding: .18rem .6rem;
+  border-radius: 20px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.logout-btn {
+  padding: .28rem .7rem;
+  border-radius: 20px;
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.7);
+  font-size: .68rem; font-weight: 600;
+  cursor: pointer;
+  font-family: "DM Sans", sans-serif;
+  text-decoration: none;
+  transition: background .18s;
+}
+.logout-btn:hover { background: rgba(255,255,255,.18); }
+
+/* ── SHELL & LAYOUT ───────────────────────────────────────── */
+.shell {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1.75rem clamp(1rem, 3vw, 2rem) 5rem;
+}
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--tk), #7B1FA2);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "TK";
+  position: absolute; right: 1.25rem; bottom: .5rem;
+  font-family: "Playfair Display", serif;
+  font-size: 4rem; font-weight: 700;
+  color: rgba(255,255,255,.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: .6rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tkb); margin-bottom: .4rem;
+}
+.hero-titel {
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem; font-weight: 700;
+  color: #fff; margin-bottom: .4rem;
+}
+.hero-sub {
+  font-size: .8rem; color: rgba(255,255,255,.65); line-height: 1.65;
+}
+
+/* ── SEKTION ──────────────────────────────────────────────── */
+.sek {
+  margin-bottom: 1.75rem;
+}
+.sek-header {
+  display: flex; align-items: center; gap: .5rem;
+  margin-bottom: .85rem;
+}
+.sek-titel {
+  font-size: .6rem; font-weight: 700;
+  color: var(--tk); letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.sek-linie {
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--border), transparent);
+}
+
+/* ── KARTEN-GRID ──────────────────────────────────────────── */
+.karten-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .65rem;
+}
+.tk-karte {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-left: 4px solid var(--tk);
+  border-radius: 10px;
+  padding: .85rem 1rem;
+  text-decoration: none;
+  display: block;
+  transition: all .18s;
+}
+.tk-karte:hover {
+  transform: translateX(3px);
+  box-shadow: 0 4px 14px rgba(74,20,140,.1);
+}
+.tk-nr {
+  font-size: .58rem; font-weight: 700;
+  color: var(--tk); letter-spacing: .12em;
+  text-transform: uppercase; margin-bottom: .2rem;
+}
+.tk-titel {
+  font-size: .88rem; font-weight: 700;
+  color: var(--ink); margin-bottom: .15rem; line-height: 1.3;
+}
+.tk-sub {
+  font-size: .72rem; color: var(--muted); line-height: 1.5;
+}
+
+/* TK-Karte Varianten */
+.tk-karte.va { border-left-color: #5D3A7A; }
+.tk-karte.va:hover { box-shadow: 0 4px 14px rgba(93,58,122,.15); }
+.tk-karte.rollen { border-left-color: #1A6B7C; }
+.tk-karte.rollen:hover { box-shadow: 0 4px 14px rgba(26,107,124,.15); }
+.tk-karte.wl { border-left-color: var(--acc); }
+.tk-karte.wl:hover { box-shadow: 0 4px 14px rgba(110,198,160,.15); }
+
+/* ── TK-EXKLUSIV: ROLLENLOGIK-PANEL ──────────────────────── */
+.tk-panel {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid #1A6B7C;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: .65rem;
+}
+.tk-panel-kopf {
+  background: rgba(26,107,124,.06);
+  padding: .75rem 1.1rem;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+}
+.tk-panel-kopf-left { display: flex; align-items: center; gap: .6rem; }
+.tk-panel-icon {
+  width: 28px; height: 28px;
+  background: rgba(26,107,124,.12);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem;
+}
+.tk-panel-label {
+  font-size: .82rem; font-weight: 700; color: var(--ink);
+}
+.tk-panel-sub {
+  font-size: .66rem; color: var(--muted);
+}
+.tk-panel-chevron {
+  font-size: .75rem; color: var(--muted);
+  transition: transform .22s;
+}
+.tk-panel.open .tk-panel-chevron { transform: rotate(180deg); }
+.tk-panel-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .3s ease;
+}
+.tk-panel.open .tk-panel-body { max-height: 800px; }
+.tk-panel-inner { padding: 1rem 1.1rem; border-top: 1px solid var(--border); }
+
+/* Rollen-Chips */
+.rollen-zeile { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .7rem; }
+.role-chip {
+  display: inline-flex; align-items: center;
+  padding: .18rem .55rem;
+  border-radius: 12px;
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  border: 1.5px solid transparent;
+}
+.chip-tk      { background: rgba(74,20,140,.1);  color: var(--tk);   border-color: var(--tkb); }
+.chip-ingra   { background: rgba(30,100,200,.1); color: #1E64C8;     border-color: #90B4E8; }
+.chip-springer{ background: rgba(46,125,110,.1); color: var(--green);border-color: #8EC5BC; }
+.chip-pool    { background: rgba(184,134,11,.1); color: var(--amber);border-color: #D4AF60; }
+.chip-vertretung{background:rgba(183,28,28,.1); color: var(--red);  border-color: #EF9A9A; }
+.chip-lk      { background: rgba(93,58,122,.1); color: #5D3A7A;     border-color: #C5A8D8; }
+.chip-eltern  { background: rgba(100,60,30,.1); color: #8B4513;     border-color: #D4A080; }
+.chip-beta    { background: rgba(80,80,80,.1);  color: #666;        border-color: #C0C0C0; }
+
+/* Weiterleitungszeile */
+.wl-zeile {
+  display: flex; align-items: center; gap: .5rem;
+  background: var(--paper);
+  border-radius: 8px;
+  padding: .6rem .8rem;
+  margin-bottom: .45rem;
+  font-size: .78rem;
+}
+.wl-von { font-weight: 700; color: var(--ink); min-width: 80px; }
+.wl-pfeil { color: var(--acc); font-size: .9rem; flex-shrink: 0; }
+.wl-zu { color: var(--muted); flex: 1; }
+.wl-status {
+  font-size: .6rem; font-weight: 700;
+  padding: .1rem .4rem; border-radius: 8px;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.wl-aktiv   { background: rgba(46,125,110,.12); color: var(--green); }
+.wl-inaktiv { background: rgba(120,112,96,.12); color: var(--muted); }
+
+/* ── VA-SEKTION ───────────────────────────────────────────── */
+.va-panel {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-top: 3px solid #5D3A7A;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.va-kopf {
+  background: rgba(93,58,122,.05);
+  padding: .85rem 1.1rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.va-icon {
+  width: 38px; height: 38px;
+  background: rgba(93,58,122,.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.va-kopf-text {}
+.va-kopf-titel {
+  font-size: .9rem; font-weight: 700; color: var(--ink);
+}
+.va-kopf-sub { font-size: .7rem; color: var(--muted); }
+
+.va-body { padding: 1rem 1.1rem; border-top: 1px solid var(--border); }
+
+.va-karten-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .55rem;
+  margin-bottom: .85rem;
+}
+.va-karte {
+  background: var(--paper);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: .7rem .85rem;
+  text-decoration: none;
+  display: block;
+  transition: all .16s;
+  border-left: 3px solid #5D3A7A;
+}
+.va-karte:hover {
+  box-shadow: 0 3px 10px rgba(93,58,122,.12);
+  transform: translateY(-1px);
+}
+.va-karte-nr {
+  font-size: .55rem; font-weight: 700;
+  color: #5D3A7A; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: .18rem;
+}
+.va-karte-titel {
+  font-size: .82rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .1rem; line-height: 1.3;
+}
+.va-karte-sub { font-size: .66rem; color: var(--muted); line-height: 1.4; }
+
+/* Vertretungs-Status-Anzeige */
+.va-status-leiste {
+  display: flex; gap: .45rem;
+  margin-bottom: .85rem; flex-wrap: wrap;
+}
+.va-status-item {
+  flex: 1; min-width: 100px;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .6rem .75rem;
+  text-align: center;
+}
+.va-status-zahl {
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem; font-weight: 700;
+  line-height: 1; margin-bottom: .15rem;
+}
+.va-status-label { font-size: .62rem; color: var(--muted); }
+.va-status-item.aktiv .va-status-zahl { color: var(--green); }
+.va-status-item.offen .va-status-zahl { color: var(--amber); }
+.va-status-item.pool  .va-status-zahl { color: #5D3A7A; }
+
+/* Quick-Action-Button */
+.btn-va {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: #5D3A7A;
+  color: #fff;
+  border: none; border-radius: 8px;
+  padding: .55rem 1rem;
+  font-size: .78rem; font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer; text-decoration: none;
+  transition: background .18s;
+}
+.btn-va:hover { background: #4A148C; }
+.btn-va-ghost {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: transparent;
+  color: #5D3A7A;
+  border: 1.5px solid #C5A8D8;
+  border-radius: 8px;
+  padding: .5rem .9rem;
+  font-size: .75rem; font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer; text-decoration: none;
+  transition: all .16s;
+}
+.btn-va-ghost:hover { background: rgba(93,58,122,.06); }
+
+/* ── HINWEIS-KARTE ────────────────────────────────────────── */
+.info-karte {
+  background: rgba(110,198,160,.08);
+  border: 1px solid rgba(110,198,160,.35);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: .7rem .9rem;
+  font-size: .73rem; color: #2E5A4B;
+  line-height: 1.6;
+  margin-top: .65rem;
+}
+
+/* ── TOAST ────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  background: var(--kt); color: #fff;
+  padding: .6rem 1.2rem; border-radius: 20px;
+  font-size: .78rem; font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,.2);
+  display: none; z-index: 999;
+  border-bottom: 2px solid var(--acc);
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .karten-grid     { grid-template-columns: 1fr; }
+  .va-karten-grid  { grid-template-columns: 1fr; }
+  .va-status-leiste{ flex-direction: column; }
+  .hero-titel      { font-size: 1.1rem; }
+}
 </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ══════════════════════════════════════════════════════════ -->
 <header class="kt-header">
   <div class="kt-left">
-    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
-    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Teamkoordination</span></div>
+    <div class="kt-logo-mark">
+      <div class="lm-k"></div>
+      <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+    </div>
+    <div class="kt-logo-text">
+      <span class="wort">KLARTEXT</span>
+      <span class="sub">Teamkoordination</span>
+    </div>
   </div>
-  <a class="logout-btn" href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}">Abmelden</a>
+  <div class="header-right">
+    <span class="tk-badge-pill">TK</span>
+    <a class="logout-btn" href="KLARTEXT_Login.html"
+       onclick="try{sessionStorage.clear();}catch(e){}">Abmelden</a>
+  </div>
 </header>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- MAIN -->
+<!-- ══════════════════════════════════════════════════════════ -->
 <div class="shell">
+
+  <!-- HERO -->
   <div class="hero">
+    <div class="hero-eyebrow">Teamkoordination · Übersicht</div>
     <div class="hero-titel">Willkommen, Teamkoordination</div>
-    <div class="hero-sub">Ihre 6 Handlungskarten für die Begleitung und Führung von Schulbegleiter:innen.</div>
+    <div class="hero-sub">
+      Ihre Handlungskarten, Rollenlogik und der Vertretungsassistent in einer Übersicht.<br>
+      Alle Steuerungsfunktionen sind ausschließlich für TK sichtbar.
+    </div>
   </div>
-  <div class="sek-titel">Ihre Karten</div>
-  <div class="karten-grid">
-    <a class="tk-karte" href="TK-01.html">
-      <div class="tk-nr">TK-01</div>
-      <div class="tk-titel">Zurück
-  KLARTEXTKlar. Warm. Menschlich.
-  Dashboard
-    ⬅ Logout
 
-KLARTEXT &middot; Teamkoordination
+  <!-- ─── HANDLUNGSKARTEN ───────────────────────────────────── -->
+  <div class="sek">
+    <div class="sek-header">
+      <span class="sek-titel">Handlungskarten</span>
+      <div class="sek-linie"></div>
+    </div>
+    <div class="karten-grid">
 
-  
-  
-    TK
-    Karte 01
-    Koordination im Team</div>
-      <div class="tk-sub"></div>
-    </a>
-    <a class="tk-karte" href="TK-02.html">
-      <div class="tk-nr">TK-02</div>
-      <div class="tk-titel">Zurück
-  KLARTEXTKlar. Warm. Menschlich.
-  Dashboard
-    ⬅ Logout
+      <a class="tk-karte" href="TK-01.html">
+        <div class="tk-nr">TK-01</div>
+        <div class="tk-titel">Koordination im Team</div>
+        <div class="tk-sub">Aufgaben, Rollen, Abläufe klären</div>
+      </a>
 
-KLARTEXT &middot; Teamkoordination
+      <a class="tk-karte" href="TK-02.html">
+        <div class="tk-nr">TK-02</div>
+        <div class="tk-titel">Fallbesprechung strukturieren</div>
+        <div class="tk-sub">Systematisch, klar, lösungsorientiert</div>
+      </a>
 
-  
-  
-    TK
-    Karte 02
-    Fallbesprechung strukturieren</div>
-      <div class="tk-sub"></div>
-    </a>
-    <a class="tk-karte" href="TK-03.html">
-      <div class="tk-nr">TK-03</div>
-      <div class="tk-titel">Zurück
-  KLARTEXTKlar. Warm. Menschlich.
-  Dashboard
-    ⬅ Logout
+      <a class="tk-karte" href="TK-03.html">
+        <div class="tk-nr">TK-03</div>
+        <div class="tk-titel">Hilfeplangespräch vorbereiten</div>
+        <div class="tk-sub">Struktur & Dokumentation</div>
+      </a>
 
-KLARTEXT &middot; Teamkoordination
+      <a class="tk-karte" href="TK-04.html">
+        <div class="tk-nr">TK-04</div>
+        <div class="tk-titel">§ 8a — Schutzauftrag</div>
+        <div class="tk-sub">Kindeswohlgefährdung erkennen & handeln</div>
+      </a>
 
-  
-  
-    TK
-    Karte 03
-    Hilfeplangespräch vorbereiten</div>
-      <div class="tk-sub"></div>
-    </a>
-    <a class="tk-karte" href="TK-04.html">
-      <div class="tk-nr">TK-04</div>
-      <div class="tk-titel">Zurück
-  KLARTEXTKlar. Warm. Menschlich.
-  Dashboard
-    ⬅ Logout
+      <a class="tk-karte" href="TK-05.html">
+        <div class="tk-nr">TK-05</div>
+        <div class="tk-titel">Qualitätssicherung</div>
+        <div class="tk-sub">Standards, Reflexion, Dokumentation</div>
+      </a>
 
-KLARTEXT &middot; Teamkoordination
+      <a class="tk-karte" href="TK-06.html">
+        <div class="tk-nr">TK-06</div>
+        <div class="tk-titel">Teamentwicklung</div>
+        <div class="tk-sub">Zusammenhalt, Feedback, Entwicklung</div>
+      </a>
 
-  
-  
-    TK
-    Karte 04
-    § 8a — Schutzauftrag</div>
-      <div class="tk-sub"></div>
-    </a>
-    <a class="tk-karte" href="TK-05.html">
-      <div class="tk-nr">TK-05</div>
-      <div class="tk-titel">Zurück
-  KLARTEXTKlar. Warm. Menschlich.
-  Dashboard
-    ⬅ Logout
+      <a class="tk-karte" href="TK-07.html">
+        <div class="tk-nr">TK-07</div>
+        <div class="tk-titel">Onboarding neue INGRA</div>
+        <div class="tk-sub">Einarbeitung systematisch begleiten</div>
+      </a>
 
-KLARTEXT &middot; Teamkoordination
+      <a class="tk-karte" href="TK-08.html">
+        <div class="tk-nr">TK-08</div>
+        <div class="tk-titel">Konflikt im Team</div>
+        <div class="tk-sub">Deeskalation, Klärung, Gesprächsführung</div>
+      </a>
 
-  
-  
-    TK
-    Karte 05
-    Qualitätssicherung</div>
-      <div class="tk-sub"></div>
-    </a>
-    <a class="tk-karte" href="TK-06.html">
-      <div class="tk-nr">TK-06</div>
-      <div class="tk-titel">Zurück
-  KLARTEXTKlar. Warm. Menschlich.
-  Dashboard
-    ⬅ Logout
+      <a class="tk-karte" href="TK-09.html">
+        <div class="tk-nr">TK-09</div>
+        <div class="tk-titel">Krisenprotokoll</div>
+        <div class="tk-sub">Sofortmaßnahmen & Meldewege</div>
+      </a>
 
-KLARTEXT &middot; Teamkoordination
+      <a class="tk-karte" href="TK-10.html">
+        <div class="tk-nr">TK-10</div>
+        <div class="tk-titel">Schulkommunikation</div>
+        <div class="tk-sub">Abstimmung mit Schule & Lehrkräften</div>
+      </a>
 
-  
-  
-    TK
-    Karte 06
-    Teamentwicklung</div>
-      <div class="tk-sub"></div>
+      <a class="tk-karte" href="TK-11.html">
+        <div class="tk-nr">TK-11</div>
+        <div class="tk-titel">Elternkontakt begleiten</div>
+        <div class="tk-sub">Transparenz, Vertrauen, Klarheit</div>
+      </a>
+
+      <a class="tk-karte" href="TK-12.html">
+        <div class="tk-nr">TK-12</div>
+        <div class="tk-titel">Zieldefinition & Hilfeplan</div>
+        <div class="tk-sub">Messbare Ziele formulieren</div>
+      </a>
+
+      <a class="tk-karte" href="TK-13.html">
+        <div class="tk-nr">TK-13</div>
+        <div class="tk-titel">Abschlussgespräch INGRA</div>
+        <div class="tk-sub">Abschluss professionell gestalten</div>
+      </a>
+
+      <a class="tk-karte" href="TK-14.html">
+        <div class="tk-nr">TK-14</div>
+        <div class="tk-titel">Supervision vorbereiten</div>
+        <div class="tk-sub">Inhalte strukturieren & einbringen</div>
+      </a>
+
+      <a class="tk-karte" href="TK-15_Vertretungsorganisation.html" style="grid-column: 1 / -1;">
+        <div class="tk-nr">TK-15</div>
+        <div class="tk-titel">Vertretungsorganisation</div>
+        <div class="tk-sub">Abläufe, Dokumentation & Übergabe bei Ausfall</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ─── ROLLENLOGIK (TK-EXKLUSIV) ────────────────────────── -->
+  <div class="sek">
+    <div class="sek-header">
+      <span class="sek-titel">Rollenlogik · TK-exklusiv</span>
+      <div class="sek-linie"></div>
+    </div>
+
+    <!-- Panel: Rollenzuweisungen -->
+    <div class="tk-panel" id="panel-rollen">
+      <div class="tk-panel-kopf" onclick="togglePanel('panel-rollen')">
+        <div class="tk-panel-kopf-left">
+          <div class="tk-panel-icon">🧩</div>
+          <div>
+            <div class="tk-panel-label">Rollen-Übersicht</div>
+            <div class="tk-panel-sub">Alle 8 Rollen und ihre Sichtbarkeit</div>
+          </div>
+        </div>
+        <span class="tk-panel-chevron">▾</span>
+      </div>
+      <div class="tk-panel-body">
+        <div class="tk-panel-inner">
+          <div class="rollen-zeile">
+            <span class="role-chip chip-tk">TK</span>
+            <span class="role-chip chip-ingra">INGRA</span>
+            <span class="role-chip chip-springer">Springer</span>
+            <span class="role-chip chip-pool">Pool</span>
+            <span class="role-chip chip-vertretung">Vertretung</span>
+            <span class="role-chip chip-lk">Lehrkraft</span>
+            <span class="role-chip chip-eltern">Eltern</span>
+            <span class="role-chip chip-beta">Beta</span>
+          </div>
+          <div style="margin-bottom:.6rem;">
+            <div class="wl-zeile">
+              <span class="wl-von">TK</span>
+              <span class="wl-pfeil">→</span>
+              <span class="wl-zu">Alle Module, Vertretungsassistent, Rollenlogik, Log</span>
+              <span class="wl-status wl-aktiv">Vollzugriff</span>
+            </div>
+            <div class="wl-zeile">
+              <span class="wl-von">INGRA</span>
+              <span class="wl-pfeil">→</span>
+              <span class="wl-zu">Eigene Karten, Barometer, Module M0–M8</span>
+              <span class="wl-status wl-aktiv">Aktiv</span>
+            </div>
+            <div class="wl-zeile">
+              <span class="wl-von">Springer / Pool</span>
+              <span class="wl-pfeil">→</span>
+              <span class="wl-zu">Einsatzübersicht, zugewiesene Karten</span>
+              <span class="wl-status wl-aktiv">Aktiv</span>
+            </div>
+            <div class="wl-zeile">
+              <span class="wl-von">Vertretung</span>
+              <span class="wl-pfeil">→</span>
+              <span class="wl-zu">Nur Ergebnisse der Vertretungszuweisung</span>
+              <span class="wl-status wl-aktiv">Aktiv</span>
+            </div>
+            <div class="wl-zeile">
+              <span class="wl-von">Lehrkraft / Eltern</span>
+              <span class="wl-pfeil">→</span>
+              <span class="wl-zu">Freigegebene Inhalte, keine TK-Steuerung</span>
+              <span class="wl-status wl-aktiv">Aktiv</span>
+            </div>
+            <div class="wl-zeile">
+              <span class="wl-von">Beta</span>
+              <span class="wl-pfeil">→</span>
+              <span class="wl-zu">Beta-Testinhalte, markierte Features</span>
+              <span class="wl-status wl-inaktiv">Begrenzt</span>
+            </div>
+          </div>
+          <div class="info-karte">
+            ℹ️ Rollenlogik ist ausschließlich für TK sichtbar. Andere Rollen sehen nur Ergebnisse – niemals Steuerungsebenen, Weiterleitungsregeln oder diesen Bereich.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Weiterleitungsregeln -->
+    <div class="tk-panel rollen" id="panel-weiterleitungen" style="margin-top:.65rem;">
+      <div class="tk-panel-kopf" onclick="togglePanel('panel-weiterleitungen')">
+        <div class="tk-panel-kopf-left">
+          <div class="tk-panel-icon">🔀</div>
+          <div>
+            <div class="tk-panel-label">Weiterleitungsregeln</div>
+            <div class="tk-panel-sub">Login → Zielseite nach Rolle</div>
+          </div>
+        </div>
+        <span class="tk-panel-chevron">▾</span>
+      </div>
+      <div class="tk-panel-body">
+        <div class="tk-panel-inner">
+          <div class="wl-zeile">
+            <span class="wl-von">tk / admin</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">TK_Landing.html</span>
+            <span class="wl-status wl-aktiv">Diese Seite</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">ingra</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_Dashboard.html</span>
+            <span class="wl-status wl-aktiv">Aktiv</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">springer</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_Springer_Landing.html</span>
+            <span class="wl-status wl-aktiv">Aktiv</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">pool</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_Pool_Landing.html</span>
+            <span class="wl-status wl-aktiv">Aktiv</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">vertretung</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_Vertretung_Info.html</span>
+            <span class="wl-status wl-aktiv">Aktiv</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">lk</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_LK_Landing.html</span>
+            <span class="wl-status wl-aktiv">Aktiv</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">eltern</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_Eltern_Landing.html</span>
+            <span class="wl-status wl-aktiv">Aktiv</span>
+          </div>
+          <div class="wl-zeile">
+            <span class="wl-von">beta</span>
+            <span class="wl-pfeil">→</span>
+            <span class="wl-zu">KLARTEXT_Beta_Landing.html</span>
+            <span class="wl-status wl-inaktiv">Beta</span>
+          </div>
+          <div class="info-karte" style="margin-top:.65rem;">
+            🔐 Weiterleitungslogik wird im Login-Script (sessionStorage) gesteuert. TK kann Regeln hier einsehen – ändern über <code>KLARTEXT_Login.html</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direktlink: TK_Rollenlogik.html -->
+    <a class="tk-karte rollen" href="TK_Rollenlogik.html" style="margin-top:.65rem; display:flex; align-items:center; gap:.75rem; text-decoration:none;">
+      <div style="font-size:1.3rem;">⚙️</div>
+      <div>
+        <div class="tk-nr">Rollenlogik · Vollansicht</div>
+        <div class="tk-titel">TK_Rollenlogik.html öffnen</div>
+        <div class="tk-sub">Rollenverwaltung, Vertretungssuche, Audit-Log – vollständige TK-Steuerungsansicht</div>
+      </div>
     </a>
   </div>
-</div>
+
+  <!-- ─── VERTRETUNGSASSISTENT ──────────────────────────────── -->
+  <div class="sek">
+    <div class="sek-header">
+      <span class="sek-titel">Vertretungsassistent</span>
+      <div class="sek-linie"></div>
+    </div>
+
+    <div class="va-panel">
+      <div class="va-kopf">
+        <div class="va-icon">🔄</div>
+        <div class="va-kopf-text">
+          <div class="va-kopf-titel">Vertretungsassistent · KLARTEXT-App</div>
+          <div class="va-kopf-sub">TK aktiviert, zuweist und beendet Vertretungen – andere Rollen sehen nur Ergebnisse</div>
+        </div>
+      </div>
+
+      <div class="va-body">
+
+        <!-- Status-Leiste -->
+        <div class="va-status-leiste">
+          <div class="va-status-item aktiv">
+            <div class="va-status-zahl" id="va-aktiv-zahl">–</div>
+            <div class="va-status-label">Aktive Vertretungen</div>
+          </div>
+          <div class="va-status-item offen">
+            <div class="va-status-zahl" id="va-offen-zahl">–</div>
+            <div class="va-status-label">Offen / Ausstehend</div>
+          </div>
+          <div class="va-status-item pool">
+            <div class="va-status-zahl" id="va-pool-zahl">–</div>
+            <div class="va-status-label">Pool verfügbar</div>
+          </div>
+        </div>
+
+        <!-- VA-Karten-Grid -->
+        <div class="va-karten-grid">
+          <a class="va-karte" href="KLARTEXT_Vertretungsassistent_Architektur.html">
+            <div class="va-karte-nr">VA · Architektur</div>
+            <div class="va-karte-titel">Backend & Datenmodell</div>
+            <div class="va-karte-sub">Architektur, Firebase-Struktur, API-Referenz</div>
+          </a>
+
+          <a class="va-karte" href="TK_Rollenlogik.html#vertretung">
+            <div class="va-karte-nr">VA · Zuweisung</div>
+            <div class="va-karte-titel">Vertretung zuweisen</div>
+            <div class="va-karte-sub">INGRA wählen, Kandidaten suchen, bestätigen</div>
+          </a>
+
+          <a class="va-karte" href="TK-15_Vertretungsorganisation.html">
+            <div class="va-karte-nr">TK-15</div>
+            <div class="va-karte-titel">Vertretungsorganisation</div>
+            <div class="va-karte-sub">Abläufe, Checklisten, Übergabedoku</div>
+          </a>
+
+          <a class="va-karte" href="TK_Rollenlogik.html#log">
+            <div class="va-karte-nr">VA · Audit-Log</div>
+            <div class="va-karte-titel">Änderungsprotokoll</div>
+            <div class="va-karte-sub">Alle TK-Aktionen revisionssicher einsehen</div>
+          </a>
+        </div>
+
+        <!-- Quick-Actions -->
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+          <a class="btn-va" href="TK_Rollenlogik.html">
+            ⚙️ Vertretungsassistent öffnen
+          </a>
+          <a class="btn-va-ghost" href="KLARTEXT_Vertretungsassistent_Architektur.html">
+            📐 Architektur ansehen
+          </a>
+        </div>
+
+        <div class="info-karte" style="margin-top:.75rem;">
+          ℹ️ Vertretungsassistent gehört vollständig zur KLARTEXT-App. TK kann Vertretungen aktivieren, zuweisen und beenden. Springer, Pool und Vertretungsrollen sehen ausschließlich die für sie freigegebenen Ergebnisse.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- .shell -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Panel-Toggle ────────────────────────────────────────────
+function togglePanel(id) {
+  const p = document.getElementById(id);
+  p.classList.toggle('open');
+}
+
+// ── Toast ───────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2800);
+}
+
+// ── VA-Status-Dummy (später Firebase-Anbindung) ─────────────
+function ladeVAStatus() {
+  // Platzhalter – ersetzen durch Firebase-Abfrage
+  // Beispiel: db.collection('vertretungen').where('status','==','aktiv').get()
+  document.getElementById('va-aktiv-zahl').textContent = '2';
+  document.getElementById('va-offen-zahl').textContent = '1';
+  document.getElementById('va-pool-zahl').textContent  = '5';
+}
+
+// ── Init ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  ladeVAStatus();
+
+  // Erstes Panel standardmäßig öffnen
+  // (optional – auskommentieren wenn alle geschlossen bleiben sollen)
+  // document.getElementById('panel-rollen').classList.add('open');
+});
+
+// Auth-Sicherung: ESC → Logout
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (confirm('Abmelden?')) {
+      try { sessionStorage.clear(); } catch(ex) {}
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  }
+});
+</script>
 </body>
 </html>

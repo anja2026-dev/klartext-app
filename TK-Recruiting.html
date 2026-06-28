@@ -280,6 +280,77 @@ footer strong{color:var(--kt-accent);}
 @media(max-width:600px){
   .btn-grid{grid-template-columns:1fr 1fr;}
 }
+
+/* ══════════════════════════════════════════════════════════
+   ERWEITERUNG: INTERAKTIVE FORMULARE (TK-Recruiting)
+══════════════════════════════════════════════════════════ */
+.form-mount{margin-top:1rem;}
+.kt-form-karte{border-color:rgba(74,20,140,.25);}
+.kt-form-intro{font-size:.78rem;color:var(--kt-muted);margin-bottom:.65rem;line-height:1.5;}
+.kt-form-intro .pflicht{color:#C62828;font-weight:700;}
+.kt-form-section{margin-bottom:.9rem;}
+.kt-form-section-titel{
+  font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--tk-color);margin-bottom:.45rem;padding-bottom:.2rem;
+  border-bottom:1px solid rgba(74,20,140,.15);
+}
+.kt-form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.55rem .7rem;}
+.kt-field{display:flex;flex-direction:column;gap:.22rem;}
+.kt-field.wide{grid-column:1/-1;}
+.kt-field label{font-size:.72rem;font-weight:600;color:var(--kt-ink);}
+.kt-field label .req{color:#C62828;margin-left:.15rem;}
+.kt-field input[type=text],
+.kt-field input[type=date],
+.kt-field select,
+.kt-field textarea{
+  font-family:'DM Sans',sans-serif;
+  font-size:.8rem;color:var(--kt-ink);
+  border:1.5px solid var(--kt-border);border-radius:var(--r-sm);
+  padding:.4rem .55rem;background:var(--kt-surface);
+  width:100%;
+}
+.kt-field textarea{resize:vertical;min-height:48px;font-family:inherit;}
+.kt-field input:focus,.kt-field select:focus,.kt-field textarea:focus{outline:none;border-color:var(--tk-color);}
+.kt-field input:invalid:not(:placeholder-shown),
+.kt-field select:invalid{border-color:#C62828;}
+.kt-checkgroup{display:flex;flex-wrap:wrap;gap:.4rem;}
+.kt-check-chip{
+  display:inline-flex;align-items:center;gap:.32rem;
+  font-size:.73rem;padding:.28rem .6rem;border-radius:16px;
+  border:1.5px solid var(--kt-border);background:var(--kt-surface);cursor:pointer;
+  transition:all .15s;
+}
+.kt-check-chip input{accent-color:var(--tk-color);}
+.kt-check-chip:has(input:checked){border-color:var(--tk-color);background:var(--tk-light);}
+
+.kt-form-footer{
+  margin-top:.85rem;padding-top:.75rem;border-top:1px solid rgba(74,20,140,.12);
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:.65rem;justify-content:space-between;
+}
+.kt-weiterleitung-block{display:flex;flex-wrap:wrap;align-items:flex-end;gap:.5rem;}
+.kt-weiterleitung-block label{font-size:.68rem;font-weight:700;letter-spacing:.04em;color:var(--kt-muted);text-transform:uppercase;display:block;margin-bottom:.25rem;}
+.kt-weiterleitung-block select{min-width:170px;}
+.kt-btn-row{display:flex;flex-wrap:wrap;gap:.45rem;}
+.kt-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.73rem;font-weight:700;padding:.42rem .85rem;border-radius:20px;
+  cursor:pointer;border:1.5px solid var(--tk-color);background:var(--kt-surface);color:var(--tk-color);
+  transition:all .15s;
+}
+.kt-btn:hover{background:var(--tk-color);color:#fff;}
+.kt-btn.primary{background:var(--tk-color);color:#fff;}
+.kt-btn.primary:hover{background:var(--tk-mid);}
+.kt-status{font-size:.74rem;color:var(--kt-muted);margin-top:.55rem;min-height:1.1em;}
+.kt-status.ok{color:#2E7D32;font-weight:700;}
+.kt-status.err{color:#C62828;font-weight:700;}
+.kt-form-brainy{margin-top:.75rem;}
+.kt-form-disclaimer{font-size:.68rem;color:var(--kt-muted);margin-top:.5rem;font-style:italic;}
+
+@media(max-width:600px){
+  .kt-form-grid{grid-template-columns:1fr;}
+  .kt-form-footer{flex-direction:column;align-items:stretch;}
+  .kt-weiterleitung-block select{min-width:0;width:100%;}
+}
 </style>
 </head>
 <body>
@@ -478,6 +549,8 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="form-mount" data-form="gespräch"></div>
+
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Übersicht</button>
       <button class="unter-nav-btn" onclick="zeige('matching')">02 Matching →</button>
@@ -555,6 +628,8 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="form-mount" data-form="matching"></div>
+
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('gespräch')">← 01 Gespräch</button>
       <button class="unter-nav-btn" onclick="zeige('risiko')">03 Risiko-Check →</button>
@@ -630,6 +705,8 @@ footer strong{color:var(--kt-accent);}
         </p>
       </div>
     </div>
+
+    <div class="form-mount" data-form="risiko"></div>
 
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('matching')">← 02 Matching</button>
@@ -708,6 +785,8 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="form-mount" data-form="entscheidung"></div>
+
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('risiko')">← 03 Risiko-Check</button>
       <button class="unter-nav-btn" onclick="zeige('weiterleitung')">05 Weiterleitung →</button>
@@ -782,6 +861,8 @@ footer strong{color:var(--kt-accent);}
         </p>
       </div>
     </div>
+
+    <div class="form-mount" data-form="weiterleitung"></div>
 
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('entscheidung')">← 04 Entscheidung</button>
@@ -859,6 +940,8 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="form-mount" data-form="dokumentation"></div>
+
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('weiterleitung')">← 05 Weiterleitung</button>
       <button class="unter-nav-btn" onclick="zeige('sab')">07 SAB-Selbstcheck →</button>
@@ -934,6 +1017,8 @@ footer strong{color:var(--kt-accent);}
         </p>
       </div>
     </div>
+
+    <div class="form-mount" data-form="sab"></div>
 
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('dokumentation')">← 06 Dokumentation</button>
@@ -1014,6 +1099,8 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="form-mount" data-form="erinnerungen"></div>
+
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('sab')">← 07 SAB-Selbstcheck</button>
       <button class="unter-nav-btn" onclick="zeige('start')">↩ Zur Übersicht</button>
@@ -1055,6 +1142,395 @@ function zeige(key) {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 }
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     ERWEITERUNG: INTERAKTIVE FORMULARE
+     (TK-01 bis TK-08 · stichwortartig · SAB-basiert)
+══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+
+var ZIELE = ['HR','Hauptverwaltung','Socura','TK-Akte'];
+
+var FORM_DEFS = [
+
+  { key:'gespräch', nr:'TK-01', titel:'Gesprächsprotokoll', icon:'📝',
+    intro:'Kurzprotokoll des Erstgesprächs – stichwortartig, kein Fließtext.',
+    brainy:'Notiere Beobachtungen, keine Bewertungen. „Wirkte unsicher" statt „war komisch".',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in',typ:'text',req:true},
+        {id:'stelle',label:'Stelle / Schule',typ:'text',req:true},
+        {id:'tk',label:'TK (Bearbeiter:in)',typ:'text',req:true}
+      ]},
+      { titel:'Gesprächsverlauf', felder:[
+        {id:'motivation',label:'Motivation (kurz)',typ:'text'},
+        {id:'belastbarkeit',label:'Belastbarkeit benannt?',typ:'select',options:['Ja','Teilweise','Nein']},
+        {id:'erwartungen',label:'Erwartungen klar?',typ:'select',options:['Ja','Teilweise','Nein']}
+      ]},
+      { titel:'Signale & Ergebnis', felder:[
+        {id:'signal',label:'Gesamtsignal',typ:'select',req:true,options:['🟢 Grün','🟡 Gelb','🔴 Rot']},
+        {id:'naechster',label:'Nächster Schritt',typ:'select',req:true,options:['Weiter zu Matching','Absage','Rücksprache TK']},
+        {id:'notiz',label:'Notiz (kurz)',typ:'textarea',wide:true}
+      ]}
+    ]
+  },
+
+  { key:'matching', nr:'TK-02', titel:'Matching-Bewertung', icon:'🎯',
+    intro:'Passung Person–Stelle–Schule in Kurzform bewerten (1 = schwach, 5 = stark).',
+    brainy:'Bauchgefühl gegen Fakten prüfen – beides festhalten, nicht nur eins.',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in',typ:'text',req:true},
+        {id:'stelle',label:'Stelle / Schule',typ:'text',req:true}
+      ]},
+      { titel:'Matching-Ebenen (1–5)', felder:[
+        {id:'p_stelle',label:'Person → Stelle',typ:'select',options:['1','2','3','4','5']},
+        {id:'p_schule',label:'Person → Schule',typ:'select',options:['1','2','3','4','5']},
+        {id:'p_sab',label:'Person → SAB-Werte',typ:'select',options:['1','2','3','4','5']}
+      ]},
+      { titel:'Einschätzung', felder:[
+        {id:'risiko',label:'Risiko erkannt?',typ:'select',options:['Nein','Ja – siehe Risiko-Check']},
+        {id:'empfehlung',label:'Empfehlung',typ:'select',req:true,options:['Weiter zu Risiko-Check','Stop / Absage']},
+        {id:'kommentar',label:'Kurzkommentar',typ:'textarea',wide:true}
+      ]}
+    ]
+  },
+
+  { key:'risiko', nr:'TK-03', titel:'Risiko-Check', icon:'⚠️',
+    intro:'Risikofaktoren ankreuzen, dann Ampel setzen.',
+    brainy:'Bei Rot gilt: nicht allein entscheiden. Rücksprache TK-Leitung ist Standard, nicht Ausnahme.',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in',typ:'text',req:true}
+      ]},
+      { titel:'Risiken Personenseite', felder:[
+        {id:'risiko_person',label:'Zutreffendes ankreuzen',typ:'checkgroup',wide:true,
+          options:['Burnout-Geschichte','Überforderungssignale','Unrealistische Erwartungen','Loyalitätskonflikte','Fehlzeiten-Muster']}
+      ]},
+      { titel:'Risiken Stellenseite', felder:[
+        {id:'risiko_stelle',label:'Zutreffendes ankreuzen',typ:'checkgroup',wide:true,
+          options:['Hohe Fluktuation','Schwieriges Kind','Instabiles Team','Fehlende Einarbeitung']}
+      ]},
+      { titel:'Ampel & Rücksprache', felder:[
+        {id:'ampel',label:'Ampeleinschätzung',typ:'select',req:true,options:['🟢 Grün','🟡 Gelb','🔴 Rot']},
+        {id:'ruecksprache',label:'Rücksprache TK erfolgt?',typ:'select',options:['Ja','Nein','Entfällt']},
+        {id:'kommentar',label:'Kommentar',typ:'textarea',wide:true}
+      ]}
+    ]
+  },
+
+  { key:'entscheidung', nr:'TK-04', titel:'Entscheidung & Votum', icon:'✅',
+    intro:'Votum kurz und nachvollziehbar begründen – keine reine Bauchentscheidung.',
+    brainy:'„Entscheide ich aus Dringlichkeit oder aus Überzeugung?" – kurz beantworten, dann eintragen.',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in',typ:'text',req:true},
+        {id:'stelle',label:'Stelle / Schule',typ:'text',req:true}
+      ]},
+      { titel:'Votum', felder:[
+        {id:'votum',label:'Votum',typ:'select',req:true,options:['Ja','Bedingt','Nein']},
+        {id:'bedingung',label:'Bedingung (falls „Bedingt")',typ:'text'},
+        {id:'frist',label:'Frist Rückmeldung',typ:'date'}
+      ]},
+      { titel:'Begründung & Freigabe', felder:[
+        {id:'begruendung',label:'Begründung (kurz)',typ:'textarea',req:true,wide:true},
+        {id:'unterschrift',label:'TK (Name / Kürzel)',typ:'text',req:true}
+      ]}
+    ]
+  },
+
+  { key:'weiterleitung', nr:'TK-05', titel:'Weiterleitungs-Protokoll', icon:'📤',
+    intro:'Wer wurde informiert – und worüber? Checkliste statt Fließtext.',
+    brainy:'Checkliste vor dem Absenden: Votum ✓ | SAB ✓ | Schule ✓ | Person ✓ | Akte ✓',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in',typ:'text',req:true}
+      ]},
+      { titel:'Empfänger (intern/extern)', felder:[
+        {id:'empfaenger',label:'Zutreffendes ankreuzen',typ:'checkgroup',wide:true,
+          options:['SAB-Sachbearbeitung','TK-Leitung','Personalakte','Einsatzplanung','Schule','Person']}
+      ]},
+      { titel:'Form & Erledigung', felder:[
+        {id:'form',label:'Form',typ:'select',options:['Mail','Telefon','Akte','Persönlich']},
+        {id:'erledigt',label:'Erledigt am',typ:'date'},
+        {id:'inhalt',label:'Inhalt (kurz)',typ:'textarea',wide:true}
+      ]}
+    ]
+  },
+
+  { key:'dokumentation', nr:'TK-06', titel:'SAB-Dokumentation', icon:'📋',
+    intro:'Beobachtungsbasiert, sachlich, zeitnah – keine Wertungen.',
+    brainy:'„Ist mein Eintrag beobachtbar – oder ist es meine Interpretation?"',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in',typ:'text',req:true}
+      ]},
+      { titel:'Inhalt', felder:[
+        {id:'gespraech',label:'Gesprächsinhalt (kurz)',typ:'textarea',req:true,wide:true},
+        {id:'matching',label:'Matching-Einschätzung (kurz)',typ:'textarea',wide:true},
+        {id:'entscheidung',label:'Entscheidung & Begründung (kurz)',typ:'textarea',req:true,wide:true},
+        {id:'weiterleitungen',label:'Weiterleitungen (kurz)',typ:'textarea',wide:true}
+      ]},
+      { titel:'Datenschutz', felder:[
+        {id:'dsgvo',label:'DSGVO-Hinweis gelesen & beachtet',typ:'checkgroup',req:true,
+          options:['Bestätigt']}
+      ]}
+    ]
+  },
+
+  { key:'sab', nr:'TK-07', titel:'SAB-Selbstcheck', icon:'🔍',
+    intro:'Kein Verhör – Professionalität. Ehrlich mit sich selbst.',
+    brainy:'„Was möchte ich beim nächsten Gespräch bewusst anders machen?"',
+    sections:[
+      { titel:'Stammdaten', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'tk',label:'TK (Name)',typ:'text',req:true}
+      ]},
+      { titel:'Haltung & Prozess', felder:[
+        {id:'sympathie',label:'Sympathie/Eignung getrennt?',typ:'select',options:['Ja','Eher ja','Eher nein','Nein']},
+        {id:'druck',label:'Druck in Entscheidung eingeflossen?',typ:'select',options:['Nein','Etwas','Ja']},
+        {id:'prozess',label:'Prozesssicherheit gegeben?',typ:'select',options:['Ja','Teilweise','Nein']}
+      ]},
+      { titel:'Reflexion', felder:[
+        {id:'reflexion',label:'Reflexion (kurz)',typ:'textarea',wide:true}
+      ]}
+    ]
+  },
+
+  { key:'erinnerungen', nr:'TK-08', titel:'Frist & Wiedervorlage', icon:'🔔',
+    intro:'Was nicht erinnert wird, wird vergessen – kurz eintragen, weiterleiten.',
+    brainy:'„Welche Wiedervorlage ist überfällig?" – Brainy erinnert, TK entscheidet.',
+    sections:[
+      { titel:'Vorgang', felder:[
+        {id:'datum',label:'Datum',typ:'date',req:true},
+        {id:'name',label:'Bewerber:in / Vorgang',typ:'text',req:true}
+      ]},
+      { titel:'Frist', felder:[
+        {id:'fristtyp',label:'Frist-Typ',typ:'select',req:true,
+          options:['Notiz 24h','Votum 3 Werktage','Weiterleitung SAB','Schule informieren','DSGVO-Löschung 6 Mon.']},
+        {id:'faellig',label:'Fälligkeitsdatum',typ:'date',req:true},
+        {id:'status',label:'Status',typ:'select',options:['Offen','Erledigt']},
+        {id:'wiedervorlage',label:'Wiedervorlage gesetzt?',typ:'select',options:['Ja','Nein']}
+      ]}
+    ]
+  }
+
+];
+
+function feldHTML(key, f){
+  var fid = 'f_'+key+'_'+f.id;
+  var reqAttr = f.req ? ' required' : '';
+  var reqMark = f.req ? '<span class="req">*</span>' : '';
+  var wideClass = f.wide ? ' wide' : '';
+  var html = '<div class="kt-field'+wideClass+'">';
+  if(f.typ !== 'checkgroup'){
+    html += '<label for="'+fid+'">'+f.label+reqMark+'</label>';
+  } else {
+    html += '<label>'+f.label+reqMark+'</label>';
+  }
+  if(f.typ === 'text'){
+    html += '<input type="text" id="'+fid+'" name="'+fid+'" placeholder=" "'+reqAttr+'>';
+  } else if(f.typ === 'date'){
+    html += '<input type="date" id="'+fid+'" name="'+fid+'"'+reqAttr+'>';
+  } else if(f.typ === 'textarea'){
+    html += '<textarea id="'+fid+'" name="'+fid+'"'+reqAttr+'></textarea>';
+  } else if(f.typ === 'select'){
+    html += '<select id="'+fid+'" name="'+fid+'"'+reqAttr+'><option value="">– wählen –</option>';
+    f.options.forEach(function(o){ html += '<option value="'+o+'">'+o+'</option>'; });
+    html += '</select>';
+  } else if(f.typ === 'checkgroup'){
+    html += '<div class="kt-checkgroup">';
+    f.options.forEach(function(o,i){
+      html += '<label class="kt-check-chip"><input type="checkbox" data-cg="'+fid+'" value="'+o+'">'+o+'</label>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function formularHTML(def){
+  var s = '<div class="karte kt-form-karte">';
+  s += '<div class="karte-header"><span class="karte-header-icon">'+def.icon+'</span><span class="karte-header-titel">'+def.nr+' · Formular: '+def.titel+'</span></div>';
+  s += '<div class="karte-body">';
+  s += '<div class="kt-form-intro">'+def.intro+' <span class="pflicht">* Pflichtfeld</span></div>';
+  s += '<form id="form_'+def.key+'" novalidate>';
+  def.sections.forEach(function(sec){
+    s += '<div class="kt-form-section">';
+    s += '<div class="kt-form-section-titel">'+sec.titel+'</div>';
+    s += '<div class="kt-form-grid">';
+    sec.felder.forEach(function(f){ s += feldHTML(def.key, f); });
+    s += '</div></div>';
+  });
+  s += '</form>';
+
+  // Footer: Weiterleitung + Aktionen
+  s += '<div class="kt-form-footer">';
+  s += '<div class="kt-weiterleitung-block">';
+  s += '<div><label>Weiterleiten an</label>';
+  s += '<select id="ziel_'+def.key+'">';
+  s += '<option value="">– Empfänger wählen –</option>';
+  ZIELE.forEach(function(z){ s += '<option value="'+z+'">'+z+'</option>'; });
+  s += '</select></div>';
+  s += '<button type="button" class="kt-btn primary" onclick="KT_FORM.weiterleiten(\''+def.key+'\')">📤 Weiterleiten</button>';
+  s += '</div>';
+  s += '<div class="kt-btn-row">';
+  s += '<button type="button" class="kt-btn" onclick="KT_FORM.drucken(\''+def.key+'\')">🖨️ Drucken</button>';
+  s += '<button type="button" class="kt-btn" onclick="KT_FORM.pdf(\''+def.key+'\')">📄 Als PDF</button>';
+  s += '</div>';
+  s += '</div>';
+  s += '<div class="kt-status" id="status_'+def.key+'"></div>';
+  s += '<div class="kt-form-disclaimer">Hinweis: Eingaben werden nur lokal im Browser gehalten. Vor Verlassen der Seite bitte drucken, als PDF sichern oder weiterleiten.</div>';
+
+  s += '</div>'; // karte-body
+
+  // eigener Brainy-Hinweis im Recruiting-Modus
+  s += '<div class="brainy-box kt-form-brainy">';
+  s += '<div class="brainy-box-icon">🧠</div>';
+  s += '<div class="brainy-box-content">';
+  s += '<span class="brainy-box-label">Brainy · Recruiting-Modus · Formular</span>';
+  s += '<p class="brainy-box-text"><em>„'+def.brainy+'"</em></p>';
+  s += '</div></div>';
+
+  s += '</div>'; // karte
+  return s;
+}
+
+function renderForms(){
+  FORM_DEFS.forEach(function(def){
+    var mount = document.querySelector('.form-mount[data-form="'+def.key+'"]');
+    if(mount){ mount.innerHTML = formularHTML(def); }
+  });
+}
+
+function sammeln(def){
+  var daten = {};
+  def.sections.forEach(function(sec){
+    sec.felder.forEach(function(f){
+      var fid = 'f_'+def.key+'_'+f.id;
+      if(f.typ === 'checkgroup'){
+        var werte = [];
+        document.querySelectorAll('[data-cg="'+fid+'"]:checked').forEach(function(cb){ werte.push(cb.value); });
+        daten[f.label] = werte.join(', ');
+      } else {
+        var el = document.getElementById(fid);
+        daten[f.label] = el ? el.value : '';
+      }
+    });
+  });
+  return daten;
+}
+
+function pflichtfelderOK(def){
+  var formEl = document.getElementById('form_'+def.key);
+  var ok = formEl.checkValidity();
+  // Pflicht-Checkgroups manuell prüfen (kein natives required möglich bei Chip-Gruppen)
+  def.sections.forEach(function(sec){
+    sec.felder.forEach(function(f){
+      if(f.typ === 'checkgroup' && f.req){
+        var fid = 'f_'+def.key+'_'+f.id;
+        var any = document.querySelectorAll('[data-cg="'+fid+'"]:checked').length > 0;
+        if(!any) ok = false;
+      }
+    });
+  });
+  if(!ok) formEl.reportValidity();
+  return ok;
+}
+
+function statusSetzen(key, text, art){
+  var el = document.getElementById('status_'+key);
+  if(!el) return;
+  el.textContent = text;
+  el.className = 'kt-status' + (art ? ' '+art : '');
+}
+
+function druckHTML(def, daten){
+  var html = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">';
+  html += '<title>'+def.nr+' · '+def.titel+'</title>';
+  html += '<style>body{font-family:DM Sans,Arial,sans-serif;color:#2D2D2D;padding:2rem;max-width:700px;margin:0 auto;}';
+  html += 'h1{font-size:1.3rem;color:#1B3A4B;margin-bottom:.1rem;}';
+  html += '.sub{color:#7A7060;font-size:.85rem;margin-bottom:1.2rem;}';
+  html += 'table{width:100%;border-collapse:collapse;font-size:.9rem;}';
+  html += 'td{padding:.4rem .3rem;border-bottom:1px solid #DDD8CE;vertical-align:top;}';
+  html += 'td.k{font-weight:700;color:#4A148C;width:42%;}';
+  html += '.foot{margin-top:1.5rem;font-size:.72rem;color:#7A7060;}</style></head><body>';
+  html += '<h1>'+def.nr+' · '+def.titel+' · KLARTEXT TK-Recruiting</h1>';
+  html += '<div class="sub">Ausgedruckt am '+new Date().toLocaleString('de-DE')+'</div>';
+  html += '<table>';
+  Object.keys(daten).forEach(function(label){
+    var val = daten[label] || '–';
+    html += '<tr><td class="k">'+label+'</td><td>'+val.replace(/</g,'&lt;')+'</td></tr>';
+  });
+  html += '</table>';
+  html += '<div class="foot">KLARTEXT · Teamkoordination · Klar. Warm. Menschlich. · SAB-basiert</div>';
+  html += '</body></html>';
+  return html;
+}
+
+function druckenOderPDF(key, label){
+  var def = FORM_DEFS.filter(function(d){return d.key===key;})[0];
+  if(!def) return;
+  if(!pflichtfelderOK(def)){
+    statusSetzen(key, '⚠ Bitte zuerst alle Pflichtfelder ausfüllen.', 'err');
+    return;
+  }
+  var daten = sammeln(def);
+  var w = window.open('', '_blank');
+  if(!w){
+    statusSetzen(key, '⚠ Pop-up wurde blockiert. Bitte Pop-ups für diese Seite erlauben.', 'err');
+    return;
+  }
+  w.document.open();
+  w.document.write(druckHTML(def, daten));
+  w.document.close();
+  setTimeout(function(){ w.focus(); w.print(); }, 250);
+  statusSetzen(key, '✓ '+label+' vorbereitet – Dialog öffnet sich in neuem Fenster.', 'ok');
+}
+
+function weiterleiten(key){
+  var def = FORM_DEFS.filter(function(d){return d.key===key;})[0];
+  if(!def) return;
+  var zielSelect = document.getElementById('ziel_'+key);
+  var ziel = zielSelect.value;
+  if(!ziel){
+    statusSetzen(key, '⚠ Bitte zuerst ein Weiterleitungsziel wählen.', 'err');
+    return;
+  }
+  if(!pflichtfelderOK(def)){
+    statusSetzen(key, '⚠ Bitte zuerst alle Pflichtfelder ausfüllen.', 'err');
+    return;
+  }
+  var daten = sammeln(def);
+  if(ziel === 'TK-Akte'){
+    statusSetzen(key, '✓ In TK-Akte vermerkt (intern, ohne Versand).', 'ok');
+    return;
+  }
+  var betreff = encodeURIComponent('KLARTEXT TK-Recruiting · '+def.nr+' · '+def.titel+' · an '+ziel);
+  var text = def.nr+' · '+def.titel+' · Weiterleitung an '+ziel+'\n\n';
+  Object.keys(daten).forEach(function(label){ text += label+': '+(daten[label] || '–')+'\n'; });
+  var body = encodeURIComponent(text);
+  window.location.href = 'mailto:?subject='+betreff+'&body='+body;
+  statusSetzen(key, '✓ Weiterleitung an '+ziel+' vorbereitet – E-Mail-Programm öffnet sich.', 'ok');
+}
+
+window.KT_FORM = {
+  drucken: function(key){ druckenOderPDF(key, 'Druck'); },
+  pdf: function(key){ druckenOderPDF(key, 'PDF-Export'); },
+  weiterleiten: weiterleiten
+};
+
+renderForms();
+
+})();
 </script>
 
 </body>

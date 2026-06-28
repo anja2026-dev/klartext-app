@@ -98,7 +98,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
       <span class="bb-info"><span class="bb-label">Eltern</span><span class="bb-desc">Elternkurs · Karten · Barometer · Downloads</span></span>
       <span class="bb-check" id="chk-eltern"></span>
     </button>
-    <button class="bb" id="bb-tk" onclick="waehl('tk','#4A148C','teamleitung','TK_Landing.html')" type="button">
+    <button class="bb" id="bb-tk" onclick="waehl('tk','#4A148C','teamleitung','DASHBOARD.html')" type="button">
       <span class="bb-emoji">🗂️</span>
       <span class="bb-info"><span class="bb-label">Teamkoordination</span><span class="bb-desc">TK-Karten · Protokolle · § 8a</span></span>
       <span class="bb-check" id="chk-tk"></span>
@@ -108,7 +108,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
       <span class="bb-info"><span class="bb-label">Trial (INGRA)</span><span class="bb-desc">4-Wochen-Testzugang · INGRA-Ansicht</span></span>
       <span class="bb-check" id="chk-trial-ingra"></span>
     </button>
-    <button class="bb" id="bb-trial-tk" onclick="waehl('trial-tk','#4A148C','trial-tk-2026','TK_Landing.html','tk')" type="button">
+    <button class="bb" id="bb-trial-tk" onclick="waehl('trial-tk','#4A148C','trial-tk-2026','DASHBOARD.html','tk')" type="button">
       <span class="bb-emoji">🧪</span>
       <span class="bb-info"><span class="bb-label">Trial (TK)</span><span class="bb-desc">4-Wochen-Testzugang · TK-Ansicht</span></span>
       <span class="bb-check" id="chk-trial-tk"></span>
@@ -118,7 +118,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
       <span class="bb-info"><span class="bb-label">Trainer:in</span><span class="bb-desc">E-Learning · Curriculum · Lernmaterialien</span></span>
       <span class="bb-check" id="chk-trainer"></span>
     </button>
-    <button class="bb" id="bb-admin" onclick="waehl('admin','#1B3A4B','klartext2026','TK_Landing.html')" type="button" style="border-color:#C0B8A8;background:#F8F5F0;">
+    <button class="bb" id="bb-admin" onclick="waehl('admin','#1B3A4B','klartext2026','DASHBOARD.html')" type="button" style="border-color:#C0B8A8;background:#F8F5F0;">
       <span class="bb-emoji">🔑</span>
       <span class="bb-info"><span class="bb-label" style="color:#7A7060;">Admin</span><span class="bb-desc">Vollzugriff auf alle Bereiche</span></span>
       <span class="bb-check" id="chk-admin"></span>
@@ -248,9 +248,9 @@ function togglePw() {
     if (sessionStorage.getItem('klartext_login') === 'true') {
       var role = sessionStorage.getItem('klartext_role');
       var ziele = {
-        ingra: 'DASHBOARD.html', admin: 'TK_Landing.html',
+        ingra: 'DASHBOARD.html', admin: 'DASHBOARD.html',
         lk: 'KLARTEXT_Lehrerkurs.html', eltern: 'KLARTEXT_Elternkurs.html',
-        tk: 'TK_Landing.html', trainer: 'DASHBOARD.html'
+        tk: 'DASHBOARD.html', trainer: 'DASHBOARD.html'
       };
       if (role && ziele[role]) window.location.href = ziele[role];
     }

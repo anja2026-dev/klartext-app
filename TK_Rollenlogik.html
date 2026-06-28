@@ -46,98 +46,8 @@ body {
   line-height: 1.6;
 }
 
-/* ── LOGIN WALL ───────────────────────────────────────────── */
-#loginWall {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  padding: 20px;
-}
-.login-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--tk);
-  border-radius: 14px;
-  padding: 48px 44px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-.login-logo {
-  font-family: 'Source Serif 4', serif;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 4px;
-  letter-spacing: .08em;
-}
-.login-sub {
-  font-size: 11px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  margin-bottom: 32px;
-}
-.login-label {
-  display: block;
-  text-align: left;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  margin-bottom: 6px;
-}
-.login-input {
-  width: 100%;
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 11px 14px;
-  font-size: 14px;
-  color: var(--white);
-  font-family: 'Inter', sans-serif;
-  outline: none;
-  transition: border-color .2s;
-  margin-bottom: 20px;
-}
-.login-input:focus { border-color: var(--tk); }
-.login-btn {
-  width: 100%;
-  background: var(--tk-dark);
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--white);
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  transition: background .2s;
-  letter-spacing: .04em;
-}
-.login-btn:hover { background: var(--tk); color: var(--bg); }
-.login-error {
-  background: rgba(248,113,113,.1);
-  border: 1px solid rgba(248,113,113,.3);
-  border-radius: 6px;
-  padding: 9px 12px;
-  font-size: 12px;
-  color: var(--red);
-  margin-top: 12px;
-  display: none;
-}
-.login-hint {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 24px;
-  line-height: 1.5;
-}
-
 /* ── APP SHELL ────────────────────────────────────────────── */
-#app { display: none; }
+#app { display: block; }
 
 .topbar {
   background: var(--surface);
@@ -1248,7 +1158,6 @@ body {
 
 <script>
 // ── CONFIG ─────────────────────────────────────────────────
-const TK_PASSWORD = "TK2026";   // ← Hier dein echtes TK-Passwort setzen
 
 // ── LOGOUT ─────────────────────────────────────────────────
 function doLogout() {

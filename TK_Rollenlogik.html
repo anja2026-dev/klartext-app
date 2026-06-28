@@ -500,22 +500,23 @@ body {
 <body>
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!-- LOGIN WALL – Nur TK -->
+<!-- AUTH-GUARD: Weiterleitung wenn keine gültige TK-Session -->
 <!-- ══════════════════════════════════════════════════════════ -->
-<div id="loginWall">
-  <div class="login-box">
-    <div class="login-logo">KLARTEXT</div>
-    <div class="login-sub">Teamkoordination · Geschützter Bereich</div>
-    <label class="login-label">TK-Zugangscode</label>
-    <input type="password" class="login-input" id="loginPw" placeholder="••••••••"
-           onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">Zugang bestätigen</button>
-    <div class="login-error" id="loginError">Falscher Zugangscode. Bitte erneut versuchen.</div>
-    <div class="login-hint">Dieser Bereich ist ausschließlich für die Teamkoordination.<br>Andere Rollen haben keinen Zugang.</div>
-    <a href="DASHBOARD.html" style="display:block;margin-top:16px;font-size:11px;color:var(--muted);text-decoration:none;text-align:center;transition:color .15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">← Zurück zum Dashboard</a>
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || !['tk','admin'].includes(role)){
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!-- APP – Nur nach TK-Login sichtbar -->
+<!-- APP -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div id="app">
 
@@ -1249,22 +1250,7 @@ body {
 // ── CONFIG ─────────────────────────────────────────────────
 const TK_PASSWORD = "TK2026";   // ← Hier dein echtes TK-Passwort setzen
 
-// ── LOGIN ──────────────────────────────────────────────────
-function doLogin() {
-  const pw = document.getElementById('loginPw').value;
-  if (pw === TK_PASSWORD) {
-    document.getElementById('loginWall').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    logAction('System', 'Login erfolgreich · TK-Zugang bestätigt');
-    document.getElementById('logTime0').textContent = now();
-  } else {
-    const err = document.getElementById('loginError');
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 3000);
-    logAction('System', 'Fehlgeschlagener Login-Versuch');
-  }
-}
-
+// ── LOGOUT ─────────────────────────────────────────────────
 function doLogout() {
   logAction('TK', 'Abgemeldet');
   try { sessionStorage.clear(); } catch(e) {}

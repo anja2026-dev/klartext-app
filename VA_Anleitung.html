@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VA-Anleitung – Vertretungsassistent · KLARTEXT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --tk-color:#4A148C;
+  --tk-light:#F3E5FF;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--tk-color);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{background:rgba(74,20,140,.25);border:1.5px solid rgba(206,147,216,.5);color:#CE93D8;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+/* ── BRAINY-BANNER ────────────────────────────────── */
+.brainy-banner{background:linear-gradient(135deg,#2D1B45,#4A148C);border-bottom:2px solid rgba(206,147,216,.4);padding:.65rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:flex-start;gap:.75rem;}
+.brainy-face{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#E1BEE7;}
+
+/* ── LAYOUT ───────────────────────────────────────── */
+.page-wrap{max-width:820px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.page-header{margin-bottom:1.4rem;}
+.page-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:var(--tk-light);color:var(--tk-color);margin-bottom:.5rem;}
+.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.page-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
+
+/* ── KARTEN ───────────────────────────────────────── */
+.karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.75rem;box-shadow:var(--shadow);}
+.karte-header{background:var(--tk-light);border-bottom:1px solid rgba(74,20,140,.12);padding:.5rem .9rem;display:flex;align-items:center;gap:.5rem;}
+.karte-header-icon{font-size:1rem;}
+.karte-header-titel{font-size:.78rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+.karte-body{padding:.75rem .9rem .85rem;}
+
+/* ── LISTEN ───────────────────────────────────────── */
+.stw-list{list-style:none;display:flex;flex-direction:column;gap:.3rem;}
+.stw-list li{font-size:.82rem;color:var(--kt-ink);line-height:1.5;padding-left:1.1rem;position:relative;}
+.stw-list li::before{content:'▸';position:absolute;left:0;top:0;color:var(--tk-color);font-size:.7rem;line-height:1.7;}
+.stw-list li strong{color:var(--kt-primary);}
+
+.schritt-list{list-style:none;display:flex;flex-direction:column;gap:.55rem;counter-reset:schritt;}
+.schritt-list li{display:flex;align-items:flex-start;gap:.6rem;font-size:.82rem;color:var(--kt-ink);line-height:1.5;counter-increment:schritt;}
+.schritt-list li::before{content:counter(schritt);min-width:22px;height:22px;background:var(--tk-color);color:#fff;border-radius:50%;font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem;}
+
+/* ── HINWEIS / AMPEL ──────────────────────────────── */
+.hinweis{background:rgba(74,20,140,.07);border-left:3px solid var(--tk-color);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.6rem .85rem;font-size:.78rem;color:var(--kt-ink);line-height:1.55;margin-top:.5rem;}
+.hinweis strong{color:var(--tk-color);}
+.ampel{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem;}
+.ampel-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .65rem;border-radius:20px;font-size:.72rem;font-weight:600;}
+.ampel-chip.gruen{background:#E8F5E9;color:#2E7D32;}
+.ampel-chip.gelb{background:#FFF8E1;color:#F57F17;}
+.ampel-chip.rot{background:#FDEAEA;color:#C62828;}
+.ampel-chip.blau{background:#E3F2FD;color:#1565C0;}
+
+/* ── BRAINY-BOX ───────────────────────────────────── */
+.brainy-box{background:linear-gradient(135deg,rgba(74,20,140,.07),rgba(74,20,140,.03));border:1.5px solid rgba(74,20,140,.18);border-radius:var(--r-md);padding:.7rem .9rem;margin-top:.9rem;display:flex;gap:.6rem;align-items:flex-start;}
+.brainy-box-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
+.brainy-box-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.2rem;display:block;}
+.brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
+.brainy-box-text em{font-style:italic;color:var(--kt-muted);}
+
+/* ── ABSCHNITT-TRENNER ────────────────────────────── */
+.abschnitt-titel{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--kt-primary);margin:1.4rem 0 .5rem;padding-bottom:.3rem;border-bottom:2px solid var(--tk-color);}
+
+/* ── FAQ ──────────────────────────────────────────── */
+.faq-item{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-md);margin-bottom:.5rem;overflow:hidden;}
+.faq-frage{width:100%;background:none;border:none;padding:.65rem .9rem;text-align:left;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;color:var(--kt-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.faq-frage:hover{background:var(--tk-light);}
+.faq-arrow{font-size:.8rem;transition:transform .2s;flex-shrink:0;}
+.faq-antwort{display:none;padding:.1rem .9rem .75rem;font-size:.8rem;color:var(--kt-ink);line-height:1.6;}
+.faq-antwort ul{list-style:none;padding:0;}
+.faq-antwort ul li{padding-left:1rem;position:relative;margin-bottom:.2rem;}
+.faq-antwort ul li::before{content:'▸';position:absolute;left:0;color:var(--tk-color);font-size:.65rem;line-height:1.7;}
+.faq-item.offen .faq-antwort{display:block;}
+.faq-item.offen .faq-arrow{transform:rotate(90deg);}
+
+/* ── PRINT ────────────────────────────────────────── */
+.print-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .9rem;border-radius:var(--r-md);background:var(--kt-surface);color:var(--tk-color);border:1.5px solid var(--tk-color);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;margin-top:1rem;}
+.print-btn:hover{background:var(--tk-color);color:#fff;}
+@media print{.kt-header,.brainy-banner,.print-btn,footer{display:none!important;}.karte{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}body{background:#fff;}}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Vertretungsassistent</span>
+      </div>
+    </a>
+    <div class="header-badge">VA · Anleitung</div>
+  </div>
+  <nav style="display:flex;gap:.4rem;">
+    <a class="btn-back" href="TK-Recruiting.html">← TK-Recruiting</a>
+    <a class="btn-back" href="DASHBOARD.html">Dashboard</a>
+  </nav>
+</header>
+
+<!-- ══ BRAINY-BANNER ════════════════════════════════════════ -->
+<div class="brainy-banner">
+  <div class="brainy-face">🧠</div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Vertretungsmodus</span>
+    <p class="brainy-msg">
+      <strong>Brainy unterstützt TK</strong> bei der Vertretungsplanung – mit Filterhilfen, Checklisten und Prozessschritten für jeden Einsatz.
+    </p>
+  </div>
+</div>
+
+<!-- ══ INHALT ════════════════════════════════════════════════ -->
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-tag">VA · Anleitung</div>
+    <h1 class="page-titel">Vertretungsassistent – Vollständige Anleitung</h1>
+    <p class="page-lead">Neutral · Stichwortartig · Prozessbezogen · Ohne trägerspezifische Inhalte</p>
+  </div>
+
+  <!-- ABSCHNITT 1: WAS IST DER VA -->
+  <div class="abschnitt-titel">1 · Was ist der Vertretungsassistent?</div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🔄</span><span class="karte-header-titel">Zweck & Funktion</span></div>
+    <div class="karte-body">
+      <ul class="stw-list">
+        <li>Digitales Werkzeug zur <strong>schnellen, strukturierten Vertretungsplanung</strong></li>
+        <li>Filtert geeignete Personen nach Verfügbarkeit, Qualifikation und Einsatzort</li>
+        <li>Unterstützt TK bei <strong>kurzfristigen Ausfällen und Planungslücken</strong></li>
+        <li>Alle Daten werden trägerintern verwaltet</li>
+        <li>Reduziert Suchaufwand und Telefonketten erheblich</li>
+        <li>Dokumentiert jeden Vertretungseinsatz lückenlos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">👥</span><span class="karte-header-titel">Wer nutzt den VA?</span></div>
+    <div class="karte-body">
+      <div class="ampel">
+        <span class="ampel-chip blau">TK · Teamkoordination</span>
+        <span class="ampel-chip blau">TK-Leitung</span>
+        <span class="ampel-chip blau">Einsatzplanung</span>
+      </div>
+      <div class="hinweis" style="margin-top:.6rem;">Nur autorisierte Personen mit aktivem Systemzugang dürfen den VA nutzen.</div>
+    </div>
+  </div>
+
+  <!-- ABSCHNITT 2: ZUGANG -->
+  <div class="abschnitt-titel">2 · Zugang & Anmeldung</div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🔐</span><span class="karte-header-titel">Erstmalige Einrichtung</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Zugangsdaten vom IT-System / Systemadministration anfordern</li>
+        <li>Link oder App auf dem Arbeitsgerät öffnen</li>
+        <li>Benutzername und Passwort eingeben</li>
+        <li>Bei Erstanmeldung: Passwort ändern (Sicherheitsvorgabe beachten)</li>
+        <li>Profil prüfen: Name, Rolle, Zuständigkeitsbereich korrekt?</li>
+      </ol>
+      <div class="hinweis"><strong>Zugangsprobleme:</strong> Systemadministration kontaktieren – nicht an Dritte weitergeben.</div>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">💻</span><span class="karte-header-titel">Tägliche Anmeldung</span></div>
+    <div class="karte-body">
+      <ul class="stw-list">
+        <li>IT-System aufrufen → Vertretungsassistent auswählen</li>
+        <li>Anmeldedaten eingeben</li>
+        <li>Startseite prüfen: aktuelle Meldungen / offene Vorgänge sichtbar?</li>
+        <li>Nach Nutzung: immer abmelden (besonders an geteilten Geräten)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ABSCHNITT 3: SCHRITT FÜR SCHRITT -->
+  <div class="abschnitt-titel">3 · Schritt-für-Schritt-Nutzung</div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Phase 1 · Bedarf erfassen</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Neuen Vertretungsbedarf anlegen</li>
+        <li>Schule / Einsatzort auswählen</li>
+        <li>Datum und Zeitraum eingeben (Eintages- oder Langzeitvertretung?)</li>
+        <li>Anforderungen definieren: Qualifikation, Erfahrung, Schulform</li>
+        <li>Dringlichkeit festlegen (kurzfristig / geplant)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🔍</span><span class="karte-header-titel">Phase 2 · Vorschläge prüfen</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Gefilterte Liste verfügbarer Personen einsehen</li>
+        <li>Verfügbarkeitsstatus prüfen (verfügbar / eingeschränkt / nicht verfügbar)</li>
+        <li>Qualifikation & Einsatzort abgleichen</li>
+        <li>Erfahrung mit Schulform / Altersgruppe berücksichtigen</li>
+        <li>Bei mehreren Optionen: am besten passende Person priorisieren</li>
+      </ol>
+      <div class="hinweis">Nur Personen mit <strong>aktuellem Profil</strong> und bestätigter Verfügbarkeit berücksichtigen.</div>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📞</span><span class="karte-header-titel">Phase 3 · Kontakt & Zusage</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Ausgewählte Person direkt kontaktieren (Telefon / Nachricht im System)</li>
+        <li>Einsatzdetails mitteilen: Schule, Datum, Aufgabe, Ansprechperson vor Ort</li>
+        <li>Zusage oder Absage im System erfassen</li>
+        <li>Bei Absage: nächste geeignete Person aus der Liste prüfen</li>
+        <li>Bestätigung an Schule / Einsatzort weitergeben</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📂</span><span class="karte-header-titel">Phase 4 · Dokumentation & Abschluss</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Vertretungseinsatz im System als „bestätigt" markieren</li>
+        <li>Einsatzdaten vollständig erfassen: Person, Schule, Zeitraum</li>
+        <li>Nach Einsatz: Abschluss im System setzen</li>
+        <li>Kurzevaluation eintragen (optional, aber empfohlen)</li>
+        <li>Auffälligkeiten an TK-Leitung melden</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ABSCHNITT 4: DATENPFLEGE -->
+  <div class="abschnitt-titel">4 · Datenpflege & Aktualität</div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🔁</span><span class="karte-header-titel">Regelmäßige Aufgaben TK</span></div>
+    <div class="karte-body">
+      <ul class="stw-list">
+        <li><strong>Wöchentlich:</strong> Verfügbarkeitsstatus aller aktiven Personen prüfen</li>
+        <li><strong>Monatlich:</strong> Profilangaben auf Aktualität prüfen (Qualifikation, Kontakt)</li>
+        <li><strong>Bei Änderungen:</strong> sofort im System aktualisieren (Auszeiten, Qualifikationen)</li>
+        <li><strong>Veraltete Einträge:</strong> deaktivieren – nicht löschen (Dokumentationspflicht)</li>
+        <li><strong>Neue Personen:</strong> vollständiges Profil anlegen, bevor sie in Vorschlägen erscheinen</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">⚠️</span><span class="karte-header-titel">Häufige Fehler vermeiden</span></div>
+    <div class="karte-body">
+      <ul class="stw-list">
+        <li>❌ Personen ohne aktuelle Verfügbarkeitsangabe vorschlagen</li>
+        <li>❌ Einsatz ohne Dokumentation abschließen</li>
+        <li>❌ Zugangsdaten teilen oder an Dritte weitergeben</li>
+        <li>❌ Vertretung ohne Rückmeldung an Schule bestätigen</li>
+        <li>❌ Datensätze inaktiver Personen nicht deaktivieren</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ABSCHNITT 5: SZENARIEN -->
+  <div class="abschnitt-titel">5 · Typische Szenarien</div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🚨</span><span class="karte-header-titel">Kurzfristiger Ausfall (am gleichen Tag)</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Meldung eingeht → sofort VA öffnen</li>
+        <li>Bedarf anlegen: „kurzfristig / heute"</li>
+        <li>Vorschläge nach Verfügbarkeit filtern</li>
+        <li>Erste verfügbare geeignete Person kontaktieren</li>
+        <li>Bei keiner Verfügbarkeit: TK-Leitung informieren</li>
+        <li>Schule über Status informieren – auch wenn keine Lösung gefunden</li>
+      </ol>
+      <div class="hinweis"><strong>Merke:</strong> Schule immer informieren – auch bei negativem Ergebnis.</div>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📅</span><span class="karte-header-titel">Geplante Langzeitvertretung</span></div>
+    <div class="karte-body">
+      <ol class="schritt-list">
+        <li>Bedarf mit Vorlauf im System anlegen</li>
+        <li>Mehrere Personen prüfen und vergleichen</li>
+        <li>Absprache mit TK-Leitung vor Auswahl</li>
+        <li>Person kontaktieren, Einsatz bestätigen</li>
+        <li>Schule mindestens 5 Tage vor Einsatzstart informieren</li>
+        <li>Einarbeitungsrahmen mit Schule abstimmen</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ABSCHNITT 6: FAQ -->
+  <div class="abschnitt-titel">6 · Häufige Fragen (FAQ)</div>
+
+  <div class="faq-item">
+    <button class="faq-frage" onclick="toggleFaq(this)">Was tue ich, wenn keine geeignete Person verfügbar ist? <span class="faq-arrow">▶</span></button>
+    <div class="faq-antwort"><ul><li>TK-Leitung sofort informieren</li><li>Schule über den Status informieren</li><li>Alternativen prüfen: andere Schulformen, erweiterte Suche</li><li>Meldung im System dokumentieren</li></ul></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-frage" onclick="toggleFaq(this)">Wer darf Einsätze im System bestätigen? <span class="faq-arrow">▶</span></button>
+    <div class="faq-antwort"><ul><li>Nur autorisierte TK mit aktivem Systemzugang</li><li>Bei Abwesenheit: TK-Leitung übernimmt oder benennt Vertretung</li><li>Nie Zugangsdaten weitergeben</li></ul></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-frage" onclick="toggleFaq(this)">Was passiert mit abgelehnten Vertretungsanfragen? <span class="faq-arrow">▶</span></button>
+    <div class="faq-antwort"><ul><li>Absage im System erfassen (Datum, Grund wenn bekannt)</li><li>Nächste Person aus der Liste kontaktieren</li><li>Absagen werden für spätere Auswertungen dokumentiert</li></ul></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-frage" onclick="toggleFaq(this)">Wie aktuell muss das Profil einer Person sein? <span class="faq-arrow">▶</span></button>
+    <div class="faq-antwort"><ul><li>Verfügbarkeitsstatus: immer aktuell – wöchentlich prüfen</li><li>Qualifikationen: bei Änderungen sofort aktualisieren</li><li>Kontaktdaten: mindestens monatlich prüfen</li><li>Veraltete Profile deaktivieren, nicht löschen</li></ul></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-frage" onclick="toggleFaq(this)">Muss ich die Schule immer informieren? <span class="faq-arrow">▶</span></button>
+    <div class="faq-antwort"><ul><li>Ja – immer, auch bei negativem Ergebnis</li><li>Bei Kurzfrist-Ausfall: sofort nach erstem Kontaktversuch</li><li>Bei geplanter Vertretung: mindestens 5 Tage vor Startdatum</li><li>Form: Telefon für Dringendes, schriftlich zur Dokumentation</li></ul></div>
+  </div>
+
+  <!-- ABSCHNITT 7: CHECKLISTEN -->
+  <div class="abschnitt-titel">7 · Checklisten zum Ausdrucken</div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">✅</span><span class="karte-header-titel">Checkliste: Vertretung kurzfristig</span></div>
+    <div class="karte-body">
+      <ul class="stw-list">
+        <li>☐ Bedarf im System angelegt</li>
+        <li>☐ Vorschläge nach Verfügbarkeit gefiltert</li>
+        <li>☐ Person kontaktiert</li>
+        <li>☐ Zusage oder Absage im System erfasst</li>
+        <li>☐ Schule informiert (auch bei Absage)</li>
+        <li>☐ Einsatz dokumentiert und abgeschlossen</li>
+        <li>☐ Auffälligkeiten an TK-Leitung gemeldet</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">✅</span><span class="karte-header-titel">Checkliste: Datenpflege (monatlich)</span></div>
+    <div class="karte-body">
+      <ul class="stw-list">
+        <li>☐ Alle Verfügbarkeitsstatus geprüft</li>
+        <li>☐ Kontaktdaten aktuell</li>
+        <li>☐ Qualifikationen auf Stand</li>
+        <li>☐ Inaktive Personen deaktiviert</li>
+        <li>☐ Neue Personen vollständig angelegt</li>
+        <li>☐ Offene Vorgänge abgeschlossen</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="brainy-box">
+    <div class="brainy-box-icon">🧠</div>
+    <div class="brainy-box-content">
+      <span class="brainy-box-label">Brainy · Vertretungsmodus</span>
+      <p class="brainy-box-text">
+        <em>„Habe ich Schule, Person und System alle drei informiert?"</em><br>
+        <em>„Ist der Einsatz dokumentiert – auch wenn er nicht zustande kam?"</em><br>
+        <strong>Brainy erinnert:</strong> Kein Vertretungseinsatz ohne Dokumentation – das schützt alle Beteiligten.
+      </p>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">🖨️ Diese Anleitung drucken</button>
+
+</div><!-- /.page-wrap -->
+
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <strong>KLARTEXT</strong> · VA-Anleitung · Vertretungsassistent<br>
+  Klar. Warm. Menschlich. · Neutral · Trägeroffen
+</footer>
+
+<script>
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  item.classList.toggle('offen');
+}
+</script>
+</body>
+</html>

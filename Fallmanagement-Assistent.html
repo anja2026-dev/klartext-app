@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT – Fallmanagement-Assistent</title>
+<style>
+  :root{
+    --kt-primary:#1B3A4B; --kt-ink:#2D2D2D; --kt-muted:#7A7060;
+    --kt-surface:#FFFFFF; --kt-border:#DDD8CE; --kt-bg:#F5F0E8;
+    --case-color:#3B6E8A; --case-light:#EAF1F5; --r-sm:8px; --r-md:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'DM Sans',Arial,sans-serif;background:var(--kt-bg);color:var(--kt-ink);}
+  header.dashboard-header{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--case-color);color:#fff;padding:.9rem 1.2rem;flex-wrap:wrap;gap:.6rem;
+  }
+  header.dashboard-header h1{font-size:1.05rem;margin:0;}
+  header.dashboard-header .claim{font-size:.75rem;opacity:.85;}
+  .header-nav a{color:#fff;text-decoration:none;font-size:.8rem;margin-left:1rem;}
+  main{max-width:980px;margin:0 auto;padding:1.2rem 1rem 3rem;}
+  .view{display:none;}
+  .view.aktiv{display:block;}
+  .karte{
+    background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-md);
+    padding:1.1rem 1.2rem;margin-bottom:1rem;
+  }
+  .karte-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
+  .karte-header-icon{font-size:1.2rem;}
+  .karte-header-titel{font-weight:700;color:var(--case-color);font-size:.95rem;}
+  .case-btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;}
+  .case-btn{
+    display:flex;flex-direction:column;align-items:flex-start;gap:.25rem;
+    text-align:left;border:1.5px solid var(--kt-border);background:var(--case-light);
+    border-radius:var(--r-sm);padding:.7rem .8rem;cursor:pointer;font-family:inherit;
+  }
+  .case-btn:hover{border-color:var(--case-color);}
+  .case-btn .lbl{font-weight:700;font-size:.85rem;color:var(--kt-ink);}
+  .case-btn .sub{font-size:.72rem;color:var(--kt-muted);}
+  .unter-nav{display:flex;justify-content:space-between;gap:.6rem;margin-top:.6rem;flex-wrap:wrap;}
+  .unter-nav-btn{
+    border:1.5px solid var(--case-color);background:var(--kt-surface);color:var(--case-color);
+    border-radius:18px;padding:.4rem .9rem;font-size:.78rem;font-weight:700;cursor:pointer;
+  }
+  .unter-nav-btn:hover{background:var(--case-color);color:#fff;}
+  .platzhalter{
+    font-size:.8rem;color:var(--kt-muted);font-style:italic;
+    border:1.5px dashed var(--kt-border);border-radius:var(--r-sm);padding:1rem;
+  }
+  .anleitung-liste{margin:0;padding-left:1.1rem;font-size:.85rem;line-height:1.7;}
+</style>
+</head>
+<body>
+
+<header class="dashboard-header">
+  <div class="header-left">
+    <h1>Fallmanagement-Assistent</h1>
+    <span class="claim">Fallakte · Risiko-Ampel · Maßnahmen · Verlauf</span>
+  </div>
+  <nav class="header-nav">
+    <a href="DASHBOARD.html">← Übersicht</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ════════════════════════ case_start ════════════════════════ -->
+  <div class="view aktiv" id="view-case_start">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🗂️</span><span class="karte-header-titel">Fallmanagement – Übersicht</span></div>
+      <p style="font-size:.85rem;color:var(--kt-muted);margin-top:0;">Wähle einen Bereich aus.</p>
+      <div class="case-btn-grid">
+        <button class="case-btn" onclick="zeigeCase('case_file')">
+          <span class="lbl">📁 Fallakte öffnen</span><span class="sub">Stammdaten</span>
+        </button>
+        <button class="case-btn" onclick="zeigeCase('case_risk')">
+          <span class="lbl">🚦 Risiko-Ampel</span><span class="sub">Einschätzung</span>
+        </button>
+        <button class="case-btn" onclick="zeigeCase('case_actions')">
+          <span class="lbl">📌 Maßnahmenplan</span><span class="sub">Maßnahmen & Status</span>
+        </button>
+        <button class="case-btn" onclick="zeigeCase('case_timeline')">
+          <span class="lbl">🕒 Verlauf / Chronik</span><span class="sub">Ereignisse</span>
+        </button>
+        <button class="case-btn" onclick="zeigeCase('case_pdf')">
+          <span class="lbl">📄 PDF-Fallakte</span><span class="sub">Export</span>
+        </button>
+        <button class="case-btn" onclick="zeigeCase('case_help')">
+          <span class="lbl">📘 Anleitung Fallmanagement</span><span class="sub">Schritt für Schritt</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_file ════════════════════════ -->
+  <div class="view" id="view-case_file">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📁</span><span class="karte-header-titel">Fallakte / Stammdaten</span></div>
+      <div class="platzhalter">Struktur-Platzhalter – Formular folgt. Datenfelder: Name, Klasse, Bezugsperson, Besonderheiten, Ziele, Ressourcen.</div>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_risk ════════════════════════ -->
+  <div class="view" id="view-case_risk">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Risiko-Ampel</span></div>
+      <div class="platzhalter">Struktur-Platzhalter – Ampel folgt. Status: grün / gelb / rot, mit kurzen neutralen Kriterien.</div>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_actions ════════════════════════ -->
+  <div class="view" id="view-case_actions">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📌</span><span class="karte-header-titel">Maßnahmenplan</span></div>
+      <div class="platzhalter">Struktur-Platzhalter – Tabelle folgt. Spalten: Maßnahme, Verantwortlich, Zeitraum, Status.</div>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_timeline ════════════════════════ -->
+  <div class="view" id="view-case_timeline">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🕒</span><span class="karte-header-titel">Verlauf / Chronik</span></div>
+      <div class="platzhalter">Struktur-Platzhalter – Chronik folgt. Einträge: Datum, Ereignis, Beobachtung, Rückmeldung.</div>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_pdf ════════════════════════ -->
+  <div class="view" id="view-case_pdf">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📄</span><span class="karte-header-titel">PDF-Fallakte</span></div>
+      <div class="platzhalter">Struktur-Platzhalter – PDF-Export folgt (sammelt Fallakte, Risiko-Ampel, Maßnahmen, Verlauf).</div>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_barometer ════════════════════════ -->
+  <div class="view" id="view-case_barometer">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🌡️</span><span class="karte-header-titel">Tagesstatus / Barometer</span></div>
+      <div class="platzhalter">Struktur-Platzhalter – Tagesstatus folgt. Felder: Stimmung, Belastung, Tagesverlauf.</div>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ case_help ════════════════════════ -->
+  <div class="view" id="view-case_help">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📘</span><span class="karte-header-titel">Anleitung Fallmanagement</span></div>
+      <ol class="anleitung-liste">
+        <li>Fallakte anlegen</li>
+        <li>Risiko-Ampel einschätzen</li>
+        <li>Maßnahmen planen</li>
+        <li>Verlauf dokumentieren</li>
+        <li>PDF exportieren</li>
+      </ol>
+      <div class="unter-nav">
+        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ── Datenstrukturen (Struktur-Vorbereitung, noch ohne Formular-Logik) ──
+// Alles ausschließlich lokal in localStorage, neutral gehalten.
+
+var CASE_KEYS = {
+  caseFile:   'case_mgmt_file',       // Stammdaten
+  riskStatus: 'case_mgmt_risk',       // Ampel
+  actions:    'case_mgmt_actions',    // Maßnahmenplan
+  timeline:   'case_mgmt_timeline',   // Chronik
+  barometer:  'case_mgmt_barometer'   // Tagesstatus
+};
+
+// Beispielhafte leere Grundstrukturen (werden später befüllt):
+var caseFile = {
+  name: '', klasse: '', bezugsperson: '', besonderheiten: '', ziele: '', ressourcen: ''
+};
+
+var riskStatus = {
+  ampel: '', // 'grün' | 'gelb' | 'rot'
+  kriterien: ''
+};
+
+var actions = [
+  // { massnahme:'', verantwortlich:'', zeitraum:'', status:'' }
+];
+
+var timeline = [
+  // { datum:'', ereignis:'', beobachtung:'', ruckmeldung:'' }
+];
+
+var barometer = {
+  stimmung: '', belastung: '', tagesverlauf: ''
+};
+
+// Views-Objekt: Zuordnung Schlüssel → DOM-ID
+var caseViews = {
+  case_start:    'view-case_start',
+  case_file:     'view-case_file',
+  case_risk:     'view-case_risk',
+  case_actions:  'view-case_actions',
+  case_timeline: 'view-case_timeline',
+  case_pdf:      'view-case_pdf',
+  case_barometer:'view-case_barometer',
+  case_help:     'view-case_help'
+};
+
+function zeigeCase(key){
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('aktiv'); });
+  var zielId = caseViews[key] || caseViews.case_start;
+  var ziel = document.getElementById(zielId);
+  if(ziel){
+    ziel.classList.add('aktiv');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+</script>
+
+</body>
+</html>

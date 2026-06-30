@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Tagesjournal</title>
+<script src="./firebase.js"></script>
+<style>
+  :root{
+    --navy:#1B3A4B;
+    --acc:#6EC6A0;
+    --paper:#F5F0E8;
+    --border:#DDD8CE;
+    --muted:#6A6878;
+    --ink:#2D2D2D;
+    --surface:#FFFFFF;
+    --r-sm:8px;
+    --r-md:14px;
+    --shadow:0 2px 8px rgba(27,58,75,.10);
+    --shadow-strong:0 4px 14px rgba(27,58,75,.18);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'DM Sans',Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  header.kt-header{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--navy);color:#fff;
+    padding:.9rem 1.2rem;flex-wrap:wrap;gap:.6rem;
+    box-shadow:var(--shadow);
+  }
+  header.kt-header .kt-title{font-size:1.05rem;font-weight:700;margin:0;}
+  header.kt-header .kt-claim{font-size:.75rem;opacity:.8;margin-top:.1rem;}
+  header.kt-header a.kt-back{
+    color:#fff;text-decoration:none;font-size:.8rem;
+    border:1.5px solid rgba(255,255,255,.4);border-radius:18px;
+    padding:.35rem .8rem;
+  }
+  header.kt-header a.kt-back:hover{background:rgba(255,255,255,.12);}
+
+  main{max-width:920px;margin:0 auto;padding:1.2rem 1rem 3rem;}
+
+  .karte{
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    border-radius:var(--r-md);
+    padding:1.1rem 1.2rem;
+    margin-bottom:1.1rem;
+    box-shadow:var(--shadow);
+  }
+  .karte-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;}
+  .karte-header-icon{font-size:1.15rem;}
+  .karte-header-titel{font-weight:700;color:var(--navy);font-size:.92rem;}
+
+  .kt-childselect{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem;}
+  .kt-childselect label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .kt-childselect select{
+    font-family:inherit;font-size:.85rem;border:1.5px solid var(--border);
+    border-radius:var(--r-sm);padding:.4rem .6rem;background:var(--surface);color:var(--ink);
+    min-width:200px;
+  }
+
+  /* Barometer kompakt */
+  .baro-row{display:flex;gap:.55rem;flex-wrap:wrap;}
+  .baro-btn{
+    width:54px;height:54px;border-radius:50%;border:2.5px solid transparent;
+    cursor:pointer;font-size:1.4rem;display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--shadow);background:var(--surface);transition:transform .12s, border-color .12s;
+  }
+  .baro-btn:hover{transform:translateY(-2px);}
+  .baro-btn.aktiv{border-color:var(--navy);box-shadow:var(--shadow-strong);}
+  .baro-gruen{background:#E3F3EA;} .baro-gelb{background:#FBF3D8;} .baro-orange{background:#FBE6D0;}
+  .baro-rot{background:#F8D9D9;} .baro-grau{background:#E4E2E6;}
+  .baro-anzeige{
+    margin-top:.7rem;font-size:.8rem;color:var(--muted);
+    display:flex;align-items:center;gap:.4rem;min-height:1.2em;
+  }
+  .baro-anzeige .punkt{width:12px;height:12px;border-radius:50%;display:inline-block;}
+
+  textarea, input[type=text], select{
+    width:100%;font-family:inherit;font-size:.85rem;color:var(--ink);
+    border:1.5px solid var(--border);border-radius:var(--r-sm);
+    padding:.55rem .7rem;background:var(--surface);
+  }
+  textarea{resize:vertical;min-height:80px;}
+  textarea:focus, input:focus, select:focus{outline:none;border-color:var(--acc);}
+
+  .kt-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.7rem;}
+  .kt-field label{font-size:.74rem;font-weight:700;color:var(--ink);}
+  .kt-field .sub{font-size:.7rem;color:var(--muted);font-weight:400;}
+
+  .kt-btn{
+    display:inline-flex;align-items:center;gap:.4rem;
+    font-size:.78rem;font-weight:700;padding:.5rem 1rem;border-radius:22px;
+    cursor:pointer;border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);
+    box-shadow:var(--shadow);transition:all .15s;font-family:inherit;
+  }
+  .kt-btn:hover{background:var(--navy);color:#fff;}
+  .kt-btn.primary{background:var(--acc);border-color:var(--acc);color:var(--navy);}
+  .kt-btn.primary:hover{background:#5BB890;}
+  .kt-btn.gross{font-size:.85rem;padding:.65rem 1.4rem;}
+  .kt-btn.klein{font-size:.68rem;padding:.3rem .65rem;border-radius:16px;}
+  .kt-btn.danger{border-color:#C62828;color:#C62828;}
+  .kt-btn.danger:hover{background:#C62828;color:#fff;}
+
+  .kt-status{font-size:.76rem;margin-top:.6rem;color:var(--muted);min-height:1.1em;}
+  .kt-status.ok{color:#2E7D32;font-weight:700;}
+  .kt-status.err{color:#C62828;font-weight:700;}
+
+  /* Liste */
+  .journal-liste{display:flex;flex-direction:column;gap:.5rem;}
+  .journal-eintrag{
+    display:flex;align-items:flex-start;gap:.65rem;
+    border:1.5px solid var(--border);border-radius:var(--r-sm);
+    padding:.6rem .75rem;background:var(--paper);flex-wrap:wrap;
+  }
+  .journal-eintrag .punkt{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:.2rem;}
+  .journal-eintrag .inhalt{flex:1;min-width:180px;}
+  .journal-eintrag .datum{font-weight:700;font-size:.8rem;color:var(--navy);}
+  .journal-eintrag .notiz{font-size:.78rem;color:var(--ink);margin-top:.15rem;}
+  .journal-eintrag .besonderheit{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+  .journal-leer{font-size:.8rem;color:var(--muted);font-style:italic;}
+
+  /* Wochenübersicht */
+  .woche-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;text-align:center;}
+  .woche-tag{
+    border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.6rem .3rem;background:var(--paper);
+  }
+  .woche-tag .label{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .woche-tag .punkt{width:18px;height:18px;border-radius:50%;margin:.4rem auto 0;}
+  .woche-tag .kdatum{font-size:.65rem;color:var(--muted);margin-top:.2rem;}
+
+  /* Overlay Leselink */
+  .overlay-bg{
+    position:fixed;inset:0;background:rgba(27,58,75,.55);
+    display:none;align-items:center;justify-content:center;padding:1rem;z-index:50;
+  }
+  .overlay-bg.aktiv{display:flex;}
+  .overlay-karte{
+    background:var(--surface);border-radius:var(--r-md);padding:1.4rem;max-width:420px;width:100%;
+    box-shadow:var(--shadow-strong);text-align:center;
+  }
+  .overlay-karte h3{margin:.2rem 0 .4rem;color:var(--navy);font-size:1rem;}
+  .overlay-karte p{font-size:.8rem;color:var(--muted);margin-bottom:.8rem;}
+  .overlay-link{
+    display:block;width:100%;font-size:.78rem;word-break:break-all;
+    background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r-sm);
+    padding:.6rem .7rem;margin-bottom:.8rem;color:var(--navy);
+  }
+  .overlay-btn-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
+
+  .brainy-box{
+    display:flex;gap:.6rem;align-items:flex-start;margin-top:.8rem;
+    background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r-sm);
+    padding:.6rem .8rem;
+  }
+  .brainy-box img{width:34px;height:34px;border-radius:50%;flex-shrink:0;}
+  .brainy-box .txt{font-size:.76rem;color:var(--muted);font-style:italic;}
+
+  @media(max-width:560px){
+    .woche-grid{grid-template-columns:repeat(5,1fr);gap:.3rem;}
+    .woche-tag{padding:.4rem .15rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div>
+    <div class="kt-title">KLARTEXT · Tagesjournal</div>
+    <div class="kt-claim">Barometer · Notiz · Übergabe · Verlauf</div>
+  </div>
+  <a class="kt-back" href="DASHBOARD.html">← Zurück zum Dashboard</a>
+</header>
+
+<main>
+
+  <!-- KIND AUSWÄHLEN -->
+  <div class="karte">
+    <div class="kt-childselect">
+      <label for="kindSelect">Kind</label>
+      <select id="kindSelect"><option value="">– wird geladen –</option></select>
+    </div>
+  </div>
+
+  <!-- BEREICH 1: BAROMETER -->
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🌡️</span><span class="karte-header-titel">Tagesbarometer</span></div>
+    <div class="baro-row">
+      <button class="baro-btn baro-gruen" data-farbe="grün" onclick="waehleBarometer('grün','🟢')">🟢</button>
+      <button class="baro-btn baro-gelb" data-farbe="gelb" onclick="waehleBarometer('gelb','🟡')">🟡</button>
+      <button class="baro-btn baro-orange" data-farbe="orange" onclick="waehleBarometer('orange','🟠')">🟠</button>
+      <button class="baro-btn baro-rot" data-farbe="rot" onclick="waehleBarometer('rot','🔴')">🔴</button>
+      <button class="baro-btn baro-grau" data-farbe="grau" onclick="waehleBarometer('grau','🩶')">🩶</button>
+    </div>
+    <div class="baro-anzeige" id="baroAnzeige">Noch keine Auswahl getroffen.</div>
+  </div>
+
+  <!-- BEREICH 2: TAGESNOTIZ -->
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📝</span><span class="karte-header-titel">Tagesnotiz</span></div>
+    <div class="kt-field">
+      <textarea id="tagesnotiz" placeholder="Was war heute wichtig?"></textarea>
+    </div>
+  </div>
+
+  <!-- BEREICH 3: BESONDERHEITEN -->
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">🔎</span><span class="karte-header-titel">Besonderheiten heute</span></div>
+    <div class="kt-field">
+      <label for="besonderheitSelect">Auswahl</label>
+      <select id="besonderheitSelect">
+        <option value="keine">keine</option>
+        <option value="Konflikt">Konflikt</option>
+        <option value="Pause schwierig">Pause schwierig</option>
+        <option value="Unterricht gut">Unterricht gut</option>
+        <option value="Elterngespräch">Elterngespräch</option>
+        <option value="Therapie/Termin">Therapie/Termin</option>
+        <option value="Sonstiges">Sonstiges</option>
+      </select>
+    </div>
+    <div class="kt-field">
+      <label for="besonderheitDetails">Details <span class="sub">(optional)</span></label>
+      <input type="text" id="besonderheitDetails" placeholder="Kurzbeschreibung">
+    </div>
+  </div>
+
+  <!-- BEREICH 4: ÜBERGABE AN TK -->
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📤</span><span class="karte-header-titel">Übergabe an TK</span></div>
+    <div class="kt-field">
+      <textarea id="uebergabeText" placeholder="Was sollte die Teamkoordination wissen?"></textarea>
+    </div>
+    <button class="kt-btn primary" onclick="weiterleitenTK()">📤 Weiterleiten</button>
+    <div class="kt-status" id="statusUebergabe"></div>
+  </div>
+
+  <!-- BEREICH 5: SPEICHERN -->
+  <div class="karte">
+    <button class="kt-btn gross primary" onclick="tagesjournalSpeichern()">✓ Tagesjournal speichern</button>
+    <div class="kt-status" id="statusSpeichern"></div>
+
+    <div class="brainy-box">
+      <img src="./brainy.png" alt="Brainy" onerror="this.style.display='none';">
+      <div class="txt">Brainy: Ein kurzer, ehrlicher Eintrag heute hilft dir morgen beim Wiedereinstieg.</div>
+    </div>
+  </div>
+
+  <!-- BEREICH 6: LISTE -->
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Alle Tagesjournale</span></div>
+    <div class="journal-liste" id="journalListe">
+      <div class="journal-leer">Noch keine Einträge vorhanden.</div>
+    </div>
+  </div>
+
+  <!-- BEREICH 7: WOCHENÜBERSICHT -->
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📅</span><span class="karte-header-titel">Wochenübersicht (Mo–Fr)</span></div>
+    <div class="woche-grid" id="wocheGrid"></div>
+    <div style="margin-top:.9rem;">
+      <button class="kt-btn" onclick="pdfExportWoche()">🖨️ PDF exportieren</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- LESELINK-OVERLAY -->
+<div class="overlay-bg" id="overlayLeselink">
+  <div class="overlay-karte">
+    <h3>📤 Weitergeleitet</h3>
+    <p>Dieser Leselink wurde erzeugt und kann geteilt werden.</p>
+    <span class="overlay-link" id="overlayLinkText">–</span>
+    <div class="overlay-btn-row">
+      <button class="kt-btn klein" onclick="leselinkKopieren()">📋 Kopieren</button>
+      <button class="kt-btn klein primary" onclick="overlaySchliessen()">✓ Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  var LS_KEY = 'kt_tagesjournal';
+  var aktuellerKindId = '';
+  var aktuelleBarometerFarbe = '';
+  var aktuelleBarometerEmoji = '';
+  var aktuelleBarometerZeit = '';
+
+  var FARB_HEX = {
+    'grün':'#3B8A68', 'gelb':'#C9A227', 'orange':'#C47A1E',
+    'rot':'#C62828', 'grau':'#9A97A0', '':'#DDD8CE'
+  };
+
+  // ───────────────────────────────────────────
+  // Kinderliste dynamisch aus /children laden
+  // ───────────────────────────────────────────
+  function kinderListeLaden(){
+    var select = document.getElementById('kindSelect');
+    function rendern(kinder){
+      select.innerHTML = '';
+      if(!kinder || !kinder.length){
+        select.innerHTML = '<option value="">Keine Kinder gefunden</option>';
+        return;
+      }
+      kinder.forEach(function(k){
+        var opt = document.createElement('option');
+        opt.value = k.id || k.childId || k.key;
+        opt.textContent = k.name || k.id || 'Kind';
+        select.appendChild(opt);
+      });
+      aktuellerKindId = select.value;
+      journalListeRendern();
+      wocheRendern();
+    }
+
+    try{
+      if(window.firebaseDB && typeof window.firebaseDB.loadChildren === 'function'){
+        window.firebaseDB.loadChildren(function(kinder){ rendern(kinder); });
+        return;
+      }
+      if(typeof window.loadChildren === 'function'){
+        window.loadChildren('/children', function(kinder){ rendern(kinder); });
+        return;
+      }
+      if(window.firebase && firebase.database){
+        firebase.database().ref('/children').once('value').then(function(snap){
+          var daten = snap.val() || {};
+          var kinder = Object.keys(daten).map(function(id){
+            var k = daten[id] || {};
+            return { id:id, name:k.name || id };
+          });
+          rendern(kinder);
+        }).catch(function(){ rendern([]); });
+        return;
+      }
+    }catch(e){ /* Firebase nicht verfügbar */ }
+
+    // Fallback: keine Verbindung möglich
+    select.innerHTML = '<option value="">Keine Verbindung zu /children</option>';
+  }
+
+  document.getElementById('kindSelect').addEventListener('change', function(){
+    aktuellerKindId = this.value;
+    journalListeRendern();
+    wocheRendern();
+  });
+
+  // ───────────────────────────────────────────
+  // Barometer
+  // ───────────────────────────────────────────
+  window.waehleBarometer = function(farbe, emoji){
+    aktuelleBarometerFarbe = farbe;
+    aktuelleBarometerEmoji = emoji;
+    var jetzt = new Date();
+    aktuelleBarometerZeit = jetzt.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+
+    document.querySelectorAll('.baro-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+    document.querySelector('.baro-btn[data-farbe="'+farbe+'"]').classList.add('aktiv');
+
+    var anzeige = document.getElementById('baroAnzeige');
+    anzeige.innerHTML = '<span class="punkt" style="background:'+FARB_HEX[farbe]+';"></span> '+
+      emoji+' '+farbe.charAt(0).toUpperCase()+farbe.slice(1)+' · '+aktuelleBarometerZeit+' Uhr';
+  };
+
+  // ───────────────────────────────────────────
+  // localStorage Helfer
+  // ───────────────────────────────────────────
+  function alleEintraegeLaden(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+    catch(e){ return []; }
+  }
+  function alleEintraegeSpeichern(arr){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+    catch(e){ /* localStorage nicht verfügbar */ }
+  }
+  function heuteISO(){
+    var d = new Date();
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+
+  // ───────────────────────────────────────────
+  // Speichern
+  // ───────────────────────────────────────────
+  window.tagesjournalSpeichern = function(){
+    var statusEl = document.getElementById('statusSpeichern');
+
+    if(!aktuelleBarometerFarbe){
+      statusEl.textContent = '⚠ Bitte zuerst ein Barometer auswählen.';
+      statusEl.className = 'kt-status err';
+      return;
+    }
+
+    var eintrag = {
+      id: 'tj'+Date.now(),
+      childId: aktuellerKindId || '',
+      datum: heuteISO(),
+      barometerFarbe: aktuelleBarometerFarbe,
+      barometerEmoji: aktuelleBarometerEmoji,
+      barometerZeit: aktuelleBarometerZeit,
+      notiz: document.getElementById('tagesnotiz').value.trim(),
+      besonderheit: document.getElementById('besonderheitSelect').value,
+      besonderheitDetails: document.getElementById('besonderheitDetails').value.trim(),
+      uebergabe: document.getElementById('uebergabeText').value.trim()
+    };
+
+    var liste = alleEintraegeLaden();
+    liste.push(eintrag);
+    alleEintraegeSpeichern(liste);
+
+    firebaseSpeichern(eintrag);
+
+    statusEl.textContent = '✓ Tagesjournal gespeichert (' + eintrag.datum + ').';
+    statusEl.className = 'kt-status ok';
+
+    journalListeRendern();
+    wocheRendern();
+  };
+
+  function firebaseSpeichern(eintrag){
+    try{
+      var pfad = '/tagesjournal/' + (eintrag.childId || 'unbekannt');
+      if(window.firebaseDB && typeof window.firebaseDB.push === 'function'){
+        window.firebaseDB.push(pfad, eintrag);
+        return;
+      }
+      if(window.firebase && firebase.database){
+        firebase.database().ref(pfad).push(eintrag);
+        return;
+      }
+    }catch(e){ /* Firebase nicht verfügbar – lokale Speicherung bleibt bestehen */ }
+  }
+
+  // ───────────────────────────────────────────
+  // Übergabe an TK / Weiterleitung (/forward)
+  // ───────────────────────────────────────────
+  window.weiterleitenTK = function(){
+    var statusEl = document.getElementById('statusUebergabe');
+    var text = document.getElementById('uebergabeText').value.trim();
+
+    if(!text){
+      statusEl.textContent = '⚠ Bitte zuerst einen Übergabetext eintragen.';
+      statusEl.className = 'kt-status err';
+      return;
+    }
+
+    var datum = heuteISO();
+    var payload = {
+      context: 'tagesjournal',
+      type: 'tagesjournal',
+      childId: aktuellerKindId || '',
+      text: 'Tagesjournal ' + datum
+    };
+
+    var leselink = '';
+    try{
+      if(typeof window.sendForward === 'function'){
+        leselink = window.sendForward(payload) || '';
+      } else if(window.firebase && firebase.database){
+        var ref = firebase.database().ref('/forward').push();
+        ref.set(Object.assign({}, payload, {
+          ts: Date.now(),
+          uebergabeText: text
+        }));
+        leselink = window.location.origin + window.location.pathname + '#forward=' + ref.key;
+      }
+    }catch(e){ /* Firebase nicht verfügbar */ }
+
+    if(!leselink){
+      leselink = window.location.origin + window.location.pathname + '#tagesjournal=' + datum;
+    }
+
+    statusEl.textContent = '✓ Übergabe an TK weitergeleitet.';
+    statusEl.className = 'kt-status ok';
+
+    leselinkAnzeigen(leselink);
+  };
+
+  // ───────────────────────────────────────────
+  // Leselink-Overlay
+  // ───────────────────────────────────────────
+  function leselinkAnzeigen(link){
+    document.getElementById('overlayLinkText').textContent = link;
+    document.getElementById('overlayLeselink').classList.add('aktiv');
+  }
+  window.overlaySchliessen = function(){
+    document.getElementById('overlayLeselink').classList.remove('aktiv');
+  };
+  window.leselinkKopieren = function(){
+    var text = document.getElementById('overlayLinkText').textContent;
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(function(){
+        alert('Link kopiert.');
+      }).catch(function(){ /* still */ });
+    }
+  };
+
+  // ───────────────────────────────────────────
+  // Liste rendern
+  // ───────────────────────────────────────────
+  function journalListeRendern(){
+    var container = document.getElementById('journalListe');
+    var liste = alleEintraegeLaden()
+      .filter(function(e){ return !aktuellerKindId || e.childId === aktuellerKindId; })
+      .sort(function(a,b){ return b.datum.localeCompare(a.datum); });
+
+    if(!liste.length){
+      container.innerHTML = '<div class="journal-leer">Noch keine Einträge vorhanden.</div>';
+      return;
+    }
+
+    var html = '';
+    liste.forEach(function(e){
+      var notizKurz = (e.notiz || '').slice(0, 70) + ((e.notiz||'').length > 70 ? '…' : '');
+      html += '<div class="journal-eintrag">';
+      html += '<span class="punkt" style="background:'+(FARB_HEX[e.barometerFarbe]||'#DDD8CE')+';"></span>';
+      html += '<div class="inhalt">';
+      html += '<div class="datum">'+e.datum+' '+(e.barometerEmoji||'')+'</div>';
+      html += '<div class="notiz">'+(notizKurz || '–')+'</div>';
+      html += '<div class="besonderheit">'+(e.besonderheit && e.besonderheit !== 'keine' ? e.besonderheit : 'keine Besonderheit')+'</div>';
+      html += '</div>';
+      html += '<button class="kt-btn klein danger" onclick="journalEintragLoeschen(\''+e.id+'\')">🗑️</button>';
+      html += '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.journalEintragLoeschen = function(id){
+    var liste = alleEintraegeLaden().filter(function(e){ return e.id !== id; });
+    alleEintraegeSpeichern(liste);
+    journalListeRendern();
+    wocheRendern();
+  };
+
+  // ───────────────────────────────────────────
+  // Wochenübersicht Mo–Fr
+  // ───────────────────────────────────────────
+  function montagDerWoche(){
+    var d = new Date();
+    var tag = d.getDay(); // 0 = So, 1 = Mo ...
+    var diff = (tag === 0) ? -6 : (1 - tag);
+    var montag = new Date(d);
+    montag.setDate(d.getDate() + diff);
+    return montag;
+  }
+
+  function isoDatum(d){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+
+  function wocheRendern(){
+    var grid = document.getElementById('wocheGrid');
+    var labels = ['Mo','Di','Mi','Do','Fr'];
+    var montag = montagDerWoche();
+    var liste = alleEintraegeLaden().filter(function(e){ return !aktuellerKindId || e.childId === aktuellerKindId; });
+
+    var html = '';
+    for(var i=0; i<5; i++){
+      var tagDatum = new Date(montag);
+      tagDatum.setDate(montag.getDate() + i);
+      var iso = isoDatum(tagDatum);
+      var eintrag = liste.filter(function(e){ return e.datum === iso; }).pop();
+      var farbe = eintrag ? eintrag.barometerFarbe : '';
+      var hex = farbe ? FARB_HEX[farbe] : '#C9C6C0';
+
+      html += '<div class="woche-tag">';
+      html += '<div class="label">'+labels[i]+'</div>';
+      html += '<div class="punkt" style="background:'+hex+';"></div>';
+      html += '<div class="kdatum">'+tagDatum.getDate()+'.'+(tagDatum.getMonth()+1)+'.</div>';
+      html += '</div>';
+    }
+    grid.innerHTML = html;
+  }
+
+  // ───────────────────────────────────────────
+  // PDF-Export Woche
+  // ───────────────────────────────────────────
+  window.pdfExportWoche = function(){
+    var montag = montagDerWoche();
+    var liste = alleEintraegeLaden().filter(function(e){ return !aktuellerKindId || e.childId === aktuellerKindId; });
+    var labels = ['Mo','Di','Mi','Do','Fr'];
+
+    var html = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">';
+    html += '<title>Tagesjournal · Wochenübersicht</title>';
+    html += '<style>body{font-family:DM Sans,Arial,sans-serif;color:#2D2D2D;padding:2rem;max-width:760px;margin:0 auto;}';
+    html += 'h1{font-size:1.25rem;color:#1B3A4B;margin-bottom:.1rem;}';
+    html += '.sub{color:#6A6878;font-size:.82rem;margin-bottom:1.2rem;}';
+    html += 'table{width:100%;border-collapse:collapse;font-size:.85rem;}';
+    html += 'th,td{padding:.45rem .4rem;border-bottom:1px solid #DDD8CE;text-align:left;vertical-align:top;}';
+    html += 'th{color:#1B3A4B;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;}';
+    html += '.punkt{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:.3rem;}';
+    html += '.foot{margin-top:1.5rem;font-size:.7rem;color:#6A6878;}</style></head><body>';
+    html += '<h1>KLARTEXT · Tagesjournal – Wochenübersicht</h1>';
+    html += '<div class="sub">Woche ab '+isoDatum(montag)+' · Export am '+new Date().toLocaleString('de-DE')+'</div>';
+    html += '<table><tr><th>Tag</th><th>Datum</th><th>Barometer</th><th>Notiz</th><th>Besonderheit</th></tr>';
+
+    for(var i=0; i<5; i++){
+      var tagDatum = new Date(montag);
+      tagDatum.setDate(montag.getDate() + i);
+      var iso = isoDatum(tagDatum);
+      var eintrag = liste.filter(function(e){ return e.datum === iso; }).pop();
+      var farbe = eintrag ? eintrag.barometerFarbe : '';
+      var hex = farbe ? FARB_HEX[farbe] : '#C9C6C0';
+      var notiz = eintrag ? (eintrag.notiz || '–') : '–';
+      var beson = eintrag && eintrag.besonderheit && eintrag.besonderheit !== 'keine' ? eintrag.besonderheit : 'keine';
+
+      html += '<tr>';
+      html += '<td>'+labels[i]+'</td>';
+      html += '<td>'+iso+'</td>';
+      html += '<td><span class="punkt" style="background:'+hex+';"></span>'+(farbe || '–')+'</td>';
+      html += '<td>'+notiz.replace(/</g,'&lt;')+'</td>';
+      html += '<td>'+beson.replace(/</g,'&lt;')+'</td>';
+      html += '</tr>';
+    }
+
+    html += '</table>';
+    html += '<div class="foot">KLARTEXT · Tagesjournal · Klar. Warm. Menschlich.</div>';
+    html += '</body></html>';
+
+    var w = window.open('', '_blank');
+    if(!w){ alert('Pop-up wurde blockiert. Bitte Pop-ups für diese Seite erlauben.'); return; }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+    setTimeout(function(){ w.focus(); w.print(); }, 250);
+  };
+
+  // ───────────────────────────────────────────
+  // Init
+  // ───────────────────────────────────────────
+  kinderListeLaden();
+  journalListeRendern();
+  wocheRendern();
+
+})();
+</script>
+
+</body>
+</html>

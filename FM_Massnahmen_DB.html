@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Maßnahmen-Datenbank</title>
+<meta name="robots" content="noindex, nofollow">
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || !['tk','admin'].includes(role)){
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt:    #1B3A4B;
+  --acc:   #6EC6A0;
+  --paper: #F5F0E8;
+  --sur:   #FFFFFF;
+  --brd:   #DDD8CE;
+  --ink:   #2D2D2D;
+  --mut:   #7A7060;
+  --fm:    #00695C;
+  --fm-l:  #E0F2EE;
+  --fm-d:  #00453C;
+  --amber: #B8860B;
+  --amber-l:#FDF6E3;
+  --red:   #8B1A1A;
+  --red-l: #FBE9E9;
+  --green: #2E7D6E;
+  --green-l:#EAF5F2;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "DM Sans", sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+
+/* ── HEADER ── */
+.kt-header { background: var(--kt); height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(.75rem,3vw,1.5rem); border-bottom: 3px solid var(--acc); position: sticky; top: 0; z-index: 200; }
+.kt-left { display: flex; align-items: center; gap: .75rem; }
+.kt-logo-mark { width: 36px; height: 36px; border: 2px solid var(--acc); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px 5px; }
+.lm-k::before { content: "K"; font-family: "Playfair Display", serif; font-size: 13px; font-weight: 700; color: #fff; }
+.kt-logo-bars { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.kt-logo-bars span { height: 2px; border-radius: 2px; background: var(--acc); display: block; }
+.kt-logo-text .wort { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 700; color: #fff; display: block; }
+.kt-logo-text .sub { font-size: .6rem; color: var(--acc); letter-spacing: .14em; display: block; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: .55rem; }
+.hdr-btn { padding: .28rem .7rem; border-radius: 20px; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.25); color: rgba(255,255,255,.75); font-size: .68rem; font-weight: 600; cursor: pointer; font-family: "DM Sans", sans-serif; text-decoration: none; transition: background .15s; }
+.hdr-btn:hover { background: rgba(255,255,255,.2); }
+
+/* ── SHELL ── */
+.shell { max-width: 920px; margin: 0 auto; padding: 1.75rem clamp(1rem,3vw,2rem) 5rem; }
+
+/* ── HERO ── */
+.hero { background: linear-gradient(135deg, var(--fm), var(--fm-d)); border-radius: 14px; padding: 1.5rem 1.75rem; margin-bottom: 1.75rem; position: relative; overflow: hidden; }
+.hero::after { content: "FM"; position: absolute; right: 1.25rem; bottom: .4rem; font-family: "Playfair Display", serif; font-size: 4.5rem; font-weight: 700; color: rgba(255,255,255,.08); pointer-events: none; line-height: 1; }
+.hero-eye { font-size: .58rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--acc); margin-bottom: .4rem; }
+.hero-titel { font-family: "Playfair Display", serif; font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: .35rem; }
+.hero-sub { font-size: .8rem; color: rgba(255,255,255,.7); line-height: 1.65; }
+
+/* ── BRAINY BANNER ── */
+.brainy-banner {
+  display: flex; align-items: center; gap: .85rem;
+  background: var(--fm-l); border: 1.5px solid rgba(0,105,92,.25);
+  border-radius: 12px; padding: .85rem 1.1rem; margin-bottom: 1.75rem;
+}
+.brainy-icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  background: #fff; border: 2px solid var(--fm);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+.brainy-text { font-size: .78rem; color: #00342C; line-height: 1.55; }
+.brainy-text strong { color: var(--fm); }
+
+/* ── TOOLBAR (Suche + Filter) ── */
+.toolbar {
+  background: var(--sur); border: 1.5px solid var(--brd);
+  border-radius: 12px; padding: 1rem 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.search-row { margin-bottom: .75rem; }
+.search-wrap { position: relative; }
+.search-icon { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--mut); pointer-events: none; font-size: .85rem; }
+#searchInput { width: 100%; padding: .6rem .9rem .6rem 2.4rem; border: 1.5px solid var(--brd); border-radius: 9px; font-family: "DM Sans", sans-serif; font-size: .85rem; color: var(--ink); background: var(--paper); outline: none; transition: border-color .15s; }
+#searchInput:focus { border-color: var(--fm); }
+
+.filter-row { display: flex; gap: .6rem; flex-wrap: wrap; }
+.filter-group { display: flex; flex-direction: column; gap: .3rem; flex: 1; min-width: 140px; }
+.filter-label { font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); }
+.filter-select {
+  padding: .45rem .6rem; border: 1.5px solid var(--brd); border-radius: 8px;
+  font-family: "DM Sans", sans-serif; font-size: .8rem; color: var(--ink);
+  background: var(--sur); outline: none; cursor: pointer;
+}
+.filter-select:focus { border-color: var(--fm); }
+
+/* ── ADD BUTTON ── */
+.add-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--fm); color: #fff;
+  border: none; border-radius: 10px;
+  padding: .7rem 1.3rem; font-size: .85rem; font-weight: 700;
+  font-family: "DM Sans", sans-serif; cursor: pointer;
+  transition: background .18s; margin-bottom: 1.5rem;
+}
+.add-btn:hover { background: var(--fm-d); }
+
+/* ── MASSNAHMEN-LISTE ── */
+.massnahmen-grid { display: flex; flex-direction: column; gap: .65rem; margin-bottom: 1.5rem; }
+
+.massnahme-karte {
+  background: var(--sur); border: 1.5px solid var(--brd);
+  border-left: 4px solid var(--fm); border-radius: 10px;
+  padding: .9rem 1.1rem; cursor: pointer; transition: all .18s;
+}
+.massnahme-karte:hover { box-shadow: 0 4px 14px rgba(0,105,92,.1); transform: translateY(-1px); }
+
+.mk-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; margin-bottom: .4rem; }
+.mk-titel { font-size: .92rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+.mk-kategorie { font-size: .6rem; font-weight: 700; color: var(--fm); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .25rem; }
+.mk-desc { font-size: .76rem; color: var(--mut); line-height: 1.5; margin-bottom: .55rem; }
+.mk-meta { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+
+.badge { display: inline-flex; align-items: center; gap: .25rem; padding: .15rem .55rem; border-radius: 12px; font-size: .62rem; font-weight: 700; }
+.badge-status-offen      { background: var(--red-l);   color: var(--red); }
+.badge-status-in_arbeit  { background: var(--amber-l); color: var(--amber); }
+.badge-status-abgeschlossen { background: var(--green-l); color: var(--green); }
+.badge-prio-niedrig { background: #EFF4F2; color: #5A7268; }
+.badge-prio-mittel  { background: var(--amber-l); color: var(--amber); }
+.badge-prio-hoch    { background: var(--red-l); color: var(--red); }
+.badge-verant { background: var(--fm-l); color: var(--fm); }
+
+.empty-state {
+  text-align: center; padding: 3rem 1rem; color: var(--mut);
+  background: var(--sur); border: 1.5px dashed var(--brd); border-radius: 12px;
+}
+.empty-state .ico { font-size: 2.2rem; display: block; margin-bottom: .6rem; }
+.empty-state p { font-size: .85rem; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.45); z-index: 500;
+  align-items: center; justify-content: center; padding: 1rem;
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: var(--sur); border-radius: 14px;
+  width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+  border-top: 4px solid var(--fm);
+}
+.modal-head { padding: 1.2rem 1.4rem .9rem; border-bottom: 1px solid var(--brd); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 700; color: var(--fm); }
+.modal-close { background: none; border: none; font-size: 1.3rem; color: var(--mut); cursor: pointer; line-height: 1; padding: 0 .3rem; }
+.modal-body { padding: 1.2rem 1.4rem; }
+
+.f-group { margin-bottom: .9rem; }
+.f-label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--mut); margin-bottom: .35rem; }
+.f-label .req { color: var(--red); }
+.f-input, .f-select, .f-textarea {
+  width: 100%; padding: .6rem .75rem; border: 1.5px solid var(--brd); border-radius: 8px;
+  font-family: "DM Sans", sans-serif; font-size: .85rem; color: var(--ink);
+  background: var(--paper); outline: none; transition: border-color .15s;
+}
+.f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--fm); }
+.f-textarea { resize: vertical; min-height: 80px; }
+.f-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+
+.modal-actions { display: flex; gap: .6rem; padding: 1rem 1.4rem 1.3rem; border-top: 1px solid var(--brd); }
+.btn-primary {
+  flex: 1; background: var(--fm); color: #fff; border: none; border-radius: 9px;
+  padding: .65rem; font-size: .83rem; font-weight: 700; cursor: pointer;
+  font-family: "DM Sans", sans-serif; transition: background .15s;
+}
+.btn-primary:hover { background: var(--fm-d); }
+.btn-secondary {
+  background: var(--sur); color: var(--mut); border: 1.5px solid var(--brd); border-radius: 9px;
+  padding: .65rem 1rem; font-size: .83rem; font-weight: 700; cursor: pointer;
+  font-family: "DM Sans", sans-serif; transition: all .15s;
+}
+.btn-secondary:hover { border-color: var(--mut); color: var(--ink); }
+.btn-delete {
+  background: var(--red-l); color: var(--red); border: 1.5px solid rgba(139,26,26,.25); border-radius: 9px;
+  padding: .65rem 1rem; font-size: .83rem; font-weight: 700; cursor: pointer;
+  font-family: "DM Sans", sans-serif; transition: all .15s;
+}
+.btn-delete:hover { background: var(--red); color: #fff; }
+
+/* ── PRINT BUTTON ── */
+.print-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--sur); color: var(--fm);
+  border: 1.5px solid var(--fm); border-radius: 10px;
+  padding: .55rem 1.1rem; font-size: .8rem; font-weight: 700;
+  font-family: "DM Sans", sans-serif; cursor: pointer;
+  transition: all .18s; margin-left: .6rem;
+}
+.print-btn:hover { background: var(--fm); color: #fff; }
+
+.action-row { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.5rem; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--fm); color: #fff; padding: .6rem 1.3rem; border-radius: 20px; font-size: .8rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,.2); display: none; z-index: 999; }
+
+/* ── HINWEIS-BLOCK ── */
+.hinweis-block {
+  background: var(--fm-l); border: 1px solid rgba(0,105,92,.25);
+  border-left: 3px solid var(--fm); border-radius: 8px;
+  padding: .8rem 1rem; font-size: .76rem; color: #00342C; line-height: 1.6;
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .filter-row { flex-direction: column; }
+  .f-row2 { grid-template-columns: 1fr; }
+  .mk-top { flex-direction: column; }
+}
+@media print {
+  .kt-header, .toolbar, .add-btn, .action-row, .hinweis-block, .brainy-banner { display: none !important; }
+  body { background: #fff; }
+  .massnahme-karte { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Maßnahmen-Datenbank</span></div>
+  </div>
+  <div class="header-right">
+    <a class="hdr-btn" href="TK_Landing.html">← TK-Bereich</a>
+    <a class="hdr-btn" href="DASHBOARD.html">🏠 Dashboard</a>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eye">Fallmanagement · Maßnahmen-Datenbank</div>
+    <div class="hero-titel">Maßnahmen sammeln, einordnen, weiterverwenden</div>
+    <div class="hero-sub">Zentrale Datenbank für alle Maßnahmen – kategorisieren, filtern und später direkt in Fälle übernehmen.</div>
+  </div>
+
+  <!-- BRAINY BANNER -->
+  <div class="brainy-banner">
+    <div class="brainy-icon">🧠</div>
+    <div class="brainy-text"><strong>Brainy unterstützt TK bei der strukturierten Maßnahmenplanung.</strong><br>Jede Maßnahme lässt sich filtern, bearbeiten und für den Fallmanagement-Assistenten wiederverwenden.</div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="search-row">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="Suche: Titel oder Beschreibung …" autocomplete="off">
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">Kategorie</span>
+        <select class="filter-select" id="filterKategorie">
+          <option value="">Alle Kategorien</option>
+          <option value="paedagogisch">Pädagogisch</option>
+          <option value="sozial">Sozial</option>
+          <option value="elternarbeit">Elternarbeit</option>
+          <option value="schule">Schule</option>
+          <option value="umfeld">Umfeld</option>
+          <option value="ressourcen">Ressourcen</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Status</span>
+        <select class="filter-select" id="filterStatus">
+          <option value="">Alle Status</option>
+          <option value="offen">Offen</option>
+          <option value="in_arbeit">In Arbeit</option>
+          <option value="abgeschlossen">Abgeschlossen</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Priorität</span>
+        <select class="filter-select" id="filterPrio">
+          <option value="">Alle Prioritäten</option>
+          <option value="niedrig">Niedrig</option>
+          <option value="mittel">Mittel</option>
+          <option value="hoch">Hoch</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION ROW -->
+  <div class="action-row">
+    <button class="add-btn" onclick="openModal()" style="margin-bottom:0;">
+      ➕ Neue Maßnahme
+    </button>
+    <button class="print-btn" onclick="window.print()">
+      🖨️ Als PDF drucken
+    </button>
+    <span id="resultCount" style="font-size:.74rem;color:var(--mut);margin-left:auto;"></span>
+  </div>
+
+  <!-- MASSNAHMEN-LISTE -->
+  <div class="massnahmen-grid" id="massnahmenGrid"></div>
+
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <span class="ico">📂</span>
+    <p>Noch keine Maßnahmen vorhanden. Klicke auf „Neue Maßnahme", um zu starten.</p>
+  </div>
+
+  <!-- HINWEIS -->
+  <div class="hinweis-block">
+    ℹ️ Dieses Modul kann aus <strong>FM · 03 Maßnahmenplan</strong> geöffnet werden.
+  </div>
+
+</div><!-- .shell -->
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- MODAL: Maßnahme hinzufügen / bearbeiten -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="modal-title" id="modalTitle">Neue Maßnahme</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+
+      <div class="f-group">
+        <label class="f-label">Titel <span class="req">*</span></label>
+        <input type="text" class="f-input" id="fTitel" placeholder="z.B. Wöchentliches Elterngespräch einführen">
+      </div>
+
+      <div class="f-row2">
+        <div class="f-group">
+          <label class="f-label">Kategorie <span class="req">*</span></label>
+          <select class="f-select" id="fKategorie">
+            <option value="paedagogisch">Pädagogisch</option>
+            <option value="sozial">Sozial</option>
+            <option value="elternarbeit">Elternarbeit</option>
+            <option value="schule">Schule</option>
+            <option value="umfeld">Umfeld</option>
+            <option value="ressourcen">Ressourcen</option>
+          </select>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Priorität</label>
+          <select class="f-select" id="fPrioritaet">
+            <option value="niedrig">Niedrig</option>
+            <option value="mittel" selected>Mittel</option>
+            <option value="hoch">Hoch</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Beschreibung</label>
+        <textarea class="f-textarea" id="fBeschreibung" placeholder="Worum geht es bei dieser Maßnahme genau?"></textarea>
+      </div>
+
+      <div class="f-row2">
+        <div class="f-group">
+          <label class="f-label">Verantwortlich</label>
+          <input type="text" class="f-input" id="fVerantwortlich" placeholder="Name oder Funktion">
+        </div>
+        <div class="f-group">
+          <label class="f-label">Status</label>
+          <select class="f-select" id="fStatus">
+            <option value="offen" selected>Offen</option>
+            <option value="in_arbeit">In Arbeit</option>
+            <option value="abgeschlossen">Abgeschlossen</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-actions">
+      <button class="btn-delete" id="deleteBtn" style="display:none;" onclick="deleteMassnahme()">🗑️ Löschen</button>
+      <button class="btn-secondary" onclick="closeModal()">Abbrechen</button>
+      <button class="btn-primary" onclick="saveMassnahme()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'fm_massnahmen_db_list';
+const KATEGORIE_LABELS = {
+  paedagogisch: 'Pädagogisch', sozial: 'Sozial', elternarbeit: 'Elternarbeit',
+  schule: 'Schule', umfeld: 'Umfeld', ressourcen: 'Ressourcen'
+};
+const STATUS_LABELS = { offen: 'Offen', in_arbeit: 'In Arbeit', abgeschlossen: 'Abgeschlossen' };
+const PRIO_LABELS = { niedrig: 'Niedrig', mittel: 'Mittel', hoch: 'Hoch' };
+
+let massnahmen = [];
+let currentFilter = { kategorie: '', status: '', prio: '', search: '' };
+
+// ── STORAGE ──────────────────────────────────────────────────
+function loadMassnahmen() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    massnahmen = raw ? JSON.parse(raw) : [];
+  } catch(e) { massnahmen = []; }
+}
+function saveMassnahmen() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(massnahmen)); }
+  catch(e) { console.error('Speichern fehlgeschlagen', e); }
+}
+
+// ── RENDER ───────────────────────────────────────────────────
+function render() {
+  const grid = document.getElementById('massnahmenGrid');
+  const empty = document.getElementById('emptyState');
+  const countEl = document.getElementById('resultCount');
+
+  const gefiltert = massnahmen.filter(m => {
+    if (currentFilter.kategorie && m.kategorie !== currentFilter.kategorie) return false;
+    if (currentFilter.status && m.status !== currentFilter.status) return false;
+    if (currentFilter.prio && m.prioritaet !== currentFilter.prio) return false;
+    if (currentFilter.search) {
+      const q = currentFilter.search.toLowerCase();
+      const hay = (m.titel + ' ' + (m.beschreibung||'')).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  countEl.textContent = gefiltert.length + ' von ' + massnahmen.length + ' Maßnahmen';
+
+  if (gefiltert.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = gefiltert.map(m => `
+    <div class="massnahme-karte" onclick="editMassnahme('${m.id}')">
+      <div class="mk-top">
+        <div style="flex:1;">
+          <div class="mk-kategorie">${KATEGORIE_LABELS[m.kategorie] || m.kategorie}</div>
+          <div class="mk-titel">${escapeHtml(m.titel)}</div>
+        </div>
+      </div>
+      ${m.beschreibung ? `<div class="mk-desc">${escapeHtml(m.beschreibung)}</div>` : ''}
+      <div class="mk-meta">
+        <span class="badge badge-status-${m.status}">${STATUS_LABELS[m.status]}</span>
+        <span class="badge badge-prio-${m.prioritaet}">Priorität: ${PRIO_LABELS[m.prioritaet]}</span>
+        ${m.verantwortlich ? `<span class="badge badge-verant">👤 ${escapeHtml(m.verantwortlich)}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+// ── MODAL ────────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('modalTitle').textContent = 'Neue Maßnahme';
+  document.getElementById('editId').value = '';
+  document.getElementById('fTitel').value = '';
+  document.getElementById('fKategorie').value = 'paedagogisch';
+  document.getElementById('fPrioritaet').value = 'mittel';
+  document.getElementById('fBeschreibung').value = '';
+  document.getElementById('fVerantwortlich').value = '';
+  document.getElementById('fStatus').value = 'offen';
+  document.getElementById('deleteBtn').style.display = 'none';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function editMassnahme(id) {
+  const m = massnahmen.find(x => x.id === id);
+  if (!m) return;
+  document.getElementById('modalTitle').textContent = 'Maßnahme bearbeiten';
+  document.getElementById('editId').value = m.id;
+  document.getElementById('fTitel').value = m.titel;
+  document.getElementById('fKategorie').value = m.kategorie;
+  document.getElementById('fPrioritaet').value = m.prioritaet;
+  document.getElementById('fBeschreibung').value = m.beschreibung || '';
+  document.getElementById('fVerantwortlich').value = m.verantwortlich || '';
+  document.getElementById('fStatus').value = m.status;
+  document.getElementById('deleteBtn').style.display = 'inline-flex';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function saveMassnahme() {
+  const titel = document.getElementById('fTitel').value.trim();
+  const kategorie = document.getElementById('fKategorie').value;
+  if (!titel) { alert('Bitte einen Titel eingeben.'); return; }
+  if (!kategorie) { alert('Bitte eine Kategorie wählen.'); return; }
+
+  const editId = document.getElementById('editId').value;
+  const data = {
+    titel,
+    kategorie,
+    beschreibung: document.getElementById('fBeschreibung').value.trim(),
+    verantwortlich: document.getElementById('fVerantwortlich').value.trim(),
+    status: document.getElementById('fStatus').value,
+    prioritaet: document.getElementById('fPrioritaet').value
+  };
+
+  if (editId) {
+    const idx = massnahmen.findIndex(x => x.id === editId);
+    if (idx > -1) massnahmen[idx] = { ...massnahmen[idx], ...data };
+  } else {
+    massnahmen.unshift({ id: 'm_' + Date.now(), ...data, erstelltAm: new Date().toISOString() });
+  }
+
+  saveMassnahmen();
+  render();
+  closeModal();
+  showToast('Gespeichert');
+}
+
+function deleteMassnahme() {
+  const editId = document.getElementById('editId').value;
+  if (!editId) return;
+  if (!confirm('Diese Maßnahme wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
+  massnahmen = massnahmen.filter(x => x.id !== editId);
+  saveMassnahmen();
+  render();
+  closeModal();
+  showToast('Maßnahme gelöscht');
+}
+
+// ── TOAST ────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2400);
+}
+
+// ── FILTER & SUCHE ───────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', function(){
+  currentFilter.search = this.value;
+  render();
+});
+document.getElementById('filterKategorie').addEventListener('change', function(){
+  currentFilter.kategorie = this.value;
+  render();
+});
+document.getElementById('filterStatus').addEventListener('change', function(){
+  currentFilter.status = this.value;
+  render();
+});
+document.getElementById('filterPrio').addEventListener('change', function(){
+  currentFilter.prio = this.value;
+  render();
+});
+
+// Modal schließen bei Klick auf Overlay-Hintergrund
+document.getElementById('modalOverlay').addEventListener('click', function(e){
+  if (e.target === this) closeModal();
+});
+
+// ── INIT ─────────────────────────────────────────────────────
+loadMassnahmen();
+render();
+</script>
+</body>
+</html>

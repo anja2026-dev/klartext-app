@@ -2,161 +2,253 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KLARTEXT · Teamkoordination</title>
-<meta name="robots" content="noindex, nofollow">
-<script>
-(function(){
-  try {
-    if(window.location.protocol==='file:') return;
-    var login = sessionStorage.getItem('klartext_login');
-    var role  = sessionStorage.getItem('klartext_role') || '';
-    if(login !== 'true') { window.location.href='KLARTEXT_Login.html'; return; }
-    if(!['tk','admin'].includes(role)) { window.location.href='KLARTEXT_Login.html'; }
-  } catch(e) {}
-})();
-</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TK-Bereich – Teamkoordination · KLARTEXT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--kt:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--sur:#FFFFFF;--brd:#DDD8CE;--ink:#2D2D2D;--mut:#7A7060;--tk:#4A148C;--tkb:#CE93D8;--va:#5D3A7A;}
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --tk-color:#4A148C;
+  --tk-light:#F3E5FF;
+  --tk-mid:#7B1FA2;
+  --fm-color:#00695C;
+  --fm-light:#E0F2F1;
+  --va-color:#1B3A4B;
+  --va-light:#EAF0F4;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
-.kt-header{background:var(--kt);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:200;}
-.kt-left{display:flex;align-items:center;gap:.75rem;}
-.kt-logo-mark{width:36px;height:36px;border:2px solid var(--acc);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
-.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--tk-color);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
 .kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
-.kt-logo-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
-.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
-.kt-logo-text .sub{font-size:.6rem;color:var(--acc);letter-spacing:.14em;display:block;margin-top:2px;}
-.header-right{display:flex;align-items:center;gap:.55rem;}
-.tk-badge{background:rgba(74,20,140,.2);border:1.5px solid var(--tkb);color:var(--tkb);font-size:.58rem;font-weight:700;padding:.15rem .55rem;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;}
-.hdr-btn{padding:.28rem .7rem;border-radius:20px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.75);font-size:.68rem;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;text-decoration:none;transition:background .15s;}
-.hdr-btn:hover{background:rgba(255,255,255,.2);}
-.shell{max-width:740px;margin:0 auto;padding:1.75rem clamp(1rem,3vw,2rem) 5rem;}
-.hero{background:linear-gradient(135deg,var(--tk),#7B1FA2);border-radius:14px;padding:1.5rem 1.75rem;margin-bottom:1.75rem;position:relative;overflow:hidden;}
-.hero::after{content:"TK";position:absolute;right:1.25rem;bottom:.4rem;font-family:"Playfair Display",serif;font-size:4.5rem;font-weight:700;color:rgba(255,255,255,.06);pointer-events:none;line-height:1;}
-.hero-eye{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--tkb);margin-bottom:.4rem;}
-.hero-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.35rem;}
-.hero-sub{font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.65;}
-.sek{margin-bottom:1.75rem;}
-.sek-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem;}
-.sek-titel{font-size:.58rem;font-weight:700;color:var(--tk);letter-spacing:.15em;text-transform:uppercase;white-space:nowrap;}
-.sek-linie{flex:1;height:1px;background:linear-gradient(to right,var(--brd),transparent);}
-.karten-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
-.tk-karte{background:var(--sur);border:1.5px solid var(--brd);border-left:4px solid var(--tk);border-radius:10px;padding:.85rem 1rem;text-decoration:none;display:block;transition:all .18s;}
-.tk-karte:hover{transform:translateX(3px);box-shadow:0 4px 14px rgba(74,20,140,.1);}
-.tk-nr{font-size:.56rem;font-weight:700;color:var(--tk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.18rem;}
-.tk-titel{font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:.12rem;line-height:1.3;}
-.tk-sub{font-size:.7rem;color:var(--mut);line-height:1.5;}
-.tk-karte.span2{grid-column:1/-1;}
-/* QA */
-.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
-.qa-karte{background:var(--sur);border:1.5px solid var(--brd);border-radius:10px;padding:.9rem 1rem;text-decoration:none;display:flex;align-items:center;gap:.75rem;transition:all .18s;}
-.qa-karte:hover{box-shadow:0 4px 14px rgba(0,0,0,.08);transform:translateY(-1px);}
-.qa-karte.va   {border-left:4px solid var(--va);}
-.qa-karte.rollen{border-left:4px solid #1A6B7C;}
-.qa-karte.dash {border-left:4px solid var(--acc);}
-.qa-karte.admin{border-left:4px solid var(--kt);}
-.qa-icon{font-size:1.3rem;flex-shrink:0;}
-.qa-label{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:.08rem;}
-.qa-sub{font-size:.67rem;color:var(--mut);line-height:1.4;}
-/* Info */
-.info-karte{background:rgba(110,198,160,.08);border:1px solid rgba(110,198,160,.3);border-left:3px solid var(--acc);border-radius:8px;padding:.65rem .9rem;font-size:.72rem;color:#2E5A4B;line-height:1.6;margin-top:.65rem;}
-@media(max-width:500px){.karten-grid{grid-template-columns:1fr;}.qa-grid{grid-template-columns:1fr;}}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{background:rgba(74,20,140,.25);border:1.5px solid rgba(206,147,216,.5);color:#CE93D8;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+/* ── BRAINY-BANNER ────────────────────────────────── */
+.brainy-banner{background:linear-gradient(135deg,#2D1B45,#4A148C);border-bottom:2px solid rgba(206,147,216,.4);padding:.65rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:flex-start;gap:.75rem;}
+.brainy-face{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#E1BEE7;}
+
+/* ── LAYOUT ───────────────────────────────────────── */
+.page-wrap{max-width:980px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.page-header{margin-bottom:1.5rem;}
+.page-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:var(--tk-light);color:var(--tk-color);margin-bottom:.5rem;}
+.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.page-lead{font-size:.9rem;color:var(--kt-muted);max-width:600px;}
+
+/* ── MODUL-GRID ───────────────────────────────────── */
+.modul-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1rem;
+  margin-top:1.5rem;
+}
+.modul-karte{
+  background:var(--kt-surface);
+  border:2px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  text-decoration:none;
+  color:inherit;
+  display:flex;flex-direction:column;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.modul-karte:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.modul-karte-stripe{height:5px;}
+.modul-karte-inner{padding:1.2rem 1.3rem 1.4rem;display:flex;flex-direction:column;gap:.6rem;flex:1;}
+.modul-karte-top{display:flex;align-items:center;justify-content:space-between;}
+.modul-karte-emoji{font-size:2rem;line-height:1;}
+.modul-karte-badge{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .55rem;border-radius:20px;}
+.modul-karte-titel{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.25;}
+.modul-karte-sub{font-size:.8rem;color:var(--kt-muted);line-height:1.5;flex:1;}
+.modul-karte-cta{font-size:.74rem;font-weight:700;display:flex;align-items:center;gap:.3rem;margin-top:.3rem;}
+
+/* Recruiting */
+.modul-karte.recruiting{border-color:var(--tk-color);}
+.modul-karte.recruiting:hover{border-color:var(--tk-mid);}
+.modul-karte.recruiting .modul-karte-stripe{background:var(--tk-color);}
+.modul-karte.recruiting .modul-karte-badge{background:var(--tk-light);color:var(--tk-color);}
+.modul-karte.recruiting .modul-karte-titel{color:var(--tk-color);}
+.modul-karte.recruiting .modul-karte-cta{color:var(--tk-color);}
+
+/* Vertretung */
+.modul-karte.va{border-color:var(--va-color);}
+.modul-karte.va:hover{border-color:var(--va-color);}
+.modul-karte.va .modul-karte-stripe{background:var(--va-color);}
+.modul-karte.va .modul-karte-badge{background:var(--va-light);color:var(--va-color);}
+.modul-karte.va .modul-karte-titel{color:var(--va-color);}
+.modul-karte.va .modul-karte-cta{color:var(--va-color);}
+
+/* Fallmanagement */
+.modul-karte.fm{border-color:var(--fm-color);}
+.modul-karte.fm:hover{border-color:var(--fm-color);}
+.modul-karte.fm .modul-karte-stripe{background:var(--fm-color);}
+.modul-karte.fm .modul-karte-badge{background:var(--fm-light);color:var(--fm-color);}
+.modul-karte.fm .modul-karte-titel{color:var(--fm-color);}
+.modul-karte.fm .modul-karte-cta{color:var(--fm-color);}
+
+.neu-badge{
+  position:absolute;top:10px;right:10px;
+  background:#C47A00;color:#fff;
+  font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:.15rem .45rem;border-radius:10px;z-index:2;
+}
+
+/* ── INFO-KARTE ───────────────────────────────────── */
+.info-karte{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  padding:1rem 1.2rem;
+  margin-top:1.8rem;
+  box-shadow:var(--shadow);
+}
+.info-karte-titel{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--kt-primary);margin-bottom:.5rem;}
+.info-karte ul{list-style:none;display:flex;flex-direction:column;gap:.3rem;}
+.info-karte li{font-size:.8rem;color:var(--kt-ink);padding-left:1.1rem;position:relative;line-height:1.5;}
+.info-karte li::before{content:'▸';position:absolute;left:0;top:0;color:var(--tk-color);font-size:.7rem;line-height:1.7;}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
 </style>
 </head>
 <body>
 
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
 <header class="kt-header">
-  <div class="kt-left">
-    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
-    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Teamkoordination</span></div>
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Teamkoordination</span>
+      </div>
+    </a>
+    <div class="header-badge">TK-Bereich</div>
   </div>
-  <div class="header-right">
-    <span class="tk-badge">TK</span>
-    <a class="hdr-btn" href="DASHBOARD.html">⬅ Dashboard</a>
-    <a class="hdr-btn" href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}">Abmelden</a>
-  </div>
+  <nav>
+    <a class="btn-back" href="DASHBOARD.html">← Dashboard</a>
+  </nav>
 </header>
 
-<div class="shell">
-
-  <div class="hero">
-    <div class="hero-eye">Teamkoordination · Übersicht</div>
-    <div class="hero-titel">Willkommen, Teamkoordination</div>
-    <div class="hero-sub">Handlungskarten, Vertretungsassistent und Steuerungsfunktionen auf einen Blick. Dieser Bereich ist ausschließlich für TK sichtbar.</div>
+<!-- ══ BRAINY-BANNER ════════════════════════════════════════ -->
+<div class="brainy-banner">
+  <div class="brainy-face">🧠</div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Teamkoordination</span>
+    <p class="brainy-msg">
+      <strong>Brainy begleitet TK</strong> in allen drei Bereichen – Recruiting, Vertretungsplanung und Fallmanagement – mit Reflexionsfragen, Prozesshinweisen und Weiterleitungen.
+    </p>
   </div>
-
-  <!-- SCHNELLZUGRIFF -->
-  <div class="sek">
-    <div class="sek-header"><span class="sek-titel">Schnellzugriff</span><div class="sek-linie"></div></div>
-    <div class="qa-grid">
-
-      <!-- Vertretungsassistent → direkt in die App, kein Login-Wall -->
-      <a class="qa-karte va" href="TK_Rollenlogik.html" id="btn-va">
-        <div class="qa-icon">🔄</div>
-        <div><div class="qa-label">Vertretungsassistent</div><div class="qa-sub">Vertretungen aktivieren, zuweisen, beenden</div></div>
-      </a>
-
-      <a class="qa-karte rollen" href="TK_Rollenlogik.html">
-        <div class="qa-icon">🧩</div>
-        <div><div class="qa-label">Rollenlogik & Weiterleitungen</div><div class="qa-sub">Rollen, Zugänge und Steuerung verwalten</div></div>
-      </a>
-
-      <!-- NUR Admin sieht diesen Button -->
-      <a class="qa-karte admin" href="Admin_Backend.html" id="admin-backend-btn" style="display:none;">
-        <div class="qa-icon">⚙️</div>
-        <div><div class="qa-label">Admin · Backend</div><div class="qa-sub">Datenmodelle, API, Architektur</div></div>
-      </a>
-
-      <a class="qa-karte dash" href="DASHBOARD.html">
-        <div class="qa-icon">🏠</div>
-        <div><div class="qa-label">Zurück zum Dashboard</div><div class="qa-sub">Alle KLARTEXT-Module & Bereiche</div></div>
-      </a>
-
-    </div>
-    <div class="info-karte">ℹ️ Rollenlogik und Vertretungsassistent sind ausschließlich für TK sichtbar. Andere Rollen sehen nur Ergebnisse – keine Steuerungsebenen.</div>
-  </div>
-
-  <!-- HANDLUNGSKARTEN -->
-  <div class="sek">
-    <div class="sek-header"><span class="sek-titel">Handlungskarten</span><div class="sek-linie"></div></div>
-    <div class="karten-grid">
-      <a class="tk-karte" href="TK-01.html"><div class="tk-nr">TK-01</div><div class="tk-titel">Koordination im Team</div><div class="tk-sub">Aufgaben, Rollen und Abläufe klären</div></a>
-      <a class="tk-karte" href="TK-02.html"><div class="tk-nr">TK-02</div><div class="tk-titel">Fallbesprechung strukturieren</div><div class="tk-sub">Systematisch, klar, lösungsorientiert</div></a>
-      <a class="tk-karte" href="TK-03.html"><div class="tk-nr">TK-03</div><div class="tk-titel">Hilfeplangespräch vorbereiten</div><div class="tk-sub">Struktur & Dokumentation</div></a>
-      <a class="tk-karte" href="TK-04.html"><div class="tk-nr">TK-04</div><div class="tk-titel">§ 8a — Schutzauftrag</div><div class="tk-sub">Kindeswohlgefährdung erkennen & handeln</div></a>
-      <a class="tk-karte" href="TK-05.html"><div class="tk-nr">TK-05</div><div class="tk-titel">Qualitätssicherung</div><div class="tk-sub">Standards, Reflexion, Dokumentation</div></a>
-      <a class="tk-karte" href="TK-06.html"><div class="tk-nr">TK-06</div><div class="tk-titel">Teamentwicklung</div><div class="tk-sub">Zusammenhalt, Feedback, Entwicklung</div></a>
-      <a class="tk-karte" href="TK-07.html"><div class="tk-nr">TK-07</div><div class="tk-titel">Onboarding neue INGRA</div><div class="tk-sub">Einarbeitung systematisch begleiten</div></a>
-      <a class="tk-karte" href="TK-08.html"><div class="tk-nr">TK-08</div><div class="tk-titel">Konflikt im Team</div><div class="tk-sub">Deeskalation, Klärung, Gesprächsführung</div></a>
-      <a class="tk-karte" href="TK-09.html"><div class="tk-nr">TK-09</div><div class="tk-titel">Krisenprotokoll</div><div class="tk-sub">Sofortmaßnahmen & Meldewege</div></a>
-      <a class="tk-karte" href="TK-10.html"><div class="tk-nr">TK-10</div><div class="tk-titel">Schulkommunikation</div><div class="tk-sub">Abstimmung mit Schule & Lehrkräften</div></a>
-      <a class="tk-karte" href="TK-11.html"><div class="tk-nr">TK-11</div><div class="tk-titel">Elternkontakt begleiten</div><div class="tk-sub">Transparenz, Vertrauen, Klarheit</div></a>
-      <a class="tk-karte" href="TK-12.html"><div class="tk-nr">TK-12</div><div class="tk-titel">Zieldefinition & Hilfeplan</div><div class="tk-sub">Messbare Ziele formulieren</div></a>
-      <a class="tk-karte" href="TK-13.html"><div class="tk-nr">TK-13</div><div class="tk-titel">Abschlussgespräch INGRA</div><div class="tk-sub">Abschluss professionell gestalten</div></a>
-      <a class="tk-karte" href="TK-14.html"><div class="tk-nr">TK-14</div><div class="tk-titel">Supervision vorbereiten</div><div class="tk-sub">Inhalte strukturieren & einbringen</div></a>
-      <a class="tk-karte span2" href="TK-15_Vertretungsorganisation.html"><div class="tk-nr">TK-15</div><div class="tk-titel">Vertretungsorganisation</div><div class="tk-sub">Abläufe, Checklisten & Übergabedokumentation bei Ausfall</div></a>
-    </div>
-  </div>
-
 </div>
 
-<script>
-(function(){
-  try {
-    var role = sessionStorage.getItem('klartext_role') || '';
-    // Admin-Backend-Button nur für Admin
-    if(role === 'admin'){
-      var btn = document.getElementById('admin-backend-btn');
-      if(btn) btn.style.display = 'flex';
-    }
-    // Vertretungsassistent: Session-Token setzen damit Login-Wall übersprungen wird
-    sessionStorage.setItem('tk_internal_access', 'true');
-  } catch(e) {}
-})();
-</script>
+<!-- ══ INHALT ════════════════════════════════════════════════ -->
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-tag">TK-Bereich</div>
+    <h1 class="page-titel">Teamkoordination</h1>
+    <p class="page-lead">Drei Module für den TK-Alltag – Recruiting, Vertretungsorganisation und Fallmanagement, jeweils strukturiert und mit Brainy-Unterstützung.</p>
+  </div>
+
+  <div class="modul-grid">
+
+    <!-- RECRUITING -->
+    <a class="modul-karte recruiting" href="TK-Recruiting.html">
+      <span class="neu-badge">✨ Neu</span>
+      <div class="modul-karte-stripe"></div>
+      <div class="modul-karte-inner">
+        <div class="modul-karte-top">
+          <span class="modul-karte-emoji">🎯</span>
+          <span class="modul-karte-badge">TK-R</span>
+        </div>
+        <div class="modul-karte-titel">Recruiting</div>
+        <div class="modul-karte-sub">Gespräch · Matching · Risiko-Check · Entscheidung · Weiterleitung · Dokumentation · Selbstcheck · Erinnerungen</div>
+        <div class="modul-karte-cta">Modul öffnen →</div>
+      </div>
+    </a>
+
+    <!-- VERTRETUNGSASSISTENT -->
+    <a class="modul-karte va" href="VA_Anleitung.html">
+      <div class="modul-karte-stripe"></div>
+      <div class="modul-karte-inner">
+        <div class="modul-karte-top">
+          <span class="modul-karte-emoji">🔄</span>
+          <span class="modul-karte-badge">VA</span>
+        </div>
+        <div class="modul-karte-titel">Vertretungsassistent</div>
+        <div class="modul-karte-sub">Bedarf erfassen · Vorschläge prüfen · Kontakt & Zusage · Dokumentation · Datenpflege</div>
+        <div class="modul-karte-cta">Modul öffnen →</div>
+      </div>
+    </a>
+
+    <!-- FALLMANAGEMENT -->
+    <a class="modul-karte fm" href="Fallmanagement-Assistent.html">
+      <span class="neu-badge">✨ Neu</span>
+      <div class="modul-karte-stripe"></div>
+      <div class="modul-karte-inner">
+        <div class="modul-karte-top">
+          <span class="modul-karte-emoji">🗂️</span>
+          <span class="modul-karte-badge">FM</span>
+        </div>
+        <div class="modul-karte-titel">Fallmanagement-Assistent</div>
+        <div class="modul-karte-sub">Fallakte · Risiko-Ampel · Maßnahmenplan · Verlauf · Tages-Barometer · PDF-Export</div>
+        <div class="modul-karte-cta">Modul öffnen →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="info-karte">
+    <div class="info-karte-titel">Über den TK-Bereich</div>
+    <ul>
+      <li><strong>Recruiting</strong> – vollständiger Bewerbungsprozess von Erstgespräch bis Entscheidung & Dokumentation</li>
+      <li><strong>Vertretungsassistent</strong> – Vertretungsplanung mit Filterhilfen und Schritt-für-Schritt-Anleitung</li>
+      <li><strong>Fallmanagement-Assistent</strong> – Fallakte, Risikoeinschätzung, Maßnahmenplanung und Verlaufsdokumentation für laufende Fälle</li>
+      <li>Alle Module speichern lokal (localStorage) und unterstützen Druck- und Export-Funktionen</li>
+    </ul>
+  </div>
+
+</div><!-- /.page-wrap -->
+
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <strong>KLARTEXT</strong> · TK-Bereich · Teamkoordination<br>
+  Klar. Warm. Menschlich. · Neutral · Trägeroffen
+</footer>
+
 </body>
 </html>

@@ -3,237 +3,1069 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLARTEXT – Fallmanagement-Assistent</title>
+<title>Fallmanagement-Assistent · KLARTEXT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --kt-primary:#1B3A4B; --kt-ink:#2D2D2D; --kt-muted:#7A7060;
-    --kt-surface:#FFFFFF; --kt-border:#DDD8CE; --kt-bg:#F5F0E8;
-    --case-color:#3B6E8A; --case-light:#EAF1F5; --r-sm:8px; --r-md:14px;
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'DM Sans',Arial,sans-serif;background:var(--kt-bg);color:var(--kt-ink);}
-  header.dashboard-header{
-    display:flex;align-items:center;justify-content:space-between;
-    background:var(--case-color);color:#fff;padding:.9rem 1.2rem;flex-wrap:wrap;gap:.6rem;
-  }
-  header.dashboard-header h1{font-size:1.05rem;margin:0;}
-  header.dashboard-header .claim{font-size:.75rem;opacity:.85;}
-  .header-nav a{color:#fff;text-decoration:none;font-size:.8rem;margin-left:1rem;}
-  main{max-width:980px;margin:0 auto;padding:1.2rem 1rem 3rem;}
-  .view{display:none;}
-  .view.aktiv{display:block;}
-  .karte{
-    background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-md);
-    padding:1.1rem 1.2rem;margin-bottom:1rem;
-  }
-  .karte-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
-  .karte-header-icon{font-size:1.2rem;}
-  .karte-header-titel{font-weight:700;color:var(--case-color);font-size:.95rem;}
-  .case-btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem;}
-  .case-btn{
-    display:flex;flex-direction:column;align-items:flex-start;gap:.25rem;
-    text-align:left;border:1.5px solid var(--kt-border);background:var(--case-light);
-    border-radius:var(--r-sm);padding:.7rem .8rem;cursor:pointer;font-family:inherit;
-  }
-  .case-btn:hover{border-color:var(--case-color);}
-  .case-btn .lbl{font-weight:700;font-size:.85rem;color:var(--kt-ink);}
-  .case-btn .sub{font-size:.72rem;color:var(--kt-muted);}
-  .unter-nav{display:flex;justify-content:space-between;gap:.6rem;margin-top:.6rem;flex-wrap:wrap;}
-  .unter-nav-btn{
-    border:1.5px solid var(--case-color);background:var(--kt-surface);color:var(--case-color);
-    border-radius:18px;padding:.4rem .9rem;font-size:.78rem;font-weight:700;cursor:pointer;
-  }
-  .unter-nav-btn:hover{background:var(--case-color);color:#fff;}
-  .platzhalter{
-    font-size:.8rem;color:var(--kt-muted);font-style:italic;
-    border:1.5px dashed var(--kt-border);border-radius:var(--r-sm);padding:1rem;
-  }
-  .anleitung-liste{margin:0;padding-left:1.1rem;font-size:.85rem;line-height:1.7;}
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --fm-color:#00695C;
+  --fm-light:#E0F2F1;
+  --fm-mid:#00897B;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--fm-color);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--fm-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--fm-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--fm-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{background:rgba(0,105,92,.25);border:1.5px solid rgba(178,223,219,.5);color:#80CBC4;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+.header-nav{display:flex;align-items:center;gap:.4rem;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+.brainy-banner{background:linear-gradient(135deg,#003D33,#00695C);border-bottom:2px solid rgba(178,223,219,.4);padding:.65rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:flex-start;gap:.75rem;}
+.brainy-face{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,.12);border:2px solid rgba(178,223,219,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#80CBC4;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#B2DFDB;}
+
+.view{display:none;}
+.view.aktiv{display:block;}
+
+.start-wrap{max-width:880px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.start-header{margin-bottom:1.4rem;}
+.start-modul-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:var(--fm-light);color:var(--fm-color);margin-bottom:.5rem;}
+.start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
+
+.btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin-top:1.2rem;}
+.btn-kachel{background:var(--kt-surface);border:2px solid var(--kt-border);border-radius:var(--r-lg);padding:.85rem 1rem;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:.3rem;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--shadow);text-decoration:none;color:inherit;}
+.btn-kachel:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--fm-color);}
+.btn-kachel-nr{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fm-color);}
+.btn-kachel-emoji{font-size:1.5rem;line-height:1;margin-bottom:.1rem;}
+.btn-kachel-titel{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--kt-primary);line-height:1.25;}
+.btn-kachel-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;}
+.btn-kachel-stripe{height:3px;background:var(--fm-color);border-radius:3px;margin-top:.4rem;}
+
+.unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.unter-breadcrumb{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--kt-muted);margin-bottom:1rem;flex-wrap:wrap;}
+.unter-breadcrumb a{color:var(--fm-color);text-decoration:none;font-weight:600;}
+.unter-breadcrumb a:hover{text-decoration:underline;}
+.unter-breadcrumb span{opacity:.5;}
+
+.unter-header{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow);}
+.unter-header-stripe{height:4px;background:var(--fm-color);}
+.unter-header-inner{padding:.9rem 1.1rem .85rem;}
+.unter-nr{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fm-color);margin-bottom:.25rem;}
+.unter-titel{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;color:var(--kt-primary);line-height:1.2;}
+.unter-sub{font-size:.8rem;color:var(--kt-muted);margin-top:.2rem;}
+
+.tab-bar{display:flex;gap:0;margin-bottom:1rem;border:1.5px solid var(--kt-border);border-radius:var(--r-md);overflow:hidden;background:var(--kt-surface);}
+.tab-btn{flex:1;padding:.5rem .6rem;background:var(--kt-surface);border:none;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;color:var(--kt-muted);cursor:pointer;border-right:1px solid var(--kt-border);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:.3rem;}
+.tab-btn:last-child{border-right:none;}
+.tab-btn:hover{background:var(--fm-light);color:var(--fm-color);}
+.tab-btn.aktiv{background:var(--fm-color);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+
+.karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.7rem;box-shadow:var(--shadow);}
+.karte-header{background:var(--fm-light);border-bottom:1px solid rgba(0,105,92,.12);padding:.5rem .9rem;display:flex;align-items:center;gap:.5rem;}
+.karte-header-icon{font-size:1rem;}
+.karte-header-titel{font-size:.78rem;font-weight:700;color:var(--fm-color);letter-spacing:.03em;}
+.karte-body{padding:.75rem .9rem .85rem;}
+
+.stw-list{list-style:none;display:flex;flex-direction:column;gap:.28rem;}
+.stw-list li{font-size:.82rem;color:var(--kt-ink);line-height:1.5;padding-left:1.1rem;position:relative;}
+.stw-list li::before{content:'▸';position:absolute;left:0;top:0;color:var(--fm-color);font-size:.7rem;line-height:1.7;}
+.stw-list li strong{color:var(--kt-primary);}
+
+.schritt-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;counter-reset:schritt;}
+.schritt-list li{display:flex;align-items:flex-start;gap:.6rem;font-size:.82rem;color:var(--kt-ink);line-height:1.5;counter-increment:schritt;}
+.schritt-list li::before{content:counter(schritt);min-width:22px;height:22px;background:var(--fm-color);color:#fff;border-radius:50%;font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem;}
+
+.ampel{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem;}
+.ampel-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .65rem;border-radius:20px;font-size:.72rem;font-weight:600;}
+.ampel-chip.gruen{background:#E8F5E9;color:#2E7D32;}
+.ampel-chip.gelb{background:#FFF8E1;color:#F57F17;}
+.ampel-chip.rot{background:#FDEAEA;color:#C62828;}
+.ampel-chip.blau{background:#E3F2FD;color:#1565C0;}
+
+.hinweis{background:rgba(0,105,92,.07);border-left:3px solid var(--fm-color);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.6rem .85rem;font-size:.78rem;color:var(--kt-ink);line-height:1.55;margin-top:.5rem;}
+.hinweis strong{color:var(--fm-color);}
+
+.brainy-box{background:linear-gradient(135deg,rgba(0,105,92,.07),rgba(0,105,92,.03));border:1.5px solid rgba(0,105,92,.18);border-radius:var(--r-md);padding:.7rem .9rem;margin-top:.9rem;display:flex;gap:.6rem;align-items:flex-start;}
+.brainy-box-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
+.brainy-box-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fm-color);margin-bottom:.2rem;display:block;}
+.brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
+.brainy-box-text em{font-style:italic;color:var(--kt-muted);}
+
+.form-section{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.75rem;box-shadow:var(--shadow);}
+.form-section-header{background:var(--fm-light);border-bottom:1px solid rgba(0,105,92,.12);padding:.45rem .9rem;display:flex;align-items:center;gap:.5rem;}
+.form-section-icon{font-size:.95rem;}
+.form-section-titel{font-size:.75rem;font-weight:700;color:var(--fm-color);letter-spacing:.03em;}
+.form-body{padding:.75rem .9rem .85rem;display:flex;flex-direction:column;gap:.55rem;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.form-row.full{grid-template-columns:1fr;}
+
+.fld{display:flex;flex-direction:column;gap:.2rem;}
+.fld label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--kt-muted);}
+.fld label .req{color:#C62828;margin-left:.1rem;}
+.fld input,.fld select,.fld textarea{font-family:'DM Sans',sans-serif;font-size:.82rem;padding:.38rem .6rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);background:var(--kt-paper);color:var(--kt-ink);outline:none;transition:border-color .15s;width:100%;}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--fm-color);box-shadow:0 0 0 3px rgba(0,105,92,.1);}
+.fld textarea{resize:vertical;min-height:56px;}
+.fld select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A7060'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .6rem center;padding-right:1.6rem;}
+
+.check-group{display:flex;flex-direction:column;gap:.28rem;}
+.check-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem;cursor:pointer;}
+.check-item input[type=checkbox]{width:15px;height:15px;accent-color:var(--fm-color);flex-shrink:0;cursor:pointer;}
+
+.ampel-radio{display:flex;gap:.4rem;flex-wrap:wrap;}
+.ampel-radio label{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .7rem;border-radius:20px;font-size:.72rem;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;text-transform:none;letter-spacing:0;}
+.ampel-radio input{display:none;}
+.ampel-radio .opt-gruen{background:#E8F5E9;color:#2E7D32;border-color:#A5D6A7;}
+.ampel-radio .opt-gruen:has(input:checked){background:#2E7D32;color:#fff;}
+.ampel-radio .opt-gelb{background:#FFF8E1;color:#F57F17;border-color:#FFE082;}
+.ampel-radio .opt-gelb:has(input:checked){background:#F57F17;color:#fff;}
+.ampel-radio .opt-rot{background:#FDEAEA;color:#C62828;border-color:#EF9A9A;}
+.ampel-radio .opt-rot:has(input:checked){background:#C62828;color:#fff;}
+
+.wl-group{display:flex;flex-wrap:wrap;gap:.4rem;}
+.wl-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border-radius:20px;border:1.5px solid var(--kt-border);background:var(--kt-surface);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s;color:var(--kt-muted);}
+.wl-chip input{display:none;}
+.wl-chip:has(input:checked){background:var(--fm-color);border-color:var(--fm-color);color:#fff;}
+
+.form-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--kt-border);}
+.act-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .85rem;border-radius:var(--r-md);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
+.act-btn.primary{background:var(--fm-color);color:#fff;}
+.act-btn.primary:hover{background:var(--fm-mid);}
+.act-btn.secondary{background:var(--kt-surface);color:var(--fm-color);border:1.5px solid var(--fm-color);}
+.act-btn.secondary:hover{background:var(--fm-light);}
+.act-btn.ghost{background:var(--kt-surface);color:var(--kt-muted);border:1.5px solid var(--kt-border);}
+.act-btn.ghost:hover{background:var(--kt-paper);}
+
+.pflicht-hinweis{font-size:.65rem;color:var(--kt-muted);margin-top:.3rem;}
+.pflicht-hinweis .req{color:#C62828;}
+
+.tl-eintrag{background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--r-sm);padding:.55rem .7rem;margin-bottom:.45rem;}
+.tl-eintrag-kopf{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.25rem;}
+.tl-eintrag-datum{font-size:.68rem;font-weight:700;color:var(--fm-color);}
+.tl-eintrag-loeschen{font-size:.65rem;color:#C62828;cursor:pointer;background:none;border:none;font-weight:700;}
+.tl-eintrag-text{font-size:.78rem;color:var(--kt-ink);line-height:1.5;}
+.tl-eintrag-text strong{color:var(--kt-primary);}
+.tl-leer{font-size:.78rem;color:var(--kt-muted);font-style:italic;padding:.5rem 0;}
+
+.akt-eintrag{display:grid;grid-template-columns:1fr;gap:.3rem;background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--r-sm);padding:.55rem .7rem;margin-bottom:.45rem;}
+.akt-eintrag-kopf{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.3rem;}
+.akt-eintrag-titel{font-size:.82rem;font-weight:700;color:var(--kt-primary);}
+.akt-eintrag-meta{font-size:.68rem;color:var(--kt-muted);}
+.akt-eintrag-loeschen{font-size:.65rem;color:#C62828;cursor:pointer;background:none;border:none;font-weight:700;}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(3rem);background:var(--fm-color);color:#fff;padding:.55rem 1.2rem;border-radius:20px;font-size:.78rem;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:9999;opacity:0;transition:all .3s;pointer-events:none;}
+.toast.sichtbar{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.unter-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;}
+.unter-nav-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.32rem .8rem;border-radius:20px;border:1.5px solid var(--fm-color);color:var(--fm-color);background:var(--kt-surface);font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;text-decoration:none;}
+.unter-nav-btn:hover{background:var(--fm-color);color:#fff;}
+.unter-nav-btn.zurueck{border-color:var(--kt-muted);color:var(--kt-muted);}
+.unter-nav-btn.zurueck:hover{background:var(--kt-muted);color:#fff;}
+
+.pdf-vorschau{background:#fff;border:1.5px solid var(--kt-border);border-radius:var(--r-md);padding:1rem 1.1rem;font-size:.8rem;line-height:1.6;}
+.pdf-vorschau h3{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--fm-color);margin-bottom:.4rem;padding-bottom:.25rem;border-bottom:2px solid var(--fm-color);}
+.pdf-vorschau .pdf-zeile{margin-bottom:.25rem;}
+.pdf-vorschau .pdf-zeile strong{color:var(--kt-primary);}
+.pdf-vorschau .pdf-sektion{margin-top:.8rem;}
+
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
+
+@media(max-width:600px){.btn-grid{grid-template-columns:1fr 1fr;}.form-row{grid-template-columns:1fr;}}
+
+@media print {
+  .kt-header,.brainy-banner,.tab-bar,.form-actions,.unter-nav,.btn-kachel,.start-wrap,.tab-panel:not(.aktiv),footer{display:none!important;}
+  .view:not(.aktiv){display:none!important;}
+  .form-section,.karte{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
+  body{background:#fff;font-size:12px;}
+  .unter-wrap{padding:.5rem;}
+}
 </style>
 </head>
 <body>
 
-<header class="dashboard-header">
+<header class="kt-header">
   <div class="header-left">
-    <h1>Fallmanagement-Assistent</h1>
-    <span class="claim">Fallakte · Risiko-Ampel · Maßnahmen · Verlauf</span>
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Fallmanagement</span>
+      </div>
+    </a>
+    <div class="header-badge">Fallmanagement-Assistent</div>
   </div>
   <nav class="header-nav">
-    <a href="DASHBOARD.html">← Übersicht</a>
+    <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
+    <a class="btn-back" href="DASHBOARD.html">Dashboard</a>
   </nav>
 </header>
 
-<main>
+<div class="brainy-banner">
+  <div class="brainy-face">🧠</div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Fallmanagement-Modus</span>
+    <p class="brainy-msg">
+      <strong>Brainy unterstützt TK</strong> beim strukturierten Fallmanagement – mit Reflexionsfragen, Risikohinweisen, Maßnahmenimpulsen und Weiterleitungen.
+    </p>
+  </div>
+</div>
 
-  <!-- ════════════════════════ case_start ════════════════════════ -->
-  <div class="view aktiv" id="view-case_start">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">🗂️</span><span class="karte-header-titel">Fallmanagement – Übersicht</span></div>
-      <p style="font-size:.85rem;color:var(--kt-muted);margin-top:0;">Wähle einen Bereich aus.</p>
-      <div class="case-btn-grid">
-        <button class="case-btn" onclick="zeigeCase('case_file')">
-          <span class="lbl">📁 Fallakte öffnen</span><span class="sub">Stammdaten</span>
-        </button>
-        <button class="case-btn" onclick="zeigeCase('case_risk')">
-          <span class="lbl">🚦 Risiko-Ampel</span><span class="sub">Einschätzung</span>
-        </button>
-        <button class="case-btn" onclick="zeigeCase('case_actions')">
-          <span class="lbl">📌 Maßnahmenplan</span><span class="sub">Maßnahmen & Status</span>
-        </button>
-        <button class="case-btn" onclick="zeigeCase('case_timeline')">
-          <span class="lbl">🕒 Verlauf / Chronik</span><span class="sub">Ereignisse</span>
-        </button>
-        <button class="case-btn" onclick="zeigeCase('case_pdf')">
-          <span class="lbl">📄 PDF-Fallakte</span><span class="sub">Export</span>
-        </button>
-        <button class="case-btn" onclick="zeigeCase('case_help')">
-          <span class="lbl">📘 Anleitung Fallmanagement</span><span class="sub">Schritt für Schritt</span>
-        </button>
+<div class="view aktiv" id="view-start">
+  <div class="start-wrap">
+    <div class="start-header">
+      <div class="start-modul-tag">Fallmanagement-Assistent</div>
+      <h1 class="start-titel">Fallmanagement</h1>
+      <p class="start-lead">Fallakte, Risikoeinschätzung, Maßnahmenplanung und Verlaufsdokumentation – strukturiert und sofort einsetzbar.</p>
+    </div>
+
+    <div class="btn-grid">
+      <button class="btn-kachel" onclick="zeige('file')">
+        <div class="btn-kachel-nr">FM · 01</div>
+        <div class="btn-kachel-emoji">📁</div>
+        <div class="btn-kachel-titel">Fallakte</div>
+        <div class="btn-kachel-sub">Stammdaten · Ziele · Ressourcen</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('risk')">
+        <div class="btn-kachel-nr">FM · 02</div>
+        <div class="btn-kachel-emoji">🚦</div>
+        <div class="btn-kachel-titel">Risiko-Ampel</div>
+        <div class="btn-kachel-sub">Grün · Gelb · Rot · Einschätzung</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('actions')">
+        <div class="btn-kachel-nr">FM · 03</div>
+        <div class="btn-kachel-emoji">📋</div>
+        <div class="btn-kachel-titel">Maßnahmenplan</div>
+        <div class="btn-kachel-sub">Maßnahme · Verantwortung · Status</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('timeline')">
+        <div class="btn-kachel-nr">FM · 04</div>
+        <div class="btn-kachel-emoji">🕐</div>
+        <div class="btn-kachel-titel">Verlauf / Chronik</div>
+        <div class="btn-kachel-sub">Datum · Ereignis · Beobachtung</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('barometer')">
+        <div class="btn-kachel-nr">FM · 05</div>
+        <div class="btn-kachel-emoji">🌡️</div>
+        <div class="btn-kachel-titel">Tages-Barometer</div>
+        <div class="btn-kachel-sub">Stimmung · Belastung · Verlauf</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('pdf')">
+        <div class="btn-kachel-nr">FM · 06</div>
+        <div class="btn-kachel-emoji">📄</div>
+        <div class="btn-kachel-titel">PDF-Fallakte</div>
+        <div class="btn-kachel-sub">Export · Drucken · Weitergabe</div>
+        <div class="btn-kachel-stripe"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('help')" style="border-color:#1B3A4B;">
+        <div class="btn-kachel-nr" style="color:#1B3A4B;">FM · ℹ</div>
+        <div class="btn-kachel-emoji">📖</div>
+        <div class="btn-kachel-titel">Anleitung</div>
+        <div class="btn-kachel-sub">Schritt-für-Schritt · Prozessübersicht</div>
+        <div class="btn-kachel-stripe" style="background:#1B3A4B;"></div>
+      </button>
+    </div>
+
+    <div class="brainy-box" style="margin-top:1.2rem;">
+      <div class="brainy-box-icon">🧠</div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text">Alle Daten werden lokal gespeichert (localStorage). Für die Weitergabe steht der PDF-Export mit Druckfunktion zur Verfügung.</p>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ════════════════════════ case_file ════════════════════════ -->
-  <div class="view" id="view-case_file">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">📁</span><span class="karte-header-titel">Fallakte / Stammdaten</span></div>
-      <div class="platzhalter">Struktur-Platzhalter – Formular folgt. Datenfelder: Name, Klasse, Bezugsperson, Besonderheiten, Ziele, Ressourcen.</div>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+<div class="view" id="view-file">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> 01 · Fallakte</div>
+    <div class="unter-header"><div class="unter-header-stripe"></div><div class="unter-header-inner"><div class="unter-nr">FM · 01 · Fallakte</div><div class="unter-titel">Stammdaten & Fallprofil</div><div class="unter-sub">Name · Klasse · Bezugsperson · Ziele · Ressourcen</div></div></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn aktiv" onclick="switchTab(this,'file-info')">📋 Info</button>
+      <button class="tab-btn" onclick="switchTab(this,'file-form')">📝 Formular</button>
+    </div>
+
+    <div class="tab-panel aktiv" id="file-info">
+      <div class="karte"><div class="karte-header"><span class="karte-header-icon">📁</span><span class="karte-header-titel">Was gehört in die Fallakte?</span></div><div class="karte-body"><ul class="stw-list"><li><strong>Stammdaten:</strong> Name, Klasse/Gruppe, Geburtsdatum, Bezugsperson</li><li><strong>Besonderheiten:</strong> relevante Hintergründe, neutral formuliert</li><li><strong>Ziele:</strong> konkrete, überprüfbare Zielformulierungen</li><li><strong>Ressourcen:</strong> Stärken, Unterstützungssystem, vorhandene Hilfen</li></ul></div></div>
+      <div class="karte"><div class="karte-header"><span class="karte-header-icon">🔒</span><span class="karte-header-titel">Datenschutz</span></div><div class="karte-body"><ul class="stw-list"><li>Nur zweckbezogene Daten erfassen</li><li>Keine Weitergabe ohne Einwilligung der Bezugspersonen</li><li>Zugriff auf autorisierte TK beschränken</li></ul></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p></div></div>
+    </div>
+
+    <div class="tab-panel" id="file-form">
+      <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">👤</span><span class="form-section-titel">Stammdaten</span></div>
+        <div class="form-body">
+          <div class="form-row">
+            <div class="fld"><label>Name <span class="req">*</span></label><input type="text" id="f-name" placeholder="Vorname, Name"></div>
+            <div class="fld"><label>Klasse / Gruppe <span class="req">*</span></label><input type="text" id="f-klasse" placeholder="z.B. 4b"></div>
+          </div>
+          <div class="form-row">
+            <div class="fld"><label>Geburtsdatum</label><input type="date" id="f-geburt"></div>
+            <div class="fld"><label>Fallakte angelegt von <span class="req">*</span></label><input type="text" id="f-tk" placeholder="Name TK"></div>
+          </div>
+          <div class="form-row">
+            <div class="fld"><label>Bezugsperson <span class="req">*</span></label><input type="text" id="f-bezug" placeholder="Name, Funktion"></div>
+            <div class="fld"><label>Kontakt Bezugsperson</label><input type="text" id="f-bezug-kontakt" placeholder="Telefon / E-Mail"></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">📌</span><span class="form-section-titel">Besonderheiten</span></div>
+        <div class="form-body">
+          <div class="fld"><label>Besonderheiten (neutral, beobachtungsbasiert)</label><textarea id="f-besonder" placeholder="Relevante Hintergründe, Auffälligkeiten, Kontext …"></textarea></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">🎯</span><span class="form-section-titel">Ziele & Ressourcen</span></div>
+        <div class="form-body">
+          <div class="fld"><label>Ziele <span class="req">*</span></label><textarea id="f-ziele" placeholder="Konkrete, überprüfbare Ziele …"></textarea></div>
+          <div class="fld"><label>Ressourcen</label><textarea id="f-ressourcen" placeholder="Stärken, Unterstützungssystem, vorhandene Hilfen …"></textarea></div>
+        </div>
+      </div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Beobachtungsbasiert dokumentieren – keine Wertungen. Ziele konkret und überprüfbar formulieren.</p></div></div>
+      <div class="form-actions">
+        <button class="act-btn primary" onclick="speichernFile()">💾 Speichern</button>
+        <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
+        <button class="act-btn ghost" onclick="formReset('file-form')">↺ Zurücksetzen</button>
       </div>
     </div>
-  </div>
 
-  <!-- ════════════════════════ case_risk ════════════════════════ -->
-  <div class="view" id="view-case_risk">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Risiko-Ampel</span></div>
-      <div class="platzhalter">Struktur-Platzhalter – Ampel folgt. Status: grün / gelb / rot, mit kurzen neutralen Kriterien.</div>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
-      </div>
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Übersicht</button>
+      <button class="unter-nav-btn" onclick="zeige('risk')">02 Risiko-Ampel →</button>
     </div>
   </div>
+</div>
 
-  <!-- ════════════════════════ case_actions ════════════════════════ -->
-  <div class="view" id="view-case_actions">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">📌</span><span class="karte-header-titel">Maßnahmenplan</span></div>
-      <div class="platzhalter">Struktur-Platzhalter – Tabelle folgt. Spalten: Maßnahme, Verantwortlich, Zeitraum, Status.</div>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+<div class="view" id="view-risk">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> 02 · Risiko-Ampel</div>
+    <div class="unter-header"><div class="unter-header-stripe"></div><div class="unter-header-inner"><div class="unter-nr">FM · 02 · Risiko-Ampel</div><div class="unter-titel">Risikoeinschätzung</div><div class="unter-sub">Grün · Gelb · Rot · Neutrale Kriterien</div></div></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn aktiv" onclick="switchTab(this,'risk-info')">📋 Info</button>
+      <button class="tab-btn" onclick="switchTab(this,'risk-form')">📝 Formular</button>
+    </div>
+
+    <div class="tab-panel aktiv" id="risk-info">
+      <div class="karte"><div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Ampel-Bedeutung</span></div><div class="karte-body"><div class="ampel" style="flex-direction:column;gap:.5rem;"><span class="ampel-chip gruen" style="justify-content:flex-start;">✔ Grün – Situation stabil, kein akuter Handlungsbedarf</span><span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span><span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – akuter Handlungsbedarf, sofortige Maßnahmen</span></div></div></div>
+      <div class="karte"><div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Einschätzungskriterien (neutral)</span></div><div class="karte-body"><ul class="stw-list"><li>Verhaltensauffälligkeiten: Häufigkeit, Intensität, Kontext</li><li>Soziale Einbindung: Peer-Kontakte, Teamfähigkeit, Isolation</li><li>Emotionale Stabilität: Stimmungsschwankungen, Belastbarkeit</li><li>Lern- und Teilhabemöglichkeiten: Zugänglichkeit, Förderung</li><li>Familiäres Umfeld: Kooperation Bezugspersonen, Unterstützung</li><li>Eigen-/Fremdgefährdung: akute Hinweise vorhanden?</li></ul></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Leitung."</em></p></div></div>
+    </div>
+
+    <div class="tab-panel" id="risk-form">
+      <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">🚦</span><span class="form-section-titel">Ampel-Einschätzung <span class="req">*</span></span></div>
+        <div class="form-body">
+          <div class="form-row"><div class="fld"><label>Datum <span class="req">*</span></label><input type="date" id="r-datum"></div><div class="fld"><label>Eingeschätzt von</label><input type="text" id="r-tk" placeholder="Name TK"></div></div>
+          <div class="fld"><label>Gesamtampel</label>
+            <div class="ampel-radio">
+              <label class="opt-gruen"><input type="radio" name="r-ampel" value="gruen"> ✔ Grün</label>
+              <label class="opt-gelb"><input type="radio" name="r-ampel" value="gelb"> ⚑ Gelb</label>
+              <label class="opt-rot"><input type="radio" name="r-ampel" value="rot"> ✗ Rot</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">📋</span><span class="form-section-titel">Einzelkriterien</span></div>
+        <div class="form-body">
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" id="r-k1"> Verhaltensauffälligkeiten beobachtet</label>
+            <label class="check-item"><input type="checkbox" id="r-k2"> Soziale Isolation erkennbar</label>
+            <label class="check-item"><input type="checkbox" id="r-k3"> Emotionale Instabilität / Stimmungsschwankungen</label>
+            <label class="check-item"><input type="checkbox" id="r-k4"> Eingeschränkte Lern-/Teilhabemöglichkeiten</label>
+            <label class="check-item"><input type="checkbox" id="r-k5"> Belastetes familiäres Umfeld</label>
+            <label class="check-item"><input type="checkbox" id="r-k6"> Hinweise auf Eigen-/Fremdgefährdung</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">📝</span><span class="form-section-titel">Begründung <span class="req">*</span></span></div>
+        <div class="form-body">
+          <div class="fld"><label>Begründung der Einschätzung</label><textarea id="r-begruendung" placeholder="Beobachtungsbasiert, sachlich, nachvollziehbar …"></textarea></div>
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">📤</span><span class="form-section-titel">Weiterleitung</span></div>
+        <div class="form-body">
+          <div class="fld"><label>Weiterleiten an</label>
+            <div class="wl-group">
+              <label class="wl-chip"><input type="checkbox" name="r-wl" value="tkleitung"> 👩‍💼 TK-Leitung</label>
+              <label class="wl-chip"><input type="checkbox" name="r-wl" value="fachberatung"> 🩺 Fachberatung</label>
+              <label class="wl-chip"><input type="checkbox" name="r-wl" value="akte"> 📂 Fallakte</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden. Sofort Rücksprache mit TK-Leitung und Weiterleitung dokumentieren.</p></div></div>
+      <div class="form-actions">
+        <button class="act-btn primary" onclick="speichernRisk()">💾 Speichern</button>
+        <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
+        <button class="act-btn ghost" onclick="formReset('risk-form')">↺ Zurücksetzen</button>
       </div>
     </div>
-  </div>
 
-  <!-- ════════════════════════ case_timeline ════════════════════════ -->
-  <div class="view" id="view-case_timeline">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">🕒</span><span class="karte-header-titel">Verlauf / Chronik</span></div>
-      <div class="platzhalter">Struktur-Platzhalter – Chronik folgt. Einträge: Datum, Ereignis, Beobachtung, Rückmeldung.</div>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
-      </div>
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('file')">← 01 Fallakte</button>
+      <button class="unter-nav-btn" onclick="zeige('actions')">03 Maßnahmenplan →</button>
     </div>
   </div>
+</div>
 
-  <!-- ════════════════════════ case_pdf ════════════════════════ -->
-  <div class="view" id="view-case_pdf">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">📄</span><span class="karte-header-titel">PDF-Fallakte</span></div>
-      <div class="platzhalter">Struktur-Platzhalter – PDF-Export folgt (sammelt Fallakte, Risiko-Ampel, Maßnahmen, Verlauf).</div>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+<div class="view" id="view-actions">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> 03 · Maßnahmenplan</div>
+    <div class="unter-header"><div class="unter-header-stripe"></div><div class="unter-header-inner"><div class="unter-nr">FM · 03 · Maßnahmenplan</div><div class="unter-titel">Maßnahmen planen & verfolgen</div><div class="unter-sub">Maßnahme · Verantwortlich · Zeitraum · Status</div></div></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn aktiv" onclick="switchTab(this,'akt-info')">📋 Info</button>
+      <button class="tab-btn" onclick="switchTab(this,'akt-form')">📝 Neue Maßnahme</button>
+      <button class="tab-btn" onclick="switchTab(this,'akt-liste')">📑 Übersicht</button>
+    </div>
+
+    <div class="tab-panel aktiv" id="akt-info">
+      <div class="karte"><div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Grundsätze Maßnahmenplanung</span></div><div class="karte-body"><ul class="stw-list"><li>Jede Maßnahme ist <strong>konkret</strong> und <strong>zeitgebunden</strong></li><li>Immer einer <strong>verantwortlichen Person</strong> zugeordnet</li><li>Status regelmäßig aktualisieren</li><li>Überfällige Maßnahmen aktiv nachverfolgen</li></ul></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p></div></div>
+    </div>
+
+    <div class="tab-panel" id="akt-form">
+      <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">📋</span><span class="form-section-titel">Neue Maßnahme</span></div>
+        <div class="form-body">
+          <div class="fld"><label>Maßnahme <span class="req">*</span></label><input type="text" id="a-massnahme" placeholder="Was wird konkret getan?"></div>
+          <div class="form-row">
+            <div class="fld"><label>Verantwortlich <span class="req">*</span></label><input type="text" id="a-verantwortlich" placeholder="Name / Funktion"></div>
+            <div class="fld"><label>Status</label>
+              <select id="a-status">
+                <option value="offen">Offen</option>
+                <option value="bearbeitung">In Bearbeitung</option>
+                <option value="abgeschlossen">Abgeschlossen</option>
+                <option value="pausiert">Pausiert</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="fld"><label>Zeitraum von</label><input type="date" id="a-von"></div>
+            <div class="fld"><label>Zeitraum bis</label><input type="date" id="a-bis"></div>
+          </div>
+          <div class="fld"><label>Notiz</label><textarea id="a-notiz" placeholder="Kurze Ergänzung / Rückmeldung …"></textarea></div>
+        </div>
+      </div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Maßnahmen ohne klare Verantwortung bleiben oft liegen – immer eine Person konkret benennen.</p></div></div>
+      <div class="form-actions">
+        <button class="act-btn primary" onclick="speichernAction()">💾 Maßnahme speichern</button>
+        <button class="act-btn ghost" onclick="formReset('akt-form')">↺ Zurücksetzen</button>
       </div>
     </div>
-  </div>
 
-  <!-- ════════════════════════ case_barometer ════════════════════════ -->
-  <div class="view" id="view-case_barometer">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">🌡️</span><span class="karte-header-titel">Tagesstatus / Barometer</span></div>
-      <div class="platzhalter">Struktur-Platzhalter – Tagesstatus folgt. Felder: Stimmung, Belastung, Tagesverlauf.</div>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
+    <div class="tab-panel" id="akt-liste">
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">📑</span><span class="karte-header-titel">Alle Maßnahmen</span></div>
+        <div class="karte-body" id="akt-liste-inhalt">
+          <div class="tl-leer">Noch keine Maßnahmen erfasst.</div>
+        </div>
+      </div>
+      <div class="form-actions" style="border-top:none;padding-top:0;">
+        <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
       </div>
     </div>
-  </div>
 
-  <!-- ════════════════════════ case_help ════════════════════════ -->
-  <div class="view" id="view-case_help">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">📘</span><span class="karte-header-titel">Anleitung Fallmanagement</span></div>
-      <ol class="anleitung-liste">
-        <li>Fallakte anlegen</li>
-        <li>Risiko-Ampel einschätzen</li>
-        <li>Maßnahmen planen</li>
-        <li>Verlauf dokumentieren</li>
-        <li>PDF exportieren</li>
-      </ol>
-      <div class="unter-nav">
-        <button class="unter-nav-btn" onclick="zeigeCase('case_start')">← Übersicht</button>
-      </div>
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('risk')">← 02 Risiko-Ampel</button>
+      <button class="unter-nav-btn" onclick="zeige('timeline')">04 Verlauf →</button>
     </div>
   </div>
+</div>
 
-</main>
+<div class="view" id="view-timeline">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> 04 · Verlauf</div>
+    <div class="unter-header"><div class="unter-header-stripe"></div><div class="unter-header-inner"><div class="unter-nr">FM · 04 · Verlauf</div><div class="unter-titel">Chronik & Verlaufsdokumentation</div><div class="unter-sub">Datum · Ereignis · Beobachtung · Rückmeldung</div></div></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn aktiv" onclick="switchTab(this,'tl-form')">📝 Neuer Eintrag</button>
+      <button class="tab-btn" onclick="switchTab(this,'tl-liste')">📑 Chronik</button>
+    </div>
+
+    <div class="tab-panel aktiv" id="tl-form">
+      <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">🕐</span><span class="form-section-titel">Neuer Verlaufseintrag</span></div>
+        <div class="form-body">
+          <div class="form-row"><div class="fld"><label>Datum <span class="req">*</span></label><input type="date" id="t-datum"></div><div class="fld"><label>Erstellt von</label><input type="text" id="t-tk" placeholder="Name TK"></div></div>
+          <div class="fld"><label>Ereignis <span class="req">*</span></label><input type="text" id="t-ereignis" placeholder="Was ist passiert? (kurz, neutral)"></div>
+          <div class="fld"><label>Beobachtung</label><textarea id="t-beobachtung" placeholder="Was wurde wahrgenommen?"></textarea></div>
+          <div class="fld"><label>Rückmeldung / nächster Schritt</label><textarea id="t-rueckmeldung" placeholder="Reaktion, Konsequenz, nächster Schritt …"></textarea></div>
+        </div>
+      </div>
+      <div class="hinweis">Beobachtungsbasiert, zeitnah, neutral formuliert – keine Interpretationen als Tatsachen.</div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em></p></div></div>
+      <div class="form-actions">
+        <button class="act-btn primary" onclick="speichernTimeline()">💾 Eintrag speichern</button>
+        <button class="act-btn ghost" onclick="formReset('tl-form')">↺ Zurücksetzen</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tl-liste">
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">📑</span><span class="karte-header-titel">Chronik (neueste zuerst)</span></div>
+        <div class="karte-body" id="tl-liste-inhalt">
+          <div class="tl-leer">Noch keine Verlaufseinträge erfasst.</div>
+        </div>
+      </div>
+      <div class="form-actions" style="border-top:none;padding-top:0;">
+        <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('actions')">← 03 Maßnahmenplan</button>
+      <button class="unter-nav-btn" onclick="zeige('barometer')">05 Barometer →</button>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-barometer">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> 05 · Tages-Barometer</div>
+    <div class="unter-header"><div class="unter-header-stripe"></div><div class="unter-header-inner"><div class="unter-nr">FM · 05 · Barometer</div><div class="unter-titel">Tagesstatus & Barometer</div><div class="unter-sub">Stimmung · Belastung · Tagesverlauf</div></div></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn aktiv" onclick="switchTab(this,'bar-form')">📝 Heutiger Eintrag</button>
+      <button class="tab-btn" onclick="switchTab(this,'bar-liste')">📊 Verlauf</button>
+    </div>
+
+    <div class="tab-panel aktiv" id="bar-form">
+      <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">🌡️</span><span class="form-section-titel">Tagesstatus erfassen</span></div>
+        <div class="form-body">
+          <div class="fld"><label>Datum <span class="req">*</span></label><input type="date" id="b-datum"></div>
+          <div class="fld"><label>Stimmung</label>
+            <div class="ampel-radio">
+              <label class="opt-gruen"><input type="radio" name="b-stimmung" value="sehr_gut"> 😊 Sehr gut</label>
+              <label class="opt-gruen"><input type="radio" name="b-stimmung" value="gut"> 🙂 Gut</label>
+              <label class="opt-gelb"><input type="radio" name="b-stimmung" value="neutral"> 😐 Neutral</label>
+              <label class="opt-gelb"><input type="radio" name="b-stimmung" value="angespannt"> 😟 Angespannt</label>
+              <label class="opt-rot"><input type="radio" name="b-stimmung" value="belastet"> 😣 Belastet</label>
+            </div>
+          </div>
+          <div class="fld"><label>Belastung</label>
+            <div class="ampel-radio">
+              <label class="opt-gruen"><input type="radio" name="b-belastung" value="gering"> Gering</label>
+              <label class="opt-gelb"><input type="radio" name="b-belastung" value="mittel"> Mittel</label>
+              <label class="opt-rot"><input type="radio" name="b-belastung" value="hoch"> Hoch</label>
+              <label class="opt-rot"><input type="radio" name="b-belastung" value="sehr_hoch"> Sehr hoch</label>
+            </div>
+          </div>
+          <div class="fld"><label>Tagesverlauf</label>
+            <select id="b-verlauf">
+              <option value="">– bitte wählen –</option>
+              <option value="ruhig">Ruhig</option>
+              <option value="ereignisreich">Ereignisreich</option>
+              <option value="schwierig">Schwierig</option>
+              <option value="ausnahme">Ausnahmesituation</option>
+            </select>
+          </div>
+          <div class="fld"><label>Kurznotiz</label><input type="text" id="b-notiz" placeholder="Ein Satz zum Tag (optional)"></div>
+        </div>
+      </div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em></p></div></div>
+      <div class="form-actions">
+        <button class="act-btn primary" onclick="speichernBarometer()">💾 Eintrag speichern</button>
+        <button class="act-btn ghost" onclick="formReset('bar-form')">↺ Zurücksetzen</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="bar-liste">
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">📊</span><span class="karte-header-titel">Barometer-Verlauf (neueste zuerst)</span></div>
+        <div class="karte-body" id="bar-liste-inhalt">
+          <div class="tl-leer">Noch keine Barometer-Einträge erfasst.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('timeline')">← 04 Verlauf</button>
+      <button class="unter-nav-btn" onclick="zeige('pdf')">06 PDF-Fallakte →</button>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-pdf">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> 06 · PDF-Fallakte</div>
+    <div class="unter-header"><div class="unter-header-stripe"></div><div class="unter-header-inner"><div class="unter-nr">FM · 06 · PDF-Export</div><div class="unter-titel">PDF-Fallakte erstellen</div><div class="unter-sub">Export · Drucken · Weitergabe · Datenschutz</div></div></div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔒</span><span class="karte-header-titel">Datenschutz beim Export</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Nur mit Einwilligung der Bezugspersonen weitergeben</li>
+          <li>Kein Versand per unverschlüsselter E-Mail</li>
+          <li>Ausdrucke sicher verwahren oder vernichten</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">📄</span><span class="form-section-titel">Vorschau der Fallakte</span></div>
+      <div class="form-body">
+        <div class="pdf-vorschau" id="pdf-inhalt">
+          <p class="tl-leer">Noch keine Daten vorhanden. Bitte zuerst Fallakte, Risiko-Ampel, Maßnahmen und Verlauf ausfüllen.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">📤</span><span class="form-section-titel">Weiterleitung</span></div>
+      <div class="form-body">
+        <div class="fld"><label>Weiterleiten an</label>
+          <div class="wl-group">
+            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="tkleitung"> 👩‍💼 TK-Leitung</label>
+            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="fachberatung"> 🩺 Fachberatung</label>
+            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="akte"> 📂 Fallakte (Archiv)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Wer bekommt dieses Dokument – und ist die Weitergabe datenschutzkonform?"</em></p></div></div>
+
+    <div class="form-actions">
+      <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
+      <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('barometer')">← 05 Barometer</button>
+      <button class="unter-nav-btn" onclick="zeige('help')">Anleitung →</button>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-help">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb"><a href="#" onclick="zeige('start');return false;">Fallmanagement</a><span>›</span> Anleitung</div>
+    <div class="unter-header"><div class="unter-header-stripe" style="background:#1B3A4B;"></div><div class="unter-header-inner"><div class="unter-nr">FM · Anleitung</div><div class="unter-titel">Fallmanagement – Schritt für Schritt</div><div class="unter-sub">Neutral · Prozessbezogen</div></div></div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Prozessübersicht</span></div>
+      <div class="karte-body">
+        <ol class="schritt-list">
+          <li><strong>Fallakte anlegen</strong> – Stammdaten, Bezugsperson, Besonderheiten, Ziele und Ressourcen erfassen</li>
+          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot sofort Rücksprache</li>
+          <li><strong>Maßnahmen planen</strong> – konkrete Schritte, Verantwortlichkeiten und Zeiträume festlegen</li>
+          <li><strong>Verlauf dokumentieren</strong> – Ereignisse zeitnah, beobachtungsbasiert und neutral eintragen</li>
+          <li><strong>Tages-Barometer pflegen</strong> – kurzen Tagesstatus erfassen, Muster erkennen</li>
+          <li><strong>PDF exportieren</strong> – Fallakte für Weitergabe oder Archiv erstellen (datenschutzkonform)</li>
+        </ol>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">⚠️</span><span class="karte-header-titel">Wichtige Grundsätze</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Beobachtungen statt Bewertungen – sachlich, neutral, nachvollziehbar</li>
+          <li>Zeitnah dokumentieren – möglichst am gleichen Tag</li>
+          <li>Ampel-Rot: immer Rücksprache mit TK-Leitung, nie allein entscheiden</li>
+          <li>Datenschutz: nur zweckbezogene Daten, Einwilligung vor Weitergabe</li>
+          <li>Alle Daten werden lokal gespeichert – regelmäßig sichern / exportieren</li>
+        </ul>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">💾</span><span class="karte-header-titel">Datenstruktur-Übersicht</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>caseFile</strong> – Stammdaten</li>
+          <li><strong>riskStatus</strong> – Ampel-Einschätzung</li>
+          <li><strong>actions</strong> – Maßnahmenplan (Array)</li>
+          <li><strong>timeline</strong> – Chronik (Array)</li>
+          <li><strong>barometer</strong> – Tagesstatus (Array)</li>
+        </ul>
+        <div class="hinweis">Gespeichert unter den Schlüsseln <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-caseFile</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-riskStatus</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-actions</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-timeline</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-barometer</code> in localStorage.</div>
+      </div>
+    </div>
+    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen, Risikohinweisen und Weiterleitungsimpulsen.</p></div></div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Übersicht</button>
+      <a class="unter-nav-btn" href="TK_Landing.html">↩ TK-Bereich</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>KLARTEXT</strong> · Fallmanagement-Assistent · Teamkoordination<br>
+  Klar. Warm. Menschlich. · Neutral · Trägeroffen
+</footer>
 
 <script>
-// ── Datenstrukturen (Struktur-Vorbereitung, noch ohne Formular-Logik) ──
-// Alles ausschließlich lokal in localStorage, neutral gehalten.
-
-var CASE_KEYS = {
-  caseFile:   'case_mgmt_file',       // Stammdaten
-  riskStatus: 'case_mgmt_risk',       // Ampel
-  actions:    'case_mgmt_actions',    // Maßnahmenplan
-  timeline:   'case_mgmt_timeline',   // Chronik
-  barometer:  'case_mgmt_barometer'   // Tagesstatus
+var views = {
+  'start':     'view-start',
+  'file':      'view-file',
+  'risk':      'view-risk',
+  'actions':   'view-actions',
+  'timeline':  'view-timeline',
+  'barometer': 'view-barometer',
+  'pdf':       'view-pdf',
+  'help':      'view-help'
 };
 
-// Beispielhafte leere Grundstrukturen (werden später befüllt):
-var caseFile = {
-  name: '', klasse: '', bezugsperson: '', besonderheiten: '', ziele: '', ressourcen: ''
-};
-
-var riskStatus = {
-  ampel: '', // 'grün' | 'gelb' | 'rot'
-  kriterien: ''
-};
-
-var actions = [
-  // { massnahme:'', verantwortlich:'', zeitraum:'', status:'' }
-];
-
-var timeline = [
-  // { datum:'', ereignis:'', beobachtung:'', ruckmeldung:'' }
-];
-
-var barometer = {
-  stimmung: '', belastung: '', tagesverlauf: ''
-};
-
-// Views-Objekt: Zuordnung Schlüssel → DOM-ID
-var caseViews = {
-  case_start:    'view-case_start',
-  case_file:     'view-case_file',
-  case_risk:     'view-case_risk',
-  case_actions:  'view-case_actions',
-  case_timeline: 'view-case_timeline',
-  case_pdf:      'view-case_pdf',
-  case_barometer:'view-case_barometer',
-  case_help:     'view-case_help'
-};
-
-function zeigeCase(key){
+function zeige(key) {
   document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('aktiv'); });
-  var zielId = caseViews[key] || caseViews.case_start;
-  var ziel = document.getElementById(zielId);
-  if(ziel){
-    ziel.classList.add('aktiv');
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
+  var ziel = document.getElementById(views[key] || 'view-start');
+  if (ziel) { ziel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
+  if (key === 'actions') renderActions();
+  if (key === 'timeline') renderTimeline();
+  if (key === 'barometer') renderBarometer();
+  if (key === 'pdf') ladePdfVorschau();
 }
-</script>
 
+function switchTab(btn, panelId) {
+  var bar = btn.closest('.tab-bar');
+  var wrap = btn.closest('.unter-wrap');
+  bar.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  wrap.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
+  btn.classList.add('aktiv');
+  var panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('aktiv');
+  if (panelId === 'akt-liste') renderActions();
+  if (panelId === 'tl-liste') renderTimeline();
+  if (panelId === 'bar-liste') renderBarometer();
+}
+
+function formReset(panelId) {
+  var panel = document.getElementById(panelId);
+  if (!panel) return;
+  panel.querySelectorAll('input,select,textarea').forEach(function(el) {
+    if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+    else el.value = '';
+  });
+  zeigeToast('↺ Formular zurückgesetzt');
+}
+
+function zeigeToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('sichtbar');
+  setTimeout(function(){ t.classList.remove('sichtbar'); }, 2200);
+}
+
+function ls_get(key, fallback) {
+  try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch(e) { return fallback; }
+}
+function ls_set(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+  catch(e) { return false; }
+}
+
+function speichernFile() {
+  var caseFile = {
+    name: document.getElementById('f-name').value,
+    klasse: document.getElementById('f-klasse').value,
+    geburtsdatum: document.getElementById('f-geburt').value,
+    erstelltVon: document.getElementById('f-tk').value,
+    bezugsperson: document.getElementById('f-bezug').value,
+    bezugspersonKontakt: document.getElementById('f-bezug-kontakt').value,
+    besonderheiten: document.getElementById('f-besonder').value,
+    ziele: document.getElementById('f-ziele').value,
+    ressourcen: document.getElementById('f-ressourcen').value
+  };
+  ls_set('fm-caseFile', caseFile);
+  zeigeToast('✔ Fallakte gespeichert');
+}
+
+function ladeFile() {
+  var d = ls_get('fm-caseFile', null);
+  if (!d) return;
+  if (document.getElementById('f-name')) document.getElementById('f-name').value = d.name || '';
+  if (document.getElementById('f-klasse')) document.getElementById('f-klasse').value = d.klasse || '';
+  if (document.getElementById('f-geburt')) document.getElementById('f-geburt').value = d.geburtsdatum || '';
+  if (document.getElementById('f-tk')) document.getElementById('f-tk').value = d.erstelltVon || '';
+  if (document.getElementById('f-bezug')) document.getElementById('f-bezug').value = d.bezugsperson || '';
+  if (document.getElementById('f-bezug-kontakt')) document.getElementById('f-bezug-kontakt').value = d.bezugspersonKontakt || '';
+  if (document.getElementById('f-besonder')) document.getElementById('f-besonder').value = d.besonderheiten || '';
+  if (document.getElementById('f-ziele')) document.getElementById('f-ziele').value = d.ziele || '';
+  if (document.getElementById('f-ressourcen')) document.getElementById('f-ressourcen').value = d.ressourcen || '';
+}
+
+function speichernRisk() {
+  var ampelEl = document.querySelector('input[name="r-ampel"]:checked');
+  var wlEls = document.querySelectorAll('input[name="r-wl"]:checked');
+  var riskStatus = {
+    datum: document.getElementById('r-datum').value,
+    tk: document.getElementById('r-tk').value,
+    ampel: ampelEl ? ampelEl.value : '',
+    kriterien: {
+      verhalten: document.getElementById('r-k1').checked,
+      isolation: document.getElementById('r-k2').checked,
+      emotional: document.getElementById('r-k3').checked,
+      teilhabe: document.getElementById('r-k4').checked,
+      familie: document.getElementById('r-k5').checked,
+      gefaehrdung: document.getElementById('r-k6').checked
+    },
+    begruendung: document.getElementById('r-begruendung').value,
+    weiterleitung: Array.from(wlEls).map(function(el){ return el.value; })
+  };
+  ls_set('fm-riskStatus', riskStatus);
+  zeigeToast('✔ Risiko-Ampel gespeichert');
+}
+
+function speichernAction() {
+  var massnahme = document.getElementById('a-massnahme').value;
+  if (!massnahme) { zeigeToast('⚠ Bitte Maßnahme eingeben'); return; }
+  var actions = ls_get('fm-actions', []);
+  actions.push({
+    id: Date.now(),
+    massnahme: massnahme,
+    verantwortlich: document.getElementById('a-verantwortlich').value,
+    status: document.getElementById('a-status').value,
+    von: document.getElementById('a-von').value,
+    bis: document.getElementById('a-bis').value,
+    notiz: document.getElementById('a-notiz').value
+  });
+  ls_set('fm-actions', actions);
+  formReset('akt-form');
+  zeigeToast('✔ Maßnahme gespeichert');
+  renderActions();
+}
+
+function loescheAction(id) {
+  var actions = ls_get('fm-actions', []);
+  actions = actions.filter(function(a){ return a.id !== id; });
+  ls_set('fm-actions', actions);
+  renderActions();
+  zeigeToast('🗑 Maßnahme gelöscht');
+}
+
+function renderActions() {
+  var container = document.getElementById('akt-liste-inhalt');
+  if (!container) return;
+  var actions = ls_get('fm-actions', []);
+  if (actions.length === 0) {
+    container.innerHTML = '<div class="tl-leer">Noch keine Maßnahmen erfasst.</div>';
+    return;
+  }
+  var statusLabel = {offen:'📌 Offen', bearbeitung:'⚙️ In Bearbeitung', abgeschlossen:'✔ Abgeschlossen', pausiert:'⏸ Pausiert'};
+  var html = '';
+  actions.slice().reverse().forEach(function(a) {
+    html += '<div class="akt-eintrag">';
+    html += '<div class="akt-eintrag-kopf"><span class="akt-eintrag-titel">' + escapeHtml(a.massnahme) + '</span><button class="akt-eintrag-loeschen" onclick="loescheAction(' + a.id + ')">✕ Löschen</button></div>';
+    html += '<div class="akt-eintrag-meta">' + (statusLabel[a.status] || a.status) + ' · Verantwortlich: ' + escapeHtml(a.verantwortlich || '–') + (a.von ? ' · ' + a.von : '') + (a.bis ? ' – ' + a.bis : '') + '</div>';
+    if (a.notiz) html += '<div class="akt-eintrag-meta">' + escapeHtml(a.notiz) + '</div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function speichernTimeline() {
+  var ereignis = document.getElementById('t-ereignis').value;
+  if (!ereignis) { zeigeToast('⚠ Bitte Ereignis eingeben'); return; }
+  var timeline = ls_get('fm-timeline', []);
+  timeline.push({
+    id: Date.now(),
+    datum: document.getElementById('t-datum').value,
+    tk: document.getElementById('t-tk').value,
+    ereignis: ereignis,
+    beobachtung: document.getElementById('t-beobachtung').value,
+    rueckmeldung: document.getElementById('t-rueckmeldung').value
+  });
+  ls_set('fm-timeline', timeline);
+  formReset('tl-form');
+  zeigeToast('✔ Verlaufseintrag gespeichert');
+  renderTimeline();
+}
+
+function loescheTimeline(id) {
+  var timeline = ls_get('fm-timeline', []);
+  timeline = timeline.filter(function(t){ return t.id !== id; });
+  ls_set('fm-timeline', timeline);
+  renderTimeline();
+  zeigeToast('🗑 Eintrag gelöscht');
+}
+
+function renderTimeline() {
+  var container = document.getElementById('tl-liste-inhalt');
+  if (!container) return;
+  var timeline = ls_get('fm-timeline', []);
+  if (timeline.length === 0) {
+    container.innerHTML = '<div class="tl-leer">Noch keine Verlaufseinträge erfasst.</div>';
+    return;
+  }
+  var html = '';
+  timeline.slice().reverse().forEach(function(t) {
+    html += '<div class="tl-eintrag">';
+    html += '<div class="tl-eintrag-kopf"><span class="tl-eintrag-datum">' + (t.datum || '–') + (t.tk ? ' · ' + escapeHtml(t.tk) : '') + '</span><button class="tl-eintrag-loeschen" onclick="loescheTimeline(' + t.id + ')">✕ Löschen</button></div>';
+    html += '<div class="tl-eintrag-text"><strong>' + escapeHtml(t.ereignis) + '</strong></div>';
+    if (t.beobachtung) html += '<div class="tl-eintrag-text">' + escapeHtml(t.beobachtung) + '</div>';
+    if (t.rueckmeldung) html += '<div class="tl-eintrag-text" style="color:var(--kt-muted);">↳ ' + escapeHtml(t.rueckmeldung) + '</div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function speichernBarometer() {
+  var stimmungEl = document.querySelector('input[name="b-stimmung"]:checked');
+  var belastungEl = document.querySelector('input[name="b-belastung"]:checked');
+  var barometer = ls_get('fm-barometer', []);
+  barometer.push({
+    id: Date.now(),
+    datum: document.getElementById('b-datum').value,
+    stimmung: stimmungEl ? stimmungEl.value : '',
+    belastung: belastungEl ? belastungEl.value : '',
+    verlauf: document.getElementById('b-verlauf').value,
+    notiz: document.getElementById('b-notiz').value
+  });
+  ls_set('fm-barometer', barometer);
+  formReset('bar-form');
+  zeigeToast('✔ Barometer-Eintrag gespeichert');
+  renderBarometer();
+}
+
+function renderBarometer() {
+  var container = document.getElementById('bar-liste-inhalt');
+  if (!container) return;
+  var barometer = ls_get('fm-barometer', []);
+  if (barometer.length === 0) {
+    container.innerHTML = '<div class="tl-leer">Noch keine Barometer-Einträge erfasst.</div>';
+    return;
+  }
+  var stimmungLabel = {sehr_gut:'😊 Sehr gut', gut:'🙂 Gut', neutral:'😐 Neutral', angespannt:'😟 Angespannt', belastet:'😣 Belastet'};
+  var belastungLabel = {gering:'Gering', mittel:'Mittel', hoch:'Hoch', sehr_hoch:'Sehr hoch'};
+  var html = '';
+  barometer.slice().reverse().forEach(function(b) {
+    html += '<div class="tl-eintrag">';
+    html += '<div class="tl-eintrag-kopf"><span class="tl-eintrag-datum">' + (b.datum || '–') + '</span></div>';
+    html += '<div class="tl-eintrag-text">' + (stimmungLabel[b.stimmung] || '–') + ' · Belastung: ' + (belastungLabel[b.belastung] || '–') + (b.verlauf ? ' · ' + b.verlauf : '') + '</div>';
+    if (b.notiz) html += '<div class="tl-eintrag-text" style="color:var(--kt-muted);">' + escapeHtml(b.notiz) + '</div>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function ladePdfVorschau() {
+  var container = document.getElementById('pdf-inhalt');
+  if (!container) return;
+  var caseFile = ls_get('fm-caseFile', null);
+  var riskStatus = ls_get('fm-riskStatus', null);
+  var actions = ls_get('fm-actions', []);
+  var timeline = ls_get('fm-timeline', []);
+
+  if (!caseFile && !riskStatus && actions.length === 0 && timeline.length === 0) {
+    container.innerHTML = '<p class="tl-leer">Noch keine Daten vorhanden. Bitte zuerst Fallakte, Risiko-Ampel, Maßnahmen und Verlauf ausfüllen.</p>';
+    return;
+  }
+
+  var ampelLabel = {gruen:'✔ Grün', gelb:'⚑ Gelb', rot:'✗ Rot'};
+  var statusLabel = {offen:'Offen', bearbeitung:'In Bearbeitung', abgeschlossen:'Abgeschlossen', pausiert:'Pausiert'};
+
+  var html = '<h3>Fallakte – Übersicht</h3>';
+
+  html += '<div class="pdf-sektion"><strong>Stammdaten</strong>';
+  if (caseFile) {
+    html += '<div class="pdf-zeile"><strong>Name:</strong> ' + escapeHtml(caseFile.name || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Klasse:</strong> ' + escapeHtml(caseFile.klasse || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Bezugsperson:</strong> ' + escapeHtml(caseFile.bezugsperson || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Ziele:</strong> ' + escapeHtml(caseFile.ziele || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Ressourcen:</strong> ' + escapeHtml(caseFile.ressourcen || '–') + '</div>';
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Stammdaten erfasst.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Risiko-Ampel</strong>';
+  if (riskStatus) {
+    html += '<div class="pdf-zeile"><strong>Ampel:</strong> ' + (ampelLabel[riskStatus.ampel] || '–') + ' (' + (riskStatus.datum || '–') + ')</div>';
+    html += '<div class="pdf-zeile"><strong>Begründung:</strong> ' + escapeHtml(riskStatus.begruendung || '–') + '</div>';
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Risiko-Einschätzung erfasst.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Maßnahmenplan (' + actions.length + ')</strong>';
+  if (actions.length > 0) {
+    actions.forEach(function(a) {
+      html += '<div class="pdf-zeile">• ' + escapeHtml(a.massnahme) + ' — ' + (statusLabel[a.status] || a.status) + ' (' + escapeHtml(a.verantwortlich || '–') + ')</div>';
+    });
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Maßnahmen erfasst.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Verlauf / Chronik (' + timeline.length + ' Einträge)</strong>';
+  if (timeline.length > 0) {
+    timeline.forEach(function(t) {
+      html += '<div class="pdf-zeile">• ' + (t.datum || '–') + ' — ' + escapeHtml(t.ereignis) + '</div>';
+    });
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Verlaufseinträge erfasst.</div>';
+  }
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  ladeFile();
+  renderActions();
+  renderTimeline();
+  renderBarometer();
+});
+</script>
 </body>
 </html>

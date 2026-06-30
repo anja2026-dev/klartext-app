@@ -410,22 +410,6 @@ body {
 <body>
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!-- AUTH-GUARD: Weiterleitung wenn keine gültige TK-Session -->
-<!-- ══════════════════════════════════════════════════════════ -->
-<script>
-(function(){
-  try {
-    if(window.location.protocol==='file:') return;
-    var login = sessionStorage.getItem('klartext_login');
-    var role  = sessionStorage.getItem('klartext_role') || '';
-    if(login !== 'true' || !['tk','admin'].includes(role)){
-      window.location.href = 'KLARTEXT_Login.html';
-    }
-  } catch(e) {}
-})();
-</script>
-
-<!-- ══════════════════════════════════════════════════════════ -->
 <!-- APP -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div id="app">
@@ -1163,7 +1147,7 @@ body {
 function doLogout() {
   logAction('TK', 'Abgemeldet');
   try { sessionStorage.clear(); } catch(e) {}
-  window.location.href = 'KLARTEXT_Login.html';
+  window.location.href = 'TK_Landing.html';
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────

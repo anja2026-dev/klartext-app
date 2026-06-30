@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT — Recruiting Rollenlogik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F0E8;
+    --paper-dark:#EAE2D4;
+    --header:#1B3A4B;
+    --accent:#4A148C;
+    --accent-light:#F3E5F5;
+    --accent-dark:#33106B;
+    --ink:#2A2A2A;
+    --muted:#6B6B6B;
+    --line:#D9D0C0;
+    --ok:#1B6E3C;
+    --warn:#A85B00;
+    --danger:#A31515;
+    --card-shadow: 0 2px 8px rgba(27,58,75,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'DM Sans', sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3{ font-family:'Playfair Display', serif; margin:0 0 .4em 0; }
+  header.top{
+    background:var(--header);
+    color:#fff;
+    padding:18px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  header.top .brand{ display:flex; align-items:center; gap:14px; }
+  header.top .brand .logo{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.4rem;
+    letter-spacing:.5px;
+  }
+  header.top .brand .sub{
+    font-size:.82rem;
+    opacity:.8;
+    border-left:1px solid rgba(255,255,255,.3);
+    padding-left:14px;
+  }
+  header.top nav a{
+    color:#fff;
+    text-decoration:none;
+    font-size:.85rem;
+    margin-left:18px;
+    opacity:.85;
+    border-bottom:1px solid transparent;
+  }
+  header.top nav a:hover{ opacity:1; border-bottom:1px solid #fff; }
+
+  .banner{
+    background:var(--accent-light);
+    border-bottom:1px solid var(--line);
+    padding:14px 28px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .banner .icon{ font-size:1.6rem; line-height:1; }
+  .banner .text{ font-size:.92rem; color:var(--accent-dark); }
+  .banner .text strong{ color:var(--accent-dark); }
+
+  main{ max-width:1100px; margin:0 auto; padding:26px 24px 60px; }
+
+  .module-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:6px;
+  }
+  .module-title .badge{
+    background:var(--accent);
+    color:#fff;
+    font-size:.72rem;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:20px;
+    letter-spacing:.4px;
+  }
+  .module-sub{ color:var(--muted); margin-bottom:24px; font-size:.95rem; }
+
+  .tabs{
+    display:flex;
+    gap:6px;
+    border-bottom:2px solid var(--line);
+    margin-bottom:22px;
+  }
+  .tab-btn{
+    background:none;
+    border:none;
+    font-family:'DM Sans', sans-serif;
+    font-size:.92rem;
+    font-weight:500;
+    padding:10px 16px;
+    cursor:pointer;
+    color:var(--muted);
+    border-bottom:3px solid transparent;
+    transform:translateY(2px);
+  }
+  .tab-btn.active{
+    color:var(--accent);
+    border-bottom:3px solid var(--accent);
+    font-weight:700;
+  }
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; animation:fade .25s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  .section{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+    margin-bottom:24px;
+    box-shadow:var(--card-shadow);
+  }
+  .section h2{
+    font-size:1.25rem;
+    color:var(--accent-dark);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section h2 .num{
+    background:var(--accent);
+    color:#fff;
+    width:28px; height:28px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+    font-family:'DM Sans', sans-serif;
+    font-weight:700;
+  }
+  .hint{
+    background:var(--paper-dark);
+    border-left:3px solid var(--accent);
+    padding:10px 14px;
+    font-size:.85rem;
+    color:var(--muted);
+    border-radius:4px;
+    margin:10px 0 18px;
+  }
+  .hint strong{ color:var(--accent-dark); }
+
+  /* --- Formular --- */
+  label{ display:block; font-size:.82rem; font-weight:700; color:var(--header); margin:14px 0 4px; }
+  input[type=text], input[type=number], input[type=date], select, textarea{
+    width:100%;
+    padding:9px 11px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-family:'DM Sans', sans-serif;
+    font-size:.92rem;
+    background:#fdfbf7;
+  }
+  textarea{ min-height:70px; resize:vertical; }
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:0 18px; }
+  .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 18px; }
+  @media (max-width:700px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .chip{
+    border:1px solid var(--accent);
+    color:var(--accent);
+    background:#fff;
+    border-radius:20px;
+    padding:5px 13px;
+    font-size:.82rem;
+    cursor:pointer;
+    user-select:none;
+  }
+  .chip.active{ background:var(--accent); color:#fff; }
+
+  button.primary{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:11px 22px;
+    border-radius:6px;
+    font-family:'DM Sans', sans-serif;
+    font-weight:700;
+    font-size:.92rem;
+    cursor:pointer;
+    margin-top:18px;
+  }
+  button.primary:hover{ background:var(--accent-dark); }
+  button.secondary{
+    background:none;
+    border:1px solid var(--muted);
+    color:var(--muted);
+    padding:8px 16px;
+    border-radius:6px;
+    font-family:'DM Sans', sans-serif;
+    font-size:.85rem;
+    cursor:pointer;
+  }
+  button.danger-link{
+    background:none; border:none; color:var(--danger);
+    font-size:.78rem; cursor:pointer; text-decoration:underline;
+    padding:0;
+  }
+
+  /* --- Score-Logik Anzeige --- */
+  .score-explain{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin:16px 0;
+  }
+  @media (max-width:700px){ .score-explain{ grid-template-columns:1fr 1fr; } }
+  .score-explain .crit{
+    background:var(--paper-dark);
+    border-radius:8px;
+    padding:12px;
+    text-align:center;
+  }
+  .score-explain .crit .pts{
+    font-family:'Playfair Display', serif;
+    font-size:1.3rem;
+    color:var(--accent);
+    font-weight:700;
+  }
+  .score-explain .crit .lbl{ font-size:.78rem; color:var(--muted); margin-top:2px; }
+
+  .candidate-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:12px 16px;
+    margin-bottom:10px;
+    background:#fdfbf7;
+  }
+  .candidate-row .rank{
+    font-family:'Playfair Display', serif;
+    font-size:1.1rem;
+    font-weight:700;
+    color:var(--accent);
+    width:28px;
+    text-align:center;
+  }
+  .candidate-row .info{ flex:1; min-width:180px; }
+  .candidate-row .info .name{ font-weight:700; }
+  .candidate-row .info .tags{ font-size:.78rem; color:var(--muted); margin-top:2px; }
+  .candidate-row .tags span{
+    background:var(--accent-light);
+    color:var(--accent-dark);
+    border-radius:10px;
+    padding:2px 8px;
+    margin-right:5px;
+    display:inline-block;
+    margin-top:3px;
+  }
+  .score-badge{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:#fff;
+    background:var(--accent);
+    border-radius:8px;
+    padding:6px 14px;
+    min-width:54px;
+    text-align:center;
+  }
+  .score-badge.mid{ background:var(--warn); }
+  .score-badge.low{ background:var(--muted); }
+
+  table.matrix{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.86rem;
+  }
+  table.matrix th, table.matrix td{
+    border:1px solid var(--line);
+    padding:9px 10px;
+    text-align:center;
+  }
+  table.matrix th{
+    background:var(--header);
+    color:#fff;
+    font-weight:500;
+    font-size:.8rem;
+  }
+  table.matrix td:first-child, table.matrix th:first-child{
+    text-align:left;
+    background:var(--paper-dark);
+    font-weight:700;
+    color:var(--header);
+  }
+  table.matrix .yes{ color:var(--ok); font-weight:700; }
+  table.matrix .no{ color:var(--line); }
+  table.matrix .partial{ color:var(--warn); font-weight:700; }
+
+  .legend{ display:flex; gap:18px; font-size:.78rem; color:var(--muted); margin-top:10px; flex-wrap:wrap; }
+  .legend span{ display:flex; align-items:center; gap:5px; }
+
+  .log-entry{
+    border-bottom:1px solid var(--line);
+    padding:10px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    font-size:.88rem;
+  }
+  .log-entry:last-child{ border-bottom:none; }
+  .log-entry .meta{ color:var(--muted); font-size:.78rem; margin-top:2px; }
+  .log-entry .text{ flex:1; }
+  .empty-state{ color:var(--muted); font-style:italic; font-size:.88rem; padding:14px 0; }
+
+  footer{
+    text-align:center;
+    padding:30px 20px;
+    color:var(--muted);
+    font-size:.8rem;
+  }
+  footer a{ color:var(--accent); }
+
+  @media print{
+    header.top nav, .banner, .tabs, button, .log-entry button{ display:none !important; }
+    .section{ box-shadow:none; border:1px solid #999; }
+    body{ background:#fff; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="logo">KLARTEXT</span>
+    <span class="sub">TK-Recruiting · Rollenlogik</span>
+  </div>
+  <nav>
+    <a href="TK-Recruiting.html">← Zur Bewerbungsübersicht</a>
+    <a href="TK_Landing.html">TK-Startseite</a>
+    <a href="DASHBOARD.html">Dashboard</a>
+  </nav>
+</header>
+
+<div class="banner">
+  <div class="icon">🧠</div>
+  <div class="text">
+    <strong>Brainy meint:</strong> Dieses Modul ergänzt TK-Recruiting um eine Matching-Score-Logik, eine Sichtbarkeitsmatrix für Bewerbungsdaten und ein Änderungsprotokoll. Score und Begründung sind ausschließlich für die TK-Sicht gedacht — Bewerber:innen und Schulen sehen diese Werte nicht.
+  </div>
+</div>
+
+<main>
+  <div class="module-title">
+    <h1>Recruiting · Rollenlogik</h1>
+    <span class="badge">TK-ANSICHT</span>
+  </div>
+  <div class="module-sub">Matching-Score · Sichtbarkeitsmatrix · Änderungsprotokoll — Erweiterung zu TK-Recruiting</div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="t1">📊 Matching-Score</button>
+    <button class="tab-btn" data-tab="t2">🔍 Sichtbarkeit</button>
+    <button class="tab-btn" data-tab="t3">📜 Audit-Log</button>
+    <button class="tab-btn" data-tab="t4">📋 Info</button>
+  </div>
+
+  <!-- ===================== TAB 1: MATCHING-SCORE ===================== -->
+  <div class="tab-panel active" id="t1">
+
+    <div class="section">
+      <h2><span class="num">1</span> Offene Stelle definieren</h2>
+      <div class="hint">Die Stellenparameter bestimmen, wie die Bewerber:innen-Scores berechnet werden. Änderungen wirken sich erst nach erneuter Berechnung aus.</div>
+
+      <div class="grid-2">
+        <div>
+          <label>Schulform</label>
+          <select id="stelleSchulform">
+            <option>Grundschule</option>
+            <option>Förderschule</option>
+            <option>weiterführende Schule</option>
+            <option>schulformübergreifend</option>
+          </select>
+        </div>
+        <div>
+          <label>Qualifikationsbedarf</label>
+          <select id="stelleQualifikation">
+            <option>keine besondere Qualifikation erforderlich</option>
+            <option>pädagogische Vorerfahrung erwünscht</option>
+            <option>pädagogische Ausbildung erforderlich</option>
+            <option>Erfahrung mit Förderbedarf erforderlich</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label>Verfügbarkeit / Zeitraum</label>
+          <input type="text" id="stelleZeitraum" placeholder="z.B. ab sofort, Vollzeit">
+        </div>
+        <div>
+          <label>Standort / Ort der Schule</label>
+          <input type="text" id="stelleOrt" placeholder="z.B. Schwerte">
+        </div>
+      </div>
+      <button class="primary" onclick="berechneScores()">Scores berechnen</button>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">2</span> Wie der Score zustande kommt</h2>
+      <div class="score-explain">
+        <div class="crit"><div class="pts">+40</div><div class="lbl">Qualifikation-Match</div></div>
+        <div class="crit"><div class="pts">+30</div><div class="lbl">Verfügbarkeit / Zeitraum</div></div>
+        <div class="crit"><div class="pts">+20</div><div class="lbl">Schulform-Erfahrung</div></div>
+        <div class="crit"><div class="pts">+10</div><div class="lbl">Standortnähe</div></div>
+      </div>
+      <div class="hint">Maximal erreichbar: <strong>100 Punkte</strong>. Die Gewichtung ist bewusst transparent gehalten, damit TK-Entscheidungen nachvollziehbar bleiben — Score ersetzt keine fachliche Einschätzung aus dem Gespräch.</div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">3</span> Bewerber:innen erfassen</h2>
+      <div class="grid-3">
+        <div>
+          <label>Name / Kürzel</label>
+          <input type="text" id="bewName" placeholder="z.B. Bewerber:in A">
+        </div>
+        <div>
+          <label>Qualifikation</label>
+          <select id="bewQualifikation">
+            <option>keine</option>
+            <option>pädagogische Vorerfahrung</option>
+            <option>pädagogische Ausbildung</option>
+            <option>Erfahrung mit Förderbedarf</option>
+          </select>
+        </div>
+        <div>
+          <label>Verfügbar passend zum Zeitraum?</label>
+          <select id="bewVerfuegbar">
+            <option value="ja">ja, passt</option>
+            <option value="teilweise">teilweise</option>
+            <option value="nein">nein</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div>
+          <label>Schulform-Erfahrung</label>
+          <select id="bewSchulform">
+            <option>keine</option>
+            <option>Grundschule</option>
+            <option>Förderschule</option>
+            <option>weiterführende Schule</option>
+            <option>mehrere Schulformen</option>
+          </select>
+        </div>
+        <div>
+          <label>Wohnort / Entfernung zur Schule</label>
+          <select id="bewEntfernung">
+            <option value="nah">gleicher Ort / sehr nah</option>
+            <option value="mittel">gleiche Region</option>
+            <option value="weit">weiter entfernt</option>
+          </select>
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button class="primary" style="margin-top:0;width:100%;" onclick="bewerberHinzufuegen()">+ Bewerber:in hinzufügen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">4</span> Rangliste (Top-Kandidat:innen)</h2>
+      <div class="hint">Nur TK sieht Score und Begründung. Schulen und Bewerber:innen erhalten ausschließlich das Ergebnis der Entscheidung, keine Punktzahl.</div>
+      <div id="kandidatenListe"><div class="empty-state">Noch keine Bewerber:innen erfasst.</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 2: SICHTBARKEIT ===================== -->
+  <div class="tab-panel" id="t2">
+    <div class="section">
+      <h2><span class="num">1</span> Sichtbarkeitsmatrix Bewerbungsdaten</h2>
+      <div class="hint">Diese Tabelle ist rein informativ und dokumentiert die Datenschutz-Regeln für Bewerbungsdaten. Sie ersetzt kein echtes Rollen-/Login-System.</div>
+
+      <table class="matrix">
+        <tr>
+          <th>Feld</th>
+          <th>TK</th>
+          <th>TK-Leitung</th>
+          <th>Schule</th>
+          <th>Bewerber:in selbst</th>
+        </tr>
+        <tr>
+          <td>Kontaktdaten</td>
+          <td class="yes">●</td><td class="yes">●</td><td class="partial">teilw.</td><td class="yes">●</td>
+        </tr>
+        <tr>
+          <td>Gesprächsnotizen</td>
+          <td class="yes">●</td><td class="yes">●</td><td class="no">—</td><td class="no">—</td>
+        </tr>
+        <tr>
+          <td>Risiko-Ampel</td>
+          <td class="yes">●</td><td class="yes">●</td><td class="no">—</td><td class="no">—</td>
+        </tr>
+        <tr>
+          <td>Matching-Score</td>
+          <td class="yes">●</td><td class="yes">●</td><td class="no">—</td><td class="no">—</td>
+        </tr>
+        <tr>
+          <td>Interne Vermerke</td>
+          <td class="yes">●</td><td class="yes">●</td><td class="no">—</td><td class="no">—</td>
+        </tr>
+        <tr>
+          <td>Entscheidung (Ergebnis)</td>
+          <td class="yes">●</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td>
+        </tr>
+      </table>
+
+      <div class="legend">
+        <span><span class="yes">●</span> volle Sicht</span>
+        <span><span class="partial">teilw.</span> eingeschränkte Sicht</span>
+        <span><span class="no">—</span> keine Sicht</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 3: AUDIT-LOG ===================== -->
+  <div class="tab-panel" id="t3">
+    <div class="section">
+      <h2><span class="num">1</span> Neuer Protokolleintrag</h2>
+      <div class="grid-2">
+        <div>
+          <label>TK-Kürzel</label>
+          <input type="text" id="logKuerzel" placeholder="z.B. TK-3" maxlength="12">
+        </div>
+        <div>
+          <label>Bewerbung / Bewerber:in (Referenz)</label>
+          <input type="text" id="logRef" placeholder="z.B. Bewerber:in A">
+        </div>
+      </div>
+      <label>Aktion</label>
+      <input type="text" id="logAktion" placeholder='z.B. "Votum geändert von Bedingt auf Ja"'>
+      <button class="primary" onclick="logHinzufuegen()">Eintrag speichern</button>
+    </div>
+
+    <div class="section">
+      <h2><span class="num">2</span> Protokoll (neueste zuerst)</h2>
+      <div id="auditListe"><div class="empty-state">Noch keine Einträge.</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 4: INFO ===================== -->
+  <div class="tab-panel" id="t4">
+    <div class="section">
+      <h2><span class="num">i</span> Über dieses Modul</h2>
+      <p>TK-Recruiting_Rollenlogik überträgt das Prinzip der Vertretungssuche (Filterlogik, Score-Ranking, Sichtbarkeitsregeln, Audit-Log) sinngemäß auf den Bewerbungsprozess. Der Hintergrund: bei der Vertretungssuche besteht ein Matching-Problem ("viele INGRAs, eine Vertretungsstelle") — strukturell vergleichbar ist beim Recruiting "viele Bewerber:innen, eine Stelle".</p>
+      <p>Im Unterschied zur Vertretungssuche ist hier <strong>kein Multi-Rollen-Login</strong> erforderlich; die Score-Ansicht ist grundsätzlich eine reine TK-Sicht und wird entsprechend gekennzeichnet.</p>
+      <p>Dieses Modul verändert keine bestehende Datei. Es ist eine eigenständige Ergänzung, erreichbar über einen Zusatzlink von TK_Landing.html.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:10px;">
+    <button class="secondary" onclick="window.print()">🖨️ Drucken</button>
+  </div>
+</main>
+
+<footer>
+  KLARTEXT · TK-Recruiting Rollenlogik · <a href="TK_Landing.html">zurück zur TK-Startseite</a>
+</footer>
+
+<script>
+  // --- Tabs ---
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  const LS_PREFIX = 'tkr-rollen-';
+  const LS_KANDIDATEN = LS_PREFIX + 'kandidaten';
+  const LS_STELLE = LS_PREFIX + 'stelle';
+  const LS_AUDITLOG = LS_PREFIX + 'auditlog';
+
+  function ladeJSON(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    }catch(e){ return fallback; }
+  }
+  function speichereJSON(key, data){
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  // --- Bewerber:innen erfassen & Score berechnen ---
+  function bewerberHinzufuegen(){
+    const name = document.getElementById('bewName').value.trim();
+    if(!name){ alert('Bitte einen Namen / ein Kürzel eingeben.'); return; }
+
+    const kandidat = {
+      id: Date.now(),
+      name: name,
+      qualifikation: document.getElementById('bewQualifikation').value,
+      verfuegbar: document.getElementById('bewVerfuegbar').value,
+      schulform: document.getElementById('bewSchulform').value,
+      entfernung: document.getElementById('bewEntfernung').value
+    };
+
+    const liste = ladeJSON(LS_KANDIDATEN, []);
+    liste.push(kandidat);
+    speichereJSON(LS_KANDIDATEN, liste);
+
+    document.getElementById('bewName').value = '';
+    berechneScores();
+  }
+
+  // Score-Logik (transparent, siehe Bereich 2):
+  // Qualifikation-Match: +40 | Verfügbarkeit: +30 | Schulform-Erfahrung: +20 | Standortnähe: +10
+  function berechneScore(stelle, k){
+    let score = 0;
+    let begruendung = [];
+
+    // Qualifikation-Match (+40)
+    const qualRang = {
+      'keine':0,
+      'pädagogische Vorerfahrung':1,
+      'pädagogische Ausbildung':2,
+      'Erfahrung mit Förderbedarf':3
+    };
+    const stelleQual = stelle.qualifikation || '';
+    if(stelleQual.includes('keine') || (qualRang[k.qualifikation]||0) >= 1){
+      score += 40;
+      begruendung.push('Qualifikation passend (+40)');
+    } else {
+      begruendung.push('Qualifikation nicht ausreichend (+0)');
+    }
+
+    // Verfügbarkeit (+30)
+    if(k.verfuegbar === 'ja'){ score += 30; begruendung.push('Verfügbarkeit passt vollständig (+30)'); }
+    else if(k.verfuegbar === 'teilweise'){ score += 15; begruendung.push('Verfügbarkeit teilweise passend (+15)'); }
+    else { begruendung.push('Verfügbarkeit passt nicht (+0)'); }
+
+    // Schulform-Erfahrung (+20)
+    if(k.schulform !== 'keine' && (k.schulform === stelle.schulform || k.schulform === 'mehrere Schulformen')){
+      score += 20; begruendung.push('Schulform-Erfahrung vorhanden (+20)');
+    } else if(k.schulform !== 'keine'){
+      score += 8; begruendung.push('andere Schulform-Erfahrung vorhanden (+8)');
+    } else {
+      begruendung.push('keine Schulform-Erfahrung (+0)');
+    }
+
+    // Standortnähe (+10)
+    if(k.entfernung === 'nah'){ score += 10; begruendung.push('Standort sehr nah (+10)'); }
+    else if(k.entfernung === 'mittel'){ score += 5; begruendung.push('Standort in der Region (+5)'); }
+    else { begruendung.push('Standort weiter entfernt (+0)'); }
+
+    return { score, begruendung };
+  }
+
+  function berechneScores(){
+    const stelle = {
+      schulform: document.getElementById('stelleSchulform').value,
+      qualifikation: document.getElementById('stelleQualifikation').value,
+      zeitraum: document.getElementById('stelleZeitraum').value,
+      ort: document.getElementById('stelleOrt').value
+    };
+    speichereJSON(LS_STELLE, stelle);
+
+    const liste = ladeJSON(LS_KANDIDATEN, []);
+    const container = document.getElementById('kandidatenListe');
+
+    if(liste.length === 0){
+      container.innerHTML = '<div class="empty-state">Noch keine Bewerber:innen erfasst.</div>';
+      return;
+    }
+
+    const bewertet = liste.map(k=>{
+      const { score, begruendung } = berechneScore(stelle, k);
+      return { ...k, score, begruendung };
+    }).sort((a,b)=> b.score - a.score);
+
+    container.innerHTML = bewertet.map((k, i)=>{
+      const scoreClass = k.score >= 70 ? '' : (k.score >= 40 ? 'mid' : 'low');
+      return `
+        <div class="candidate-row">
+          <div class="rank">${i+1}.</div>
+          <div class="info">
+            <div class="name">${escapeHTML(k.name)}</div>
+            <div class="tags">
+              <span>${escapeHTML(k.qualifikation)}</span>
+              <span>${escapeHTML(k.schulform)}</span>
+              <span>${k.entfernung === 'nah' ? 'nah' : k.entfernung === 'mittel' ? 'Region' : 'entfernt'}</span>
+            </div>
+            <div class="tags" style="margin-top:6px;color:var(--muted);">${k.begruendung.join(' · ')}</div>
+          </div>
+          <div class="score-badge ${scoreClass}">${k.score}</div>
+          <button class="secondary" onclick="bestaetigen('${escapeHTML(k.name)}', ${k.score})">Bestätigen</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function bestaetigen(name, score){
+    const kuerzel = prompt('TK-Kürzel für das Audit-Log:', '');
+    if(kuerzel === null) return;
+    const liste = ladeJSON(LS_AUDITLOG, []);
+    liste.unshift({
+      id: Date.now(),
+      datum: new Date().toLocaleString('de-DE'),
+      kuerzel: kuerzel || '—',
+      ref: name,
+      aktion: `Bewerbung bestätigt (Score ${score})`
+    });
+    speichereJSON(LS_AUDITLOG, liste);
+    renderAuditLog();
+    alert('Bestätigung im Audit-Log vermerkt.');
+  }
+
+  function escapeHTML(str){
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  // --- Audit-Log ---
+  function logHinzufuegen(){
+    const kuerzel = document.getElementById('logKuerzel').value.trim();
+    const ref = document.getElementById('logRef').value.trim();
+    const aktion = document.getElementById('logAktion').value.trim();
+
+    if(!kuerzel || !aktion){
+      alert('Bitte mindestens TK-Kürzel und Aktion angeben.');
+      return;
+    }
+
+    const liste = ladeJSON(LS_AUDITLOG, []);
+    liste.unshift({
+      id: Date.now(),
+      datum: new Date().toLocaleString('de-DE'),
+      kuerzel, ref: ref || '—', aktion
+    });
+    speichereJSON(LS_AUDITLOG, liste);
+
+    document.getElementById('logKuerzel').value = '';
+    document.getElementById('logRef').value = '';
+    document.getElementById('logAktion').value = '';
+
+    renderAuditLog();
+  }
+
+  function logLoeschen(id){
+    if(!confirm('Diesen Protokolleintrag wirklich löschen?')) return;
+    let liste = ladeJSON(LS_AUDITLOG, []);
+    liste = liste.filter(e=>e.id !== id);
+    speichereJSON(LS_AUDITLOG, liste);
+    renderAuditLog();
+  }
+
+  function renderAuditLog(){
+    const liste = ladeJSON(LS_AUDITLOG, []);
+    const container = document.getElementById('auditListe');
+    if(liste.length === 0){
+      container.innerHTML = '<div class="empty-state">Noch keine Einträge.</div>';
+      return;
+    }
+    container.innerHTML = liste.map(e=>`
+      <div class="log-entry">
+        <div class="text">
+          <strong>${escapeHTML(e.ref)}</strong> — ${escapeHTML(e.aktion)}
+          <div class="meta">${escapeHTML(e.datum)} · ${escapeHTML(e.kuerzel)}</div>
+        </div>
+        <button class="danger-link" onclick="logLoeschen(${e.id})">löschen</button>
+      </div>
+    `).join('');
+  }
+
+  // --- Init ---
+  (function init(){
+    const stelle = ladeJSON(LS_STELLE, null);
+    if(stelle){
+      document.getElementById('stelleSchulform').value = stelle.schulform || 'Grundschule';
+      document.getElementById('stelleQualifikation').value = stelle.qualifikation || 'keine besondere Qualifikation erforderlich';
+      document.getElementById('stelleZeitraum').value = stelle.zeitraum || '';
+      document.getElementById('stelleOrt').value = stelle.ort || '';
+    }
+    berechneScores();
+    renderAuditLog();
+  })();
+</script>
+
+</body>
+</html>

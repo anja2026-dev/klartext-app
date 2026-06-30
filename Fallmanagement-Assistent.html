@@ -367,6 +367,7 @@ footer strong{color:var(--kt-accent);}
         <button class="act-btn primary" onclick="speichernFile()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
         <button class="act-btn ghost" onclick="formReset('file-form')">↺ Zurücksetzen</button>
+        <button class="act-btn" onclick="fwWeiterleiten('fm01')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -444,6 +445,7 @@ footer strong{color:var(--kt-accent);}
         <button class="act-btn primary" onclick="speichernRisk()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
         <button class="act-btn ghost" onclick="formReset('risk-form')">↺ Zurücksetzen</button>
+        <button class="act-btn" onclick="fwWeiterleiten('fm02')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -509,6 +511,7 @@ footer strong{color:var(--kt-accent);}
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernAction()">💾 Maßnahme speichern</button>
         <button class="act-btn ghost" onclick="formReset('akt-form')">↺ Zurücksetzen</button>
+        <button class="act-btn" onclick="fwWeiterleiten('fm03')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -557,6 +560,7 @@ footer strong{color:var(--kt-accent);}
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernTimeline()">💾 Eintrag speichern</button>
         <button class="act-btn ghost" onclick="formReset('tl-form')">↺ Zurücksetzen</button>
+        <button class="act-btn" onclick="fwWeiterleiten('fm04')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -628,6 +632,7 @@ footer strong{color:var(--kt-accent);}
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernBarometer()">💾 Eintrag speichern</button>
         <button class="act-btn ghost" onclick="formReset('bar-form')">↺ Zurücksetzen</button>
+        <button class="act-btn" onclick="fwWeiterleiten('fm05')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -690,6 +695,7 @@ footer strong{color:var(--kt-accent);}
     <div class="form-actions">
       <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
       <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
+      <button class="act-btn" onclick="fwWeiterleiten('fm06')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
     </div>
 
     <div class="unter-nav">
@@ -1077,6 +1083,155 @@ document.addEventListener('DOMContentLoaded', function() {
   renderTimeline();
   renderBarometer();
 });
+</script>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- WEITERLEITUNGS-OVERLAY -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="fw-overlay" style="display:none;position:fixed;inset:0;background:rgba(27,58,75,.82);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:380px;width:100%;text-align:center;border-top:4px solid var(--fm-color);box-shadow:0 8px 32px rgba(0,0,0,.25);">
+    <div style="font-size:2.2rem;margin-bottom:.6rem;">✅</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--kt-primary);font-weight:700;margin-bottom:.5rem;">Weiterleitung gespeichert</div>
+    <div style="font-size:.84rem;color:var(--kt-muted);line-height:1.55;margin-bottom:1.4rem;" id="fw-overlay-text">Die Daten wurden an TK weitergeleitet.</div>
+    <button onclick="document.getElementById('fw-overlay').style.display='none';"
+      style="background:var(--fm-color);color:#fff;border:none;border-radius:10px;padding:.65rem 1.75rem;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;">
+      Schließen
+    </button>
+  </div>
+</div>
+
+<script>
+// ── WEITERLEITUNGS-SYSTEM ─────────────────────────────────────
+// Goldene Regel: type, context, text IMMER gesetzt
+// Key: kt_forward
+
+var FW_MODUL_LABELS = {
+  fm01: 'FM 01 · Fallakte',
+  fm02: 'FM 02 · Risiko-Ampel',
+  fm03: 'FM 03 · Maßnahmenplan',
+  fm04: 'FM 04 · Verlauf / Chronik',
+  fm05: 'FM 05 · Tages-Barometer',
+  fm06: 'FM 06 · PDF-Fallakte'
+};
+
+function fwHeuteDatum() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function fwGetList() {
+  try { return JSON.parse(localStorage.getItem('kt_forward') || '[]'); } catch(e) { return []; }
+}
+
+function fwSave(list) {
+  try { localStorage.setItem('kt_forward', JSON.stringify(list)); } catch(e) {}
+}
+
+function fwZeigeOverlay(modul) {
+  var label = FW_MODUL_LABELS[modul] || modul;
+  document.getElementById('fw-overlay-text').textContent =
+    label + ' wurde erfolgreich an den TK-Bereich weitergeleitet.';
+  var ov = document.getElementById('fw-overlay');
+  ov.style.display = 'flex';
+}
+
+function fwEintrag(modul, text, payload) {
+  return {
+    id:      'fw' + Date.now(),
+    type:    'fallmanagement',
+    context: 'fallmanagement',
+    modul:   modul,
+    text:    text,
+    payload: payload,
+    datum:   fwHeuteDatum()
+  };
+}
+
+function fwWeiterleiten(modul) {
+  var list = fwGetList();
+  var eintrag;
+
+  if (modul === 'fm01') {
+    // FM 01 · Fallakte
+    var name         = (document.getElementById('f-name')          || {}).value || '';
+    var klasse       = (document.getElementById('f-klasse')        || {}).value || '';
+    var geburt       = (document.getElementById('f-geburt')        || {}).value || '';
+    var bezug        = (document.getElementById('f-bezug')         || {}).value || '';
+    var besonders    = (document.getElementById('f-besonders')     || {}).value || '';
+    var ziele        = (document.getElementById('f-ziele')         || {}).value || '';
+    var ressourcen   = (document.getElementById('f-ressourcen')    || {}).value || '';
+    eintrag = fwEintrag('FM-01', 'Fallakte: ' + (name || '(kein Name)'), {
+      name: name, klasse: klasse, geburtsdatum: geburt,
+      bezugsperson: bezug, besonderheiten: besonders,
+      ziele: ziele, ressourcen: ressourcen
+    });
+
+  } else if (modul === 'fm02') {
+    // FM 02 · Risiko-Ampel
+    var ampel  = (document.getElementById('r-ampel')  || {}).value || '';
+    var datum  = (document.getElementById('r-datum')  || {}).value || fwHeuteDatum();
+    var person = (document.getElementById('r-person') || {}).value || '';
+    var begr   = (document.getElementById('r-begruendung') || {}).value || '';
+    var kriterien = [];
+    document.querySelectorAll('#risk-form input[type="checkbox"]:checked').forEach(function(cb) {
+      kriterien.push(cb.value || cb.name || cb.id);
+    });
+    eintrag = fwEintrag('FM-02', 'Risiko-Ampel: ' + (ampel || '—') + ' · ' + datum, {
+      datum: datum, gesamtampel: ampel,
+      einzelkriterien: kriterien,
+      einschaetzendePerson: person,
+      begruendung: begr
+    });
+
+  } else if (modul === 'fm03') {
+    // FM 03 · Maßnahmenplan
+    var actions = ls_get('fm-actions', []);
+    var liste = actions.map(function(a) {
+      return { titel: a.massnahme, verantwortlich: a.verantwortlich, status: a.status };
+    });
+    eintrag = fwEintrag('FM-03', 'Maßnahmenplan: ' + liste.length + ' Maßnahme(n)', {
+      massnahmeliste: liste
+    });
+
+  } else if (modul === 'fm04') {
+    // FM 04 · Verlauf / Chronik
+    var timeline = ls_get('fm-timeline', []);
+    var eintraege = timeline.map(function(t) {
+      return { datum: t.datum, ereignis: t.ereignis, beobachtung: t.beobachtung };
+    });
+    eintrag = fwEintrag('FM-04', 'Chronik: ' + eintraege.length + ' Eintrag/Einträge', {
+      chronikEintraege: eintraege
+    });
+
+  } else if (modul === 'fm05') {
+    // FM 05 · Tages-Barometer
+    var bDatum    = (document.getElementById('b-datum')   || {}).value || fwHeuteDatum();
+    var bStimmung = (document.getElementById('b-stimmung')|| {}).value || '';
+    var bBelast   = (document.getElementById('b-belast')  || {}).value || '';
+    var bNotiz    = (document.getElementById('b-notiz')   || {}).value || '';
+    eintrag = fwEintrag('FM-05', 'Barometer: Stimmung ' + (bStimmung || '—') + ' · ' + bDatum, {
+      datum: bDatum, stimmung: bStimmung,
+      belastung: bBelast, notizen: bNotiz
+    });
+
+  } else if (modul === 'fm06') {
+    // FM 06 · PDF-Fallakte
+    var pdfEl    = document.getElementById('pdf-inhalt');
+    var pdfText  = pdfEl ? pdfEl.innerText : '';
+    var caseFile = ls_get('fm-caseFile', {});
+    var titel    = 'Fallakte' + (caseFile.name ? ': ' + caseFile.name : '');
+    eintrag = fwEintrag('FM-06', 'PDF-Fallakte: ' + titel, {
+      titel:  titel,
+      datum:  fwHeuteDatum(),
+      inhalt: pdfText.substring(0, 3000) // max 3000 Zeichen
+    });
+  }
+
+  if (eintrag) {
+    list.push(eintrag);
+    fwSave(list);
+    fwZeigeOverlay(modul);
+  }
+}
 </script>
 </body>
 </html>

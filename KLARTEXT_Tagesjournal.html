@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLARTEXT · Tagesjournal</title>
-<script src="./firebase.js"></script>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+
 <style>
   :root{
     --navy:#1B3A4B;
@@ -275,8 +280,10 @@
     <p>Dieser Leselink wurde erzeugt und kann geteilt werden.</p>
     <span class="overlay-link" id="overlayLinkText">–</span>
     <div class="overlay-btn-row">
-      <button class="kt-btn klein" onclick="leselinkKopieren()">📋 Kopieren</button>
+      <button class="kt-btn klein" onclick="leselinkKopieren()">🔗 Leselink kopieren</button>
       <button class="kt-btn klein primary" onclick="overlaySchliessen()">✓ Schließen</button>
+    </div>
+    <div id="overlayKopierBestaetigung" style="font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.4rem;opacity:0;transition:opacity .25s;">Link kopiert!</div>
     </div>
   </div>
 </div>
@@ -297,50 +304,31 @@
 
   // ───────────────────────────────────────────
   // Kinderliste dynamisch aus /children laden
+  // (exakt nach Muster KLARTEXT_Weiterleiten.html)
   // ───────────────────────────────────────────
   function kinderListeLaden(){
     var select = document.getElementById('kindSelect');
-    function rendern(kinder){
-      select.innerHTML = '';
-      if(!kinder || !kinder.length){
-        select.innerHTML = '<option value="">Keine Kinder gefunden</option>';
-        return;
-      }
-      kinder.forEach(function(k){
-        var opt = document.createElement('option');
-        opt.value = k.id || k.childId || k.key;
-        opt.textContent = k.name || k.id || 'Kind';
-        select.appendChild(opt);
+    db.ref('children').once('value').then(function(snapshot){
+      var kinder = snapshot.val() || {};
+      select.innerHTML = '<option value="">Bitte wählen …</option>';
+      Object.keys(kinder).forEach(function(childId){
+        var kind = kinder[childId];
+        if(kind.active === false) return; // inaktive Kinder nicht anzeigen
+        var option = document.createElement('option');
+        option.value = childId;
+        option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+        select.appendChild(option);
       });
-      aktuellerKindId = select.value;
       journalListeRendern();
       wocheRendern();
-    }
-
-    try{
-      if(window.firebaseDB && typeof window.firebaseDB.loadChildren === 'function'){
-        window.firebaseDB.loadChildren(function(kinder){ rendern(kinder); });
-        return;
+    }).catch(function(error){
+      select.innerHTML = '<option value="">Kinderliste konnte nicht geladen werden</option>';
+      var statusEl = document.getElementById('statusSpeichern');
+      if(statusEl){
+        statusEl.textContent = '⚠ Kinderliste konnte nicht geladen werden: ' + error.message;
+        statusEl.className = 'kt-status err';
       }
-      if(typeof window.loadChildren === 'function'){
-        window.loadChildren('/children', function(kinder){ rendern(kinder); });
-        return;
-      }
-      if(window.firebase && firebase.database){
-        firebase.database().ref('/children').once('value').then(function(snap){
-          var daten = snap.val() || {};
-          var kinder = Object.keys(daten).map(function(id){
-            var k = daten[id] || {};
-            return { id:id, name:k.name || id };
-          });
-          rendern(kinder);
-        }).catch(function(){ rendern([]); });
-        return;
-      }
-    }catch(e){ /* Firebase nicht verfügbar */ }
-
-    // Fallback: keine Verbindung möglich
-    select.innerHTML = '<option value="">Keine Verbindung zu /children</option>';
+    });
   }
 
   document.getElementById('kindSelect').addEventListener('change', function(){
@@ -348,6 +336,11 @@
     journalListeRendern();
     wocheRendern();
   });
+
+  // aktuellerKindId beim Laden aus Select übernehmen (nach Firebase-Callback)
+  function kindSelectAktualisieren(){
+    aktuellerKindId = document.getElementById('kindSelect').value;
+  }
 
   // ───────────────────────────────────────────
   // Barometer
@@ -422,15 +415,8 @@
 
   function firebaseSpeichern(eintrag){
     try{
-      var pfad = '/tagesjournal/' + (eintrag.childId || 'unbekannt');
-      if(window.firebaseDB && typeof window.firebaseDB.push === 'function'){
-        window.firebaseDB.push(pfad, eintrag);
-        return;
-      }
-      if(window.firebase && firebase.database){
-        firebase.database().ref(pfad).push(eintrag);
-        return;
-      }
+      var pfad = 'tagesjournal/' + (eintrag.childId || 'unbekannt');
+      db.ref(pfad).push(eintrag);
     }catch(e){ /* Firebase nicht verfügbar – lokale Speicherung bleibt bestehen */ }
   }
 
@@ -448,41 +434,39 @@
     }
 
     var datum = heuteISO();
-    var payload = {
-      context: 'tagesjournal',
-      type: 'tagesjournal',
+    var fromRole = sessionStorage.getItem('klartext_role') || 'ingra';
+    var fromUser = fromRole + '-demo';
+
+    var forwardDaten = {
+      fromUser: fromUser,
+      fromRole: fromRole,
+      targetRole: 'tk',
       childId: aktuellerKindId || '',
-      text: 'Tagesjournal ' + datum
+      type: 'tagesjournal',
+      text: 'Tagesjournal ' + datum + ' – Übergabe: ' + text
     };
 
-    var leselink = '';
-    try{
-      if(typeof window.sendForward === 'function'){
-        leselink = window.sendForward(payload) || '';
-      } else if(window.firebase && firebase.database){
-        var ref = firebase.database().ref('/forward').push();
-        ref.set(Object.assign({}, payload, {
-          ts: Date.now(),
-          uebergabeText: text
-        }));
-        leselink = window.location.origin + window.location.pathname + '#forward=' + ref.key;
-      }
-    }catch(e){ /* Firebase nicht verfügbar */ }
-
-    if(!leselink){
-      leselink = window.location.origin + window.location.pathname + '#tagesjournal=' + datum;
-    }
-
-    statusEl.textContent = '✓ Übergabe an TK weitergeleitet.';
-    statusEl.className = 'kt-status ok';
-
-    leselinkAnzeigen(leselink);
+    sendForward(forwardDaten)
+      .then(function(ref){
+        letzteForwardId = ref.key;
+        statusEl.textContent = '✓ Übergabe an TK weitergeleitet.';
+        statusEl.className = 'kt-status ok';
+        leselinkAnzeigen(letzteForwardId);
+      })
+      .catch(function(error){
+        statusEl.textContent = '⚠ Fehler beim Weiterleiten: ' + error.message;
+        statusEl.className = 'kt-status err';
+      });
   };
 
   // ───────────────────────────────────────────
-  // Leselink-Overlay
+  // Leselink-Overlay (wie KLARTEXT_Weiterleiten.html)
   // ───────────────────────────────────────────
-  function leselinkAnzeigen(link){
+  var letzteForwardId = null;
+
+  function leselinkAnzeigen(forwardId){
+    var basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+    var link = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + forwardId;
     document.getElementById('overlayLinkText').textContent = link;
     document.getElementById('overlayLeselink').classList.add('aktiv');
   }
@@ -491,11 +475,12 @@
   };
   window.leselinkKopieren = function(){
     var text = document.getElementById('overlayLinkText').textContent;
-    if(navigator.clipboard){
-      navigator.clipboard.writeText(text).then(function(){
-        alert('Link kopiert.');
-      }).catch(function(){ /* still */ });
-    }
+    navigator.clipboard.writeText(text).then(function(){
+      var best = document.getElementById('overlayKopierBestaetigung');
+      if(best){ best.style.opacity='1'; setTimeout(function(){ best.style.opacity='0'; }, 2500); }
+    }).catch(function(){
+      prompt('Bitte manuell kopieren:', text);
+    });
   };
 
   // ───────────────────────────────────────────

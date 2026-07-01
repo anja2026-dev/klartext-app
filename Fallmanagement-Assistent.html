@@ -234,12 +234,12 @@ footer strong{color:var(--kt-accent);}
   </nav>
 </header>
 
-<div class="brainy-banner">
-  <div class="brainy-face">🧠</div>
+<div class="brainy-banner" style="background:linear-gradient(135deg,#1B3A4B,#2A5570);border-bottom:2px solid rgba(110,198,160,.35);">
+  <div class="brainy-face" style="border-color:rgba(110,198,160,.5);">🧠</div>
   <div class="brainy-text">
-    <span class="brainy-label">Brainy · Fallmanagement-Modus</span>
+    <span class="brainy-label" style="color:#6EC6A0;">Brainy · Fallmanagement</span>
     <p class="brainy-msg">
-      <strong>Brainy unterstützt TK</strong> beim strukturierten Fallmanagement – mit Reflexionsfragen, Risikohinweisen, Maßnahmenimpulsen und Weiterleitungen.
+      <strong style="color:#B2E8D0;">Brainy begleitet TK</strong> beim strukturierten Fallmanagement – mit Reflexionsfragen, Risikohinweisen und Weiterleitungen an den TK-Bereich.
     </p>
   </div>
 </div>
@@ -307,7 +307,7 @@ footer strong{color:var(--kt-accent);}
     <div class="brainy-box" style="margin-top:1.2rem;">
       <div class="brainy-box-icon">🧠</div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <span class="brainy-box-label">Brainy · Fallmanagement</span>
         <p class="brainy-box-text">Alle Daten werden lokal gespeichert (localStorage). Für die Weitergabe steht der PDF-Export mit Druckfunktion zur Verfügung.</p>
       </div>
     </div>
@@ -327,7 +327,7 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="file-info">
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">📁</span><span class="karte-header-titel">Was gehört in die Fallakte?</span></div><div class="karte-body"><ul class="stw-list"><li><strong>Stammdaten:</strong> Name, Klasse/Gruppe, Geburtsdatum, Bezugsperson</li><li><strong>Besonderheiten:</strong> relevante Hintergründe, neutral formuliert</li><li><strong>Ziele:</strong> konkrete, überprüfbare Zielformulierungen</li><li><strong>Ressourcen:</strong> Stärken, Unterstützungssystem, vorhandene Hilfen</li></ul></div></div>
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">🔒</span><span class="karte-header-titel">Datenschutz</span></div><div class="karte-body"><ul class="stw-list"><li>Nur zweckbezogene Daten erfassen</li><li>Keine Weitergabe ohne Einwilligung der Bezugspersonen</li><li>Zugriff auf autorisierte TK beschränken</li></ul></div></div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="file-form">
@@ -362,7 +362,7 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Ressourcen</label><textarea id="f-ressourcen" placeholder="Stärken, Unterstützungssystem, vorhandene Hilfen …"></textarea></div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Beobachtungsbasiert dokumentieren – keine Wertungen. Ziele konkret und überprüfbar formulieren.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Beobachtungsbasiert dokumentieren – keine Wertungen. Ziele konkret und überprüfbar formulieren.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernFile()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
@@ -391,7 +391,7 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="risk-info">
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Ampel-Bedeutung</span></div><div class="karte-body"><div class="ampel" style="flex-direction:column;gap:.5rem;"><span class="ampel-chip gruen" style="justify-content:flex-start;">✔ Grün – Situation stabil, kein akuter Handlungsbedarf</span><span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span><span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – akuter Handlungsbedarf, sofortige Maßnahmen</span></div></div></div>
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Einschätzungskriterien (neutral)</span></div><div class="karte-body"><ul class="stw-list"><li>Verhaltensauffälligkeiten: Häufigkeit, Intensität, Kontext</li><li>Soziale Einbindung: Peer-Kontakte, Teamfähigkeit, Isolation</li><li>Emotionale Stabilität: Stimmungsschwankungen, Belastbarkeit</li><li>Lern- und Teilhabemöglichkeiten: Zugänglichkeit, Förderung</li><li>Familiäres Umfeld: Kooperation Bezugspersonen, Unterstützung</li><li>Eigen-/Fremdgefährdung: akute Hinweise vorhanden?</li></ul></div></div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Leitung."</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Leitung."</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="risk-form">
@@ -440,7 +440,7 @@ footer strong{color:var(--kt-accent);}
           </div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden. Sofort Rücksprache mit TK-Leitung und Weiterleitung dokumentieren.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden. Sofort Rücksprache mit TK-Leitung und Weiterleitung dokumentieren.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernRisk()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
@@ -480,7 +480,7 @@ footer strong{color:var(--kt-accent);}
           </a>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="akt-form">
@@ -507,7 +507,7 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Notiz</label><textarea id="a-notiz" placeholder="Kurze Ergänzung / Rückmeldung …"></textarea></div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Maßnahmen ohne klare Verantwortung bleiben oft liegen – immer eine Person konkret benennen.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Maßnahmen ohne klare Verantwortung bleiben oft liegen – immer eine Person konkret benennen.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernAction()">💾 Maßnahme speichern</button>
         <button class="act-btn ghost" onclick="formReset('akt-form')">↺ Zurücksetzen</button>
@@ -556,7 +556,7 @@ footer strong{color:var(--kt-accent);}
         </div>
       </div>
       <div class="hinweis">Beobachtungsbasiert, zeitnah, neutral formuliert – keine Interpretationen als Tatsachen.</div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em></p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernTimeline()">💾 Eintrag speichern</button>
         <button class="act-btn ghost" onclick="formReset('tl-form')">↺ Zurücksetzen</button>
@@ -628,7 +628,7 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Kurznotiz</label><input type="text" id="b-notiz" placeholder="Ein Satz zum Tag (optional)"></div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em></p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernBarometer()">💾 Eintrag speichern</button>
         <button class="act-btn ghost" onclick="formReset('bar-form')">↺ Zurücksetzen</button>
@@ -682,7 +682,7 @@ footer strong{color:var(--kt-accent);}
       <div class="form-body">
         <div class="fld"><label>Weiterleiten an</label>
           <div class="wl-group">
-            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="tkleitung"> 👩‍💼 TK-Leitung</label>
+            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="tk-bereich"> 🗂️ TK-Bereich</label>
             <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="fachberatung"> 🩺 Fachberatung</label>
             <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="akte"> 📂 Fallakte (Archiv)</label>
           </div>
@@ -690,7 +690,7 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
-    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Wer bekommt dieses Dokument – und ist die Weitergabe datenschutzkonform?"</em></p></div></div>
+    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Wer bekommt dieses Dokument – und ist die Weitergabe datenschutzkonform?"</em></p></div></div>
 
     <div class="form-actions">
       <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
@@ -729,7 +729,7 @@ footer strong{color:var(--kt-accent);}
         <ul class="stw-list">
           <li>Beobachtungen statt Bewertungen – sachlich, neutral, nachvollziehbar</li>
           <li>Zeitnah dokumentieren – möglichst am gleichen Tag</li>
-          <li>Ampel-Rot: immer Rücksprache mit TK-Leitung, nie allein entscheiden</li>
+          <li>Ampel-Rot: immer Rücksprache mit TK-Bereich, nie allein entscheiden</li>
           <li>Datenschutz: nur zweckbezogene Daten, Einwilligung vor Weitergabe</li>
           <li>Alle Daten werden lokal gespeichert – regelmäßig sichern / exportieren</li>
         </ul>
@@ -748,7 +748,7 @@ footer strong{color:var(--kt-accent);}
         <div class="hinweis">Gespeichert unter den Schlüsseln <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-caseFile</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-riskStatus</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-actions</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-timeline</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-barometer</code> in localStorage.</div>
       </div>
     </div>
-    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen, Risikohinweisen und Weiterleitungsimpulsen.</p></div></div>
+    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen, Risikohinweisen und Weiterleitungsimpulsen.</p></div></div>
 
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Übersicht</button>
@@ -758,7 +758,7 @@ footer strong{color:var(--kt-accent);}
 </div>
 
 <footer>
-  <strong>KLARTEXT</strong> · Fallmanagement-Assistent · Teamkoordination<br>
+  <strong>KLARTEXT</strong> · Fallmanagement-Assistent · TK-Bereich<br>
   Klar. Warm. Menschlich. · Neutral · Trägeroffen
 </footer>
 
@@ -1156,7 +1156,7 @@ function fwWeiterleiten(modul) {
     var klasse       = (document.getElementById('f-klasse')        || {}).value || '';
     var geburt       = (document.getElementById('f-geburt')        || {}).value || '';
     var bezug        = (document.getElementById('f-bezug')         || {}).value || '';
-    var besonders    = (document.getElementById('f-besonders')     || {}).value || '';
+    var besonders    = (document.getElementById('f-besonder')     || {}).value || '';
     var ziele        = (document.getElementById('f-ziele')         || {}).value || '';
     var ressourcen   = (document.getElementById('f-ressourcen')    || {}).value || '';
     eintrag = fwEintrag('FM-01', 'Fallakte: ' + (name || '(kein Name)'), {
@@ -1167,13 +1167,15 @@ function fwWeiterleiten(modul) {
 
   } else if (modul === 'fm02') {
     // FM 02 · Risiko-Ampel
-    var ampel  = (document.getElementById('r-ampel')  || {}).value || '';
-    var datum  = (document.getElementById('r-datum')  || {}).value || fwHeuteDatum();
-    var person = (document.getElementById('r-person') || {}).value || '';
-    var begr   = (document.getElementById('r-begruendung') || {}).value || '';
+    var ampelEl2 = document.querySelector('input[name="r-ampel"]:checked');
+    var ampel    = ampelEl2 ? ampelEl2.value : '';
+    var datum    = (document.getElementById('r-datum') || {}).value || fwHeuteDatum();
+    var person   = (document.getElementById('r-tk')    || {}).value || '';
+    var begr     = (document.getElementById('r-begruendung') || {}).value || '';
     var kriterien = [];
-    document.querySelectorAll('#risk-form input[type="checkbox"]:checked').forEach(function(cb) {
-      kriterien.push(cb.value || cb.name || cb.id);
+    ['r-k1','r-k2','r-k3','r-k4','r-k5','r-k6'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.checked) kriterien.push(el.parentElement ? el.parentElement.textContent.trim() : id);
     });
     eintrag = fwEintrag('FM-02', 'Risiko-Ampel: ' + (ampel || '—') + ' · ' + datum, {
       datum: datum, gesamtampel: ampel,
@@ -1204,10 +1206,12 @@ function fwWeiterleiten(modul) {
 
   } else if (modul === 'fm05') {
     // FM 05 · Tages-Barometer
-    var bDatum    = (document.getElementById('b-datum')   || {}).value || fwHeuteDatum();
-    var bStimmung = (document.getElementById('b-stimmung')|| {}).value || '';
-    var bBelast   = (document.getElementById('b-belast')  || {}).value || '';
-    var bNotiz    = (document.getElementById('b-notiz')   || {}).value || '';
+    var bDatum     = (document.getElementById('b-datum') || {}).value || fwHeuteDatum();
+    var bStimmEl   = document.querySelector('input[name="b-stimmung"]:checked');
+    var bBelastEl  = document.querySelector('input[name="b-belastung"]:checked');
+    var bStimmung  = bStimmEl  ? bStimmEl.value  : '';
+    var bBelast    = bBelastEl ? bBelastEl.value : '';
+    var bNotiz     = (document.getElementById('b-notiz') || {}).value || '';
     eintrag = fwEintrag('FM-05', 'Barometer: Stimmung ' + (bStimmung || '—') + ' · ' + bDatum, {
       datum: bDatum, stimmung: bStimmung,
       belastung: bBelast, notizen: bNotiz

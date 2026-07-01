@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Kinderverwaltung</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--muted:#6A6878;--ink:#2D2D2D;
+  --r-sm:8px;--r-md:14px;--shadow:0 2px 8px rgba(27,58,75,.10);
+}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+
+/* Header */
+.kt-header{
+  background:var(--navy);height:56px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;
+  border-bottom:3px solid var(--acc);
+}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+
+main{max-width:760px;margin:0 auto;padding:1.4rem 1rem 4rem;}
+
+/* Karten */
+.karte{background:var(--surface);border-radius:var(--r-md);padding:1.3rem 1.4rem;margin-bottom:1.1rem;box-shadow:var(--shadow);}
+.karte-titel{font-family:"Playfair Display",serif;font-size:1rem;color:var(--navy);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;}
+
+/* Formular */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.form-grid .wide{grid-column:1/-1;}
+.feld{display:flex;flex-direction:column;gap:.3rem;}
+.feld label{font-size:.73rem;font-weight:700;color:var(--ink);}
+.feld label .req{color:#C62828;margin-left:.1rem;}
+.feld input,.feld textarea,.feld select{
+  font-family:"DM Sans",sans-serif;font-size:.84rem;color:var(--ink);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:.5rem .7rem;background:#FAFAFA;
+}
+.feld textarea{resize:vertical;min-height:60px;}
+.feld input:focus,.feld textarea:focus{outline:none;border-color:var(--navy);}
+
+/* Buttons */
+.btn-row{display:flex;gap:.5rem;margin-top:.85rem;flex-wrap:wrap;}
+.kt-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.78rem;font-weight:700;padding:.48rem 1rem;border-radius:20px;
+  cursor:pointer;border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);
+  box-shadow:var(--shadow);font-family:"DM Sans",sans-serif;
+}
+.kt-btn:hover{background:var(--navy);color:#fff;}
+.kt-btn.primary{background:var(--acc);border-color:var(--acc);color:var(--navy);}
+.kt-btn.primary:hover{background:#5BB890;}
+.kt-btn.danger{border-color:#C62828;color:#C62828;}
+.kt-btn.danger:hover{background:#C62828;color:#fff;}
+.kt-btn.klein{font-size:.68rem;padding:.28rem .6rem;border-radius:14px;}
+
+.kt-status{font-size:.76rem;margin-top:.6rem;min-height:1.1em;}
+.kt-status.ok{color:#2E7D32;font-weight:700;}
+.kt-status.err{color:#C62828;font-weight:700;}
+
+/* Kinderliste */
+.kinder-liste{display:flex;flex-direction:column;gap:.5rem;margin-top:.3rem;}
+.kind-row{
+  display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:.6rem .8rem;background:var(--paper);
+}
+.kind-info{flex:1;min-width:140px;}
+.kind-name{font-weight:700;font-size:.85rem;color:var(--navy);}
+.kind-meta{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
+.kind-leer{font-size:.82rem;color:var(--muted);font-style:italic;padding:.5rem 0;}
+
+/* Zähler */
+.zaehler{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:.6rem;
+}
+.zaehler .badge{
+  background:var(--navy);color:#fff;border-radius:12px;
+  padding:.1rem .45rem;font-size:.68rem;
+}
+
+@media(max-width:520px){.form-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo">KLARTEXT <span>Kinderverwaltung · TK-Bereich</span></div>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<main>
+
+  <!-- FORMULAR -->
+  <div class="karte">
+    <div class="karte-titel">➕ <span id="formTitel">Kind anlegen</span></div>
+    <div class="form-grid">
+      <div class="feld">
+        <label for="kindName">Name<span class="req">*</span></label>
+        <input type="text" id="kindName" placeholder="Vorname Nachname">
+      </div>
+      <div class="feld">
+        <label for="kindKlasse">Klasse</label>
+        <input type="text" id="kindKlasse" placeholder="z. B. 3b">
+      </div>
+      <div class="feld">
+        <label for="kindGeburt">Geburtsdatum</label>
+        <input type="date" id="kindGeburt">
+      </div>
+      <div class="feld wide">
+        <label for="kindNotizen">Notizen</label>
+        <textarea id="kindNotizen" placeholder="Besonderheiten, Hinweise …"></textarea>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="kt-btn primary" onclick="kindSpeichern()">💾 Speichern</button>
+      <button class="kt-btn" id="btnAbbrechen" onclick="formZuruecksetzen()" style="display:none;">✖ Abbrechen</button>
+    </div>
+    <div class="kt-status" id="formStatus"></div>
+  </div>
+
+  <!-- LISTE -->
+  <div class="karte">
+    <div class="karte-titel">📋 Alle Kinder</div>
+    <div class="zaehler">Einträge: <span class="badge" id="zaehlerBadge">0</span></div>
+    <div class="kinder-liste" id="kinderListe">
+      <div class="kind-leer">Noch keine Kinder angelegt.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+var LS_KEY = 'children';
+var editId = null;
+
+function laden(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+  catch(e){ return []; }
+}
+function speichern(liste){
+  localStorage.setItem(LS_KEY, JSON.stringify(liste));
+}
+
+function rendern(){
+  var liste = laden();
+  var container = document.getElementById('kinderListe');
+  document.getElementById('zaehlerBadge').textContent = liste.length;
+
+  if(!liste.length){
+    container.innerHTML = '<div class="kind-leer">Noch keine Kinder angelegt.</div>';
+    return;
+  }
+
+  var html = '';
+  liste.forEach(function(k){
+    var meta = [k.klasse ? 'Klasse ' + k.klasse : '', k.geburtsdatum || '', k.notizen ? '📝' : ''].filter(Boolean).join(' · ');
+    html += '<div class="kind-row">';
+    html +=   '<div class="kind-info">';
+    html +=     '<div class="kind-name">' + esc(k.name) + '</div>';
+    if(meta) html += '<div class="kind-meta">' + esc(meta) + '</div>';
+    html +=   '</div>';
+    html +=   '<button class="kt-btn klein" onclick="kindBearbeiten(\'' + k.id + '\')">✏️ Bearbeiten</button>';
+    html +=   '<button class="kt-btn klein danger" onclick="kindLoeschen(\'' + k.id + '\')">🗑️ Löschen</button>';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function esc(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function kindSpeichern(){
+  var name = document.getElementById('kindName').value.trim();
+  var status = document.getElementById('formStatus');
+
+  if(!name){
+    status.textContent = '⚠ Name ist ein Pflichtfeld.';
+    status.className = 'kt-status err';
+    return;
+  }
+
+  var liste = laden();
+
+  if(editId){
+    var idx = liste.findIndex(function(k){ return k.id === editId; });
+    if(idx > -1){
+      liste[idx].name       = name;
+      liste[idx].klasse     = document.getElementById('kindKlasse').value.trim();
+      liste[idx].geburtsdatum = document.getElementById('kindGeburt').value;
+      liste[idx].notizen    = document.getElementById('kindNotizen').value.trim();
+    }
+    status.textContent = '✓ Kind „' + name + '" aktualisiert.';
+  } else {
+    liste.push({
+      id:           'kid' + Date.now(),
+      name:         name,
+      klasse:       document.getElementById('kindKlasse').value.trim(),
+      geburtsdatum: document.getElementById('kindGeburt').value,
+      notizen:      document.getElementById('kindNotizen').value.trim()
+    });
+    status.textContent = '✓ Kind „' + name + '" angelegt.';
+  }
+
+  speichern(liste);
+  status.className = 'kt-status ok';
+  formZuruecksetzen();
+  rendern();
+}
+
+function kindBearbeiten(id){
+  var liste = laden();
+  var k = liste.find(function(x){ return x.id === id; });
+  if(!k) return;
+  editId = id;
+  document.getElementById('kindName').value    = k.name || '';
+  document.getElementById('kindKlasse').value  = k.klasse || '';
+  document.getElementById('kindGeburt').value  = k.geburtsdatum || '';
+  document.getElementById('kindNotizen').value = k.notizen || '';
+  document.getElementById('formTitel').textContent = 'Kind bearbeiten';
+  document.getElementById('btnAbbrechen').style.display = '';
+  document.getElementById('formStatus').textContent = '';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function kindLoeschen(id){
+  var liste = laden();
+  var k = liste.find(function(x){ return x.id === id; });
+  if(!k) return;
+  if(!confirm('Kind „' + k.name + '" wirklich löschen?')) return;
+  speichern(liste.filter(function(x){ return x.id !== id; }));
+  rendern();
+  if(editId === id) formZuruecksetzen();
+}
+
+function formZuruecksetzen(){
+  editId = null;
+  document.getElementById('kindName').value    = '';
+  document.getElementById('kindKlasse').value  = '';
+  document.getElementById('kindGeburt').value  = '';
+  document.getElementById('kindNotizen').value = '';
+  document.getElementById('formTitel').textContent = 'Kind anlegen';
+  document.getElementById('btnAbbrechen').style.display = 'none';
+}
+
+rendern();
+</script>
+</body>
+</html>

@@ -303,32 +303,33 @@
   };
 
   // ───────────────────────────────────────────
-  // Kinderliste dynamisch aus /children laden
-  // (exakt nach Muster KLARTEXT_Weiterleiten.html)
+  // Kinderliste aus zentralem localStorage
+  // Quelle: TK_Kinder.html → key "children"
   // ───────────────────────────────────────────
   function kinderListeLaden(){
     var select = document.getElementById('kindSelect');
-    db.ref('children').once('value').then(function(snapshot){
-      var kinder = snapshot.val() || {};
-      select.innerHTML = '<option value="">Bitte wählen …</option>';
-      Object.keys(kinder).forEach(function(childId){
-        var kind = kinder[childId];
-        if(kind.active === false) return; // inaktive Kinder nicht anzeigen
-        var option = document.createElement('option');
-        option.value = childId;
-        option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
-        select.appendChild(option);
-      });
+    var kinder = [];
+    try{ kinder = JSON.parse(localStorage.getItem('children')) || []; }catch(e){}
+
+    select.innerHTML = '';
+    if(!kinder.length){
+      select.innerHTML = '<option value="">Noch keine Kinder angelegt – bitte im TK-Bereich anlegen</option>';
       journalListeRendern();
       wocheRendern();
-    }).catch(function(error){
-      select.innerHTML = '<option value="">Kinderliste konnte nicht geladen werden</option>';
-      var statusEl = document.getElementById('statusSpeichern');
-      if(statusEl){
-        statusEl.textContent = '⚠ Kinderliste konnte nicht geladen werden: ' + error.message;
-        statusEl.className = 'kt-status err';
-      }
+      return;
+    }
+    var platzhalter = document.createElement('option');
+    platzhalter.value = '';
+    platzhalter.textContent = 'Bitte wählen …';
+    select.appendChild(platzhalter);
+    kinder.forEach(function(k){
+      var opt = document.createElement('option');
+      opt.value = k.id;
+      opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+      select.appendChild(opt);
     });
+    journalListeRendern();
+    wocheRendern();
   }
 
   document.getElementById('kindSelect').addEventListener('change', function(){
@@ -404,21 +405,12 @@
     liste.push(eintrag);
     alleEintraegeSpeichern(liste);
 
-    firebaseSpeichern(eintrag);
-
     statusEl.textContent = '✓ Tagesjournal gespeichert (' + eintrag.datum + ').';
     statusEl.className = 'kt-status ok';
 
     journalListeRendern();
     wocheRendern();
   };
-
-  function firebaseSpeichern(eintrag){
-    try{
-      var pfad = 'tagesjournal/' + (eintrag.childId || 'unbekannt');
-      db.ref(pfad).push(eintrag);
-    }catch(e){ /* Firebase nicht verfügbar – lokale Speicherung bleibt bestehen */ }
-  }
 
   // ───────────────────────────────────────────
   // Übergabe an TK / Weiterleitung (/forward)

@@ -391,7 +391,7 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="risk-info">
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Ampel-Bedeutung</span></div><div class="karte-body"><div class="ampel" style="flex-direction:column;gap:.5rem;"><span class="ampel-chip gruen" style="justify-content:flex-start;">✔ Grün – Situation stabil, kein akuter Handlungsbedarf</span><span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span><span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – akuter Handlungsbedarf, sofortige Maßnahmen</span></div></div></div>
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Einschätzungskriterien (neutral)</span></div><div class="karte-body"><ul class="stw-list"><li>Verhaltensauffälligkeiten: Häufigkeit, Intensität, Kontext</li><li>Soziale Einbindung: Peer-Kontakte, Teamfähigkeit, Isolation</li><li>Emotionale Stabilität: Stimmungsschwankungen, Belastbarkeit</li><li>Lern- und Teilhabemöglichkeiten: Zugänglichkeit, Förderung</li><li>Familiäres Umfeld: Kooperation Bezugspersonen, Unterstützung</li><li>Eigen-/Fremdgefährdung: akute Hinweise vorhanden?</li></ul></div></div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Leitung."</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Bereich."</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="risk-form">
@@ -433,14 +433,14 @@ footer strong{color:var(--kt-accent);}
         <div class="form-body">
           <div class="fld"><label>Weiterleiten an</label>
             <div class="wl-group">
-              <label class="wl-chip"><input type="checkbox" name="r-wl" value="tkleitung"> 👩‍💼 TK-Leitung</label>
+              <label class="wl-chip"><input type="checkbox" name="r-wl" value="tk-bereich"> 🗂️ TK-Bereich</label>
               <label class="wl-chip"><input type="checkbox" name="r-wl" value="fachberatung"> 🩺 Fachberatung</label>
               <label class="wl-chip"><input type="checkbox" name="r-wl" value="akte"> 📂 Fallakte</label>
             </div>
           </div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden. Sofort Rücksprache mit TK-Leitung und Weiterleitung dokumentieren.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden. Sofort Rücksprache mit TK-Bereich und Weiterleitung dokumentieren.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernRisk()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
@@ -695,7 +695,6 @@ footer strong{color:var(--kt-accent);}
     <div class="form-actions">
       <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
       <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
-      <button class="act-btn" onclick="fwWeiterleiten('fm06')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
     </div>
 
     <div class="unter-nav">
@@ -1110,8 +1109,7 @@ var FW_MODUL_LABELS = {
   fm02: 'FM 02 · Risiko-Ampel',
   fm03: 'FM 03 · Maßnahmenplan',
   fm04: 'FM 04 · Verlauf / Chronik',
-  fm05: 'FM 05 · Tages-Barometer',
-  fm06: 'FM 06 · PDF-Fallakte'
+  fm05: 'FM 05 · Tages-Barometer'
 };
 
 function fwHeuteDatum() {
@@ -1217,17 +1215,6 @@ function fwWeiterleiten(modul) {
       belastung: bBelast, notizen: bNotiz
     });
 
-  } else if (modul === 'fm06') {
-    // FM 06 · PDF-Fallakte
-    var pdfEl    = document.getElementById('pdf-inhalt');
-    var pdfText  = pdfEl ? pdfEl.innerText : '';
-    var caseFile = ls_get('fm-caseFile', {});
-    var titel    = 'Fallakte' + (caseFile.name ? ': ' + caseFile.name : '');
-    eintrag = fwEintrag('FM-06', 'PDF-Fallakte: ' + titel, {
-      titel:  titel,
-      datum:  fwHeuteDatum(),
-      inhalt: pdfText.substring(0, 3000) // max 3000 Zeichen
-    });
   }
 
   if (eintrag) {

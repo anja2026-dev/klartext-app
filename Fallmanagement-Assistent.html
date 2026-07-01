@@ -333,6 +333,12 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel" id="file-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
       <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional – aus Kinderverwaltung)</span></div>
+        <div class="form-body">
+          <div class="fld"><label>Kind auswählen</label><select id="f-kindId" onchange="fmKindUebernehmen('file')"><option value="">– kein Kinderbezug –</option></select></div>
+        </div>
+      </div>
+      <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">👤</span><span class="form-section-titel">Stammdaten</span></div>
         <div class="form-body">
           <div class="form-row">
@@ -396,6 +402,10 @@ footer strong{color:var(--kt-accent);}
 
     <div class="tab-panel" id="risk-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
+        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="r-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
+      </div>
       <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">🚦</span><span class="form-section-titel">Ampel-Einschätzung <span class="req">*</span></span></div>
         <div class="form-body">
@@ -486,6 +496,10 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel" id="akt-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
       <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
+        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="a-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
+      </div>
+      <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">📋</span><span class="form-section-titel">Neue Maßnahme</span></div>
         <div class="form-body">
           <div class="fld"><label>Maßnahme <span class="req">*</span></label><input type="text" id="a-massnahme" placeholder="Was wird konkret getan?"></div>
@@ -547,6 +561,10 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="tl-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
       <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
+        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="t-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
+      </div>
+      <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">🕐</span><span class="form-section-titel">Neuer Verlaufseintrag</span></div>
         <div class="form-body">
           <div class="form-row"><div class="fld"><label>Datum <span class="req">*</span></label><input type="date" id="t-datum"></div><div class="fld"><label>Erstellt von</label><input type="text" id="t-tk" placeholder="Name TK"></div></div>
@@ -595,6 +613,10 @@ footer strong{color:var(--kt-accent);}
 
     <div class="tab-panel aktiv" id="bar-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
+        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="b-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
+      </div>
       <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">🌡️</span><span class="form-section-titel">Tagesstatus erfassen</span></div>
         <div class="form-body">
@@ -824,7 +846,11 @@ function ls_set(key, value) {
 }
 
 function speichernFile() {
+  var kindId = document.getElementById('f-kindId').value;
+  var kindName = kindId ? (fmKindName(kindId)) : '';
   var caseFile = {
+    kindId: kindId,
+    kindName: kindName,
     name: document.getElementById('f-name').value,
     klasse: document.getElementById('f-klasse').value,
     geburtsdatum: document.getElementById('f-geburt').value,
@@ -856,7 +882,10 @@ function ladeFile() {
 function speichernRisk() {
   var ampelEl = document.querySelector('input[name="r-ampel"]:checked');
   var wlEls = document.querySelectorAll('input[name="r-wl"]:checked');
+  var kindId = document.getElementById('r-kindId').value;
   var riskStatus = {
+    kindId: kindId,
+    kindName: kindId ? fmKindName(kindId) : '',
     datum: document.getElementById('r-datum').value,
     tk: document.getElementById('r-tk').value,
     ampel: ampelEl ? ampelEl.value : '',
@@ -878,9 +907,12 @@ function speichernRisk() {
 function speichernAction() {
   var massnahme = document.getElementById('a-massnahme').value;
   if (!massnahme) { zeigeToast('⚠ Bitte Maßnahme eingeben'); return; }
+  var kindId = document.getElementById('a-kindId').value;
   var actions = ls_get('fm-actions', []);
   actions.push({
     id: Date.now(),
+    kindId: kindId,
+    kindName: kindId ? fmKindName(kindId) : '',
     massnahme: massnahme,
     verantwortlich: document.getElementById('a-verantwortlich').value,
     status: document.getElementById('a-status').value,
@@ -925,9 +957,12 @@ function renderActions() {
 function speichernTimeline() {
   var ereignis = document.getElementById('t-ereignis').value;
   if (!ereignis) { zeigeToast('⚠ Bitte Ereignis eingeben'); return; }
+  var kindId = document.getElementById('t-kindId').value;
   var timeline = ls_get('fm-timeline', []);
   timeline.push({
     id: Date.now(),
+    kindId: kindId,
+    kindName: kindId ? fmKindName(kindId) : '',
     datum: document.getElementById('t-datum').value,
     tk: document.getElementById('t-tk').value,
     ereignis: ereignis,
@@ -971,9 +1006,12 @@ function renderTimeline() {
 function speichernBarometer() {
   var stimmungEl = document.querySelector('input[name="b-stimmung"]:checked');
   var belastungEl = document.querySelector('input[name="b-belastung"]:checked');
+  var kindId = document.getElementById('b-kindId').value;
   var barometer = ls_get('fm-barometer', []);
   barometer.push({
     id: Date.now(),
+    kindId: kindId,
+    kindName: kindId ? fmKindName(kindId) : '',
     datum: document.getElementById('b-datum').value,
     stimmung: stimmungEl ? stimmungEl.value : '',
     belastung: belastungEl ? belastungEl.value : '',
@@ -1076,7 +1114,48 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+// ── Zentrale Kinderquelle ──────────────────────────────────
+function fmKinderLaden() {
+  try { return JSON.parse(localStorage.getItem('children')) || []; } catch(e) { return []; }
+}
+function fmKindName(id) {
+  var k = fmKinderLaden().find(function(x){ return x.id === id; });
+  return k ? k.name : '';
+}
+function fmDropdownFuellen(selectId) {
+  var sel = document.getElementById(selectId);
+  if (!sel) return;
+  var kinder = fmKinderLaden();
+  sel.innerHTML = '<option value="">– kein Kinderbezug –</option>';
+  if (!kinder.length) {
+    sel.innerHTML += '<option disabled>Noch keine Kinder angelegt (TK-Bereich)</option>';
+    return;
+  }
+  kinder.forEach(function(k) {
+    var opt = document.createElement('option');
+    opt.value = k.id;
+    opt.textContent = k.name + (k.klasse ? ' · ' + k.klasse : '');
+    sel.appendChild(opt);
+  });
+}
+function fmKindUebernehmen(bereich) {
+  // Optional: aus f-kindId Stammdaten vorausfüllen
+  if (bereich !== 'file') return;
+  var kindId = document.getElementById('f-kindId').value;
+  if (!kindId) return;
+  var k = fmKinderLaden().find(function(x){ return x.id === kindId; });
+  if (!k) return;
+  if (document.getElementById('f-name') && !document.getElementById('f-name').value)
+    document.getElementById('f-name').value = k.name;
+  if (document.getElementById('f-klasse') && !document.getElementById('f-klasse').value)
+    document.getElementById('f-klasse').value = k.klasse || '';
+  if (document.getElementById('f-geburt') && !document.getElementById('f-geburt').value)
+    document.getElementById('f-geburt').value = k.geburtsdatum || '';
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Alle FM-Kinder-Dropdowns befüllen
+  ['f-kindId','r-kindId','a-kindId','t-kindId','b-kindId'].forEach(fmDropdownFuellen);
   ladeFile();
   renderActions();
   renderTimeline();

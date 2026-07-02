@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Kinderverwaltung</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f7f7f7;margin:0;padding:20px;}
+    section{background:white;padding:15px;margin-bottom:20px;border-radius:8px;box-shadow:0 0 4px rgba(0,0,0,.1);}
+    input{padding:8px;margin-bottom:10px;width:100%;border-radius:6px;border:1px solid #ccc;box-sizing:border-box;}
+    button{padding:8px 12px;border-radius:6px;border:none;background:#e0e0e0;cursor:pointer;}
+    button:hover{background:#d5d5d5;}
+  </style>
+</head>
+<body>
+
+<h1>Kinderverwaltung</h1>
+
+<section id="kinder-formular">
+  <h2>Neues Kind anlegen</h2>
+  <input id="kind-name"   placeholder="Name des Kindes">
+  <input id="kind-klasse" placeholder="Klasse">
+  <button id="kind-speichern">Kind speichern</button>
+</section>
+
+<section id="kinder-liste">
+  <h2>Alle Kinder</h2>
+  <div id="kinder-output"></div>
+</section>
+
+<script>
+var currentEditIndex = null;
+
+function ladeKinder() {
+  try { return JSON.parse(localStorage.getItem('children') || '[]'); } catch(e) { return []; }
+}
+
+function speichereKinder(kinder) {
+  localStorage.setItem('children', JSON.stringify(kinder));
+}
+
+function addChild() {
+  var name   = document.getElementById('kind-name').value.trim();
+  var klasse = document.getElementById('kind-klasse').value.trim();
+  if (!name) { alert('Bitte einen Namen eingeben.'); return; }
+
+  var kinder = ladeKinder();
+
+  if (currentEditIndex !== null) {
+    // Bearbeiten: bestehende ID erhalten
+    kinder[currentEditIndex].name   = name;
+    kinder[currentEditIndex].klasse = klasse;
+    currentEditIndex = null;
+    document.getElementById('kind-speichern').textContent = 'Kind speichern';
+  } else {
+    // Neu anlegen: neue ID erzeugen
+    kinder.push({ id: Date.now(), name: name, klasse: klasse });
+  }
+
+  speichereKinder(kinder);
+  document.getElementById('kind-name').value   = '';
+  document.getElementById('kind-klasse').value = '';
+  renderChildren();
+}
+
+function deleteChild(index) {
+  var kinder = ladeKinder();
+  kinder.splice(index, 1);
+  speichereKinder(kinder);
+  renderChildren();
+}
+
+function editChild(index) {
+  var kinder = ladeKinder();
+  var k = kinder[index];
+  document.getElementById('kind-name').value   = k.name   || '';
+  document.getElementById('kind-klasse').value = k.klasse || '';
+  currentEditIndex = index;
+  document.getElementById('kind-speichern').textContent = 'Änderungen speichern';
+}
+
+function renderChildren() {
+  var kinder    = ladeKinder();
+  var container = document.getElementById('kinder-output');
+  if (!kinder.length) {
+    container.innerHTML = '<p style="color:#888;font-style:italic;">Noch keine Kinder angelegt.</p>';
+    return;
+  }
+  // ID wird intern gespeichert, aber NICHT angezeigt
+  container.innerHTML = kinder.map(function(k, i) {
+    return '<div style="padding:8px 10px;border:1px solid #ddd;border-radius:6px;margin-bottom:8px;background:#fafafa;display:flex;align-items:center;gap:8px;">'
+      + '<span style="flex:1;"><strong>' + k.name + '</strong>'
+      + (k.klasse ? ' &nbsp;·&nbsp; Klasse ' + k.klasse : '') + '</span>'
+      + '<button onclick="editChild(' + i + ')">✏️ Bearbeiten</button>'
+      + '<button onclick="deleteChild(' + i + ')" style="color:#c00;">🗑️ Löschen</button>'
+      + '</div>';
+  }).join('');
+}
+
+document.getElementById('kind-speichern').addEventListener('click', addChild);
+document.addEventListener('DOMContentLoaded', renderChildren);
+</script>
+
+</body>
+</html>

@@ -78,7 +78,23 @@
     }
     .nav-btn:hover{border-color:var(--navy);}
 
-    @media(max-width:520px){.sz-grid{grid-template-columns:1fr;}.ingra-buttons{gap:.3rem;}}
+    .ingra-massnahmen{margin-top:.6rem;}
+    .massnahme-karte{background:#fff;border:1px solid #ddd;border-radius:6px;padding:8px 10px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+    .massnahme-status-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;color:#fff;margin-bottom:4px;}
+    .massnahme-meta{font-size:.78rem;color:var(--muted);margin-bottom:4px;}
+    .massnahme-buttons{display:flex;gap:.35rem;margin-top:.4rem;}
+    .massnahme-edit,.massnahme-delete,.massnahme-add{font-size:.7rem;padding:.28rem .6rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);color:var(--navy);cursor:pointer;font-family:inherit;}
+    .massnahme-delete{border-color:#C62828;color:#C62828;}
+    .massnahme-delete:hover{background:#C62828;color:#fff;}
+    .massnahme-edit:hover{background:var(--navy);color:#fff;}
+    .massnahme-add{background:var(--acc);border-color:var(--acc);color:var(--navy);font-weight:700;margin-top:.4rem;}
+    #massnahme-form{background:var(--surface);border-radius:var(--r-md);padding:1.2rem 1.3rem;margin-bottom:1.1rem;box-shadow:var(--shadow);}
+    #massnahme-form h2{font-family:"Playfair Display",serif;font-size:1rem;color:var(--navy);margin-bottom:.8rem;}
+    #massnahme-form input,#massnahme-form textarea,#massnahme-form select{width:100%;margin-bottom:.6rem;padding:8px;border-radius:6px;border:1.5px solid var(--border);font-family:inherit;font-size:.84rem;box-sizing:border-box;}
+    #massnahme-form textarea{min-height:60px;resize:vertical;}
+    #massnahme-speichern,#massnahme-abbrechen{padding:.45rem .9rem;border-radius:16px;border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);cursor:pointer;font-family:inherit;font-weight:700;font-size:.78rem;margin-right:.5rem;}
+    #massnahme-speichern:hover{background:var(--navy);color:#fff;}
+    #massnahme-abbrechen:hover{background:var(--border);}
   </style>
 </head>
 <body>
@@ -111,6 +127,21 @@
     <h2>⚡ Schnellzugriff</h2>
     <div id="schnellzugriff-container"></div>
   </div>
+
+  <!-- MASSNAHMEN-FORMULAR -->
+  <section id="massnahme-form" style="display:none;">
+    <h2>Neue Maßnahme</h2>
+    <input id="massnahme-datum" type="date">
+    <textarea id="massnahme-beschreibung" placeholder="Beschreibung der Maßnahme"></textarea>
+    <select id="massnahme-status">
+      <option value="offen">offen</option>
+      <option value="in Arbeit">in Arbeit</option>
+      <option value="abgeschlossen">abgeschlossen</option>
+    </select>
+    <input id="massnahme-verantwortlich" type="text" placeholder="Verantwortliche Person">
+    <button id="massnahme-speichern">💾 Speichern</button>
+    <button id="massnahme-abbrechen">✖ Abbrechen</button>
+  </section>
 
 </main>
 
@@ -146,20 +177,31 @@ function renderKinderliste() {
     var meta = [k.klasse ? 'Klasse ' + k.klasse : '', k.geburtsdatum || ''].filter(Boolean).join(' · ');
     var div = document.createElement('div');
     div.className = 'kind-karte';
+    div.setAttribute('data-kind-id', k.id);
     div.innerHTML =
+      '<span class="kind-id" style="display:none;">' + k.id + '</span>' +
       '<div class="kind-karte-name">' + esc(k.name) + '</div>' +
       (meta ? '<div class="kind-karte-meta">' + esc(meta) + '</div>' : '') +
-      '<div class="ingra-buttons"></div>';
+      '<div class="ingra-buttons" data-kind-id="' + k.id + '"></div>';
     var btnContainer = div.querySelector('.ingra-buttons');
     INGRA_MODULE.forEach(function(m) {
       var btn = document.createElement('button');
       btn.className = 'ingra-btn';
       btn.textContent = m.label;
+      btn.setAttribute('data-kind-id', k.id);
       btn.onclick = function() {
         if (m.href) window.location.href = m.href;
       };
       btnContainer.appendChild(btn);
     });
+
+    // Maßnahmen-Bereich pro Kind
+    var massnahmenDiv = document.createElement('div');
+    massnahmenDiv.className = 'ingra-massnahmen';
+    massnahmenDiv.id = 'massnahmen-' + k.id;
+    div.appendChild(massnahmenDiv);
+    setTimeout(function(id){ return function(){ renderMassnahmen(id); }; }(k.id), 0);
+
     container.appendChild(div);
   });
 }
@@ -211,9 +253,151 @@ function esc(s) {
   return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Aliase für Kompatibilität mit anderen KLARTEXT-Modulen
+// ── Aliase ────────────────────────────────────────────────
 function addIngraButtons() { renderKinderliste(); }
 function initINGRAStart()  { renderKinderliste(); renderSchnellzugriff(); }
+
+// ── Maßnahmen-Modul ───────────────────────────────────────
+var currentMassnahmeId     = null;
+var currentMassnahmeEditId = null;
+
+var MASSNAHME_STATUS_FARBEN = {
+  'offen':          '#FFC107',
+  'in Arbeit':      '#2196F3',
+  'abgeschlossen':  '#4CAF50'
+};
+
+function initMassnahmen(child) {
+  if (!child.massnahmen) child.massnahmen = [];
+  return child;
+}
+
+function addMassnahme(kindId, datum, beschreibung, status, verantwortlich) {
+  var kinder = ladeKinder();
+  kinder.forEach(function(k) {
+    if (String(k.id) === String(kindId)) {
+      initMassnahmen(k);
+      k.massnahmen.push({
+        id: Date.now(),
+        datum: datum,
+        beschreibung: beschreibung,
+        status: status,
+        verantwortlich: verantwortlich
+      });
+    }
+  });
+  localStorage.setItem('children', JSON.stringify(kinder));
+}
+
+function editMassnahme(kindId, massnahmeId) {
+  var kinder = ladeKinder();
+  var kind   = kinder.find(function(k){ return String(k.id) === String(kindId); });
+  if (!kind || !kind.massnahmen) return;
+  var m = kind.massnahmen.find(function(x){ return String(x.id) === String(massnahmeId); });
+  if (!m) return;
+  currentMassnahmeId     = kindId;
+  currentMassnahmeEditId = massnahmeId;
+  document.getElementById('massnahme-datum').value          = m.datum || '';
+  document.getElementById('massnahme-beschreibung').value   = m.beschreibung || '';
+  document.getElementById('massnahme-status').value         = m.status || 'offen';
+  document.getElementById('massnahme-verantwortlich').value = m.verantwortlich || '';
+  document.getElementById('massnahme-form').style.display   = 'block';
+  document.getElementById('massnahme-form').scrollIntoView({ behavior:'smooth' });
+}
+
+function deleteMassnahme(kindId, massnahmeId) {
+  var kinder = ladeKinder();
+  kinder.forEach(function(k) {
+    if (String(k.id) === String(kindId) && k.massnahmen) {
+      k.massnahmen = k.massnahmen.filter(function(m){ return String(m.id) !== String(massnahmeId); });
+    }
+  });
+  localStorage.setItem('children', JSON.stringify(kinder));
+  renderMassnahmen(kindId);
+}
+
+function renderMassnahmen(kindId) {
+  var container = document.getElementById('massnahmen-' + kindId);
+  if (!container) return;
+  var kinder = ladeKinder();
+  var kind   = kinder.find(function(k){ return String(k.id) === String(kindId); });
+  if (!kind || !kind.massnahmen || !kind.massnahmen.length) {
+    container.innerHTML = '<div style="font-size:.75rem;color:var(--muted);font-style:italic;padding:.3rem 0;">Noch keine Maßnahmen.</div>';
+    container.innerHTML += '<button class="massnahme-add" onclick="openMassnahmeForm(\'' + kindId + '\')">➕ Neue Maßnahme</button>';
+    return;
+  }
+  var html = kind.massnahmen.map(function(m) {
+    var farbe = MASSNAHME_STATUS_FARBEN[m.status] || '#999';
+    return '<div class="massnahme-karte">' +
+      '<span class="massnahme-status-badge" style="background:' + farbe + ';">' + esc(m.status) + '</span>' +
+      '<div class="massnahme-meta">' + esc(m.datum) + ' · ' + esc(m.verantwortlich) + '</div>' +
+      '<div style="font-size:.82rem;">' + esc(m.beschreibung) + '</div>' +
+      '<div class="massnahme-buttons">' +
+        '<button class="massnahme-edit" onclick="editMassnahme(\'' + kindId + '\',' + m.id + ')">✏️ Bearbeiten</button>' +
+        '<button class="massnahme-delete" onclick="deleteMassnahme(\'' + kindId + '\',' + m.id + ')">🗑️ Löschen</button>' +
+      '</div></div>';
+  }).join('');
+  html += '<button class="massnahme-add" onclick="openMassnahmeForm(\'' + kindId + '\')">➕ Neue Maßnahme</button>';
+  container.innerHTML = html;
+}
+
+function openMassnahmeForm(kindId) {
+  currentMassnahmeId     = kindId;
+  currentMassnahmeEditId = null;
+  document.getElementById('massnahme-datum').value          = '';
+  document.getElementById('massnahme-beschreibung').value   = '';
+  document.getElementById('massnahme-status').value         = 'offen';
+  document.getElementById('massnahme-verantwortlich').value = '';
+  document.getElementById('massnahme-form').style.display   = 'block';
+  document.getElementById('massnahme-form').scrollIntoView({ behavior:'smooth' });
+}
+
+function resetMassnahmeForm() {
+  document.getElementById('massnahme-datum').value          = '';
+  document.getElementById('massnahme-beschreibung').value   = '';
+  document.getElementById('massnahme-status').value         = 'offen';
+  document.getElementById('massnahme-verantwortlich').value = '';
+  document.getElementById('massnahme-form').style.display   = 'none';
+  currentMassnahmeId     = null;
+  currentMassnahmeEditId = null;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('massnahme-speichern').addEventListener('click', function() {
+    var datum          = document.getElementById('massnahme-datum').value;
+    var beschreibung   = document.getElementById('massnahme-beschreibung').value.trim();
+    var status         = document.getElementById('massnahme-status').value;
+    var verantwortlich = document.getElementById('massnahme-verantwortlich').value.trim();
+    if (!datum)          { alert('Bitte ein Datum auswählen.'); return; }
+    if (!beschreibung)   { alert('Bitte eine Beschreibung eingeben.'); return; }
+    if (!verantwortlich) { alert('Bitte eine verantwortliche Person angeben.'); return; }
+
+    if (currentMassnahmeEditId !== null) {
+      // Bearbeiten-Modus
+      var kinder = ladeKinder();
+      kinder.forEach(function(k) {
+        if (String(k.id) === String(currentMassnahmeId) && k.massnahmen) {
+          k.massnahmen.forEach(function(m) {
+            if (String(m.id) === String(currentMassnahmeEditId)) {
+              m.datum = datum; m.beschreibung = beschreibung;
+              m.status = status; m.verantwortlich = verantwortlich;
+            }
+          });
+        }
+      });
+      localStorage.setItem('children', JSON.stringify(kinder));
+    } else {
+      addMassnahme(currentMassnahmeId, datum, beschreibung, status, verantwortlich);
+    }
+    var kid = currentMassnahmeId;
+    resetMassnahmeForm();
+    renderMassnahmen(kid);
+  });
+
+  document.getElementById('massnahme-abbrechen').addEventListener('click', function() {
+    resetMassnahmeForm();
+  });
+});
 
 // ── Init ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {

@@ -2,551 +2,329 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Downloads & Formulare · KLARTEXT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Downloads & Formulare</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --kt-primary:#1B3A4B;--kt-accent:#6EC6A0;--kt-paper:#F5F0E8;
-  --kt-ink:#2D2D2D;--kt-muted:#7A7060;--kt-surface:#FFF;--kt-border:#DDD8CE;
-  --c-ingra:#1d9e75;--c-eltern:#185fa5;--c-lk:#1565C0;
-  --c-tk:#00695C;--c-kinder:#4FC3C7;--c-mobbing:#c2185b;
-  --shadow:0 2px 10px rgba(27,58,75,.09);--shadow-lg:0 6px 28px rgba(27,58,75,.14);
-  --r-sm:6px;--r-md:10px;--r-lg:16px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);min-height:100vh;}
-
-/* HEADER */
-.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--kt-accent);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
-.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
-.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
-.kt-logo-text .claim{font-size:.65rem;color:var(--kt-accent);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
-.header-badge{background:rgba(110,198,160,.2);border:1.5px solid rgba(110,198,160,.4);color:var(--kt-accent);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
-.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
-.btn-back:hover{background:rgba(110,198,160,.22);}
-
-/* PAGE */
-.page-wrap{max-width:920px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
-.page-header{margin-bottom:1.5rem;}
-.page-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:#E8F5E9;color:#2E7D32;margin-bottom:.5rem;}
-.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
-.page-lead{font-size:.9rem;color:var(--kt-muted);max-width:600px;}
-
-/* ZIELGRUPPEN-TABS */
-.zg-tabs{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.5rem;}
-.zg-tab{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .85rem;border-radius:20px;border:1.5px solid var(--kt-border);background:var(--kt-surface);font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--kt-muted);}
-.zg-tab:hover{border-color:var(--c);color:var(--c);}
-.zg-tab.aktiv{background:var(--c);color:#fff;border-color:var(--c);}
-
-/* SEKTIONEN */
-.dl-sektion{display:none;margin-bottom:2rem;}
-.dl-sektion.aktiv{display:block;}
-
-/* SEKTION-HEADER */
-.dl-sek-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--c);}
-.dl-sek-dot{width:12px;height:12px;border-radius:50%;background:var(--c);flex-shrink:0;}
-.dl-sek-titel{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--kt-primary);}
-.dl-sek-sub{font-size:.72rem;color:var(--kt-muted);margin-left:auto;}
-
-/* KATEGORIE-LABEL */
-.dl-kat-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--kt-muted);margin:1.1rem 0 .5rem;display:flex;align-items:center;gap:.5rem;}
-.dl-kat-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--kt-border),transparent);}
-
-/* DOWNLOAD-GRID */
-.dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.65rem;}
-
-/* DOWNLOAD-KARTE */
-.dl-karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-left:4px solid var(--c);border-radius:var(--r-md);padding:.75rem 1rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.2rem;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);}
-.dl-karte:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
-.dl-karte-nr{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c);}
-.dl-karte-titel{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--kt-primary);line-height:1.25;margin-top:.05rem;}
-.dl-karte-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;margin-top:.05rem;}
-.dl-badge{display:inline-block;font-size:.58rem;font-weight:700;padding:.1rem .4rem;border-radius:3px;margin-top:.3rem;background:var(--c);color:#fff;opacity:.8;}
-
-/* ALLE-SEKTION */
-.alle-hinweis{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);padding:1rem 1.25rem;font-size:.83rem;color:var(--kt-muted);line-height:1.6;margin-bottom:1.2rem;}
-.alle-hinweis strong{color:var(--kt-primary);}
-
-/* FOOTER */
-footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
-footer strong{color:var(--kt-accent);}
-
-@media(max-width:500px){.dl-grid{grid-template-columns:1fr;}.zg-tabs{gap:.3rem;}}
+:root{--m:#1B3A4B;--accent:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:130px;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--accent);border-radius:20px;color:var(--accent);font-size:.7rem;font-weight:700;text-decoration:none;}
+.tab-nav{background:var(--surface);border-bottom:1.5px solid var(--border);padding:.6rem clamp(1rem,4vw,2rem);display:flex;gap:.4rem;flex-wrap:wrap;position:sticky;top:64px;z-index:90;overflow-x:auto;}
+.tab{padding:.3rem .75rem;border-radius:20px;font-size:.73rem;font-weight:600;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;text-decoration:none;white-space:nowrap;}
+.tab:hover{border-color:var(--m);color:var(--m);}
+.tab.ingra{} .tab.el{} .tab.lk{} .tab.tk{} .tab.kd{} .tab.am{}
+.tab.ingra.aktiv{background:#1B3A4B;border-color:#1B3A4B;color:#fff;}
+.tab.el.aktiv{background:#AD1457;border-color:#AD1457;color:#fff;}
+.tab.lk.aktiv{background:#1565C0;border-color:#1565C0;color:#fff;}
+.tab.tk.aktiv{background:#4A148C;border-color:#4A148C;color:#fff;}
+.tab.kd.aktiv{background:#3B8A68;border-color:#3B8A68;color:#fff;}
+.tab.am.aktiv{background:#C62828;border-color:#C62828;color:#fff;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2rem;margin-bottom:.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto;}
+.shell{max-width:900px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+.sek{margin-bottom:2.5rem;scroll-margin-top:135px;}
+.sek-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:10px;margin-bottom:.85rem;}
+.sek-emoji{font-size:1.4rem;}
+.sek-info{flex:1;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;}
+.sek-sub{font-size:.72rem;margin-top:1px;opacity:.7;}
+.dl-grid{display:flex;flex-direction:column;gap:.5rem;}
+.dl-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:.9rem;padding:.75rem 1rem;transition:all .15s;}
+.dl-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.dl-icon{font-size:1.3rem;flex-shrink:0;}
+.dl-info{flex:1;}
+.dl-name{font-size:.87rem;font-weight:600;margin-bottom:.15rem;}
+.dl-desc{font-size:.72rem;color:var(--muted);}
+.dl-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:6px;font-size:.75rem;font-weight:700;text-decoration:none;transition:all .15s;flex-shrink:0;color:#fff;}
+.dl-btn:hover{opacity:.85;}
 </style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
 </head>
 <body>
-
-<header class="kt-header">
-  <div style="display:flex;align-items:center;gap:.9rem;">
-    <a class="kt-logo" href="DASHBOARD.html">
-      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Downloads & Formulare</span></div>
-    </a>
-    <div class="header-badge">📥 Downloads</div>
-  </div>
-  <nav><a class="btn-back" href="DASHBOARD.html">← Dashboard</a></nav>
+<header class="header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div><div class="logo-text">KLARTEXT · Downloads</div></div>
+  </a>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
 </header>
 
-<div class="page-wrap">
+<nav class="tab-nav">
+  <a class="tab ingra aktiv" href="#ingra">🟢 INGRA</a>
+  <a class="tab el" href="#el">❤️ Eltern</a>
+  <a class="tab lk" href="#lk">🏫 Lehrkraft</a>
+  <a class="tab tk" href="#tk">🗂️ Teamkoordination</a>
+  <a class="tab kd" href="#kd">🧒 Kinder</a>
+  <a class="tab am" href="#am">🛡️ Anti-Mobbing</a>
+</nav>
 
-  <div class="page-header">
-    <div class="page-tag">Downloads & Formulare · 6 Zielgruppen</div>
-    <h1 class="page-titel">Download-Zentrale</h1>
-    <p class="page-lead">Alle Formulare, Vorlagen und Druckmaterialien — nach Zielgruppe sortiert. Sofort nutzbar, druckeroptimiert.</p>
-  </div>
+<div class="hero">
+  <div class="hero-icon">📥</div>
+  <h1 class="hero-titel">Downloads & Formulare</h1>
+  <p class="hero-sub">Alle Druckvorlagen, Formulare und Materialien — nach Zielgruppe sortiert. Öffnen · Ausfüllen · Als PDF drucken.</p>
+</div>
 
-  <!-- ZIELGRUPPEN-TABS -->
-  <div class="zg-tabs">
-    <a class="zg-tab aktiv" style="--c:var(--c-ingra);" onclick="zeigeZG('ingra',this);return false;" href="#">👩‍💼 INGRA</a>
-    <a class="zg-tab" style="--c:var(--c-eltern);" onclick="zeigeZG('eltern',this);return false;" href="#">👨‍👩‍👧 Eltern</a>
-    <a class="zg-tab" style="--c:var(--c-lk);" onclick="zeigeZG('lk',this);return false;" href="#">🏫 Lehrkraft</a>
-    <a class="zg-tab" style="--c:var(--c-tk);" onclick="zeigeZG('tk',this);return false;" href="#">🗂️ Teamkoordination</a>
-    <a class="zg-tab" style="--c:var(--c-kinder);" onclick="zeigeZG('kinder',this);return false;" href="#">👶 Kinder</a>
-    <a class="zg-tab" style="--c:var(--c-mobbing);" onclick="zeigeZG('mobbing',this);return false;" href="#">🛑 Anti-Mobbing</a>
-  </div>
+<div class="shell">
 
-  <!-- ═══════════════════════════════════════════════
-       INGRA
-  ═══════════════════════════════════════════════ -->
-  <div class="dl-sektion aktiv" id="zg-ingra" style="--c:var(--c-ingra);">
-    <div class="dl-sek-header">
-      <div class="dl-sek-dot"></div>
-      <div class="dl-sek-titel">INGRA · Formulare & Dokumentation</div>
-      <div class="dl-sek-sub">11 Materialien</div>
+  <!-- INGRA -->
+  <div class="sek" id="ingra">
+    <div class="sek-header" style="background:#EAF0F4;">
+      <div class="sek-emoji">🟢</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#1B3A4B;">INGRA · Schulbegleitung</div><div class="sek-sub" style="color:#1B3A4B;">Dokumentationsformulare für den Schulalltag</div></div>
     </div>
-
-    <div class="dl-kat-label">Tagesdokumentation & Berichte</div>
     <div class="dl-grid">
-      <a class="dl-karte" href="F-01_Tagesdokumentation.html">
-        <div class="dl-karte-nr">F-01</div>
-        <div class="dl-karte-titel">Tagesdokumentation</div>
-        <div class="dl-karte-sub">Barometer-Verlauf · Ereignisse · Interventionen</div>
-        <span class="dl-badge">Täglich</span>
-      </a>
-      <a class="dl-karte" href="F-02_Wochenreflexion.html">
-        <div class="dl-karte-nr">F-02</div>
-        <div class="dl-karte-titel">Wochenreflexion</div>
-        <div class="dl-karte-sub">Rückblick · Muster · Nächste Woche</div>
-        <span class="dl-badge">Wöchentlich</span>
-      </a>
-      <a class="dl-karte" href="F-03_Monatsbericht.html">
-        <div class="dl-karte-nr">F-03</div>
-        <div class="dl-karte-titel">Monatsbericht</div>
-        <div class="dl-karte-sub">Entwicklung · Ziele · Träger-konform</div>
-        <span class="dl-badge">Monatlich</span>
-      </a>
-      <a class="dl-karte" href="F-04_Uebergabeprotokoll.html">
-        <div class="dl-karte-nr">F-04</div>
-        <div class="dl-karte-titel">Übergabeprotokoll</div>
-        <div class="dl-karte-sub">Vertretung · Infos · Übergabe strukturiert</div>
-        <span class="dl-badge">Bei Bedarf</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Beobachtung & Ziele</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="F-05_Beobachtungsbogen.html">
-        <div class="dl-karte-nr">F-05</div>
-        <div class="dl-karte-titel">Beobachtungsbogen</div>
-        <div class="dl-karte-sub">Strukturierte Beobachtung · Verhalten · Entwicklung</div>
-        <span class="dl-badge">Beobachtung</span>
-      </a>
-      <a class="dl-karte" href="F-06_Zielvereinbarung.html">
-        <div class="dl-karte-nr">F-06</div>
-        <div class="dl-karte-titel">Zielvereinbarung</div>
-        <div class="dl-karte-sub">SMART-Ziele · Kind · INGRA · TK</div>
-        <span class="dl-badge">Hilfeplan</span>
-      </a>
-      <a class="dl-karte" href="F-07_Gespraechsnotiz.html">
-        <div class="dl-karte-nr">F-07</div>
-        <div class="dl-karte-titel">Gesprächsnotiz</div>
-        <div class="dl-karte-sub">Schule · Eltern · TK · Kostenträger</div>
-        <span class="dl-badge">Dokumentation</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Schutz & Gesundheit</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="F-08_SB_Schutzprotokoll.html">
-        <div class="dl-karte-nr">F-08</div>
-        <div class="dl-karte-titel">SB-Schutzprotokoll</div>
-        <div class="dl-karte-sub">§ 8a · Kindeswohlgefährdung · Meldekette</div>
-        <span class="dl-badge">Schutz</span>
-      </a>
-      <a class="dl-karte" href="F-09_Esstoerung_Bogen.html">
-        <div class="dl-karte-nr">F-09</div>
-        <div class="dl-karte-titel">Essstörung-Bogen</div>
-        <div class="dl-karte-sub">Beobachtung · Frühwarnzeichen · Dokumentation</div>
-        <span class="dl-badge">Gesundheit</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Tools & Selbstfürsorge</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="BAROMETER_INGRA.html">
-        <div class="dl-karte-nr">Tool</div>
-        <div class="dl-karte-titel">Barometer interaktiv</div>
-        <div class="dl-karte-sub">6 Stufen · Farben · Bedeutung · Druckversion</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="F-Selbstfuersorge_Bingo.html">
-        <div class="dl-karte-nr">Tool</div>
-        <div class="dl-karte-titel">Selbstfürsorge-Bingo</div>
-        <div class="dl-karte-sub">25 Felder · Wöchentliche Herausforderung</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
+      <div class="dl-item">
+        <div class="dl-icon">📋</div>
+        <div class="dl-info"><div class="dl-name">Tagesdokumentation</div><div class="dl-desc">Tagesprotokoll · Barometer · Werkzeuge · Übergabe</div></div>
+        <a class="dl-btn" href="M5_DL_Tagesdokumentation.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🔖</div>
+        <div class="dl-info"><div class="dl-name">Lesezeichen für dich</div><div class="dl-desc">Zum Ausdrucken, Lochen, Faden dran — Brainy begleitet dich</div></div>
+        <a class="dl-btn" href="INGRA_Lesezeichen_Klartext.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">👆</div>
+        <div class="dl-info"><div class="dl-name">Lesefinger</div><div class="dl-desc">Zum Ausschneiden — über den Finger stülpen, Zeile für Zeile mitlesen</div></div>
+        <a class="dl-btn" href="Lesefinger-Klartext.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📊</div>
+        <div class="dl-info"><div class="dl-name">Wochenreflexion</div><div class="dl-desc">Barometer je Wochentag · Was gut war · Was schwierig war</div></div>
+        <a class="dl-btn" href="M5_DL_Wochenreflexion.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📈</div>
+        <div class="dl-info"><div class="dl-name">Monatsbericht</div><div class="dl-desc">Barometer-Bilanz · Entwicklung · Ziele · Hilfeplan-Empfehlung</div></div>
+        <a class="dl-btn" href="M5_DL_Monatsbericht.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🔄</div>
+        <div class="dl-info"><div class="dl-name">Übergabeprotokoll</div><div class="dl-desc">Von/An INGRA · Barometer · Was half · Unterschriften</div></div>
+        <a class="dl-btn" href="M5_DL_Uebergabeprotokoll.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">👁️</div>
+        <div class="dl-info"><div class="dl-name">Beobachtungsbogen</div><div class="dl-desc">Sachliche Beobachtung · nur Fakten · § 8a-Hinweis</div></div>
+        <a class="dl-btn" href="M5_DL_Beobachtungsbogen.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🎯</div>
+        <div class="dl-info"><div class="dl-name">Zielvereinbarung</div><div class="dl-desc">3 Ziele · Messkriterien · Zuständigkeiten · 3 Unterschriften</div></div>
+        <a class="dl-btn" href="M5_DL_Zielvereinbarung.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🗣️</div>
+        <div class="dl-info"><div class="dl-name">Gesprächsnotiz</div><div class="dl-desc">Eltern-, TK-, LK-Gespräch · Vereinbarungen · Nächster Termin</div></div>
+        <a class="dl-btn" href="M5_DL_Gespraechsnotiz.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
+      </div>
+            <div class="dl-item">
+        <div class="dl-icon">🛡️</div>
+        <div class="dl-info"><div class="dl-name">SB-Schutzprotokoll (Hochkonflikt-Eltern)</div><div class="dl-desc">Vorfallsdokumentation · Art des Vorfalls · Reaktion · TK-Weitergabe · Unterschriften</div></div>
+        <a class="dl-btn" href="M2_DL_SB_Schutzprotokoll.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌿</div>
+        <div class="dl-info"><div class="dl-name">Essstörung — Beobachtungsbogen</div><div class="dl-desc">Sachliche Mustererkennung · Keine Diagnose · Körperlich · Essverhalten · Weitergabe an TK</div></div>
+        <a class="dl-btn" href="M2_DL_Esstoerung_Beobachtung.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌡️</div>
+        <div class="dl-info"><div class="dl-name">Barometer INGRA — interaktiv</div><div class="dl-desc">Täglicher Eintrag · Wochenbilanz · PDF-Export</div></div>
+        <a class="dl-btn" href="BAROMETER_INGRA.html" style="background:#6EC6A0;color:#1B3A4B;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🎯</div>
+        <div class="dl-info"><div class="dl-name">Selbstfürsorge-Bingo</div><div class="dl-desc">16 Felder zum Abhaken · Eine Woche lang</div></div>
+        <a class="dl-btn" href="M8-DL_Selbstfuersorge-Bingo.html" style="background:#6B3F6B;">🖨️ Öffnen</a>
+      </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════
-       ELTERN
-  ═══════════════════════════════════════════════ -->
-  <div class="dl-sektion" id="zg-eltern" style="--c:var(--c-eltern);">
-    <div class="dl-sek-header">
-      <div class="dl-sek-dot"></div>
-      <div class="dl-sek-titel">Eltern · Materialien für zuhause</div>
-      <div class="dl-sek-sub">5 Materialien</div>
+  <!-- ELTERN -->
+  <div class="sek" id="el">
+    <div class="sek-header" style="background:#FCE4EC;">
+      <div class="sek-emoji">❤️</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#AD1457;">Eltern</div><div class="sek-sub" style="color:#AD1457;">Materialien für zuhause und den Austausch mit der Schule</div></div>
     </div>
-
-    <div class="dl-kat-label">Barometer & Orientierung</div>
     <div class="dl-grid">
-      <a class="dl-karte" href="AM_DL_Barometer_Poster.html">
-        <div class="dl-karte-nr">Eltern</div>
-        <div class="dl-karte-titel">Barometer-Poster</div>
-        <div class="dl-karte-sub">A4 · Für den Kühlschrank · 6 Stufen erklärt</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="BAROMETER_KIND.html">
-        <div class="dl-karte-nr">Eltern</div>
-        <div class="dl-karte-titel">Kinder-Barometer</div>
-        <div class="dl-karte-sub">Vereinfachte Version · Mit Kind zusammen nutzen</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Alltag & Rituale</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="AM_DL_Morgenritual.html">
-        <div class="dl-karte-nr">Eltern</div>
-        <div class="dl-karte-titel">Morgenritual-Karte</div>
-        <div class="dl-karte-sub">Schritt-für-Schritt · Morgen strukturieren</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="AM_DL_Eltern_Wochennotiz.html">
-        <div class="dl-karte-nr">Eltern</div>
-        <div class="dl-karte-titel">Eltern-Wochennotiz</div>
-        <div class="dl-karte-sub">Beobachtungen · Fragen · Themen für Gespräch</div>
-        <span class="dl-badge">Wöchentlich</span>
-      </a>
-      <a class="dl-karte" href="AM_DL_Notfallkontakte.html">
-        <div class="dl-karte-nr">Eltern</div>
-        <div class="dl-karte-titel">Notfallkontakte</div>
-        <div class="dl-karte-sub">Schule · Träger · Kostenträger · Krisentelefon</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
+      <div class="dl-item">
+        <div class="dl-icon">🌡️</div>
+        <div class="dl-info"><div class="dl-name">Barometer-Poster</div><div class="dl-desc">Für zuhause ausdrucken · 5 Farben · kindgerecht</div></div>
+        <a class="dl-btn" href="EL_DL_Barometer_Poster.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">😊</div>
+        <div class="dl-info"><div class="dl-name">Kinder-Barometer — interaktiv</div><div class="dl-desc">Kind stellt selbst ein · Wochenbilanz · Drucken</div></div>
+        <a class="dl-btn" href="BAROMETER_KIND.html" style="background:#AD1457;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌅</div>
+        <div class="dl-info"><div class="dl-name">Morgenritual-Karte</div><div class="dl-desc">Tagesablauf planen · Abschiedsritual · Ausfüllbar</div></div>
+        <a class="dl-btn" href="EL_DL_Morgenritual.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📋</div>
+        <div class="dl-info"><div class="dl-name">Eltern-Wochennotiz</div><div class="dl-desc">Beobachtungen zuhause · Barometer · Fragen an Schule</div></div>
+        <a class="dl-btn" href="EL_DL_Wochennotiz.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📞</div>
+        <div class="dl-info"><div class="dl-name">Notfallkontakte</div><div class="dl-desc">Ausfüllbare Kontaktkarte · Schule · TK · Kostenträger</div></div>
+        <a class="dl-btn" href="EL-04.html" style="background:#AD1457;">🖨️ Öffnen</a>
+      </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════
-       LEHRKRAFT
-  ═══════════════════════════════════════════════ -->
-  <div class="dl-sektion" id="zg-lk" style="--c:var(--c-lk);">
-    <div class="dl-sek-header">
-      <div class="dl-sek-dot"></div>
-      <div class="dl-sek-titel">Lehrkraft · Materialien zum Weitergeben</div>
-      <div class="dl-sek-sub">LK-Karten · Weitergabefähig</div>
+  <!-- LEHRKRAFT -->
+  
+  <!-- KINDER -->
+  <div class="sek" id="kd">
+    <div class="sek-header" style="background:#E8F5EE;">
+      <div class="sek-emoji">🧒</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#3B8A68;">Kinder · Für das Kind direkt</div><div class="sek-sub" style="color:#3B8A68;">Interaktive Karten und alle Druckvorlagen</div></div>
     </div>
-
-    <div class="dl-kat-label">Lehrkraft-Karten (17 Karten)</div>
     <div class="dl-grid">
-      <a class="dl-karte" href="KLARTEXT_LK_Info.html">
-        <div class="dl-karte-nr">LK · Übersicht</div>
-        <div class="dl-karte-titel">Alle LK-Karten</div>
-        <div class="dl-karte-sub">17 Karten · Direkt teilbar · Kein Login nötig</div>
-        <span class="dl-badge">Übersicht</span>
-      </a>
-      <a class="dl-karte" href="LK-17_ADHS_Uebergang.html">
-        <div class="dl-karte-nr">LK-17 · Neu</div>
-        <div class="dl-karte-titel">ADHS & Ausbildungsreife</div>
-        <div class="dl-karte-sub">Übergang Schule → Beruf · KAoA · Nachteilsausgleich</div>
-        <span class="dl-badge">Übergang</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Zusammenarbeit INGRA ↔ Lehrkraft</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="AM_DL_Klassenvertrag.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Klassenvertrag</div>
-        <div class="dl-karte-sub">Gemeinsame Regeln · Klasse & INGRA</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="AM_DL_So_melde_ich_Mobbing.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">So melde ich Mobbing</div>
-        <div class="dl-karte-sub">Für Lehrkräfte · Klare Schritte</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
+      <div class="dl-item">
+        <div class="dl-icon">😊</div>
+        <div class="dl-info"><div class="dl-name">Barometer für Kinder — interaktiv</div><div class="dl-desc">Kind wählt selbst · Wochenbilanz · Konfetti · Drucken</div></div>
+        <a class="dl-btn" href="BAROMETER_KIND.html" style="background:#3B8A68;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🔖</div>
+        <div class="dl-info"><div class="dl-name">Lesezeichen für dich</div><div class="dl-desc">Zum Ausdrucken, Lochen, Faden dran — Brainy bewacht deine Seite</div></div>
+        <a class="dl-btn" href="KIND_Lesezeichen_Klartext.pdf" style="background:#3B8A68;" download>📄 PDF</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌡️</div>
+        <div class="dl-info"><div class="dl-name">Wie geht es mir? (KD-01)</div><div class="dl-desc">Interaktive Barometer-Karte für das Kind</div></div>
+        <a class="dl-btn" href="KD-01.html" style="background:#3B8A68;">Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🕵️</div>
+        <div class="dl-info"><div class="dl-name">Geheimschüler-Ausweis</div><div class="dl-desc">Druckvorlage · Ausschneiden · Laminieren</div></div>
+        <a class="dl-btn" href="KD-DL-01.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🃏</div>
+        <div class="dl-info"><div class="dl-name">Joker-Gutscheine</div><div class="dl-desc">Druckvorlage · Notfallsignal für das Kind</div></div>
+        <a class="dl-btn" href="KD-DL-02.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">⭐</div>
+        <div class="dl-info"><div class="dl-name">Sterntaler</div><div class="dl-desc">Druckvorlage · Lob und Erfolge sichtbar machen</div></div>
+        <a class="dl-btn" href="KD-DL-03.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🚽</div>
+        <div class="dl-info"><div class="dl-name">Klo-Kärtchen</div><div class="dl-desc">Druckvorlage · Pausenregelung für das Kind</div></div>
+        <a class="dl-btn" href="KD-02_Klokarten.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📿</div>
+        <div class="dl-info"><div class="dl-name">Lob-Armband</div><div class="dl-desc">Druckvorlage · Belohnung sichtbar tragen</div></div>
+        <a class="dl-btn" href="KD-04_Lobarmband.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">💛</div>
+        <div class="dl-info"><div class="dl-name">Lob-Kärtchen</div><div class="dl-desc">Druckvorlage · Wertschätzung konkret zeigen</div></div>
+        <a class="dl-btn" href="KD-05_Lobkaertchen.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🤸</div>
+        <div class="dl-info"><div class="dl-name">Mini-Fitness</div><div class="dl-desc">Druckvorlage · Bewegungspausen im Unterricht</div></div>
+        <a class="dl-btn" href="KD-06_MiniFitness.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🎮</div>
+        <div class="dl-info"><div class="dl-name">Himmel & Hölle</div><div class="dl-desc">Druckvorlage · Spielerische Übung</div></div>
+        <a class="dl-btn" href="KD-08_HimmelHoelle.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">💪</div>
+        <div class="dl-info"><div class="dl-name">Mutmach-Kärtchen</div><div class="dl-desc">Druckvorlage · Stärken und Mut zeigen</div></div>
+        <a class="dl-btn" href="KD-10_Mutmachkaertchen.html" style="background:#3B8A68;">🖨️ Öffnen</a>
+      </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════
-       TEAMKOORDINATION
-  ═══════════════════════════════════════════════ -->
-  <div class="dl-sektion" id="zg-tk" style="--c:var(--c-tk);">
-    <div class="dl-sek-header">
-      <div class="dl-sek-dot"></div>
-      <div class="dl-sek-titel">Teamkoordination · Formulare & Protokolle</div>
-      <div class="dl-sek-sub">TK-Formulare · Checklisten</div>
+  <!-- ANTI-MOBBING -->
+  <div class="sek" id="am">
+    <div class="sek-header" style="background:#FFEBEE;">
+      <div class="sek-emoji">🛡️</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#C62828;">Anti-Mobbing</div><div class="sek-sub" style="color:#C62828;">Druckmaterialien für Klasse und Kind</div></div>
     </div>
-
-    <div class="dl-kat-label">Recruiting</div>
     <div class="dl-grid">
-      <a class="dl-karte" href="TK-Recruiting.html#gespräch">
-        <div class="dl-karte-nr">TK-R · 01</div>
-        <div class="dl-karte-titel">Erstgespräch-Bogen</div>
-        <div class="dl-karte-sub">Kandidat · Stelle · Schule · Kompatibilität</div>
-        <span class="dl-badge">Formular</span>
-      </a>
-      <a class="dl-karte" href="TK-Recruiting.html#entscheidung">
-        <div class="dl-karte-nr">TK-R · 04</div>
-        <div class="dl-karte-titel">Entscheidungs-Matrix</div>
-        <div class="dl-karte-sub">5 Kriterien · Ampel · Votum dokumentieren</div>
-        <span class="dl-badge">Formular</span>
-      </a>
-      <a class="dl-karte" href="TK-Recruiting.html#dokumentation">
-        <div class="dl-karte-nr">TK-R · 06</div>
-        <div class="dl-karte-titel">Recruiting-Dokumentation</div>
-        <div class="dl-karte-sub">Träger-konform · Ablage · Export</div>
-        <span class="dl-badge">Protokoll</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Fallmanagement</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="TK-Recruiting.html#case_start">
-        <div class="dl-karte-nr">FM · Start</div>
-        <div class="dl-karte-titel">Fallakte anlegen</div>
-        <div class="dl-karte-sub">Stammdaten · Kind · Stelle · Träger</div>
-        <span class="dl-badge">Formular</span>
-      </a>
-      <a class="dl-karte" href="TK-Recruiting.html#case_risk">
-        <div class="dl-karte-nr">FM · Risiko</div>
-        <div class="dl-karte-titel">Risiko-Ampel</div>
-        <div class="dl-karte-sub">Grün · Gelb · Rot · Maßnahmen</div>
-        <span class="dl-badge">Checkliste</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Checklisten</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="TK-Recruiting.html#sab">
-        <div class="dl-karte-nr">TK-R · 07</div>
-        <div class="dl-karte-titel">TK-Selbstcheck</div>
-        <div class="dl-karte-sub">Prozesssicherheit · Haltung · Qualität</div>
-        <span class="dl-badge">Checkliste</span>
-      </a>
-      <a class="dl-karte" href="Kinderverwaltung.html">
-        <div class="dl-karte-nr">KV</div>
-        <div class="dl-karte-titel">Kinderliste exportieren</div>
-        <div class="dl-karte-sub">CSV-Export · Alle Kinder · Datenschutzhinweis</div>
-        <span class="dl-badge">Export</span>
-      </a>
+      <div class="dl-item">
+        <div class="dl-icon">🛑</div>
+        <div class="dl-info"><div class="dl-name">Stoppschild-Karte</div><div class="dl-desc">Karte A6 + Klassenposter A4 · Ausschneiden · Laminieren</div></div>
+        <a class="dl-btn" href="AM_DL_Stoppschild.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">🌟</div>
+        <div class="dl-info"><div class="dl-name">Meine Verbündeten</div><div class="dl-desc">Sonne GS + Netzwerk WF · Ausfüllbar</div></div>
+        <a class="dl-btn" href="AM_DL_Meine_Verbuendeten.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📋</div>
+        <div class="dl-info"><div class="dl-name">So melde ich Mobbing</div><div class="dl-desc">Schritte · Notfallnummer · Für das Kind</div></div>
+        <a class="dl-btn" href="AM_DL_So_melde_ich_Mobbing.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
+      <div class="dl-item">
+        <div class="dl-icon">📜</div>
+        <div class="dl-info"><div class="dl-name">Klassenvertrag</div><div class="dl-desc">5 Regeln · Alle unterschreiben · A4 Druckvorlage</div></div>
+        <a class="dl-btn" href="AM_DL_Klassenvertrag.html" style="background:#C62828;">🖨️ Öffnen</a>
+      </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════════
-       KINDER
-  ═══════════════════════════════════════════════ -->
-  <div class="dl-sektion" id="zg-kinder" style="--c:var(--c-kinder);">
-    <div class="dl-sek-header">
-      <div class="dl-sek-dot"></div>
-      <div class="dl-sek-titel">Kinder · Druckvorlagen & interaktive Tools</div>
-      <div class="dl-sek-sub">14 Materialien</div>
-    </div>
+</div>
 
-    <div class="dl-kat-label">Interaktive Tools</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="KD-01.html">
-        <div class="dl-karte-nr">KD-01</div>
-        <div class="dl-karte-titel">Wie geht es mir?</div>
-        <div class="dl-karte-sub">Barometer für Kinder · 6 Stufen</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-03.html">
-        <div class="dl-karte-nr">KD-03</div>
-        <div class="dl-karte-titel">Die Stopp-Taste</div>
-        <div class="dl-karte-sub">Stopp sagen üben · Grenzen</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-04.html">
-        <div class="dl-karte-nr">KD-04</div>
-        <div class="dl-karte-titel">Atem-Pause</div>
-        <div class="dl-karte-sub">Atemübung · Beruhigung</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-05.html">
-        <div class="dl-karte-nr">KD-05</div>
-        <div class="dl-karte-titel">Mein Schultag</div>
-        <div class="dl-karte-sub">Tagesplan · Struktur geben</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-06.html">
-        <div class="dl-karte-nr">KD-06</div>
-        <div class="dl-karte-titel">Wut-Weg</div>
-        <div class="dl-karte-sub">Wut regulieren · Strategien</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-07.html">
-        <div class="dl-karte-nr">KD-07</div>
-        <div class="dl-karte-titel">Die liegende Acht</div>
-        <div class="dl-karte-sub">Bewegungsübung · Konzentration</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-08.html">
-        <div class="dl-karte-nr">KD-08</div>
-        <div class="dl-karte-titel">Meine Insel</div>
-        <div class="dl-karte-sub">Ruhebild · Entspannung</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-      <a class="dl-karte" href="KD-09.html">
-        <div class="dl-karte-nr">KD-09</div>
-        <div class="dl-karte-titel">Tag-Check</div>
-        <div class="dl-karte-sub">Tagesrückblick · Reflexion</div>
-        <span class="dl-badge">Interaktiv</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Druckvorlagen</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="KD-DL-01.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Geheimschüler-Ausweis</div>
-        <div class="dl-karte-sub">A6 · Druckvorlage · Original</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-02_Klokarten.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Klo-Kärtchen</div>
-        <div class="dl-karte-sub">Druckvorlage · Pause signalisieren</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-DL-02.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Joker-Gutscheine</div>
-        <div class="dl-karte-sub">Notfallsignal · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-DL-03.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Sterntaler</div>
-        <div class="dl-karte-sub">Lob · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-04_Lobarmband.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Lob-Armband</div>
-        <div class="dl-karte-sub">Belohnung · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-05_Lobkaertchen.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Lob-Kärtchen</div>
-        <div class="dl-karte-sub">Wertschätzung · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-06_MiniFitness.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Mini-Fitness</div>
-        <div class="dl-karte-sub">Bewegung · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-08_HimmelHoelle.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Himmel & Hölle</div>
-        <div class="dl-karte-sub">Spiel · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="KD-10_Mutmachkaertchen.html">
-        <div class="dl-karte-nr">Druck</div>
-        <div class="dl-karte-titel">Mutmach-Kärtchen</div>
-        <div class="dl-karte-sub">Stärken · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════════
-       ANTI-MOBBING
-  ═══════════════════════════════════════════════ -->
-  <div class="dl-sektion" id="zg-mobbing" style="--c:var(--c-mobbing);">
-    <div class="dl-sek-header">
-      <div class="dl-sek-dot"></div>
-      <div class="dl-sek-titel">Anti-Mobbing · Materialien für alle</div>
-      <div class="dl-sek-sub">Für Kinder · Eltern · Schule</div>
-    </div>
-
-    <div class="dl-kat-label">Für Kinder</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="AM_DL_Meine_Verbuendeten.html">
-        <div class="dl-karte-nr">AM · Kinder</div>
-        <div class="dl-karte-titel">Meine Verbündeten</div>
-        <div class="dl-karte-sub">Wen kann ich fragen? · Netzwerkkarte</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="AM_DL_Stoppschild.html">
-        <div class="dl-karte-nr">AM · Kinder</div>
-        <div class="dl-karte-titel">Stopp-Schild</div>
-        <div class="dl-karte-sub">Grenzen zeigen · Druckvorlage</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="AM_DL_So_melde_ich_Mobbing.html">
-        <div class="dl-karte-nr">AM · Kinder</div>
-        <div class="dl-karte-titel">So melde ich Mobbing</div>
-        <div class="dl-karte-sub">Schritt-für-Schritt · Für Kinder</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-    </div>
-
-    <div class="dl-kat-label">Für Eltern & Schule</div>
-    <div class="dl-grid">
-      <a class="dl-karte" href="AM_DL_Klassenvertrag.html">
-        <div class="dl-karte-nr">AM · Klasse</div>
-        <div class="dl-karte-titel">Klassenvertrag</div>
-        <div class="dl-karte-sub">Gemeinsame Regeln · Unterschriften</div>
-        <span class="dl-badge">Drucken</span>
-      </a>
-      <a class="dl-karte" href="M6-01_Mobbing_erkennen.html">
-        <div class="dl-karte-nr">M6-01</div>
-        <div class="dl-karte-titel">Mobbing erkennen</div>
-        <div class="dl-karte-sub">3 Merkmale · Konflikt vs. Mobbing</div>
-        <span class="dl-badge">Karte</span>
-      </a>
-      <a class="dl-karte" href="M6-06_Mobbing_und_Lehrkraft.html">
-        <div class="dl-karte-nr">M6-06</div>
-        <div class="dl-karte-titel">Mobbing & Lehrkraft</div>
-        <div class="dl-karte-sub">Weitergabefähig · Zusammenarbeit</div>
-        <span class="dl-badge">LK-Karte</span>
-      </a>
-    </div>
-  </div>
-
-</div><!-- /.page-wrap -->
-
-<footer>
-  <strong>KLARTEXT</strong> · Downloads & Formulare · 6 Zielgruppen<br>
-  Klar. Warm. Menschlich. · © 2026 Anja Jolk
-</footer>
+<div style="position:fixed;bottom:1.25rem;right:1rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
 
 <script>
-function zeigeZG(id, tab) {
-  document.querySelectorAll('.dl-sektion').forEach(function(s){ s.classList.remove('aktiv'); });
-  document.querySelectorAll('.zg-tab').forEach(function(t){ t.classList.remove('aktiv'); });
-  document.getElementById('zg-' + id).classList.add('aktiv');
-  tab.classList.add('aktiv');
-}
+// Tab aktiv setzen beim Scrollen
+const seks = document.querySelectorAll('.sek');
+const tabs = document.querySelectorAll('.tab');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      tabs.forEach(t=>{t.classList.remove('aktiv');});
+      const aktiv=document.querySelector('.tab[href="#'+id+'"]');
+      if(aktiv)aktiv.classList.add('aktiv');
+    }
+  });
+},{rootMargin:'-135px 0px -60% 0px'});
+seks.forEach(s=>obs.observe(s));
 </script>
-
 </body>
 </html>

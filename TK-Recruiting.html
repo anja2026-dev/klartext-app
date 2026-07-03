@@ -100,7 +100,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
   margin-bottom:.5rem;
 }
 .start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
-.start-section-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);margin:1.2rem 0 .5rem;padding-bottom:.3rem;border-bottom:1.5px solid var(--kt-border);}
 .start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
 
 .btn-grid{
@@ -479,13 +478,11 @@ footer strong{color:var(--kt-accent);}
 <div class="view aktiv" id="view-start">
   <div class="start-wrap">
     <div class="start-header">
-      <div class="start-modul-tag">TK · Dashboard</div>
+      <div class="start-modul-tag">TK · Recruiting</div>
       <h1 class="start-titel">TK-Recruiting</h1>
-      <p class="start-lead">Alle Prozessschritte, Module und Werkzeuge der Teamkoordination.</p>
+      <p class="start-lead">Alle 8 Prozessschritte des Recruiting-Workflows –<br>strukturiert, Träger-basiert, sofort einsetzbar.</p>
     </div>
 
-    <!-- SEKTION 1: TK-Recruiting -->
-    <div class="start-section-label">TK-Recruiting</div>
     <div class="btn-grid">
 
       <!-- 1 -->
@@ -568,13 +565,6 @@ footer strong{color:var(--kt-accent);}
         <div class="btn-kachel-stripe" style="background:#1B3A4B;"></div>
       </button>
 
-    </div>
-
-    <!-- SEKTION 2: TK-Module -->
-    <div class="start-section-label" style="margin-top:1.5rem;">TK-Module</div>
-    <div class="btn-grid">
-
-      <!-- VA -->
       <button class="btn-kachel" onclick="zeige('anleitung-va')" style="border-color:#1B3A4B;">
         <div class="btn-kachel-nr" style="color:#1B3A4B;">VA · ℹ</div>
         <div class="btn-kachel-emoji">🔄</div>
@@ -583,14 +573,7 @@ footer strong{color:var(--kt-accent);}
         <div class="btn-kachel-stripe" style="background:#1B3A4B;"></div>
       </button>
 
-      <!-- Kinderverwaltung -->
-      <a class="btn-kachel" href="Kinderverwaltung.html" style="border-color:#1A8C8C;text-decoration:none;">
-        <div class="btn-kachel-nr" style="color:#1A8C8C;">TK · KV</div>
-        <div class="btn-kachel-emoji">👶</div>
-        <div class="btn-kachel-titel">Kinderverwaltung</div>
-        <div class="btn-kachel-sub">Stammdaten · Klassen · Bedarfsarten</div>
-        <div class="btn-kachel-stripe" style="background:#1A8C8C;"></div>
-      </a>
+      
 
     </div>
   </div>
@@ -672,81 +655,6 @@ footer strong{color:var(--kt-accent);}
 
 <!-- ══════════════════════════════════════════════════════════
      MINI-KARTE: ANLEITUNG VERTRETUNGSASSISTENT
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-anleitung-va">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('start');return false;">TK-Recruiting</a>
-      <span>›</span> Anleitung Vertretungsassistent
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr">VA · Anleitung</div>
-        <div class="unter-titel">Vertretungsassistent – Kurzanleitung</div>
-        <div class="unter-sub">Neutral · Stichwortartig · Prozessbezogen</div>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">🔄</span><span class="karte-header-titel">Was ist der Vertretungsassistent?</span></div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Digitales Werkzeug zur schnellen Vertretungsorganisation</li>
-          <li>Filtert geeignete Personen nach Verfügbarkeit, Qualifikation & Einsatzort</li>
-          <li>Unterstützt TK bei kurzfristigen Ausfällen und Planungslücken</li>
-          <li>Alle Daten werden trägerintern verwaltet</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Schritt-für-Schritt-Nutzung</span></div>
-      <div class="karte-body">
-        <ol class="schritt-list">
-          <li><strong>Anmelden</strong> – mit persönlichem Zugang im IT-System einloggen</li>
-          <li><strong>Bedarf erfassen</strong> – Schule, Datum, Zeitraum und Anforderungen eingeben</li>
-          <li><strong>Vorschläge prüfen</strong> – gefilterte Liste verfügbarer Personen einsehen</li>
-          <li><strong>Eignung abwägen</strong> – Qualifikation, Erfahrung & Einsatzort abgleichen</li>
-          <li><strong>Person auswählen & kontaktieren</strong> – Zusage einholen, Einsatz bestätigen</li>
-          <li><strong>Einsatz dokumentieren</strong> – Vertretung im System erfassen und abschließen</li>
-          <li><strong>Rückmeldung</strong> – Kurzevaluation nach Einsatz (optional, aber empfohlen)</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">💡</span><span class="karte-header-titel">Hinweise & Tipps</span></div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Vertretungsliste regelmäßig aktuell halten – veraltete Einträge vermeiden</li>
-          <li>Nur Personen mit aktuellem Profil und Verfügbarkeitsstatus berücksichtigen</li>
-          <li>Bei Unklarheiten zur Eignung: Rücksprache mit TK-Leitung</li>
-          <li>Kurzfristige Ausfälle: zuerst intern prüfen, dann externe Optionen</li>
-          <li>Alle Vertretungseinsätze lückenlos dokumentieren</li>
-        </ul>
-        <div class="hinweis">Vollständige Anleitung → <a href="VA_Anleitung.html" style="color:var(--tk-color);font-weight:700;">VA_Anleitung.html</a> öffnen</div>
-      </div>
-    </div>
-
-    <div class="brainy-box">
-      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
-      <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Prozesshinweis</span>
-        <p class="brainy-box-text">Brainy unterstützt auch bei Vertretungssituationen – mit Checklisten, Filterhilfen und Weiterleitungsimpulsen für jede Prozessphase.</p>
-      </div>
-    </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Zur Übersicht</button>
-      <a class="unter-nav-btn" href="VA_Anleitung.html">📄 Vollständige VA-Anleitung →</a>
-    </div>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════════════════════════
-     VIEW 1: GESPRÄCH
 ══════════════════════════════════════════════════════════ -->
 <div class="view" id="view-gespräch">
   <div class="unter-wrap">
@@ -1639,7 +1547,14 @@ var views = {
   'sab':          'view-sab',
   'erinnerungen': 'view-erinnerungen',
   'anleitung-recruiting': 'view-anleitung-recruiting',
-  'anleitung-va':         'view-anleitung-va',
+  // removed 'case_start':           'view-case_start',
+  // removed 'case_file':            'view-case_file',
+  // removed 'case_risk':            'view-case_risk',
+  // removed 'case_actions':         'view-case_actions',
+  // removed 'case_timeline':        'view-case_timeline',
+  // removed 'case_barometer':       'view-case_barometer',
+  // removed 'case_pdf':             'view-case_pdf',
+  // removed 'case_help':            'view-case_help'
 };
 
 function zeige(key) {
@@ -1696,11 +1611,6 @@ function zeigeToast(msg) {
   t.classList.add('sichtbar');
   setTimeout(function(){ t.classList.remove('sichtbar'); }, 2200);
 }
-// ── Hash-Navigation beim Laden ─────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  var hash = window.location.hash.replace('#','');
-  if (hash && hash !== 'start') { zeige(hash); }
-});
 </script>
 
 </body>

@@ -133,10 +133,15 @@
   .woche-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;text-align:center;}
   .woche-tag{
     border:1.5px solid var(--border);border-radius:var(--r-sm);padding:.6rem .3rem;background:var(--paper);
+    cursor:pointer;transition:border-color .15s,background .15s;
   }
+  .woche-tag:hover{border-color:var(--navy);background:#EDE8DF;}
+  .woche-tag.hat-eintrag{border-color:#4CAF50;background:#F1F8F1;}
+  .woche-tag.heute{border-color:var(--navy);font-weight:700;}
   .woche-tag .label{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
   .woche-tag .punkt{width:18px;height:18px;border-radius:50%;margin:.4rem auto 0;}
   .woche-tag .kdatum{font-size:.65rem;color:var(--muted);margin-top:.2rem;}
+  .woche-tag .woche-check{font-size:.85rem;margin-top:.3rem;line-height:1;}
 
   /* Übergabe Dringlichkeit */
   .dringlichkeit-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.3rem;}
@@ -554,30 +559,50 @@
   }
 
   function wocheRendern(){
-    var grid = document.getElementById('wocheGrid');
+    var grid   = document.getElementById('wocheGrid');
     var labels = ['Mo','Di','Mi','Do','Fr'];
     var montag = montagDerWoche();
-    var liste = alleEintraegeLaden().filter(function(e){ return !aktuellerKindId || e.childId === aktuellerKindId; });
+    var heute  = isoDatum(new Date());
+    var liste  = alleEintraegeLaden().filter(function(e){
+      return !aktuellerKindId || e.childId === aktuellerKindId;
+    });
 
     var html = '';
     for(var i=0; i<5; i++){
-      var tagDatum = new Date(montag);
+      var tagDatum   = new Date(montag);
       tagDatum.setDate(montag.getDate() + i);
-      var iso = isoDatum(tagDatum);
-      var eintrag = liste.filter(function(e){ return e.datum === iso; }).pop();
-      var farbe = eintrag ? eintrag.barometerFarbe : '';
-      var hex = farbe ? FARB_HEX[farbe] : '#C9C6C0';
+      var iso        = isoDatum(tagDatum);
+      var eintrag    = liste.filter(function(e){ return e.datum === iso; }).pop();
+      var farbe      = eintrag ? eintrag.barometerFarbe : '';
+      var hex        = farbe ? FARB_HEX[farbe] : '#C9C6C0';
+      var hatEintrag = !!eintrag;
+      var istHeute   = iso === heute;
 
-      html += '<div class="woche-tag">';
+      var klassen = 'woche-tag';
+      if(hatEintrag) klassen += ' hat-eintrag';
+      if(istHeute)   klassen += ' heute';
+
+      html += '<div class="' + klassen + '" onclick="wocheTagKlick(\'' + iso + '\')" title="' + iso + ' öffnen">';
       html += '<div class="label">'+labels[i]+'</div>';
       html += '<div class="punkt" style="background:'+hex+';"></div>';
       html += '<div class="kdatum">'+tagDatum.getDate()+'.'+(tagDatum.getMonth()+1)+'.</div>';
+      html += '<div class="woche-check">'+(hatEintrag ? '✔' : '☐')+'</div>';
       html += '</div>';
     }
     grid.innerHTML = html;
   }
 
-  // ───────────────────────────────────────────
+  window.wocheTagKlick = function(iso){
+    var datumsfeld = document.getElementById('datum');
+    if(datumsfeld){
+      datumsfeld.value = iso;
+      datumsfeld.dispatchEvent(new Event('change'));
+    }
+    var ziel = document.querySelector('main');
+    if(ziel) ziel.scrollIntoView({ behavior:'smooth', block:'start' });
+  };
+
+    // ───────────────────────────────────────────
   // PDF-Export Woche
   // ───────────────────────────────────────────
   window.pdfExportWoche = function(){

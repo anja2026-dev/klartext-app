@@ -106,10 +106,26 @@
     .datenschutz-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#B45309;margin-bottom:.35rem;display:block;}
     .datenschutz p{font-size:.76rem;color:#5C4209;line-height:1.55;}
 
+    /* ── BEDINGTE FELDGRUPPEN (Bedarfsart-abhängig) ── */
+    .feld-gruppe{display:none;margin-top:.7rem;padding-top:.65rem;border-top:1px dashed var(--kt-border);}
+    .feld-gruppe.sichtbar{display:block;}
+    .feld-gruppe-titel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.5rem;display:flex;align-items:center;gap:.35rem;}
+    .feld-gruppe-titel .fg-icon{font-size:.85rem;}
+
+    /* ── WOCHENPLAN (Einsatzzeiten) ── */
+    .wochenplan{display:grid;grid-template-columns:auto 1fr 1fr;gap:.45rem .65rem;align-items:center;}
+    .wochenplan-tag{font-size:.74rem;font-weight:700;color:var(--kt-ink);}
+    .wochenplan-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--kt-muted);grid-column:2/4;margin-bottom:-.15rem;}
+    .wochenplan input[type="time"]{padding:.4rem .55rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);font-size:.78rem;font-family:'DM Sans',sans-serif;color:var(--kt-ink);width:100%;background:#fff;transition:border-color .15s;}
+    .wochenplan input[type="time"]:focus{border-color:var(--tk-color);outline:none;}
+
     @media(max-width:500px){
       .form-grid{grid-template-columns:1fr;}
       .filter-bar{flex-direction:column;}
       .export-bar{justify-content:flex-start;}
+      .wochenplan{grid-template-columns:auto 1fr;}
+      .wochenplan-tag{grid-column:1/2;}
+      .wochenplan-label{display:none;}
     }
   </style>
 </head>
@@ -184,16 +200,143 @@
         </div>
         <div class="form-group">
           <label>Bedarfsart</label>
-          <select id="kind-bedarf">
+          <select id="kind-bedarf" onchange="toggleFeldgruppen()">
             <option value="">– bitte wählen –</option>
-            <option>GS – Grundschule</option>
-            <option>FS – Förderschule</option>
-            <option>WF – Weiterführend</option>
-            <option>BK – Berufskolleg</option>
+            <optgroup label="Schulisch">
+              <option data-kategorie="schulisch">GS – Grundschule</option>
+              <option data-kategorie="schulisch">FS – Förderschule</option>
+              <option data-kategorie="schulisch">WF – Weiterführend</option>
+              <option data-kategorie="schulisch">BK – Berufskolleg</option>
+            </optgroup>
+            <optgroup label="Frühkindlich">
+              <option data-kategorie="fruehkindlich">Kita – Regelgruppe</option>
+              <option data-kategorie="fruehkindlich">Kita – Integrativgruppe</option>
+              <option data-kategorie="fruehkindlich">Krippe</option>
+            </optgroup>
+            <optgroup label="Berufliche Integration">
+              <option data-kategorie="beruflich">WfbM – Werkstatt für behinderte Menschen</option>
+              <option data-kategorie="beruflich">Ausbildung – Betrieblich</option>
+              <option data-kategorie="beruflich">Arbeitsplatz – Allgemeiner Arbeitsmarkt</option>
+            </optgroup>
           </select>
         </div>
       </div>
-      <div class="btn-row">
+
+      <!-- FELDGRUPPE: SCHULISCH -->
+      <div class="feld-gruppe" id="grp-schulisch">
+        <div class="feld-gruppe-titel"><span class="fg-icon">🏫</span> Schulische Angaben</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Schule</label>
+            <input id="kind-schule" placeholder="Name der Schule">
+          </div>
+          <div class="form-group">
+            <label>Standort</label>
+            <input id="kind-standort" placeholder="Adresse / Ortsteil">
+          </div>
+          <div class="form-group">
+            <label>Lehrkraft</label>
+            <input id="kind-lehrkraft" placeholder="Ansprechperson Lehrkraft">
+          </div>
+        </div>
+      </div>
+
+      <!-- FELDGRUPPE: FRÜHKINDLICH -->
+      <div class="feld-gruppe" id="grp-fruehkindlich">
+        <div class="feld-gruppe-titel"><span class="fg-icon">🧸</span> Frühkindliche Angaben</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Kita</label>
+            <input id="kind-kita" placeholder="Name der Kita">
+          </div>
+          <div class="form-group">
+            <label>Gruppe</label>
+            <input id="kind-kigruppe" placeholder="z. B. Sonnengruppe">
+          </div>
+          <div class="form-group">
+            <label>Bezugserzieher/-in</label>
+            <input id="kind-bezugserzieher" placeholder="Name Bezugserzieher/-in">
+          </div>
+        </div>
+      </div>
+
+      <!-- FELDGRUPPE: BERUFLICHE INTEGRATION -->
+      <div class="feld-gruppe" id="grp-beruflich">
+        <div class="feld-gruppe-titel"><span class="fg-icon">🛠️</span> Berufliche Integration – Werkstatt</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Behindertenwerkstatt</label>
+            <input id="kind-werkstatt" placeholder="Name der Werkstatt">
+          </div>
+          <div class="form-group">
+            <label>Bereich</label>
+            <input id="kind-wf-bereich" placeholder="z. B. Montage, Garten, Küche">
+          </div>
+          <div class="form-group">
+            <label>Gruppenleitung</label>
+            <input id="kind-wf-gruppenleitung" placeholder="Name Gruppenleitung">
+          </div>
+        </div>
+        <div class="feld-gruppe-titel" style="margin-top:.75rem;"><span class="fg-icon">💼</span> Berufliche Integration – Arbeitsplatz</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Arbeitsplatz</label>
+            <input id="kind-arbeitsplatz" placeholder="Betrieb / Unternehmen">
+          </div>
+          <div class="form-group">
+            <label>Einsatzort</label>
+            <input id="kind-einsatzort" placeholder="Adresse Einsatzort">
+          </div>
+          <div class="form-group">
+            <label>Ansprechpartner</label>
+            <input id="kind-ansprechpartner" placeholder="Name Ansprechpartner">
+          </div>
+          <div class="form-group">
+            <label>Arbeitszeiten</label>
+            <input id="kind-arbeitszeiten" placeholder="z. B. Mo–Fr 8–13 Uhr">
+          </div>
+        </div>
+      </div>
+
+      <!-- FELDGRUPPE: TRÄGER / KOSTENTRÄGER (immer sichtbar) -->
+      <div class="feld-gruppe sichtbar" id="grp-traeger">
+        <div class="feld-gruppe-titel"><span class="fg-icon">🗂️</span> Träger &amp; Aktenlage</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Träger</label>
+            <input id="kind-traeger" placeholder="Träger der Maßnahme">
+          </div>
+          <div class="form-group">
+            <label>Kostenträger</label>
+            <input id="kind-kostentraeger" placeholder="z. B. Jugendamt, Sozialamt">
+          </div>
+          <div class="form-group">
+            <label>Aktenzeichen</label>
+            <input id="kind-aktenzeichen" placeholder="Aktenzeichen / Fallnummer">
+          </div>
+        </div>
+      </div>
+
+      <!-- FELDGRUPPE: EINSATZZEITEN (WOCHENPLAN, immer sichtbar) -->
+      <div class="feld-gruppe sichtbar" id="grp-wochenplan">
+        <div class="feld-gruppe-titel"><span class="fg-icon">🗓️</span> Einsatzzeiten · Wochenplan</div>
+        <div class="wochenplan">
+          <span class="wochenplan-label">Von</span>
+          <span class="wochenplan-label" style="grid-column:3/4;">Bis</span>
+          <span class="wochenplan-tag">Montag</span>
+          <input type="time" id="wp-mo-von"><input type="time" id="wp-mo-bis">
+          <span class="wochenplan-tag">Dienstag</span>
+          <input type="time" id="wp-di-von"><input type="time" id="wp-di-bis">
+          <span class="wochenplan-tag">Mittwoch</span>
+          <input type="time" id="wp-mi-von"><input type="time" id="wp-mi-bis">
+          <span class="wochenplan-tag">Donnerstag</span>
+          <input type="time" id="wp-do-von"><input type="time" id="wp-do-bis">
+          <span class="wochenplan-tag">Freitag</span>
+          <input type="time" id="wp-fr-von"><input type="time" id="wp-fr-bis">
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:.75rem;">
         <button class="btn-primary" id="kind-speichern">Kind speichern</button>
         <button class="btn-ghost" id="kind-abbrechen" style="display:none;">Abbrechen</button>
       </div>
@@ -249,29 +392,68 @@ function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+var FELD_IDS = [
+  'kind-schule','kind-standort','kind-lehrkraft',
+  'kind-kita','kind-kigruppe','kind-bezugserzieher',
+  'kind-werkstatt','kind-wf-bereich','kind-wf-gruppenleitung',
+  'kind-arbeitsplatz','kind-einsatzort','kind-ansprechpartner','kind-arbeitszeiten',
+  'kind-traeger','kind-kostentraeger','kind-aktenzeichen',
+  'wp-mo-von','wp-mo-bis','wp-di-von','wp-di-bis','wp-mi-von','wp-mi-bis','wp-do-von','wp-do-bis','wp-fr-von','wp-fr-bis'
+];
+
+function toggleFeldgruppen() {
+  var sel = document.getElementById('kind-bedarf');
+  var opt = sel.options[sel.selectedIndex];
+  var kategorie = opt ? opt.getAttribute('data-kategorie') : null;
+  document.getElementById('grp-schulisch').classList.toggle('sichtbar', kategorie === 'schulisch');
+  document.getElementById('grp-fruehkindlich').classList.toggle('sichtbar', kategorie === 'fruehkindlich');
+  document.getElementById('grp-beruflich').classList.toggle('sichtbar', kategorie === 'beruflich');
+}
+
+function sammleFelder() {
+  var werte = {};
+  FELD_IDS.forEach(function(id){ werte[id] = document.getElementById(id).value.trim(); });
+  return werte;
+}
+
+function fuelleFelder(k) {
+  FELD_IDS.forEach(function(id){ document.getElementById(id).value = (k[id] !== undefined ? k[id] : ''); });
+}
+
+function leereFelder() {
+  FELD_IDS.forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
 function addChild() {
   var name   = document.getElementById('kind-name').value.trim();
   var klasse = document.getElementById('kind-klasse').value.trim();
   var geburt = document.getElementById('kind-geburt').value;
   var bedarf = document.getElementById('kind-bedarf').value;
   if (!name) { alert('Bitte einen Namen eingeben.'); return; }
+  var zusatz = sammleFelder();
   var kinder = ladeKinder();
   if (currentEditIndex !== null) {
-    kinder[currentEditIndex].name   = name;
-    kinder[currentEditIndex].klasse = klasse;
-    kinder[currentEditIndex].geburt = geburt;
-    kinder[currentEditIndex].bedarf = bedarf;
+    var eintrag = kinder[currentEditIndex];
+    eintrag.name   = name;
+    eintrag.klasse = klasse;
+    eintrag.geburt = geburt;
+    eintrag.bedarf = bedarf;
+    Object.assign(eintrag, zusatz);
     currentEditIndex = null;
     document.getElementById('kind-speichern').textContent = 'Kind speichern';
     document.getElementById('kind-abbrechen').style.display = 'none';
   } else {
-    kinder.push({ id: Date.now(), name: name, klasse: klasse, geburt: geburt, bedarf: bedarf });
+    var neu = { id: Date.now(), name: name, klasse: klasse, geburt: geburt, bedarf: bedarf };
+    Object.assign(neu, zusatz);
+    kinder.push(neu);
   }
   speichereKinder(kinder);
   document.getElementById('kind-name').value   = '';
   document.getElementById('kind-klasse').value = '';
   document.getElementById('kind-geburt').value = '';
   document.getElementById('kind-bedarf').value = '';
+  leereFelder();
+  toggleFeldgruppen();
   renderChildren();
 }
 
@@ -290,6 +472,8 @@ function editChild(index) {
   document.getElementById('kind-klasse').value = k.klasse || '';
   document.getElementById('kind-geburt').value = k.geburt || '';
   document.getElementById('kind-bedarf').value = k.bedarf || '';
+  fuelleFelder(k);
+  toggleFeldgruppen();
   currentEditIndex = index;
   document.getElementById('kind-speichern').textContent = 'Änderungen speichern';
   document.getElementById('kind-abbrechen').style.display = 'inline-flex';
@@ -300,6 +484,8 @@ function abbrechen() {
   currentEditIndex = null;
   ['kind-name','kind-klasse','kind-geburt'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('kind-bedarf').value = '';
+  leereFelder();
+  toggleFeldgruppen();
   document.getElementById('kind-speichern').textContent = 'Kind speichern';
   document.getElementById('kind-abbrechen').style.display = 'none';
 }
@@ -334,7 +520,7 @@ function renderChildren() {
     return;
   }
   container.innerHTML = list.map(function(k){
-    var meta = [k.klasse?'Klasse '+k.klasse:'', k.bedarf||'', k.geburt?'* '+k.geburt:''].filter(Boolean).join(' · ');
+    var meta = [k.klasse?'Klasse '+k.klasse:'', k.bedarf||'', k.geburt?'* '+k.geburt:'', k['kind-traeger']?'Träger: '+k['kind-traeger']:''].filter(Boolean).join(' · ');
     return '<div class="kind-karte">'
       +'<div class="kind-karte-info">'
       +'<div class="kind-karte-name">'+esc(k.name)+'</div>'
@@ -347,13 +533,26 @@ function renderChildren() {
   }).join('');
 }
 
+var CSV_SPALTEN = [
+  ['name','Name'],['klasse','Klasse'],['geburt','Geburtsdatum'],['bedarf','Bedarfsart'],
+  ['kind-schule','Schule'],['kind-standort','Standort'],['kind-lehrkraft','Lehrkraft'],
+  ['kind-kita','Kita'],['kind-kigruppe','Kita-Gruppe'],['kind-bezugserzieher','Bezugserzieher'],
+  ['kind-werkstatt','Behindertenwerkstatt'],['kind-wf-bereich','WfbM-Bereich'],['kind-wf-gruppenleitung','WfbM-Gruppenleitung'],
+  ['kind-arbeitsplatz','Arbeitsplatz'],['kind-einsatzort','Einsatzort'],['kind-ansprechpartner','Ansprechpartner'],['kind-arbeitszeiten','Arbeitszeiten'],
+  ['kind-traeger','Träger'],['kind-kostentraeger','Kostenträger'],['kind-aktenzeichen','Aktenzeichen'],
+  ['wp-mo-von','Mo von'],['wp-mo-bis','Mo bis'],['wp-di-von','Di von'],['wp-di-bis','Di bis'],
+  ['wp-mi-von','Mi von'],['wp-mi-bis','Mi bis'],['wp-do-von','Do von'],['wp-do-bis','Do bis'],
+  ['wp-fr-von','Fr von'],['wp-fr-bis','Fr bis']
+];
+
 function exportCSV() {
   var kinder = ladeKinder();
   if (!kinder.length) { alert('Keine Daten zum Exportieren.'); return; }
   var rows = kinder.map(function(k){
-    return [k.name,k.klasse,k.geburt,k.bedarf].map(function(v){ return '"'+(v||'').replace(/"/g,'""')+'"'; }).join(',');
+    return CSV_SPALTEN.map(function(s){ return '"'+(k[s[0]]||'').toString().replace(/"/g,'""')+'"'; }).join(',');
   });
-  var csv = ['Name,Klasse,Geburtsdatum,Bedarfsart'].concat(rows).join('\r\n');
+  var header = CSV_SPALTEN.map(function(s){ return s[1]; }).join(',');
+  var csv = [header].concat(rows).join('\r\n');
   var blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a'); a.href=url;

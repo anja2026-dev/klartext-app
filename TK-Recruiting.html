@@ -100,6 +100,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
   margin-bottom:.5rem;
 }
 .start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.start-section-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);margin:1.2rem 0 .5rem;padding-bottom:.3rem;border-bottom:1.5px solid var(--kt-border);}
 .start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
 
 .btn-grid{
@@ -478,11 +479,13 @@ footer strong{color:var(--kt-accent);}
 <div class="view aktiv" id="view-start">
   <div class="start-wrap">
     <div class="start-header">
-      <div class="start-modul-tag">TK · Recruiting</div>
+      <div class="start-modul-tag">TK · Dashboard</div>
       <h1 class="start-titel">TK-Recruiting</h1>
-      <p class="start-lead">Alle 8 Prozessschritte des Recruiting-Workflows –<br>strukturiert, Träger-basiert, sofort einsetzbar.</p>
+      <p class="start-lead">Alle Prozessschritte, Module und Werkzeuge der Teamkoordination.</p>
     </div>
 
+    <!-- SEKTION 1: TK-Recruiting -->
+    <div class="start-section-label">TK-Recruiting</div>
     <div class="btn-grid">
 
       <!-- 1 -->
@@ -565,9 +568,15 @@ footer strong{color:var(--kt-accent);}
         <div class="btn-kachel-stripe" style="background:#1B3A4B;"></div>
       </button>
 
+    </div>
+
+    <!-- SEKTION 2: TK-Module -->
+    <div class="start-section-label" style="margin-top:1.5rem;">TK-Module</div>
+    <div class="btn-grid">
+
       <!-- FM -->
       <button class="btn-kachel" onclick="zeige('case_start')" style="border-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM</div>
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · Neu</div>
         <div class="btn-kachel-emoji">🗂️</div>
         <div class="btn-kachel-titel">Fallmanagement</div>
         <div class="btn-kachel-sub">Fallakte · Risiko · Maßnahmen · Verlauf</div>

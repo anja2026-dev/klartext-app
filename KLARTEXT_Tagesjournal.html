@@ -138,25 +138,12 @@
   .woche-tag .punkt{width:18px;height:18px;border-radius:50%;margin:.4rem auto 0;}
   .woche-tag .kdatum{font-size:.65rem;color:var(--muted);margin-top:.2rem;}
 
-  /* Overlay Leselink */
-  .overlay-bg{
-    position:fixed;inset:0;background:rgba(27,58,75,.55);
-    display:none;align-items:center;justify-content:center;padding:1rem;z-index:50;
-  }
-  .overlay-bg.aktiv{display:flex;}
-  .overlay-karte{
-    background:var(--surface);border-radius:var(--r-md);padding:1.4rem;max-width:420px;width:100%;
-    box-shadow:var(--shadow-strong);text-align:center;
-  }
-  .overlay-karte h3{margin:.2rem 0 .4rem;color:var(--navy);font-size:1rem;}
-  .overlay-karte p{font-size:.8rem;color:var(--muted);margin-bottom:.8rem;}
-  .overlay-link{
-    display:block;width:100%;font-size:.78rem;word-break:break-all;
-    background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r-sm);
-    padding:.6rem .7rem;margin-bottom:.8rem;color:var(--navy);
-  }
-  .overlay-btn-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
-
+  /* Übergabe Dringlichkeit */
+  .dringlichkeit-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.3rem;}
+  .dring-btn{border:1.5px solid var(--border);border-radius:20px;padding:.28rem .75rem;font-size:.75rem;font-weight:700;cursor:pointer;background:var(--surface);font-family:inherit;}
+  .dring-btn.aktiv.normal{background:#4CAF50;border-color:#4CAF50;color:#fff;}
+  .dring-btn.aktiv.erhoben{background:#FF9800;border-color:#FF9800;color:#fff;}
+  .dring-btn.aktiv.dringend{background:#F44336;border-color:#F44336;color:#fff;}
   .brainy-box{
     display:flex;gap:.6rem;align-items:flex-start;margin-top:.8rem;
     background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r-sm);
@@ -237,18 +224,38 @@
   <div class="karte">
     <div class="karte-header"><span class="karte-header-icon">📤</span><span class="karte-header-titel">Übergabe an TK</span></div>
     <div class="kt-field">
-      <textarea id="uebergabeText" placeholder="Was sollte die Teamkoordination wissen?"></textarea>
+      <label>Was sollte TK wissen?</label>
+      <textarea id="uebergabeText" placeholder="Beobachtungen, Situation, Anliegen …"></textarea>
     </div>
-    <button class="kt-btn primary" onclick="weiterleitenTK()">📤 Weiterleiten</button>
+    <div class="kt-field">
+      <label>Besonderheiten</label>
+      <textarea id="uebergabeBesonderheiten" placeholder="Auffälligkeiten, Veränderungen, Hinweise …" rows="2"></textarea>
+    </div>
+    <div class="kt-field">
+      <label>Details <span class="sub">(optional)</span></label>
+      <input type="text" id="uebergabeDetails" placeholder="Kurzbeschreibung">
+    </div>
+    <div class="kt-field">
+      <label>Dringlichkeit</label>
+      <div class="dringlichkeit-row">
+        <button class="dring-btn normal aktiv" onclick="dringlichkeitWaehlen(this,'normal')">🟢 Normal</button>
+        <button class="dring-btn erhoben" onclick="dringlichkeitWaehlen(this,'erhoben')">🟡 Erhöht</button>
+        <button class="dring-btn dringend" onclick="dringlichkeitWaehlen(this,'dringend')">🔴 Dringend</button>
+      </div>
+    </div>
+    <div class="kt-field">
+      <label>Anhang <span class="sub">(optional)</span></label>
+      <input type="text" id="uebergabeAnhang" placeholder="Dateiname, Link oder Hinweis auf Dokument">
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem;">
+      <button class="kt-btn primary" onclick="uebergabeAnTK()">📤 An TK übergeben</button>
+      <button class="kt-btn" onclick="tagesjournalSpeichern()">💾 Speichern</button>
+    </div>
     <div class="kt-status" id="statusUebergabe"></div>
   </div>
 
-  <!-- BEREICH 5: SPEICHERN -->
+  <!-- BEREICH 5: BRAINY -->
   <div class="karte">
-    <button class="kt-btn gross primary" onclick="tagesjournalSpeichern()">✓ Tagesjournal speichern</button>
-    <div class="kt-status" id="statusSpeichern"></div>
-
-    <div class="brainy-box">
       <img src="./brainy.png" alt="Brainy" onerror="this.style.display='none';">
       <div class="txt">Brainy: Ein kurzer, ehrlicher Eintrag heute hilft dir morgen beim Wiedereinstieg.</div>
     </div>
@@ -273,20 +280,7 @@
 
 </main>
 
-<!-- LESELINK-OVERLAY -->
-<div class="overlay-bg" id="overlayLeselink">
-  <div class="overlay-karte">
-    <h3>📤 Weitergeleitet</h3>
-    <p>Dieser Leselink wurde erzeugt und kann geteilt werden.</p>
-    <span class="overlay-link" id="overlayLinkText">–</span>
-    <div class="overlay-btn-row">
-      <button class="kt-btn klein" onclick="leselinkKopieren()">🔗 Leselink kopieren</button>
-      <button class="kt-btn klein primary" onclick="overlaySchliessen()">✓ Schließen</button>
-    </div>
-    <div id="overlayKopierBestaetigung" style="font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.4rem;opacity:0;transition:opacity .25s;">Link kopiert!</div>
-    </div>
-  </div>
-</div>
+
 
 <script>
 (function(){
@@ -413,66 +407,96 @@
   };
 
   // ───────────────────────────────────────────
-  // Übergabe an TK / Weiterleitung (/forward)
   // ───────────────────────────────────────────
-  window.weiterleitenTK = function(){
-    var statusEl = document.getElementById('statusUebergabe');
-    var text = document.getElementById('uebergabeText').value.trim();
+  // Übergabe an TK (neue Logik, kein Leselink)
+  // ───────────────────────────────────────────
+  var aktiveDringlichkeit = 'normal';
 
-    if(!text){
-      statusEl.textContent = '⚠ Bitte zuerst einen Übergabetext eintragen.';
-      statusEl.className = 'kt-status err';
+  window.dringlichkeitWaehlen = function(btn, wert) {
+    document.querySelectorAll('.dring-btn').forEach(function(b){
+      b.classList.remove('aktiv');
+    });
+    btn.classList.add('aktiv');
+    aktiveDringlichkeit = wert;
+  };
+
+  window.uebergabeAnTK = function() {
+    var statusEl = document.getElementById('statusUebergabe');
+    var text     = (document.getElementById('uebergabeText').value || '').trim();
+    if (!text) {
+      statusEl.textContent = '⚠ Bitte einen Übergabetext eingeben.';
+      statusEl.className   = 'kt-status err';
       return;
     }
 
-    var datum = heuteISO();
-    var fromRole = sessionStorage.getItem('klartext_role') || 'ingra';
-    var fromUser = fromRole + '-demo';
+    var datum      = heuteISO();
+    var uhrzeit    = new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+    var fromRole   = sessionStorage.getItem('klartext_role') || 'ingra';
+    var fromUser   = sessionStorage.getItem('klartext_user') || fromRole + '-demo';
+    var kindId     = aktuellerKindId || '';
+
+    // Kinddaten aus localStorage.children für TK
+    var kindName   = '';
+    try {
+      var kinder = JSON.parse(localStorage.getItem('children') || '[]');
+      var kind   = kinder.find(function(k){ return String(k.id) === String(kindId); });
+      if (kind) kindName = kind.name || '';
+    } catch(e) {}
 
     var forwardDaten = {
-      fromUser: fromUser,
-      fromRole: fromRole,
-      targetRole: 'tk',
-      childId: aktuellerKindId || '',
-      type: 'tagesjournal',
-      text: 'Tagesjournal ' + datum + ' – Übergabe: ' + text
+      targetRole:      'tk',
+      fromUser:        fromUser,
+      fromRole:        fromRole,
+      childId:         kindId,
+      childName:       kindName,
+      datum:           datum,
+      uhrzeit:         uhrzeit,
+      text:            text,
+      besonderheiten:  (document.getElementById('uebergabeBesonderheiten').value || '').trim(),
+      details:         (document.getElementById('uebergabeDetails').value || '').trim(),
+      dringlichkeit:   aktiveDringlichkeit,
+      anhang:          (document.getElementById('uebergabeAnhang').value || '').trim(),
+      type:            'tagesjournal',
+      status:          'offen'
     };
 
+    statusEl.textContent = '⏳ Wird übergeben …';
+    statusEl.className   = 'kt-status';
+
     sendForward(forwardDaten)
-      .then(function(ref){
-        letzteForwardId = ref.key;
-        statusEl.textContent = '✓ Übergabe an TK weitergeleitet.';
-        statusEl.className = 'kt-status ok';
-        leselinkAnzeigen(letzteForwardId);
+      .then(function(ref) {
+        // Verlaufseintrag in localStorage
+        try {
+          var verlauf = JSON.parse(localStorage.getItem('kt_uebergaben_verlauf') || '[]');
+          verlauf.unshift({
+            id:        ref.key,
+            datum:     datum,
+            uhrzeit:   uhrzeit,
+            childId:   kindId,
+            childName: kindName,
+            text:      text,
+            dringlichkeit: aktiveDringlichkeit,
+            status:    'offen'
+          });
+          localStorage.setItem('kt_uebergaben_verlauf', JSON.stringify(verlauf));
+        } catch(e) {}
+
+        statusEl.textContent = '✓ Übergabe an TK gespeichert. TK wird informiert.';
+        statusEl.className   = 'kt-status ok';
+
+        // Felder zurücksetzen
+        document.getElementById('uebergabeText').value          = '';
+        document.getElementById('uebergabeBesonderheiten').value = '';
+        document.getElementById('uebergabeDetails').value       = '';
+        document.getElementById('uebergabeAnhang').value        = '';
+        aktiveDringlichkeit = 'normal';
+        document.querySelectorAll('.dring-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+        document.querySelector('.dring-btn.normal').classList.add('aktiv');
       })
-      .catch(function(error){
-        statusEl.textContent = '⚠ Fehler beim Weiterleiten: ' + error.message;
-        statusEl.className = 'kt-status err';
+      .catch(function(error) {
+        statusEl.textContent = '⚠ Fehler: ' + error.message;
+        statusEl.className   = 'kt-status err';
       });
-  };
-
-  // ───────────────────────────────────────────
-  // Leselink-Overlay (wie KLARTEXT_Weiterleiten.html)
-  // ───────────────────────────────────────────
-  var letzteForwardId = null;
-
-  function leselinkAnzeigen(forwardId){
-    var basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-    var link = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + forwardId;
-    document.getElementById('overlayLinkText').textContent = link;
-    document.getElementById('overlayLeselink').classList.add('aktiv');
-  }
-  window.overlaySchliessen = function(){
-    document.getElementById('overlayLeselink').classList.remove('aktiv');
-  };
-  window.leselinkKopieren = function(){
-    var text = document.getElementById('overlayLinkText').textContent;
-    navigator.clipboard.writeText(text).then(function(){
-      var best = document.getElementById('overlayKopierBestaetigung');
-      if(best){ best.style.opacity='1'; setTimeout(function(){ best.style.opacity='0'; }, 2500); }
-    }).catch(function(){
-      prompt('Bitte manuell kopieren:', text);
-    });
   };
 
   // ───────────────────────────────────────────

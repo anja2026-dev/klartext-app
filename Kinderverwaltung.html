@@ -2,30 +2,237 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Kinderverwaltung</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Kinderverwaltung · KLARTEXT TK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
-    body{font-family:Arial,sans-serif;background:#f7f7f7;margin:0;padding:20px;}
-    section{background:white;padding:15px;margin-bottom:20px;border-radius:8px;box-shadow:0 0 4px rgba(0,0,0,.1);}
-    input{padding:8px;margin-bottom:10px;width:100%;border-radius:6px;border:1px solid #ccc;box-sizing:border-box;}
-    button{padding:8px 12px;border-radius:6px;border:none;background:#e0e0e0;cursor:pointer;}
-    button:hover{background:#d5d5d5;}
+    :root {
+      --kt-primary:#1B3A4B;
+      --kt-accent:#6EC6A0;
+      --kt-paper:#F5F0E8;
+      --kt-ink:#2D2D2D;
+      --kt-muted:#7A7060;
+      --kt-surface:#FFFFFF;
+      --kt-border:#DDD8CE;
+      --tk-color:#1A8C8C;
+      --tk-light:#E6F5F5;
+      --tk-mid:#12707C;
+      --shadow:0 2px 10px rgba(27,58,75,.09);
+      --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+      --r-sm:6px;--r-md:10px;--r-lg:16px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+    /* ── HEADER ── */
+    .kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--tk-color);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+    .kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+    .kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+    .header-badge{background:rgba(26,140,140,.25);border:1.5px solid rgba(110,198,160,.4);color:var(--kt-accent);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+
+    /* ── BRAINY-BANNER (exakt wie TK) ── */
+    .brainy-banner{background:linear-gradient(135deg,#0D4A4A,var(--tk-color));border-bottom:2px solid rgba(110,198,160,.4);padding:.65rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:flex-start;gap:.75rem;}
+    .brainy-face{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,.12);border:2px solid rgba(110,198,160,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .brainy-face img{width:36px;height:36px;object-fit:contain;}
+    .brainy-text{flex:1;}
+    .brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#A8DDD8;display:block;margin-bottom:.18rem;}
+    .brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+    .brainy-msg strong{color:#D0F0EE;}
+
+    /* ── HAUPT-LAYOUT ── */
+    .kv-main{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+
+    /* ── HINWEIS-BOX (wie TK .hinweis) ── */
+    .hinweis-box{background:rgba(26,140,140,.07);border-left:3px solid var(--tk-color);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.6rem .85rem;font-size:.78rem;color:var(--kt-ink);line-height:1.55;margin-bottom:1rem;}
+    .hinweis-box-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.35rem;display:block;}
+    .hinweis-box ul{list-style:none;display:flex;flex-direction:column;gap:.28rem;padding:0;}
+    .hinweis-box li{font-size:.78rem;color:var(--kt-ink);display:flex;gap:.5rem;line-height:1.45;padding-left:0;}
+    .hinweis-box li::before{content:'▸';color:var(--tk-color);font-size:.7rem;flex-shrink:0;line-height:1.7;}
+
+    /* ── PROZESS ── */
+    .prozess{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.7rem;box-shadow:var(--shadow);}
+    .prozess-head{background:var(--tk-light);border-bottom:1px solid rgba(26,140,140,.12);padding:.5rem .9rem;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tk-color);}
+    .prozess-body{padding:.75rem .9rem;display:flex;align-items:center;flex-wrap:wrap;gap:.35rem;}
+    .prozess-step{background:var(--tk-light);border:1px solid rgba(26,140,140,.3);border-radius:20px;padding:.2rem .7rem;font-size:.72rem;font-weight:600;color:var(--tk-color);}
+    .prozess-arrow{color:var(--kt-muted);font-size:.8rem;}
+
+    /* ── KARTEN (wie TK .karte) ── */
+    .kv-section{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.7rem;box-shadow:var(--shadow);}
+    .kv-section-head{background:var(--tk-light);border-bottom:1px solid rgba(26,140,140,.12);padding:.5rem .9rem;display:flex;align-items:center;gap:.5rem;}
+    .kv-section-head-icon{font-size:1rem;}
+    .kv-section-head-title{font-size:.78rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+    .kv-section-body{padding:.75rem .9rem .85rem;}
+
+    /* ── FORMULAR ── */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.65rem;}
+    .form-group{display:flex;flex-direction:column;gap:.2rem;}
+    .form-group label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--kt-muted);}
+    .form-group input,.form-group select{padding:.45rem .7rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);font-size:.82rem;font-family:'DM Sans',sans-serif;color:var(--kt-ink);background:#fff;width:100%;transition:border-color .15s;}
+    .form-group input:focus,.form-group select:focus{border-color:var(--tk-color);outline:none;}
+
+    /* ── BUTTONS (wie TK .unter-nav-btn / .act-btn) ── */
+    .btn-primary{background:var(--tk-color);color:#fff;border:none;border-radius:20px;padding:.32rem .9rem;font-size:.72rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;}
+    .btn-primary:hover{background:var(--tk-mid);}
+    .btn-secondary{background:var(--kt-surface);color:var(--tk-color);border:1.5px solid var(--tk-color);border-radius:20px;padding:.28rem .8rem;font-size:.72rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;}
+    .btn-secondary:hover{background:var(--tk-color);color:#fff;}
+    .btn-ghost{background:var(--kt-surface);color:var(--kt-muted);border:1.5px solid var(--kt-border);border-radius:20px;padding:.28rem .8rem;font-size:.72rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
+    .btn-ghost:hover{background:var(--kt-muted);color:#fff;}
+    .btn-danger{background:var(--kt-surface);color:#C62828;border:1.5px solid #e57373;border-radius:20px;padding:.25rem .65rem;font-size:.72rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;}
+    .btn-danger:hover{background:#fdecea;}
+    .btn-row{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;}
+
+    /* ── FILTER-LEISTE ── */
+    .filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem;}
+    .filter-bar input[type="search"],.filter-bar select{padding:.42rem .7rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);font-size:.8rem;font-family:'DM Sans',sans-serif;color:var(--kt-ink);background:#fff;transition:border-color .15s;}
+    .filter-bar input[type="search"]{flex:1;min-width:160px;}
+    .filter-bar input[type="search"]:focus,.filter-bar select:focus{border-color:var(--tk-color);outline:none;}
+
+    /* ── KIND-KARTE ── */
+    .kind-karte{border:1.5px solid var(--kt-border);border-radius:var(--r-md);padding:.55rem .85rem;margin-bottom:.45rem;background:#fafafa;display:flex;align-items:center;gap:.65rem;box-shadow:var(--shadow);}
+    .kind-karte-info{flex:1;}
+    .kind-karte-name{font-family:'Playfair Display',serif;font-weight:700;font-size:.88rem;color:var(--kt-primary);}
+    .kind-karte-meta{font-size:.7rem;color:var(--kt-muted);margin-top:.1rem;}
+    .kind-karte-actions{display:flex;gap:.35rem;flex-shrink:0;}
+    .kind-karte-leer{font-size:.78rem;color:var(--kt-muted);font-style:italic;padding:.4rem 0;}
+
+    /* ── EXPORT ── */
+    .export-bar{display:flex;justify-content:flex-end;gap:.45rem;margin-top:.65rem;padding-top:.65rem;border-top:1px solid var(--kt-border);}
+
+    /* ── DATENSCHUTZ ── */
+    .datenschutz{background:#FFF8E1;border:1.5px solid #FFE082;border-radius:var(--r-lg);padding:.75rem 1rem;margin-bottom:1rem;box-shadow:var(--shadow);}
+    .datenschutz-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#B45309;margin-bottom:.35rem;display:block;}
+    .datenschutz p{font-size:.76rem;color:#5C4209;line-height:1.55;}
+
+    @media(max-width:500px){
+      .form-grid{grid-template-columns:1fr;}
+      .filter-bar{flex-direction:column;}
+      .export-bar{justify-content:flex-start;}
+    }
   </style>
 </head>
 <body>
 
-<h1>Kinderverwaltung</h1>
+<!-- HEADER -->
+<div class="kt-header">
+  <div class="kt-logo-text">
+    <span class="wort">KLARTEXT</span>
+    <span class="claim">Kinderverwaltung · TK-Modul</span>
+  </div>
+  <span class="header-badge">👶 Kinderverwaltung</span>
+</div>
 
-<section id="kinder-formular">
-  <h2>Neues Kind anlegen</h2>
-  <input id="kind-name"   placeholder="Name des Kindes">
-  <input id="kind-klasse" placeholder="Klasse">
-  <button id="kind-speichern">Kind speichern</button>
-</section>
+<!-- BRAINY-BANNER -->
+<div class="brainy-banner">
+  <div class="brainy-face"><img src="brainy-m2.png" alt="Brainy"></div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Kinderverwaltung</span>
+    <p class="brainy-msg">Brainy begleitet TK bei der Kinderverwaltung – mit Hinweisen zu Datenqualität, Rollenlogik und Prozesssicherheit.</p>
+  </div>
+</div>
 
-<section id="kinder-liste">
-  <h2>Alle Kinder</h2>
-  <div id="kinder-output"></div>
-</section>
+<div class="kv-main">
+
+  <!-- HINWEIS-BOX -->
+  <div class="hinweis-box">
+    <span class="hinweis-box-label">Systemhinweise</span>
+    <ul>
+      <li>Die Kinderverwaltung ist die zentrale Quelle für alle TK-Module</li>
+      <li>Änderungen wirken systemweit — VA, Recruiting und FM greifen auf diese Daten zu</li>
+      <li>Datenqualität ist entscheidend: vollständige und aktuelle Einträge verhindern Fehler</li>
+      <li>Datenschutz beachten: Kinderdaten unterliegen besonderem Schutz gemäß DSGVO Art. 9</li>
+    </ul>
+  </div>
+
+  <!-- PROZESS -->
+  <div class="prozess">
+    <div class="prozess-head">Mini-Prozess · Kinderverwaltung</div>
+    <div class="prozess-body">
+      <span class="prozess-step">① Kind anlegen</span>
+      <span class="prozess-arrow">›</span>
+      <span class="prozess-step">② Daten prüfen</span>
+      <span class="prozess-arrow">›</span>
+      <span class="prozess-step">③ In TK-Modulen nutzen</span>
+      <span class="prozess-arrow">›</span>
+      <span class="prozess-step">④ Regelmäßig aktualisieren</span>
+      <span class="prozess-arrow">›</span>
+      <span class="prozess-step">⑤ Bei Austritt löschen</span>
+    </div>
+  </div>
+
+  <!-- FORMULAR -->
+  <div class="kv-section">
+    <div class="kv-section-head">
+      <span class="kv-section-head-icon">➕</span>
+      <span class="kv-section-head-title">Kind anlegen / bearbeiten</span>
+    </div>
+    <div class="kv-section-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Name des Kindes</label>
+          <input id="kind-name" placeholder="Vorname Nachname">
+        </div>
+        <div class="form-group">
+          <label>Klasse</label>
+          <input id="kind-klasse" placeholder="z. B. 3b">
+        </div>
+        <div class="form-group">
+          <label>Geburtsdatum</label>
+          <input id="kind-geburt" type="date">
+        </div>
+        <div class="form-group">
+          <label>Bedarfsart</label>
+          <select id="kind-bedarf">
+            <option value="">– bitte wählen –</option>
+            <option>GS – Grundschule</option>
+            <option>FS – Förderschule</option>
+            <option>WF – Weiterführend</option>
+            <option>BK – Berufskolleg</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="kind-speichern">Kind speichern</button>
+        <button class="btn-ghost" id="kind-abbrechen" style="display:none;">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTE -->
+  <div class="kv-section">
+    <div class="kv-section-head">
+      <span class="kv-section-head-icon">📋</span>
+      <span class="kv-section-head-title">Alle Kinder</span>
+    </div>
+    <div class="kv-section-body">
+      <div class="filter-bar">
+        <input type="search" id="kinder-suche" placeholder="Kinder suchen…" oninput="renderChildren()">
+        <select id="kinder-klasse-filter" onchange="renderChildren()">
+          <option value="">Alle Klassen</option>
+        </select>
+        <select id="kinder-sort" onchange="renderChildren()">
+          <option value="name">Sortierung: Name</option>
+          <option value="klasse">Sortierung: Klasse</option>
+          <option value="geburt">Sortierung: Geburtsdatum</option>
+        </select>
+      </div>
+      <div id="kinder-output"></div>
+      <div class="export-bar">
+        <button class="btn-secondary" onclick="exportCSV()">⬇ CSV exportieren</button>
+        <button class="btn-secondary" onclick="window.print()">🖨 PDF / Drucken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATENSCHUTZ -->
+  <div class="datenschutz">
+    <span class="datenschutz-label">⚠ Datenschutzhinweis</span>
+    <p>Kinderdaten sind besonders schutzwürdig gemäß DSGVO Art. 9 und § 35 SGB I. Daten dürfen ausschließlich zum Zweck der Schulbegleitung verarbeitet werden. Nicht mehr benötigte Einträge sind unverzüglich zu löschen. Kein Export an Unbefugte. Speicherung ausschließlich auf genehmigten Systemen des Trägers.</p>
+  </div>
+
+</div><!-- /kv-main -->
 
 <script>
 var currentEditIndex = null;
@@ -38,31 +245,38 @@ function speichereKinder(kinder) {
   localStorage.setItem('children', JSON.stringify(kinder));
 }
 
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function addChild() {
   var name   = document.getElementById('kind-name').value.trim();
   var klasse = document.getElementById('kind-klasse').value.trim();
+  var geburt = document.getElementById('kind-geburt').value;
+  var bedarf = document.getElementById('kind-bedarf').value;
   if (!name) { alert('Bitte einen Namen eingeben.'); return; }
-
   var kinder = ladeKinder();
-
   if (currentEditIndex !== null) {
-    // Bearbeiten: bestehende ID erhalten
     kinder[currentEditIndex].name   = name;
     kinder[currentEditIndex].klasse = klasse;
+    kinder[currentEditIndex].geburt = geburt;
+    kinder[currentEditIndex].bedarf = bedarf;
     currentEditIndex = null;
     document.getElementById('kind-speichern').textContent = 'Kind speichern';
+    document.getElementById('kind-abbrechen').style.display = 'none';
   } else {
-    // Neu anlegen: neue ID erzeugen
-    kinder.push({ id: Date.now(), name: name, klasse: klasse });
+    kinder.push({ id: Date.now(), name: name, klasse: klasse, geburt: geburt, bedarf: bedarf });
   }
-
   speichereKinder(kinder);
   document.getElementById('kind-name').value   = '';
   document.getElementById('kind-klasse').value = '';
+  document.getElementById('kind-geburt').value = '';
+  document.getElementById('kind-bedarf').value = '';
   renderChildren();
 }
 
 function deleteChild(index) {
+  if (!confirm('Kind wirklich löschen?')) return;
   var kinder = ladeKinder();
   kinder.splice(index, 1);
   speichereKinder(kinder);
@@ -74,29 +288,82 @@ function editChild(index) {
   var k = kinder[index];
   document.getElementById('kind-name').value   = k.name   || '';
   document.getElementById('kind-klasse').value = k.klasse || '';
+  document.getElementById('kind-geburt').value = k.geburt || '';
+  document.getElementById('kind-bedarf').value = k.bedarf || '';
   currentEditIndex = index;
   document.getElementById('kind-speichern').textContent = 'Änderungen speichern';
+  document.getElementById('kind-abbrechen').style.display = 'inline-flex';
+  document.getElementById('kind-name').focus();
+}
+
+function abbrechen() {
+  currentEditIndex = null;
+  ['kind-name','kind-klasse','kind-geburt'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('kind-bedarf').value = '';
+  document.getElementById('kind-speichern').textContent = 'Kind speichern';
+  document.getElementById('kind-abbrechen').style.display = 'none';
 }
 
 function renderChildren() {
-  var kinder    = ladeKinder();
+  var kinder   = ladeKinder();
+  var suche    = (document.getElementById('kinder-suche').value || '').toLowerCase();
+  var klFilter = document.getElementById('kinder-klasse-filter').value;
+  var sort     = document.getElementById('kinder-sort').value;
+
+  var klassen = [...new Set(kinder.map(function(k){ return k.klasse; }).filter(Boolean))].sort();
+  var sel = document.getElementById('kinder-klasse-filter');
+  var cur = sel.value;
+  sel.innerHTML = '<option value="">Alle Klassen</option>'
+    + klassen.map(function(k){ return '<option'+(k===cur?' selected':'')+'>'+esc(k)+'</option>'; }).join('');
+
+  var list = kinder.map(function(k,i){ k._i=i; return k; }).filter(function(k){
+    var ms = !suche || (k.name||'').toLowerCase().includes(suche) || (k.klasse||'').toLowerCase().includes(suche);
+    var mk = !klFilter || k.klasse === klFilter;
+    return ms && mk;
+  });
+
+  list.sort(function(a,b){
+    if (sort==='klasse') return (a.klasse||'').localeCompare(b.klasse||'');
+    if (sort==='geburt') return (a.geburt||'').localeCompare(b.geburt||'');
+    return (a.name||'').localeCompare(b.name||'');
+  });
+
   var container = document.getElementById('kinder-output');
-  if (!kinder.length) {
-    container.innerHTML = '<p style="color:#888;font-style:italic;">Noch keine Kinder angelegt.</p>';
+  if (!list.length) {
+    container.innerHTML = '<div class="kind-karte-leer">'+(suche||klFilter?'Keine Kinder gefunden.':'Noch keine Kinder angelegt.')+'</div>';
     return;
   }
-  // ID wird intern gespeichert, aber NICHT angezeigt
-  container.innerHTML = kinder.map(function(k, i) {
-    return '<div style="padding:8px 10px;border:1px solid #ddd;border-radius:6px;margin-bottom:8px;background:#fafafa;display:flex;align-items:center;gap:8px;">'
-      + '<span style="flex:1;"><strong>' + k.name + '</strong>'
-      + (k.klasse ? ' &nbsp;·&nbsp; Klasse ' + k.klasse : '') + '</span>'
-      + '<button onclick="editChild(' + i + ')">✏️ Bearbeiten</button>'
-      + '<button onclick="deleteChild(' + i + ')" style="color:#c00;">🗑️ Löschen</button>'
-      + '</div>';
+  container.innerHTML = list.map(function(k){
+    var meta = [k.klasse?'Klasse '+k.klasse:'', k.bedarf||'', k.geburt?'* '+k.geburt:''].filter(Boolean).join(' · ');
+    return '<div class="kind-karte">'
+      +'<div class="kind-karte-info">'
+      +'<div class="kind-karte-name">'+esc(k.name)+'</div>'
+      +(meta?'<div class="kind-karte-meta">'+esc(meta)+'</div>':'')
+      +'</div>'
+      +'<div class="kind-karte-actions">'
+      +'<button class="btn-secondary" onclick="editChild('+k._i+')">✏️</button>'
+      +'<button class="btn-danger" onclick="deleteChild('+k._i+')">🗑️</button>'
+      +'</div></div>';
   }).join('');
 }
 
+function exportCSV() {
+  var kinder = ladeKinder();
+  if (!kinder.length) { alert('Keine Daten zum Exportieren.'); return; }
+  var rows = kinder.map(function(k){
+    return [k.name,k.klasse,k.geburt,k.bedarf].map(function(v){ return '"'+(v||'').replace(/"/g,'""')+'"'; }).join(',');
+  });
+  var csv = ['Name,Klasse,Geburtsdatum,Bedarfsart'].concat(rows).join('\r\n');
+  var blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href=url;
+  a.download='Kinderverwaltung_'+new Date().toISOString().slice(0,10)+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 document.getElementById('kind-speichern').addEventListener('click', addChild);
+document.getElementById('kind-abbrechen').addEventListener('click', abbrechen);
 document.addEventListener('DOMContentLoaded', renderChildren);
 </script>
 

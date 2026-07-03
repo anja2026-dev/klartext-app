@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · TK · Fallmanagement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --tk-color:#4A148C;
+  --tk-light:#F3E5FF;
+  --tk-mid:#7B1FA2;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.kt-header{
+  background:var(--kt-primary);
+  height:80px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,4vw,2rem);
+  border-bottom:4px solid var(--tk-color);
+  position:sticky;top:0;z-index:200;
+  box-shadow:var(--shadow-lg);
+}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{
+  background:rgba(74,20,140,.25);
+  border:1.5px solid rgba(206,147,216,.5);
+  color:#CE93D8;
+  font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .7rem;border-radius:20px;
+}
+.header-nav{display:flex;align-items:center;gap:.4rem;}
+.btn-back{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.28rem .75rem;border-radius:20px;
+  background:rgba(110,198,160,.12);
+  border:1px solid rgba(110,198,160,.3);
+  color:var(--kt-accent);
+  font-size:.72rem;font-weight:700;text-decoration:none;
+  transition:all .15s;
+}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+/* ── BRAINY-BANNER ────────────────────────────────── */
+.brainy-banner{
+  background:linear-gradient(135deg,#2D1B45,#4A148C);
+  border-bottom:2px solid rgba(206,147,216,.4);
+  padding:.65rem clamp(.75rem,3vw,1.5rem);
+  display:flex;align-items:flex-start;gap:.75rem;
+}
+.brainy-face{
+  width:42px;height:42px;flex-shrink:0;
+  background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#E1BEE7;}
+
+/* ── VIEWS: Start & Unterseite ────────────────────── */
+.view{display:none;}
+.view.aktiv{display:block;}
+
+/* ── START-KARTE (Übersicht) ──────────────────────── */
+.start-wrap{max-width:880px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.start-header{margin-bottom:1.4rem;}
+.start-modul-tag{
+  display:inline-block;
+  font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:.2rem .6rem;border-radius:4px;
+  background:var(--tk-light);color:var(--tk-color);
+  margin-bottom:.5rem;
+}
+.start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.start-section-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);margin:1.2rem 0 .5rem;padding-bottom:.3rem;border-bottom:1.5px solid var(--kt-border);}
+.start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
+
+.btn-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
+  gap:.75rem;
+  margin-top:1.2rem;
+}
+.btn-kachel{
+  background:var(--kt-surface);
+  border:2px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  padding:.85rem 1rem;
+  cursor:pointer;
+  text-align:left;
+  display:flex;flex-direction:column;gap:.3rem;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+  box-shadow:var(--shadow);
+  text-decoration:none;
+  color:inherit;
+}
+.btn-kachel:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-lg);
+  border-color:var(--tk-color);
+}
+.btn-kachel-nr{
+  font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tk-color);
+}
+.btn-kachel-emoji{font-size:1.5rem;line-height:1;margin-bottom:.1rem;}
+.btn-kachel-titel{
+  font-family:'Playfair Display',serif;
+  font-size:.95rem;font-weight:700;
+  color:var(--kt-primary);line-height:1.25;
+}
+.btn-kachel-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;}
+.btn-kachel-stripe{height:3px;background:var(--tk-color);border-radius:3px;margin-top:.4rem;}
+
+/* ── UNTERSEITE ───────────────────────────────────── */
+.unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+
+.unter-breadcrumb{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.7rem;color:var(--kt-muted);margin-bottom:1rem;flex-wrap:wrap;
+}
+.unter-breadcrumb a{color:var(--tk-color);text-decoration:none;font-weight:600;}
+.unter-breadcrumb a:hover{text-decoration:underline;}
+.unter-breadcrumb span{opacity:.5;}
+
+.unter-header{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow);
+}
+.unter-header-stripe{height:4px;background:var(--tk-color);}
+.unter-header-inner{padding:.9rem 1.1rem .85rem;}
+.unter-nr{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.25rem;}
+.unter-titel{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;color:var(--kt-primary);line-height:1.2;}
+.unter-sub{font-size:.8rem;color:var(--kt-muted);margin-top:.2rem;}
+
+/* ── KARTEN (Inhaltskarten) ───────────────────────── */
+.karte{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:.7rem;
+  box-shadow:var(--shadow);
+}
+.karte-header{
+  background:var(--tk-light);
+  border-bottom:1px solid rgba(74,20,140,.12);
+  padding:.5rem .9rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.karte-header-icon{font-size:1rem;}
+.karte-header-titel{font-size:.78rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+.karte-body{padding:.75rem .9rem .85rem;}
+
+/* Stichwort-Listen */
+.stw-list{list-style:none;display:flex;flex-direction:column;gap:.28rem;}
+.stw-list li{
+  font-size:.82rem;color:var(--kt-ink);line-height:1.5;
+  padding-left:1.1rem;position:relative;
+}
+.stw-list li::before{
+  content:'▸';position:absolute;left:0;top:0;
+  color:var(--tk-color);font-size:.7rem;line-height:1.7;
+}
+.stw-list li strong{color:var(--kt-primary);}
+
+/* Schritt-Liste */
+.schritt-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;counter-reset:schritt;}
+.schritt-list li{
+  display:flex;align-items:flex-start;gap:.6rem;
+  font-size:.82rem;color:var(--kt-ink);line-height:1.5;
+  counter-increment:schritt;
+}
+.schritt-list li::before{
+  content:counter(schritt);
+  min-width:22px;height:22px;
+  background:var(--tk-color);color:#fff;
+  border-radius:50%;
+  font-size:.68rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:.15rem;
+}
+
+/* Ampel / Status-Reihe */
+.ampel{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem;}
+.ampel-chip{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.25rem .65rem;border-radius:20px;
+  font-size:.72rem;font-weight:600;
+}
+.ampel-chip.gruen{background:#E8F5E9;color:#2E7D32;}
+.ampel-chip.gelb{background:#FFF8E1;color:#F57F17;}
+.ampel-chip.rot{background:#FDEAEA;color:#C62828;}
+.ampel-chip.blau{background:#E3F2FD;color:#1565C0;}
+
+/* Hinweis-Box */
+.hinweis{
+  background:rgba(74,20,140,.07);
+  border-left:3px solid var(--tk-color);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;color:var(--kt-ink);line-height:1.55;
+  margin-top:.5rem;
+}
+.hinweis strong{color:var(--tk-color);}
+
+/* Brainy-Box (inline) */
+.brainy-box{
+  background:linear-gradient(135deg,rgba(74,20,140,.07),rgba(74,20,140,.03));
+  border:1.5px solid rgba(74,20,140,.18);
+  border-radius:var(--r-md);
+  padding:.7rem .9rem;
+  margin-top:.9rem;
+  display:flex;gap:.6rem;align-items:flex-start;
+}
+.brainy-box-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
+.brainy-box-content{}
+.brainy-box-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.2rem;display:block;}
+.brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
+.brainy-box-text em{font-style:italic;color:var(--kt-muted);}
+
+/* ── NAV-LEISTE (Unterseite) ──────────────────────── */
+.unter-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;
+}
+.unter-nav-btn{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.32rem .8rem;border-radius:20px;
+  border:1.5px solid var(--tk-color);
+  color:var(--tk-color);
+  background:var(--kt-surface);
+  font-size:.72rem;font-weight:700;
+  cursor:pointer;transition:all .15s;
+  text-decoration:none;
+}
+.unter-nav-btn:hover{background:var(--tk-color);color:#fff;}
+.unter-nav-btn.zurueck{border-color:var(--kt-muted);color:var(--kt-muted);}
+.unter-nav-btn.zurueck:hover{background:var(--kt-muted);color:#fff;}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{
+  background:var(--kt-primary);color:rgba(255,255,255,.55);
+  text-align:center;padding:1.2rem 1rem;
+  font-size:.72rem;line-height:1.9;
+}
+footer strong{color:var(--kt-accent);}
+
+@media(max-width:600px){
+  .btn-grid{grid-template-columns:1fr 1fr;}
+}
+
+/* ── TAB-SYSTEM ───────────────────────────────────────── */
+.tab-bar{
+  display:flex;gap:0;margin-bottom:1rem;
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-md);
+  overflow:hidden;
+  background:var(--kt-surface);
+}
+.tab-btn{
+  flex:1;padding:.5rem .6rem;
+  background:var(--kt-surface);border:none;
+  font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;
+  color:var(--kt-muted);cursor:pointer;
+  border-right:1px solid var(--kt-border);
+  transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:.3rem;
+}
+.tab-btn:last-child{border-right:none;}
+.tab-btn:hover{background:var(--tk-light);color:var(--tk-color);}
+.tab-btn.aktiv{background:var(--tk-color);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+
+/* ── FORMULAR-STYLES ──────────────────────────────────── */
+.form-section{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:.75rem;
+  box-shadow:var(--shadow);
+}
+.form-section-header{
+  background:var(--tk-light);
+  border-bottom:1px solid rgba(74,20,140,.12);
+  padding:.45rem .9rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.form-section-icon{font-size:.95rem;}
+.form-section-titel{font-size:.75rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+.form-body{padding:.75rem .9rem .85rem;display:flex;flex-direction:column;gap:.55rem;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.form-row.full{grid-template-columns:1fr;}
+.form-row.drei{grid-template-columns:1fr 1fr 1fr;}
+
+.fld{display:flex;flex-direction:column;gap:.2rem;}
+.fld label{
+  font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--kt-muted);
+}
+.fld label .req{color:#C62828;margin-left:.1rem;}
+.fld input,.fld select,.fld textarea{
+  font-family:'DM Sans',sans-serif;font-size:.82rem;
+  padding:.38rem .6rem;
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-sm);
+  background:var(--kt-paper);
+  color:var(--kt-ink);
+  outline:none;
+  transition:border-color .15s;
+  width:100%;
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{
+  border-color:var(--tk-color);
+  box-shadow:0 0 0 3px rgba(74,20,140,.1);
+}
+.fld textarea{resize:vertical;min-height:56px;}
+.fld select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A7060'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .6rem center;padding-right:1.6rem;}
+
+/* Checkbox-Gruppe */
+.check-group{display:flex;flex-direction:column;gap:.28rem;}
+.check-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem;cursor:pointer;}
+.check-item input[type=checkbox]{
+  width:15px;height:15px;accent-color:var(--tk-color);flex-shrink:0;cursor:pointer;
+}
+
+/* Radio-Ampel */
+.ampel-radio{display:flex;gap:.4rem;flex-wrap:wrap;}
+.ampel-radio label{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.28rem .7rem;border-radius:20px;
+  font-size:.72rem;font-weight:600;cursor:pointer;
+  border:1.5px solid transparent;
+  transition:all .15s;
+  text-transform:none;letter-spacing:0;
+}
+.ampel-radio input{display:none;}
+.ampel-radio .opt-gruen{background:#E8F5E9;color:#2E7D32;border-color:#A5D6A7;}
+.ampel-radio .opt-gruen:has(input:checked){background:#2E7D32;color:#fff;}
+.ampel-radio .opt-gelb{background:#FFF8E1;color:#F57F17;border-color:#FFE082;}
+.ampel-radio .opt-gelb:has(input:checked){background:#F57F17;color:#fff;}
+.ampel-radio .opt-rot{background:#FDEAEA;color:#C62828;border-color:#EF9A9A;}
+.ampel-radio .opt-rot:has(input:checked){background:#C62828;color:#fff;}
+
+/* Weiterleitung Checkboxen */
+.wl-group{display:flex;flex-wrap:wrap;gap:.4rem;}
+.wl-chip{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.3rem .75rem;border-radius:20px;
+  border:1.5px solid var(--tk-border);
+  background:var(--kt-surface);
+  font-size:.72rem;font-weight:600;
+  cursor:pointer;transition:all .15s;color:var(--kt-muted);
+}
+.wl-chip input{display:none;}
+.wl-chip:has(input:checked){background:var(--tk-color);border-color:var(--tk-color);color:#fff;}
+
+/* Formular-Aktionsleiste */
+.form-actions{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  margin-top:1rem;
+  padding-top:.85rem;
+  border-top:1px solid var(--kt-border);
+}
+.act-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.38rem .85rem;border-radius:var(--r-md);
+  font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;
+  cursor:pointer;border:none;transition:all .15s;
+}
+.act-btn.primary{background:var(--tk-color);color:#fff;}
+.act-btn.primary:hover{background:var(--tk-mid);}
+.act-btn.secondary{background:var(--kt-surface);color:var(--tk-color);border:1.5px solid var(--tk-color);}
+.act-btn.secondary:hover{background:var(--tk-light);}
+.act-btn.ghost{background:var(--kt-surface);color:var(--kt-muted);border:1.5px solid var(--kt-border);}
+.act-btn.ghost:hover{background:var(--kt-paper);}
+.act-btn.success{background:#2E7D32;color:#fff;}
+.act-btn.success:hover{background:#1B5E20;}
+
+/* Pflichtfeld-Hinweis */
+.pflicht-hinweis{font-size:.65rem;color:var(--kt-muted);margin-top:.3rem;}
+.pflicht-hinweis .req{color:#C62828;}
+
+/* Gespeichert-Toast */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(3rem);
+  background:#2E7D32;color:#fff;
+  padding:.55rem 1.2rem;border-radius:20px;
+  font-size:.78rem;font-weight:700;
+  box-shadow:0 4px 16px rgba(0,0,0,.2);
+  z-index:9999;opacity:0;
+  transition:all .3s;pointer-events:none;
+}
+.toast.sichtbar{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* Print */
+@media print {
+  .kt-header,.brainy-banner,.tab-bar,.form-actions,.unter-nav,
+  .btn-kachel,.start-wrap,.tab-panel:not(.aktiv),footer{display:none!important;}
+  .view:not(.aktiv){display:none!important;}
+  .form-section{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
+  body{background:#fff;font-size:12px;}
+  .unter-wrap{padding:.5rem;}
+}
+</style>
+<style>
+.brainy-banner img { width: 42px; height: 42px; object-fit: contain; }
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="header-inner">
+    <a class="kt-logo" href="TK_Landing.html">
+      <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">TK · Fallmanagement</span></div>
+    </a>
+    <div class="header-badge">🗂️ FM</div>
+  </div>
+  <nav class="header-right">
+    <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
+  </nav>
+</header>
+
+<div class="brainy-banner">
+  <div class="brainy-face"><img src="tk-brainy.png" alt="Brainy"></div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Fallmanagement</span>
+    <p class="brainy-msg">Brainy begleitet TK beim Fallmanagement — strukturiert, datenschutzkonform, prozesssicher.</p>
+  </div>
+</div>
+
+<div id="app">
+<div class="view" id="view-case_start">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Fallmanagement
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · Startseite</div>
+        <div class="unter-titel">Fallmanagement-Assistent</div>
+        <div class="unter-sub">Fallakte · Risiko · Maßnahmen · Verlauf · Barometer · PDF</div>
+      </div>
+    </div>
+
+    <div class="btn-grid">
+      <button class="btn-kachel" onclick="zeige('case_file')" style="--kachel-color:#00695C;">
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · 01</div>
+        <div class="btn-kachel-emoji">📁</div>
+        <div class="btn-kachel-titel">Fallakte öffnen</div>
+        <div class="btn-kachel-sub">Stammdaten · Ziele · Ressourcen</div>
+        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('case_risk')" style="--kachel-color:#00695C;">
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · 02</div>
+        <div class="btn-kachel-emoji">🚦</div>
+        <div class="btn-kachel-titel">Risiko-Ampel</div>
+        <div class="btn-kachel-sub">Grün · Gelb · Rot · Einschätzung</div>
+        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('case_actions')" style="--kachel-color:#00695C;">
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · 03</div>
+        <div class="btn-kachel-emoji">📋</div>
+        <div class="btn-kachel-titel">Maßnahmenplan</div>
+        <div class="btn-kachel-sub">Maßnahme · Verantwortung · Status</div>
+        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('case_timeline')" style="--kachel-color:#00695C;">
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · 04</div>
+        <div class="btn-kachel-emoji">🕐</div>
+        <div class="btn-kachel-titel">Verlauf / Chronik</div>
+        <div class="btn-kachel-sub">Datum · Ereignis · Beobachtung</div>
+        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('case_barometer')" style="--kachel-color:#00695C;">
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · 05</div>
+        <div class="btn-kachel-emoji">🌡️</div>
+        <div class="btn-kachel-titel">Tages-Barometer</div>
+        <div class="btn-kachel-sub">Stimmung · Belastung · Tagesverlauf</div>
+        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('case_pdf')" style="--kachel-color:#00695C;">
+        <div class="btn-kachel-nr" style="color:#00695C;">FM · 06</div>
+        <div class="btn-kachel-emoji">📄</div>
+        <div class="btn-kachel-titel">PDF-Fallakte</div>
+        <div class="btn-kachel-sub">Export · Drucken · Weitergabe</div>
+        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
+      </button>
+      <button class="btn-kachel" onclick="zeige('case_help')" style="border-color:#1B3A4B;">
+        <div class="btn-kachel-nr" style="color:#1B3A4B;">FM · ℹ</div>
+        <div class="btn-kachel-emoji">📖</div>
+        <div class="btn-kachel-titel">Anleitung Fallmanagement</div>
+        <div class="btn-kachel-sub">Schritt-für-Schritt · Prozessübersicht</div>
+        <div class="btn-kachel-stripe" style="background:#1B3A4B;"></div>
+      </button>
+    </div>
+
+    <div class="brainy-box" style="margin-top:1.2rem;">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text">
+          <strong>Brainy unterstützt TK</strong> beim strukturierten Fallmanagement –
+          mit Reflexionsfragen, Risikohinweisen, Maßnahmenimpulsen und Weiterleitungen.
+        </p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('start')">← TK-Recruiting Übersicht</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_file – FALLAKTE / STAMMDATEN
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_file">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Fallakte
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · 01 · Fallakte</div>
+        <div class="unter-titel">Stammdaten & Fallprofil</div>
+        <div class="unter-sub">Name · Klasse · Bezugsperson · Ziele · Ressourcen</div>
+      </div>
+    </div>
+
+    <!-- Platzhalter – Formular wird in einem folgenden Schritt eingefügt -->
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📁</span>
+        <span class="karte-header-titel" style="color:#00695C;">Stammdaten</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Name:</strong> – wird hier erfasst</li>
+          <li><strong>Klasse / Gruppe:</strong> – wird hier erfasst</li>
+          <li><strong>Bezugsperson:</strong> – wird hier erfasst</li>
+          <li><strong>Besonderheiten:</strong> – wird hier erfasst</li>
+        </ul>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🎯</span>
+        <span class="karte-header-titel" style="color:#00695C;">Ziele & Ressourcen</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Ziele:</strong> – werden hier definiert</li>
+          <li><strong>Ressourcen:</strong> – werden hier erfasst</li>
+        </ul>
+        <div class="hinweis" style="border-color:#00695C;">Formular wird in Schritt 2 vollständig ausgefüllt. Daten werden in localStorage gespeichert.</div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_start')">← Fallmanagement</button>
+      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_risk')">02 Risiko-Ampel →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_risk – RISIKO-AMPEL
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_risk">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Risiko-Ampel
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · 02 · Risiko-Ampel</div>
+        <div class="unter-titel">Risikoeinschätzung</div>
+        <div class="unter-sub">Grün · Gelb · Rot · Neutrale Kriterien</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🚦</span>
+        <span class="karte-header-titel" style="color:#00695C;">Ampel-Kriterien (riskStatus)</span>
+      </div>
+      <div class="karte-body">
+        <div class="ampel" style="flex-direction:column;gap:.5rem;">
+          <span class="ampel-chip gruen" style="justify-content:flex-start;">✔ Grün – Situation stabil, Bedarf gedeckt, keine akuten Hinweise</span>
+          <span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – Erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span>
+          <span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – Akuter Handlungsbedarf, sofortige Maßnahmen erforderlich</span>
+        </div>
+        <div class="hinweis" style="border-color:#00695C;margin-top:.7rem;">Ampel-Einschätzung + Begründung werden in localStorage als <strong>riskStatus</strong> gespeichert.</div>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📋</span>
+        <span class="karte-header-titel" style="color:#00695C;">Einschätzungskriterien (neutral)</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Verhaltensauffälligkeiten: Häufigkeit, Intensität, Kontext</li>
+          <li>Soziale Einbindung: Peer-Kontakte, Teamfähigkeit, Isolation</li>
+          <li>Emotionale Stabilität: Stimmungsschwankungen, Belastbarkeit</li>
+          <li>Lern- und Teilhabemöglichkeiten: Zugänglichkeit, Förderung</li>
+          <li>Familiäres Umfeld: Kooperation Bezugspersonen, Unterstützung</li>
+          <li>Eigengefährdung / Fremdgefährdung: akute Hinweise vorhanden?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder auf Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Leitung."</em></p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_file')">← 01 Fallakte</button>
+      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_actions')">03 Maßnahmenplan →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_actions – MASSNAHMENPLAN
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_actions">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Maßnahmenplan
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · 03 · Maßnahmenplan</div>
+        <div class="unter-titel">Maßnahmen planen & verfolgen</div>
+        <div class="unter-sub">Maßnahme · Verantwortlich · Zeitraum · Status</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📋</span>
+        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: actions</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Maßnahme:</strong> Was wird konkret getan?</li>
+          <li><strong>Verantwortlich:</strong> Wer ist zuständig?</li>
+          <li><strong>Zeitraum:</strong> Von – Bis (Datum)</li>
+          <li><strong>Status:</strong> Offen · In Bearbeitung · Abgeschlossen · Pausiert</li>
+          <li><strong>Notiz:</strong> Kurze Ergänzung / Rückmeldung</li>
+        </ul>
+        <div class="hinweis" style="border-color:#00695C;">Maßnahmen werden als Array in localStorage (<strong>actions</strong>) gespeichert. Mehrere Einträge möglich.</div>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🎯</span>
+        <span class="karte-header-titel" style="color:#00695C;">Status-Übersicht (Platzhalter)</span>
+      </div>
+      <div class="karte-body">
+        <div class="ampel">
+          <span class="ampel-chip blau">📌 Offen</span>
+          <span class="ampel-chip gelb">⚙️ In Bearbeitung</span>
+          <span class="ampel-chip gruen">✔ Abgeschlossen</span>
+          <span class="ampel-chip rot" style="background:#F3E5F5;color:#6A1B9A;">⏸ Pausiert</span>
+        </div>
+        <div class="hinweis" style="border-color:#00695C;margin-top:.6rem;">Formulare und Logik werden in Schritt 2 eingefügt.</div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_risk')">← 02 Risiko-Ampel</button>
+      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_timeline')">04 Verlauf →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_timeline – VERLAUF / CHRONIK
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_timeline">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Verlauf / Chronik
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · 04 · Verlauf</div>
+        <div class="unter-titel">Chronik & Verlaufsdokumentation</div>
+        <div class="unter-sub">Datum · Ereignis · Beobachtung · Rückmeldung</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🕐</span>
+        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: timeline</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Datum:</strong> Eintrags- / Ereignisdatum</li>
+          <li><strong>Ereignis:</strong> Was ist passiert? (kurz, neutral)</li>
+          <li><strong>Beobachtung:</strong> Was wurde wahrgenommen?</li>
+          <li><strong>Rückmeldung:</strong> Reaktion, Konsequenz, nächster Schritt</li>
+          <li><strong>Erstellt von:</strong> TK (Kürzel / Funktion)</li>
+        </ul>
+        <div class="hinweis" style="border-color:#00695C;">Einträge werden chronologisch als Array in localStorage (<strong>timeline</strong>) gespeichert.</div>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📌</span>
+        <span class="karte-header-titel" style="color:#00695C;">Dokumentationsgrundsätze</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Beobachtungsbasiert – keine Interpretationen als Tatsachen</li>
+          <li>Zeitnah – möglichst am gleichen Tag erfassen</li>
+          <li>Neutral – keine wertenden Formulierungen</li>
+          <li>Vollständig – Datum und Kürzel immer eintragen</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em><br><em>„Wann wurde der letzte Verlaufseintrag gemacht?"</em></p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_actions')">← 03 Maßnahmenplan</button>
+      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_barometer')">05 Barometer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_barometer – TAGES-BAROMETER
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_barometer">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Tages-Barometer
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · 05 · Barometer</div>
+        <div class="unter-titel">Tagesstatus & Barometer</div>
+        <div class="unter-sub">Stimmung · Belastung · Tagesverlauf</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🌡️</span>
+        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: barometer</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Datum:</strong> Tageseintrag (täglich)</li>
+          <li><strong>Stimmung:</strong> sehr gut · gut · neutral · angespannt · belastet</li>
+          <li><strong>Belastung:</strong> gering · mittel · hoch · sehr hoch</li>
+          <li><strong>Tagesverlauf:</strong> ruhig · ereignisreich · schwierig · Ausnahmesituation</li>
+          <li><strong>Kurznotiz:</strong> Optional – ein Satz zum Tag</li>
+        </ul>
+        <div class="hinweis" style="border-color:#00695C;">Barometer-Einträge werden täglich in localStorage (<strong>barometer</strong>) gespeichert und bilden den Verlauf ab.</div>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📊</span>
+        <span class="karte-header-titel" style="color:#00695C;">Wofür dient das Barometer?</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Schneller Tagesstatus – auch für kurze Dokumentation geeignet</li>
+          <li>Muster erkennen: Wann ist die Belastung regelmäßig hoch?</li>
+          <li>Gesprächsgrundlage für Fachberatung / TK-Leitung</li>
+          <li>Ergänzung zur Chronik – kein Ersatz</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em><br><em>„Sehe ich ein Muster in den letzten Einträgen?"</em></p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_timeline')">← 04 Verlauf</button>
+      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_pdf')">06 PDF-Fallakte →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_pdf – PDF-FALLAKTE
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_pdf">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> PDF-Fallakte
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#00695C;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr" style="color:#00695C;">FM · 06 · PDF-Export</div>
+        <div class="unter-titel">PDF-Fallakte erstellen</div>
+        <div class="unter-sub">Export · Drucken · Weitergabe · Datenschutz</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📄</span>
+        <span class="karte-header-titel" style="color:#00695C;">Was wird exportiert?</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>Stammdaten</strong> (caseFile) – Name, Klasse, Bezugsperson, Ziele</li>
+          <li><strong>Risiko-Ampel</strong> (riskStatus) – aktuelle Einschätzung + Begründung</li>
+          <li><strong>Maßnahmenplan</strong> (actions) – alle Einträge mit Status</li>
+          <li><strong>Chronik</strong> (timeline) – alle Verlaufseinträge chronologisch</li>
+          <li><strong>Barometer</strong> (barometer) – Tagesstatus-Übersicht (optional)</li>
+        </ul>
+        <div class="hinweis" style="border-color:#00695C;">PDF-Export und Druckfunktion werden in Schritt 2 implementiert. Datenschutzhinweis wird automatisch eingefügt.</div>
+      </div>
+    </div>
+    <div class="karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🔒</span>
+        <span class="karte-header-titel" style="color:#00695C;">Datenschutz beim Export</span>
+      </div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Nur mit Einwilligung der Bezugspersonen weitergeben</li>
+          <li>Kein Versand per unverschlüsselter E-Mail</li>
+          <li>Ausdrucke sicher verwahren oder vernichten</li>
+          <li>Digitale Kopien nur auf dienstlichen Geräten speichern</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text"><em>„Wer bekommt dieses Dokument – und ist die Weitergabe datenschutzkonform?"</em><br><em>„Sind alle Daten vollständig und aktuell vor dem Export?"</em></p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_barometer')">← 05 Barometer</button>
+      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_help')">Anleitung →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FALLMANAGEMENT · case_help – ANLEITUNG FALLMANAGEMENT
+══════════════════════════════════════════════════════════ -->
+<div class="view" id="view-case_help">
+  <div class="unter-wrap">
+    <div class="unter-breadcrumb">
+      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
+      <span>›</span> Anleitung
+    </div>
+    <div class="unter-header">
+      <div class="unter-header-stripe" style="background:#1B3A4B;"></div>
+      <div class="unter-header-inner">
+        <div class="unter-nr">FM · Anleitung</div>
+        <div class="unter-titel">Fallmanagement – Schritt für Schritt</div>
+        <div class="unter-sub">Neutral · Prozessbezogen · Ohne trägerspezifische Inhalte</div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Prozessübersicht</span></div>
+      <div class="karte-body">
+        <ol class="schritt-list">
+          <li><strong>Fallakte anlegen</strong> – Stammdaten, Bezugsperson, Besonderheiten, Ziele und Ressourcen erfassen</li>
+          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot sofort Rücksprache</li>
+          <li><strong>Maßnahmen planen</strong> – konkrete Schritte, Verantwortlichkeiten und Zeiträume festlegen</li>
+          <li><strong>Verlauf dokumentieren</strong> – Ereignisse zeitnah, beobachtungsbasiert und neutral eintragen</li>
+          <li><strong>Tages-Barometer pflegen</strong> – kurzen Tagesstatus erfassen, Muster erkennen</li>
+          <li><strong>PDF exportieren</strong> – Fallakte für Weitergabe oder Archiv erstellen (datenschutzkonform)</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">⚠️</span><span class="karte-header-titel">Wichtige Grundsätze</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li>Beobachtungen statt Bewertungen – sachlich, neutral, nachvollziehbar</li>
+          <li>Zeitnah dokumentieren – möglichst am gleichen Tag</li>
+          <li>Ampel-Rot: immer Rücksprache mit TK-Leitung, nie allein entscheiden</li>
+          <li>Datenschutz: nur zweckbezogene Daten, Einwilligung vor Weitergabe</li>
+          <li>Maßnahmen: konkret, zeitgebunden, verantwortlich zugeordnet</li>
+          <li>Alle Daten werden lokal gespeichert – regelmäßig sichern</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">💾</span><span class="karte-header-titel">Datenstruktur-Übersicht</span></div>
+      <div class="karte-body">
+        <ul class="stw-list">
+          <li><strong>caseFile</strong> – Stammdaten (Name, Klasse, Bezugsperson, Ziele, Ressourcen)</li>
+          <li><strong>riskStatus</strong> – Ampel-Einschätzung (grün / gelb / rot + Begründung)</li>
+          <li><strong>actions</strong> – Maßnahmenplan (Array: Maßnahme, Verantwortlich, Zeitraum, Status)</li>
+          <li><strong>timeline</strong> – Chronik (Array: Datum, Ereignis, Beobachtung, Rückmeldung)</li>
+          <li><strong>barometer</strong> – Tagesstatus (Array: Datum, Stimmung, Belastung, Verlauf)</li>
+        </ul>
+        <div class="hinweis">Alle Strukturen werden in <strong>localStorage</strong> gespeichert. Schlüssel: <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-caseFile</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-riskStatus</code> etc.</div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="tk-brainy.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen, Risikohinweisen und Weiterleitungsimpulsen – direkt im jeweiligen Bereich abrufbar.</p>
+      </div>
+    </div>
+
+    <div class="unter-nav">
+      <button class="unter-nav-btn zurueck" onclick="zeige('case_start')">← Fallmanagement Übersicht</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MINI-KARTE: ANLEITUNG RECRUITING
+══════════════════════════════════════════════════════════ -->
+
+</div>
+
+<script>
+var views = {
+  'case_start':     'view-case_start',
+  'case_file':      'view-case_file',
+  'case_risk':      'view-case_risk',
+  'case_actions':   'view-case_actions',
+  'case_timeline':  'view-case_timeline',
+  'case_barometer': 'view-case_barometer',
+  'case_pdf':       'view-case_pdf',
+  'case_help':      'view-case_help'
+};
+
+function zeige(key) {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('aktiv'); });
+  var ziel = document.getElementById(views[key] || 'view-start');
+  if (ziel) { ziel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+// ── Tab-System ─────────────────────────────────────────────
+function switchTab(btn, panelId) {
+  var bar = btn.closest('.tab-bar');
+  var wrap = btn.closest('.unter-wrap');
+  bar.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  wrap.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
+  btn.classList.add('aktiv');
+  var panel = document.getElementById(panelId);
+  if (panel) panel.classList.add('aktiv');
+}
+
+// ── Speichern (localStorage) ───────────────────────────────
+function speichern(bereich) {
+  try {
+    var view = document.getElementById('view-' + (bereich === 'gespräch' ? 'gespräch' : bereich));
+    if (!view) return;
+    var data = {};
+    view.querySelectorAll('input,select,textarea').forEach(function(el) {
+      var key = el.id || el.name || el.placeholder || Math.random();
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        if (el.checked) data[key] = el.value || 'checked';
+      } else {
+        data[key] = el.value;
+      }
+    });
+    localStorage.setItem('tkr-' + bereich, JSON.stringify(data));
+    zeigeToast('✔ Gespeichert');
+  } catch(e) { zeigeToast('⚠ Konnte nicht speichern'); }
+}
+
+function formReset(panelId) {
+  var panel = document.getElementById(panelId);
+  if (!panel) return;
+  panel.querySelectorAll('input,select,textarea').forEach(function(el) {
+    if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
+    else el.value = '';
+  });
+  zeigeToast('↺ Formular zurückgesetzt');
+}
+
+// ── Toast ──────────────────────────────────────────────────
+function zeigeToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('sichtbar');
+  setTimeout(function(){ t.classList.remove('sichtbar'); }, 2200);
+}
+// ── Hash-Navigation beim Laden ─────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = window.location.hash.replace('#','');
+  if (hash && hash !== 'start') { zeige(hash); }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = window.location.hash.replace('#','');
+  if (hash && views[hash]) { zeige(hash); } else { zeige('case_start'); }
+});
+</script>
+</body>
+</html>

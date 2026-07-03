@@ -145,12 +145,12 @@
   .dring-btn.aktiv.erhoben{background:#FF9800;border-color:#FF9800;color:#fff;}
   .dring-btn.aktiv.dringend{background:#F44336;border-color:#F44336;color:#fff;}
   .brainy-box{
-    display:flex;gap:.6rem;align-items:flex-start;margin-top:.8rem;
-    background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r-sm);
-    padding:.6rem .8rem;
+    display:flex;gap:.5rem;align-items:center;
+    background:#f5f5f5;border-radius:6px;
+    padding:.45rem .75rem;margin-top:.6rem;
   }
-  .brainy-box img{width:34px;height:34px;border-radius:50%;flex-shrink:0;}
-  .brainy-box .txt{font-size:.76rem;color:var(--muted);font-style:italic;}
+  .brainy-box img{width:26px;height:26px;border-radius:50%;flex-shrink:0;}
+  .brainy-box .txt{font-size:.75rem;color:var(--muted);font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
   @media(max-width:560px){
     .woche-grid{grid-template-columns:repeat(5,1fr);gap:.3rem;}
@@ -256,6 +256,7 @@
 
   <!-- BEREICH 5: BRAINY -->
   <div class="karte">
+    <div class="brainy-box">
       <img src="./brainy.png" alt="Brainy" onerror="this.style.display='none';">
       <div class="txt">Brainy: Ein kurzer, ehrlicher Eintrag heute hilft dir morgen beim Wiedereinstieg.</div>
     </div>

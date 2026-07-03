@@ -1,230 +1,242 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>TK-Landing</title>
-  <style>
-    body{font-family:Arial,sans-serif;background:#f7f7f7;margin:0;padding:20px;}
-    section{background:white;padding:15px;margin-bottom:20px;border-radius:8px;box-shadow:0 0 4px rgba(0,0,0,.1);}
-    button{padding:8px 12px;border-radius:6px;border:none;background:#e0e0e0;cursor:pointer;margin-right:6px;}
-    button:hover{background:#d5d5d5;}
-    .tk-buttons{margin-top:8px;}
-    .tk-status{margin-top:8px;font-size:.85rem;font-weight:bold;}
-    .tk-progress{width:100%;background:#eee;height:8px;border-radius:4px;margin-top:6px;}
-    .tk-progress-bar{height:8px;border-radius:4px;}
-    .tk-recruiting-info{font-size:.8rem;color:#555;margin-top:6px;padding:6px 0;border-top:1px solid #eee;}
-    #recruiting-form{background:white;padding:15px;border-radius:8px;box-shadow:0 0 4px rgba(0,0,0,.1);margin-top:20px;}
-    #recruiting-datum,#recruiting-notiz{width:100%;margin-bottom:10px;padding:8px;border-radius:6px;border:1px solid #ccc;box-sizing:border-box;font-family:inherit;}
-    #recruiting-notiz{min-height:70px;resize:vertical;}
-    #recruiting-speichern,#recruiting-abbrechen{padding:8px 12px;border-radius:6px;border:none;background:#e0e0e0;cursor:pointer;margin-right:10px;}
-    #recruiting-speichern:hover{background:#1A8C8C;color:white;}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TK-Bereich – Teamkoordination · KLARTEXT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --tk-color:#4A148C;
+  --tk-light:#F3E5FF;
+  --tk-mid:#7B1FA2;
+  --fm-color:#00695C;
+  --fm-light:#E0F2F1;
+  --va-color:#1B3A4B;
+  --va-light:#EAF0F4;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--tk-color);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{background:rgba(74,20,140,.25);border:1.5px solid rgba(206,147,216,.5);color:#CE93D8;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+/* ── BRAINY-BANNER ────────────────────────────────── */
+.brainy-banner{background:linear-gradient(135deg,#2D1B45,#4A148C);border-bottom:2px solid rgba(206,147,216,.4);padding:.65rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:flex-start;gap:.75rem;}
+.brainy-face{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#E1BEE7;}
+
+/* ── LAYOUT ───────────────────────────────────────── */
+.page-wrap{max-width:980px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.page-header{margin-bottom:1.5rem;}
+.page-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:var(--tk-light);color:var(--tk-color);margin-bottom:.5rem;}
+.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.page-lead{font-size:.9rem;color:var(--kt-muted);max-width:600px;}
+
+/* ── MODUL-GRID ───────────────────────────────────── */
+.modul-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1rem;
+  margin-top:1.5rem;
+}
+.modul-karte{
+  background:var(--kt-surface);
+  border:2px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  text-decoration:none;
+  color:inherit;
+  display:flex;flex-direction:column;
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.modul-karte:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.modul-karte-stripe{height:5px;}
+.modul-karte-inner{padding:1.2rem 1.3rem 1.4rem;display:flex;flex-direction:column;gap:.6rem;flex:1;}
+.modul-karte-top{display:flex;align-items:center;justify-content:space-between;}
+.modul-karte-emoji{font-size:2rem;line-height:1;}
+.modul-karte-badge{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .55rem;border-radius:20px;}
+.modul-karte-titel{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;line-height:1.25;}
+.modul-karte-sub{font-size:.8rem;color:var(--kt-muted);line-height:1.5;flex:1;}
+.modul-karte-cta{font-size:.74rem;font-weight:700;display:flex;align-items:center;gap:.3rem;margin-top:.3rem;}
+
+/* Recruiting */
+.modul-karte.recruiting{border-color:var(--tk-color);}
+.modul-karte.recruiting:hover{border-color:var(--tk-mid);}
+.modul-karte.recruiting .modul-karte-stripe{background:var(--tk-color);}
+.modul-karte.recruiting .modul-karte-badge{background:var(--tk-light);color:var(--tk-color);}
+.modul-karte.recruiting .modul-karte-titel{color:var(--tk-color);}
+.modul-karte.recruiting .modul-karte-cta{color:var(--tk-color);}
+
+/* Vertretung */
+.modul-karte.va{border-color:var(--va-color);}
+.modul-karte.va:hover{border-color:var(--va-color);}
+.modul-karte.va .modul-karte-stripe{background:var(--va-color);}
+.modul-karte.va .modul-karte-badge{background:var(--va-light);color:var(--va-color);}
+.modul-karte.va .modul-karte-titel{color:var(--va-color);}
+.modul-karte.va .modul-karte-cta{color:var(--va-color);}
+
+/* Fallmanagement */
+.modul-karte.fm{border-color:var(--fm-color);}
+.modul-karte.fm:hover{border-color:var(--fm-color);}
+.modul-karte.fm .modul-karte-stripe{background:var(--fm-color);}
+.modul-karte.fm .modul-karte-badge{background:var(--fm-light);color:var(--fm-color);}
+.modul-karte.fm .modul-karte-titel{color:var(--fm-color);}
+.modul-karte.fm .modul-karte-cta{color:var(--fm-color);}
+
+.neu-badge{
+  position:absolute;top:10px;right:10px;
+  background:#C47A00;color:#fff;
+  font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:.15rem .45rem;border-radius:10px;z-index:2;
+}
+
+/* ── INFO-KARTE ───────────────────────────────────── */
+.info-karte{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  padding:1rem 1.2rem;
+  margin-top:1.8rem;
+  box-shadow:var(--shadow);
+}
+.info-karte-titel{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--kt-primary);margin-bottom:.5rem;}
+.info-karte ul{list-style:none;display:flex;flex-direction:column;gap:.3rem;}
+.info-karte li{font-size:.8rem;color:var(--kt-ink);padding-left:1.1rem;position:relative;line-height:1.5;}
+.info-karte li::before{content:'▸';position:absolute;left:0;top:0;color:var(--tk-color);font-size:.7rem;line-height:1.7;}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
+</style>
 </head>
 <body>
 
-<h1>TK-Landing</h1>
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-mark">
+        <div class="lm-k"></div>
+        <div class="kt-logo-bars"><span></span><span></span><span></span></div>
+      </div>
+      <div class="kt-logo-text">
+        <span class="wort">KLARTEXT</span>
+        <span class="claim">Teamkoordination</span>
+      </div>
+    </a>
+    <div class="header-badge">TK-Bereich</div>
+  </div>
+  <nav>
+    <a class="btn-back" href="DASHBOARD.html">← Dashboard</a>
+  </nav>
+</header>
 
-<section id="tk-kinderliste">
-  <h2>Alle Kinder (TK)</h2>
-  <div id="tk-kinder-output"></div>
-</section>
+<!-- ══ BRAINY-BANNER ════════════════════════════════════════ -->
+<div class="brainy-banner">
+  <div class="brainy-face"><img src="brainy-tk.png" alt="Brainy TK" style="width:100%;height:100%;object-fit:contain;border-radius:50%;"></div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Teamkoordination</span>
+    <p class="brainy-msg">
+      <strong>Brainy begleitet TK</strong> in den Bereichen Recruiting und Vertretungsplanung – mit Reflexionsfragen und Prozesshinweisen.
+    </p>
+  </div>
+</div>
 
-<script>
-var TK_BUTTONS = ['Bewerbung','Auswahl','Matching','Gespräch','Dokumente'];
+<!-- ══ INHALT ════════════════════════════════════════════════ -->
+<div class="page-wrap">
 
-function getTKColor(status) {
-  var map = {
-    'Bewerbung':'#1A8C8C','Auswahl':'#4CAF50','Matching':'#FFC107',
-    'Gespräch':'#2196F3','Dokumente':'#9C27B0'
-  };
-  return map[status] || '#999';
-}
+  <div class="page-header">
+    <div class="page-tag">TK-Bereich</div>
+    <h1 class="page-titel">Teamkoordination</h1>
+    <p class="page-lead">Zwei Module für den TK-Alltag – Recruiting und Vertretungsorganisation, jeweils strukturiert und mit Brainy-Unterstützung.</p>
+  </div>
 
-function getTKProgress(status) {
-  var map = {
-    'Bewerbung':20,'Auswahl':40,'Matching':60,'Gespräch':80,'Dokumente':100
-  };
-  return map[status] || 0;
-}
+  <div class="modul-grid">
 
-function loadChildrenTK() {
-  try { return JSON.parse(localStorage.getItem('children') || '[]'); } catch(e) { return []; }
-}
+    <!-- RECRUITING -->
+    <a class="modul-karte recruiting" href="TK-Recruiting.html">
+      <span class="neu-badge">✨ Neu</span>
+      <div class="modul-karte-stripe"></div>
+      <div class="modul-karte-inner">
+        <div class="modul-karte-top">
+          <span class="modul-karte-emoji">🎯</span>
+          <span class="modul-karte-badge">TK-R</span>
+        </div>
+        <div class="modul-karte-titel">Recruiting</div>
+        <div class="modul-karte-sub">Gespräch · Matching · Risiko-Check · Entscheidung · Weiterleitung · Dokumentation · Selbstcheck · Erinnerungen</div>
+        <div class="modul-karte-cta">Modul öffnen →</div>
+      </div>
+    </a>
 
-function saveChildrenTK(kinder) {
-  localStorage.setItem('children', JSON.stringify(kinder));
-}
+    <!-- VERTRETUNGSASSISTENT -->
+    <a class="modul-karte va" href="TK_Rollenlogik.html">
+      <span class="neu-badge">✨ Neu</span>
+      <div class="modul-karte-stripe"></div>
+      <div class="modul-karte-inner">
+        <div class="modul-karte-top">
+          <span class="modul-karte-emoji">🔄</span>
+          <span class="modul-karte-badge">VA</span>
+        </div>
+        <div class="modul-karte-titel">Vertretungsassistent</div>
+        <div class="modul-karte-sub">Abwesenheit erfassen · Automatische Vorschlagsliste · Score-Ranking · Routing & Sichtbarkeit</div>
+        <div class="modul-karte-cta">Modul öffnen →</div>
+      </div>
+    </a>
 
-function setTKStatus(kindId, status) {
-  var kinder = loadChildrenTK();
-  kinder.forEach(function(k) {
-    if (String(k.id) === String(kindId)) {
-      k.tkStatus = status;
-    }
-  });
-  saveChildrenTK(kinder);
-  renderChildrenTK();
-}
 
-function renderChildrenTK() {
-  var kinder    = loadChildrenTK();
-  var container = document.getElementById('tk-kinder-output');
-  if (!kinder.length) {
-    container.innerHTML = '<p style="color:#888;font-style:italic;">Noch keine Kinder angelegt. Bitte in der Kinderverwaltung anlegen.</p>';
-    return;
-  }
 
-  container.innerHTML = '';
-  kinder.forEach(function(k) {
-    var div = document.createElement('div');
-    div.setAttribute('data-kind-id', k.id);
-    div.style.cssText = 'padding:8px 10px;border:1px solid #ddd;border-radius:6px;margin-bottom:8px;background:#fafafa;';
-    div.innerHTML =
-      '<strong>' + (k.name || '–') + '</strong>' +
-      (k.klasse ? ' &nbsp;·&nbsp; Klasse ' + k.klasse : '');
+  </div>
 
-    // Button-Container mit Phase-Highlighting
-    var btnContainer = document.createElement('div');
-    btnContainer.className = 'tk-buttons';
-    TK_BUTTONS.forEach(function(label) {
-      var phase = label.toLowerCase().replace('ä','a').replace('ü','u').replace('ö','o');
-      var istAktiv = (k.tkStatus === label);
-      var btn = document.createElement('button');
-      btn.textContent = label;
-      btn.setAttribute('data-kind-id', k.id);
-      if (istAktiv) {
-        btn.style.background = getTKColor(label);
-        btn.style.color      = 'white';
-      }
-      btn.onclick = (function(id, lbl, ph) {
-        return function() {
-          setTKStatus(id, lbl);
-          openRecruitingForm(id, ph);
-        };
-      })(k.id, label, phase);
-      btnContainer.appendChild(btn);
-    });
+  <div class="info-karte">
+    <div class="info-karte-titel">Über den TK-Bereich</div>
+    <ul>
+      <li><strong>Recruiting</strong> – vollständiger Bewerbungsprozess von Erstgespräch bis Entscheidung & Dokumentation (<a href="TK-Recruiting_Rollenlogik.html" style="color:var(--tk-color);font-weight:700;">Rollenlogik & Matching-Score</a>)</li>
+      <li><strong>Vertretungsassistent</strong> – automatische Vertretungssuche mit Filterlogik, Score-Ranking und Routing (<a href="VA_Anleitung.html" style="color:var(--va-color);font-weight:700;">ausführliche Anleitung</a>)</li>
 
-    // Status-Anzeige + Fortschrittsbalken
-    var statusDiv = document.createElement('div');
-    statusDiv.className = 'tk-status';
-    statusDiv.style.color = getTKColor(k.tkStatus);
-    statusDiv.textContent = 'Status: ' + (k.tkStatus || 'Noch kein Schritt gewählt');
+      <li>Alle Module speichern lokal (localStorage) und unterstützen Druck- und Export-Funktionen</li>
+    </ul>
+  </div>
 
-    var progressWrap = document.createElement('div');
-    progressWrap.className = 'tk-progress';
-    var progressBar = document.createElement('div');
-    progressBar.className = 'tk-progress-bar';
-    progressBar.style.width  = getTKProgress(k.tkStatus) + '%';
-    progressBar.style.background = getTKColor(k.tkStatus);
-    progressWrap.appendChild(progressBar);
+</div><!-- /.page-wrap -->
 
-    div.appendChild(btnContainer);
-    div.appendChild(statusDiv);
-    div.appendChild(progressWrap);
-
-    // Recruiting-Info-Block
-    var infoDiv = document.createElement('div');
-    infoDiv.className = 'tk-recruiting-info';
-    var aktPhase = k.tkStatus
-      ? k.tkStatus.toLowerCase().replace('ä','a').replace('ü','u').replace('ö','o')
-      : null;
-    var recruiting = k.recruiting && aktPhase && k.recruiting[aktPhase];
-    if (recruiting && recruiting.datum) {
-      infoDiv.innerHTML =
-        '<strong>' + (PHASE_LABEL_MAP[aktPhase] || aktPhase) + ':</strong> ' +
-        recruiting.datum +
-        (recruiting.notiz ? ' – ' + recruiting.notiz : '');
-    } else {
-      infoDiv.textContent = 'Keine Recruiting-Daten hinterlegt';
-    }
-    div.appendChild(infoDiv);
-    container.appendChild(div);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', renderChildrenTK);
-
-// ── Recruiting-Basis ───────────────────────────────────────
-var RECRUITING_PHASEN = ['bewerbung','auswahl','matching','gespraech','dokumente'];
-
-function initRecruiting(child) {
-  if (!child.recruiting) {
-    child.recruiting = {};
-    RECRUITING_PHASEN.forEach(function(p) {
-      child.recruiting[p] = { datum: '', notiz: '' };
-    });
-  }
-  return child;
-}
-
-function setRecruitingData(kindId, phase, datum, notiz) {
-  var kinder = loadChildrenTK();
-  kinder.forEach(function(k) {
-    if (String(k.id) === String(kindId)) {
-      initRecruiting(k);
-      k.recruiting[phase].datum = datum;
-      k.recruiting[phase].notiz = notiz;
-    }
-  });
-  saveChildrenTK(kinder);
-}
-
-// ── Recruiting-Formular ────────────────────────────────────
-var currentRecruitingId    = null;
-var currentRecruitingPhase = null;
-
-var PHASE_LABEL_MAP = {
-  'bewerbung':'Bewerbung','auswahl':'Auswahl','matching':'Matching',
-  'gespraech':'Gespräch','dokumente':'Dokumente'
-};
-
-function openRecruitingForm(kindId, phase) {
-  currentRecruitingId    = kindId;
-  currentRecruitingPhase = phase;
-  document.getElementById('recruiting-form-title').textContent =
-    'Recruiting – ' + (PHASE_LABEL_MAP[phase] || phase);
-  var kinder = loadChildrenTK();
-  var kind   = kinder.find(function(k) { return String(k.id) === String(kindId); });
-  var daten  = (kind && kind.recruiting && kind.recruiting[phase]) || { datum:'', notiz:'' };
-  document.getElementById('recruiting-datum').value = daten.datum || '';
-  document.getElementById('recruiting-notiz').value = daten.notiz || '';
-  document.getElementById('recruiting-form').style.display = 'block';
-  document.getElementById('recruiting-form').scrollIntoView({ behavior:'smooth' });
-}
-
-function resetRecruitingForm() {
-  document.getElementById('recruiting-datum').value = '';
-  document.getElementById('recruiting-notiz').value = '';
-  document.getElementById('recruiting-form').style.display = 'none';
-  currentRecruitingId    = null;
-  currentRecruitingPhase = null;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('recruiting-speichern').addEventListener('click', function() {
-    var datum = document.getElementById('recruiting-datum').value;
-    var notiz = document.getElementById('recruiting-notiz').value.trim();
-    if (!datum) { alert('Bitte ein Datum auswählen.'); return; }
-    if (!notiz) { alert('Bitte eine Notiz eingeben.'); return; }
-    setRecruitingData(currentRecruitingId, currentRecruitingPhase, datum, notiz);
-    resetRecruitingForm();
-    renderChildrenTK();
-  });
-
-  document.getElementById('recruiting-abbrechen').addEventListener('click', function() {
-    resetRecruitingForm();
-  });
-});
-</script>
-
-<section id="recruiting-form" style="display:none;">
-  <h2 id="recruiting-form-title"></h2>
-  <input id="recruiting-datum" type="date">
-  <textarea id="recruiting-notiz" placeholder="Notiz zur Phase"></textarea>
-  <button id="recruiting-speichern">Speichern</button>
-  <button id="recruiting-abbrechen">Abbrechen</button>
-</section>
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <strong>KLARTEXT</strong> · TK-Bereich · Teamkoordination<br>
+  Klar. Warm. Menschlich. · Neutral · Trägeroffen
+</footer>
 
 </body>
 </html>

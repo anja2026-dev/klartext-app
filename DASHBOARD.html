@@ -146,8 +146,20 @@ footer strong{color:var(--kt-accent);}
     <a href="BAROMETER_KIND.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(46,158,90,.15);border:1px solid rgba(46,158,90,.3);color:#4EC880;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(46,158,90,.25)'" onmouseout="this.style.background='rgba(46,158,90,.15)'">🌡️ Kind</a>
     <a href="M3-Joker.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(196,122,0,.15);border:1px solid rgba(196,122,0,.5);color:#C47A00;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;">🃏 Joker</a>
     <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .65rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">👩 Über mich</a>
+    <a id="tk-bereich-btn" href="TK_Landing.html" style="display:none;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(74,20,140,.18);border:1.5px solid rgba(206,147,216,.45);color:#CE93D8;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(74,20,140,.3)'" onmouseout="this.style.background='rgba(74,20,140,.18)'">🗂️ TK-Bereich</a>
     <a href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border:1.5px solid rgba(255,100,100,.4);border-radius:20px;color:rgba(255,180,180,.8);font-size:.72rem;font-weight:700;text-decoration:none;background:rgba(255,100,100,.1);">⬅ Logout</a>
   </nav>
+  <script>
+  (function(){
+    try {
+      var role = sessionStorage.getItem('klartext_role') || '';
+      if(['tk','admin'].includes(role)){
+        var btn = document.getElementById('tk-bereich-btn');
+        if(btn) btn.style.display = 'inline-flex';
+      }
+    } catch(e) {}
+  })();
+  </script>
 </header>
 <!-- GLOBALE HAUPTNAVIGATION -->
 <nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
@@ -158,6 +170,8 @@ footer strong{color:var(--kt-accent);}
   <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
   <a class="gnav-link" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
+  <a class="gnav-link" href="KLARTEXT_Tagesjournal.html">📘 Tagesjournal</a>
+  <a class="gnav-link" href="TK_Kinder.html">👶 Kinder</a>
 </nav>
 <a class="wtij-bar" href="DASHBOARD-M3.html">
   <div class="wtij-bar-icon">🎯</div>
@@ -754,50 +768,95 @@ footer strong{color:var(--kt-accent);}
   </section>
 
   <!-- TEAMKOORDINATION -->
-  <section class="modul-sektion" id="sek-tk" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;">
+  <section class="modul-sektion" id="sek-tk" style="scroll-margin-top:135px;--sek-color:#00695C;--sek-light:#E0F2F1;">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
-      <div class="modul-sektion-dot">
-      <span class="sek-chevron">▼</span>
-    </div>
+      <div class="modul-sektion-dot"><span class="sek-chevron">▼</span></div>
       <span class="modul-sektion-titel">🗂️ Teamkoordination</span>
-      <span class="modul-sektion-sub">20 Karten · Für Teamkoordination</span>
+      <span class="modul-sektion-sub">FM · VA · Kinderverwaltung · Fachbuch · Trainer</span>
     </div>
-    <div class="karten-grid">
-      <a class="kachel" href="KLARTEXT_Urlaubsplan.html"
-             data-modul="tk" data-search="urlaub plan kalender ferien krank abwesenheit"
-             style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;">
-            <div class="kachel-stripe" style="background:#1B3A4B;"></div>
-            <div class="kachel-header"><span class="kachel-nr">Plan</span><span class="kachel-emoji">🏖️</span></div>
-            <div class="kachel-body">
-              <div class="kachel-titel">Urlaubsplan TK</div>
-              <div class="kachel-sub">Team-Kalender · Urlaub · Krank · Schulfrei</div>
-            </div>
-          </a>
-      <a class="kachel" href="TK-01.html" data-modul="tk" data-search="onboarding ingra einführung checkliste erstkontakt hilfeplan" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-01</span><span class="kachel-emoji">🚀</span></div><div class="kachel-body"><div class="kachel-titel">INGRA-Onboarding</div><div class="kachel-sub">Einführung & Checkliste</div><span class="kachel-tag">Grundlage</span></div></a>
-      <a class="kachel" href="TK-02.html" data-modul="tk" data-search="qualitätssicherung standards reflexion teamkoordination überprüfung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-02</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Qualitätssicherung</div><div class="kachel-sub">Standards & Reflexion</div><span class="kachel-tag">Qualität</span></div></a>
-      <a class="kachel" href="TK-03.html" data-modul="tk" data-search="krisenmanagement teamkoordination krise ablauf eskalation melden" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-03</span><span class="kachel-emoji">🆘</span></div><div class="kachel-body"><div class="kachel-titel">Krisenmanagement</div><div class="kachel-sub">Ablauf & Zuständigkeiten</div><span class="kachel-tag">Krise</span></div></a>
-      <a class="kachel" href="TK-04.html" data-modul="tk" data-search="8a kinderschutz ablauf meldung gefährdung teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-04</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">§ 8a Ablauf</div><div class="kachel-sub">Kinderschutz & Meldung</div><span class="kachel-tag">Recht</span></div></a>
-      <a class="kachel" href="TK-05.html" data-modul="tk" data-search="bewilligung verlängerung antrag hilfeplan teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-05</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Bewilligung & Verlängerung</div><div class="kachel-sub">Anträge & Fristen</div><span class="kachel-tag">Verwaltung</span></div></a>
-      <a class="kachel" href="TK-06.html" data-modul="tk" data-search="übergänge koordinieren schulwechsel schule teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-06</span><span class="kachel-emoji">🔄</span></div><div class="kachel-body"><div class="kachel-titel">Übergänge koordinieren</div><div class="kachel-sub">Schulwechsel & Übergaben</div><span class="kachel-tag">Abschluss</span></div></a>
-      <a class="kachel" href="TK-07_Migrantische_Eltern.html" data-modul="tk" data-search="migrantische eltern kultursensibel dolmetscher teamkoordination" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">TK-07</span><span class="kachel-emoji">🌍</span></div><div class="kachel-body"><div class="kachel-titel">Migrantische Eltern</div><div class="kachel-sub">Kultursensibel organisieren</div><span class="kachel-tag">Neu</span></div></a>
-      <a class="kachel" href="TK-08_Rollenklaerung.html" data-modul="tk" data-search="rollenklaerung rollen zustaendigkeit grenzen" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">08</span><span class="kachel-emoji">🤝</span></div><div class="kachel-body"><div class="kachel-titel">Rollenklärung</div><div class="kachel-sub">JA/NEIN/Delegieren — klare Struktur</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-09_Start-Checkliste.html" data-modul="tk" data-search="start checkliste neuer fall beginn" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">09</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Start-Checkliste</div><div class="kachel-sub">Neuer Fall — strukturiert beginnen</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-10_Laufende_Fall-Checkliste.html" data-modul="tk" data-search="laufend checkliste fall pruefung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">10</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Laufende Fall-Checkliste</div><div class="kachel-sub">Regelmäßige Prüfpunkte</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-11_Fallabschluss-Checkliste.html" data-modul="tk" data-search="abschluss checkliste fall beenden" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">11</span><span class="kachel-emoji">🔒</span></div><div class="kachel-body"><div class="kachel-titel">Fallabschluss-Checkliste</div><div class="kachel-sub">Sauber dokumentiert beenden</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-12_Kommunikation.html" data-modul="tk" data-search="kommunikation austausch lehrkraft eltern" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">12</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Kommunikation</div><div class="kachel-sub">3 Zielgruppen mit Beispielsätzen</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-13_Konfliktmoderation.html" data-modul="tk" data-search="konflikt moderation vermittlung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">13</span><span class="kachel-emoji">⚖️</span></div><div class="kachel-body"><div class="kachel-titel">Konfliktmoderation</div><div class="kachel-sub">4-Schritte-Modell zur Vermittlung</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-14_Dokumentationspruefung.html" data-modul="tk" data-search="dokumentation pruefung muss darf nicht" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">14</span><span class="kachel-emoji">📑</span></div><div class="kachel-body"><div class="kachel-titel">Dokumentationsprüfung</div><div class="kachel-sub">Was rein darf, was nicht</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-15_Vertretungsorganisation.html" data-modul="tk" data-search="vertretung organisation ausfall" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">15</span><span class="kachel-emoji">👥</span></div><div class="kachel-body"><div class="kachel-titel">Vertretungsorganisation</div><div class="kachel-sub">5 Schritte bei Ausfall</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-16_Selbstfuersorge_TK.html" data-modul="tk" data-search="selbstfuersorge tk fuehrung" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">16</span><span class="kachel-emoji">💙</span></div><div class="kachel-body"><div class="kachel-titel">Selbstfürsorge TK</div><div class="kachel-sub">Führungsperspektive</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-17_Zeitmanagement.html" data-modul="tk" data-search="zeitmanagement eisenhower prioritaeten" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">17</span><span class="kachel-emoji">⏳</span></div><div class="kachel-body"><div class="kachel-titel">Zeitmanagement</div><div class="kachel-sub">Eisenhower-Matrix · 10-Min-Regel</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-18_Meetingstruktur.html" data-modul="tk" data-search="meeting struktur ablauf" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">18</span><span class="kachel-emoji">📅</span></div><div class="kachel-body"><div class="kachel-titel">Meetingstruktur</div><div class="kachel-sub">5-Punkte-Ablauf</div><span class="kachel-tag">Teamkoordination</span></div></a>
-      <a class="kachel" href="TK-19_Feedback_geben.html" data-modul="tk" data-search="feedback geben regeln" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">19</span><span class="kachel-emoji">💭</span></div><div class="kachel-body"><div class="kachel-titel">Feedback geben</div><div class="kachel-sub">4 Grundregeln</div><span class="kachel-tag">Teamkoordination</span></div></a>
-    </div></div></section>
+    <div class="modul-sektion-body"><div class="karten-grid">
+      <a class="kachel" href="TK_Landing.html" data-modul="tk" data-search="teamkoordination tk bereich weiterleitungen recruiting vertretung fallmanagement" style="--kachel-color:#00695C;--kachel-bg:#E0F2F1;">
+        <div class="kachel-stripe" style="background:#00695C;"></div>
+        <div class="kachel-header"><span class="kachel-nr">TK</span><span class="kachel-emoji">🗂️</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">TK-Bereich</div>
+          <div class="kachel-sub">Übersicht · Module · Handlungskarten</div>
+          <span class="kachel-tag">Einstieg</span>
+        </div>
+      </a>
+      <a class="kachel" href="TK-Recruiting.html" data-modul="tk" data-search="fallmanagement fm fallakte risiko maßnahmen verlauf" style="--kachel-color:#00695C;--kachel-bg:#E0F2F1;">
+        <div class="kachel-stripe" style="background:#00695C;"></div>
+        <div class="kachel-header"><span class="kachel-nr">FM · Neu</span><span class="kachel-emoji">🗂️</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">Fallmanagement</div>
+          <div class="kachel-sub">Fallakte · Risiko · Maßnahmen · Verlauf</div>
+          <span class="kachel-tag">TK-Modul</span>
+        </div>
+      </a>
+      <a class="kachel" href="KLARTEXT___TK___Rollenlogik___Vertretungsassistent.html" data-modul="tk" data-search="vertretungsassistent va anleitung vertretung ausfall" style="--kachel-color:#00695C;--kachel-bg:#E0F2F1;">
+        <div class="kachel-stripe" style="background:#00695C;"></div>
+        <div class="kachel-header"><span class="kachel-nr">VA · ℹ</span><span class="kachel-emoji">🔄</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">Vertretungsassistent</div>
+          <div class="kachel-sub">Anleitung · Schritt-für-Schritt · Kurzanleitung</div>
+          <span class="kachel-tag">TK-Modul</span>
+        </div>
+      </a>
+      <a class="kachel" href="TK_Kinder.html" data-modul="tk" data-search="kinderverwaltung kinder anlegen bearbeiten löschen tk" style="--kachel-color:#00695C;--kachel-bg:#E0F2F1;">
+        <div class="kachel-stripe" style="background:#00695C;"></div>
+        <div class="kachel-header"><span class="kachel-nr">TK · KV</span><span class="kachel-emoji">👶</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">Kinderverwaltung</div>
+          <div class="kachel-sub">Stammdaten · Klassen · Bedarfsarten</div>
+          <span class="kachel-tag">Zentrale Quelle</span>
+        </div>
+      </a>
+      <a class="kachel" href="KLARTEXT_Fachbuch_Neu.html" data-modul="tk" data-search="fachbuch kapitel grundlagen fallbeispiele training" style="--kachel-color:#00695C;--kachel-bg:#E0F2F1;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span>
+        <div class="kachel-stripe" style="background:#00695C;"></div>
+        <div class="kachel-header"><span class="kachel-nr">Fachbuch</span><span class="kachel-emoji">📕</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">Fachbuch Schulbegleitung</div>
+          <div class="kachel-sub">12 Kapitel · Fallbeispiele · Trainingsmodule</div>
+          <span class="kachel-tag">Vertiefung</span>
+        </div>
+      </a>
+      <a class="kachel" href="KLARTEXT_Trainer_Ausbildung.html" data-modul="tk" data-search="trainer ausbildung schulung kurs werden" style="--kachel-color:#00695C;--kachel-bg:#E0F2F1;">
+        <div class="kachel-stripe" style="background:#00695C;"></div>
+        <div class="kachel-header"><span class="kachel-nr">Trainer</span><span class="kachel-emoji">🎓</span></div>
+        <div class="kachel-body">
+          <div class="kachel-titel">Trainer-Ausbildung</div>
+          <div class="kachel-sub">Selbst KLARTEXT-Trainer werden</div>
+          <span class="kachel-tag">Ausbildung</span>
+        </div>
+      </a>
+    </div></div>
+  </section>
+
+  <!-- TK-RECRUITING -->
+  <section class="modul-sektion" id="sek-tk-recruiting" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot"><span class="sek-chevron">▼</span></div>
+      <span class="modul-sektion-titel">🎯 TK-Recruiting</span>
+      <span class="modul-sektion-sub">8 Prozessschritte · Anleitung</span>
+    </div>
+    <div class="modul-sektion-body"><div class="karten-grid">
+      <a class="kachel" href="TK-Recruiting.html#gespräch" data-modul="tk" data-search="gespräch erstgespräch recruiting tk-r 01" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 01</span><span class="kachel-emoji">💬</span></div><div class="kachel-body"><div class="kachel-titel">Gespräch</div><div class="kachel-sub">Erstgespräch vorbereiten & führen</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#matching" data-modul="tk" data-search="matching person stelle schule abgleichen tk-r 02" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 02</span><span class="kachel-emoji">🎯</span></div><div class="kachel-body"><div class="kachel-titel">Matching</div><div class="kachel-sub">Person–Stelle–Schule abgleichen</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#risiko" data-modul="tk" data-search="risiko check erkennen einschätzen tk-r 03" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 03</span><span class="kachel-emoji">⚠️</span></div><div class="kachel-body"><div class="kachel-titel">Risiko-Check</div><div class="kachel-sub">Risiken früh erkennen & einschätzen</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#entscheidung" data-modul="tk" data-search="entscheidung kriterien votum dokumentieren tk-r 04" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 04</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Entscheidung</div><div class="kachel-sub">Kriterien prüfen · Votum dokumentieren</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#weiterleitung" data-modul="tk" data-search="weiterleitung intern extern tk-r 05" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 05</span><span class="kachel-emoji">📤</span></div><div class="kachel-body"><div class="kachel-titel">Weiterleitung</div><div class="kachel-sub">Intern & extern richtig weitergeben</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#dokumentation" data-modul="tk" data-search="dokumentation träger erfassen ablegen tk-r 06" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 06</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Dokumentation</div><div class="kachel-sub">Träger-konform erfassen & ablegen</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#sab" data-modul="tk" data-search="selbstcheck haltung prozesssicherheit tk-r 07" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 07</span><span class="kachel-emoji">🔍</span></div><div class="kachel-body"><div class="kachel-titel">Selbstcheck</div><div class="kachel-sub">Eigene Haltung & Prozesssicherheit</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#erinnerungen" data-modul="tk" data-search="erinnerungen pushs fristen wiedervorlagen tk-r 08" style="--kachel-color:#4A148C;--kachel-bg:#F3E5FF;"><div class="kachel-stripe" style="background:#4A148C;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · 08</span><span class="kachel-emoji">🔔</span></div><div class="kachel-body"><div class="kachel-titel">Erinnerungen & Pushs</div><div class="kachel-sub">Fristen · Wiedervorlagen · Impulse</div><span class="kachel-tag">Recruiting</span></div></a>
+      <a class="kachel" href="TK-Recruiting.html#anleitung-recruiting" data-modul="tk" data-search="anleitung recruiting prozessübersicht schritt" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe" style="background:#1B3A4B;"></div><div class="kachel-header"><span class="kachel-nr">TK-R · ℹ</span><span class="kachel-emoji">📖</span></div><div class="kachel-body"><div class="kachel-titel">Anleitung Recruiting</div><div class="kachel-sub">Schritt-für-Schritt · Prozessübersicht</div><span class="kachel-tag">Anleitung</span></div></a>
+    </div></div>
+  </section>
 
   <!-- ELTERNKURS -->
 
   <!-- ELTERNKARTEN -->
 
+  <!-- FALLMANAGEMENT -->
   <!-- DOWNLOADS -->
     <!-- ══ ZEITKONTO + KRANKMELDUNG ══════════════════════════════ --><section id="sek-tools" class="modul-sektion">
         <div class="modul-sektion-header" onclick="toggleSek(this)">

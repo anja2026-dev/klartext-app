@@ -99,7 +99,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
   margin-bottom:.5rem;
 }
 .start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
-.start-section-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);margin:1.2rem 0 .5rem;padding-bottom:.3rem;border-bottom:1.5px solid var(--kt-border);}
 .start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
 
 .btn-grid{
@@ -437,27 +436,21 @@ footer strong{color:var(--kt-accent);}
   .unter-wrap{padding:.5rem;}
 }
 </style>
-<style>
-.brainy-banner img { width: 42px; height: 42px; object-fit: contain; }
-</style>
 </head>
 <body>
-
 <header class="kt-header">
-  <div class="header-inner">
+  <div class="header-left">
     <a class="kt-logo" href="TK_Landing.html">
       <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
       <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">TK · Fallmanagement</span></div>
     </a>
     <div class="header-badge">🗂️ FM</div>
   </div>
-  <nav class="header-right">
-    <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
-  </nav>
+  <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
 </header>
 
 <div class="brainy-banner">
-  <div class="brainy-face"><img src="tk-brainy.png" alt="Brainy"></div>
+  <div class="brainy-face"><img src="tk-brainy.png" alt="Brainy" style="width:32px;height:32px;object-fit:contain;"></div>
   <div class="brainy-text">
     <span class="brainy-label">Brainy · Fallmanagement</span>
     <p class="brainy-msg">Brainy begleitet TK beim Fallmanagement — strukturiert, datenschutzkonform, prozesssicher.</p>
@@ -1021,16 +1014,15 @@ footer strong{color:var(--kt-accent);}
 
 <script>
 var views = {
-  'case_start':     'view-case_start',
-  'case_file':      'view-case_file',
-  'case_risk':      'view-case_risk',
-  'case_actions':   'view-case_actions',
-  'case_timeline':  'view-case_timeline',
-  'case_barometer': 'view-case_barometer',
-  'case_pdf':       'view-case_pdf',
-  'case_help':      'view-case_help'
+  'case_start':           'view-case_start',
+  'case_file':            'view-case_file',
+  'case_risk':            'view-case_risk',
+  'case_actions':         'view-case_actions',
+  'case_timeline':        'view-case_timeline',
+  'case_barometer':       'view-case_barometer',
+  'case_pdf':             'view-case_pdf',
+  'case_help':            'view-case_help'
 };
-
 function zeige(key) {
   document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('aktiv'); });
   var ziel = document.getElementById(views[key] || 'view-start');
@@ -1085,12 +1077,6 @@ function zeigeToast(msg) {
   t.classList.add('sichtbar');
   setTimeout(function(){ t.classList.remove('sichtbar'); }, 2200);
 }
-// ── Hash-Navigation beim Laden ─────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  var hash = window.location.hash.replace('#','');
-  if (hash && hash !== 'start') { zeige(hash); }
-});
-
 
 document.addEventListener('DOMContentLoaded', function() {
   var hash = window.location.hash.replace('#','');

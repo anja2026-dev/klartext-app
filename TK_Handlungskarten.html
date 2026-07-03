@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TK-Handlungskarten · KLARTEXT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --kt-primary:#1B3A4B;--kt-accent:#6EC6A0;--kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;--kt-muted:#7A7060;--kt-surface:#FFFFFF;--kt-border:#DDD8CE;
+  --tk-color:#4A148C;--tk-light:#F3E5FF;
+  --shadow:0 2px 10px rgba(27,58,75,.09);--shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);min-height:100vh;}
+
+/* HEADER */
+.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--tk-color);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{background:rgba(74,20,140,.25);border:1.5px solid rgba(206,147,216,.5);color:#CE93D8;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+/* PAGE */
+.page-wrap{max-width:860px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.page-header{margin-bottom:1.5rem;}
+.page-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:var(--tk-light);color:var(--tk-color);margin-bottom:.5rem;}
+.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.page-lead{font-size:.9rem;color:var(--kt-muted);max-width:600px;}
+
+/* SUCHE */
+.suche-bar{display:flex;gap:.5rem;align-items:center;margin-bottom:1.2rem;}
+.suche-input{flex:1;padding:.55rem .85rem;border:1.5px solid var(--kt-border);border-radius:var(--r-md);font-size:.85rem;font-family:'DM Sans',sans-serif;color:var(--kt-ink);background:#fff;transition:border-color .15s;}
+.suche-input:focus{border-color:var(--tk-color);outline:none;}
+.filter-btn{padding:.45rem .8rem;border-radius:var(--r-md);border:1.5px solid var(--kt-border);background:#fff;font-size:.75rem;font-family:'DM Sans',sans-serif;color:var(--kt-muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.filter-btn.aktiv{background:var(--tk-color);color:#fff;border-color:var(--tk-color);}
+.filter-btn:hover:not(.aktiv){border-color:var(--tk-color);color:var(--tk-color);}
+
+/* SEKTIONS-LABEL */
+.sek-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--kt-muted);margin:1.4rem 0 .6rem;display:flex;align-items:center;gap:.5rem;}
+.sek-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--kt-border),transparent);}
+
+/* KARTEN-GRID */
+.karten-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.7rem;}
+.tk-karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-left:4px solid var(--tk-color);border-radius:var(--r-md);padding:.85rem 1rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.25rem;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--shadow);}
+.tk-karte:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--tk-color);}
+.tk-karte.versteckt{display:none;}
+.tk-nr{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tk-color);}
+.tk-titel{font-family:'Playfair Display',serif;font-size:.92rem;font-weight:700;color:var(--kt-primary);line-height:1.25;margin-top:.1rem;}
+.tk-sub{font-size:.73rem;color:var(--kt-muted);line-height:1.45;margin-top:.1rem;}
+.tk-karte.span2{grid-column:1/-1;}
+
+/* KEINE TREFFER */
+.keine-treffer{text-align:center;padding:2.5rem 1rem;color:var(--kt-muted);font-size:.85rem;display:none;}
+
+/* FOOTER */
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
+
+@media(max-width:500px){.karten-grid{grid-template-columns:1fr;}.suche-bar{flex-wrap:wrap;}.tk-karte.span2{grid-column:1;}}
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="TK_Landing.html">
+      <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Teamkoordination</span></div>
+    </a>
+    <div class="header-badge">TK-Wissen</div>
+  </div>
+  <nav><a class="btn-back" href="TK_Landing.html">← TK-Bereich</a></nav>
+</header>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="page-tag">TK-Handlungskarten · 15 Karten</div>
+    <h1 class="page-titel">Handlungskarten</h1>
+    <p class="page-lead">Fachliches Handlungswissen für die Teamkoordination — von Fallbesprechung bis Krisenprotokoll. Strukturiert, praxisnah, sofort einsetzbar.</p>
+  </div>
+
+  <!-- SUCHE & FILTER -->
+  <div class="suche-bar">
+    <input class="suche-input" id="suche" type="search" placeholder="Karte suchen…" oninput="filterKarten()">
+    <button class="filter-btn aktiv" data-filter="alle" onclick="setFilter(this,'alle')">Alle</button>
+    <button class="filter-btn" data-filter="team" onclick="setFilter(this,'team')">Team</button>
+    <button class="filter-btn" data-filter="kind" onclick="setFilter(this,'kind')">Kind & Familie</button>
+    <button class="filter-btn" data-filter="system" onclick="setFilter(this,'system')">System</button>
+  </div>
+
+  <div id="keine-treffer" class="keine-treffer">Keine Karten gefunden.</div>
+
+  <!-- SEKTION: TEAM & KOORDINATION -->
+  <div class="sek-label" data-sek="team">Team & Koordination</div>
+  <div class="karten-grid" id="grid-team">
+
+    <a class="tk-karte" data-kat="team" data-text="koordination team aufgaben rollen abläufe" href="TK-01.html">
+      <div class="tk-nr">TK-01</div>
+      <div class="tk-titel">Koordination im Team</div>
+      <div class="tk-sub">Aufgaben, Rollen und Abläufe klären</div>
+    </a>
+
+    <a class="tk-karte" data-kat="team" data-text="fallbesprechung strukturieren systematisch lösungsorientiert" href="TK-02.html">
+      <div class="tk-nr">TK-02</div>
+      <div class="tk-titel">Fallbesprechung strukturieren</div>
+      <div class="tk-sub">Systematisch, klar, lösungsorientiert</div>
+    </a>
+
+    <a class="tk-karte" data-kat="team" data-text="teamentwicklung zusammenhalt feedback entwicklung" href="TK-06.html">
+      <div class="tk-nr">TK-06</div>
+      <div class="tk-titel">Teamentwicklung</div>
+      <div class="tk-sub">Zusammenhalt, Feedback, Entwicklung</div>
+    </a>
+
+    <a class="tk-karte" data-kat="team" data-text="onboarding neue ingra einarbeitung systematisch" href="TK-07.html">
+      <div class="tk-nr">TK-07</div>
+      <div class="tk-titel">Onboarding neue INGRA</div>
+      <div class="tk-sub">Einarbeitung systematisch begleiten</div>
+    </a>
+
+    <a class="tk-karte" data-kat="team" data-text="konflikt team deeskalation klärung gesprächsführung" href="TK-08.html">
+      <div class="tk-nr">TK-08</div>
+      <div class="tk-titel">Konflikt im Team</div>
+      <div class="tk-sub">Deeskalation, Klärung, Gesprächsführung</div>
+    </a>
+
+    <a class="tk-karte" data-kat="system" data-text="supervision vorbereiten inhalte strukturieren einbringen" href="TK-14.html">
+      <div class="tk-nr">TK-14</div>
+      <div class="tk-titel">Supervision vorbereiten</div>
+      <div class="tk-sub">Inhalte strukturieren & einbringen</div>
+    </a>
+
+  </div>
+
+  <!-- SEKTION: KIND & FAMILIE -->
+  <div class="sek-label" data-sek="kind">Kind & Familie</div>
+  <div class="karten-grid" id="grid-kind">
+
+    <a class="tk-karte" data-kat="kind" data-text="hilfeplangespräch vorbereiten struktur dokumentation" href="TK-03.html">
+      <div class="tk-nr">TK-03</div>
+      <div class="tk-titel">Hilfeplangespräch vorbereiten</div>
+      <div class="tk-sub">Struktur & Dokumentation</div>
+    </a>
+
+    <a class="tk-karte" data-kat="kind" data-text="8a schutzauftrag kindeswohlgefährdung erkennen handeln" href="TK-04.html">
+      <div class="tk-nr">TK-04</div>
+      <div class="tk-titel">§ 8a — Schutzauftrag</div>
+      <div class="tk-sub">Kindeswohlgefährdung erkennen & handeln</div>
+    </a>
+
+    <a class="tk-karte" data-kat="kind" data-text="elternkontakt begleiten transparenz vertrauen klarheit" href="TK-11.html">
+      <div class="tk-nr">TK-11</div>
+      <div class="tk-titel">Elternkontakt begleiten</div>
+      <div class="tk-sub">Transparenz, Vertrauen, Klarheit</div>
+    </a>
+
+    <a class="tk-karte" data-kat="kind" data-text="zieldefinition hilfeplan messbare ziele formulieren" href="TK-12.html">
+      <div class="tk-nr">TK-12</div>
+      <div class="tk-titel">Zieldefinition & Hilfeplan</div>
+      <div class="tk-sub">Messbare Ziele formulieren</div>
+    </a>
+
+    <a class="tk-karte" data-kat="kind" data-text="abschlussgespräch ingra abschluss professionell" href="TK-13.html">
+      <div class="tk-nr">TK-13</div>
+      <div class="tk-titel">Abschlussgespräch INGRA</div>
+      <div class="tk-sub">Abschluss professionell gestalten</div>
+    </a>
+
+  </div>
+
+  <!-- SEKTION: SYSTEM & SCHNITTSTELLEN -->
+  <div class="sek-label" data-sek="system">System & Schnittstellen</div>
+  <div class="karten-grid" id="grid-system">
+
+    <a class="tk-karte" data-kat="system" data-text="qualitätssicherung standards reflexion dokumentation" href="TK-05.html">
+      <div class="tk-nr">TK-05</div>
+      <div class="tk-titel">Qualitätssicherung</div>
+      <div class="tk-sub">Standards, Reflexion, Dokumentation</div>
+    </a>
+
+    <a class="tk-karte" data-kat="system" data-text="krisenprotokoll sofortmaßnahmen meldewege" href="TK-09.html">
+      <div class="tk-nr">TK-09</div>
+      <div class="tk-titel">Krisenprotokoll</div>
+      <div class="tk-sub">Sofortmaßnahmen & Meldewege</div>
+    </a>
+
+    <a class="tk-karte" data-kat="system" data-text="schulkommunikation abstimmung schule lehrkräfte" href="TK-10.html">
+      <div class="tk-nr">TK-10</div>
+      <div class="tk-titel">Schulkommunikation</div>
+      <div class="tk-sub">Abstimmung mit Schule & Lehrkräften</div>
+    </a>
+
+    <a class="tk-karte span2" data-kat="system" data-text="vertretungsorganisation abläufe checklisten übergabe ausfall" href="TK-15_Vertretungsorganisation.html">
+      <div class="tk-nr">TK-15</div>
+      <div class="tk-titel">Vertretungsorganisation</div>
+      <div class="tk-sub">Abläufe, Checklisten & Übergabedokumentation bei Ausfall</div>
+    </a>
+
+  </div>
+
+</div><!-- /.page-wrap -->
+
+<footer>
+  <strong>KLARTEXT</strong> · TK-Handlungskarten · TK-01 bis TK-15<br>
+  Klar. Warm. Menschlich. · Neutral · Trägeroffen
+</footer>
+
+<script>
+var aktiverFilter = 'alle';
+
+function setFilter(btn, filter) {
+  aktiverFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  btn.classList.add('aktiv');
+  filterKarten();
+}
+
+function filterKarten() {
+  var suche = document.getElementById('suche').value.toLowerCase().trim();
+  var karten = document.querySelectorAll('.tk-karte');
+  var sektionen = document.querySelectorAll('.sek-label');
+  var treffer = 0;
+
+  karten.forEach(function(k) {
+    var kat = k.getAttribute('data-kat');
+    var text = (k.getAttribute('data-text') || '') + ' ' + k.innerText.toLowerCase();
+    var matchFilter = aktiverFilter === 'alle' || kat === aktiverFilter;
+    var matchSuche = !suche || text.includes(suche);
+    if (matchFilter && matchSuche) {
+      k.classList.remove('versteckt');
+      treffer++;
+    } else {
+      k.classList.add('versteckt');
+    }
+  });
+
+  // Sektions-Labels ausblenden wenn alle Karten darin versteckt
+  ['team','kind','system'].forEach(function(sek) {
+    var grid = document.getElementById('grid-' + sek);
+    var sichtbar = grid ? grid.querySelectorAll('.tk-karte:not(.versteckt)').length > 0 : false;
+    var label = document.querySelector('[data-sek="' + sek + '"]');
+    if (label) label.style.display = sichtbar ? '' : 'none';
+    if (grid) grid.style.display = sichtbar ? '' : 'none';
+  });
+
+  document.getElementById('keine-treffer').style.display = treffer === 0 ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

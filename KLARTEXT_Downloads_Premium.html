@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Downloads Premium</title>
+<meta name="robots" content="noindex,nofollow">
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    if(sessionStorage.getItem('klartext_login')!=='true')
+      window.location.href='KLARTEXT_Login.html';
+  } catch(e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt:  #1B3A4B; --acc: #6EC6A0; --paper: #F5F0E8;
+  --sur: #FFFFFF;  --brd: #DDD8CE; --ink: #2D2D2D; --mut: #7A7060;
+  --fk:  #C62828;  --fk-l:#FDEAEA;
+  --kd:  #00838F;  --kd-l:#E0F7FA;
+  --tools:#455A64; --tools-l:#ECEFF1;
+  --tk:  #4A148C;  --tk-l:#F3E5F5;
+  --lk:  #1565C0;  --lk-l:#E3F2FD;
+  --mh:  #C47A00;  --mh-l:#FDF4E3;
+  --m0:  #1B3A4B;  --m0-l:#EAF0F4;
+  --m1:  #2E5E8A;  --m1-l:#EAF1F8;
+  --m2:  #3B8A68;  --m2-l:#EEF7F2;
+  --m3:  #B07D2A;  --m3-l:#FBF4E8;
+  --m4:  #5D3A7A;  --m4-l:#F3EEF9;
+  --m5:  #B7500A;  --m5-l:#FBF0EA;
+  --m6:  #D81B60;  --m6-l:#FDE8F1;
+  --m7:  #8B4A38;  --m7-l:#F7EFED;
+  --m8:  #6B3F6B;  --m8-l:#F3EDF3;
+  --dl:  #2E7D32;  --dl-l:#E8F5E9;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+
+/* ── HEADER ── */
+.kt-header{background:var(--kt);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(.75rem,3vw,1.5rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:300;}
+.kt-left{display:flex;align-items:center;gap:.75rem;}
+.kt-logo-mark{width:36px;height:36px;border:2px solid var(--acc);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 5px;}
+.lm-k::before{content:"K";font-family:"Playfair Display",serif;font-size:13px;font-weight:700;color:#fff;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--acc);display:block;}
+.kt-logo-text .wort{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .sub{font-size:.6rem;color:var(--acc);letter-spacing:.14em;display:block;margin-top:2px;}
+.hdr-right{display:flex;align-items:center;gap:.5rem;}
+.hdr-btn{padding:.28rem .7rem;border-radius:20px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.75);font-size:.68rem;font-weight:600;text-decoration:none;transition:background .15s;}
+.hdr-btn:hover{background:rgba(255,255,255,.2);}
+
+/* ── SLIM TABS (sticky) ── */
+.slim-tabs{background:var(--sur);border-bottom:1.5px solid var(--brd);position:sticky;top:64px;z-index:200;overflow-x:auto;scrollbar-width:none;white-space:nowrap;}
+.slim-tabs::-webkit-scrollbar{display:none;}
+.slim-tabs-inner{display:inline-flex;padding:0 clamp(.75rem,3vw,1.5rem);min-width:100%;}
+.stab{display:inline-flex;align-items:center;gap:.3rem;padding:.7rem .9rem;font-size:.75rem;font-weight:600;color:var(--mut);border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;text-decoration:none;background:none;border-left:none;border-right:none;border-top:none;font-family:"DM Sans",sans-serif;}
+.stab:hover{color:var(--ink);}
+.stab.aktiv{color:var(--kt);border-bottom-color:var(--tab-color,var(--kt));font-weight:700;}
+
+/* ── SUCHE & TAGS ── */
+.search-zone{background:var(--sur);border-bottom:1px solid var(--brd);padding:.85rem clamp(.75rem,3vw,1.5rem);}
+.search-wrap{position:relative;max-width:560px;margin-bottom:.65rem;}
+.search-icon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--mut);pointer-events:none;font-size:.9rem;}
+#searchInput{width:100%;padding:.6rem 1rem .6rem 2.3rem;border:1.5px solid var(--brd);border-radius:22px;font-family:"DM Sans",sans-serif;font-size:.85rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .15s;}
+#searchInput:focus{border-color:var(--kt);}
+#searchInput::placeholder{color:var(--mut);}
+.tag-reihe{display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;}
+.tag-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);flex-shrink:0;}
+.tag-btn{display:inline-flex;align-items:center;padding:.18rem .55rem;border:1.5px solid var(--brd);border-radius:14px;background:var(--sur);color:var(--mut);font-size:.68rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:"DM Sans",sans-serif;}
+.tag-btn:hover,.tag-btn.aktiv{background:var(--kt);border-color:var(--kt);color:#fff;}
+
+/* ── SHELL ── */
+.shell{max-width:1080px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,1.5rem) 5rem;}
+
+/* ── SEKTION ── */
+.sektion{margin-bottom:2.5rem;scroll-margin-top:140px;}
+.sektion.hidden{display:none;}
+.sek-header{display:flex;align-items:center;gap:.65rem;margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--sek-color,var(--brd));}
+.sek-dot{width:10px;height:10px;border-radius:50%;background:var(--sek-color);flex-shrink:0;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--kt);}
+.sek-count{font-size:.68rem;color:var(--mut);margin-left:auto;}
+
+/* ── PREMIUM KACHELN GRID ── */
+.kacheln-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.85rem;}
+
+/* ── PREMIUM KACHEL ── */
+.pkachel{background:var(--sur);border:1.5px solid var(--brd);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s;}
+.pkachel:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(27,58,75,.12);}
+.pkachel-stripe{height:4px;background:var(--pk-color,var(--mut));}
+.pkachel-head{padding:.85rem 1rem .6rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;}
+.pkachel-emoji{font-size:1.5rem;line-height:1;flex-shrink:0;}
+.pkachel-nr{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pk-color,var(--mut));background:var(--pk-bg,#F5F0E8);padding:.15rem .5rem;border-radius:8px;}
+.pkachel-body{padding:.1rem 1rem .8rem;flex:1;}
+.pkachel-titel{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:.25rem;}
+.pkachel-kat{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--pk-color,var(--mut));margin-bottom:.3rem;}
+.pkachel-desc{font-size:.76rem;color:var(--mut);line-height:1.55;margin-bottom:.55rem;}
+.pkachel-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.7rem;}
+.ptag{font-size:.6rem;font-weight:700;padding:.1rem .45rem;border-radius:8px;background:var(--pk-bg,#F0EBE3);color:var(--pk-color,var(--mut));letter-spacing:.05em;}
+.pkachel-actions{padding:.75rem 1rem;border-top:1px solid var(--brd);display:flex;flex-wrap:wrap;gap:.4rem;background:var(--paper);}
+.pact-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.32rem .7rem;border-radius:20px;font-size:.68rem;font-weight:700;font-family:"DM Sans",sans-serif;cursor:pointer;text-decoration:none;border:1.5px solid var(--brd);background:var(--sur);color:var(--ink);transition:all .15s;}
+.pact-btn:hover{border-color:var(--pk-color);color:var(--pk-color);}
+.pact-btn.primary{background:var(--pk-color,var(--kt));color:#fff;border-color:var(--pk-color,var(--kt));}
+.pact-btn.primary:hover{opacity:.88;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:3.5rem 1rem;color:var(--mut);display:none;}
+.empty-state .ico{font-size:2.5rem;display:block;margin-bottom:.75rem;}
+.empty-state p{font-size:.85rem;}
+
+@media(max-width:600px){
+  .kacheln-grid{grid-template-columns:1fr;}
+  .slim-tabs-inner{gap:0;}
+  .stab{padding:.65rem .65rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════ -->
+<header class="kt-header">
+  <div class="kt-left">
+    <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="sub">Downloads Premium</span></div>
+  </div>
+  <div class="hdr-right">
+    <a class="hdr-btn" href="DASHBOARD.html">🏠 Dashboard</a>
+    <a class="hdr-btn" href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}">Abmelden</a>
+  </div>
+</header>
+
+<!-- ══ SLIM TABS ════════════════════════════════════════════════ -->
+<nav class="slim-tabs" id="slim-tabs">
+  <div class="slim-tabs-inner">
+    <button class="stab aktiv" data-filter="alle" style="--tab-color:var(--kt);">Alle</button>
+    <button class="stab" data-filter="fk"    style="--tab-color:var(--fk);">🚒 Feuerwehr</button>
+    <button class="stab" data-filter="kd"    style="--tab-color:var(--kd);">🧒 Kinder</button>
+    <button class="stab" data-filter="tools" style="--tab-color:var(--tools);">⏱️ Tools</button>
+    <button class="stab" data-filter="tk"    style="--tab-color:var(--tk);">🗂️ TK</button>
+    <button class="stab" data-filter="lk"    style="--tab-color:var(--lk);">🏫 LK</button>
+    <button class="stab" data-filter="mh"    style="--tab-color:var(--mh);">😄 Humor</button>
+    <button class="stab" data-filter="m-module" style="--tab-color:var(--m3);">📚 M-Module</button>
+    <button class="stab" data-filter="dl"    style="--tab-color:var(--dl);">📥 Downloads</button>
+    <button class="stab" data-filter="eigene" style="--tab-color:var(--mut);">⭐ Eigene</button>
+  </div>
+</nav>
+
+<!-- ══ SUCHE & TAGS ═════════════════════════════════════════════ -->
+<div class="search-zone">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="searchInput" placeholder="Suche: Barometer, ADHS, Deeskalation, Mobbing …" autocomplete="off">
+  </div>
+  <div class="tag-reihe">
+    <span class="tag-label">Tags:</span>
+    <button class="tag-btn" data-tag="pdf">PDF</button>
+    <button class="tag-btn" data-tag="a5">A5</button>
+    <button class="tag-btn" data-tag="karte">Karte</button>
+    <button class="tag-btn" data-tag="tool">Tool</button>
+    <button class="tag-btn" data-tag="checkliste">Checkliste</button>
+    <button class="tag-btn" data-tag="vorlage">Vorlage</button>
+    <button class="tag-btn" data-tag="kind">Kind</button>
+    <button class="tag-btn" data-tag="feuerwehr">Feuerwehr</button>
+    <button class="tag-btn" data-tag="mentoring">Mentoring</button>
+  </div>
+</div>
+
+<!-- ══ MAIN ══════════════════════════════════════════════════════ -->
+<div class="shell">
+
+<div id="result-meta" style="font-size:.72rem;color:var(--mut);margin-bottom:.85rem;"></div>
+<div class="empty-state" id="empty-state"><span class="ico">🔍</span><p>Kein Material gefunden. Bitte Suche oder Filter anpassen.</p></div>
+
+<!-- ── FEUERWEHR ──────────────────────────────────────────────── -->
+<section class="sektion" id="sek-fk" data-kategorie="fk" style="--sek-color:var(--fk);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">🚒 Feuerwehrkarten · Barometer ROT</span><span class="sek-count">10 Karten</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="fk" data-tags="feuerwehr karte krise meltdown barometer rot" style="--pk-color:var(--fk);--pk-bg:var(--fk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🔥</span><span class="pkachel-nr">FK-01</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Feuerwehr · Krise</div>
+        <div class="pkachel-titel">Meltdown</div>
+        <div class="pkachel-desc">Was tun wenn alles eskaliert? Sofortmaßnahmen Schritt für Schritt, klar und ruhig.</div>
+        <div class="pkachel-tags"><span class="ptag">Feuerwehr</span><span class="ptag">Karte</span><span class="ptag">Krise</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="FK-01_Meltdown.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="fk" data-tags="feuerwehr karte aggression deeskalation" style="--pk-color:var(--fk);--pk-bg:var(--fk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">⚡</span><span class="pkachel-nr">FK-02</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Feuerwehr · Deeskalation</div>
+        <div class="pkachel-titel">Aggression & Ausraster</div>
+        <div class="pkachel-desc">Klare Handlungsschritte bei aggressivem Verhalten – ohne Eskalation.</div>
+        <div class="pkachel-tags"><span class="ptag">Feuerwehr</span><span class="ptag">Karte</span><span class="ptag">Deeskalation</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="FK-02_Aggression.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="fk" data-tags="feuerwehr karte panik angst beruhigung" style="--pk-color:var(--fk);--pk-bg:var(--fk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">😰</span><span class="pkachel-nr">FK-03</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Feuerwehr · Panik</div>
+        <div class="pkachel-titel">Panik & Angst</div>
+        <div class="pkachel-desc">Beruhigungstechniken und Sofortmaßnahmen bei Panikattacken.</div>
+        <div class="pkachel-tags"><span class="ptag">Feuerwehr</span><span class="ptag">Karte</span><span class="ptag">Angst</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="FK-03_Panik.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="fk" data-tags="feuerwehr karte mobbing konflikt" style="--pk-color:var(--fk);--pk-bg:var(--fk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">😤</span><span class="pkachel-nr">FK-04</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Feuerwehr · Konflikt</div>
+        <div class="pkachel-titel">Mobbing & Ausgrenzung</div>
+        <div class="pkachel-desc">Sofortintervention bei Mobbing – deeskalierend, schützend, klar.</div>
+        <div class="pkachel-tags"><span class="ptag">Feuerwehr</span><span class="ptag">Karte</span><span class="ptag">Mobbing</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="FK-04_Mobbing.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="fk" data-tags="feuerwehr karte selbstverletzung krise schutz" style="--pk-color:var(--fk);--pk-bg:var(--fk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🆘</span><span class="pkachel-nr">FK-05</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Feuerwehr · Schutz</div>
+        <div class="pkachel-titel">Selbstverletzung</div>
+        <div class="pkachel-desc">Ruhig bleiben, schützen, handeln — Schritt für Schritt.</div>
+        <div class="pkachel-tags"><span class="ptag">Feuerwehr</span><span class="ptag">Karte</span><span class="ptag">Schutz</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="FK-05_Selbstverletzung.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── KINDER ─────────────────────────────────────────────────── -->
+<section class="sektion" id="sek-kd" data-kategorie="kd" style="--sek-color:var(--kd);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">🧒 Kind-Karten</span><span class="sek-count">8 Karten</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="kd" data-tags="kind karte adhs konzentration" style="--pk-color:var(--kd);--pk-bg:var(--kd-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🧠</span><span class="pkachel-nr">KD-ADHS</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Kinder · Förderung</div>
+        <div class="pkachel-titel">ADHS & Ausbildungsreife</div>
+        <div class="pkachel-desc">Verstehen, begleiten, fördern — praxisnah und warm.</div>
+        <div class="pkachel-tags"><span class="ptag">Kind</span><span class="ptag">Karte</span><span class="ptag">ADHS</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KD-ADHS.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="kd" data-tags="kind karte sexueller missbrauch schutz erkennen handeln" style="--pk-color:var(--kd);--pk-bg:var(--kd-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🛡️</span><span class="pkachel-nr">KD-SM</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Kinder · Schutz</div>
+        <div class="pkachel-titel">Sex. Missbrauch — Erkennen · Handeln · Schutz</div>
+        <div class="pkachel-desc">Drei Karten: Erkennen, Handeln, Präventiver Schutz. Vertraulich und klar.</div>
+        <div class="pkachel-tags"><span class="ptag">Kind</span><span class="ptag">Schutz</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KD-SM-01_Erkennen.html">🔗 Erkennen</a>
+        <a class="pact-btn" href="KD-SM-02_Handeln.html">🔗 Handeln</a>
+        <a class="pact-btn" href="KD-SM-03_Schutz.html">🔗 Schutz</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="kd" data-tags="kind karte sehbehinderung inklusion" style="--pk-color:var(--kd);--pk-bg:var(--kd-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">👁️</span><span class="pkachel-nr">KD-SB</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Kinder · Inklusion</div>
+        <div class="pkachel-titel">Sehbehinderung — Grundlagen & Praxis</div>
+        <div class="pkachel-desc">Grundlagenwissen und konkrete Begleitpraxis für sehbehinderte Kinder.</div>
+        <div class="pkachel-tags"><span class="ptag">Kind</span><span class="ptag">Inklusion</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KD-SB-01_Grundlagen.html">🔗 Grundlagen</a>
+        <a class="pact-btn" href="KD-SB-02_Praxis.html">🔗 Praxis</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="kd" data-tags="kind karte gehoerlosigkeit kommunikation gebaerdensprache" style="--pk-color:var(--kd);--pk-bg:var(--kd-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">👂</span><span class="pkachel-nr">KD-GL</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Kinder · Kommunikation</div>
+        <div class="pkachel-titel">Gehörlosigkeit — Grundlagen & Praxis</div>
+        <div class="pkachel-desc">Kommunikation, Gebärdensprache, Begleitung im Schulalltag.</div>
+        <div class="pkachel-tags"><span class="ptag">Kind</span><span class="ptag">Karte</span><span class="ptag">Kommunikation</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KD-GL-01_Grundlagen.html">🔗 Grundlagen</a>
+        <a class="pact-btn" href="KD-GL-02_Praxis.html">🔗 Praxis</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TOOLS ──────────────────────────────────────────────────── -->
+<section class="sektion" id="sek-tools" data-kategorie="tools" style="--sek-color:var(--tools);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">⏱️ Tools & Formulare</span><span class="sek-count">6 Tools</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="tools" data-tags="tool zeitkonto csv stunden abrechnung" style="--pk-color:var(--tools);--pk-bg:var(--tools-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">⏱️</span><span class="pkachel-nr">Tool</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Tools · Zeiterfassung</div>
+        <div class="pkachel-titel">Zeitkonto</div>
+        <div class="pkachel-desc">Stunden erfassen, exportieren, auswerten. CSV-Export für Abrechnung.</div>
+        <div class="pkachel-tags"><span class="ptag">Tool</span><span class="ptag">CSV</span><span class="ptag">Zeiterfassung</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Zeitkonto.html">🔗 Tool öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tools" data-tags="vorlage pdf krankmeldung formular" style="--pk-color:var(--tools);--pk-bg:var(--tools-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🤒</span><span class="pkachel-nr">Formular</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Formulare · PDF</div>
+        <div class="pkachel-titel">Krankmeldung</div>
+        <div class="pkachel-desc">Formular für die schnelle Krankmeldung — ausfüllen und drucken.</div>
+        <div class="pkachel-tags"><span class="ptag">Vorlage</span><span class="ptag">PDF</span><span class="ptag">Formular</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Krankmeldung.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tools" data-tags="vorlage pdf urlaubsantrag formular" style="--pk-color:var(--tools);--pk-bg:var(--tools-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🌴</span><span class="pkachel-nr">Formular</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Formulare · PDF</div>
+        <div class="pkachel-titel">Urlaubsantrag</div>
+        <div class="pkachel-desc">Digitaler Urlaubsantrag mit Unterschriftenfeld — direkt druckfertig.</div>
+        <div class="pkachel-tags"><span class="ptag">Vorlage</span><span class="ptag">PDF</span><span class="ptag">Formular</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Urlaubsantrag.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tools" data-tags="tool notizblock a5 notizen schreiben" style="--pk-color:var(--tools);--pk-bg:var(--tools-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📝</span><span class="pkachel-nr">A5</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Tools · Notizen</div>
+        <div class="pkachel-titel">Notizblock A5</div>
+        <div class="pkachel-desc">Digitaler Notizblock — schreiben, speichern, drucken in A5.</div>
+        <div class="pkachel-tags"><span class="ptag">Tool</span><span class="ptag">A5</span><span class="ptag">Notizen</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Notizblock.html">🔗 Tool öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tools" data-tags="tool tagesjournal journal tagesdokumentation" style="--pk-color:var(--tools);--pk-bg:var(--tools-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📘</span><span class="pkachel-nr">Tool</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Tools · Dokumentation</div>
+        <div class="pkachel-titel">Tagesjournal</div>
+        <div class="pkachel-desc">Tägliche Dokumentation — strukturiert, schnell, sicher gespeichert.</div>
+        <div class="pkachel-tags"><span class="ptag">Tool</span><span class="ptag">Dokumentation</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Tagesjournal.html">🔗 Tool öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tools" data-tags="vorlage protokoll teilnehmer liste" style="--pk-color:var(--tools);--pk-bg:var(--tools-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📋</span><span class="pkachel-nr">Formular</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Formulare · Vorlage</div>
+        <div class="pkachel-titel">Teilnehmer-Protokoll</div>
+        <div class="pkachel-desc">Anwesenheitsliste und Besprechungsprotokoll in einem Formular.</div>
+        <div class="pkachel-tags"><span class="ptag">Vorlage</span><span class="ptag">Protokoll</span><span class="ptag">PDF</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Teilnehmer_Protokoll.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TK ─────────────────────────────────────────────────────── -->
+<section class="sektion" id="sek-tk" data-kategorie="tk" style="--sek-color:var(--tk);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">🗂️ TK · Teamkoordination</span><span class="sek-count">4 Module</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="tk" data-tags="tk teamkoordination handlungskarten übersicht" style="--pk-color:var(--tk);--pk-bg:var(--tk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🗂️</span><span class="pkachel-nr">TK</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">TK · Übersicht</div>
+        <div class="pkachel-titel">TK-Bereich</div>
+        <div class="pkachel-desc">Alle TK-Handlungskarten, Rollenlogik und Vertretungsassistent in einer Übersicht.</div>
+        <div class="pkachel-tags"><span class="ptag">TK</span><span class="ptag">Übersicht</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="TK_Landing.html">🔗 TK-Bereich öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tk" data-tags="tk fallmanagement assistent" style="--pk-color:var(--tk);--pk-bg:var(--tk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📂</span><span class="pkachel-nr">FM</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">TK · Fallmanagement</div>
+        <div class="pkachel-titel">Fallmanagement-Assistent</div>
+        <div class="pkachel-desc">Fallakte, Risiko-Ampel, Maßnahmenplan, Chronik, Barometer, PDF-Export.</div>
+        <div class="pkachel-tags"><span class="ptag">TK</span><span class="ptag">Tool</span><span class="ptag">Dokumentation</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="Fallmanagement-Assistent.html">🔗 Öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tk" data-tags="tk vertretung assistent zuweisung" style="--pk-color:var(--tk);--pk-bg:var(--tk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🔄</span><span class="pkachel-nr">VA</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">TK · Vertretung</div>
+        <div class="pkachel-titel">Vertretungsassistent</div>
+        <div class="pkachel-desc">Vertretungen aktivieren, zuweisen und beenden — vollständig im TK-Bereich.</div>
+        <div class="pkachel-tags"><span class="ptag">TK</span><span class="ptag">Tool</span><span class="ptag">Vertretung</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="TK_Rollenlogik.html">🔗 Öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="tk" data-tags="tk massnahmen datenbank filter" style="--pk-color:var(--tk);--pk-bg:var(--tk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📊</span><span class="pkachel-nr">DB</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">TK · Datenbank</div>
+        <div class="pkachel-titel">Maßnahmen-Datenbank</div>
+        <div class="pkachel-desc">Maßnahmen sammeln, kategorisieren und filtern — zentral für das Team.</div>
+        <div class="pkachel-tags"><span class="ptag">TK</span><span class="ptag">Tool</span><span class="ptag">Maßnahmen</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="FM_Massnahmen_DB.html">🔗 Öffnen</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── LK ─────────────────────────────────────────────────────── -->
+<section class="sektion" id="sek-lk" data-kategorie="lk" style="--sek-color:var(--lk);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">🏫 Lehrkraft-Karten</span><span class="sek-count">3 Karten</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="lk" data-tags="lk lehrkraft kurs karten kommunikation" style="--pk-color:var(--lk);--pk-bg:var(--lk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🏫</span><span class="pkachel-nr">LK</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Lehrkraft · Kurs</div>
+        <div class="pkachel-titel">Lehrkraft-Kurs</div>
+        <div class="pkachel-desc">Zusammenarbeit mit INGRA, Rollen, Kommunikation — für Lehrkräfte.</div>
+        <div class="pkachel-tags"><span class="ptag">LK</span><span class="ptag">Karte</span><span class="ptag">Mentoring</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Lehrerkurs.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="lk" data-tags="lk lehrkraft zusammenarbeit ingra schule" style="--pk-color:var(--lk);--pk-bg:var(--lk-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🤝</span><span class="pkachel-nr">LK-01</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Lehrkraft · Zusammenarbeit</div>
+        <div class="pkachel-titel">Zusammenarbeit INGRA & LK</div>
+        <div class="pkachel-desc">Klare Rollenverteilung, Kommunikation und Übergaben im Schulalltag.</div>
+        <div class="pkachel-tags"><span class="ptag">LK</span><span class="ptag">Karte</span><span class="ptag">Kommunikation</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="LK-01.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── HUMOR ──────────────────────────────────────────────────── -->
+<section class="sektion" id="sek-mh" data-kategorie="mh" style="--sek-color:var(--mh);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">😄 M-Humor · Zusatzmodul</span><span class="sek-count">8 Karten</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="mh" data-tags="humor regeln karte mh" style="--pk-color:var(--mh);--pk-bg:var(--mh-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📋</span><span class="pkachel-nr">MH-01</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Humor · Grundlage</div>
+        <div class="pkachel-titel">Humor-Regeln</div>
+        <div class="pkachel-desc">5 Grundregeln für den professionellen Einsatz von Humor in der Begleitung.</div>
+        <div class="pkachel-tags"><span class="ptag">Karte</span><span class="ptag">Humor</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="MH-01_Humor-Regeln.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="mh" data-tags="humor grenzen karte mh sarkasmus" style="--pk-color:var(--mh);--pk-bg:var(--mh-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🚧</span><span class="pkachel-nr">MH-02</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Humor · Grenzen</div>
+        <div class="pkachel-titel">Humor-Grenzen</div>
+        <div class="pkachel-desc">Was immer gilt — absolute Grenzen, kein Sarkasmus, keine Ironie auf Kosten anderer.</div>
+        <div class="pkachel-tags"><span class="ptag">Karte</span><span class="ptag">Humor</span><span class="ptag">Grenzen</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="MH-02_Humor-Grenzen.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="mh" data-tags="humor barometer matrix karte mh" style="--pk-color:var(--mh);--pk-bg:var(--mh-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🌡️</span><span class="pkachel-nr">MH-07</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Humor · Zentralkarte</div>
+        <div class="pkachel-titel">Barometer-Matrix</div>
+        <div class="pkachel-desc">Wann passt Humor? Grün · Gelb · Orange · Rot — die wichtigste Humor-Karte.</div>
+        <div class="pkachel-tags"><span class="ptag">Karte</span><span class="ptag">Humor</span><span class="ptag">Barometer</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="MH-07_Barometer-Matrix_Wann_passt_Humor.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="mh" data-tags="humor notfall saetze koffer karte mh" style="--pk-color:var(--mh);--pk-bg:var(--mh-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🧳</span><span class="pkachel-nr">MH-17</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Humor · Praxis</div>
+        <div class="pkachel-titel">Humor-Notfallkoffer</div>
+        <div class="pkachel-desc">10 Sätze für den Geduldsfaden — im richtigen Moment treffend und entlastend.</div>
+        <div class="pkachel-tags"><span class="ptag">Karte</span><span class="ptag">Humor</span><span class="ptag">Praxis</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="M8-17_Humor-Notfallkoffer.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── M-MODULE ────────────────────────────────────────────────── -->
+<section class="sektion" id="sek-module" data-kategorie="m-module" style="--sek-color:var(--m3);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">📚 M-Module · Übersicht</span><span class="sek-count">M0–M8</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="m-module" data-tags="m0 systemelemente orientierung mentoring ingra" style="--pk-color:var(--m0);--pk-bg:var(--m0-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🧭</span><span class="pkachel-nr">M0</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M0 · Systemelemente</div>
+        <div class="pkachel-titel">Orientierung & System</div>
+        <div class="pkachel-desc">Wie funktioniert KLARTEXT? Rollen, Struktur, Einstieg ins System.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M0.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m1 rolle recht gesetz ingra schulbegleitung" style="--pk-color:var(--m1);--pk-bg:var(--m1-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">⚖️</span><span class="pkachel-nr">M1</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M1 · Rolle & Recht</div>
+        <div class="pkachel-titel">Meine Rolle & Rechtliches</div>
+        <div class="pkachel-desc">Was darf ich? Was muss ich? Rechtlicher Rahmen der Schulbegleitung.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M1.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m2 kinder verstehen adhs autismus trauma behinderung" style="--pk-color:var(--m2);--pk-bg:var(--m2-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🧒</span><span class="pkachel-nr">M2</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M2 · Kinder verstehen</div>
+        <div class="pkachel-titel">Kinder verstehen</div>
+        <div class="pkachel-desc">ADHS, Autismus, Trauma, Behinderung — Grundwissen für die Praxis.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Kind</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M2.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m3 sofort werkzeuge joker intervention" style="--pk-color:var(--m3);--pk-bg:var(--m3-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🎯</span><span class="pkachel-nr">M3</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M3 · Sofort-Werkzeuge</div>
+        <div class="pkachel-titel">Was tue ich jetzt?</div>
+        <div class="pkachel-desc">8 Situationen · 12 Werkzeuge · direkt im Unterricht einsetzbar.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Tool</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M3.html">🔗 Modul öffnen</a>
+        <a class="pact-btn" href="M3-Joker.html">🃏 Joker</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m4 kommunikation eltern lehrkraft gespräch" style="--pk-color:var(--m4);--pk-bg:var(--m4-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">💬</span><span class="pkachel-nr">M4</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M4 · Kommunikation</div>
+        <div class="pkachel-titel">Kommunikation</div>
+        <div class="pkachel-desc">Mit Eltern, Lehrkräften und Kindern sprechen — klar, warm, professionell.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M4.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m5 schwierige situationen konflikt mobbing grenze" style="--pk-color:var(--m5);--pk-bg:var(--m5-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">⚠️</span><span class="pkachel-nr">M5</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M5 · Schwierige Situationen</div>
+        <div class="pkachel-titel">Schwierige Situationen</div>
+        <div class="pkachel-desc">Konflikte, Grenzverletzungen, Mobbing — vorbereitet und handlungsfähig.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M5.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m6 krisen notfall suizid gefährdung kindeswohlgefährdung" style="--pk-color:var(--m6);--pk-bg:var(--m6-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🆘</span><span class="pkachel-nr">M6</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M6 · Krisen</div>
+        <div class="pkachel-titel">Krisen & Notfälle</div>
+        <div class="pkachel-desc">Suizid, Kindeswohlgefährdung, Notfall — klar, ruhig, richtig handeln.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span><span class="ptag">Krise</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M6.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m7 praxissituationen alltag unterricht schule" style="--pk-color:var(--m7);--pk-bg:var(--m7-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🏫</span><span class="pkachel-nr">M7</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M7 · Praxissituationen</div>
+        <div class="pkachel-titel">Praxissituationen</div>
+        <div class="pkachel-desc">Konkrete Situationen aus dem Schulalltag — mit Lösungsansätzen und Reflexion.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span><span class="ptag">Praxis</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M7.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="m-module" data-tags="m8 selbstfürsorge pause stress barometer erholung humor" style="--pk-color:var(--m8);--pk-bg:var(--m8-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🌿</span><span class="pkachel-nr">M8</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">M8 · Selbstfürsorge</div>
+        <div class="pkachel-titel">Selbstfürsorge</div>
+        <div class="pkachel-desc">Barometer, Pausen, Humor, Bingo — 19 Karten für das eigene Wohlbefinden.</div>
+        <div class="pkachel-tags"><span class="ptag">Mentoring</span><span class="ptag">Karte</span><span class="ptag">Selbstfürsorge</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="DASHBOARD-M8.html">🔗 Modul öffnen</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── DOWNLOADS ──────────────────────────────────────────────── -->
+<section class="sektion" id="sek-dl" data-kategorie="dl" style="--sek-color:var(--dl);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">📥 Download-Zentrale</span><span class="sek-count">Alle Formulare</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="dl" data-tags="download pdf formulare barometer tagesdokumentation ingra eltern lk tk kinder" style="--pk-color:var(--dl);--pk-bg:var(--dl-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📥</span><span class="pkachel-nr">Downloads</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Downloads · Alle Formulare</div>
+        <div class="pkachel-titel">Download-Zentrale öffnen</div>
+        <div class="pkachel-desc">INGRA · Eltern · Lehrkraft · TK · Kinder · Anti-Mobbing — alle 20+ Formulare an einem Ort.</div>
+        <div class="pkachel-tags"><span class="ptag">PDF</span><span class="ptag">Vorlage</span><span class="ptag">Download</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Downloads.html">🔗 Alle Formulare öffnen</a>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="dl" data-tags="download pdf meine listen todo aufgaben" style="--pk-color:var(--dl);--pk-bg:var(--dl-l);">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📋</span><span class="pkachel-nr">Listen</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Downloads · Listen</div>
+        <div class="pkachel-titel">Meine Listen</div>
+        <div class="pkachel-desc">To-do-Listen, Checklisten, Vorlagen — strukturiert und druckfertig.</div>
+        <div class="pkachel-tags"><span class="ptag">Checkliste</span><span class="ptag">Vorlage</span><span class="ptag">PDF</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Listen.html">🔗 Öffnen</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EIGENE MATERIALIEN ─────────────────────────────────────── -->
+<section class="sektion" id="sek-eigene" data-kategorie="eigene" style="--sek-color:var(--mut);">
+  <div class="sek-header"><div class="sek-dot"></div><span class="sek-titel">⭐ Eigene Materialien</span><span class="sek-count">Persönlich</span></div>
+  <div class="kacheln-grid">
+
+    <div class="pkachel" data-kat="eigene" data-tags="eigene materialien notizblock" style="--pk-color:var(--mut);--pk-bg:#F0EBE3;">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">📝</span><span class="pkachel-nr">Eigene</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Eigene · Notizen</div>
+        <div class="pkachel-titel">Mein Notizblock</div>
+        <div class="pkachel-desc">Persönliche Notizen, Entwürfe und Texte — privat und lokal gespeichert.</div>
+        <div class="pkachel-tags"><span class="ptag">Eigene</span><span class="ptag">A5</span><span class="ptag">Notizen</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="KLARTEXT_Notizblock.html">🔗 Öffnen</a>
+        <button class="pact-btn" onclick="window.print()">🖨️ A5-Druck</button>
+      </div>
+    </div>
+
+    <div class="pkachel" data-kat="eigene" data-tags="eigene materialien barometer ingra stimmung" style="--pk-color:var(--mut);--pk-bg:#F0EBE3;">
+      <div class="pkachel-stripe"></div>
+      <div class="pkachel-head"><span class="pkachel-emoji">🌡️</span><span class="pkachel-nr">Eigene</span></div>
+      <div class="pkachel-body">
+        <div class="pkachel-kat">Eigene · Barometer</div>
+        <div class="pkachel-titel">Mein Barometer</div>
+        <div class="pkachel-desc">Wie geht es mir heute? Stimmung, Belastung, Notiz — täglich in Sekunden.</div>
+        <div class="pkachel-tags"><span class="ptag">Eigene</span><span class="ptag">Tool</span><span class="ptag">Barometer</span></div>
+      </div>
+      <div class="pkachel-actions">
+        <a class="pact-btn primary" href="BAROMETER_INGRA.html">🔗 Öffnen</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div><!-- .shell -->
+
+<script>
+// ── FILTER: TABS ────────────────────────────────────────────
+document.querySelectorAll('.stab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    var filter = this.dataset.filter;
+    document.querySelectorAll('.stab').forEach(function(t){ t.classList.remove('aktiv'); });
+    this.classList.add('aktiv');
+    activeTags = [];
+    document.querySelectorAll('.tag-btn').forEach(function(t){ t.classList.remove('aktiv'); });
+    filterAlles(filter, '', []);
+  });
+});
+
+// ── FILTER: TAGS ────────────────────────────────────────────
+var activeTags = [];
+document.querySelectorAll('.tag-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var tag = this.dataset.tag;
+    if (activeTags.includes(tag)) {
+      activeTags = activeTags.filter(function(t){ return t !== tag; });
+      this.classList.remove('aktiv');
+    } else {
+      activeTags.push(tag);
+      this.classList.add('aktiv');
+    }
+    var activeTab = document.querySelector('.stab.aktiv');
+    filterAlles(activeTab ? activeTab.dataset.filter : 'alle', document.getElementById('searchInput').value, activeTags);
+  });
+});
+
+// ── SUCHE ───────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', function() {
+  var activeTab = document.querySelector('.stab.aktiv');
+  filterAlles(activeTab ? activeTab.dataset.filter : 'alle', this.value, activeTags);
+});
+
+function filterAlles(kat, suche, tags) {
+  var q = (suche || '').toLowerCase().trim();
+  var kacheln = document.querySelectorAll('.pkachel');
+  var sektionen = document.querySelectorAll('.sektion');
+  var sichtbar = 0;
+
+  kacheln.forEach(function(k) {
+    var kKat  = k.dataset.kat || '';
+    var kTags = (k.dataset.tags || '').toLowerCase();
+    var kText = k.innerText.toLowerCase();
+
+    var katOk  = kat === 'alle' || kKat === kat;
+    var suchOk = !q || kText.includes(q) || kTags.includes(q);
+    var tagOk  = tags.length === 0 || tags.every(function(t){ return kTags.includes(t); });
+
+    var zeigen = katOk && suchOk && tagOk;
+    k.style.display = zeigen ? '' : 'none';
+    if (zeigen) sichtbar++;
+  });
+
+  // Sektionen mit allen unsichtbaren Kacheln ausblenden
+  sektionen.forEach(function(sek) {
+    var kds = sek.querySelectorAll('.pkachel');
+    var allHidden = Array.from(kds).every(function(k){ return k.style.display === 'none'; });
+    // Nur verstecken wenn aktiver Kategorie-Filter nicht die Sektion betrifft
+    if (kat !== 'alle') {
+      var sekKat = sek.dataset.kategorie;
+      sek.classList.toggle('hidden', sekKat !== kat);
+    } else {
+      sek.classList.toggle('hidden', allHidden);
+    }
+  });
+
+  document.getElementById('result-meta').textContent = sichtbar + ' Material' + (sichtbar !== 1 ? 'ien' : '') + ' gefunden';
+  document.getElementById('empty-state').style.display = sichtbar === 0 ? 'block' : 'none';
+}
+
+// Init
+filterAlles('alle','', []);
+</script>
+</body>
+</html>

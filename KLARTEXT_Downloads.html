@@ -2,329 +2,433 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLARTEXT · Downloads & Formulare</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Downloads</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--m:#1B3A4B;--accent:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;scroll-padding-top:130px;}
-body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
-.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;}
-.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
-.logo-mark{width:32px;height:32px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;}
-.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
-.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
-.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--accent);border-radius:20px;color:var(--accent);font-size:.7rem;font-weight:700;text-decoration:none;}
-.tab-nav{background:var(--surface);border-bottom:1.5px solid var(--border);padding:.6rem clamp(1rem,4vw,2rem);display:flex;gap:.4rem;flex-wrap:wrap;position:sticky;top:64px;z-index:90;overflow-x:auto;}
-.tab{padding:.3rem .75rem;border-radius:20px;font-size:.73rem;font-weight:600;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;text-decoration:none;white-space:nowrap;}
-.tab:hover{border-color:var(--m);color:var(--m);}
-.tab.ingra{} .tab.el{} .tab.lk{} .tab.tk{} .tab.kd{} .tab.am{}
-.tab.ingra.aktiv{background:#1B3A4B;border-color:#1B3A4B;color:#fff;}
-.tab.el.aktiv{background:#AD1457;border-color:#AD1457;color:#fff;}
-.tab.lk.aktiv{background:#1565C0;border-color:#1565C0;color:#fff;}
-.tab.tk.aktiv{background:#4A148C;border-color:#4A148C;color:#fff;}
-.tab.kd.aktiv{background:#3B8A68;border-color:#3B8A68;color:#fff;}
-.tab.am.aktiv{background:#C62828;border-color:#C62828;color:#fff;}
-.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2rem clamp(1rem,4vw,2rem);text-align:center;}
-.hero-icon{font-size:2rem;margin-bottom:.5rem;}
-.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
-.hero-sub{font-size:.82rem;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto;}
-.shell{max-width:900px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
-.sek{margin-bottom:2.5rem;scroll-margin-top:135px;}
-.sek-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:10px;margin-bottom:.85rem;}
-.sek-emoji{font-size:1.4rem;}
-.sek-info{flex:1;}
-.sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;}
-.sek-sub{font-size:.72rem;margin-top:1px;opacity:.7;}
-.dl-grid{display:flex;flex-direction:column;gap:.5rem;}
-.dl-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:.9rem;padding:.75rem 1rem;transition:all .15s;}
-.dl-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);}
-.dl-icon{font-size:1.3rem;flex-shrink:0;}
-.dl-info{flex:1;}
-.dl-name{font-size:.87rem;font-weight:600;margin-bottom:.15rem;}
-.dl-desc{font-size:.72rem;color:var(--muted);}
-.dl-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:6px;font-size:.75rem;font-weight:700;text-decoration:none;transition:all .15s;flex-shrink:0;color:#fff;}
+:root{
+  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--muted:#6A6878;--ink:#2D2D2D;
+  --r-sm:8px;--r-md:14px;
+  --shadow:0 2px 8px rgba(27,58,75,.09);
+  --shadow-lg:0 4px 18px rgba(27,58,75,.14);
+  /* Kategorie-Farben */
+  --c-fw:#C47A00; --c-ki:#3B8A68; --c-to:#2E5E8A;
+  --c-tk:#4A148C; --c-lk:#8B2A2A; --c-fk:#4A6B4A;
+  --c-mm:#1B3A4B; --c-ei:#6A6878;
+}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+
+/* ── Header ─────────────────────────────────────── */
+.kt-header{
+  background:var(--navy);height:56px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 1.4rem;
+  border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:200;
+}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.4rem;}
+.kt-logo span{color:var(--acc);font-size:.6rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;letter-spacing:.04em;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.28rem .7rem;}
+.back-btn:hover{background:var(--acc);color:var(--navy);}
+
+/* ── Slim Tab-Leiste ─────────────────────────────── */
+.tab-bar{
+  position:sticky;top:56px;z-index:190;
+  background:var(--navy);border-bottom:1px solid rgba(110,198,160,.25);
+  display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;
+  padding:0 .6rem;gap:.15rem;
+}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-btn{
+  flex-shrink:0;
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.52rem .85rem;font-size:.72rem;font-weight:700;
+  color:rgba(255,255,255,.6);border:none;background:transparent;
+  cursor:pointer;border-bottom:2.5px solid transparent;
+  transition:color .15s,border-color .15s;white-space:nowrap;
+  font-family:"DM Sans",sans-serif;letter-spacing:.02em;
+}
+.tab-btn:hover{color:rgba(255,255,255,.9);}
+.tab-btn.aktiv{color:#fff;border-bottom-color:var(--acc);}
+.tab-btn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* ── Hero ────────────────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#0F2230 100%);
+  padding:2rem 1.5rem 1.6rem;margin-bottom:0;
+}
+.hero-inner{max-width:1000px;margin:0 auto;}
+.hero h1{font-family:"Playfair Display",serif;font-size:1.6rem;color:#fff;margin-bottom:.35rem;}
+.hero p{font-size:.83rem;color:rgba(255,255,255,.65);line-height:1.6;max-width:560px;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.3rem;margin-top:.7rem;
+  background:rgba(110,198,160,.18);border:1px solid rgba(110,198,160,.35);
+  color:var(--acc);border-radius:12px;padding:.25rem .7rem;font-size:.68rem;font-weight:700;
+}
+
+/* ── Suche ───────────────────────────────────────── */
+.such-leiste{background:var(--surface);border-bottom:1px solid var(--border);padding:.7rem 1.4rem;}
+.such-leiste-inner{max-width:1000px;margin:0 auto;position:relative;}
+.such-leiste input{
+  width:100%;border:1.5px solid var(--border);border-radius:22px;
+  padding:.5rem 1rem .5rem 2.2rem;font-family:inherit;font-size:.84rem;color:var(--ink);
+  background:var(--paper);
+}
+.such-leiste input:focus{outline:none;border-color:var(--navy);}
+.such-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--muted);}
+
+/* ── Inhalt ──────────────────────────────────────── */
+main{max-width:1000px;margin:0 auto;padding:1.6rem 1rem 4rem;}
+
+.kat-sektion{display:none;}
+.kat-sektion.aktiv{display:block;}
+
+.kat-titel{
+  font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--navy);
+  margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem;
+}
+.kat-stripe{width:4px;height:1.1rem;border-radius:2px;}
+
+/* ── Kachel-Grid ─────────────────────────────────── */
+.kachel-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:.9rem;
+}
+
+.dl-kachel{
+  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);
+  padding:1.1rem 1rem 1rem;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:.45rem;
+  transition:box-shadow .18s,transform .18s;text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+}
+.dl-kachel:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+.dl-kachel::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--kachel-farbe, var(--muted));
+}
+.dl-kachel-icon{font-size:1.5rem;line-height:1;}
+.dl-kachel-titel{font-weight:700;font-size:.88rem;color:var(--ink);line-height:1.3;}
+.dl-kachel-sub{font-size:.72rem;color:var(--muted);line-height:1.45;}
+.dl-kachel-typ{
+  display:inline-flex;align-items:center;gap:.25rem;margin-top:auto;
+  font-size:.65rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--kachel-farbe, var(--muted));
+}
+.dl-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.3rem;
+  margin-top:.3rem;padding:.42rem .8rem;border-radius:16px;
+  background:var(--kachel-farbe, var(--muted));color:#fff;
+  font-size:.72rem;font-weight:700;font-family:inherit;border:none;cursor:pointer;
+  text-decoration:none;
+}
 .dl-btn:hover{opacity:.85;}
+
+/* Eigene-Kachel Upload */
+.upload-kachel{
+  border:2px dashed var(--border);background:var(--paper);
+  align-items:center;justify-content:center;text-align:center;min-height:140px;cursor:pointer;
+}
+.upload-kachel:hover{border-color:var(--navy);background:#EEF3F6;}
+.upload-kachel .upload-icon{font-size:2rem;margin-bottom:.4rem;color:var(--muted);}
+.upload-kachel .upload-txt{font-size:.78rem;color:var(--muted);}
+
+/* Zähler-Badge im Tab */
+.tab-count{
+  background:rgba(255,255,255,.15);color:#fff;border-radius:8px;
+  padding:.05rem .4rem;font-size:.62rem;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media(max-width:600px){
+  .kachel-grid{grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:1.25rem;}
+}
+@media(max-width:380px){
+  .kachel-grid{grid-template-columns:1fr;}
+}
 </style>
-<script>
-(function(){
-  try{
-    if(sessionStorage.getItem('klartext_login')!=='true'){
-      window.location.href='KLARTEXT_Login.html';
-    }
-  }catch(e){}
-})();
-</script>
-<link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="KLARTEXT">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#1B3A4B">
 </head>
 <body>
-<header class="header">
-  <a class="logo" href="DASHBOARD.html">
-    <div class="logo-mark"><span>K</span></div>
-    <div><div class="logo-text">KLARTEXT · Downloads</div></div>
-  </a>
+
+<!-- HEADER -->
+<header class="kt-header">
+  <div class="kt-logo">KLARTEXT <span>Downloads · Premium</span></div>
   <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
 </header>
 
-<nav class="tab-nav">
-  <a class="tab ingra aktiv" href="#ingra">🟢 INGRA</a>
-  <a class="tab el" href="#el">❤️ Eltern</a>
-  <a class="tab lk" href="#lk">🏫 Lehrkraft</a>
-  <a class="tab tk" href="#tk">🗂️ Teamkoordination</a>
-  <a class="tab kd" href="#kd">🧒 Kinder</a>
-  <a class="tab am" href="#am">🛡️ Anti-Mobbing</a>
+<!-- SLIM TABS -->
+<nav class="tab-bar" id="tabBar">
+  <button class="tab-btn aktiv" data-kat="fw"  onclick="wechsleTab('fw',this)"><span class="dot" style="background:var(--c-fw);"></span>Feuerwehr <span class="tab-count" id="cnt-fw"></span></button>
+  <button class="tab-btn" data-kat="ki"  onclick="wechsleTab('ki',this)"><span class="dot" style="background:var(--c-ki);"></span>Kinder <span class="tab-count" id="cnt-ki"></span></button>
+  <button class="tab-btn" data-kat="to"  onclick="wechsleTab('to',this)"><span class="dot" style="background:var(--c-to);"></span>Tools <span class="tab-count" id="cnt-to"></span></button>
+  <button class="tab-btn" data-kat="tk"  onclick="wechsleTab('tk',this)"><span class="dot" style="background:var(--c-tk);"></span>TK <span class="tab-count" id="cnt-tk"></span></button>
+  <button class="tab-btn" data-kat="lk"  onclick="wechsleTab('lk',this)"><span class="dot" style="background:var(--c-lk);"></span>LK <span class="tab-count" id="cnt-lk"></span></button>
+  <button class="tab-btn" data-kat="fk"  onclick="wechsleTab('fk',this)"><span class="dot" style="background:var(--c-fk);"></span>FK <span class="tab-count" id="cnt-fk"></span></button>
+  <button class="tab-btn" data-kat="mm"  onclick="wechsleTab('mm',this)"><span class="dot" style="background:var(--c-mm);"></span>M-Module <span class="tab-count" id="cnt-mm"></span></button>
+  <button class="tab-btn" data-kat="ei"  onclick="wechsleTab('ei',this)"><span class="dot" style="background:var(--c-ei);"></span>Eigene <span class="tab-count" id="cnt-ei"></span></button>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-icon">📥</div>
-  <h1 class="hero-titel">Downloads & Formulare</h1>
-  <p class="hero-sub">Alle Druckvorlagen, Formulare und Materialien — nach Zielgruppe sortiert. Öffnen · Ausfüllen · Als PDF drucken.</p>
+  <div class="hero-inner">
+    <h1>Downloads & Materialien</h1>
+    <p>Alle KLARTEXT-Ressourcen — Karten, Formulare, Handbücher, Vorlagen — sortiert nach Bereich. Klick auf eine Kachel öffnet den direkten Download.</p>
+    <div class="hero-badge">⭐ Premium · Alle Bereiche freigeschaltet</div>
+  </div>
 </div>
 
-<div class="shell">
-
-  <!-- INGRA -->
-  <div class="sek" id="ingra">
-    <div class="sek-header" style="background:#EAF0F4;">
-      <div class="sek-emoji">🟢</div>
-      <div class="sek-info"><div class="sek-titel" style="color:#1B3A4B;">INGRA · Schulbegleitung</div><div class="sek-sub" style="color:#1B3A4B;">Dokumentationsformulare für den Schulalltag</div></div>
-    </div>
-    <div class="dl-grid">
-      <div class="dl-item">
-        <div class="dl-icon">📋</div>
-        <div class="dl-info"><div class="dl-name">Tagesdokumentation</div><div class="dl-desc">Tagesprotokoll · Barometer · Werkzeuge · Übergabe</div></div>
-        <a class="dl-btn" href="M5_DL_Tagesdokumentation.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🔖</div>
-        <div class="dl-info"><div class="dl-name">Lesezeichen für dich</div><div class="dl-desc">Zum Ausdrucken, Lochen, Faden dran — Brainy begleitet dich</div></div>
-        <a class="dl-btn" href="INGRA_Lesezeichen_Klartext.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">👆</div>
-        <div class="dl-info"><div class="dl-name">Lesefinger</div><div class="dl-desc">Zum Ausschneiden — über den Finger stülpen, Zeile für Zeile mitlesen</div></div>
-        <a class="dl-btn" href="Lesefinger-Klartext.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📊</div>
-        <div class="dl-info"><div class="dl-name">Wochenreflexion</div><div class="dl-desc">Barometer je Wochentag · Was gut war · Was schwierig war</div></div>
-        <a class="dl-btn" href="M5_DL_Wochenreflexion.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📈</div>
-        <div class="dl-info"><div class="dl-name">Monatsbericht</div><div class="dl-desc">Barometer-Bilanz · Entwicklung · Ziele · Hilfeplan-Empfehlung</div></div>
-        <a class="dl-btn" href="M5_DL_Monatsbericht.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🔄</div>
-        <div class="dl-info"><div class="dl-name">Übergabeprotokoll</div><div class="dl-desc">Von/An INGRA · Barometer · Was half · Unterschriften</div></div>
-        <a class="dl-btn" href="M5_DL_Uebergabeprotokoll.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">👁️</div>
-        <div class="dl-info"><div class="dl-name">Beobachtungsbogen</div><div class="dl-desc">Sachliche Beobachtung · nur Fakten · § 8a-Hinweis</div></div>
-        <a class="dl-btn" href="M5_DL_Beobachtungsbogen.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🎯</div>
-        <div class="dl-info"><div class="dl-name">Zielvereinbarung</div><div class="dl-desc">3 Ziele · Messkriterien · Zuständigkeiten · 3 Unterschriften</div></div>
-        <a class="dl-btn" href="M5_DL_Zielvereinbarung.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🗣️</div>
-        <div class="dl-info"><div class="dl-name">Gesprächsnotiz</div><div class="dl-desc">Eltern-, TK-, LK-Gespräch · Vereinbarungen · Nächster Termin</div></div>
-        <a class="dl-btn" href="M5_DL_Gespraechsnotiz.html" style="background:#1B3A4B;">🖨️ Öffnen</a>
-      </div>
-            <div class="dl-item">
-        <div class="dl-icon">🛡️</div>
-        <div class="dl-info"><div class="dl-name">SB-Schutzprotokoll (Hochkonflikt-Eltern)</div><div class="dl-desc">Vorfallsdokumentation · Art des Vorfalls · Reaktion · TK-Weitergabe · Unterschriften</div></div>
-        <a class="dl-btn" href="M2_DL_SB_Schutzprotokoll.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🌿</div>
-        <div class="dl-info"><div class="dl-name">Essstörung — Beobachtungsbogen</div><div class="dl-desc">Sachliche Mustererkennung · Keine Diagnose · Körperlich · Essverhalten · Weitergabe an TK</div></div>
-        <a class="dl-btn" href="M2_DL_Esstoerung_Beobachtung.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🌡️</div>
-        <div class="dl-info"><div class="dl-name">Barometer INGRA — interaktiv</div><div class="dl-desc">Täglicher Eintrag · Wochenbilanz · PDF-Export</div></div>
-        <a class="dl-btn" href="BAROMETER_INGRA.html" style="background:#6EC6A0;color:#1B3A4B;">Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🎯</div>
-        <div class="dl-info"><div class="dl-name">Selbstfürsorge-Bingo</div><div class="dl-desc">16 Felder zum Abhaken · Eine Woche lang</div></div>
-        <a class="dl-btn" href="M8-DL_Selbstfuersorge-Bingo.html" style="background:#6B3F6B;">🖨️ Öffnen</a>
-      </div>
-    </div>
+<!-- SUCHE -->
+<div class="such-leiste">
+  <div class="such-leiste-inner">
+    <span class="such-icon">🔍</span>
+    <input type="text" id="suchfeld" placeholder="Material suchen …" oninput="suchFilter(this.value)">
   </div>
+</div>
 
-  <!-- ELTERN -->
-  <div class="sek" id="el">
-    <div class="sek-header" style="background:#FCE4EC;">
-      <div class="sek-emoji">❤️</div>
-      <div class="sek-info"><div class="sek-titel" style="color:#AD1457;">Eltern</div><div class="sek-sub" style="color:#AD1457;">Materialien für zuhause und den Austausch mit der Schule</div></div>
-    </div>
-    <div class="dl-grid">
-      <div class="dl-item">
-        <div class="dl-icon">🌡️</div>
-        <div class="dl-info"><div class="dl-name">Barometer-Poster</div><div class="dl-desc">Für zuhause ausdrucken · 5 Farben · kindgerecht</div></div>
-        <a class="dl-btn" href="EL_DL_Barometer_Poster.html" style="background:#AD1457;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">😊</div>
-        <div class="dl-info"><div class="dl-name">Kinder-Barometer — interaktiv</div><div class="dl-desc">Kind stellt selbst ein · Wochenbilanz · Drucken</div></div>
-        <a class="dl-btn" href="BAROMETER_KIND.html" style="background:#AD1457;">Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🌅</div>
-        <div class="dl-info"><div class="dl-name">Morgenritual-Karte</div><div class="dl-desc">Tagesablauf planen · Abschiedsritual · Ausfüllbar</div></div>
-        <a class="dl-btn" href="EL_DL_Morgenritual.html" style="background:#AD1457;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📋</div>
-        <div class="dl-info"><div class="dl-name">Eltern-Wochennotiz</div><div class="dl-desc">Beobachtungen zuhause · Barometer · Fragen an Schule</div></div>
-        <a class="dl-btn" href="EL_DL_Wochennotiz.html" style="background:#AD1457;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📞</div>
-        <div class="dl-info"><div class="dl-name">Notfallkontakte</div><div class="dl-desc">Ausfüllbare Kontaktkarte · Schule · TK · Kostenträger</div></div>
-        <a class="dl-btn" href="EL-04.html" style="background:#AD1457;">🖨️ Öffnen</a>
-      </div>
-    </div>
-  </div>
+<!-- INHALT -->
+<main id="hauptinhalt">
 
-  <!-- LEHRKRAFT -->
-  
+  <!-- FEUERWEHR -->
+  <section class="kat-sektion aktiv" id="kat-fw">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-fw);"></span>🚒 Feuerwehrkarten</div>
+    <div class="kachel-grid" id="grid-fw"></div>
+  </section>
+
   <!-- KINDER -->
-  <div class="sek" id="kd">
-    <div class="sek-header" style="background:#E8F5EE;">
-      <div class="sek-emoji">🧒</div>
-      <div class="sek-info"><div class="sek-titel" style="color:#3B8A68;">Kinder · Für das Kind direkt</div><div class="sek-sub" style="color:#3B8A68;">Interaktive Karten und alle Druckvorlagen</div></div>
-    </div>
-    <div class="dl-grid">
-      <div class="dl-item">
-        <div class="dl-icon">😊</div>
-        <div class="dl-info"><div class="dl-name">Barometer für Kinder — interaktiv</div><div class="dl-desc">Kind wählt selbst · Wochenbilanz · Konfetti · Drucken</div></div>
-        <a class="dl-btn" href="BAROMETER_KIND.html" style="background:#3B8A68;">Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🔖</div>
-        <div class="dl-info"><div class="dl-name">Lesezeichen für dich</div><div class="dl-desc">Zum Ausdrucken, Lochen, Faden dran — Brainy bewacht deine Seite</div></div>
-        <a class="dl-btn" href="KIND_Lesezeichen_Klartext.pdf" style="background:#3B8A68;" download>📄 PDF</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🌡️</div>
-        <div class="dl-info"><div class="dl-name">Wie geht es mir? (KD-01)</div><div class="dl-desc">Interaktive Barometer-Karte für das Kind</div></div>
-        <a class="dl-btn" href="KD-01.html" style="background:#3B8A68;">Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🕵️</div>
-        <div class="dl-info"><div class="dl-name">Geheimschüler-Ausweis</div><div class="dl-desc">Druckvorlage · Ausschneiden · Laminieren</div></div>
-        <a class="dl-btn" href="KD-DL-01.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🃏</div>
-        <div class="dl-info"><div class="dl-name">Joker-Gutscheine</div><div class="dl-desc">Druckvorlage · Notfallsignal für das Kind</div></div>
-        <a class="dl-btn" href="KD-DL-02.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">⭐</div>
-        <div class="dl-info"><div class="dl-name">Sterntaler</div><div class="dl-desc">Druckvorlage · Lob und Erfolge sichtbar machen</div></div>
-        <a class="dl-btn" href="KD-DL-03.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🚽</div>
-        <div class="dl-info"><div class="dl-name">Klo-Kärtchen</div><div class="dl-desc">Druckvorlage · Pausenregelung für das Kind</div></div>
-        <a class="dl-btn" href="KD-02_Klokarten.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📿</div>
-        <div class="dl-info"><div class="dl-name">Lob-Armband</div><div class="dl-desc">Druckvorlage · Belohnung sichtbar tragen</div></div>
-        <a class="dl-btn" href="KD-04_Lobarmband.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">💛</div>
-        <div class="dl-info"><div class="dl-name">Lob-Kärtchen</div><div class="dl-desc">Druckvorlage · Wertschätzung konkret zeigen</div></div>
-        <a class="dl-btn" href="KD-05_Lobkaertchen.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🤸</div>
-        <div class="dl-info"><div class="dl-name">Mini-Fitness</div><div class="dl-desc">Druckvorlage · Bewegungspausen im Unterricht</div></div>
-        <a class="dl-btn" href="KD-06_MiniFitness.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🎮</div>
-        <div class="dl-info"><div class="dl-name">Himmel & Hölle</div><div class="dl-desc">Druckvorlage · Spielerische Übung</div></div>
-        <a class="dl-btn" href="KD-08_HimmelHoelle.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">💪</div>
-        <div class="dl-info"><div class="dl-name">Mutmach-Kärtchen</div><div class="dl-desc">Druckvorlage · Stärken und Mut zeigen</div></div>
-        <a class="dl-btn" href="KD-10_Mutmachkaertchen.html" style="background:#3B8A68;">🖨️ Öffnen</a>
-      </div>
-    </div>
-  </div>
+  <section class="kat-sektion" id="kat-ki">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-ki);"></span>👶 Kinder</div>
+    <div class="kachel-grid" id="grid-ki"></div>
+  </section>
 
-  <!-- ANTI-MOBBING -->
-  <div class="sek" id="am">
-    <div class="sek-header" style="background:#FFEBEE;">
-      <div class="sek-emoji">🛡️</div>
-      <div class="sek-info"><div class="sek-titel" style="color:#C62828;">Anti-Mobbing</div><div class="sek-sub" style="color:#C62828;">Druckmaterialien für Klasse und Kind</div></div>
-    </div>
-    <div class="dl-grid">
-      <div class="dl-item">
-        <div class="dl-icon">🛑</div>
-        <div class="dl-info"><div class="dl-name">Stoppschild-Karte</div><div class="dl-desc">Karte A6 + Klassenposter A4 · Ausschneiden · Laminieren</div></div>
-        <a class="dl-btn" href="AM_DL_Stoppschild.html" style="background:#C62828;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">🌟</div>
-        <div class="dl-info"><div class="dl-name">Meine Verbündeten</div><div class="dl-desc">Sonne GS + Netzwerk WF · Ausfüllbar</div></div>
-        <a class="dl-btn" href="AM_DL_Meine_Verbuendeten.html" style="background:#C62828;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📋</div>
-        <div class="dl-info"><div class="dl-name">So melde ich Mobbing</div><div class="dl-desc">Schritte · Notfallnummer · Für das Kind</div></div>
-        <a class="dl-btn" href="AM_DL_So_melde_ich_Mobbing.html" style="background:#C62828;">🖨️ Öffnen</a>
-      </div>
-      <div class="dl-item">
-        <div class="dl-icon">📜</div>
-        <div class="dl-info"><div class="dl-name">Klassenvertrag</div><div class="dl-desc">5 Regeln · Alle unterschreiben · A4 Druckvorlage</div></div>
-        <a class="dl-btn" href="AM_DL_Klassenvertrag.html" style="background:#C62828;">🖨️ Öffnen</a>
-      </div>
-    </div>
-  </div>
+  <!-- TOOLS -->
+  <section class="kat-sektion" id="kat-to">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-to);"></span>🛠️ Tools</div>
+    <div class="kachel-grid" id="grid-to"></div>
+  </section>
 
-</div>
+  <!-- TK -->
+  <section class="kat-sektion" id="kat-tk">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-tk);"></span>🗂️ Teamkoordination</div>
+    <div class="kachel-grid" id="grid-tk"></div>
+  </section>
 
-<div style="position:fixed;bottom:1.25rem;right:1rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
-  <a href="DASHBOARD.html" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
-    <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
-  </a>
-</div>
+  <!-- LK -->
+  <section class="kat-sektion" id="kat-lk">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-lk);"></span>🏫 Lehrkraft</div>
+    <div class="kachel-grid" id="grid-lk"></div>
+  </section>
+
+  <!-- FK -->
+  <section class="kat-sektion" id="kat-fk">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-fk);"></span>👥 Fachkraft</div>
+    <div class="kachel-grid" id="grid-fk"></div>
+  </section>
+
+  <!-- M-MODULE -->
+  <section class="kat-sektion" id="kat-mm">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-mm);"></span>📚 M-Module</div>
+    <div class="kachel-grid" id="grid-mm"></div>
+  </section>
+
+  <!-- EIGENE -->
+  <section class="kat-sektion" id="kat-ei">
+    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-ei);"></span>📁 Eigene Materialien</div>
+    <div class="kachel-grid" id="grid-ei"></div>
+  </section>
+
+</main>
 
 <script>
-// Tab aktiv setzen beim Scrollen
-const seks = document.querySelectorAll('.sek');
-const tabs = document.querySelectorAll('.tab');
-const obs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const id=e.target.id;
-      tabs.forEach(t=>{t.classList.remove('aktiv');});
-      const aktiv=document.querySelector('.tab[href="#'+id+'"]');
-      if(aktiv)aktiv.classList.add('aktiv');
-    }
+// ── Materialdaten ──────────────────────────────────────────
+// href: Pfad zu deiner Datei anpassen
+var MATERIALIEN = [
+
+  // FEUERWEHR
+  { kat:'fw', icon:'🚒', titel:'Feuerwehrkarte M0', sub:'Modul 0 · Grundlagen · Notfall-Protokoll', typ:'PDF', href:'#', farbe:'var(--c-fw)' },
+  { kat:'fw', icon:'🔴', titel:'Eskalationskarte', sub:'5-stufiges Barometer · Handlungsschritte', typ:'PDF', farbe:'var(--c-fw)' },
+  { kat:'fw', icon:'📋', titel:'Feuerwehrprotokoll', sub:'Dokumentationsbogen Krisensituation', typ:'PDF', farbe:'var(--c-fw)' },
+  { kat:'fw', icon:'🧭', titel:'Deeskalationsleitfaden', sub:'KLAR-Modell kompakt · Druckvorlage', typ:'PDF', farbe:'var(--c-fw)' },
+  { kat:'fw', icon:'📌', titel:'Checkliste Akutsituation', sub:'Sofortmaßnahmen · Schritt für Schritt', typ:'PDF', farbe:'var(--c-fw)' },
+  { kat:'fw', icon:'🖨️', titel:'Postervorlage Barometer', sub:'A3 · Klassenraum-Aushang', typ:'POSTER', farbe:'var(--c-fw)' },
+
+  // KINDER
+  { kat:'ki', icon:'👶', titel:'Kinderprofil-Vorlage', sub:'Stammdaten · Bezugspersonen · Notizen', typ:'DOCX', farbe:'var(--c-ki)' },
+  { kat:'ki', icon:'🌡️', titel:'Barometer-Tageskarte Kind', sub:'5 Stufen · Selbsteinschätzung', typ:'PDF', farbe:'var(--c-ki)' },
+  { kat:'ki', icon:'📓', titel:'Tagesjournal Kind', sub:'Wöchentliche Übersicht · Druckvorlage', typ:'PDF', farbe:'var(--c-ki)' },
+  { kat:'ki', icon:'💬', titel:'Gesprächsleitfaden Eltern', sub:'Erstkontakt · Regelmäßige Rückmeldung', typ:'PDF', farbe:'var(--c-ki)' },
+  { kat:'ki', icon:'🎯', titel:'Förderziel-Bogen', sub:'Kurzform · Halbjährig', typ:'DOCX', farbe:'var(--c-ki)' },
+  { kat:'ki', icon:'📊', titel:'Entwicklungsraster', sub:'Beobachtungsbogen · 4 Bereiche', typ:'PDF', farbe:'var(--c-ki)' },
+
+  // TOOLS
+  { kat:'to', icon:'📅', titel:'Wochenplan INGRA', sub:'Mo–Fr · Zeiteinteilung · Druckvorlage', typ:'PDF', farbe:'var(--c-to)' },
+  { kat:'to', icon:'⏱️', titel:'Zeitkonto-Tabelle', sub:'Stunden · Übersicht · Excel-Vorlage', typ:'XLSX', farbe:'var(--c-to)' },
+  { kat:'to', icon:'📝', titel:'Übergabeprotokoll', sub:'TK-Weiterleitung · Kurzform', typ:'PDF', farbe:'var(--c-to)' },
+  { kat:'to', icon:'✅', titel:'To-do-Vorlage', sub:'Wöchentlich · Prioritäten A–C', typ:'PDF', farbe:'var(--c-to)' },
+  { kat:'to', icon:'📤', titel:'Weiterleitungsformular', sub:'INGRA → TK · Standardvorlage', typ:'PDF', farbe:'var(--c-to)' },
+  { kat:'to', icon:'🗂️', titel:'Fallmanagement-Starter', sub:'FM 01–05 ausgefüllt als Muster', typ:'PDF', farbe:'var(--c-to)' },
+
+  // TK
+  { kat:'tk', icon:'🗂️', titel:'TK-Recruiting-Leitfaden', sub:'Bewerbung · Auswahl · Matching · Gespräch', typ:'PDF', farbe:'var(--c-tk)' },
+  { kat:'tk', icon:'📋', titel:'Gesprächsprotokoll TK', sub:'TK-01 bis TK-08 · Formularsatz', typ:'PDF', farbe:'var(--c-tk)' },
+  { kat:'tk', icon:'📊', titel:'SAB-Selbstcheck TK', sub:'Checkliste Reflexion · Druckvorlage', typ:'PDF', farbe:'var(--c-tk)' },
+  { kat:'tk', icon:'🔔', titel:'Frist & Wiedervorlage', sub:'TK-08 · Fristen-Tracker', typ:'PDF', farbe:'var(--c-tk)' },
+  { kat:'tk', icon:'📁', titel:'TK-Akte Muster', sub:'Dokumentationsmappe komplett', typ:'PDF', farbe:'var(--c-tk)' },
+  { kat:'tk', icon:'👥', titel:'Matching-Matrix', sub:'Übersicht Person–Stelle–Schule', typ:'PDF', farbe:'var(--c-tk)' },
+
+  // LK
+  { kat:'lk', icon:'🏫', titel:'Lehrkraft-Karten L-01', sub:'Erstkontakt · Rollen klären', typ:'PDF', farbe:'var(--c-lk)' },
+  { kat:'lk', icon:'📚', titel:'Lehrkraft-Karten L-02', sub:'Kommunikation im Schulalltag', typ:'PDF', farbe:'var(--c-lk)' },
+  { kat:'lk', icon:'🤝', titel:'Lehrkraft-Karten L-03', sub:'Zusammenarbeit INGRA–LK', typ:'PDF', farbe:'var(--c-lk)' },
+  { kat:'lk', icon:'📋', titel:'Gesprächsleitfaden LK', sub:'Jahresgespräch · Rückmeldung', typ:'PDF', farbe:'var(--c-lk)' },
+  { kat:'lk', icon:'📊', titel:'Unterrichtsbeobachtung', sub:'Beobachtungsbogen Inklusion', typ:'PDF', farbe:'var(--c-lk)' },
+
+  // FK
+  { kat:'fk', icon:'👥', titel:'FK-Grundlagen', sub:'Rolle und Haltung · Selbstverständnis', typ:'PDF', farbe:'var(--c-fk)' },
+  { kat:'fk', icon:'🔍', titel:'FK-Beobachtungsbogen', sub:'Tagesstruktur · Verhalten · Kurzform', typ:'PDF', farbe:'var(--c-fk)' },
+  { kat:'fk', icon:'💼', titel:'FK-Profil Vorlage', sub:'Qualifikation · Einsatzbereiche', typ:'DOCX', farbe:'var(--c-fk)' },
+  { kat:'fk', icon:'📝', titel:'FK-Reflexionsbogen', sub:'Wöchentlich · Selbsteinschätzung', typ:'PDF', farbe:'var(--c-fk)' },
+
+  // M-MODULE
+  { kat:'mm', icon:'📘', titel:'M0 – Grundlagen', sub:'9 Karten · Brainy · KLAR-Modell · Barometer', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📙', titel:'M1 – Kommunikation', sub:'12 Karten · Sprache · Beziehung', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📗', titel:'M2 – Verhalten', sub:'23 Karten · Analyse · Strategien', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📒', titel:'M3 – Schulalltag', sub:'40 Karten · Strukturen · Routinen', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📕', titel:'M4 – Kooperation', sub:'15 Karten · TK · LK · Eltern', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📓', titel:'M5 – Selbstfürsorge', sub:'12 Karten · Ressourcen · Grenzen', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📔', titel:'M6 – Krisenintervention', sub:'3 Karten · Eskalation · Deeskalation', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📖', titel:'M7 – Dokumentation', sub:'20 Karten · Berichte · Protokolle', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📑', titel:'M8 – Übergang', sub:'12 Karten · Abschluss · Weitergabe', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'😄', titel:'Humor-Modul', sub:'8 Karten · Leichtigkeit · Haltung', typ:'PDF', farbe:'var(--c-mm)' },
+  { kat:'mm', icon:'📚', titel:'Lernhandbuch Komplett', sub:'134 Kapitel · M0–M8 + Humor', typ:'HTML', farbe:'var(--c-mm)' },
+
+  // EIGENE – Upload-Slot
+  { kat:'ei', icon:'', titel:'', sub:'', typ:'UPLOAD', farbe:'var(--c-ei)' }
+];
+
+// ── Kacheln rendern ────────────────────────────────────────
+function kachelHTML(m) {
+  if (m.typ === 'UPLOAD') {
+    return '<div class="dl-kachel upload-kachel" onclick="document.getElementById(\'upload-input\').click()">'
+      + '<div class="upload-icon">☁️</div>'
+      + '<div class="upload-txt">Eigene Datei hochladen<br><small style="font-size:.65rem;">PDF · DOCX · XLSX · HTML</small></div>'
+      + '</div>';
+  }
+  return '<a class="dl-kachel" href="' + (m.href || '#') + '" style="--kachel-farbe:' + m.farbe + ';" download>'
+    + '<div class="dl-kachel-icon">' + m.icon + '</div>'
+    + '<div class="dl-kachel-titel">' + m.titel + '</div>'
+    + '<div class="dl-kachel-sub">' + m.sub + '</div>'
+    + '<div class="dl-kachel-typ"><span>↓</span>' + m.typ + '</div>'
+    + '<a class="dl-btn" href="' + (m.href || '#') + '" download>↓ Download</a>'
+    + '</a>';
+}
+
+function renderAlle() {
+  var gruppen = {};
+  MATERIALIEN.forEach(function(m) {
+    if (!gruppen[m.kat]) gruppen[m.kat] = [];
+    gruppen[m.kat].push(m);
   });
-},{rootMargin:'-135px 0px -60% 0px'});
-seks.forEach(s=>obs.observe(s));
+  Object.keys(gruppen).forEach(function(kat) {
+    var grid = document.getElementById('grid-' + kat);
+    var cnt  = document.getElementById('cnt-' + kat);
+    if (!grid) return;
+    var echte = gruppen[kat].filter(function(m){ return m.typ !== 'UPLOAD'; });
+    if (cnt) cnt.textContent = echte.length;
+    grid.innerHTML = gruppen[kat].map(kachelHTML).join('');
+  });
+}
+
+// ── Tab-Wechsel ────────────────────────────────────────────
+function wechsleTab(kat, btn) {
+  document.querySelectorAll('.kat-sektion').forEach(function(s){ s.classList.remove('aktiv'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  var sek = document.getElementById('kat-' + kat);
+  if (sek) sek.classList.add('aktiv');
+  if (btn) btn.classList.add('aktiv');
+  window.scrollTo({ top: document.querySelector('.hero').offsetTop, behavior: 'smooth' });
+}
+
+// ── Suchfilter ─────────────────────────────────────────────
+function suchFilter(q) {
+  q = q.toLowerCase().trim();
+  if (!q) {
+    // Alle Kacheln zeigen
+    document.querySelectorAll('.dl-kachel').forEach(function(el){ el.style.display = ''; });
+    return;
+  }
+  // Alle Sektionen sichtbar, gefilterte Kacheln
+  document.querySelectorAll('.kat-sektion').forEach(function(s){ s.classList.add('aktiv'); });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  MATERIALIEN.forEach(function(m, i) {
+    var treffer = (m.titel + m.sub + m.typ).toLowerCase().includes(q);
+    // Kacheln per Index per data-idx finden
+    var kacheln = document.querySelectorAll('.dl-kachel:not(.upload-kachel)');
+    // Einfachere Methode: Text-Match auf gerenderte Kacheln
+  });
+  document.querySelectorAll('.dl-kachel:not(.upload-kachel)').forEach(function(el) {
+    var txt = (el.textContent || '').toLowerCase();
+    el.style.display = txt.includes(q) ? '' : 'none';
+  });
+}
+
+// ── Eigene Dateien (localStorage) ─────────────────────────
+function ladeEigene() {
+  try { return JSON.parse(localStorage.getItem('kt_eigene_downloads') || '[]'); } catch(e) { return []; }
+}
+function speichereEigene(liste) {
+  localStorage.setItem('kt_eigene_downloads', JSON.stringify(liste));
+}
+function renderEigene() {
+  var grid   = document.getElementById('grid-ei');
+  var eigene = ladeEigene();
+  var html   = eigene.map(function(f) {
+    return '<div class="dl-kachel" style="--kachel-farbe:var(--c-ei);">'
+      + '<div class="dl-kachel-icon">📄</div>'
+      + '<div class="dl-kachel-titel">' + f.name + '</div>'
+      + '<div class="dl-kachel-sub">Eigene Datei · ' + f.datum + '</div>'
+      + '<div class="dl-kachel-typ">↓ ' + f.typ + '</div>'
+      + '<button class="dl-btn" onclick="loescheEigene(\'' + f.id + '\')" style="background:var(--c-ei);">🗑️ Entfernen</button>'
+      + '</div>';
+  }).join('');
+  html += kachelHTML({ typ:'UPLOAD' });
+  grid.innerHTML = html;
+  var cnt = document.getElementById('cnt-ei');
+  if (cnt) cnt.textContent = eigene.length;
+}
+function loescheEigene(id) {
+  speichereEigene(ladeEigene().filter(function(f){ return f.id !== id; }));
+  renderEigene();
+}
+
+// Upload-Input (unsichtbar)
+document.addEventListener('DOMContentLoaded', function() {
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.id = 'upload-input'; inp.accept = '.pdf,.docx,.xlsx,.html';
+  inp.style.display = 'none';
+  inp.addEventListener('change', function() {
+    if (!inp.files || !inp.files[0]) return;
+    var f = inp.files[0];
+    var ext = f.name.split('.').pop().toUpperCase();
+    var eigene = ladeEigene();
+    eigene.push({
+      id: 'ei' + Date.now(),
+      name: f.name,
+      typ: ext,
+      datum: new Date().toLocaleDateString('de-DE')
+    });
+    speichereEigene(eigene);
+    renderEigene();
+    wechsleTab('ei', document.querySelector('[data-kat="ei"]'));
+    inp.value = '';
+  });
+  document.body.appendChild(inp);
+
+  renderAlle();
+  renderEigene();
+});
 </script>
+
 </body>
 </html>

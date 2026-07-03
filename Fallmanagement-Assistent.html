@@ -54,14 +54,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .view{display:none;}
 .view.aktiv{display:block;}
 
-.start-wrap{max-width:880px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
-.start-header{margin-bottom:1.4rem;}
+.start-wrap{max-width:880px;margin:0 auto;padding:1.75rem clamp(.75rem,3vw,2rem) 5rem;}
+.start-header{margin-bottom:1.75rem;}
 .start-modul-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:var(--fm-light);color:var(--fm-color);margin-bottom:.5rem;}
 .start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
 .start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
 
-.btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.75rem;margin-top:1.2rem;}
-.btn-kachel{background:var(--kt-surface);border:2px solid var(--kt-border);border-radius:var(--r-lg);padding:.85rem 1rem;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:.3rem;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--shadow);text-decoration:none;color:inherit;}
+.btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1.2rem;}
+.btn-kachel{background:var(--kt-surface);border:2px solid var(--kt-border);border-radius:var(--r-lg);padding:1rem 1.1rem;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:.4rem;transition:transform .15s,box-shadow .15s,border-color .15s;box-shadow:var(--shadow);text-decoration:none;color:inherit;}
 .btn-kachel:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--fm-color);}
 .btn-kachel-nr{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fm-color);}
 .btn-kachel-emoji{font-size:1.5rem;line-height:1;margin-bottom:.1rem;}
@@ -69,7 +69,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .btn-kachel-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;}
 .btn-kachel-stripe{height:3px;background:var(--fm-color);border-radius:3px;margin-top:.4rem;}
 
-.unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.unter-wrap{max-width:800px;margin:0 auto;padding:1.75rem clamp(.75rem,3vw,2rem) 5rem;}
 .unter-breadcrumb{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--kt-muted);margin-bottom:1rem;flex-wrap:wrap;}
 .unter-breadcrumb a{color:var(--fm-color);text-decoration:none;font-weight:600;}
 .unter-breadcrumb a:hover{text-decoration:underline;}
@@ -77,7 +77,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 
 .unter-header{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow);}
 .unter-header-stripe{height:4px;background:var(--fm-color);}
-.unter-header-inner{padding:.9rem 1.1rem .85rem;}
+.unter-header-inner{padding:1rem 1.2rem 1rem;}
 .unter-nr{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fm-color);margin-bottom:.25rem;}
 .unter-titel{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;color:var(--kt-primary);line-height:1.2;}
 .unter-sub{font-size:.8rem;color:var(--kt-muted);margin-top:.2rem;}
@@ -90,15 +90,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .tab-panel{display:none;}
 .tab-panel.aktiv{display:block;}
 
-.karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.7rem;box-shadow:var(--shadow);}
-.karte-header{background:var(--fm-light);border-bottom:1px solid rgba(0,105,92,.12);padding:.5rem .9rem;display:flex;align-items:center;gap:.5rem;}
+.karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.85rem;box-shadow:var(--shadow);}
+.karte-header{background:var(--fm-light);border-bottom:1px solid rgba(0,105,92,.12);padding:.55rem .9rem;display:flex;align-items:center;gap:.5rem;}
 .karte-header-icon{font-size:1rem;}
 .karte-header-titel{font-size:.78rem;font-weight:700;color:var(--fm-color);letter-spacing:.03em;}
-.karte-body{padding:.75rem .9rem .85rem;}
+.karte-body{padding:.85rem 1rem 1rem;}
 
-.stw-list{list-style:none;display:flex;flex-direction:column;gap:.28rem;}
-.stw-list li{font-size:.82rem;color:var(--kt-ink);line-height:1.5;padding-left:1.1rem;position:relative;}
-.stw-list li::before{content:'▸';position:absolute;left:0;top:0;color:var(--fm-color);font-size:.7rem;line-height:1.7;}
+.stw-list{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.stw-list li{font-size:.82rem;color:var(--kt-ink);line-height:1.6;padding-left:1.1rem;position:relative;}
+.stw-list li::before{content:'▸';position:absolute;left:0;top:0;color:var(--fm-color);font-size:.7rem;line-height:1.8;}
 .stw-list li strong{color:var(--kt-primary);}
 
 .schritt-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;counter-reset:schritt;}
@@ -121,11 +121,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
 .brainy-box-text em{font-style:italic;color:var(--kt-muted);}
 
-.form-section{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.75rem;box-shadow:var(--shadow);}
-.form-section-header{background:var(--fm-light);border-bottom:1px solid rgba(0,105,92,.12);padding:.45rem .9rem;display:flex;align-items:center;gap:.5rem;}
+.form-section{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.9rem;box-shadow:var(--shadow);}
+.form-section-header{background:var(--fm-light);border-bottom:1px solid rgba(0,105,92,.12);padding:.5rem .9rem;display:flex;align-items:center;gap:.5rem;}
 .form-section-icon{font-size:.95rem;}
 .form-section-titel{font-size:.75rem;font-weight:700;color:var(--fm-color);letter-spacing:.03em;}
-.form-body{padding:.75rem .9rem .85rem;display:flex;flex-direction:column;gap:.55rem;}
+.form-body{padding:.85rem 1rem 1rem;display:flex;flex-direction:column;gap:.65rem;}
 
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
 .form-row.full{grid-template-columns:1fr;}
@@ -152,10 +152,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .ampel-radio .opt-rot{background:#FDEAEA;color:#C62828;border-color:#EF9A9A;}
 .ampel-radio .opt-rot:has(input:checked){background:#C62828;color:#fff;}
 
-.wl-group{display:flex;flex-wrap:wrap;gap:.4rem;}
-.wl-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .75rem;border-radius:20px;border:1.5px solid var(--kt-border);background:var(--kt-surface);font-size:.72rem;font-weight:600;cursor:pointer;transition:all .15s;color:var(--kt-muted);}
-.wl-chip input{display:none;}
-.wl-chip:has(input:checked){background:var(--fm-color);border-color:var(--fm-color);color:#fff;}
+
 
 .form-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--kt-border);}
 .act-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .85rem;border-radius:var(--r-md);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;border:none;transition:all .15s;}
@@ -169,7 +166,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .pflicht-hinweis{font-size:.65rem;color:var(--kt-muted);margin-top:.3rem;}
 .pflicht-hinweis .req{color:#C62828;}
 
-.tl-eintrag{background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--r-sm);padding:.55rem .7rem;margin-bottom:.45rem;}
+.tl-eintrag{background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--r-sm);padding:.55rem .7rem;margin-bottom:.55rem;}
 .tl-eintrag-kopf{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.25rem;}
 .tl-eintrag-datum{font-size:.68rem;font-weight:700;color:var(--fm-color);}
 .tl-eintrag-loeschen{font-size:.65rem;color:#C62828;cursor:pointer;background:none;border:none;font-weight:700;}
@@ -177,7 +174,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .tl-eintrag-text strong{color:var(--kt-primary);}
 .tl-leer{font-size:.78rem;color:var(--kt-muted);font-style:italic;padding:.5rem 0;}
 
-.akt-eintrag{display:grid;grid-template-columns:1fr;gap:.3rem;background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--r-sm);padding:.55rem .7rem;margin-bottom:.45rem;}
+.akt-eintrag{display:grid;grid-template-columns:1fr;gap:.3rem;background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--r-sm);padding:.55rem .7rem;margin-bottom:.55rem;}
 .akt-eintrag-kopf{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.3rem;}
 .akt-eintrag-titel{font-size:.82rem;font-weight:700;color:var(--kt-primary);}
 .akt-eintrag-meta{font-size:.68rem;color:var(--kt-muted);}
@@ -186,7 +183,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(3rem);background:var(--fm-color);color:#fff;padding:.55rem 1.2rem;border-radius:20px;font-size:.78rem;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:9999;opacity:0;transition:all .3s;pointer-events:none;}
 .toast.sichtbar{opacity:1;transform:translateX(-50%) translateY(0);}
 
-.unter-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;}
+.unter-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:1.5rem;flex-wrap:wrap;}
 .unter-nav-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.32rem .8rem;border-radius:20px;border:1.5px solid var(--fm-color);color:var(--fm-color);background:var(--kt-surface);font-size:.72rem;font-weight:700;cursor:pointer;transition:all .15s;text-decoration:none;}
 .unter-nav-btn:hover{background:var(--fm-color);color:#fff;}
 .unter-nav-btn.zurueck{border-color:var(--kt-muted);color:var(--kt-muted);}
@@ -229,17 +226,16 @@ footer strong{color:var(--kt-accent);}
     <div class="header-badge">Fallmanagement-Assistent</div>
   </div>
   <nav class="header-nav">
-    <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
     <a class="btn-back" href="DASHBOARD.html">Dashboard</a>
   </nav>
 </header>
 
-<div class="brainy-banner" style="background:linear-gradient(135deg,#1B3A4B,#2A5570);border-bottom:2px solid rgba(110,198,160,.35);">
-  <div class="brainy-face" style="border-color:rgba(110,198,160,.5);">🧠</div>
+<div class="brainy-banner">
+  <div class="brainy-face">🧠</div>
   <div class="brainy-text">
-    <span class="brainy-label" style="color:#6EC6A0;">Brainy · Fallmanagement</span>
+    <span class="brainy-label">Brainy · Fallmanagement-Modus</span>
     <p class="brainy-msg">
-      <strong style="color:#B2E8D0;">Brainy begleitet TK</strong> beim strukturierten Fallmanagement – mit Reflexionsfragen, Risikohinweisen und Weiterleitungen an den TK-Bereich.
+      <strong>Brainy unterstützt TK</strong> beim strukturierten Fallmanagement – mit Reflexionsfragen, Risikohinweisen und Maßnahmenimpulsen.
     </p>
   </div>
 </div>
@@ -249,7 +245,7 @@ footer strong{color:var(--kt-accent);}
     <div class="start-header">
       <div class="start-modul-tag">Fallmanagement-Assistent</div>
       <h1 class="start-titel">Fallmanagement</h1>
-      <p class="start-lead">Fallakte, Risikoeinschätzung, Maßnahmenplanung und Verlaufsdokumentation – strukturiert und sofort einsetzbar.</p>
+      <p class="start-lead">Fallakte, Risikoeinschätzung, Maßnahmenplanung und Verlaufsdokumentation – strukturiert und praxisnah aufgebaut.</p>
     </div>
 
     <div class="btn-grid">
@@ -307,8 +303,8 @@ footer strong{color:var(--kt-accent);}
     <div class="brainy-box" style="margin-top:1.2rem;">
       <div class="brainy-box-icon">🧠</div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement</span>
-        <p class="brainy-box-text">Alle Daten werden lokal gespeichert (localStorage). Für die Weitergabe steht der PDF-Export mit Druckfunktion zur Verfügung.</p>
+        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
+        <p class="brainy-box-text">Alle Daten werden lokal gespeichert (localStorage). Der PDF-Export mit Druckfunktion steht für die Dokumentation zur Verfügung.</p>
       </div>
     </div>
   </div>
@@ -327,17 +323,11 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="file-info">
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">📁</span><span class="karte-header-titel">Was gehört in die Fallakte?</span></div><div class="karte-body"><ul class="stw-list"><li><strong>Stammdaten:</strong> Name, Klasse/Gruppe, Geburtsdatum, Bezugsperson</li><li><strong>Besonderheiten:</strong> relevante Hintergründe, neutral formuliert</li><li><strong>Ziele:</strong> konkrete, überprüfbare Zielformulierungen</li><li><strong>Ressourcen:</strong> Stärken, Unterstützungssystem, vorhandene Hilfen</li></ul></div></div>
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">🔒</span><span class="karte-header-titel">Datenschutz</span></div><div class="karte-body"><ul class="stw-list"><li>Nur zweckbezogene Daten erfassen</li><li>Keine Weitergabe ohne Einwilligung der Bezugspersonen</li><li>Zugriff auf autorisierte TK beschränken</li></ul></div></div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="file-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
-      <div class="form-section">
-        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional – aus Kinderverwaltung)</span></div>
-        <div class="form-body">
-          <div class="fld"><label>Kind auswählen</label><select id="f-kindId" onchange="fmKindUebernehmen('file')"><option value="">– kein Kinderbezug –</option></select></div>
-        </div>
-      </div>
       <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">👤</span><span class="form-section-titel">Stammdaten</span></div>
         <div class="form-body">
@@ -368,12 +358,11 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Ressourcen</label><textarea id="f-ressourcen" placeholder="Stärken, Unterstützungssystem, vorhandene Hilfen …"></textarea></div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Beobachtungsbasiert dokumentieren – keine Wertungen. Ziele konkret und überprüfbar formulieren.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Beobachtungsbasiert dokumentieren – keine Wertungen. Ziele konkret und überprüfbar formulieren.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernFile()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
         <button class="act-btn ghost" onclick="formReset('file-form')">↺ Zurücksetzen</button>
-        <button class="act-btn" onclick="fwWeiterleiten('fm01')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -397,15 +386,11 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="risk-info">
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Ampel-Bedeutung</span></div><div class="karte-body"><div class="ampel" style="flex-direction:column;gap:.5rem;"><span class="ampel-chip gruen" style="justify-content:flex-start;">✔ Grün – Situation stabil, kein akuter Handlungsbedarf</span><span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span><span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – akuter Handlungsbedarf, sofortige Maßnahmen</span></div></div></div>
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Einschätzungskriterien (neutral)</span></div><div class="karte-body"><ul class="stw-list"><li>Verhaltensauffälligkeiten: Häufigkeit, Intensität, Kontext</li><li>Soziale Einbindung: Peer-Kontakte, Teamfähigkeit, Isolation</li><li>Emotionale Stabilität: Stimmungsschwankungen, Belastbarkeit</li><li>Lern- und Teilhabemöglichkeiten: Zugänglichkeit, Förderung</li><li>Familiäres Umfeld: Kooperation Bezugspersonen, Unterstützung</li><li>Eigen-/Fremdgefährdung: akute Hinweise vorhanden?</li></ul></div></div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Bereich."</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder Vermutungen?"</em><br><em>„Bei Rot: nicht allein entscheiden – intern abstimmen."</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="risk-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
-      <div class="form-section">
-        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
-        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="r-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
-      </div>
       <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">🚦</span><span class="form-section-titel">Ampel-Einschätzung <span class="req">*</span></span></div>
         <div class="form-body">
@@ -438,24 +423,11 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Begründung der Einschätzung</label><textarea id="r-begruendung" placeholder="Beobachtungsbasiert, sachlich, nachvollziehbar …"></textarea></div>
         </div>
       </div>
-      <div class="form-section">
-        <div class="form-section-header"><span class="form-section-icon">📤</span><span class="form-section-titel">Weiterleitung</span></div>
-        <div class="form-body">
-          <div class="fld"><label>Weiterleiten an</label>
-            <div class="wl-group">
-              <label class="wl-chip"><input type="checkbox" name="r-wl" value="tk-bereich"> 🗂️ TK-Bereich</label>
-              <label class="wl-chip"><input type="checkbox" name="r-wl" value="fachberatung"> 🩺 Fachberatung</label>
-              <label class="wl-chip"><input type="checkbox" name="r-wl" value="akte"> 📂 Fallakte</label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden. Sofort Rücksprache mit TK-Bereich und Weiterleitung dokumentieren.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Bei <strong>Rot</strong>: nicht allein entscheiden – intern abstimmen und dokumentieren.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernRisk()">💾 Speichern</button>
         <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken</button>
         <button class="act-btn ghost" onclick="formReset('risk-form')">↺ Zurücksetzen</button>
-        <button class="act-btn" onclick="fwWeiterleiten('fm02')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -479,26 +451,11 @@ footer strong{color:var(--kt-accent);}
 
     <div class="tab-panel aktiv" id="akt-info">
       <div class="karte"><div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Grundsätze Maßnahmenplanung</span></div><div class="karte-body"><ul class="stw-list"><li>Jede Maßnahme ist <strong>konkret</strong> und <strong>zeitgebunden</strong></li><li>Immer einer <strong>verantwortlichen Person</strong> zugeordnet</li><li>Status regelmäßig aktualisieren</li><li>Überfällige Maßnahmen aktiv nachverfolgen</li></ul></div></div>
-      <div class="karte">
-        <div class="karte-header"><span class="karte-header-icon">📂</span><span class="karte-header-titel">Maßnahmen-Datenbank</span></div>
-        <div class="karte-body">
-          <p style="font-size:.82rem;color:var(--kt-muted,#5a6a72);line-height:1.6;margin-bottom:.7rem;">Zentrale Datenbank für alle Maßnahmen – sammeln, kategorisieren, filtern und für künftige Fälle wiederverwenden.</p>
-          <a href="FM_Massnahmen_DB.html" target="_blank" rel="noopener"
-             style="display:inline-flex;align-items:center;gap:8px;background:var(--fm-color);color:#fff;text-decoration:none;font-size:.85rem;font-weight:700;padding:.6rem 1.1rem;border-radius:9px;transition:background .15s;"
-             onmouseover="this.style.background='#00453C'" onmouseout="this.style.background='var(--fm-color)'">
-            📂 Zur Maßnahmen-Datenbank
-          </a>
-        </div>
-      </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p></div></div>
     </div>
 
     <div class="tab-panel" id="akt-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
-      <div class="form-section">
-        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
-        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="a-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
-      </div>
       <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">📋</span><span class="form-section-titel">Neue Maßnahme</span></div>
         <div class="form-body">
@@ -521,11 +478,10 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Notiz</label><textarea id="a-notiz" placeholder="Kurze Ergänzung / Rückmeldung …"></textarea></div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Maßnahmen ohne klare Verantwortung bleiben oft liegen – immer eine Person konkret benennen.</p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Maßnahmen ohne klare Verantwortung bleiben oft liegen – immer eine Person konkret benennen.</p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernAction()">💾 Maßnahme speichern</button>
         <button class="act-btn ghost" onclick="formReset('akt-form')">↺ Zurücksetzen</button>
-        <button class="act-btn" onclick="fwWeiterleiten('fm03')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -561,10 +517,6 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="tl-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
       <div class="form-section">
-        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
-        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="t-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
-      </div>
-      <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">🕐</span><span class="form-section-titel">Neuer Verlaufseintrag</span></div>
         <div class="form-body">
           <div class="form-row"><div class="fld"><label>Datum <span class="req">*</span></label><input type="date" id="t-datum"></div><div class="fld"><label>Erstellt von</label><input type="text" id="t-tk" placeholder="Name TK"></div></div>
@@ -574,11 +526,10 @@ footer strong{color:var(--kt-accent);}
         </div>
       </div>
       <div class="hinweis">Beobachtungsbasiert, zeitnah, neutral formuliert – keine Interpretationen als Tatsachen.</div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em></p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernTimeline()">💾 Eintrag speichern</button>
         <button class="act-btn ghost" onclick="formReset('tl-form')">↺ Zurücksetzen</button>
-        <button class="act-btn" onclick="fwWeiterleiten('fm04')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -614,10 +565,6 @@ footer strong{color:var(--kt-accent);}
     <div class="tab-panel aktiv" id="bar-form">
       <p class="pflicht-hinweis">Felder mit <span class="req">*</span> sind Pflichtfelder.</p>
       <div class="form-section">
-        <div class="form-section-header"><span class="form-section-icon">👶</span><span class="form-section-titel">Kind (optional)</span></div>
-        <div class="form-body"><div class="fld"><label>Kind auswählen</label><select id="b-kindId"><option value="">– kein Kinderbezug –</option></select></div></div>
-      </div>
-      <div class="form-section">
         <div class="form-section-header"><span class="form-section-icon">🌡️</span><span class="form-section-titel">Tagesstatus erfassen</span></div>
         <div class="form-body">
           <div class="fld"><label>Datum <span class="req">*</span></label><input type="date" id="b-datum"></div>
@@ -650,11 +597,10 @@ footer strong{color:var(--kt-accent);}
           <div class="fld"><label>Kurznotiz</label><input type="text" id="b-notiz" placeholder="Ein Satz zum Tag (optional)"></div>
         </div>
       </div>
-      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em></p></div></div>
+      <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em></p></div></div>
       <div class="form-actions">
         <button class="act-btn primary" onclick="speichernBarometer()">💾 Eintrag speichern</button>
         <button class="act-btn ghost" onclick="formReset('bar-form')">↺ Zurücksetzen</button>
-        <button class="act-btn" onclick="fwWeiterleiten('fm05')" style="background:var(--fm-color);color:#fff;border-color:var(--fm-color);">📤 An TK weiterleiten</button>
       </div>
     </div>
 
@@ -699,20 +645,7 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">📤</span><span class="form-section-titel">Weiterleitung</span></div>
-      <div class="form-body">
-        <div class="fld"><label>Weiterleiten an</label>
-          <div class="wl-group">
-            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="tk-bereich"> 🗂️ TK-Bereich</label>
-            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="fachberatung"> 🩺 Fachberatung</label>
-            <label class="wl-chip"><input type="checkbox" name="pdf-wl" value="akte"> 📂 Fallakte (Archiv)</label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text"><em>„Wer bekommt dieses Dokument – und ist die Weitergabe datenschutzkonform?"</em></p></div></div>
+    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text"><em>„Sind alle Felder vollständig und beobachtungsbasiert dokumentiert?"</em></p></div></div>
 
     <div class="form-actions">
       <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
@@ -736,7 +669,7 @@ footer strong{color:var(--kt-accent);}
       <div class="karte-body">
         <ol class="schritt-list">
           <li><strong>Fallakte anlegen</strong> – Stammdaten, Bezugsperson, Besonderheiten, Ziele und Ressourcen erfassen</li>
-          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot sofort Rücksprache</li>
+          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot intern abstimmen</li>
           <li><strong>Maßnahmen planen</strong> – konkrete Schritte, Verantwortlichkeiten und Zeiträume festlegen</li>
           <li><strong>Verlauf dokumentieren</strong> – Ereignisse zeitnah, beobachtungsbasiert und neutral eintragen</li>
           <li><strong>Tages-Barometer pflegen</strong> – kurzen Tagesstatus erfassen, Muster erkennen</li>
@@ -750,7 +683,7 @@ footer strong{color:var(--kt-accent);}
         <ul class="stw-list">
           <li>Beobachtungen statt Bewertungen – sachlich, neutral, nachvollziehbar</li>
           <li>Zeitnah dokumentieren – möglichst am gleichen Tag</li>
-          <li>Ampel-Rot: immer Rücksprache mit TK-Bereich, nie allein entscheiden</li>
+          <li>Ampel-Rot: immer intern abstimmen, nie allein entscheiden</li>
           <li>Datenschutz: nur zweckbezogene Daten, Einwilligung vor Weitergabe</li>
           <li>Alle Daten werden lokal gespeichert – regelmäßig sichern / exportieren</li>
         </ul>
@@ -769,17 +702,16 @@ footer strong{color:var(--kt-accent);}
         <div class="hinweis">Gespeichert unter den Schlüsseln <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-caseFile</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-riskStatus</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-actions</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-timeline</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-barometer</code> in localStorage.</div>
       </div>
     </div>
-    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement</span><p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen, Risikohinweisen und Weiterleitungsimpulsen.</p></div></div>
+    <div class="brainy-box"><div class="brainy-box-icon">🧠</div><div class="brainy-box-content"><span class="brainy-box-label">Brainy · Fallmanagement-Modus</span><p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen und Risikohinweisen.</p></div></div>
 
     <div class="unter-nav">
       <button class="unter-nav-btn zurueck" onclick="zeige('start')">← Übersicht</button>
-      <a class="unter-nav-btn" href="TK_Landing.html">↩ TK-Bereich</a>
     </div>
   </div>
 </div>
 
 <footer>
-  <strong>KLARTEXT</strong> · Fallmanagement-Assistent · TK-Bereich<br>
+  <strong>KLARTEXT</strong> · Fallmanagement-Assistent · Teamkoordination<br>
   Klar. Warm. Menschlich. · Neutral · Trägeroffen
 </footer>
 
@@ -846,11 +778,7 @@ function ls_set(key, value) {
 }
 
 function speichernFile() {
-  var kindId = document.getElementById('f-kindId').value;
-  var kindName = kindId ? (fmKindName(kindId)) : '';
   var caseFile = {
-    kindId: kindId,
-    kindName: kindName,
     name: document.getElementById('f-name').value,
     klasse: document.getElementById('f-klasse').value,
     geburtsdatum: document.getElementById('f-geburt').value,
@@ -881,11 +809,7 @@ function ladeFile() {
 
 function speichernRisk() {
   var ampelEl = document.querySelector('input[name="r-ampel"]:checked');
-  var wlEls = document.querySelectorAll('input[name="r-wl"]:checked');
-  var kindId = document.getElementById('r-kindId').value;
   var riskStatus = {
-    kindId: kindId,
-    kindName: kindId ? fmKindName(kindId) : '',
     datum: document.getElementById('r-datum').value,
     tk: document.getElementById('r-tk').value,
     ampel: ampelEl ? ampelEl.value : '',
@@ -897,8 +821,7 @@ function speichernRisk() {
       familie: document.getElementById('r-k5').checked,
       gefaehrdung: document.getElementById('r-k6').checked
     },
-    begruendung: document.getElementById('r-begruendung').value,
-    weiterleitung: Array.from(wlEls).map(function(el){ return el.value; })
+    begruendung: document.getElementById('r-begruendung').value
   };
   ls_set('fm-riskStatus', riskStatus);
   zeigeToast('✔ Risiko-Ampel gespeichert');
@@ -907,12 +830,9 @@ function speichernRisk() {
 function speichernAction() {
   var massnahme = document.getElementById('a-massnahme').value;
   if (!massnahme) { zeigeToast('⚠ Bitte Maßnahme eingeben'); return; }
-  var kindId = document.getElementById('a-kindId').value;
   var actions = ls_get('fm-actions', []);
   actions.push({
     id: Date.now(),
-    kindId: kindId,
-    kindName: kindId ? fmKindName(kindId) : '',
     massnahme: massnahme,
     verantwortlich: document.getElementById('a-verantwortlich').value,
     status: document.getElementById('a-status').value,
@@ -957,12 +877,9 @@ function renderActions() {
 function speichernTimeline() {
   var ereignis = document.getElementById('t-ereignis').value;
   if (!ereignis) { zeigeToast('⚠ Bitte Ereignis eingeben'); return; }
-  var kindId = document.getElementById('t-kindId').value;
   var timeline = ls_get('fm-timeline', []);
   timeline.push({
     id: Date.now(),
-    kindId: kindId,
-    kindName: kindId ? fmKindName(kindId) : '',
     datum: document.getElementById('t-datum').value,
     tk: document.getElementById('t-tk').value,
     ereignis: ereignis,
@@ -1006,12 +923,9 @@ function renderTimeline() {
 function speichernBarometer() {
   var stimmungEl = document.querySelector('input[name="b-stimmung"]:checked');
   var belastungEl = document.querySelector('input[name="b-belastung"]:checked');
-  var kindId = document.getElementById('b-kindId').value;
   var barometer = ls_get('fm-barometer', []);
   barometer.push({
     id: Date.now(),
-    kindId: kindId,
-    kindName: kindId ? fmKindName(kindId) : '',
     datum: document.getElementById('b-datum').value,
     stimmung: stimmungEl ? stimmungEl.value : '',
     belastung: belastungEl ? belastungEl.value : '',
@@ -1114,194 +1028,12 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// ── Zentrale Kinderquelle ──────────────────────────────────
-function fmKinderLaden() {
-  try { return JSON.parse(localStorage.getItem('children')) || []; } catch(e) { return []; }
-}
-function fmKindName(id) {
-  var k = fmKinderLaden().find(function(x){ return x.id === id; });
-  return k ? k.name : '';
-}
-function fmDropdownFuellen(selectId) {
-  var sel = document.getElementById(selectId);
-  if (!sel) return;
-  var kinder = fmKinderLaden();
-  sel.innerHTML = '<option value="">– kein Kinderbezug –</option>';
-  if (!kinder.length) {
-    sel.innerHTML += '<option disabled>Noch keine Kinder angelegt (TK-Bereich)</option>';
-    return;
-  }
-  kinder.forEach(function(k) {
-    var opt = document.createElement('option');
-    opt.value = k.id;
-    opt.textContent = k.name + (k.klasse ? ' · ' + k.klasse : '');
-    sel.appendChild(opt);
-  });
-}
-function fmKindUebernehmen(bereich) {
-  // Optional: aus f-kindId Stammdaten vorausfüllen
-  if (bereich !== 'file') return;
-  var kindId = document.getElementById('f-kindId').value;
-  if (!kindId) return;
-  var k = fmKinderLaden().find(function(x){ return x.id === kindId; });
-  if (!k) return;
-  if (document.getElementById('f-name') && !document.getElementById('f-name').value)
-    document.getElementById('f-name').value = k.name;
-  if (document.getElementById('f-klasse') && !document.getElementById('f-klasse').value)
-    document.getElementById('f-klasse').value = k.klasse || '';
-  if (document.getElementById('f-geburt') && !document.getElementById('f-geburt').value)
-    document.getElementById('f-geburt').value = k.geburtsdatum || '';
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-  // Alle FM-Kinder-Dropdowns befüllen
-  ['f-kindId','r-kindId','a-kindId','t-kindId','b-kindId'].forEach(fmDropdownFuellen);
   ladeFile();
   renderActions();
   renderTimeline();
   renderBarometer();
 });
-</script>
-
-<!-- ══════════════════════════════════════════════════════════ -->
-<!-- WEITERLEITUNGS-OVERLAY -->
-<!-- ══════════════════════════════════════════════════════════ -->
-<div id="fw-overlay" style="display:none;position:fixed;inset:0;background:rgba(27,58,75,.82);z-index:9999;align-items:center;justify-content:center;padding:1.5rem;">
-  <div style="background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:380px;width:100%;text-align:center;border-top:4px solid var(--fm-color);box-shadow:0 8px 32px rgba(0,0,0,.25);">
-    <div style="font-size:2.2rem;margin-bottom:.6rem;">✅</div>
-    <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--kt-primary);font-weight:700;margin-bottom:.5rem;">Weiterleitung gespeichert</div>
-    <div style="font-size:.84rem;color:var(--kt-muted);line-height:1.55;margin-bottom:1.4rem;" id="fw-overlay-text">Die Daten wurden an TK weitergeleitet.</div>
-    <button onclick="document.getElementById('fw-overlay').style.display='none';"
-      style="background:var(--fm-color);color:#fff;border:none;border-radius:10px;padding:.65rem 1.75rem;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;">
-      Schließen
-    </button>
-  </div>
-</div>
-
-<script>
-// ── WEITERLEITUNGS-SYSTEM ─────────────────────────────────────
-// Goldene Regel: type, context, text IMMER gesetzt
-// Key: kt_forward
-
-var FW_MODUL_LABELS = {
-  fm01: 'FM 01 · Fallakte',
-  fm02: 'FM 02 · Risiko-Ampel',
-  fm03: 'FM 03 · Maßnahmenplan',
-  fm04: 'FM 04 · Verlauf / Chronik',
-  fm05: 'FM 05 · Tages-Barometer'
-};
-
-function fwHeuteDatum() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function fwGetList() {
-  try { return JSON.parse(localStorage.getItem('kt_forward') || '[]'); } catch(e) { return []; }
-}
-
-function fwSave(list) {
-  try { localStorage.setItem('kt_forward', JSON.stringify(list)); } catch(e) {}
-}
-
-function fwZeigeOverlay(modul) {
-  var label = FW_MODUL_LABELS[modul] || modul;
-  document.getElementById('fw-overlay-text').textContent =
-    label + ' wurde erfolgreich an den TK-Bereich weitergeleitet.';
-  var ov = document.getElementById('fw-overlay');
-  ov.style.display = 'flex';
-}
-
-function fwEintrag(modul, text, payload) {
-  return {
-    id:      'fw' + Date.now(),
-    type:    'fallmanagement',
-    context: 'fallmanagement',
-    modul:   modul,
-    text:    text,
-    payload: payload,
-    datum:   fwHeuteDatum()
-  };
-}
-
-function fwWeiterleiten(modul) {
-  var list = fwGetList();
-  var eintrag;
-
-  if (modul === 'fm01') {
-    // FM 01 · Fallakte
-    var name         = (document.getElementById('f-name')          || {}).value || '';
-    var klasse       = (document.getElementById('f-klasse')        || {}).value || '';
-    var geburt       = (document.getElementById('f-geburt')        || {}).value || '';
-    var bezug        = (document.getElementById('f-bezug')         || {}).value || '';
-    var besonders    = (document.getElementById('f-besonder')     || {}).value || '';
-    var ziele        = (document.getElementById('f-ziele')         || {}).value || '';
-    var ressourcen   = (document.getElementById('f-ressourcen')    || {}).value || '';
-    eintrag = fwEintrag('FM-01', 'Fallakte: ' + (name || '(kein Name)'), {
-      name: name, klasse: klasse, geburtsdatum: geburt,
-      bezugsperson: bezug, besonderheiten: besonders,
-      ziele: ziele, ressourcen: ressourcen
-    });
-
-  } else if (modul === 'fm02') {
-    // FM 02 · Risiko-Ampel
-    var ampelEl2 = document.querySelector('input[name="r-ampel"]:checked');
-    var ampel    = ampelEl2 ? ampelEl2.value : '';
-    var datum    = (document.getElementById('r-datum') || {}).value || fwHeuteDatum();
-    var person   = (document.getElementById('r-tk')    || {}).value || '';
-    var begr     = (document.getElementById('r-begruendung') || {}).value || '';
-    var kriterien = [];
-    ['r-k1','r-k2','r-k3','r-k4','r-k5','r-k6'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el && el.checked) kriterien.push(el.parentElement ? el.parentElement.textContent.trim() : id);
-    });
-    eintrag = fwEintrag('FM-02', 'Risiko-Ampel: ' + (ampel || '—') + ' · ' + datum, {
-      datum: datum, gesamtampel: ampel,
-      einzelkriterien: kriterien,
-      einschaetzendePerson: person,
-      begruendung: begr
-    });
-
-  } else if (modul === 'fm03') {
-    // FM 03 · Maßnahmenplan
-    var actions = ls_get('fm-actions', []);
-    var liste = actions.map(function(a) {
-      return { titel: a.massnahme, verantwortlich: a.verantwortlich, status: a.status };
-    });
-    eintrag = fwEintrag('FM-03', 'Maßnahmenplan: ' + liste.length + ' Maßnahme(n)', {
-      massnahmeliste: liste
-    });
-
-  } else if (modul === 'fm04') {
-    // FM 04 · Verlauf / Chronik
-    var timeline = ls_get('fm-timeline', []);
-    var eintraege = timeline.map(function(t) {
-      return { datum: t.datum, ereignis: t.ereignis, beobachtung: t.beobachtung };
-    });
-    eintrag = fwEintrag('FM-04', 'Chronik: ' + eintraege.length + ' Eintrag/Einträge', {
-      chronikEintraege: eintraege
-    });
-
-  } else if (modul === 'fm05') {
-    // FM 05 · Tages-Barometer
-    var bDatum     = (document.getElementById('b-datum') || {}).value || fwHeuteDatum();
-    var bStimmEl   = document.querySelector('input[name="b-stimmung"]:checked');
-    var bBelastEl  = document.querySelector('input[name="b-belastung"]:checked');
-    var bStimmung  = bStimmEl  ? bStimmEl.value  : '';
-    var bBelast    = bBelastEl ? bBelastEl.value : '';
-    var bNotiz     = (document.getElementById('b-notiz') || {}).value || '';
-    eintrag = fwEintrag('FM-05', 'Barometer: Stimmung ' + (bStimmung || '—') + ' · ' + bDatum, {
-      datum: bDatum, stimmung: bStimmung,
-      belastung: bBelast, notizen: bNotiz
-    });
-
-  }
-
-  if (eintrag) {
-    list.push(eintrag);
-    fwSave(list);
-    fwZeigeOverlay(modul);
-  }
-}
 </script>
 </body>
 </html>

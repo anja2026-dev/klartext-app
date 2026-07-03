@@ -3,431 +3,549 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KLARTEXT · Downloads</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>Downloads & Formulare · KLARTEXT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
-  --border:#DDD8CE;--muted:#6A6878;--ink:#2D2D2D;
-  --r-sm:8px;--r-md:14px;
-  --shadow:0 2px 8px rgba(27,58,75,.09);
-  --shadow-lg:0 4px 18px rgba(27,58,75,.14);
-  /* Kategorie-Farben */
-  --c-fw:#C47A00; --c-ki:#3B8A68; --c-to:#2E5E8A;
-  --c-tk:#4A148C; --c-lk:#8B2A2A; --c-fk:#4A6B4A;
-  --c-mm:#1B3A4B; --c-ei:#6A6878;
+  --kt-primary:#1B3A4B;--kt-accent:#6EC6A0;--kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;--kt-muted:#7A7060;--kt-surface:#FFF;--kt-border:#DDD8CE;
+  --c-ingra:#1d9e75;--c-eltern:#185fa5;--c-lk:#1565C0;
+  --c-tk:#00695C;--c-kinder:#4FC3C7;--c-mobbing:#c2185b;
+  --shadow:0 2px 10px rgba(27,58,75,.09);--shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
 }
-body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);min-height:100vh;}
 
-/* ── Header ─────────────────────────────────────── */
-.kt-header{
-  background:var(--navy);height:56px;display:flex;align-items:center;
-  justify-content:space-between;padding:0 1.4rem;
-  border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:200;
-}
-.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.4rem;}
-.kt-logo span{color:var(--acc);font-size:.6rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;letter-spacing:.04em;}
-.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.28rem .7rem;}
-.back-btn:hover{background:var(--acc);color:var(--navy);}
+/* HEADER */
+.kt-header{background:var(--kt-primary);height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--kt-accent);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--kt-accent);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{background:rgba(110,198,160,.2);border:1.5px solid rgba(110,198,160,.4);color:var(--kt-accent);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.25rem .7rem;border-radius:20px;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border-radius:20px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--kt-accent);font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;}
+.btn-back:hover{background:rgba(110,198,160,.22);}
 
-/* ── Slim Tab-Leiste ─────────────────────────────── */
-.tab-bar{
-  position:sticky;top:56px;z-index:190;
-  background:var(--navy);border-bottom:1px solid rgba(110,198,160,.25);
-  display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;
-  padding:0 .6rem;gap:.15rem;
-}
-.tab-bar::-webkit-scrollbar{display:none;}
-.tab-btn{
-  flex-shrink:0;
-  display:inline-flex;align-items:center;gap:.35rem;
-  padding:.52rem .85rem;font-size:.72rem;font-weight:700;
-  color:rgba(255,255,255,.6);border:none;background:transparent;
-  cursor:pointer;border-bottom:2.5px solid transparent;
-  transition:color .15s,border-color .15s;white-space:nowrap;
-  font-family:"DM Sans",sans-serif;letter-spacing:.02em;
-}
-.tab-btn:hover{color:rgba(255,255,255,.9);}
-.tab-btn.aktiv{color:#fff;border-bottom-color:var(--acc);}
-.tab-btn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* PAGE */
+.page-wrap{max-width:920px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.page-header{margin-bottom:1.5rem;}
+.page-tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;background:#E8F5E9;color:#2E7D32;margin-bottom:.5rem;}
+.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
+.page-lead{font-size:.9rem;color:var(--kt-muted);max-width:600px;}
 
-/* ── Hero ────────────────────────────────────────── */
-.hero{
-  background:linear-gradient(135deg,var(--navy) 0%,#0F2230 100%);
-  padding:2rem 1.5rem 1.6rem;margin-bottom:0;
-}
-.hero-inner{max-width:1000px;margin:0 auto;}
-.hero h1{font-family:"Playfair Display",serif;font-size:1.6rem;color:#fff;margin-bottom:.35rem;}
-.hero p{font-size:.83rem;color:rgba(255,255,255,.65);line-height:1.6;max-width:560px;}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:.3rem;margin-top:.7rem;
-  background:rgba(110,198,160,.18);border:1px solid rgba(110,198,160,.35);
-  color:var(--acc);border-radius:12px;padding:.25rem .7rem;font-size:.68rem;font-weight:700;
-}
+/* ZIELGRUPPEN-TABS */
+.zg-tabs{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.5rem;}
+.zg-tab{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .85rem;border-radius:20px;border:1.5px solid var(--kt-border);background:var(--kt-surface);font-size:.75rem;font-weight:700;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--kt-muted);}
+.zg-tab:hover{border-color:var(--c);color:var(--c);}
+.zg-tab.aktiv{background:var(--c);color:#fff;border-color:var(--c);}
 
-/* ── Suche ───────────────────────────────────────── */
-.such-leiste{background:var(--surface);border-bottom:1px solid var(--border);padding:.7rem 1.4rem;}
-.such-leiste-inner{max-width:1000px;margin:0 auto;position:relative;}
-.such-leiste input{
-  width:100%;border:1.5px solid var(--border);border-radius:22px;
-  padding:.5rem 1rem .5rem 2.2rem;font-family:inherit;font-size:.84rem;color:var(--ink);
-  background:var(--paper);
-}
-.such-leiste input:focus{outline:none;border-color:var(--navy);}
-.such-icon{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--muted);}
+/* SEKTIONEN */
+.dl-sektion{display:none;margin-bottom:2rem;}
+.dl-sektion.aktiv{display:block;}
 
-/* ── Inhalt ──────────────────────────────────────── */
-main{max-width:1000px;margin:0 auto;padding:1.6rem 1rem 4rem;}
+/* SEKTION-HEADER */
+.dl-sek-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--c);}
+.dl-sek-dot{width:12px;height:12px;border-radius:50%;background:var(--c);flex-shrink:0;}
+.dl-sek-titel{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--kt-primary);}
+.dl-sek-sub{font-size:.72rem;color:var(--kt-muted);margin-left:auto;}
 
-.kat-sektion{display:none;}
-.kat-sektion.aktiv{display:block;}
+/* KATEGORIE-LABEL */
+.dl-kat-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--kt-muted);margin:1.1rem 0 .5rem;display:flex;align-items:center;gap:.5rem;}
+.dl-kat-label::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--kt-border),transparent);}
 
-.kat-titel{
-  font-family:"Playfair Display",serif;font-size:1.05rem;color:var(--navy);
-  margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem;
-}
-.kat-stripe{width:4px;height:1.1rem;border-radius:2px;}
+/* DOWNLOAD-GRID */
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.65rem;}
 
-/* ── Kachel-Grid ─────────────────────────────────── */
-.kachel-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:.9rem;
-}
+/* DOWNLOAD-KARTE */
+.dl-karte{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-left:4px solid var(--c);border-radius:var(--r-md);padding:.75rem 1rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.2rem;transition:transform .15s,box-shadow .15s;box-shadow:var(--shadow);}
+.dl-karte:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.dl-karte-nr{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c);}
+.dl-karte-titel{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--kt-primary);line-height:1.25;margin-top:.05rem;}
+.dl-karte-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;margin-top:.05rem;}
+.dl-badge{display:inline-block;font-size:.58rem;font-weight:700;padding:.1rem .4rem;border-radius:3px;margin-top:.3rem;background:var(--c);color:#fff;opacity:.8;}
 
-.dl-kachel{
-  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);
-  padding:1.1rem 1rem 1rem;box-shadow:var(--shadow);
-  display:flex;flex-direction:column;gap:.45rem;
-  transition:box-shadow .18s,transform .18s;text-decoration:none;color:inherit;
-  position:relative;overflow:hidden;
-}
-.dl-kachel:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
-.dl-kachel::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
-  background:var(--kachel-farbe, var(--muted));
-}
-.dl-kachel-icon{font-size:1.5rem;line-height:1;}
-.dl-kachel-titel{font-weight:700;font-size:.88rem;color:var(--ink);line-height:1.3;}
-.dl-kachel-sub{font-size:.72rem;color:var(--muted);line-height:1.45;}
-.dl-kachel-typ{
-  display:inline-flex;align-items:center;gap:.25rem;margin-top:auto;
-  font-size:.65rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-  color:var(--kachel-farbe, var(--muted));
-}
-.dl-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:.3rem;
-  margin-top:.3rem;padding:.42rem .8rem;border-radius:16px;
-  background:var(--kachel-farbe, var(--muted));color:#fff;
-  font-size:.72rem;font-weight:700;font-family:inherit;border:none;cursor:pointer;
-  text-decoration:none;
-}
-.dl-btn:hover{opacity:.85;}
+/* ALLE-SEKTION */
+.alle-hinweis{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);padding:1rem 1.25rem;font-size:.83rem;color:var(--kt-muted);line-height:1.6;margin-bottom:1.2rem;}
+.alle-hinweis strong{color:var(--kt-primary);}
 
-/* Eigene-Kachel Upload */
-.upload-kachel{
-  border:2px dashed var(--border);background:var(--paper);
-  align-items:center;justify-content:center;text-align:center;min-height:140px;cursor:pointer;
-}
-.upload-kachel:hover{border-color:var(--navy);background:#EEF3F6;}
-.upload-kachel .upload-icon{font-size:2rem;margin-bottom:.4rem;color:var(--muted);}
-.upload-kachel .upload-txt{font-size:.78rem;color:var(--muted);}
+/* FOOTER */
+footer{background:var(--kt-primary);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--kt-accent);}
 
-/* Zähler-Badge im Tab */
-.tab-count{
-  background:rgba(255,255,255,.15);color:#fff;border-radius:8px;
-  padding:.05rem .4rem;font-size:.62rem;
-}
-
-/* ── Responsive ──────────────────────────────────── */
-@media(max-width:600px){
-  .kachel-grid{grid-template-columns:1fr 1fr;}
-  .hero h1{font-size:1.25rem;}
-}
-@media(max-width:380px){
-  .kachel-grid{grid-template-columns:1fr;}
-}
+@media(max-width:500px){.dl-grid{grid-template-columns:1fr;}.zg-tabs{gap:.3rem;}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="kt-header">
-  <div class="kt-logo">KLARTEXT <span>Downloads · Premium</span></div>
-  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+  <div style="display:flex;align-items:center;gap:.9rem;">
+    <a class="kt-logo" href="DASHBOARD.html">
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Downloads & Formulare</span></div>
+    </a>
+    <div class="header-badge">📥 Downloads</div>
+  </div>
+  <nav><a class="btn-back" href="DASHBOARD.html">← Dashboard</a></nav>
 </header>
 
-<!-- SLIM TABS -->
-<nav class="tab-bar" id="tabBar">
-  <button class="tab-btn aktiv" data-kat="fw"  onclick="wechsleTab('fw',this)"><span class="dot" style="background:var(--c-fw);"></span>Feuerwehr <span class="tab-count" id="cnt-fw"></span></button>
-  <button class="tab-btn" data-kat="ki"  onclick="wechsleTab('ki',this)"><span class="dot" style="background:var(--c-ki);"></span>Kinder <span class="tab-count" id="cnt-ki"></span></button>
-  <button class="tab-btn" data-kat="to"  onclick="wechsleTab('to',this)"><span class="dot" style="background:var(--c-to);"></span>Tools <span class="tab-count" id="cnt-to"></span></button>
-  <button class="tab-btn" data-kat="tk"  onclick="wechsleTab('tk',this)"><span class="dot" style="background:var(--c-tk);"></span>TK <span class="tab-count" id="cnt-tk"></span></button>
-  <button class="tab-btn" data-kat="lk"  onclick="wechsleTab('lk',this)"><span class="dot" style="background:var(--c-lk);"></span>LK <span class="tab-count" id="cnt-lk"></span></button>
-  <button class="tab-btn" data-kat="fk"  onclick="wechsleTab('fk',this)"><span class="dot" style="background:var(--c-fk);"></span>FK <span class="tab-count" id="cnt-fk"></span></button>
-  <button class="tab-btn" data-kat="mm"  onclick="wechsleTab('mm',this)"><span class="dot" style="background:var(--c-mm);"></span>M-Module <span class="tab-count" id="cnt-mm"></span></button>
-  <button class="tab-btn" data-kat="ei"  onclick="wechsleTab('ei',this)"><span class="dot" style="background:var(--c-ei);"></span>Eigene <span class="tab-count" id="cnt-ei"></span></button>
-</nav>
+<div class="page-wrap">
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-inner">
-    <h1>Downloads & Materialien</h1>
-    <p>Alle KLARTEXT-Ressourcen — Karten, Formulare, Handbücher, Vorlagen — sortiert nach Bereich. Klick auf eine Kachel öffnet den direkten Download.</p>
-    <div class="hero-badge">⭐ Premium · Alle Bereiche freigeschaltet</div>
+  <div class="page-header">
+    <div class="page-tag">Downloads & Formulare · 6 Zielgruppen</div>
+    <h1 class="page-titel">Download-Zentrale</h1>
+    <p class="page-lead">Alle Formulare, Vorlagen und Druckmaterialien — nach Zielgruppe sortiert. Sofort nutzbar, druckeroptimiert.</p>
   </div>
-</div>
 
-<!-- SUCHE -->
-<div class="such-leiste">
-  <div class="such-leiste-inner">
-    <span class="such-icon">🔍</span>
-    <input type="text" id="suchfeld" placeholder="Material suchen …" oninput="suchFilter(this.value)">
+  <!-- ZIELGRUPPEN-TABS -->
+  <div class="zg-tabs">
+    <a class="zg-tab aktiv" style="--c:var(--c-ingra);" onclick="zeigeZG('ingra',this);return false;" href="#">👩‍💼 INGRA</a>
+    <a class="zg-tab" style="--c:var(--c-eltern);" onclick="zeigeZG('eltern',this);return false;" href="#">👨‍👩‍👧 Eltern</a>
+    <a class="zg-tab" style="--c:var(--c-lk);" onclick="zeigeZG('lk',this);return false;" href="#">🏫 Lehrkraft</a>
+    <a class="zg-tab" style="--c:var(--c-tk);" onclick="zeigeZG('tk',this);return false;" href="#">🗂️ Teamkoordination</a>
+    <a class="zg-tab" style="--c:var(--c-kinder);" onclick="zeigeZG('kinder',this);return false;" href="#">👶 Kinder</a>
+    <a class="zg-tab" style="--c:var(--c-mobbing);" onclick="zeigeZG('mobbing',this);return false;" href="#">🛑 Anti-Mobbing</a>
   </div>
-</div>
 
-<!-- INHALT -->
-<main id="hauptinhalt">
+  <!-- ═══════════════════════════════════════════════
+       INGRA
+  ═══════════════════════════════════════════════ -->
+  <div class="dl-sektion aktiv" id="zg-ingra" style="--c:var(--c-ingra);">
+    <div class="dl-sek-header">
+      <div class="dl-sek-dot"></div>
+      <div class="dl-sek-titel">INGRA · Formulare & Dokumentation</div>
+      <div class="dl-sek-sub">11 Materialien</div>
+    </div>
 
-  <!-- FEUERWEHR -->
-  <section class="kat-sektion aktiv" id="kat-fw">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-fw);"></span>🚒 Feuerwehrkarten</div>
-    <div class="kachel-grid" id="grid-fw"></div>
-  </section>
+    <div class="dl-kat-label">Tagesdokumentation & Berichte</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="F-01_Tagesdokumentation.html">
+        <div class="dl-karte-nr">F-01</div>
+        <div class="dl-karte-titel">Tagesdokumentation</div>
+        <div class="dl-karte-sub">Barometer-Verlauf · Ereignisse · Interventionen</div>
+        <span class="dl-badge">Täglich</span>
+      </a>
+      <a class="dl-karte" href="F-02_Wochenreflexion.html">
+        <div class="dl-karte-nr">F-02</div>
+        <div class="dl-karte-titel">Wochenreflexion</div>
+        <div class="dl-karte-sub">Rückblick · Muster · Nächste Woche</div>
+        <span class="dl-badge">Wöchentlich</span>
+      </a>
+      <a class="dl-karte" href="F-03_Monatsbericht.html">
+        <div class="dl-karte-nr">F-03</div>
+        <div class="dl-karte-titel">Monatsbericht</div>
+        <div class="dl-karte-sub">Entwicklung · Ziele · Träger-konform</div>
+        <span class="dl-badge">Monatlich</span>
+      </a>
+      <a class="dl-karte" href="F-04_Uebergabeprotokoll.html">
+        <div class="dl-karte-nr">F-04</div>
+        <div class="dl-karte-titel">Übergabeprotokoll</div>
+        <div class="dl-karte-sub">Vertretung · Infos · Übergabe strukturiert</div>
+        <span class="dl-badge">Bei Bedarf</span>
+      </a>
+    </div>
 
-  <!-- KINDER -->
-  <section class="kat-sektion" id="kat-ki">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-ki);"></span>👶 Kinder</div>
-    <div class="kachel-grid" id="grid-ki"></div>
-  </section>
+    <div class="dl-kat-label">Beobachtung & Ziele</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="F-05_Beobachtungsbogen.html">
+        <div class="dl-karte-nr">F-05</div>
+        <div class="dl-karte-titel">Beobachtungsbogen</div>
+        <div class="dl-karte-sub">Strukturierte Beobachtung · Verhalten · Entwicklung</div>
+        <span class="dl-badge">Beobachtung</span>
+      </a>
+      <a class="dl-karte" href="F-06_Zielvereinbarung.html">
+        <div class="dl-karte-nr">F-06</div>
+        <div class="dl-karte-titel">Zielvereinbarung</div>
+        <div class="dl-karte-sub">SMART-Ziele · Kind · INGRA · TK</div>
+        <span class="dl-badge">Hilfeplan</span>
+      </a>
+      <a class="dl-karte" href="F-07_Gespraechsnotiz.html">
+        <div class="dl-karte-nr">F-07</div>
+        <div class="dl-karte-titel">Gesprächsnotiz</div>
+        <div class="dl-karte-sub">Schule · Eltern · TK · Kostenträger</div>
+        <span class="dl-badge">Dokumentation</span>
+      </a>
+    </div>
 
-  <!-- TOOLS -->
-  <section class="kat-sektion" id="kat-to">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-to);"></span>🛠️ Tools</div>
-    <div class="kachel-grid" id="grid-to"></div>
-  </section>
+    <div class="dl-kat-label">Schutz & Gesundheit</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="F-08_SB_Schutzprotokoll.html">
+        <div class="dl-karte-nr">F-08</div>
+        <div class="dl-karte-titel">SB-Schutzprotokoll</div>
+        <div class="dl-karte-sub">§ 8a · Kindeswohlgefährdung · Meldekette</div>
+        <span class="dl-badge">Schutz</span>
+      </a>
+      <a class="dl-karte" href="F-09_Esstoerung_Bogen.html">
+        <div class="dl-karte-nr">F-09</div>
+        <div class="dl-karte-titel">Essstörung-Bogen</div>
+        <div class="dl-karte-sub">Beobachtung · Frühwarnzeichen · Dokumentation</div>
+        <span class="dl-badge">Gesundheit</span>
+      </a>
+    </div>
 
-  <!-- TK -->
-  <section class="kat-sektion" id="kat-tk">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-tk);"></span>🗂️ Teamkoordination</div>
-    <div class="kachel-grid" id="grid-tk"></div>
-  </section>
+    <div class="dl-kat-label">Tools & Selbstfürsorge</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="BAROMETER_INGRA.html">
+        <div class="dl-karte-nr">Tool</div>
+        <div class="dl-karte-titel">Barometer interaktiv</div>
+        <div class="dl-karte-sub">6 Stufen · Farben · Bedeutung · Druckversion</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="F-Selbstfuersorge_Bingo.html">
+        <div class="dl-karte-nr">Tool</div>
+        <div class="dl-karte-titel">Selbstfürsorge-Bingo</div>
+        <div class="dl-karte-sub">25 Felder · Wöchentliche Herausforderung</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+    </div>
+  </div>
 
-  <!-- LK -->
-  <section class="kat-sektion" id="kat-lk">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-lk);"></span>🏫 Lehrkraft</div>
-    <div class="kachel-grid" id="grid-lk"></div>
-  </section>
+  <!-- ═══════════════════════════════════════════════
+       ELTERN
+  ═══════════════════════════════════════════════ -->
+  <div class="dl-sektion" id="zg-eltern" style="--c:var(--c-eltern);">
+    <div class="dl-sek-header">
+      <div class="dl-sek-dot"></div>
+      <div class="dl-sek-titel">Eltern · Materialien für zuhause</div>
+      <div class="dl-sek-sub">5 Materialien</div>
+    </div>
 
-  <!-- FK -->
-  <section class="kat-sektion" id="kat-fk">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-fk);"></span>👥 Fachkraft</div>
-    <div class="kachel-grid" id="grid-fk"></div>
-  </section>
+    <div class="dl-kat-label">Barometer & Orientierung</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="AM_DL_Barometer_Poster.html">
+        <div class="dl-karte-nr">Eltern</div>
+        <div class="dl-karte-titel">Barometer-Poster</div>
+        <div class="dl-karte-sub">A4 · Für den Kühlschrank · 6 Stufen erklärt</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="BAROMETER_KIND.html">
+        <div class="dl-karte-nr">Eltern</div>
+        <div class="dl-karte-titel">Kinder-Barometer</div>
+        <div class="dl-karte-sub">Vereinfachte Version · Mit Kind zusammen nutzen</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+    </div>
 
-  <!-- M-MODULE -->
-  <section class="kat-sektion" id="kat-mm">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-mm);"></span>📚 M-Module</div>
-    <div class="kachel-grid" id="grid-mm"></div>
-  </section>
+    <div class="dl-kat-label">Alltag & Rituale</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="AM_DL_Morgenritual.html">
+        <div class="dl-karte-nr">Eltern</div>
+        <div class="dl-karte-titel">Morgenritual-Karte</div>
+        <div class="dl-karte-sub">Schritt-für-Schritt · Morgen strukturieren</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="AM_DL_Eltern_Wochennotiz.html">
+        <div class="dl-karte-nr">Eltern</div>
+        <div class="dl-karte-titel">Eltern-Wochennotiz</div>
+        <div class="dl-karte-sub">Beobachtungen · Fragen · Themen für Gespräch</div>
+        <span class="dl-badge">Wöchentlich</span>
+      </a>
+      <a class="dl-karte" href="AM_DL_Notfallkontakte.html">
+        <div class="dl-karte-nr">Eltern</div>
+        <div class="dl-karte-titel">Notfallkontakte</div>
+        <div class="dl-karte-sub">Schule · Träger · Kostenträger · Krisentelefon</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+    </div>
+  </div>
 
-  <!-- EIGENE -->
-  <section class="kat-sektion" id="kat-ei">
-    <div class="kat-titel"><span class="kat-stripe" style="background:var(--c-ei);"></span>📁 Eigene Materialien</div>
-    <div class="kachel-grid" id="grid-ei"></div>
-  </section>
+  <!-- ═══════════════════════════════════════════════
+       LEHRKRAFT
+  ═══════════════════════════════════════════════ -->
+  <div class="dl-sektion" id="zg-lk" style="--c:var(--c-lk);">
+    <div class="dl-sek-header">
+      <div class="dl-sek-dot"></div>
+      <div class="dl-sek-titel">Lehrkraft · Materialien zum Weitergeben</div>
+      <div class="dl-sek-sub">LK-Karten · Weitergabefähig</div>
+    </div>
 
-</main>
+    <div class="dl-kat-label">Lehrkraft-Karten (17 Karten)</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="KLARTEXT_LK_Info.html">
+        <div class="dl-karte-nr">LK · Übersicht</div>
+        <div class="dl-karte-titel">Alle LK-Karten</div>
+        <div class="dl-karte-sub">17 Karten · Direkt teilbar · Kein Login nötig</div>
+        <span class="dl-badge">Übersicht</span>
+      </a>
+      <a class="dl-karte" href="LK-17_ADHS_Uebergang.html">
+        <div class="dl-karte-nr">LK-17 · Neu</div>
+        <div class="dl-karte-titel">ADHS & Ausbildungsreife</div>
+        <div class="dl-karte-sub">Übergang Schule → Beruf · KAoA · Nachteilsausgleich</div>
+        <span class="dl-badge">Übergang</span>
+      </a>
+    </div>
+
+    <div class="dl-kat-label">Zusammenarbeit INGRA ↔ Lehrkraft</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="AM_DL_Klassenvertrag.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Klassenvertrag</div>
+        <div class="dl-karte-sub">Gemeinsame Regeln · Klasse & INGRA</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="AM_DL_So_melde_ich_Mobbing.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">So melde ich Mobbing</div>
+        <div class="dl-karte-sub">Für Lehrkräfte · Klare Schritte</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       TEAMKOORDINATION
+  ═══════════════════════════════════════════════ -->
+  <div class="dl-sektion" id="zg-tk" style="--c:var(--c-tk);">
+    <div class="dl-sek-header">
+      <div class="dl-sek-dot"></div>
+      <div class="dl-sek-titel">Teamkoordination · Formulare & Protokolle</div>
+      <div class="dl-sek-sub">TK-Formulare · Checklisten</div>
+    </div>
+
+    <div class="dl-kat-label">Recruiting</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="TK-Recruiting.html#gespräch">
+        <div class="dl-karte-nr">TK-R · 01</div>
+        <div class="dl-karte-titel">Erstgespräch-Bogen</div>
+        <div class="dl-karte-sub">Kandidat · Stelle · Schule · Kompatibilität</div>
+        <span class="dl-badge">Formular</span>
+      </a>
+      <a class="dl-karte" href="TK-Recruiting.html#entscheidung">
+        <div class="dl-karte-nr">TK-R · 04</div>
+        <div class="dl-karte-titel">Entscheidungs-Matrix</div>
+        <div class="dl-karte-sub">5 Kriterien · Ampel · Votum dokumentieren</div>
+        <span class="dl-badge">Formular</span>
+      </a>
+      <a class="dl-karte" href="TK-Recruiting.html#dokumentation">
+        <div class="dl-karte-nr">TK-R · 06</div>
+        <div class="dl-karte-titel">Recruiting-Dokumentation</div>
+        <div class="dl-karte-sub">Träger-konform · Ablage · Export</div>
+        <span class="dl-badge">Protokoll</span>
+      </a>
+    </div>
+
+    <div class="dl-kat-label">Fallmanagement</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="TK-Recruiting.html#case_start">
+        <div class="dl-karte-nr">FM · Start</div>
+        <div class="dl-karte-titel">Fallakte anlegen</div>
+        <div class="dl-karte-sub">Stammdaten · Kind · Stelle · Träger</div>
+        <span class="dl-badge">Formular</span>
+      </a>
+      <a class="dl-karte" href="TK-Recruiting.html#case_risk">
+        <div class="dl-karte-nr">FM · Risiko</div>
+        <div class="dl-karte-titel">Risiko-Ampel</div>
+        <div class="dl-karte-sub">Grün · Gelb · Rot · Maßnahmen</div>
+        <span class="dl-badge">Checkliste</span>
+      </a>
+    </div>
+
+    <div class="dl-kat-label">Checklisten</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="TK-Recruiting.html#sab">
+        <div class="dl-karte-nr">TK-R · 07</div>
+        <div class="dl-karte-titel">TK-Selbstcheck</div>
+        <div class="dl-karte-sub">Prozesssicherheit · Haltung · Qualität</div>
+        <span class="dl-badge">Checkliste</span>
+      </a>
+      <a class="dl-karte" href="Kinderverwaltung.html">
+        <div class="dl-karte-nr">KV</div>
+        <div class="dl-karte-titel">Kinderliste exportieren</div>
+        <div class="dl-karte-sub">CSV-Export · Alle Kinder · Datenschutzhinweis</div>
+        <span class="dl-badge">Export</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       KINDER
+  ═══════════════════════════════════════════════ -->
+  <div class="dl-sektion" id="zg-kinder" style="--c:var(--c-kinder);">
+    <div class="dl-sek-header">
+      <div class="dl-sek-dot"></div>
+      <div class="dl-sek-titel">Kinder · Druckvorlagen & interaktive Tools</div>
+      <div class="dl-sek-sub">14 Materialien</div>
+    </div>
+
+    <div class="dl-kat-label">Interaktive Tools</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="KD-01.html">
+        <div class="dl-karte-nr">KD-01</div>
+        <div class="dl-karte-titel">Wie geht es mir?</div>
+        <div class="dl-karte-sub">Barometer für Kinder · 6 Stufen</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-03.html">
+        <div class="dl-karte-nr">KD-03</div>
+        <div class="dl-karte-titel">Die Stopp-Taste</div>
+        <div class="dl-karte-sub">Stopp sagen üben · Grenzen</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-04.html">
+        <div class="dl-karte-nr">KD-04</div>
+        <div class="dl-karte-titel">Atem-Pause</div>
+        <div class="dl-karte-sub">Atemübung · Beruhigung</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-05.html">
+        <div class="dl-karte-nr">KD-05</div>
+        <div class="dl-karte-titel">Mein Schultag</div>
+        <div class="dl-karte-sub">Tagesplan · Struktur geben</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-06.html">
+        <div class="dl-karte-nr">KD-06</div>
+        <div class="dl-karte-titel">Wut-Weg</div>
+        <div class="dl-karte-sub">Wut regulieren · Strategien</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-07.html">
+        <div class="dl-karte-nr">KD-07</div>
+        <div class="dl-karte-titel">Die liegende Acht</div>
+        <div class="dl-karte-sub">Bewegungsübung · Konzentration</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-08.html">
+        <div class="dl-karte-nr">KD-08</div>
+        <div class="dl-karte-titel">Meine Insel</div>
+        <div class="dl-karte-sub">Ruhebild · Entspannung</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+      <a class="dl-karte" href="KD-09.html">
+        <div class="dl-karte-nr">KD-09</div>
+        <div class="dl-karte-titel">Tag-Check</div>
+        <div class="dl-karte-sub">Tagesrückblick · Reflexion</div>
+        <span class="dl-badge">Interaktiv</span>
+      </a>
+    </div>
+
+    <div class="dl-kat-label">Druckvorlagen</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="KD-DL-01.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Geheimschüler-Ausweis</div>
+        <div class="dl-karte-sub">A6 · Druckvorlage · Original</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-02_Klokarten.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Klo-Kärtchen</div>
+        <div class="dl-karte-sub">Druckvorlage · Pause signalisieren</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-DL-02.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Joker-Gutscheine</div>
+        <div class="dl-karte-sub">Notfallsignal · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-DL-03.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Sterntaler</div>
+        <div class="dl-karte-sub">Lob · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-04_Lobarmband.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Lob-Armband</div>
+        <div class="dl-karte-sub">Belohnung · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-05_Lobkaertchen.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Lob-Kärtchen</div>
+        <div class="dl-karte-sub">Wertschätzung · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-06_MiniFitness.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Mini-Fitness</div>
+        <div class="dl-karte-sub">Bewegung · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-08_HimmelHoelle.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Himmel & Hölle</div>
+        <div class="dl-karte-sub">Spiel · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="KD-10_Mutmachkaertchen.html">
+        <div class="dl-karte-nr">Druck</div>
+        <div class="dl-karte-titel">Mutmach-Kärtchen</div>
+        <div class="dl-karte-sub">Stärken · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       ANTI-MOBBING
+  ═══════════════════════════════════════════════ -->
+  <div class="dl-sektion" id="zg-mobbing" style="--c:var(--c-mobbing);">
+    <div class="dl-sek-header">
+      <div class="dl-sek-dot"></div>
+      <div class="dl-sek-titel">Anti-Mobbing · Materialien für alle</div>
+      <div class="dl-sek-sub">Für Kinder · Eltern · Schule</div>
+    </div>
+
+    <div class="dl-kat-label">Für Kinder</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="AM_DL_Meine_Verbuendeten.html">
+        <div class="dl-karte-nr">AM · Kinder</div>
+        <div class="dl-karte-titel">Meine Verbündeten</div>
+        <div class="dl-karte-sub">Wen kann ich fragen? · Netzwerkkarte</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="AM_DL_Stoppschild.html">
+        <div class="dl-karte-nr">AM · Kinder</div>
+        <div class="dl-karte-titel">Stopp-Schild</div>
+        <div class="dl-karte-sub">Grenzen zeigen · Druckvorlage</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="AM_DL_So_melde_ich_Mobbing.html">
+        <div class="dl-karte-nr">AM · Kinder</div>
+        <div class="dl-karte-titel">So melde ich Mobbing</div>
+        <div class="dl-karte-sub">Schritt-für-Schritt · Für Kinder</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+    </div>
+
+    <div class="dl-kat-label">Für Eltern & Schule</div>
+    <div class="dl-grid">
+      <a class="dl-karte" href="AM_DL_Klassenvertrag.html">
+        <div class="dl-karte-nr">AM · Klasse</div>
+        <div class="dl-karte-titel">Klassenvertrag</div>
+        <div class="dl-karte-sub">Gemeinsame Regeln · Unterschriften</div>
+        <span class="dl-badge">Drucken</span>
+      </a>
+      <a class="dl-karte" href="M6-01_Mobbing_erkennen.html">
+        <div class="dl-karte-nr">M6-01</div>
+        <div class="dl-karte-titel">Mobbing erkennen</div>
+        <div class="dl-karte-sub">3 Merkmale · Konflikt vs. Mobbing</div>
+        <span class="dl-badge">Karte</span>
+      </a>
+      <a class="dl-karte" href="M6-06_Mobbing_und_Lehrkraft.html">
+        <div class="dl-karte-nr">M6-06</div>
+        <div class="dl-karte-titel">Mobbing & Lehrkraft</div>
+        <div class="dl-karte-sub">Weitergabefähig · Zusammenarbeit</div>
+        <span class="dl-badge">LK-Karte</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /.page-wrap -->
+
+<footer>
+  <strong>KLARTEXT</strong> · Downloads & Formulare · 6 Zielgruppen<br>
+  Klar. Warm. Menschlich. · © 2026 Anja Jolk
+</footer>
 
 <script>
-// ── Materialdaten ──────────────────────────────────────────
-// href: Pfad zu deiner Datei anpassen
-var MATERIALIEN = [
-
-  // FEUERWEHR
-  { kat:'fw', icon:'🚒', titel:'Feuerwehrkarte M0', sub:'Modul 0 · Grundlagen · Notfall-Protokoll', typ:'PDF', href:'#', farbe:'var(--c-fw)' },
-  { kat:'fw', icon:'🔴', titel:'Eskalationskarte', sub:'5-stufiges Barometer · Handlungsschritte', typ:'PDF', farbe:'var(--c-fw)' },
-  { kat:'fw', icon:'📋', titel:'Feuerwehrprotokoll', sub:'Dokumentationsbogen Krisensituation', typ:'PDF', farbe:'var(--c-fw)' },
-  { kat:'fw', icon:'🧭', titel:'Deeskalationsleitfaden', sub:'KLAR-Modell kompakt · Druckvorlage', typ:'PDF', farbe:'var(--c-fw)' },
-  { kat:'fw', icon:'📌', titel:'Checkliste Akutsituation', sub:'Sofortmaßnahmen · Schritt für Schritt', typ:'PDF', farbe:'var(--c-fw)' },
-  { kat:'fw', icon:'🖨️', titel:'Postervorlage Barometer', sub:'A3 · Klassenraum-Aushang', typ:'POSTER', farbe:'var(--c-fw)' },
-
-  // KINDER
-  { kat:'ki', icon:'👶', titel:'Kinderprofil-Vorlage', sub:'Stammdaten · Bezugspersonen · Notizen', typ:'DOCX', farbe:'var(--c-ki)' },
-  { kat:'ki', icon:'🌡️', titel:'Barometer-Tageskarte Kind', sub:'5 Stufen · Selbsteinschätzung', typ:'PDF', farbe:'var(--c-ki)' },
-  { kat:'ki', icon:'📓', titel:'Tagesjournal Kind', sub:'Wöchentliche Übersicht · Druckvorlage', typ:'PDF', farbe:'var(--c-ki)' },
-  { kat:'ki', icon:'💬', titel:'Gesprächsleitfaden Eltern', sub:'Erstkontakt · Regelmäßige Rückmeldung', typ:'PDF', farbe:'var(--c-ki)' },
-  { kat:'ki', icon:'🎯', titel:'Förderziel-Bogen', sub:'Kurzform · Halbjährig', typ:'DOCX', farbe:'var(--c-ki)' },
-  { kat:'ki', icon:'📊', titel:'Entwicklungsraster', sub:'Beobachtungsbogen · 4 Bereiche', typ:'PDF', farbe:'var(--c-ki)' },
-
-  // TOOLS
-  { kat:'to', icon:'📅', titel:'Wochenplan INGRA', sub:'Mo–Fr · Zeiteinteilung · Druckvorlage', typ:'PDF', farbe:'var(--c-to)' },
-  { kat:'to', icon:'⏱️', titel:'Zeitkonto-Tabelle', sub:'Stunden · Übersicht · Excel-Vorlage', typ:'XLSX', farbe:'var(--c-to)' },
-  { kat:'to', icon:'📝', titel:'Übergabeprotokoll', sub:'TK-Weiterleitung · Kurzform', typ:'PDF', farbe:'var(--c-to)' },
-  { kat:'to', icon:'✅', titel:'To-do-Vorlage', sub:'Wöchentlich · Prioritäten A–C', typ:'PDF', farbe:'var(--c-to)' },
-  { kat:'to', icon:'📤', titel:'Weiterleitungsformular', sub:'INGRA → TK · Standardvorlage', typ:'PDF', farbe:'var(--c-to)' },
-  { kat:'to', icon:'🗂️', titel:'Fallmanagement-Starter', sub:'FM 01–05 ausgefüllt als Muster', typ:'PDF', farbe:'var(--c-to)' },
-
-  // TK
-  { kat:'tk', icon:'🗂️', titel:'TK-Recruiting-Leitfaden', sub:'Bewerbung · Auswahl · Matching · Gespräch', typ:'PDF', farbe:'var(--c-tk)' },
-  { kat:'tk', icon:'📋', titel:'Gesprächsprotokoll TK', sub:'TK-01 bis TK-08 · Formularsatz', typ:'PDF', farbe:'var(--c-tk)' },
-  { kat:'tk', icon:'📊', titel:'SAB-Selbstcheck TK', sub:'Checkliste Reflexion · Druckvorlage', typ:'PDF', farbe:'var(--c-tk)' },
-  { kat:'tk', icon:'🔔', titel:'Frist & Wiedervorlage', sub:'TK-08 · Fristen-Tracker', typ:'PDF', farbe:'var(--c-tk)' },
-  { kat:'tk', icon:'📁', titel:'TK-Akte Muster', sub:'Dokumentationsmappe komplett', typ:'PDF', farbe:'var(--c-tk)' },
-  { kat:'tk', icon:'👥', titel:'Matching-Matrix', sub:'Übersicht Person–Stelle–Schule', typ:'PDF', farbe:'var(--c-tk)' },
-
-  // LK
-  { kat:'lk', icon:'🏫', titel:'Lehrkraft-Karten L-01', sub:'Erstkontakt · Rollen klären', typ:'PDF', farbe:'var(--c-lk)' },
-  { kat:'lk', icon:'📚', titel:'Lehrkraft-Karten L-02', sub:'Kommunikation im Schulalltag', typ:'PDF', farbe:'var(--c-lk)' },
-  { kat:'lk', icon:'🤝', titel:'Lehrkraft-Karten L-03', sub:'Zusammenarbeit INGRA–LK', typ:'PDF', farbe:'var(--c-lk)' },
-  { kat:'lk', icon:'📋', titel:'Gesprächsleitfaden LK', sub:'Jahresgespräch · Rückmeldung', typ:'PDF', farbe:'var(--c-lk)' },
-  { kat:'lk', icon:'📊', titel:'Unterrichtsbeobachtung', sub:'Beobachtungsbogen Inklusion', typ:'PDF', farbe:'var(--c-lk)' },
-
-  // FK
-  { kat:'fk', icon:'👥', titel:'FK-Grundlagen', sub:'Rolle und Haltung · Selbstverständnis', typ:'PDF', farbe:'var(--c-fk)' },
-  { kat:'fk', icon:'🔍', titel:'FK-Beobachtungsbogen', sub:'Tagesstruktur · Verhalten · Kurzform', typ:'PDF', farbe:'var(--c-fk)' },
-  { kat:'fk', icon:'💼', titel:'FK-Profil Vorlage', sub:'Qualifikation · Einsatzbereiche', typ:'DOCX', farbe:'var(--c-fk)' },
-  { kat:'fk', icon:'📝', titel:'FK-Reflexionsbogen', sub:'Wöchentlich · Selbsteinschätzung', typ:'PDF', farbe:'var(--c-fk)' },
-
-  // M-MODULE
-  { kat:'mm', icon:'📘', titel:'M0 – Grundlagen', sub:'9 Karten · Brainy · KLAR-Modell · Barometer', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📙', titel:'M1 – Kommunikation', sub:'12 Karten · Sprache · Beziehung', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📗', titel:'M2 – Verhalten', sub:'23 Karten · Analyse · Strategien', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📒', titel:'M3 – Schulalltag', sub:'40 Karten · Strukturen · Routinen', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📕', titel:'M4 – Kooperation', sub:'15 Karten · TK · LK · Eltern', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📓', titel:'M5 – Selbstfürsorge', sub:'12 Karten · Ressourcen · Grenzen', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📔', titel:'M6 – Krisenintervention', sub:'3 Karten · Eskalation · Deeskalation', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📖', titel:'M7 – Dokumentation', sub:'20 Karten · Berichte · Protokolle', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📑', titel:'M8 – Übergang', sub:'12 Karten · Abschluss · Weitergabe', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'😄', titel:'Humor-Modul', sub:'8 Karten · Leichtigkeit · Haltung', typ:'PDF', farbe:'var(--c-mm)' },
-  { kat:'mm', icon:'📚', titel:'Lernhandbuch Komplett', sub:'134 Kapitel · M0–M8 + Humor', typ:'HTML', farbe:'var(--c-mm)' },
-
-  // EIGENE – Upload-Slot
-  { kat:'ei', icon:'', titel:'', sub:'', typ:'UPLOAD', farbe:'var(--c-ei)' }
-];
-
-// ── Kacheln rendern ────────────────────────────────────────
-function kachelHTML(m) {
-  if (m.typ === 'UPLOAD') {
-    return '<div class="dl-kachel upload-kachel" onclick="document.getElementById(\'upload-input\').click()">'
-      + '<div class="upload-icon">☁️</div>'
-      + '<div class="upload-txt">Eigene Datei hochladen<br><small style="font-size:.65rem;">PDF · DOCX · XLSX · HTML</small></div>'
-      + '</div>';
-  }
-  return '<a class="dl-kachel" href="' + (m.href || '#') + '" style="--kachel-farbe:' + m.farbe + ';" download>'
-    + '<div class="dl-kachel-icon">' + m.icon + '</div>'
-    + '<div class="dl-kachel-titel">' + m.titel + '</div>'
-    + '<div class="dl-kachel-sub">' + m.sub + '</div>'
-    + '<div class="dl-kachel-typ"><span>↓</span>' + m.typ + '</div>'
-    + '<a class="dl-btn" href="' + (m.href || '#') + '" download>↓ Download</a>'
-    + '</a>';
+function zeigeZG(id, tab) {
+  document.querySelectorAll('.dl-sektion').forEach(function(s){ s.classList.remove('aktiv'); });
+  document.querySelectorAll('.zg-tab').forEach(function(t){ t.classList.remove('aktiv'); });
+  document.getElementById('zg-' + id).classList.add('aktiv');
+  tab.classList.add('aktiv');
 }
-
-function renderAlle() {
-  var gruppen = {};
-  MATERIALIEN.forEach(function(m) {
-    if (!gruppen[m.kat]) gruppen[m.kat] = [];
-    gruppen[m.kat].push(m);
-  });
-  Object.keys(gruppen).forEach(function(kat) {
-    var grid = document.getElementById('grid-' + kat);
-    var cnt  = document.getElementById('cnt-' + kat);
-    if (!grid) return;
-    var echte = gruppen[kat].filter(function(m){ return m.typ !== 'UPLOAD'; });
-    if (cnt) cnt.textContent = echte.length;
-    grid.innerHTML = gruppen[kat].map(kachelHTML).join('');
-  });
-}
-
-// ── Tab-Wechsel ────────────────────────────────────────────
-function wechsleTab(kat, btn) {
-  document.querySelectorAll('.kat-sektion').forEach(function(s){ s.classList.remove('aktiv'); });
-  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
-  var sek = document.getElementById('kat-' + kat);
-  if (sek) sek.classList.add('aktiv');
-  if (btn) btn.classList.add('aktiv');
-  window.scrollTo({ top: document.querySelector('.hero').offsetTop, behavior: 'smooth' });
-}
-
-// ── Suchfilter ─────────────────────────────────────────────
-function suchFilter(q) {
-  q = q.toLowerCase().trim();
-  if (!q) {
-    // Alle Kacheln zeigen
-    document.querySelectorAll('.dl-kachel').forEach(function(el){ el.style.display = ''; });
-    return;
-  }
-  // Alle Sektionen sichtbar, gefilterte Kacheln
-  document.querySelectorAll('.kat-sektion').forEach(function(s){ s.classList.add('aktiv'); });
-  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
-  MATERIALIEN.forEach(function(m, i) {
-    var treffer = (m.titel + m.sub + m.typ).toLowerCase().includes(q);
-    // Kacheln per Index per data-idx finden
-    var kacheln = document.querySelectorAll('.dl-kachel:not(.upload-kachel)');
-    // Einfachere Methode: Text-Match auf gerenderte Kacheln
-  });
-  document.querySelectorAll('.dl-kachel:not(.upload-kachel)').forEach(function(el) {
-    var txt = (el.textContent || '').toLowerCase();
-    el.style.display = txt.includes(q) ? '' : 'none';
-  });
-}
-
-// ── Eigene Dateien (localStorage) ─────────────────────────
-function ladeEigene() {
-  try { return JSON.parse(localStorage.getItem('kt_eigene_downloads') || '[]'); } catch(e) { return []; }
-}
-function speichereEigene(liste) {
-  localStorage.setItem('kt_eigene_downloads', JSON.stringify(liste));
-}
-function renderEigene() {
-  var grid   = document.getElementById('grid-ei');
-  var eigene = ladeEigene();
-  var html   = eigene.map(function(f) {
-    return '<div class="dl-kachel" style="--kachel-farbe:var(--c-ei);">'
-      + '<div class="dl-kachel-icon">📄</div>'
-      + '<div class="dl-kachel-titel">' + f.name + '</div>'
-      + '<div class="dl-kachel-sub">Eigene Datei · ' + f.datum + '</div>'
-      + '<div class="dl-kachel-typ">↓ ' + f.typ + '</div>'
-      + '<button class="dl-btn" onclick="loescheEigene(\'' + f.id + '\')" style="background:var(--c-ei);">🗑️ Entfernen</button>'
-      + '</div>';
-  }).join('');
-  html += kachelHTML({ typ:'UPLOAD' });
-  grid.innerHTML = html;
-  var cnt = document.getElementById('cnt-ei');
-  if (cnt) cnt.textContent = eigene.length;
-}
-function loescheEigene(id) {
-  speichereEigene(ladeEigene().filter(function(f){ return f.id !== id; }));
-  renderEigene();
-}
-
-// Upload-Input (unsichtbar)
-document.addEventListener('DOMContentLoaded', function() {
-  var inp = document.createElement('input');
-  inp.type = 'file'; inp.id = 'upload-input'; inp.accept = '.pdf,.docx,.xlsx,.html';
-  inp.style.display = 'none';
-  inp.addEventListener('change', function() {
-    if (!inp.files || !inp.files[0]) return;
-    var f = inp.files[0];
-    var ext = f.name.split('.').pop().toUpperCase();
-    var eigene = ladeEigene();
-    eigene.push({
-      id: 'ei' + Date.now(),
-      name: f.name,
-      typ: ext,
-      datum: new Date().toLocaleDateString('de-DE')
-    });
-    speichereEigene(eigene);
-    renderEigene();
-    wechsleTab('ei', document.querySelector('[data-kat="ei"]'));
-    inp.value = '';
-  });
-  document.body.appendChild(inp);
-
-  renderAlle();
-  renderEigene();
-});
 </script>
 
 </body>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Anleitung Vertretungsassistent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tk:#4A148C;--tk-l:#F3E5FF;--tk-mid:#6A1B9A;
+  --kt-primary:#1B3A4B;--kt-paper:#F5F0E8;--kt-surface:#fff;
+  --kt-border:#DDD8CE;--kt-muted:#7A7060;--kt-ink:#2D2D2D;
+  --shadow:0 2px 10px rgba(27,58,75,.09);--shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);min-height:100vh;}
+
+.kt-header{background:var(--kt-primary);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:4px solid var(--tk);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-lg);}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff;display:block;}
+.kt-logo-text .claim{font-size:.62rem;color:rgba(255,255,255,.5);display:block;letter-spacing:.1em;}
+.header-badge{background:rgba(74,20,140,.3);border:1.5px solid rgba(206,147,216,.5);color:#CE93D8;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .65rem;border-radius:20px;}
+.btn-back{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .7rem;border-radius:20px;background:rgba(206,147,216,.12);border:1px solid rgba(206,147,216,.3);color:#CE93D8;font-size:.7rem;font-weight:700;text-decoration:none;}
+
+.brainy-banner{background:linear-gradient(135deg,#38006b,var(--tk));padding:.65rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:flex-start;gap:.75rem;border-bottom:2px solid rgba(206,147,216,.3);}
+.brainy-face{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.brainy-face img{width:36px;height:36px;object-fit:contain;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+
+.page-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+.page-tag{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.18rem .55rem;border-radius:4px;background:var(--tk-l);color:var(--tk);margin-bottom:.45rem;}
+.page-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3vw,1.75rem);font-weight:700;color:var(--kt-primary);margin-bottom:.3rem;}
+.page-lead{font-size:.85rem;color:var(--kt-muted);max-width:560px;line-height:1.55;margin-bottom:1.5rem;}
+
+/* SCHRITTE */
+.schritt{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-left:4px solid var(--tk);border-radius:var(--r-lg);padding:1rem 1.25rem;margin-bottom:.85rem;box-shadow:var(--shadow);}
+.schritt-nr{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tk);margin-bottom:.3rem;}
+.schritt-titel{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--kt-primary);margin-bottom:.4rem;}
+.schritt-text{font-size:.84rem;color:var(--kt-muted);line-height:1.6;}
+.schritt-text strong{color:var(--kt-ink);}
+
+/* HINWEIS-BOX */
+.hinweis{background:var(--tk-l);border-left:3px solid var(--tk);border-radius:0 var(--r-md) var(--r-md) 0;padding:.65rem .9rem;margin-top:.65rem;font-size:.8rem;color:var(--kt-ink);line-height:1.55;}
+.hinweis strong{color:var(--tk);}
+
+/* PROZESS-KETTE */
+.prozess{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem;margin:1rem 0;}
+.p-step{background:var(--tk-l);border:1px solid rgba(74,20,140,.3);border-radius:20px;padding:.22rem .7rem;font-size:.72rem;font-weight:600;color:var(--tk);}
+.p-arrow{color:var(--kt-muted);font-size:.8rem;}
+
+/* TIPPS */
+.tipp-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.5rem;}
+.tipp{background:#faf5ff;border:1.5px solid rgba(74,20,140,.15);border-radius:var(--r-md);padding:.65rem .85rem;}
+.tipp-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tk);margin-bottom:.25rem;}
+.tipp-text{font-size:.78rem;color:var(--kt-muted);line-height:1.45;}
+
+/* FAQ */
+.faq{border:1.5px solid var(--kt-border);border-radius:var(--r-md);overflow:hidden;margin-bottom:.5rem;box-shadow:var(--shadow);}
+.faq-q{padding:.65rem 1rem;background:var(--kt-surface);font-size:.84rem;font-weight:700;color:var(--kt-primary);cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.faq-q::after{content:"▼";font-size:.6rem;color:var(--kt-muted);}
+.faq-a{display:none;padding:.65rem 1rem;background:#faf5ff;font-size:.81rem;color:var(--kt-muted);line-height:1.55;border-top:1px solid var(--kt-border);}
+.faq.open .faq-a{display:block;}
+.faq.open .faq-q::after{content:"▲";}
+
+footer{background:var(--kt-primary);color:rgba(255,255,255,.5);text-align:center;padding:1rem;font-size:.7rem;line-height:1.8;}
+footer strong{color:#CE93D8;}
+@media(max-width:500px){.tipp-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Anleitung VA</span></div>
+    <div class="header-badge">VA · Anleitung</div>
+  </div>
+  <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
+</header>
+
+<div class="brainy-banner">
+  <div class="brainy-face"><img src="tk-brainy.png" alt="Brainy"></div>
+  <div>
+    <span class="brainy-label">Brainy · Vertretungsassistent</span>
+    <p class="brainy-msg">Brainy erklärt den Vertretungsassistenten Schritt für Schritt — von der Abwesenheitsmeldung bis zur finalen Bestätigung.</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-tag">VA · Schritt-für-Schritt-Anleitung</div>
+  <h1 class="page-titel">Anleitung Vertretungsassistent</h1>
+  <p class="page-lead">Der Vertretungsassistent findet automatisch geeignete Vertretungen bei Abwesenheit — nach Filterkriterien, Score-Ranking und Routing. Diese Anleitung erklärt alle Schritte.</p>
+
+  <!-- PROZESS-ÜBERSICHT -->
+  <div class="schritt">
+    <div class="schritt-nr">Prozessübersicht</div>
+    <div class="schritt-titel">So funktioniert der Vertretungsassistent</div>
+    <div class="prozess">
+      <span class="p-step">① Abwesenheit melden</span>
+      <span class="p-arrow">›</span>
+      <span class="p-step">② Filter setzen</span>
+      <span class="p-arrow">›</span>
+      <span class="p-step">③ Vorschlagsliste prüfen</span>
+      <span class="p-arrow">›</span>
+      <span class="p-step">④ Vertretung bestätigen</span>
+      <span class="p-arrow">›</span>
+      <span class="p-step">⑤ Routing & Sichtbarkeit</span>
+    </div>
+  </div>
+
+  <!-- SCHRITT 1 -->
+  <div class="schritt">
+    <div class="schritt-nr">Schritt 1</div>
+    <div class="schritt-titel">Abwesenheit erfassen</div>
+    <div class="schritt-text">
+      Öffne den <strong>Vertretungsassistenten</strong> über die TK-Landing. Wähle die betroffene INGRA aus der Liste und trage Datum, Grund und voraussichtliche Dauer der Abwesenheit ein.
+      <div class="hinweis"><strong>Wichtig:</strong> Abwesenheit so früh wie möglich eintragen — das System braucht Zeit für das Score-Ranking der Vorschläge.</div>
+    </div>
+  </div>
+
+  <!-- SCHRITT 2 -->
+  <div class="schritt">
+    <div class="schritt-nr">Schritt 2</div>
+    <div class="schritt-titel">Filterkriterien setzen</div>
+    <div class="schritt-text">
+      Das System schlägt automatisch Filter vor — du kannst sie anpassen:
+      <ul style="margin-top:.5rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:.25rem;">
+        <li><strong>Qualifikation:</strong> Welche Ausbildung / welches Profil braucht die Stelle?</li>
+        <li><strong>Region:</strong> Maximale Entfernung zur Schule</li>
+        <li><strong>Verfügbarkeit:</strong> Nur freie INGRAs anzeigen</li>
+        <li><strong>Erfahrung:</strong> Mindest-Erfahrung mit ähnlichen Kindern</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SCHRITT 3 -->
+  <div class="schritt">
+    <div class="schritt-nr">Schritt 3</div>
+    <div class="schritt-titel">Vorschlagsliste prüfen</div>
+    <div class="schritt-text">
+      Das System berechnet einen <strong>Score</strong> für jede potenzielle Vertretung — basierend auf Qualifikation, Entfernung, Verfügbarkeit und Vorerfahrung. Die Liste ist nach Score sortiert.
+      <div class="hinweis"><strong>Score-Logik:</strong> Ein hoher Score bedeutet gute Passung — kein Automatismus. Die finale Entscheidung liegt bei TK.</div>
+    </div>
+  </div>
+
+  <!-- SCHRITT 4 -->
+  <div class="schritt">
+    <div class="schritt-nr">Schritt 4</div>
+    <div class="schritt-titel">Vertretung bestätigen</div>
+    <div class="schritt-text">
+      Klick auf die gewünschte Person → <strong>„Vertretung bestätigen"</strong>. Das System dokumentiert die Entscheidung automatisch mit Zeitstempel und vergibt Person-ID.
+      <div class="hinweis"><strong>Dokumentation:</strong> Jede Vertretungsentscheidung wird im Protokoll festgehalten — Träger-konform, mit Begründung.</div>
+    </div>
+  </div>
+
+  <!-- SCHRITT 5 -->
+  <div class="schritt">
+    <div class="schritt-nr">Schritt 5</div>
+    <div class="schritt-titel">Routing & Sichtbarkeit</div>
+    <div class="schritt-text">
+      Nach der Bestätigung wird die Vertretungsperson automatisch für die relevanten Bereiche freigeschaltet — Barometer, Dokumentation, Chat. Die ursprüngliche INGRA verliert temporär die Sichtbarkeit auf den Fall.
+      <div class="hinweis"><strong>Rückgabe:</strong> Bei Rückkehr der INGRA: Vertretung beenden → Sichtbarkeit wird automatisch zurückgesetzt.</div>
+    </div>
+  </div>
+
+  <!-- TIPPS -->
+  <div class="schritt">
+    <div class="schritt-nr">Tipps für die Praxis</div>
+    <div class="schritt-titel">Was gut funktioniert</div>
+    <div class="tipp-grid">
+      <div class="tipp">
+        <div class="tipp-label">Frühzeitig melden</div>
+        <div class="tipp-text">Je früher die Abwesenheit eingetragen wird, desto mehr Optionen hat das System für Vorschläge.</div>
+      </div>
+      <div class="tipp">
+        <div class="tipp-label">Score nicht überschätzen</div>
+        <div class="tipp-text">Der Score ist eine Orientierung. Persönliche Kenntnis der INGRA kann wichtiger sein.</div>
+      </div>
+      <div class="tipp">
+        <div class="tipp-label">Kurzfristige Ausfälle</div>
+        <div class="tipp-text">Bei Ausfall am gleichen Tag: Filter auf „sofort verfügbar" setzen, Radius erweitern.</div>
+      </div>
+      <div class="tipp">
+        <div class="tipp-label">Übergabe dokumentieren</div>
+        <div class="tipp-text">Wichtige Infos zum Kind im Übergabeprotokoll hinterlegen — bevor die Vertretung startet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="schritt">
+    <div class="schritt-nr">Häufige Fragen</div>
+    <div class="schritt-titel" style="margin-bottom:.75rem;">FAQ</div>
+
+    <div class="faq" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Was wenn keine Vertretung verfügbar ist?</div>
+      <div class="faq-a">Filter lockern (Radius erhöhen, Qualifikation anpassen) oder TK-Leitung direkt kontaktieren. Das System zeigt auch Personen mit Einschränkungen an, wenn alle freien Optionen erschöpft sind.</div>
+    </div>
+    <div class="faq" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Kann eine INGRA selbst eine Vertretung anfragen?</div>
+      <div class="faq-a">Nein — Vertretungen werden ausschließlich durch TK vergeben. INGRAs melden nur ihre Abwesenheit.</div>
+    </div>
+    <div class="faq" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Wie lange bleibt die Vertretung aktiv?</div>
+      <div class="faq-a">Bis TK die Vertretung manuell beendet. Es gibt keine automatische Frist. Bei längerer Abwesenheit regelmäßig prüfen.</div>
+    </div>
+    <div class="faq" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Was passiert mit der Dokumentation der Vertretungsperson?</div>
+      <div class="faq-a">Alle Einträge der Vertretungsperson bleiben im System erhalten und sind für die zurückgekehrte INGRA einsehbar.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer><strong>KLARTEXT</strong> · Anleitung Vertretungsassistent · TK-Bereich · © 2026 Anja Jolk</footer>
+
+</body>
+</html>

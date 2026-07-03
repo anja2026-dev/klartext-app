@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TK · Übergaben – KLARTEXT</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--muted:#6A6878;--ink:#2D2D2D;
+  --tk:#4A148C;--tk-light:#F3E5FF;
+  --ok:#1B6E3C;--warn:#A85B00;--danger:#A31515;
+  --shadow:0 2px 8px rgba(27,58,75,.10);--shadow-lg:0 6px 24px rgba(27,58,75,.14);
+  --r:8px;--r-md:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+
+header{background:var(--navy);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;border-bottom:3px solid var(--tk);position:sticky;top:0;z-index:100;}
+.logo{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;}
+.logo span{color:var(--tk);font-size:.6rem;display:block;font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:.08em;text-transform:uppercase;}
+.back{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+
+main{max-width:860px;margin:0 auto;padding:1.4rem 1rem 5rem;}
+h1{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--navy);margin-bottom:.3rem;}
+.lead{font-size:.85rem;color:var(--muted);margin-bottom:1.4rem;}
+
+.filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.filter-btn{border:1.5px solid var(--border);border-radius:20px;padding:.28rem .8rem;font-size:.75rem;font-weight:700;cursor:pointer;background:var(--surface);font-family:inherit;color:var(--muted);}
+.filter-btn.aktiv{background:var(--tk);border-color:var(--tk);color:#fff;}
+
+.uebergabe-liste{display:flex;flex-direction:column;gap:.7rem;}
+.ue-karte{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-md);box-shadow:var(--shadow);overflow:hidden;}
+.ue-karte.dringend{border-left:4px solid #F44336;}
+.ue-karte.erhoben{border-left:4px solid #FF9800;}
+.ue-karte.normal{border-left:4px solid #4CAF50;}
+
+.ue-kopf{padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;justify-content:space-between;flex-wrap:wrap;cursor:pointer;user-select:none;}
+.ue-kopf-left{display:flex;align-items:center;gap:.6rem;}
+.ue-dring-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.ue-kopf-info{font-size:.8rem;}
+.ue-kopf-name{font-weight:700;color:var(--navy);}
+.ue-kopf-meta{font-size:.7rem;color:var(--muted);}
+.ue-status-badge{font-size:.65rem;font-weight:700;padding:.2rem .55rem;border-radius:20px;letter-spacing:.05em;text-transform:uppercase;}
+.badge-offen{background:#FFF3E0;color:#E65100;}
+.badge-gelesen{background:#E3F2FD;color:#0D47A1;}
+.badge-erledigt{background:#E8F5E9;color:#1B5E20;}
+.ue-toggle{font-size:.8rem;color:var(--muted);margin-left:.4rem;}
+
+.ue-body{padding:.75rem 1rem 1rem;border-top:1px solid var(--border);display:none;}
+.ue-body.offen{display:block;}
+.ue-feld{margin-bottom:.55rem;font-size:.82rem;}
+.ue-feld label{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.15rem;}
+.ue-feld p{color:var(--ink);line-height:1.5;}
+.ue-feld .leer{color:var(--muted);font-style:italic;}
+
+.status-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border);}
+.st-btn{border:none;border-radius:6px;padding:.32rem .8rem;font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;}
+.st-btn.offen{background:#FFF3E0;color:#E65100;border:1.5px solid #FFB74D;}
+.st-btn.gelesen{background:#E3F2FD;color:#0D47A1;border:1.5px solid #64B5F6;}
+.st-btn.erledigt{background:#E8F5E9;color:#1B5E20;border:1.5px solid #81C784;}
+.st-btn.aktiv{opacity:.45;cursor:default;}
+
+.leer-hinweis{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.88rem;font-style:italic;}
+.lade-hint{text-align:center;padding:1.5rem;color:var(--muted);font-size:.82rem;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">KLARTEXT <span>TK · Übergaben</span></div>
+  <a class="back" href="TK_Landing.html">← TK-Bereich</a>
+</header>
+
+<main>
+  <h1>Übergaben an TK</h1>
+  <p class="lead">Alle Übergaben aus dem Tagesjournal – sortiert nach Eingang, neueste zuerst.</p>
+
+  <div class="filter-row">
+    <button class="filter-btn aktiv" onclick="filterSetzen(this,'alle')">Alle</button>
+    <button class="filter-btn" onclick="filterSetzen(this,'offen')">🔴 Offen</button>
+    <button class="filter-btn" onclick="filterSetzen(this,'gelesen')">🔵 Gelesen</button>
+    <button class="filter-btn" onclick="filterSetzen(this,'erledigt')">🟢 Erledigt</button>
+    <button class="filter-btn" onclick="filterSetzen(this,'dringend')">⚡ Dringend</button>
+  </div>
+
+  <div id="liste" class="uebergabe-liste">
+    <div class="lade-hint">⏳ Übergaben werden geladen …</div>
+  </div>
+</main>
+
+<script src="firebase.js"></script>
+<script>
+var alleUebergaben = {};
+var aktiverFilter  = 'alle';
+var offeneKarten   = {};
+
+// ── Firebase laden ──────────────────────────────────────
+getInbox('tk', function(daten) {
+  alleUebergaben = daten || {};
+  renderListe();
+});
+
+// ── Filter ──────────────────────────────────────────────
+function filterSetzen(btn, wert) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  btn.classList.add('aktiv');
+  aktiverFilter = wert;
+  renderListe();
+}
+
+// ── Liste rendern ────────────────────────────────────────
+function renderListe() {
+  var container = document.getElementById('liste');
+  var eintraege = Object.entries(alleUebergaben)
+    .map(function(e){ return Object.assign({ _key: e[0] }, e[1]); })
+    .filter(function(e){ return e.type === 'tagesjournal'; })
+    .filter(function(e){
+      if (aktiverFilter === 'alle')     return true;
+      if (aktiverFilter === 'dringend') return e.dringlichkeit === 'dringend';
+      return (e.status || 'offen') === aktiverFilter;
+    })
+    .sort(function(a, b){ return (b.timestamp || 0) - (a.timestamp || 0); });
+
+  if (!eintraege.length) {
+    container.innerHTML = '<div class="leer-hinweis">Keine Übergaben gefunden.</div>';
+    return;
+  }
+
+  container.innerHTML = eintraege.map(function(e) {
+    var status   = e.status || 'offen';
+    var dring    = e.dringlichkeit || 'normal';
+    var dringFarbe = { dringend:'#F44336', erhoben:'#FF9800', normal:'#4CAF50' }[dring] || '#4CAF50';
+    var istOffen = !!offeneKarten[e._key];
+
+    return '<div class="ue-karte ' + dring + '" id="karte-' + e._key + '">' +
+      '<div class="ue-kopf" onclick="toggleKarte(\'' + e._key + '\')">' +
+        '<div class="ue-kopf-left">' +
+          '<div class="ue-dring-dot" style="background:' + dringFarbe + ';"></div>' +
+          '<div class="ue-kopf-info">' +
+            '<div class="ue-kopf-name">' + esc(e.childName || e.childId || 'Unbekanntes Kind') + '</div>' +
+            '<div class="ue-kopf-meta">' + esc(e.datum || '') + (e.uhrzeit ? ' · ' + esc(e.uhrzeit) : '') + ' · von ' + esc(e.fromRole || '?') + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:.5rem;">' +
+          '<span class="ue-status-badge badge-' + status + '">' + status + '</span>' +
+          '<span class="ue-toggle">' + (istOffen ? '▲' : '▼') + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ue-body' + (istOffen ? ' offen' : '') + '" id="body-' + e._key + '">' +
+        feld('Übergabetext', e.text) +
+        feld('Besonderheiten', e.besonderheiten) +
+        feld('Details', e.details) +
+        feld('Anhang', e.anhang) +
+        '<div class="status-row">' +
+          stBtn(e._key, 'offen',    status) +
+          stBtn(e._key, 'gelesen',  status) +
+          stBtn(e._key, 'erledigt', status) +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function feld(label, wert) {
+  var inhalt = (wert || '').trim()
+    ? '<p>' + esc(wert) + '</p>'
+    : '<p class="leer">–</p>';
+  return '<div class="ue-feld"><label>' + label + '</label>' + inhalt + '</div>';
+}
+
+function stBtn(key, wert, aktuellerStatus) {
+  var label = { offen:'🔴 Offen', gelesen:'🔵 Gelesen', erledigt:'🟢 Erledigt' }[wert];
+  var istAktiv = aktuellerStatus === wert;
+  return '<button class="st-btn ' + wert + (istAktiv ? ' aktiv' : '') + '" ' +
+    (istAktiv ? '' : 'onclick="statusSetzen(\'' + key + '\',\'' + wert + '\')"') +
+    '>' + label + '</button>';
+}
+
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Karte auf-/zuklappen ─────────────────────────────────
+function toggleKarte(key) {
+  offeneKarten[key] = !offeneKarten[key];
+  var body   = document.getElementById('body-' + key);
+  var karte  = document.getElementById('karte-' + key);
+  if (!body) return;
+  if (offeneKarten[key]) {
+    body.classList.add('offen');
+    karte.querySelector('.ue-toggle').textContent = '▲';
+    // automatisch auf "gelesen" setzen wenn noch "offen"
+    var eintrag = alleUebergaben[key];
+    if (eintrag && (eintrag.status || 'offen') === 'offen') {
+      statusSetzen(key, 'gelesen');
+    }
+  } else {
+    body.classList.remove('offen');
+    karte.querySelector('.ue-toggle').textContent = '▼';
+  }
+}
+
+// ── Status setzen ────────────────────────────────────────
+function statusSetzen(key, neuerStatus) {
+  db.ref('forward/' + key + '/status').set(neuerStatus)
+    .then(function() {
+      if (alleUebergaben[key]) alleUebergaben[key].status = neuerStatus;
+      renderListe();
+    })
+    .catch(function(e){ alert('Fehler: ' + e.message); });
+}
+</script>
+</body>
+</html>

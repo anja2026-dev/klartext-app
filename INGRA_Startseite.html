@@ -150,12 +150,6 @@
     </div>
   </div>
 
-  <!-- KINDERLISTE -->
-  <div class="karte" id="kinderliste">
-    <h2>👶 Kinderliste</h2>
-    <div id="kinder-container"></div>
-  </div>
-
   <!-- SCHNELLZUGRIFF -->
   <div class="karte" id="schnellzugriff">
     <h2>⚡ Schnellzugriff</h2>
@@ -227,6 +221,7 @@ var INGRA_MODULE = [
 function renderKinderliste() {
   var kinder = ladeKinder();
   var container = document.getElementById('kinder-container');
+  if (!container) return; // Widget aktuell nicht auf der Seite vorhanden
   if (!kinder.length) {
     container.innerHTML = '<div class="kind-karte-leer">Noch keine Kinder angelegt. Bitte im TK-Bereich anlegen.</div>';
     return;
@@ -325,7 +320,12 @@ function renderSchnellzugriff() {
 
 // ── Navigation ─────────────────────────────────────────────
 function navigateTo(target) {
-  // Platzhalter – Navigation wird später ergänzt
+  var ziele = {
+    dashboard: 'DASHBOARD.html',
+    tk:        'TK_Landing.html',
+    kinder:    'Kinderverwaltung.html'
+  };
+  if (ziele[target]) window.location.href = ziele[target];
 }
 
 // ── Aliase ─────────────────────────────────────────────────

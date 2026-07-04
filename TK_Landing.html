@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TK-Bereich – Teamkoordination · KLARTEXT</title>
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AUTH-GUARD: Nur TK/Admin – Weiterleitung ohne gültige Rolle -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || !['tk','admin'].includes(role)){
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -183,6 +198,15 @@ footer strong{color:var(--kt-accent);}
     <h1 class="page-titel">Teamkoordination</h1>
     <p class="page-lead">Zwei Module für den TK-Alltag – Recruiting und Vertretungsorganisation, jeweils strukturiert und mit Brainy-Unterstützung.</p>
   </div>
+
+  <a href="TK-04_Schutzauftrag_8a.html" style="display:flex;align-items:center;gap:.85rem;background:#FFEBEE;border:2px solid #C62828;border-radius:14px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-decoration:none;transition:transform .15s;">
+    <span style="font-size:1.8rem;flex-shrink:0;">🚨</span>
+    <div style="flex:1;">
+      <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#C62828;margin-bottom:.2rem;">Notfall-Schnellzugriff</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#8B1A1A;">§ 8a — Schutzauftrag bei Kindeswohlgefährdung</div>
+    </div>
+    <span style="color:#C62828;font-size:1.2rem;">→</span>
+  </a>
 
   <div class="modul-grid">
 

@@ -56,7 +56,9 @@
     .prozess{background:var(--kt-surface);border:1.5px solid var(--kt-border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:.7rem;box-shadow:var(--shadow);}
     .prozess-head{background:var(--tk-light);border-bottom:1px solid rgba(26,140,140,.12);padding:.5rem .9rem;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tk-color);}
     .prozess-body{padding:.75rem .9rem;display:flex;align-items:center;flex-wrap:wrap;gap:.35rem;}
-    .prozess-step{background:var(--tk-light);border:1px solid rgba(26,140,140,.3);border-radius:20px;padding:.2rem .7rem;font-size:.72rem;font-weight:600;color:var(--tk-color);}
+    .prozess-step{background:var(--tk-light);border:1px solid rgba(26,140,140,.3);border-radius:20px;padding:.2rem .7rem;font-size:.72rem;font-weight:600;color:var(--tk-color);cursor:pointer;transition:all .15s;user-select:none;}
+    .prozess-step:hover{background:var(--tk-color);color:#fff;border-color:var(--tk-color);}
+    .prozess-step:focus-visible{outline:2px solid var(--tk-color);outline-offset:2px;}
     .prozess-arrow{color:var(--kt-muted);font-size:.8rem;}
 
     /* ── KARTEN (wie TK .karte) ── */
@@ -166,15 +168,15 @@
   <div class="prozess">
     <div class="prozess-head">Mini-Prozess · Kinderverwaltung</div>
     <div class="prozess-body">
-      <span class="prozess-step">① Kind anlegen</span>
+      <span class="prozess-step" role="button" tabindex="0" onclick="prozessSchritt(1)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();prozessSchritt(1);}">① Kind anlegen</span>
       <span class="prozess-arrow">›</span>
-      <span class="prozess-step">② Daten prüfen</span>
+      <span class="prozess-step" role="button" tabindex="0" onclick="prozessSchritt(2)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();prozessSchritt(2);}">② Daten prüfen</span>
       <span class="prozess-arrow">›</span>
-      <span class="prozess-step">③ In TK-Modulen nutzen</span>
+      <span class="prozess-step" role="button" tabindex="0" onclick="prozessSchritt(3)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();prozessSchritt(3);}">③ In TK-Modulen nutzen</span>
       <span class="prozess-arrow">›</span>
-      <span class="prozess-step">④ Regelmäßig aktualisieren</span>
+      <span class="prozess-step" role="button" tabindex="0" onclick="prozessSchritt(4)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();prozessSchritt(4);}">④ Regelmäßig aktualisieren</span>
       <span class="prozess-arrow">›</span>
-      <span class="prozess-step">⑤ Bei Austritt löschen</span>
+      <span class="prozess-step" role="button" tabindex="0" onclick="prozessSchritt(5)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();prozessSchritt(5);}">⑤ Bei Austritt löschen</span>
     </div>
   </div>
 
@@ -427,6 +429,39 @@
 </div><!-- /kv-main -->
 
 <script>
+function prozessSchritt(n) {
+  if (n === 1) {
+    // ① Kind anlegen → springt zu Stammdaten und fokussiert das Namensfeld
+    var feld = document.getElementById('kind-name');
+    feld.scrollIntoView({behavior:'smooth', block:'center'});
+    feld.focus();
+  } else if (n === 2) {
+    // ② Daten prüfen → springt zur Liste "Alle Kinder"
+    document.getElementById('kinder-output').scrollIntoView({behavior:'smooth', block:'start'});
+  } else if (n === 3) {
+    // ③ In TK-Modulen nutzen → führt zur TK-Übersicht (Recruiting, VA, Fallmanagement)
+    window.location.href = 'TK_Landing.html';
+  } else if (n === 4) {
+    // ④ Regelmäßig aktualisieren → springt zur Suche, um ein Kind zu finden und zu bearbeiten
+    var suche = document.getElementById('kinder-suche');
+    suche.scrollIntoView({behavior:'smooth', block:'center'});
+    suche.focus();
+    hebeHervor(suche);
+  } else if (n === 5) {
+    // ⑤ Bei Austritt löschen → springt zur Suche, um das austretende Kind zu finden und zu löschen
+    var suche2 = document.getElementById('kinder-suche');
+    suche2.scrollIntoView({behavior:'smooth', block:'center'});
+    suche2.focus();
+    hebeHervor(suche2);
+  }
+}
+
+function hebeHervor(el) {
+  el.style.borderColor = '#C62828';
+  el.style.boxShadow = '0 0 0 3px rgba(198,40,40,.15)';
+  setTimeout(function(){ el.style.borderColor=''; el.style.boxShadow=''; }, 1800);
+}
+
 var currentEditIndex = null;
 
 function ladeKinder() {

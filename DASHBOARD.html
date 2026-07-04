@@ -38,6 +38,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .kt-logo-text .sub{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.18em;text-transform:uppercase;display:block;margin-top:2px;}
 .brainy-circle{width:68px;height:68px;background:#fff;border:3px solid var(--kt-accent);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
 .brainy-circle img{width:82%;height:auto;}
+.kt-header nav{min-width:0;}
 .search-zone{background:var(--kt-surface);border-bottom:1.5px solid var(--kt-border);padding:1rem clamp(1rem,4vw,2rem);position:sticky;top:160px;z-index:190;box-shadow:0 2px 12px rgba(27,58,75,.07);}
 .search-inner{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:.65rem;}
 .search-wrap{position:relative;}
@@ -80,11 +81,15 @@ footer strong{color:var(--kt-accent);}
 .footer-copy{font-size:.65rem;opacity:.4;margin-top:.6rem;display:block;}
 @media(max-width:640px){
   .kt-header{height:100px;}
-  .search-zone{top:100px;}
+  .search-zone{top:142px;}
   .karten-grid{grid-template-columns:repeat(2,1fr);}
   .filter-label{display:none;}
   .brainy-circle{width:52px;height:52px;}
+  .kt-header nav{flex-shrink:1;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;}
+  .kt-header nav::-webkit-scrollbar{display:none;}
+  #global-nav{top:100px!important;}
 }
+#global-nav{top:118px!important;height:42px;}
 </style>
 <script>
 (function(){
@@ -171,7 +176,7 @@ footer strong{color:var(--kt-accent);}
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
   <a class="gnav-link" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
   <a class="gnav-link" href="KLARTEXT_Tagesjournal.html">📘 Tagesjournal</a>
-  <a class="gnav-link" href="TK_Kinder.html">👶 Kinder</a>
+  <a class="gnav-link" href="Kinderverwaltung.html">👶 Kinder</a>
 </nav>
 <a class="wtij-bar" href="DASHBOARD-M3.html">
   <div class="wtij-bar-icon">🎯</div>

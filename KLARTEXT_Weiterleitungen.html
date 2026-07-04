@@ -43,6 +43,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .fg-hinweis{font-size:.7rem;color:var(--muted);margin-top:.25rem;}
 select,textarea,input[type="text"]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.65rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;background:#FAFAFA;color:#1A1A2E;}
 select:focus,textarea:focus,input:focus{outline:none;border-color:var(--navy);}
+@media(max-width:480px){
+  .fg-zeile{grid-template-columns:1fr;}
+}
 textarea{resize:vertical;min-height:100px;line-height:1.55;}
 
 .empf-gruppe{display:flex;gap:.5rem;flex-wrap:wrap;}

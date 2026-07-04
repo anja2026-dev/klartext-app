@@ -71,6 +71,19 @@ footer strong{color:var(--kt-accent);}
 </style>
 </head>
 <body>
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || !['tk','admin'].includes(role)){
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
+
 
 <header class="kt-header">
   <div class="header-left">

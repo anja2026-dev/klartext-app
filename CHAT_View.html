@@ -131,6 +131,15 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
 .lese-haken{opacity:.75;}
 .lese-haken.haken-gelesen{color:#6EC6A0;opacity:1;font-weight:700;}
 .brainy-wink{display:inline-block;animation:wink .6s ease-in-out 1;}
+.chat-avatar img, .chat-main-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+.sticker-btn img{width:26px;height:26px;object-fit:contain;border-radius:50%;}
+.sticker-btn{position:relative;}
+.sticker-btn .sticker-plus-badge{
+  position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-radius:50%;
+  background:#1B3A4B;color:#fff;font-size:.65rem;font-weight:700;line-height:16px;text-align:center;
+  border:1.5px solid #fff;pointer-events:none;
+}
+#brainy-icon img{width:22px;height:22px;object-fit:contain;vertical-align:middle;border-radius:50%;}
 @keyframes wink{0%{transform:rotate(0)}30%{transform:rotate(20deg)}60%{transform:rotate(-10deg)}100%{transform:rotate(0)}}
 
 /* ── MOBILE ── */
@@ -259,19 +268,22 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
         <button type="button" title="Du schaffst das!" onclick="brainyStickerEinfuegen('cheer')"><svg class="brainy-icon"><use href="#brainy-cheer"/></svg></button>
       </div>
       <div class="chat-eingabe-leiste" style="position:relative;">
-        <button type="button" class="sticker-btn" id="sticker-toggle-btn" onclick="stickerPickerToggle()" title="Brainy-Sticker">🧠</button>
+        <button type="button" class="sticker-btn" id="sticker-toggle-btn" onclick="stickerPickerToggle()" title="Brainy-Sticker auswählen">
+          <img src="brainy.png" alt="Brainy">
+          <span class="sticker-plus-badge">+</span>
+        </button>
         <textarea class="chat-eingabe-feld" id="chat-eingabe" placeholder="Nachricht schreiben …" rows="1"></textarea>
         <button class="chat-senden-btn" id="chat-senden-btn" onclick="chatViewSenden()">➤</button>
       </div>
       <div class="brainy-btn-row">
-        <button id="brainy-fragen-btn" onclick="brainyCoachStart()">🧠 Brainy fragen</button>
+        <button id="brainy-fragen-btn" onclick="brainyCoachStart()"><img src="brainy.png" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;border-radius:50%;margin-right:.3rem;"> Brainy fragen</button>
       </div>
     </div>
   </div>
 
   <!-- RECHTS: Brainy-Panel -->
   <div id="brainy-panel" class="hidden">
-    <h3><span id="brainy-icon" class="brainy-wink">🧠👋</span> Brainy-Coach</h3>
+    <h3><span id="brainy-icon" class="brainy-wink"><img src="brainy.png" alt="Brainy">👋</span> Brainy-Coach</h3>
     <p>Chatverlauf in deine KI kopieren, Vorschlag hier einfügen.</p>
     <textarea id="brainy-chattext" readonly></textarea>
     <button id="brainy-copy" onclick="brainyCopy()">In KI öffnen (kopieren)</button>
@@ -403,7 +415,7 @@ function renderSidebar(conversations) {
     let avatarInhalt = initiale;
     if (conv.type === 'group') {
       avatarFarbe = '#6EC6A0';
-      avatarInhalt = '🧠';
+      avatarInhalt = '<img src="brainy.png" alt="INGRA-Austausch">';
     } else {
       const andereId = Object.keys(conv.members||{}).find(function(id){return id!==aktuellerUser.id;});
       if (andereId && conv.memberRoles && conv.memberRoles[andereId]) {
@@ -479,7 +491,7 @@ function chatOeffnenInner(cid, conv) {
     // Gruppe: Lese-Status gilt als "gelesen", sobald IRGENDEIN anderes Mitglied gelesen hat
     chatAktuelleMitglieder = Object.keys(conv.members||{}).filter(function(id){ return id !== aktuellerUser.id; });
     chatAktuellerAndereId = null;
-    avatar.textContent = '🧠';
+    avatar.innerHTML = '<img src="brainy.png" alt="INGRA-Austausch">';
     avatar.style.background = '#6EC6A0';
   } else {
     const andereId = Object.keys(conv.members||{}).find(function(id){return id!==aktuellerUser.id;});

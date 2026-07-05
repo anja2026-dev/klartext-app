@@ -97,7 +97,7 @@ function renderChatListe(conversations) {
     const user = chatAktuellerUser();
     if (conv.type === 'group') {
       avatarFarbe = '#6EC6A0';
-      avatarInhalt = '🧠';
+      avatarInhalt = '<img src="brainy.png" alt="INGRA-Austausch" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
     } else {
       const andereId = Object.keys(conv.members||{}).find(function(id){return id!==user.id;});
       if (andereId&&conv.memberRoles&&conv.memberRoles[andereId]) avatarFarbe=chatRollenfarbe(conv.memberRoles[andereId]);

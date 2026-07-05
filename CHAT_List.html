@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KLARTEXT · Nachrichten</title>
+<title>KLARTEXT · KLARapp</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="chat.css">
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
@@ -30,7 +30,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
 <nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
   <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
   <a class="gnav-link" href="DASHBOARD.html">🏠 Dashboard</a>
-  <a class="gnav-link aktiv" href="CHAT_View.html">💬 Nachrichten</a>
+  <a class="gnav-link aktiv" href="CHAT_View.html">💬 KLARapp</a>
   <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
   <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
@@ -48,6 +48,38 @@ if (window.innerWidth > 700) {
 
 const kinderNamenCache = {};
 
+// Brainy-Sticker-Token in der Vorschau als lesbares Label zeigen (gleiche Mappings wie CHAT_View.html)
+const BRAINY_LABELS = { freu:'Freu 🧠', top:'Top! 🧠', denk:'Hmm… 🧠', erschoepft:'Erschöpft 🧠', cheer:'Du schaffst das! 🧠' };
+function brainyVorschauText(text) {
+  const re = /\[\[brainy:(freu|top|denk|erschoepft|cheer)\]\]/g;
+  const ersetzt = text.replace(re, function(_, mood){ return BRAINY_LABELS[mood] || '🧠'; }).trim();
+  return ersetzt || 'Noch keine Nachrichten';
+}
+
+// INGRA-Austausch: automatische Mitgliedschaft, gleiche Logik wie in CHAT_View.html
+const INGRA_GRUPPE_ID = 'ingra-austausch';
+const INGRA_ROLLEN = ['ingra','springer_ingra','pool_ingra','vertretung_ingra'];
+function ingraGruppeSicherstellen() {
+  const user = chatAktuellerUser();
+  if (!INGRA_ROLLEN.includes(user.role) || !user.id) return Promise.resolve();
+  const ref = db.ref('conversations/' + INGRA_GRUPPE_ID);
+  return ref.once('value').then(function(snapshot){
+    const bereitsMitglied = snapshot.exists() && snapshot.val().members && snapshot.val().members[user.id];
+    if (bereitsMitglied) return;
+    const updates = {};
+    updates['members/' + user.id] = true;
+    updates['memberNames/' + user.id] = user.name;
+    updates['memberRoles/' + user.id] = user.role;
+    if (!snapshot.exists()) {
+      updates['type'] = 'group';
+      updates['groupName'] = '💬 INGRA-Austausch';
+      updates['lastMessage'] = '';
+      updates['lastTimestamp'] = Date.now();
+    }
+    return ref.update(updates);
+  }).catch(function(){});
+}
+
 function renderChatListe(conversations) {
   const wrap = document.getElementById('chat-liste');
   const ids = Object.keys(conversations||{});
@@ -61,12 +93,18 @@ function renderChatListe(conversations) {
     const name = chatKonversationsName(conv, kinderNamenCache);
     const initiale = (name||'?').charAt(0).toUpperCase();
     let avatarFarbe='#6A6878';
+    let avatarInhalt = initiale;
     const user = chatAktuellerUser();
-    const andereId = Object.keys(conv.members||{}).find(function(id){return id!==user.id;});
-    if (andereId&&conv.memberRoles&&conv.memberRoles[andereId]) avatarFarbe=chatRollenfarbe(conv.memberRoles[andereId]);
-    const vorschau=(conv.lastMessage||'').substring(0,60)||'Noch keine Nachrichten';
+    if (conv.type === 'group') {
+      avatarFarbe = '#6EC6A0';
+      avatarInhalt = '🧠';
+    } else {
+      const andereId = Object.keys(conv.members||{}).find(function(id){return id!==user.id;});
+      if (andereId&&conv.memberRoles&&conv.memberRoles[andereId]) avatarFarbe=chatRollenfarbe(conv.memberRoles[andereId]);
+    }
+    const vorschau = brainyVorschauText((conv.lastMessage||'').substring(0,60));
     return `<a class="chat-eintrag" href="CHAT_View.html?cid=${cid}">
-      <div class="chat-avatar" style="background:${avatarFarbe};">${initiale}</div>
+      <div class="chat-avatar" style="background:${avatarFarbe};">${avatarInhalt}</div>
       <div class="chat-eintrag-inhalt">
         <div class="chat-eintrag-kopf">
           <span class="chat-eintrag-name">${name}</span>
@@ -87,11 +125,13 @@ function renderChatListe(conversations) {
   });
 }
 
-db.ref('children').once('value').then(function(snapshot){
-  const kinder=snapshot.val()||{};
-  Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
-  chatLadeConversations(renderChatListe);
-}).catch(function(){chatLadeConversations(renderChatListe);});
+ingraGruppeSicherstellen().then(function(){
+  db.ref('children').once('value').then(function(snapshot){
+    const kinder=snapshot.val()||{};
+    Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
+    chatLadeConversations(renderChatListe);
+  }).catch(function(){chatLadeConversations(renderChatListe);});
+});
 </script>
 </body>
 </html>

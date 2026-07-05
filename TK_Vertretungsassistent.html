@@ -7,6 +7,9 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
 <style>
 /* ── ROOT ─────────────────────────────────────────────────── */
 :root {
@@ -506,31 +509,7 @@ body {
         <div class="card-title">Aktive Rollenzuweisungen</div>
         <div class="card-sub">Nur TK sieht diese Liste.</div>
         <div id="personenListe">
-          <!-- Demo-Einträge -->
-          <div class="kandidat-row">
-            <div class="role-chip chip-ingra">INGRA</div>
-            <div class="kandidat-name">Maria M.</div>
-            <div style="flex:1;font-size:11px;color:var(--muted);">GS Aplerbeck</div>
-            <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="showToast('Rolle entfernt')">✕</button>
-          </div>
-          <div class="kandidat-row">
-            <div class="role-chip chip-springer">Springer</div>
-            <div class="kandidat-name">Peter K.</div>
-            <div style="flex:1;font-size:11px;color:var(--muted);">Mehrere Schulen</div>
-            <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="showToast('Rolle entfernt')">✕</button>
-          </div>
-          <div class="kandidat-row">
-            <div class="role-chip chip-pool">Pool</div>
-            <div class="kandidat-name">Jana H.</div>
-            <div style="flex:1;font-size:11px;color:var(--muted);">Verfügbar</div>
-            <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="showToast('Rolle entfernt')">✕</button>
-          </div>
-          <div class="kandidat-row">
-            <div class="role-chip chip-vertr">Vertretung</div>
-            <div class="kandidat-name">Sandra B.</div>
-            <div style="flex:1;font-size:11px;color:var(--muted);">Aktive Vertretung</div>
-            <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="showToast('Rolle entfernt')">✕</button>
-          </div>
+          <div style="font-size:12px;color:var(--muted);padding:10px 0;">Lade …</div>
         </div>
       </div>
     </div>
@@ -784,9 +763,6 @@ body {
             <label class="login-label" style="margin-bottom:5px;">Abwesende INGRA</label>
             <select class="tk-select" id="va-ingra">
               <option>– INGRA wählen –</option>
-              <option>Maria M. · GS Aplerbeck</option>
-              <option>Klaus R. · GS Brackel</option>
-              <option>Sandra B. · Förderschule Hörde</option>
             </select>
           </div>
           <div>
@@ -871,6 +847,7 @@ body {
     <div class="card" id="va-ergebnis" style="display:none;">
       <div class="card-title">Schritt 3 · Vorschlagsliste</div>
       <div class="card-sub">Top-Kandidaten nach Score · Nur TK sieht Ranking und Begründung</div>
+      <div class="info-box warn" style="margin-bottom:14px;">⚠️ <strong>Platzhalter:</strong> Die folgenden Kandidaten sind Demo-Daten. Die echte Such-/Bewertungslogik (Qualifikation → Schule/Pool → Kapazität) ist noch nicht angebunden.</div>
 
       <div id="va-kandidaten">
         <div class="kandidat-row">
@@ -1139,11 +1116,7 @@ body {
     </div>
     <div class="card">
       <div id="logListe">
-        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,51,71,.5);font-size:12px;">
-          <span style="color:var(--muted);min-width:130px;" id="logTime0"></span>
-          <span style="color:var(--tk);">System</span>
-          <span style="color:var(--text);">TK_Rollenlogik.html geöffnet · Login erfolgreich</span>
-        </div>
+        <div style="font-size:12px;color:var(--muted);padding:10px 0;">Lade …</div>
       </div>
       <div style="margin-top:14px;">
         <button class="btn btn-ghost" onclick="clearLog()">Log leeren</button>
@@ -1175,38 +1148,90 @@ function showView(id, btn) {
 }
 
 // ── ROLLEN ─────────────────────────────────────────────────
+const ROLLEN_LABELS = { ingra:'INGRA', springer:'Springer', pool:'Pool', vertretung:'Vertretung', lk:'Lehrkraft', eltern:'Eltern', beta:'Beta' };
+const ROLLEN_CHIP_CLASS = { ingra:'chip-ingra', springer:'chip-springer', pool:'chip-pool', vertretung:'chip-vertr', lk:'chip-lk', eltern:'chip-eltern', beta:'chip-beta' };
+let personenCache = {};
+
 function addPerson() {
   const name   = document.getElementById('newPersonName').value.trim();
   const role   = document.getElementById('newPersonRole').value;
   const schule = document.getElementById('newPersonSchule').value.trim();
   if (!name || !role) { showToast('⚠️ Name und Rolle sind Pflichtfelder'); return; }
 
-  const chipClass = 'chip-' + role;
-  const labels = { ingra:'INGRA', springer:'Springer', pool:'Pool', vertretung:'Vertretung', lk:'Lehrkraft', eltern:'Eltern', beta:'Beta' };
-  const html = `
-    <div class="kandidat-row">
-      <div class="role-chip ${chipClass}">${labels[role]}</div>
-      <div class="kandidat-name">${name}</div>
-      <div style="flex:1;font-size:11px;color:var(--muted);">${schule || '–'}</div>
-      <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="this.closest('.kandidat-row').remove();showToast('Rolle entfernt')">✕</button>
+  db.ref('personen').push({ name, role, schule, timestamp: Date.now() }).then(function(){
+    document.getElementById('newPersonName').value = '';
+    document.getElementById('newPersonSchule').value = '';
+    logAction('TK', `Rolle zugewiesen: ${name} → ${ROLLEN_LABELS[role]}${schule ? ' · ' + schule : ''}`);
+    showToast(`✓ ${name} als ${ROLLEN_LABELS[role]} gespeichert`);
+  }).catch(function(err){
+    showToast('⚠️ Fehler beim Speichern: ' + err.message);
+  });
+}
+
+function entfernePerson(id, name) {
+  db.ref('personen/' + id).remove().then(function(){
+    logAction('TK', `Rolle entfernt: ${name}`);
+    showToast('Rolle entfernt');
+  }).catch(function(err){
+    showToast('⚠️ Fehler beim Entfernen: ' + err.message);
+  });
+}
+
+function renderPersonenListe() {
+  const el = document.getElementById('personenListe');
+  const ids = Object.keys(personenCache);
+  if (ids.length === 0) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:10px 0;">Noch keine Rollen zugewiesen.</div>';
+    return;
+  }
+  ids.sort(function(a,b){ return (personenCache[a].timestamp||0) - (personenCache[b].timestamp||0); });
+  el.innerHTML = ids.map(function(id){
+    const p = personenCache[id];
+    const label = ROLLEN_LABELS[p.role] || p.role;
+    const chipClass = ROLLEN_CHIP_CLASS[p.role] || 'chip-beta';
+    const nameEsc = (p.name||'').replace(/'/g,"\\'");
+    return `<div class="kandidat-row">
+      <div class="role-chip ${chipClass}">${label}</div>
+      <div class="kandidat-name">${p.name}</div>
+      <div style="flex:1;font-size:11px;color:var(--muted);">${p.schule || '–'}</div>
+      <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="entfernePerson('${id}','${nameEsc}')">✕</button>
     </div>`;
-  document.getElementById('personenListe').insertAdjacentHTML('beforeend', html);
-  document.getElementById('newPersonName').value = '';
-  document.getElementById('newPersonSchule').value = '';
-  logAction('TK', `Rolle zugewiesen: ${name} → ${labels[role]} · ${schule}`);
-  showToast(`✓ ${name} als ${labels[role]} gespeichert`);
+  }).join('');
+}
+
+// Personen live laden — Basis für Rollenliste UND Vertretungssuche-Dropdown
+db.ref('personen').on('value', function(snapshot){
+  personenCache = snapshot.val() || {};
+  renderPersonenListe();
+  renderVaIngraDropdown();
+});
+
+function renderVaIngraDropdown() {
+  const select = document.getElementById('va-ingra');
+  if (!select) return;
+  const bisher = select.value;
+  const ingraIds = Object.keys(personenCache).filter(function(id){ return personenCache[id].role === 'ingra'; });
+  select.innerHTML = '<option>– INGRA wählen –</option>' + ingraIds.map(function(id){
+    const p = personenCache[id];
+    const label = p.name + (p.schule ? ' · ' + p.schule : '');
+    return `<option value="${id}">${label}</option>`;
+  }).join('');
+  if (ingraIds.includes(bisher)) select.value = bisher;
 }
 
 // ── VERTRETUNGSSUCHE ────────────────────────────────────────
 function startVertretungssuche() {
-  const ingra = document.getElementById('va-ingra').value;
-  if (ingra === '– INGRA wählen –') { showToast('⚠️ Bitte INGRA wählen'); return; }
+  const ingraId = document.getElementById('va-ingra').value;
+  if (ingraId === '– INGRA wählen –') { showToast('⚠️ Bitte INGRA wählen'); return; }
+  const ingraName = (personenCache[ingraId] && personenCache[ingraId].name) || ingraId;
   const ergebnis = document.getElementById('va-ergebnis');
   ergebnis.style.display = 'block';
   ergebnis.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  logAction('TK', `Vertretungssuche gestartet für: ${ingra}`);
+  logAction('TK', `Vertretungssuche gestartet für: ${ingraName}`);
   showToast('🔍 Vertretungssuche läuft…');
-  setTimeout(() => showToast('✓ 3 Kandidaten gefunden'), 1200);
+  // Hinweis: Die eigentliche Such-/Zuordnungslogik ist noch nicht gebaut (Phase 2).
+  // Die folgenden Kandidaten sind Platzhalter, keine echte Auswertung von Schule/Qualifikation/Kapazität.
+  setTimeout(() => showToast('✓ 3 Kandidaten gefunden (Demo – echte Suchlogik folgt)'), 1200);
 }
 
 function bestaetigen(name) {
@@ -1216,27 +1241,31 @@ function bestaetigen(name) {
 }
 
 // ── LOG ────────────────────────────────────────────────────
-const logEintraege = [];
 function logAction(wer, was) {
-  logEintraege.unshift({ zeit: now(), wer, was });
-  renderLog();
+  db.ref('vertretung_log').push({ wer, was, zeit: now(), timestamp: Date.now() }).catch(function(){});
 }
-function renderLog() {
+db.ref('vertretung_log').orderByChild('timestamp').limitToLast(100).on('value', function(snapshot){
+  const alle = snapshot.val() || {};
+  const ids = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0) - (alle[a].timestamp||0); });
   const el = document.getElementById('logListe');
   if (!el) return;
-  const erste = el.children[0];
-  el.innerHTML = logEintraege.map(e => `
-    <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,51,71,.5);font-size:12px;">
+  if (ids.length === 0) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:10px 0;">Noch keine Einträge.</div>';
+    return;
+  }
+  el.innerHTML = ids.map(function(id){
+    const e = alle[id];
+    return `<div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,51,71,.5);font-size:12px;">
       <span style="color:var(--muted);min-width:130px;">${e.zeit}</span>
       <span style="color:var(--tk);">${e.wer}</span>
       <span style="color:var(--text);">${e.was}</span>
-    </div>`).join('');
-  if (erste && logEintraege.length === 0) el.appendChild(erste);
-}
+    </div>`;
+  }).join('');
+});
 function clearLog() {
-  logEintraege.length = 0;
-  document.getElementById('logListe').innerHTML = '<div style="font-size:12px;color:var(--muted);padding:10px 0;">Log wurde geleert.</div>';
-  showToast('Log geleert');
+  db.ref('vertretung_log').remove().then(function(){
+    showToast('Log geleert');
+  }).catch(function(err){ showToast('⚠️ Fehler: ' + err.message); });
 }
 
 // ── HELPERS ────────────────────────────────────────────────
@@ -1251,6 +1280,7 @@ function showToast(msg) {
 }
 
 // Init
+logAction('System', 'Vertretungsassistent geöffnet');
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && document.getElementById('app').style.display === 'block') doLogout();
 });

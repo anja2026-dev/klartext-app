@@ -17,25 +17,15 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 .card{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:440px;box-shadow:0 24px 60px rgba(0,0,0,.35);}
 .card-titel{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:#1B3A4B;margin-bottom:.25rem;text-align:center;}
 .card-sub{font-size:.8rem;color:#7A7060;text-align:center;margin-bottom:1.5rem;}
-.bereich-grid{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.25rem;}
-.bb{display:flex;align-items:center;gap:.75rem;padding:.75rem .9rem;border:1.5px solid #E0D8CC;border-radius:10px;background:#fff;cursor:pointer;transition:all .15s;text-align:left;font-family:"DM Sans",sans-serif;width:100%;}
-.bb:hover{transform:translateX(3px);}
-.bb.aktiv{border-width:2px;}
-.bb-emoji{font-size:1.2rem;flex-shrink:0;}
-.bb-info{flex:1;}
-.bb-label{font-size:.86rem;font-weight:600;display:block;color:#1B3A4B;}
-.bb-desc{font-size:.68rem;color:#7A7060;display:block;margin-top:1px;}
-.bb-check{width:16px;height:16px;border-radius:50%;border:1.5px solid #DDD8CE;flex-shrink:0;}
-.bb.aktiv .bb-check{border-color:currentColor;background:currentColor;}
-.pw-wrap{margin-bottom:1rem;display:none;}
-.pw-wrap.show{display:block;}
-.pw-label{font-size:.7rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
+.feld{margin-bottom:1rem;}
+.feld-label{font-size:.7rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
 .pw-row{display:flex;gap:.5rem;}
-.pw-input{flex:1;padding:.6rem .85rem;border:1.5px solid #DDD8CE;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.9rem;outline:none;color:#1B3A4B;}
-.pw-input:focus{border-color:#1B3A4B;}
+.feld-input{flex:1;padding:.6rem .85rem;border:1.5px solid #DDD8CE;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.9rem;outline:none;color:#1B3A4B;width:100%;}
+.feld-input:focus{border-color:#1B3A4B;}
 .pw-toggle{background:none;border:none;cursor:pointer;color:#7A7060;font-size:1rem;padding:.4rem;}
-.login-btn{width:100%;padding:.75rem;border-radius:10px;border:none;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;color:#fff;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:.4rem;}
+.login-btn{width:100%;padding:.75rem;border-radius:10px;border:none;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;color:#fff;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:.4rem;background:#1B3A4B;margin-top:.5rem;}
 .login-btn:hover{opacity:.9;transform:translateY(-1px);}
+.login-btn:disabled{opacity:.6;cursor:default;transform:none;}
 .err{display:none;font-size:.78rem;color:#C62828;text-align:center;margin-top:.75rem;padding:.4rem;background:#FDECEA;border-radius:6px;}
 .err.show{display:block;}
 .hint{text-align:center;margin-top:1.25rem;}
@@ -48,6 +38,9 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 <meta name="apple-mobile-web-app-title" content="KLARTEXT">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#1B3A4B">
+<!-- Supabase SDK -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 </head>
 <body>
 
@@ -59,87 +52,29 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 
 <div class="card">
   <div class="card-titel">Willkommen</div>
-  <div class="card-sub">Bitte wähle deinen Bereich und gib das Passwort ein.</div>
+  <div class="card-sub">Bitte melde dich mit deinem persönlichen Konto an.</div>
 
-  <div class="bereich-grid">
-    <button class="bb" id="bb-ingra" onclick="waehl('ingra','#3B8A68','ingra2026','DASHBOARD.html')" type="button">
-      <span class="bb-emoji">🟢</span>
-      <span class="bb-info"><span class="bb-label">INGRA · Schulbegleitung</span><span class="bb-desc">Alle Module · Karten · E-Learning · Downloads</span></span>
-      <span class="bb-check" id="chk-ingra"></span>
-    </button>
-    <button class="bb" id="bb-ingra-anna" onclick="waehl('ingra-anna','#3B8A68','ingra-beta','DASHBOARD.html','ingra')" type="button">
-      <span class="bb-emoji">🟢</span>
-      <span class="bb-info"><span class="bb-label">INGRA Anna</span><span class="bb-desc">Persönlicher Zugang für Anna</span></span>
-      <span class="bb-check" id="chk-ingra-anna"></span>
-    </button>
-    <button class="bb" id="bb-ingra-ben" onclick="waehl('ingra-ben','#3B8A68','ingra-beta','DASHBOARD.html','ingra')" type="button">
-      <span class="bb-emoji">🟢</span>
-      <span class="bb-info"><span class="bb-label">INGRA Ben</span><span class="bb-desc">Persönlicher Zugang für Ben</span></span>
-      <span class="bb-check" id="chk-ingra-ben"></span>
-    </button>
-    <button class="bb" id="bb-ingra-clara" onclick="waehl('ingra-clara','#3B8A68','ingra-beta','DASHBOARD.html','ingra')" type="button">
-      <span class="bb-emoji">🟢</span>
-      <span class="bb-info"><span class="bb-label">INGRA Clara</span><span class="bb-desc">Persönlicher Zugang für Clara</span></span>
-      <span class="bb-check" id="chk-ingra-clara"></span>
-    </button>
-    <button class="bb" id="bb-beta" onclick="waehl('beta','#3B8A68','ingra-beta','DASHBOARD.html')" type="button">
-      <span class="bb-emoji">🧪</span>
-      <span class="bb-info"><span class="bb-label">INGRA · Beta-Test</span><span class="bb-desc">Testphase bis 07.07.2026 · Alle INGRA-Module</span></span>
-      <span class="bb-chevron">›</span>
-      <span class="bb-check" id="chk-beta"></span>
-    </button>
-    <button class="bb" id="bb-lk" onclick="waehl('lk','#1565C0','lehrerkraft','KLARTEXT_Lehrerkurs.html')" type="button">
-      <span class="bb-emoji">🏫</span>
-      <span class="bb-info"><span class="bb-label">Lehrkraft</span><span class="bb-desc">Lehrerkurs · LK-Karten · Downloads</span></span>
-      <span class="bb-check" id="chk-lk"></span>
-    </button>
-    <button class="bb" id="bb-eltern" onclick="waehl('eltern','#AD1457','elternkurs','KLARTEXT_Elternkurs.html')" type="button">
-      <span class="bb-emoji">❤️</span>
-      <span class="bb-info"><span class="bb-label">Eltern</span><span class="bb-desc">Elternkurs · Karten · Barometer · Downloads</span></span>
-      <span class="bb-check" id="chk-eltern"></span>
-    </button>
-    <button class="bb" id="bb-tk" onclick="waehl('tk','#4A148C','teamleitung','DASHBOARD.html')" type="button">
-      <span class="bb-emoji">🗂️</span>
-      <span class="bb-info"><span class="bb-label">Teamkoordination</span><span class="bb-desc">TK-Karten · Protokolle · § 8a</span></span>
-      <span class="bb-check" id="chk-tk"></span>
-    </button>
-    <button class="bb" id="bb-trial-ingra" onclick="waehl('trial-ingra','#3B8A68','trial-ingra-2026','DASHBOARD.html','ingra')" type="button">
-      <span class="bb-emoji">🧪</span>
-      <span class="bb-info"><span class="bb-label">Trial (INGRA)</span><span class="bb-desc">4-Wochen-Testzugang · INGRA-Ansicht</span></span>
-      <span class="bb-check" id="chk-trial-ingra"></span>
-    </button>
-    <button class="bb" id="bb-trial-tk" onclick="waehl('trial-tk','#4A148C','trial-tk-2026','DASHBOARD.html','tk')" type="button">
-      <span class="bb-emoji">🧪</span>
-      <span class="bb-info"><span class="bb-label">Trial (TK)</span><span class="bb-desc">4-Wochen-Testzugang · TK-Ansicht</span></span>
-      <span class="bb-check" id="chk-trial-tk"></span>
-    </button>
-    <button class="bb" id="bb-trainer" onclick="waehl('trainer','#B07D2A','trainer2026','DASHBOARD.html')" type="button">
-      <span class="bb-emoji">🎓</span>
-      <span class="bb-info"><span class="bb-label">Trainer:in</span><span class="bb-desc">E-Learning · Curriculum · Lernmaterialien</span></span>
-      <span class="bb-check" id="chk-trainer"></span>
-    </button>
-    <button class="bb" id="bb-admin" onclick="waehl('admin','#1B3A4B','klartext2026','DASHBOARD.html')" type="button" style="border-color:#C0B8A8;background:#F8F5F0;">
-      <span class="bb-emoji">🔑</span>
-      <span class="bb-info"><span class="bb-label" style="color:#7A7060;">Admin</span><span class="bb-desc">Vollzugriff auf alle Bereiche</span></span>
-      <span class="bb-check" id="chk-admin"></span>
-    </button>
+  <div class="feld">
+    <span class="feld-label">E-Mail</span>
+    <input class="feld-input" type="email" id="email-input" placeholder="name@beispiel.de" autocomplete="username"
+      onkeydown="if(event.key==='Enter')document.getElementById('pw-input').focus();">
   </div>
 
-  <div class="pw-wrap" id="pw-wrap">
-    <span class="pw-label" id="pw-label">Passwort</span>
+  <div class="feld">
+    <span class="feld-label">Passwort</span>
     <div class="pw-row">
-      <input class="pw-input" type="password" id="pw-input" placeholder="Passwort eingeben …"
-        onkeydown="if(event.key==='Enter')login()">
-      <button class="pw-toggle" onclick="togglePw()" type="button">👁️</button>
+      <input class="feld-input" type="password" id="pw-input" placeholder="Passwort eingeben …" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')login();">
+      <button class="pw-toggle" onclick="togglePw()" type="button" aria-label="Passwort anzeigen">👁️</button>
     </div>
   </div>
 
-  <button class="login-btn" id="login-btn" onclick="login()" style="background:#1B3A4B;display:none;">
+  <button class="login-btn" id="login-btn" onclick="login()" type="button">
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
     Einloggen
   </button>
 
-  <div class="err" id="err">Falsches Passwort — bitte nochmal versuchen.</div>
+  <div class="err" id="err">Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.</div>
 
   <div class="hint">
     <a href="KLARTEXT_Landing.html">← Zurück zur Startseite</a>
@@ -147,114 +82,87 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 </div>
 
 <script>
-var aktuelleWahl = null;
-
-
-
-function waehl(id, farbe, pw, ziel, effektiveRolle) {
-  // Alle zurücksetzen
-  document.querySelectorAll('.bb').forEach(b => {
-    b.classList.remove('aktiv');
-    b.style.borderColor = '';
-    b.style.color = '';
-    b.style.background = id === 'admin' ? '' : '#fff';
-  });
-  document.querySelectorAll('.bb-check').forEach(c => {
-    c.style.borderColor = '';
-    c.style.background = '';
-  });
-
-  // Aktiven setzen
-  var btn = document.getElementById('bb-' + id);
-  btn.classList.add('aktiv');
-  btn.style.borderColor = farbe;
-  btn.style.color = farbe;
-  var chk = document.getElementById('chk-' + id);
-  chk.style.borderColor = farbe;
-  chk.style.background = farbe;
-
-  aktuelleWahl = {id, farbe, pw, ziel, effektiveRolle: effektiveRolle || id};
-
-  // PW-Feld zeigen
-  document.getElementById('pw-wrap').classList.add('show');
-  document.getElementById('pw-label').textContent = 'Passwort für ' + btn.querySelector('.bb-label').textContent;
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-input').focus();
-  document.getElementById('pw-input').style.borderColor = farbe;
-
-  // Login-Button zeigen
-  var lbtn = document.getElementById('login-btn');
-  lbtn.style.display = 'flex';
-  lbtn.style.background = farbe;
-
-  document.getElementById('err').classList.remove('show');
-}
-
-function login() {
-  if (!aktuelleWahl) return;
-  var eingabe = document.getElementById('pw-input').value.trim();
-  if (eingabe === aktuelleWahl.pw) {
-    // Rolle in sessionStorage speichern
-    try {
-      // roleToStore nutzt effektiveRolle, falls gesetzt (z.B. Trial-Zugänge nutzen die echte 'ingra'/'tk'-Sichtbarkeitslogik)
-      var roleToStore = aktuelleWahl.id === 'beta' ? 'ingra' : aktuelleWahl.effektiveRolle;
-      sessionStorage.setItem('klartext_role', roleToStore);
-      if(aktuelleWahl.id === 'beta') sessionStorage.setItem('klartext_beta_orig','beta');
-      sessionStorage.setItem('klartext_farbe', aktuelleWahl.farbe);
-      sessionStorage.setItem('klartext_login', 'true');
-      // environment_mode: 'beta' = Malteser-Testgruppe, 'trial' = 4-Wochen-Träger-Testzugänge, 'internal' = alle übrigen bestehenden Zugänge.
-      var environmentMode = 'internal';
-      if (aktuelleWahl.id === 'beta') environmentMode = 'beta';
-      if (aktuelleWahl.id === 'trial-ingra' || aktuelleWahl.id === 'trial-tk') environmentMode = 'trial';
-      sessionStorage.setItem('klartext_environment', environmentMode);
-
-      // Benutzer-Identität für den Chat (Etappe 7.1) — feste Demo-IDs pro Login-Zugang,
-      // solange es noch keine echten Firebase-User-Konten mit individuellem Login gibt.
-      var USER_IDENTITAET = {
-        'ingra':       { id: 'ingra_1',  name: 'INGRA' },
-        'ingra-anna':  { id: 'ingra_anna',  name: 'Anna' },
-        'ingra-ben':   { id: 'ingra_ben',   name: 'Ben' },
-        'ingra-clara': { id: 'ingra_clara', name: 'Clara' },
-        'beta':        { id: 'ingra_1',  name: 'INGRA' },
-        'lk':          { id: 'lk_1',     name: 'Lehrkraft' },
-        'eltern':      { id: 'eltern_1', name: 'Eltern' },
-        'tk':          { id: 'tk_1',     name: 'Teamkoordination' },
-        'trainer':     { id: 'trainer_1',name: 'Trainer' },
-        'admin':       { id: 'admin_1',  name: 'Admin' },
-        'trial-ingra': { id: 'ingra_1',  name: 'INGRA' },
-        'trial-tk':    { id: 'tk_1',     name: 'Teamkoordination' }
-      };
-      var identitaet = USER_IDENTITAET[aktuelleWahl.id] || { id: roleToStore + '_1', name: roleToStore };
-      sessionStorage.setItem('klartext_user_id', identitaet.id);
-      sessionStorage.setItem('klartext_name', identitaet.name);
-    } catch(e) {}
-    // Weiterleiten
-    window.location.href = aktuelleWahl.ziel;
-  } else {
-    document.getElementById('err').classList.add('show');
-    document.getElementById('pw-input').style.borderColor = '#C62828';
-    document.getElementById('pw-input').select();
-  }
-}
+// Ziel-Seite je Rolle nach erfolgreichem Login (unverändert gegenüber dem bisherigen Modell)
+var ZIELE = {
+  ingra: 'DASHBOARD.html', admin: 'DASHBOARD.html',
+  lk: 'KLARTEXT_Lehrerkurs.html', eltern: 'KLARTEXT_Elternkurs.html',
+  tk: 'DASHBOARD.html', trainer: 'DASHBOARD.html'
+};
 
 function togglePw() {
   var inp = document.getElementById('pw-input');
   inp.type = inp.type === 'password' ? 'text' : 'password';
 }
 
-// Auto-Login wenn schon eingeloggt
-(function(){
+function zeigeFehler(text) {
+  var err = document.getElementById('err');
+  err.textContent = text;
+  err.classList.add('show');
+}
+
+// Übergangs-Kompatibilität: die übrigen, noch nicht migrierten Seiten
+// prüfen weiterhin sessionStorage['klartext_login']/['klartext_role'].
+// Sobald jede Seite direkt gegen Supabase-Sessions prüft, kann dieser
+// Block entfallen.
+function setzeUebergangsSession(profil, userId) {
   try {
-    if (sessionStorage.getItem('klartext_login') === 'true') {
-      var role = sessionStorage.getItem('klartext_role');
-      var ziele = {
-        ingra: 'DASHBOARD.html', admin: 'DASHBOARD.html',
-        lk: 'KLARTEXT_Lehrerkurs.html', eltern: 'KLARTEXT_Elternkurs.html',
-        tk: 'DASHBOARD.html', trainer: 'DASHBOARD.html'
-      };
-      if (role && ziele[role]) window.location.href = ziele[role];
+    sessionStorage.setItem('klartext_login', 'true');
+    sessionStorage.setItem('klartext_role', profil.rolle);
+    sessionStorage.setItem('klartext_user_id', userId);
+    sessionStorage.setItem('klartext_name', [profil.vorname, profil.nachname].filter(Boolean).join(' ') || profil.rolle);
+  } catch (e) {}
+}
+
+function weiterleiten(rolle) {
+  window.location.href = ZIELE[rolle] || 'DASHBOARD.html';
+}
+
+async function login() {
+  var email = document.getElementById('email-input').value.trim();
+  var passwort = document.getElementById('pw-input').value;
+  document.getElementById('err').classList.remove('show');
+
+  if (!email || !passwort) {
+    zeigeFehler('Bitte E-Mail und Passwort eingeben.');
+    return;
+  }
+
+  var btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  try {
+    var anmeldung = await supabase.auth.signInWithPassword({ email: email, password: passwort });
+    if (anmeldung.error) throw anmeldung.error;
+
+    var profilAbfrage = await supabase
+      .from('profiles')
+      .select('rolle, vorname, nachname')
+      .eq('id', anmeldung.data.user.id)
+      .single();
+    if (profilAbfrage.error) throw profilAbfrage.error;
+
+    setzeUebergangsSession(profilAbfrage.data, anmeldung.data.user.id);
+    weiterleiten(profilAbfrage.data.rolle);
+  } catch (e) {
+    zeigeFehler('Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.');
+    btn.disabled = false;
+  }
+}
+
+// Auto-Login, falls bereits eine gültige Supabase-Session besteht
+(async function(){
+  try {
+    var sitzung = await supabase.auth.getSession();
+    if (!sitzung.data.session) return;
+    var profilAbfrage = await supabase
+      .from('profiles')
+      .select('rolle, vorname, nachname')
+      .eq('id', sitzung.data.session.user.id)
+      .single();
+    if (profilAbfrage.data) {
+      setzeUebergangsSession(profilAbfrage.data, sitzung.data.session.user.id);
+      weiterleiten(profilAbfrage.data.rolle);
     }
-  } catch(e) {}
+  } catch (e) {}
 })();
 </script>
 <script>

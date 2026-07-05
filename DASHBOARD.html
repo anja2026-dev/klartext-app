@@ -133,6 +133,126 @@ footer strong{color:var(--kt-accent);}
 </head>
 <body>
 
+<!-- ============ MOBILE DASHBOARD (nur < 701px sichtbar) ============ -->
+<style>
+:root{
+  --mk-navy:#1B3A4B; --mk-acc:#6EC6A0; --mk-paper:#F5F0E8; --mk-border:#DDD8CE; --mk-muted:#6A6878;
+}
+#mobile-dashboard{ display:none; }
+
+@media (max-width:700px){
+  #global-nav, .desktop-only { display:none !important; }
+  body{ overflow-x:hidden; margin:0; }
+
+  #mobile-dashboard{
+    display:block; font-family:"DM Sans",sans-serif; background:var(--mk-paper); min-height:100vh;
+  }
+
+  .m-header{
+    position:fixed; top:0; left:0; right:0; z-index:200; height:56px;
+    background:var(--mk-navy); display:flex; align-items:center; justify-content:space-between;
+    padding:0 16px; border-bottom:3px solid var(--mk-acc); box-sizing:border-box;
+  }
+  .m-logo{ font-family:"Playfair Display",serif; font-weight:700; font-size:18px; color:#fff; }
+  .m-burger{ background:none; border:none; color:var(--mk-acc); font-size:24px; cursor:pointer; padding:4px 8px; }
+
+  .m-menu{
+    position:fixed; top:0; right:-100%; width:80%; max-width:320px; height:100vh;
+    background:var(--mk-navy); z-index:300; padding:16px; box-sizing:border-box;
+    display:flex; flex-direction:column; gap:4px; transition:right .25s ease; overflow-y:auto;
+  }
+  .m-menu.offen{ right:0; }
+  .m-menu a{ color:#fff; text-decoration:none; font-size:16px; padding:12px 8px; border-bottom:1px solid rgba(255,255,255,.12); }
+  .m-menu-close{ align-self:flex-end; background:none; border:none; color:var(--mk-acc); font-size:22px; cursor:pointer; margin-bottom:8px; }
+
+  .m-main{ padding:72px 16px 16px; display:flex; flex-direction:column; gap:24px; box-sizing:border-box; }
+  .m-section{ display:flex; flex-direction:column; gap:12px; }
+
+  .m-rolle-btn{ width:100%; padding:14px; font-size:16px; font-weight:700; border-radius:12px; border:1.5px solid var(--mk-navy); background:#fff; color:var(--mk-navy); cursor:pointer; box-sizing:border-box; }
+  .m-rolle-btn.aktiv{ background:var(--mk-navy); color:#fff; }
+
+  .m-dropdown{ background:#fff; border:1.5px solid var(--mk-border); border-radius:12px; padding:12px 16px; box-sizing:border-box; }
+  .m-dropdown summary{ font-size:16px; font-weight:700; color:var(--mk-navy); cursor:pointer; list-style:none; }
+  .m-dropdown summary::-webkit-details-marker{ display:none; }
+  .m-dropdown-inhalt{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .m-dropdown-inhalt a{ flex:1 1 calc(33% - 8px); min-width:60px; text-align:center; background:var(--mk-paper); border:1px solid var(--mk-border); border-radius:8px; padding:10px 4px; font-size:14px; color:var(--mk-navy); text-decoration:none; box-sizing:border-box; }
+
+  .m-btn-full{ display:block; width:100%; padding:14px; font-size:16px; font-weight:700; background:#fff; border:1.5px solid var(--mk-border); border-radius:12px; color:var(--mk-navy); text-decoration:none; text-align:center; box-sizing:border-box; }
+
+  .m-suchfeld{ width:100%; padding:12px 16px; font-size:16px; border-radius:12px; border:1.5px solid var(--mk-border); box-sizing:border-box; font-family:inherit; }
+
+  .m-footer{ text-align:center; padding:16px; font-size:13px; color:var(--mk-muted); }
+  .m-footer a{ color:var(--mk-muted); text-decoration:underline; }
+}
+</style>
+
+<div id="mobile-dashboard">
+  <header class="m-header">
+    <div class="m-logo">KLARTEXT</div>
+    <button class="m-burger" onclick="mobileMenuToggle()" aria-label="Menü">☰</button>
+  </header>
+
+  <nav id="m-menu" class="m-menu">
+    <button class="m-menu-close" onclick="mobileMenuToggle()" aria-label="Schließen">✕</button>
+    <a href="CHAT_View.html">💬 KlarApp</a>
+    <a href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
+    <a href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
+    <a href="#sek-fk">🚒 Feuerwehrkarten</a>
+    <a href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
+    <a href="KLARTEXT_Tagesjournal.html">📓 Tagesjournal</a>
+    <a href="#" onclick="mobileSucheFokus();return false;">🔍 Suche</a>
+    <a href="#" onclick="sessionStorage.clear();window.location.href='KLARTEXT_Login.html';return false;">🚪 Logout</a>
+  </nav>
+
+  <main class="m-main">
+    <section class="m-section">
+      <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">INGRA</button>
+      <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">TK</button>
+      <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">FM</button>
+    </section>
+
+    <section class="m-section">
+      <details class="m-dropdown">
+        <summary>Module öffnen</summary>
+        <div class="m-dropdown-inhalt">
+          <a href="#modul-m0">M0</a><a href="#modul-m1">M1</a><a href="#modul-m2">M2</a>
+          <a href="#modul-m3">M3</a><a href="#modul-m4">M4</a><a href="#modul-m5">M5</a>
+          <a href="#modul-m6">M6</a><a href="#modul-m7">M7</a><a href="#modul-m8">M8</a>
+          <a href="#modul-humor">Humor</a><a href="#sek-kk">Kinderkarten</a><a href="#sek-fk">Feuerwehrkarten</a>
+        </div>
+      </details>
+    </section>
+
+    <section class="m-section">
+      <a class="m-btn-full" href="#sek-kk">Kind-Karten</a>
+      <a class="m-btn-full" href="KLARTEXT_Downloads.html">Tools</a>
+      <a class="m-btn-full" href="KLARTEXT_Downloads.html">Downloads</a>
+    </section>
+
+    <section class="m-section">
+      <input type="search" id="m-suche" class="m-suchfeld" placeholder="Suchen …">
+    </section>
+  </main>
+
+  <footer class="m-footer">
+    <a href="KLARTEXT_Impressum.html">Impressum</a> · <a href="KLARTEXT_Ueber.html">Über KLARTEXT</a> · <a href="KLARTEXT_Glossar.html">Glossar</a>
+  </footer>
+</div>
+
+<script>
+function mobileMenuToggle(){ document.getElementById('m-menu').classList.toggle('offen'); }
+function mobileSucheFokus(){
+  mobileMenuToggle();
+  const feld = document.getElementById('m-suche');
+  if (feld) { feld.scrollIntoView({behavior:'smooth'}); feld.focus(); }
+}
+function mobileRolleWaehlen(btn){
+  document.querySelectorAll('.m-rolle-btn').forEach(b=>b.classList.remove('aktiv'));
+  btn.classList.add('aktiv');
+}
+</script>
+
+
 <header class="kt-header">
   <div class="header-left">
     <a class="kt-logo" href="DASHBOARD.html">

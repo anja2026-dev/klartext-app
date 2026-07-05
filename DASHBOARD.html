@@ -165,21 +165,35 @@ footer strong{color:var(--kt-accent);}
   .m-menu a{ color:#fff; text-decoration:none; font-size:16px; padding:12px 8px; border-bottom:1px solid rgba(255,255,255,.12); }
   .m-menu-close{ align-self:flex-end; background:none; border:none; color:var(--mk-acc); font-size:22px; cursor:pointer; margin-bottom:8px; }
 
-  .m-main{ padding:72px 16px 16px; display:flex; flex-direction:column; gap:24px; box-sizing:border-box; }
-  .m-section{ display:flex; flex-direction:column; gap:12px; }
+  .m-main{ padding:68px 16px 16px; display:flex; flex-direction:column; gap:18px; box-sizing:border-box; }
+  .m-section{ display:flex; flex-direction:column; gap:8px; }
 
-  .m-rolle-btn{ width:100%; padding:14px; font-size:16px; font-weight:700; border-radius:12px; border:1.5px solid var(--mk-navy); background:#fff; color:var(--mk-navy); cursor:pointer; box-sizing:border-box; }
+  .m-label{ font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--mk-muted); }
+  .m-label-fk{ color:#B71C1C; }
+
+  .m-suche-wrap{ position:relative; }
+  .m-suche-icon{ position:absolute; left:14px; top:50%; transform:translateY(-50%); opacity:.55; pointer-events:none; font-size:15px; }
+  .m-suchfeld{ width:100%; padding:12px 14px 12px 40px; font-size:16px; border-radius:12px; border:1.5px solid var(--mk-border); box-sizing:border-box; font-family:inherit; background:#fff; }
+
+  .m-rollen-tabs{ display:flex; border:1.5px solid var(--mk-navy); border-radius:12px; overflow:hidden; }
+  .m-rolle-btn{ flex:1; padding:11px 4px; font-size:14.5px; font-weight:700; border:none; border-right:1px solid rgba(27,58,75,.2); background:#fff; color:var(--mk-navy); cursor:pointer; }
+  .m-rolle-btn:last-child{ border-right:none; }
   .m-rolle-btn.aktiv{ background:var(--mk-navy); color:#fff; }
 
+  .m-grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+  .m-chip{ display:flex; align-items:center; gap:8px; padding:11px 10px; background:#fff; border:1.5px solid var(--mk-border); border-radius:10px; color:var(--mk-navy); text-decoration:none; font-size:13.5px; font-weight:600; line-height:1.2; box-sizing:border-box; }
+  .m-chip-emoji{ font-size:17px; flex-shrink:0; }
+  .m-chip-fk{ background:#FDEAEA; border-color:#F1B3B0; color:#8E2020; }
+
   .m-dropdown{ background:#fff; border:1.5px solid var(--mk-border); border-radius:12px; padding:12px 16px; box-sizing:border-box; }
-  .m-dropdown summary{ font-size:16px; font-weight:700; color:var(--mk-navy); cursor:pointer; list-style:none; }
+  .m-dropdown summary{ font-size:15px; font-weight:700; color:var(--mk-navy); cursor:pointer; list-style:none; }
   .m-dropdown summary::-webkit-details-marker{ display:none; }
   .m-dropdown-inhalt{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .m-dropdown-inhalt a{ flex:1 1 calc(33% - 8px); min-width:60px; text-align:center; background:var(--mk-paper); border:1px solid var(--mk-border); border-radius:8px; padding:10px 4px; font-size:14px; color:var(--mk-navy); text-decoration:none; box-sizing:border-box; }
 
   .m-btn-full{ display:block; width:100%; padding:14px; font-size:16px; font-weight:700; background:#fff; border:1.5px solid var(--mk-border); border-radius:12px; color:var(--mk-navy); text-decoration:none; text-align:center; box-sizing:border-box; }
-
-  .m-suchfeld{ width:100%; padding:12px 16px; font-size:16px; border-radius:12px; border:1.5px solid var(--mk-border); box-sizing:border-box; font-family:inherit; }
+  .m-btn-m3{ background:linear-gradient(135deg,#7A5318,#B07D2A); border:none; color:#fff; }
 
   .m-footer{ text-align:center; padding:16px; font-size:13px; color:var(--mk-muted); }
   .m-footer a{ color:var(--mk-muted); text-decoration:underline; }
@@ -211,43 +225,58 @@ footer strong{color:var(--kt-accent);}
   </nav>
 
   <main class="m-main">
+    <div class="m-suche-wrap">
+      <span class="m-suche-icon">🔍</span>
+      <input type="search" id="m-suche" class="m-suchfeld" placeholder="Suchen: Barometer, ADHS, Mobbing …">
+    </div>
+
     <section class="m-section">
-      <a class="m-btn-full" href="BAROMETER_KIND.html">🌡️ Kind-Barometer</a>
-      <a class="m-btn-full" href="BAROMETER_INGRA.html">🌡️ INGRA-Barometer</a>
+      <span class="m-label">Rolle</span>
+      <div class="m-rollen-tabs">
+        <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">INGRA</button>
+        <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">TK</button>
+        <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">FM</button>
+      </div>
     </section>
 
     <section class="m-section">
-      <a class="m-btn-full" href="CHAT_View.html">💬 KlarApp</a>
-      <a class="m-btn-full" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
-      <a class="m-btn-full" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
-      <a class="m-btn-full" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
-      <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html">📓 Tagesjournal</a>
+      <span class="m-label">Barometer</span>
+      <div class="m-grid-2">
+        <a class="m-chip" href="BAROMETER_KIND.html"><span class="m-chip-emoji">🌡️</span><span>Kind-Barometer</span></a>
+        <a class="m-chip" href="BAROMETER_INGRA.html"><span class="m-chip-emoji">🌡️</span><span>INGRA-Barometer</span></a>
+      </div>
     </section>
 
     <section class="m-section">
-      <a class="m-btn-full" href="FK-01.html">⚡ FK-01 · Akute Eskalation</a>
-      <a class="m-btn-full" href="FK-02.html">🔇 FK-02 · Shutdown</a>
-      <a class="m-btn-full" href="FK-03.html">😰 FK-03 · Panikattacke</a>
-      <a class="m-btn-full" href="FK-04.html">⚠️ FK-04 · Fremdgefährdung</a>
-      <a class="m-btn-full" href="FK-05.html">🩹 FK-05 · Selbstverletzung</a>
-      <a class="m-btn-full" href="FK-06.html">🏃 FK-06 · Weglaufen / Flucht</a>
-      <a class="m-btn-full" href="FK-07.html">🌫️ FK-07 · Dissoziation</a>
-      <a class="m-btn-full" href="FK-08.html">🌋 FK-08 · Meltdown</a>
+      <span class="m-label">Schnellzugriff</span>
+      <div class="m-grid-2">
+        <a class="m-chip" href="CHAT_View.html"><span class="m-chip-emoji">💬</span><span>KlarApp</span></a>
+        <a class="m-chip" href="KLARTEXT_Listen.html"><span class="m-chip-emoji">📋</span><span>To-do-Liste</span></a>
+        <a class="m-chip" href="KLARTEXT_Weiterleitungen.html"><span class="m-chip-emoji">📤</span><span>Weiterleitungen</span></a>
+        <a class="m-chip" href="KLARTEXT_Notizblock.html"><span class="m-chip-emoji">📝</span><span>Notizblock</span></a>
+        <a class="m-chip" href="KLARTEXT_Tagesjournal.html"><span class="m-chip-emoji">📓</span><span>Tagesjournal</span></a>
+      </div>
     </section>
 
     <section class="m-section">
-      <a class="m-btn-full" href="DASHBOARD-M3.html">🧰 M3 · Alle 20 Werkzeugkarten</a>
+      <span class="m-label m-label-fk">🚒 Feuerwehrkarten · Notfall</span>
+      <div class="m-grid-2">
+        <a class="m-chip m-chip-fk" href="FK-01.html"><span class="m-chip-emoji">⚡</span><span>Akute Eskalation</span></a>
+        <a class="m-chip m-chip-fk" href="FK-02.html"><span class="m-chip-emoji">🔇</span><span>Shutdown</span></a>
+        <a class="m-chip m-chip-fk" href="FK-03.html"><span class="m-chip-emoji">😰</span><span>Panikattacke</span></a>
+        <a class="m-chip m-chip-fk" href="FK-04.html"><span class="m-chip-emoji">⚠️</span><span>Fremdgefährdung</span></a>
+        <a class="m-chip m-chip-fk" href="FK-05.html"><span class="m-chip-emoji">🩹</span><span>Selbstverletzung</span></a>
+        <a class="m-chip m-chip-fk" href="FK-06.html"><span class="m-chip-emoji">🏃</span><span>Weglaufen / Flucht</span></a>
+        <a class="m-chip m-chip-fk" href="FK-07.html"><span class="m-chip-emoji">🌫️</span><span>Dissoziation</span></a>
+        <a class="m-chip m-chip-fk" href="FK-08.html"><span class="m-chip-emoji">🌋</span><span>Meltdown</span></a>
+      </div>
     </section>
 
-    <section class="m-section">
-      <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">INGRA</button>
-      <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">TK</button>
-      <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">FM</button>
-    </section>
+    <a class="m-btn-full m-btn-m3" href="DASHBOARD-M3.html">🧰 M3 · Alle 20 Werkzeugkarten</a>
 
     <section class="m-section">
       <details class="m-dropdown">
-        <summary>Module öffnen</summary>
+        <summary>📚 Alle Module öffnen</summary>
         <div class="m-dropdown-inhalt">
           <a href="#modul-m0">M0</a><a href="#modul-m1">M1</a><a href="#modul-m2">M2</a>
           <a href="#modul-m3">M3</a><a href="#modul-m4">M4</a><a href="#modul-m5">M5</a>
@@ -255,10 +284,6 @@ footer strong{color:var(--kt-accent);}
           <a href="#modul-humor">Humor</a><a href="#sek-kk">Kinderkarten</a><a href="#sek-fk">Feuerwehrkarten</a>
         </div>
       </details>
-    </section>
-
-    <section class="m-section">
-      <input type="search" id="m-suche" class="m-suchfeld" placeholder="Suchen …">
     </section>
   </main>
 

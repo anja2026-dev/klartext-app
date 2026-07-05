@@ -38,9 +38,6 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 <meta name="apple-mobile-web-app-title" content="KLARTEXT">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#1B3A4B">
-<!-- Supabase SDK -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
 </head>
 <body>
 
@@ -81,7 +78,10 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { supabase } from './supabase/auth_client.js';
+  // neuer Login-Code kommt hier rein
+
 // Ziel-Seite je Rolle nach erfolgreichem Login (unverändert gegenüber dem bisherigen Modell)
 var ZIELE = {
   ingra: 'DASHBOARD.html', admin: 'DASHBOARD.html',
@@ -147,6 +147,11 @@ async function login() {
     btn.disabled = false;
   }
 }
+
+// Module-Skripte sind nicht global sichtbar — für die inline onclick/onkeydown-
+// Attribute im HTML oben müssen die Funktionen explizit an window gehängt werden.
+window.login = login;
+window.togglePw = togglePw;
 
 // Auto-Login, falls bereits eine gültige Supabase-Session besteht
 (async function(){

@@ -63,6 +63,22 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
 <meta name="apple-mobile-web-app-title" content="KLARTEXT">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#1B3A4B">
+
+<script>
+(function(){
+  try{
+    var role = sessionStorage.getItem('klartext_role') || '';
+    if(!['tk','admin'].includes(role)){
+      document.addEventListener('DOMContentLoaded', function(){
+        var tab = document.querySelector('.tab.tk');
+        var sek = document.getElementById('tk');
+        if(tab) tab.style.display = 'none';
+        if(sek) sek.style.display = 'none';
+      });
+    }
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
 <header class="header">

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>KLARTEXT · Nachrichten</title>
+<title>KLARTEXT · KLARapp</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="chat.css">
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
@@ -100,11 +100,36 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
   width:260px;flex-shrink:0;background:#f7f7f7;border-left:1px solid #ccc;
   padding:10px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;
 }
+
+/* ── BRAINY-STICKER PICKER ── */
+.sticker-btn{
+  width:40px;height:40px;border-radius:50%;background:#fff;color:#1B3A4B;
+  border:1.5px solid #DDD8CE;font-size:1.2rem;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.sticker-btn:hover{border-color:#6EC6A0;}
+#sticker-picker{
+  position:absolute;bottom:64px;left:.85rem;background:#fff;border:1.5px solid #DDD8CE;
+  border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.12);padding:.6rem;
+  display:none;grid-template-columns:repeat(5,1fr);gap:.4rem;z-index:60;
+}
+#sticker-picker.offen{display:grid;}
+#sticker-picker button{
+  width:44px;height:44px;border:none;background:none;cursor:pointer;
+  border-radius:10px;padding:.15rem;
+}
+#sticker-picker button:hover{background:#F5F0E8;}
+.brainy-icon{width:100%;height:100%;display:block;}
+.brainy-msg-sticker{width:52px;height:52px;display:block;}
+
 #brainy-panel.hidden{display:none;}
 #brainy-panel h3{font-family:"Playfair Display",serif;font-size:.9rem;color:#1B3A4B;margin:0;display:flex;align-items:center;gap:.35rem;}
 #brainy-panel p{font-size:.75rem;color:#6A6878;margin:0;line-height:1.5;}
 #brainy-chattext,#brainy-vorschlag{width:100%;height:110px;resize:vertical;font-family:inherit;font-size:.75rem;border:1.5px solid #DDD8CE;border-radius:6px;padding:.4rem;}
 #brainy-copy,#brainy-uebernehmen{background:#1B3A4B;color:#fff;border:none;border-radius:6px;padding:.4rem .7rem;font-family:inherit;font-size:.75rem;font-weight:700;cursor:pointer;}
+.chat-bubble-zeit{font-size:.62rem;opacity:.8;text-align:right;margin-top:.15rem;}
+.lese-haken{opacity:.75;}
+.lese-haken.haken-gelesen{color:#6EC6A0;opacity:1;font-weight:700;}
 .brainy-wink{display:inline-block;animation:wink .6s ease-in-out 1;}
 @keyframes wink{0%{transform:rotate(0)}30%{transform:rotate(20deg)}60%{transform:rotate(-10deg)}100%{transform:rotate(0)}}
 
@@ -121,12 +146,78 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
 </head>
 <body>
 
+<!-- BRAINY-STICKER SPRITESHEET (angelehnt an brainy.png: Mintgrün-Kreis, cremefarbene Wolkenform, Brille) -->
+<svg style="display:none" aria-hidden="true">
+  <defs>
+    <!-- Basis: Kreis + Wolkenform, ohne Gesicht -->
+    <symbol id="brainy-base" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#6EC6A0"/>
+      <path d="M50 15 C35 15 25 25 25 35 C15 35 10 45 15 52 C10 60 15 70 25 72 C25 82 35 88 50 88 C65 88 75 82 75 72 C85 70 90 60 85 52 C90 45 85 35 75 35 C75 25 65 15 50 15 Z"
+            fill="#F5F0E8" stroke="#1B3A4B" stroke-width="2.5"/>
+    </symbol>
+
+    <!-- 1: Freu / Gruß (Brille, geschlossene Augen, Herz) -->
+    <symbol id="brainy-freu" viewBox="0 0 100 100">
+      <use href="#brainy-base"/>
+      <circle cx="40" cy="52" r="7" fill="none" stroke="#1B3A4B" stroke-width="2"/>
+      <circle cx="60" cy="52" r="7" fill="none" stroke="#1B3A4B" stroke-width="2"/>
+      <line x1="47" y1="52" x2="53" y2="52" stroke="#1B3A4B" stroke-width="2"/>
+      <path d="M35 47 Q40 43 45 47" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round"/>
+      <path d="M55 47 Q60 43 65 47" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round"/>
+      <path d="M45 64 Q50 68 55 64" fill="none" stroke="#1B3A4B" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M78 30 c-3-4-9-2-9 3 c0 4 9 10 9 10 s9-6 9-10 c0-5-6-7-9-3 Z" fill="#D9453C"/>
+    </symbol>
+
+    <!-- 2: Top / Daumen hoch -->
+    <symbol id="brainy-top" viewBox="0 0 100 100">
+      <use href="#brainy-base"/>
+      <circle cx="40" cy="53" r="2.6" fill="#1B3A4B"/>
+      <circle cx="60" cy="53" r="2.6" fill="#1B3A4B"/>
+      <path d="M43 66 Q50 71 57 66" fill="none" stroke="#1B3A4B" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M78 55 v-13 a4 4 0 0 1 8 0 v13 h3 a4 4 0 0 1 4 5 l-2 10 a5 5 0 0 1-5 4 h-10 v-19 Z"
+            fill="#F5F0E8" stroke="#1B3A4B" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- 3: Nachdenklich -->
+    <symbol id="brainy-denk" viewBox="0 0 100 100">
+      <use href="#brainy-base"/>
+      <circle cx="39" cy="52" r="2.6" fill="#1B3A4B"/>
+      <circle cx="59" cy="52" r="2.6" fill="#1B3A4B"/>
+      <path d="M52 46 Q60 40 66 44" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round"/>
+      <path d="M43 65 Q50 63 57 65" fill="none" stroke="#1B3A4B" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="80" cy="28" r="9" fill="none" stroke="#1B3A4B" stroke-width="2"/>
+      <text x="80" y="33" font-size="12" text-anchor="middle" fill="#1B3A4B" font-family="DM Sans, sans-serif" font-weight="700">?</text>
+    </symbol>
+
+    <!-- 4: Erschöpft (Barometer Grau) -->
+    <symbol id="brainy-erschoepft" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="48" fill="#9C9C9C"/>
+      <path d="M50 15 C35 15 25 25 25 35 C15 35 10 45 15 52 C10 60 15 70 25 72 C25 82 35 88 50 88 C65 88 75 82 75 72 C85 70 90 60 85 52 C90 45 85 35 75 35 C75 25 65 15 50 15 Z"
+            fill="#F5F0E8" stroke="#1B3A4B" stroke-width="2.5"/>
+      <line x1="35" y1="52" x2="45" y2="52" stroke="#1B3A4B" stroke-width="2.2" stroke-linecap="round"/>
+      <line x1="55" y1="52" x2="65" y2="52" stroke="#1B3A4B" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M45 66 Q50 64 55 66" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round"/>
+      <text x="82" y="26" font-size="11" fill="#1B3A4B" font-family="DM Sans, sans-serif" font-weight="700">z Z</text>
+    </symbol>
+
+    <!-- 5: Cheer / Du schaffst das -->
+    <symbol id="brainy-cheer" viewBox="0 0 100 100">
+      <use href="#brainy-base"/>
+      <path d="M35 47 Q40 43 45 47" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round"/>
+      <path d="M55 47 Q60 43 65 47" fill="none" stroke="#1B3A4B" stroke-width="2" stroke-linecap="round"/>
+      <path d="M42 63 Q50 71 58 63" fill="none" stroke="#1B3A4B" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="22" y1="38" x2="14" y2="24" stroke="#1B3A4B" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="78" y1="38" x2="86" y2="24" stroke="#1B3A4B" stroke-width="2.5" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
 <!-- NEUE CHAT-NAVIGATION -->
 <!-- GLOBALE HAUPTNAVIGATION -->
 <nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
   <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
   <a class="gnav-link" href="DASHBOARD.html">🏠 Dashboard</a>
-  <a class="gnav-link aktiv" href="CHAT_View.html">💬 Nachrichten</a>
+  <a class="gnav-link aktiv" href="CHAT_View.html">💬 KLARapp</a>
   <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
   <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
@@ -139,7 +230,7 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
   <!-- LINKS: Chatliste -->
   <div class="chat-sidebar" id="chat-sidebar">
     <div class="chat-sidebar-header">
-      <span class="chat-sidebar-titel">💬 Chats</span>
+      <span class="chat-sidebar-titel">💬 KLARapp</span>
       <a class="chat-sidebar-neu" href="CHAT_New.html">＋ Neu</a>
     </div>
     <div class="chat-sidebar-liste" id="sidebar-liste">
@@ -160,7 +251,15 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
         <div class="chat-main-name" id="chat-titel">—</div>
       </div>
       <div class="chat-verlauf" id="chat-verlauf"></div>
-      <div class="chat-eingabe-leiste">
+      <div id="sticker-picker">
+        <button type="button" title="Freu" onclick="brainyStickerEinfuegen('freu')"><svg class="brainy-icon"><use href="#brainy-freu"/></svg></button>
+        <button type="button" title="Top!" onclick="brainyStickerEinfuegen('top')"><svg class="brainy-icon"><use href="#brainy-top"/></svg></button>
+        <button type="button" title="Hmm, überleg…" onclick="brainyStickerEinfuegen('denk')"><svg class="brainy-icon"><use href="#brainy-denk"/></svg></button>
+        <button type="button" title="Erschöpft" onclick="brainyStickerEinfuegen('erschoepft')"><svg class="brainy-icon"><use href="#brainy-erschoepft"/></svg></button>
+        <button type="button" title="Du schaffst das!" onclick="brainyStickerEinfuegen('cheer')"><svg class="brainy-icon"><use href="#brainy-cheer"/></svg></button>
+      </div>
+      <div class="chat-eingabe-leiste" style="position:relative;">
+        <button type="button" class="sticker-btn" id="sticker-toggle-btn" onclick="stickerPickerToggle()" title="Brainy-Sticker">🧠</button>
         <textarea class="chat-eingabe-feld" id="chat-eingabe" placeholder="Nachricht schreiben …" rows="1"></textarea>
         <button class="chat-senden-btn" id="chat-senden-btn" onclick="chatViewSenden()">➤</button>
       </div>
@@ -186,10 +285,83 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
 const aktuellerUser = chatAktuellerUser();
 let conversationId = new URLSearchParams(window.location.search).get('cid') || null;
 let chatNachrichtenListenerRef = null;
+let chatAenderungListenerRef = null;
+let chatAktuellerAndereId = null;
 let kinderNamenCache = {};
+
+// Brainy-Sticker-Token in der Chatliste-Vorschau als lesbares Label statt Klammer-Code zeigen
+const BRAINY_LABELS = { freu:'Freu 🧠', top:'Top! 🧠', denk:'Hmm… 🧠', erschoepft:'Erschöpft 🧠', cheer:'Du schaffst das! 🧠' };
+function brainyVorschauText(text) {
+  const re = /\[\[brainy:(freu|top|denk|erschoepft|cheer)\]\]/g;
+  const ersetzt = text.replace(re, function(_, mood){ return BRAINY_LABELS[mood] || '🧠'; }).trim();
+  return ersetzt || 'Noch keine Nachrichten';
+}
+
+// ── LEICHTGEWICHTIGER HINWEIS BEI NEUEN NACHRICHTEN (kein echtes Push, nur solange der Tab offen ist) ──
+let chatLetzteTimestamps = {};
+let chatErstesLaden = true;
+let chatTitelFlackerInterval = null;
+const chatUrsprungsTitel = document.title;
+
+function chatNavBadgeSetzen(sichtbar) {
+  const nav = document.querySelector('.gnav-link.aktiv');
+  if (!nav) return;
+  let dot = nav.querySelector('.gnav-badge-dot');
+  if (sichtbar) {
+    if (!dot) {
+      dot = document.createElement('span');
+      dot.className = 'gnav-badge-dot';
+      dot.style.cssText = 'display:inline-block;width:7px;height:7px;border-radius:50%;background:#D9453C;margin-left:.3rem;vertical-align:middle;';
+      nav.appendChild(dot);
+    }
+  } else if (dot) {
+    dot.remove();
+  }
+}
+
+function chatTitelFlackerStart(text) {
+  if (chatTitelFlackerInterval) return;
+  let umschalten = false;
+  chatTitelFlackerInterval = setInterval(function(){
+    document.title = umschalten ? chatUrsprungsTitel : text;
+    umschalten = !umschalten;
+  }, 1500);
+}
+function chatTitelFlackerStopp() {
+  if (chatTitelFlackerInterval) { clearInterval(chatTitelFlackerInterval); chatTitelFlackerInterval = null; }
+  document.title = chatUrsprungsTitel;
+  chatNavBadgeSetzen(false);
+}
+window.addEventListener('focus', chatTitelFlackerStopp);
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) chatTitelFlackerStopp(); });
+
+if ('Notification' in window && Notification.permission === 'default') {
+  Notification.requestPermission();
+}
+
+function chatPruefeNeueNachrichten(conversations) {
+  Object.keys(conversations||{}).forEach(function(cid){
+    const conv = conversations[cid];
+    const ts = conv.lastTimestamp || 0;
+    const vorher = chatLetzteTimestamps[cid] || 0;
+    if (!chatErstesLaden && ts > vorher && cid !== conversationId) {
+      const name = chatKonversationsName(conv, kinderNamenCache);
+      chatNavBadgeSetzen(true);
+      if (document.hidden) {
+        chatTitelFlackerStart('🔴 Neue Nachricht — KLARapp');
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification('KLARapp · ' + name, { body: brainyVorschauText(conv.lastMessage||'') });
+        }
+      }
+    }
+    chatLetzteTimestamps[cid] = ts;
+  });
+  chatErstesLaden = false;
+}
 
 // ── CHATLISTE IN DER SIDEBAR LADEN ──
 function renderSidebar(conversations) {
+  chatPruefeNeueNachrichten(conversations);
   const liste = document.getElementById('sidebar-liste');
   const ids = Object.keys(conversations || {});
   if (ids.length === 0) {
@@ -208,7 +380,8 @@ function renderSidebar(conversations) {
       avatarFarbe = chatRollenfarbe(conv.memberRoles[andereId]);
     }
     const istAktiv = cid === conversationId;
-    const vorschau = (conv.lastMessage||'').substring(0,45)||'Noch keine Nachrichten';
+    const vorschauRoh = (conv.lastMessage||'').substring(0,45)||'Noch keine Nachrichten';
+    const vorschau = brainyVorschauText(vorschauRoh);
     return `<div class="chat-eintrag${istAktiv?' aktiv-eintrag':''}" onclick="chatOeffnen('${cid}')" style="cursor:pointer;${istAktiv?'background:#EAF0F4;border-left:3px solid #1B3A4B;':''}">
       <div class="chat-avatar" style="background:${avatarFarbe};">${initiale}</div>
       <div class="chat-eintrag-inhalt">
@@ -224,10 +397,15 @@ function renderSidebar(conversations) {
 
 // ── CHAT ÖFFNEN ──
 function chatOeffnen(cid) {
+  chatTitelFlackerStopp();
   // alten Listener sauber abmelden
   if (chatNachrichtenListenerRef) {
     chatNachrichtenListenerRef.off('child_added');
     chatNachrichtenListenerRef = null;
+  }
+  if (chatAenderungListenerRef) {
+    chatAenderungListenerRef.off('child_changed');
+    chatAenderungListenerRef = null;
   }
 
   conversationId = cid;
@@ -253,6 +431,7 @@ function chatOeffnen(cid) {
     const name = chatKonversationsName(conv, kinderNamenCache);
     document.getElementById('chat-titel').textContent = name;
     const andereId = Object.keys(conv.members||{}).find(function(id){return id!==aktuellerUser.id;});
+    chatAktuellerAndereId = andereId || null;
     let farbe='#6A6878';
     if (andereId && conv.memberRoles && conv.memberRoles[andereId]) farbe=chatRollenfarbe(conv.memberRoles[andereId]);
     const avatar = document.getElementById('chat-partner-avatar');
@@ -273,6 +452,12 @@ function chatOeffnen(cid) {
     chatViewNachrichtAnhaengen(messageId, nachricht);
   });
 
+  // Live-Update der Lesebestätigung, wenn readBy sich ändert (z.B. Partner öffnet den Chat)
+  chatAenderungListenerRef = db.ref('messages/' + cid);
+  chatAenderungListenerRef.on('child_changed', function(snapshot){
+    chatAktualisiereLesestatus(snapshot.key, snapshot.val());
+  });
+
   chatMarkiereAlleGelesen(cid);
 
   setTimeout(function(){
@@ -282,22 +467,77 @@ function chatOeffnen(cid) {
   }, 800);
 }
 
+// Brainy-Sticker-Token im Text sicher als <svg><use> rendern (kein innerHTML mit Nutzertext)
+function brainyRenderMessageText(container, text) {
+  container.innerHTML = '';
+  const re = /\[\[brainy:(freu|top|denk|erschoepft|cheer)\]\]/g;
+  const svgNS = 'http://www.w3.org/2000/svg';
+  let lastIndex = 0, match;
+  while ((match = re.exec(text)) !== null) {
+    if (match.index > lastIndex) container.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('class', 'brainy-msg-sticker');
+    const use = document.createElementNS(svgNS, 'use');
+    use.setAttribute('href', '#brainy-' + match[1]);
+    svg.appendChild(use);
+    container.appendChild(svg);
+    lastIndex = re.lastIndex;
+  }
+  if (lastIndex < text.length) container.appendChild(document.createTextNode(text.slice(lastIndex)));
+}
+
 function chatViewNachrichtAnhaengen(messageId, nachricht) {
   const verlauf = document.getElementById('chat-verlauf');
   const istEigene = nachricht.senderId === aktuellerUser.id;
   const farbe = chatRollenfarbe(nachricht.senderRole);
   const zeile = document.createElement('div');
   zeile.className = 'chat-bubble-zeile '+(istEigene?'eigene':'fremde');
+  zeile.dataset.msgId = messageId;
+  const gelesenVomPartner = !!(nachricht.readBy && chatAktuellerAndereId && nachricht.readBy[chatAktuellerAndereId]);
   zeile.innerHTML = `<div class="chat-bubble" style="background:${farbe};">
     ${!istEigene?`<span class="chat-bubble-sender">${nachricht.senderName||nachricht.senderRole}</span>`:''}
     <div class="chat-bubble-text"></div>
-    <div class="chat-bubble-zeit">${chatFormatZeit(nachricht.timestamp)}</div>
+    <div class="chat-bubble-zeit">${chatFormatZeit(nachricht.timestamp)}${istEigene?` <span class="lese-haken">${gelesenVomPartner?'✓✓':'✓'}</span>`:''}</div>
   </div>`;
-  zeile.querySelector('.chat-bubble-text').textContent = nachricht.text||'';
+  brainyRenderMessageText(zeile.querySelector('.chat-bubble-text'), nachricht.text||'');
   verlauf.appendChild(zeile);
   verlauf.scrollTop = verlauf.scrollHeight;
   if (!istEigene) chatMarkiereGelesen(conversationId, messageId);
 }
+
+// aktualisiert nur den Lese-Haken einer bereits gerenderten eigenen Nachricht
+function chatAktualisiereLesestatus(messageId, nachricht) {
+  if (nachricht.senderId !== aktuellerUser.id) return; // Haken nur bei eigenen Nachrichten relevant
+  const zeile = document.querySelector('.chat-bubble-zeile[data-msg-id="'+messageId+'"]');
+  if (!zeile) return;
+  const haken = zeile.querySelector('.lese-haken');
+  if (!haken) return;
+  const gelesenVomPartner = !!(nachricht.readBy && chatAktuellerAndereId && nachricht.readBy[chatAktuellerAndereId]);
+  haken.textContent = gelesenVomPartner ? '✓✓' : '✓';
+  if (gelesenVomPartner) haken.classList.add('haken-gelesen');
+}
+
+// ── Sticker-Picker ──
+function stickerPickerToggle() {
+  document.getElementById('sticker-picker').classList.toggle('offen');
+}
+function brainyStickerEinfuegen(mood) {
+  const feld = document.getElementById('chat-eingabe');
+  const token = '[[brainy:'+mood+']] ';
+  const start = feld.selectionStart ?? feld.value.length;
+  const end = feld.selectionEnd ?? feld.value.length;
+  feld.value = feld.value.slice(0,start) + token + feld.value.slice(end);
+  feld.focus();
+  feld.selectionStart = feld.selectionEnd = start + token.length;
+  document.getElementById('sticker-picker').classList.remove('offen');
+}
+document.addEventListener('click', function(e){
+  const picker = document.getElementById('sticker-picker');
+  const btn = document.getElementById('sticker-toggle-btn');
+  if (picker.classList.contains('offen') && !picker.contains(e.target) && e.target!==btn) {
+    picker.classList.remove('offen');
+  }
+});
 
 function chatViewSenden() {
   const feld = document.getElementById('chat-eingabe');
@@ -331,6 +571,7 @@ db.ref('children').once('value').then(function(snapshot){
 
 window.addEventListener('beforeunload',function(){
   if(chatNachrichtenListenerRef) chatNachrichtenListenerRef.off('child_added');
+  if(chatAenderungListenerRef) chatAenderungListenerRef.off('child_changed');
 });
 </script>
 </body>

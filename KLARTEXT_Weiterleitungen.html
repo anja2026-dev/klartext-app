@@ -53,6 +53,8 @@ textarea{resize:vertical;min-height:100px;line-height:1.55;}
 .empf-btn.aktiv-tk{border-color:#C47A00;background:#FBF4E8;color:#7A4A00;}
 .empf-btn.aktiv-lk{border-color:#1565C0;background:#EAF1F8;color:#0D47A1;}
 .empf-btn.aktiv-eltern{border-color:#AD1457;background:#FCE4EC;color:#7B0D35;}
+.empf-gruppe.gesperrt .empf-btn{opacity:.5;pointer-events:none;}
+.fg-hinweis.auto-hinweis{color:#1B5E2E;font-weight:700;}
 
 .datei-label{display:flex;align-items:center;gap:.6rem;border:1.5px dashed var(--border);border-radius:8px;padding:.75rem 1rem;cursor:pointer;font-size:.82rem;color:var(--muted);background:#FAFAFA;}
 .datei-label:hover{border-color:var(--navy);color:var(--navy);}
@@ -112,12 +114,24 @@ input[type="file"]{display:none;}
 
 <div class="shell">
 
-  <div class="tab-nav">
+  <div class="tab-nav" id="tab-nav-leiste">
     <button class="tab-btn aktiv" id="tbtn-weiterleiten" onclick="tab('weiterleiten')">📤 Weiterleiten</button>
     <button class="tab-btn" id="tbtn-bereich" onclick="tab('bereich')">📦 Bereich senden</button>
     <button class="tab-btn" id="tbtn-inbox" onclick="tab('inbox')">📥 TK-Inbox</button>
     <button class="tab-btn" id="tbtn-verlauf" onclick="tab('verlauf')">📋 Mein Verlauf</button>
   </div>
+  <script>
+  // Zugriffsschutz TK-Inbox: sofort entfernen, bevor der Rest der Seite rendert (kein kurzes Aufblitzen)
+  (function(){
+    try {
+      const rolle = sessionStorage.getItem('klartext_role') || '';
+      if (rolle !== 'tk' && rolle !== 'admin') {
+        const btn = document.getElementById('tbtn-inbox');
+        if (btn) btn.remove();
+      }
+    } catch(e) {}
+  })();
+  </script>
 
   <!-- ══ TAB: WEITERLEITEN ══ -->
   <div id="tab-weiterleiten" class="tab-inhalt aktiv">
@@ -140,6 +154,11 @@ input[type="file"]{display:none;}
               <option value="Krankmeldung Kind">Krankmeldung Kind</option>
               <option value="Krankmeldung INGRA">Krankmeldung INGRA</option>
             </optgroup>
+            <optgroup label="Abwesenheiten & Organisatorisches">
+              <option value="Urlaub">Urlaub</option>
+              <option value="Zeitkonto-Meldung">Zeitkonto-Meldung (Überstunden/Ausgleich)</option>
+              <option value="Schulausfall">Schulausfall (Wetter/Sonstiges)</option>
+            </optgroup>
             <optgroup label="Rückfragen">
               <option value="Rückfrage an TK">Rückfrage an TK</option>
               <option value="Rückfrage an LK">Rückfrage an LK</option>
@@ -161,8 +180,15 @@ input[type="file"]{display:none;}
             <button type="button" class="empf-btn" data-rolle="lk" onclick="empfWaehlen(this)">🔵 Lehrkraft</button>
             <button type="button" class="empf-btn" data-rolle="eltern" onclick="empfWaehlen(this)">🩷 Eltern</button>
           </div>
-          <div class="fg-hinweis">LK/Eltern erhalten einen Leselink (kein Login nötig)</div>
+          <div class="fg-hinweis" id="empf-hinweis">LK/Eltern erhalten einen Leselink (kein Login nötig)</div>
         </div>
+      </div>
+
+      <div class="fg" id="fw-kind-feld" style="display:none;">
+        <label for="fw-kind">Betrifft Kind<span class="pflicht">*</span></label>
+        <select id="fw-kind">
+          <option value="">Bitte wählen …</option>
+        </select>
       </div>
 
       <div class="fg">
@@ -259,6 +285,22 @@ const ME = {
   name: sessionStorage.getItem('klartext_name')    || 'INGRA'
 };
 
+// Kinder-Dropdown für "Krankmeldung Kind" befüllen + Namen-Cache für die Anzeige in Inbox/Verlauf
+const kinderNamenCache = {};
+db.ref('children').once('value').then(function(snapshot) {
+  const kinder = snapshot.val() || {};
+  const select = document.getElementById('fw-kind');
+  Object.keys(kinder).forEach(function(childId) {
+    const kind = kinder[childId];
+    kinderNamenCache[childId] = kind.name;
+    if (kind.active === false) return;
+    const option = document.createElement('option');
+    option.value = childId;
+    option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+    select.appendChild(option);
+  });
+}).catch(function(){ /* Fehler hier nicht kritisch fürs restliche Formular */ });
+
 let gewaehlterEmpfaenger = null;  // 'tk' | 'lk' | 'eltern'
 let letzteForwardId       = null;
 let inboxGeladenHook      = null;
@@ -270,13 +312,23 @@ const ART_ZU_EMPF = {
   'Weitergabe an Eltern': 'eltern',
   'Weitergabe an LK':  'lk',
   'Krankmeldung INGRA': 'tk',
+  'Krankmeldung Kind':  'tk',
+  'Urlaub':             'tk',
+  'Zeitkonto-Meldung':  'tk',
+  'Schulausfall':       'tk',
 };
+// Diese Arten gehen IMMER an TK und die Empfänger-Auswahl wird gesperrt (kein versehentliches Umleiten)
+const IMMER_TK = ['Krankmeldung INGRA','Krankmeldung Kind','Urlaub','Zeitkonto-Meldung','Schulausfall'];
 
 // ── TABS ─────────────────────────────────────────────────
 function tab(id) {
+  if (id === 'inbox' && ME.role !== 'tk' && ME.role !== 'admin') {
+    return; // Zugriff verweigert, auch bei direktem Aufruf ohne sichtbaren Button
+  }
   ['weiterleiten','bereich','inbox','verlauf'].forEach(function(t) {
     document.getElementById('tab-'+t).classList.toggle('aktiv', t===id);
-    document.getElementById('tbtn-'+t).classList.toggle('aktiv', t===id);
+    const btn = document.getElementById('tbtn-'+t);
+    if (btn) btn.classList.toggle('aktiv', t===id);
   });
   if (id==='inbox')   ladeInbox();
   if (id==='verlauf') ladeVerlauf();
@@ -285,6 +337,10 @@ function tab(id) {
 // ── FORMULAR-LOGIK ────────────────────────────────────────
 function artGeaendert() {
   const art = document.getElementById('fw-art').value;
+  const gruppe = document.getElementById('empf-gruppe');
+  const hinweis = document.getElementById('empf-hinweis');
+  const kindFeld = document.getElementById('fw-kind-feld');
+
   // Empfänger auto-vorbelegen wenn die Art es eindeutig bestimmt
   if (ART_ZU_EMPF[art]) {
     document.querySelectorAll('.empf-btn').forEach(function(b) {
@@ -293,9 +349,28 @@ function artGeaendert() {
     const match = document.querySelector(`.empf-btn[data-rolle="${ART_ZU_EMPF[art]}"]`);
     if (match) { match.classList.add('aktiv-'+ART_ZU_EMPF[art]); gewaehlterEmpfaenger = ART_ZU_EMPF[art]; }
   }
+
+  // Bei den "Immer TK"-Arten die Empfänger-Auswahl sperren, damit sie nicht versehentlich geändert wird
+  if (IMMER_TK.includes(art)) {
+    gruppe.classList.add('gesperrt');
+    hinweis.textContent = '🔒 Wird automatisch an die Teamkoordination gesendet.';
+    hinweis.classList.add('auto-hinweis');
+  } else {
+    gruppe.classList.remove('gesperrt');
+    hinweis.textContent = 'LK/Eltern erhalten einen Leselink (kein Login nötig)';
+    hinweis.classList.remove('auto-hinweis');
+    if (!ART_ZU_EMPF[art]) {
+      document.querySelectorAll('.empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
+      gewaehlterEmpfaenger = null;
+    }
+  }
+
+  // Kind-Dropdown nur bei kindbezogenen Arten zeigen
+  kindFeld.style.display = (art === 'Krankmeldung Kind') ? 'block' : 'none';
 }
 
 function empfWaehlen(btn) {
+  if (document.getElementById('empf-gruppe').classList.contains('gesperrt')) return;
   document.querySelectorAll('.empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
   const rolle = btn.dataset.rolle;
   btn.classList.add('aktiv-'+rolle);
@@ -320,17 +395,19 @@ function weiterleitungSenden() {
   const art  = document.getElementById('fw-art').value;
   const text = document.getElementById('fw-text').value.trim();
   const datei = document.getElementById('fw-datei').files[0];
+  const kindId = document.getElementById('fw-kind').value;
 
   if (!art) { zeigeFehler('Bitte eine Art der Weiterleitung wählen.'); return; }
   if (!gewaehlterEmpfaenger) { zeigeFehler('Bitte einen Empfänger wählen.'); return; }
   if (!text) { zeigeFehler('Bitte eine Nachricht eingeben.'); return; }
+  if (art === 'Krankmeldung Kind' && !kindId) { zeigeFehler('Bitte das betroffene Kind wählen.'); return; }
 
   const btn = document.getElementById('fw-btn');
   btn.disabled = true;
   btn.textContent = 'Wird gesendet …';
 
   let nachrichtText = text;
-  if (datei) nachrichtText += '\n\n📎 Datei: ' + datei.name + ' (wurde lokal angehängt, bitte separat übermitteln)';
+  if (datei) nachrichtText += '\n\n📎 Datei: ' + datei.name + ' (wurde lokal ausgewählt, bitte zusätzlich separat übermitteln — Upload folgt noch)';
 
   const daten = {
     fromUser:   ME.id,
@@ -342,6 +419,7 @@ function weiterleitungSenden() {
     timestamp:  Date.now(),
     gelesen:    false
   };
+  if (kindId) daten.childId = kindId;
 
   db.ref('forward').push(daten).then(function(ref) {
     letzteForwardId = ref.key;
@@ -350,6 +428,11 @@ function weiterleitungSenden() {
     document.getElementById('fw-text').value  = '';
     document.getElementById('fw-datei').value = '';
     document.getElementById('fw-datei-name').style.display = 'none';
+    document.getElementById('fw-kind').value = '';
+    document.getElementById('fw-kind-feld').style.display = 'none';
+    document.getElementById('empf-gruppe').classList.remove('gesperrt');
+    document.getElementById('empf-hinweis').textContent = 'LK/Eltern erhalten einen Leselink (kein Login nötig)';
+    document.getElementById('empf-hinweis').classList.remove('auto-hinweis');
     document.querySelectorAll('.empf-btn').forEach(function(b) { b.className = 'empf-btn'; });
     gewaehlterEmpfaenger = null;
     btn.disabled = false;
@@ -448,6 +531,7 @@ function antwortSenden(forwardId) {
 
 // ── TK-INBOX laden ───────────────────────────────────────
 function ladeInbox() {
+  if (ME.role !== 'tk' && ME.role !== 'admin') return; // zweite Sicherheitsebene
   const wrap = document.getElementById('inbox-wrap');
   wrap.innerHTML = '<div class="leer">Lade …</div>';
   if (inboxGeladenHook) { inboxGeladenHook.off('value'); }
@@ -474,6 +558,7 @@ function ladeInbox() {
             + '</tr>'
             + '<tr><td colspan="5" style="padding:0 .5rem;">'
             + '<div class="detail-panel" id="detail-' + id + '">'
+            + (e.childId ? '<div style="font-size:.78rem;color:var(--navy);font-weight:700;margin-bottom:.4rem;">👶 Kind: ' + (kinderNamenCache[e.childId] || e.childId) + '</div>' : '')
             + '<div class="detail-text">' + (e.text||'') + '</div>'
             + (e.targetRole !== 'tk' ? '<button class="link-btn-s" onclick="linkKopieren(\'' + id + '\')">🔗 Leselink</button><span class="kop-best" id="kob-' + id + '">Kopiert!</span><br><br>' : '')
             + '<textarea class="antwort-feld" id="antwort-' + id + '" placeholder="Antwort …">'
@@ -517,6 +602,7 @@ function ladeVerlauf() {
             + '</tr>'
             + '<tr><td colspan="5" style="padding:0 .5rem;">'
             + '<div class="detail-panel" id="detail-' + id + '">'
+            + (e.childId ? '<div style="font-size:.78rem;color:var(--navy);font-weight:700;margin-bottom:.4rem;">👶 Kind: ' + (kinderNamenCache[e.childId] || e.childId) + '</div>' : '')
             + '<div class="detail-text">' + (e.text||'') + '</div>'
             + (e.beantwortet ? '<div style="font-size:.78rem;color:var(--gelesen);margin-top:.4rem;">✓ Antwort von ' + (e.antwortVon||'TK') + ': ' + (e.antwort||'') + '</div>' : '')
             + '</div></td></tr>'

@@ -287,6 +287,7 @@ let conversationId = new URLSearchParams(window.location.search).get('cid') || n
 let chatNachrichtenListenerRef = null;
 let chatAenderungListenerRef = null;
 let chatAktuellerAndereId = null;
+let chatAktuelleMitglieder = [];
 let kinderNamenCache = {};
 
 // Brainy-Sticker-Token in der Chatliste-Vorschau als lesbares Label statt Klammer-Code zeigen
@@ -359,6 +360,30 @@ function chatPruefeNeueNachrichten(conversations) {
   chatErstesLaden = false;
 }
 
+// ── INGRA-AUSTAUSCH: automatische Mitgliedschaft für alle INGRA-Rollenvarianten ──
+const INGRA_GRUPPE_ID = 'ingra-austausch';
+const INGRA_ROLLEN = ['ingra','springer_ingra','pool_ingra','vertretung_ingra'];
+
+function ingraGruppeSicherstellen() {
+  if (!INGRA_ROLLEN.includes(aktuellerUser.role) || !aktuellerUser.id) return Promise.resolve();
+  const ref = db.ref('conversations/' + INGRA_GRUPPE_ID);
+  return ref.once('value').then(function(snapshot){
+    const bereitsMitglied = snapshot.exists() && snapshot.val().members && snapshot.val().members[aktuellerUser.id];
+    if (bereitsMitglied) return;
+    const updates = {};
+    updates['members/' + aktuellerUser.id] = true;
+    updates['memberNames/' + aktuellerUser.id] = aktuellerUser.name;
+    updates['memberRoles/' + aktuellerUser.id] = aktuellerUser.role;
+    if (!snapshot.exists()) {
+      updates['type'] = 'group';
+      updates['groupName'] = '💬 INGRA-Austausch';
+      updates['lastMessage'] = '';
+      updates['lastTimestamp'] = Date.now();
+    }
+    return ref.update(updates);
+  }).catch(function(){ /* stilles Scheitern hier ist ok, Chat funktioniert trotzdem weiter */ });
+}
+
 // ── CHATLISTE IN DER SIDEBAR LADEN ──
 function renderSidebar(conversations) {
   chatPruefeNeueNachrichten(conversations);
@@ -375,15 +400,21 @@ function renderSidebar(conversations) {
     const name = chatKonversationsName(conv, kinderNamenCache);
     const initiale = (name||'?').charAt(0).toUpperCase();
     let avatarFarbe = '#6A6878';
-    const andereId = Object.keys(conv.members||{}).find(function(id){return id!==aktuellerUser.id;});
-    if (andereId && conv.memberRoles && conv.memberRoles[andereId]) {
-      avatarFarbe = chatRollenfarbe(conv.memberRoles[andereId]);
+    let avatarInhalt = initiale;
+    if (conv.type === 'group') {
+      avatarFarbe = '#6EC6A0';
+      avatarInhalt = '🧠';
+    } else {
+      const andereId = Object.keys(conv.members||{}).find(function(id){return id!==aktuellerUser.id;});
+      if (andereId && conv.memberRoles && conv.memberRoles[andereId]) {
+        avatarFarbe = chatRollenfarbe(conv.memberRoles[andereId]);
+      }
     }
     const istAktiv = cid === conversationId;
     const vorschauRoh = (conv.lastMessage||'').substring(0,45)||'Noch keine Nachrichten';
     const vorschau = brainyVorschauText(vorschauRoh);
     return `<div class="chat-eintrag${istAktiv?' aktiv-eintrag':''}" onclick="chatOeffnen('${cid}')" style="cursor:pointer;${istAktiv?'background:#EAF0F4;border-left:3px solid #1B3A4B;':''}">
-      <div class="chat-avatar" style="background:${avatarFarbe};">${initiale}</div>
+      <div class="chat-avatar" style="background:${avatarFarbe};">${avatarInhalt}</div>
       <div class="chat-eintrag-inhalt">
         <div class="chat-eintrag-kopf">
           <span class="chat-eintrag-name">${name}</span>
@@ -397,6 +428,22 @@ function renderSidebar(conversations) {
 
 // ── CHAT ÖFFNEN ──
 function chatOeffnen(cid) {
+  db.ref('conversations/' + cid).once('value').then(function(snapshot){
+    const conv = snapshot.val();
+    if (!conv || !conv.members || !conv.members[aktuellerUser.id]) {
+      showToastFallback('Kein Zugriff auf diese Konversation.');
+      return;
+    }
+    chatOeffnenInner(cid, conv);
+  });
+}
+
+function showToastFallback(msg) {
+  // einfacher Fallback, falls kein eigenes Toast-System vorhanden ist
+  try { alert(msg); } catch(e) {}
+}
+
+function chatOeffnenInner(cid, conv) {
   chatTitelFlackerStopp();
   // alten Listener sauber abmelden
   if (chatNachrichtenListenerRef) {
@@ -424,20 +471,25 @@ function chatOeffnen(cid) {
     el.style.background='';el.style.borderLeft='';
   });
 
-  // Konversations-Header laden
-  db.ref('conversations/'+cid).once('value').then(function(snapshot){
-    const conv = snapshot.val();
-    if (!conv) return;
-    const name = chatKonversationsName(conv, kinderNamenCache);
-    document.getElementById('chat-titel').textContent = name;
+  // Konversations-Header (conv liegt bereits vor, kein zweiter Request nötig)
+  const name = chatKonversationsName(conv, kinderNamenCache);
+  document.getElementById('chat-titel').textContent = name;
+  const avatar = document.getElementById('chat-partner-avatar');
+  if (conv.type === 'group') {
+    // Gruppe: Lese-Status gilt als "gelesen", sobald IRGENDEIN anderes Mitglied gelesen hat
+    chatAktuelleMitglieder = Object.keys(conv.members||{}).filter(function(id){ return id !== aktuellerUser.id; });
+    chatAktuellerAndereId = null;
+    avatar.textContent = '🧠';
+    avatar.style.background = '#6EC6A0';
+  } else {
     const andereId = Object.keys(conv.members||{}).find(function(id){return id!==aktuellerUser.id;});
     chatAktuellerAndereId = andereId || null;
+    chatAktuelleMitglieder = andereId ? [andereId] : [];
     let farbe='#6A6878';
     if (andereId && conv.memberRoles && conv.memberRoles[andereId]) farbe=chatRollenfarbe(conv.memberRoles[andereId]);
-    const avatar = document.getElementById('chat-partner-avatar');
     avatar.textContent = (name||'?').charAt(0).toUpperCase();
     avatar.style.background = farbe;
-  });
+  }
 
   // Nachrichten laden
   const verlauf = document.getElementById('chat-verlauf');
@@ -486,6 +538,12 @@ function brainyRenderMessageText(container, text) {
   if (lastIndex < text.length) container.appendChild(document.createTextNode(text.slice(lastIndex)));
 }
 
+// prüft, ob mind. ein anderes Mitglied (1:1-Partner oder irgendein Gruppenmitglied) gelesen hat
+function chatIstGelesenVonAnderen(readBy) {
+  if (!readBy || !chatAktuelleMitglieder.length) return false;
+  return chatAktuelleMitglieder.some(function(id){ return !!readBy[id]; });
+}
+
 function chatViewNachrichtAnhaengen(messageId, nachricht) {
   const verlauf = document.getElementById('chat-verlauf');
   const istEigene = nachricht.senderId === aktuellerUser.id;
@@ -493,7 +551,7 @@ function chatViewNachrichtAnhaengen(messageId, nachricht) {
   const zeile = document.createElement('div');
   zeile.className = 'chat-bubble-zeile '+(istEigene?'eigene':'fremde');
   zeile.dataset.msgId = messageId;
-  const gelesenVomPartner = !!(nachricht.readBy && chatAktuellerAndereId && nachricht.readBy[chatAktuellerAndereId]);
+  const gelesenVomPartner = chatIstGelesenVonAnderen(nachricht.readBy);
   zeile.innerHTML = `<div class="chat-bubble" style="background:${farbe};">
     ${!istEigene?`<span class="chat-bubble-sender">${nachricht.senderName||nachricht.senderRole}</span>`:''}
     <div class="chat-bubble-text"></div>
@@ -512,7 +570,7 @@ function chatAktualisiereLesestatus(messageId, nachricht) {
   if (!zeile) return;
   const haken = zeile.querySelector('.lese-haken');
   if (!haken) return;
-  const gelesenVomPartner = !!(nachricht.readBy && chatAktuellerAndereId && nachricht.readBy[chatAktuellerAndereId]);
+  const gelesenVomPartner = chatIstGelesenVonAnderen(nachricht.readBy);
   haken.textContent = gelesenVomPartner ? '✓✓' : '✓';
   if (gelesenVomPartner) haken.classList.add('haken-gelesen');
 }
@@ -559,14 +617,16 @@ document.getElementById('chat-eingabe').addEventListener('input', function(){
 });
 
 // Initialisierung
-db.ref('children').once('value').then(function(snapshot){
-  const kinder=snapshot.val()||{};
-  Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
-  chatLadeConversations(renderSidebar);
-  if (conversationId) chatOeffnen(conversationId);
-}).catch(function(){
-  chatLadeConversations(renderSidebar);
-  if (conversationId) chatOeffnen(conversationId);
+ingraGruppeSicherstellen().then(function(){
+  db.ref('children').once('value').then(function(snapshot){
+    const kinder=snapshot.val()||{};
+    Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
+    chatLadeConversations(renderSidebar);
+    if (conversationId) chatOeffnen(conversationId);
+  }).catch(function(){
+    chatLadeConversations(renderSidebar);
+    if (conversationId) chatOeffnen(conversationId);
+  });
 });
 
 window.addEventListener('beforeunload',function(){

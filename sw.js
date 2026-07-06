@@ -1,11 +1,16 @@
 // KLARTEXT Service Worker — Safari-kompatibel
-const CACHE = 'klartext-v2';
+const CACHE = 'klartext-v3';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(namen =>
+      Promise.all(namen.filter(name => name !== CACHE).map(name => caches.delete(name)))
+    )
+  );
   self.clients.claim();
 });
 

@@ -102,19 +102,48 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 </div>
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
 let bearbeiteId = null;
 
 function heute() {
   return new Date().toLocaleDateString('de-DE', {weekday:'short', day:'2-digit', month:'2-digit', year:'numeric'});
 }
-
-function ladeListe() {
-  try { return JSON.parse(localStorage.getItem('kt_tn_protokoll') || '[]'); } catch(e) { return []; }
+function heuteISO(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+// teilnehmer_protokoll.datum ist in Supabase eine "date"-Spalte (ISO YYYY-MM-DD);
+// das Eingabefeld zeigt weiterhin das deutsche Format aus heute() - diese zwei
+// Helfer wandeln zwischen beiden Darstellungen um, ohne das Feld selbst
+// oder sein Format zu ändern.
+function datumFeldZuISO(text){
+  const m = (text || '').match(/(\d{2})\.(\d{2})\.(\d{4})/);
+  if (!m) return heuteISO();
+  return m[3] + '-' + m[2] + '-' + m[1];
+}
+function datumAnzeigeVonISO(iso){
+  if (!iso) return heute();
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('de-DE', {weekday:'short', day:'2-digit', month:'2-digit', year:'numeric'});
 }
 
-function speichereListe(liste) {
-  try { localStorage.setItem('kt_tn_protokoll', JSON.stringify(liste)); } catch(e) {}
+async function aktuellerUserId(){
+  const { data } = await supabase.auth.getUser();
+  return data.user ? data.user.id : null;
+}
+
+// Ersetzt localStorage['kt_tn_protokoll']
+async function ladeListe() {
+  const userId = await aktuellerUserId();
+  const { data, error } = await supabase
+    .from('teilnehmer_protokoll')
+    .select('id, ersteller_id, name, datum, einrichtung, vorschlaege, anmerkungen, created_at')
+    .eq('ersteller_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('Liste laden fehlgeschlagen:', error); return []; }
+  return data || [];
 }
 
 function neuerEintrag() {
@@ -129,13 +158,17 @@ function neuerEintrag() {
   document.getElementById('editor').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function bearbeiten(id) {
-  const liste = ladeListe();
-  const n = liste.find(x => x.id === id);
-  if (!n) return;
+// SELECT * FROM teilnehmer_protokoll WHERE id = ...
+async function bearbeiten(id) {
+  const { data: n, error } = await supabase
+    .from('teilnehmer_protokoll')
+    .select('id, ersteller_id, name, datum, einrichtung, vorschlaege, anmerkungen, created_at')
+    .eq('id', id)
+    .single();
+  if (error || !n) { console.error('Eintrag laden fehlgeschlagen:', error); return; }
   bearbeiteId = id;
   document.getElementById('tn-name').value = n.name;
-  document.getElementById('tn-datum').value = n.datum;
+  document.getElementById('tn-datum').value = datumAnzeigeVonISO(n.datum);
   document.getElementById('tn-einrichtung').value = n.einrichtung || '';
   document.getElementById('tn-vorschlaege').value = n.vorschlaege || '';
   document.getElementById('tn-anmerkungen').value = n.anmerkungen || '';
@@ -143,26 +176,31 @@ function bearbeiten(id) {
   document.getElementById('editor').scrollIntoView({behavior:'smooth'});
 }
 
-function speichern() {
+// INSERT oder UPDATE in teilnehmer_protokoll
+async function speichern() {
   const name = document.getElementById('tn-name').value.trim();
   if (!name) { alert('Bitte einen Namen eingeben.'); return; }
-  let liste = ladeListe();
+
   const eintrag = {
-    id: bearbeiteId || Date.now(),
     name: name,
-    datum: document.getElementById('tn-datum').value,
+    datum: datumFeldZuISO(document.getElementById('tn-datum').value),
     einrichtung: document.getElementById('tn-einrichtung').value.trim(),
     vorschlaege: document.getElementById('tn-vorschlaege').value.trim(),
     anmerkungen: document.getElementById('tn-anmerkungen').value.trim()
   };
+
+  let error;
   if (bearbeiteId) {
-    liste = liste.map(n => n.id === bearbeiteId ? eintrag : n);
+    ({ error } = await supabase.from('teilnehmer_protokoll').update(eintrag).eq('id', bearbeiteId));
   } else {
-    liste.unshift(eintrag);
+    const userId = await aktuellerUserId();
+    ({ error } = await supabase.from('teilnehmer_protokoll').insert({ ...eintrag, ersteller_id: userId }));
   }
-  speichereListe(liste);
+
+  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
   abbrechen();
-  renderListe();
+  await renderListe();
 }
 
 function abbrechen() {
@@ -170,14 +208,16 @@ function abbrechen() {
   document.getElementById('editor').classList.remove('aktiv');
 }
 
-function loeschen(id) {
+// DELETE FROM teilnehmer_protokoll WHERE id = ...
+async function loeschen(id) {
   if (!confirm('Diesen Eintrag löschen?')) return;
-  speichereListe(ladeListe().filter(n => n.id !== id));
-  renderListe();
+  const { error } = await supabase.from('teilnehmer_protokoll').delete().eq('id', id);
+  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
+  await renderListe();
 }
 
-function renderListe() {
-  const liste = ladeListe();
+async function renderListe() {
+  const liste = await ladeListe();
   const el = document.getElementById('tn-liste');
   if (liste.length === 0) {
     el.innerHTML = '<div class="leer-hinweis">Noch keine Einträge — klick oben auf „＋ Neuer Eintrag"</div>';
@@ -187,16 +227,22 @@ function renderListe() {
     <div class="tn-eintrag">
       <div class="te-head">
         <span class="te-name">${n.name}${n.einrichtung ? ' · ' + n.einrichtung : ''}</span>
-        <span class="te-datum">${n.datum}</span>
+        <span class="te-datum">${datumAnzeigeVonISO(n.datum)}</span>
       </div>
       ${n.vorschlaege ? `<div class="te-feld"><div class="te-feld-label">Vorschläge / Wünsche</div><div class="te-feld-text">${n.vorschlaege}</div></div>` : ''}
       ${n.anmerkungen ? `<div class="te-feld"><div class="te-feld-label">Anmerkungen</div><div class="te-feld-text">${n.anmerkungen}</div></div>` : ''}
       <div class="te-actions">
-        <button class="te-btn" onclick="bearbeiten(${n.id})">✏️ Bearbeiten</button>
-        <button class="te-btn del" onclick="loeschen(${n.id})">🗑️ Löschen</button>
+        <button class="te-btn" onclick="bearbeiten('${n.id}')">✏️ Bearbeiten</button>
+        <button class="te-btn del" onclick="loeschen('${n.id}')">🗑️ Löschen</button>
       </div>
     </div>`).join('');
 }
+
+window.neuerEintrag = neuerEintrag;
+window.bearbeiten = bearbeiten;
+window.speichern = speichern;
+window.abbrechen = abbrechen;
+window.loeschen = loeschen;
 
 document.addEventListener('DOMContentLoaded', renderListe);
 </script>

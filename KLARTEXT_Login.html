@@ -66,6 +66,17 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
     </div>
   </div>
 
+  <div class="feld">
+    <span class="feld-label">Rolle</span>
+    <select class="feld-input" id="role-select">
+      <option value="ingra">INGRA</option>
+      <option value="ingra-beta">INGRA (Beta)</option>
+      <option value="tk">Teamkoordination (TK)</option>
+      <option value="trainer">Trainer</option>
+      <option value="admin">Admin</option>
+    </select>
+  </div>
+
   <button class="login-btn" id="login-btn" onclick="login()" type="button">
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
     Einloggen
@@ -84,7 +95,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 
 // Ziel-Seite je Rolle nach erfolgreichem Login (unverändert gegenüber dem bisherigen Modell)
 var ZIELE = {
-  ingra: 'DASHBOARD.html', admin: 'DASHBOARD.html',
+  ingra: 'DASHBOARD.html', 'ingra-beta': 'DASHBOARD.html', admin: 'DASHBOARD.html',
   lk: 'KLARTEXT_Lehrerkurs.html', eltern: 'KLARTEXT_Elternkurs.html',
   tk: 'DASHBOARD.html', trainer: 'DASHBOARD.html'
 };
@@ -104,12 +115,12 @@ function zeigeFehler(text) {
 // prüfen weiterhin sessionStorage['klartext_login']/['klartext_role'].
 // Sobald jede Seite direkt gegen Supabase-Sessions prüft, kann dieser
 // Block entfallen.
-function setzeUebergangsSession(profil, userId) {
+function setzeUebergangsSession(rolle, userId, name) {
   try {
     sessionStorage.setItem('klartext_login', 'true');
-    sessionStorage.setItem('klartext_role', profil.rolle);
+    sessionStorage.setItem('klartext_role', rolle);
     sessionStorage.setItem('klartext_user_id', userId);
-    sessionStorage.setItem('klartext_name', [profil.vorname, profil.nachname].filter(Boolean).join(' ') || profil.rolle);
+    sessionStorage.setItem('klartext_name', name || rolle);
   } catch (e) {}
 }
 
@@ -121,6 +132,7 @@ async function login() {
   var btn = document.getElementById('login-btn');
   var email = document.getElementById('email-input').value.trim();
   var passwort = document.getElementById('pw-input').value.trim();
+  var rolle = document.getElementById('role-select').value;
   document.getElementById('err').classList.remove('show');
 
   if (!email || !passwort) {
@@ -137,18 +149,9 @@ async function login() {
     return;
   }
 
-  // Profil-Abfrage darf den Login nicht blockieren: falls 'profiles' (noch)
-  // nicht existiert oder keine Zeile liefert, mit Standard-Rolle fortfahren,
-  // statt eine erfolgreiche Anmeldung als Fehler auszugeben.
-  const { data: profil, error: profilError } = await supabase
-    .from('profiles')
-    .select('rolle, vorname, nachname')
-    .eq('id', data.user.id)
-    .single();
-  const aktivesProfil = profilError ? { rolle: 'ingra', vorname: '', nachname: '' } : profil;
-
-  setzeUebergangsSession(aktivesProfil, data.user.id);
-  weiterleiten(aktivesProfil.rolle);
+  // Rolle kommt bewusst aus der Auswahl im Login, nicht aus profiles.rolle.
+  setzeUebergangsSession(rolle, data.user.id, email);
+  weiterleiten(rolle);
 }
 
 // Module-Skripte sind nicht global sichtbar — für die inline onclick/onkeydown-
@@ -156,20 +159,15 @@ async function login() {
 window.login = login;
 window.togglePw = togglePw;
 
-// Auto-Login, falls bereits eine gültige Supabase-Session besteht
+// Auto-Login, falls bereits eine gültige Supabase-Session UND eine in dieser
+// Session bereits gewählte Rolle besteht (Rolle kommt nie aus profiles.rolle).
 (async function(){
   try {
     var sitzung = await supabase.auth.getSession();
     if (!sitzung.data.session) return;
-    var profilAbfrage = await supabase
-      .from('profiles')
-      .select('rolle, vorname, nachname')
-      .eq('id', sitzung.data.session.user.id)
-      .single();
-    // Profil-Abfrage darf den Auto-Login nicht blockieren (siehe login()).
-    var aktivesProfil = profilAbfrage.data || { rolle: 'ingra', vorname: '', nachname: '' };
-    setzeUebergangsSession(aktivesProfil, sitzung.data.session.user.id);
-    weiterleiten(aktivesProfil.rolle);
+    var vorherigeRolle = sessionStorage.getItem('klartext_role');
+    if (!vorherigeRolle) return;
+    weiterleiten(vorherigeRolle);
   } catch (e) {}
 })();
 </script>

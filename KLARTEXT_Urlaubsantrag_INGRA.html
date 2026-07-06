@@ -94,7 +94,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 </div>
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+async function aktuellerUserId(){
+  const { data } = await supabase.auth.getUser();
+  return data.user ? data.user.id : null;
+}
+
 function fmtDatum(d) {
   if (!d) return '–';
   const [y,m,t] = d.split('-');
@@ -114,7 +121,7 @@ function arbeitstage(von, bis) {
   return count;
 }
 
-function generiere() {
+async function generiere() {
   const name       = document.getElementById('u-name').value.trim();
   const kindSelect = document.getElementById('u-kind');
   const childId    = kindSelect.value;
@@ -147,22 +154,22 @@ function generiere() {
   document.getElementById('result-box').style.display = 'block';
   document.getElementById('result-box').scrollIntoView({behavior:'smooth'});
 
-  // Firebase-Speichern + Weiterleitung (Etappe 6.3)
-  try {
-    db.ref('vacation_request').push({
-      name: name,
-      childId: childId || null,
-      childName: childName || null,
-      from: von,
-      to: bis,
-      days: tage,
-      substitute: vertretung,
-      note: notiz,
-      timestamp: Date.now(),
-      createdBy: 'ingra',
-      role: 'ingra'
-    });
+  // INSERT INTO urlaubsantraege (ersetzt db.ref('vacation_request').push())
+  const userId = await aktuellerUserId();
+  const { error } = await supabase.from('urlaubsantraege').insert({
+    ingra_id: userId,
+    kind_id: childId || null,
+    von_datum: von,
+    bis_datum: bis,
+    tage,
+    vertretung,
+    notiz,
+    status: 'beantragt'
+  });
+  if (error) { console.error('Speichern fehlgeschlagen:', error); }
 
+  // Firebase-Weiterleitung (Etappe 6.3) - unverändert, unabhängig vom Kind-Status
+  try {
     sendForward({
       context: 'vacation_request',
       type: 'vacation_request',
@@ -178,7 +185,7 @@ function generiere() {
       console.error('Weiterleitung fehlgeschlagen:', error);
     });
   } catch(err) {
-    console.error('Firebase-Speicherung fehlgeschlagen:', err);
+    console.error('Weiterleitung fehlgeschlagen:', err);
   }
 }
 
@@ -204,7 +211,11 @@ function reset() {
   document.getElementById('result-box').style.display = 'none';
 }
 
-// Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.3)
+window.generiere = generiere;
+window.kopiere = kopiere;
+window.reset = reset;
+
+// Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.3) - unverändert (Firebase)
 document.addEventListener('DOMContentLoaded', function() {
   try {
     db.ref('children').once('value').then(function(snapshot) {

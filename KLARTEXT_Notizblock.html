@@ -93,20 +93,49 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 </div>
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
 const SPRUECHE = ['Du machst das richtig gut — auch wenn heute mal nicht alles perfekt war.', 'Kleine Notizen, große Wirkung. Schreib auf, was dir wichtig ist!', 'Ein guter Tag fängt mit einem klaren Kopf an — und der passt hier rein.', "Du musst nicht alles im Kopf behalten. Dafür gibt's mich!", 'Manchmal hilft schon, die Gedanken einfach mal aufzuschreiben.', 'Du schaffst mehr, als du denkst — auch an den anstrengenden Tagen.', "Notiert ist halb erledigt. Los geht's!", 'Auch kleine Erfolge verdienen einen Platz auf diesem Zettel.'];
 let bearbeiteId = null;
 
 function heute() {
   return new Date().toLocaleDateString('de-DE', {weekday:'short', day:'2-digit', month:'2-digit', year:'numeric'});
 }
-
-function ladeNotizen() {
-  try { return JSON.parse(localStorage.getItem('kt_notizen_liste') || '[]'); } catch(e) { return []; }
+function heuteISO(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+// notizen.datum ist in Supabase eine "date"-Spalte (ISO YYYY-MM-DD); das
+// Eingabefeld zeigt weiterhin das deutsche Format aus heute() - diese zwei
+// Helfer wandeln zwischen beiden Darstellungen um, ohne das Feld selbst
+// oder sein Format zu ändern.
+function datumFeldZuISO(text){
+  const m = (text || '').match(/(\d{2})\.(\d{2})\.(\d{4})/);
+  if (!m) return heuteISO();
+  return m[3] + '-' + m[2] + '-' + m[1];
+}
+function datumAnzeigeVonISO(iso){
+  if (!iso) return heute();
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('de-DE', {weekday:'short', day:'2-digit', month:'2-digit', year:'numeric'});
 }
 
-function speichereListe(liste) {
-  try { localStorage.setItem('kt_notizen_liste', JSON.stringify(liste)); } catch(e) {}
+async function aktuellerUserId(){
+  const { data } = await supabase.auth.getUser();
+  return data.user ? data.user.id : null;
+}
+
+// Ersetzt localStorage['kt_notizen_liste']
+async function ladeNotizen() {
+  const userId = await aktuellerUserId();
+  const { data, error } = await supabase
+    .from('notizen')
+    .select('id, ersteller_id, datum, thema, text, created_at')
+    .eq('ersteller_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('Notizen laden fehlgeschlagen:', error); return []; }
+  return data || [];
 }
 
 function neuerSpruch() {
@@ -124,36 +153,45 @@ function neueNotiz() {
   document.getElementById('editor').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function bearbeiten(id) {
-  const liste = ladeNotizen();
-  const n = liste.find(x => x.id === id);
-  if (!n) return;
+// Ersetzt das Filtern im lokalen Array: SELECT * FROM notizen WHERE id = ...
+async function bearbeiten(id) {
+  const { data: n, error } = await supabase
+    .from('notizen')
+    .select('id, ersteller_id, datum, thema, text, created_at')
+    .eq('id', id)
+    .single();
+  if (error || !n) { console.error('Notiz laden fehlgeschlagen:', error); return; }
   bearbeiteId = id;
-  document.getElementById('notiz-datum').value = n.datum;
-  document.getElementById('notiz-thema').value = n.thema;
+  document.getElementById('notiz-datum').value = datumAnzeigeVonISO(n.datum);
+  document.getElementById('notiz-thema').value = n.thema || '';
   document.getElementById('notiz-text').value = n.text;
   document.getElementById('editor').classList.add('aktiv');
   document.getElementById('editor').scrollIntoView({behavior:'smooth'});
 }
 
-function speichern() {
+// INSERT oder UPDATE in notizen
+async function speichern() {
   const text = document.getElementById('notiz-text').value.trim();
   if (!text) { alert('Bitte etwas schreiben.'); return; }
-  let liste = ladeNotizen();
+
   const eintrag = {
-    id: bearbeiteId || Date.now(),
-    datum: document.getElementById('notiz-datum').value,
+    datum: datumFeldZuISO(document.getElementById('notiz-datum').value),
     thema: document.getElementById('notiz-thema').value.trim(),
     text: text
   };
+
+  let error;
   if (bearbeiteId) {
-    liste = liste.map(n => n.id === bearbeiteId ? eintrag : n);
+    ({ error } = await supabase.from('notizen').update(eintrag).eq('id', bearbeiteId));
   } else {
-    liste.unshift(eintrag);
+    const userId = await aktuellerUserId();
+    ({ error } = await supabase.from('notizen').insert({ ...eintrag, ersteller_id: userId }));
   }
-  speichereListe(liste);
+
+  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
   abbrechen();
-  renderListe();
+  await renderListe();
 }
 
 function abbrechen() {
@@ -161,14 +199,16 @@ function abbrechen() {
   document.getElementById('editor').classList.remove('aktiv');
 }
 
-function loeschen(id) {
+// DELETE FROM notizen WHERE id = ...
+async function loeschen(id) {
   if (!confirm('Diese Notiz löschen?')) return;
-  speichereListe(ladeNotizen().filter(n => n.id !== id));
-  renderListe();
+  const { error } = await supabase.from('notizen').delete().eq('id', id);
+  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
+  await renderListe();
 }
 
-function renderListe() {
-  const liste = ladeNotizen();
+async function renderListe() {
+  const liste = await ladeNotizen();
   const el = document.getElementById('notizen-liste');
   if (liste.length === 0) {
     el.innerHTML = '<div class="leer-hinweis">Noch keine Notizen — klick oben auf „＋ Neue Notiz"</div>';
@@ -178,15 +218,23 @@ function renderListe() {
     <div class="notiz-eintrag">
       <div class="ne-head">
         <span class="ne-thema">${n.thema || 'Ohne Thema'}</span>
-        <span class="ne-datum">${n.datum}</span>
+        <span class="ne-datum">${datumAnzeigeVonISO(n.datum)}</span>
       </div>
       <div class="ne-text">${n.text}</div>
       <div class="ne-actions">
-        <button class="ne-btn" onclick="bearbeiten(${n.id})">✏️ Bearbeiten</button>
-        <button class="ne-btn del" onclick="loeschen(${n.id})">🗑️ Löschen</button>
+        <button class="ne-btn" onclick="bearbeiten('${n.id}')">✏️ Bearbeiten</button>
+        <button class="ne-btn del" onclick="loeschen('${n.id}')">🗑️ Löschen</button>
       </div>
     </div>`).join('');
 }
+
+// Module-Skripte sind nicht global sichtbar - die inline onclick-Attribute
+// im HTML (statisch und dynamisch generiert) brauchen die Funktionen auf window.
+window.neueNotiz = neueNotiz;
+window.speichern = speichern;
+window.abbrechen = abbrechen;
+window.bearbeiten = bearbeiten;
+window.loeschen = loeschen;
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('brainy-spruch').textContent = SPRUECHE[Math.floor(Math.random() * SPRUECHE.length)];

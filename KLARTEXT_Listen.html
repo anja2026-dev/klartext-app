@@ -103,49 +103,55 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 </div>
 
-<script>
-// ── KEYS ──────────────────────────────────────────────────
-const KEYS = {
-  todo:    'klartext_todo_list'
-};
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
 
 // ── TABS ──────────────────────────────────────────────────
 function tab(id) {
   document.getElementById('tab-todo').classList.add('aktiv');
 }
 
-// ── STORAGE ───────────────────────────────────────────────
-function laden(key) {
-  try { return JSON.parse(localStorage.getItem(KEYS[key]) || '[]'); }
-  catch(e) { return []; }
+// ── AUTH ──────────────────────────────────────────────────
+async function aktuellerUserId(){
+  const { data } = await supabase.auth.getUser();
+  return data.user ? data.user.id : null;
 }
 
-function speichern(key, liste) {
-  try { localStorage.setItem(KEYS[key], JSON.stringify(liste)); }
-  catch(e) {}
+// ── SUPABASE ──────────────────────────────────────────────
+// Ersetzt localStorage['klartext_todo_list']
+async function laden(key) {
+  const userId = await aktuellerUserId();
+  const { data, error } = await supabase
+    .from('listen_eintraege')
+    .select('id, ersteller_id, kategorie, text, erledigt, created_at')
+    .eq('ersteller_id', userId)
+    .eq('kategorie', key)
+    .order('created_at', { ascending: true });
+  if (error) { console.error('Liste laden fehlgeschlagen:', error); return []; }
+  return data || [];
 }
 
 // ── RENDER ────────────────────────────────────────────────
-function render(key) {
-  const liste = laden(key);
+async function render(key) {
+  const liste = await laden(key);
   const container = document.getElementById(key + '-liste');
   const info = document.getElementById(key + '-info');
   const fill = document.getElementById(key + '-fill');
   const fwrap = document.getElementById(key + '-fortschritt-wrap');
 
   const gesamt = liste.length;
-  const erledigt = liste.filter(function(e){ return e.done; }).length;
+  const erledigtAnzahl = liste.filter(function(e){ return e.erledigt; }).length;
 
   // Fortschrittsbalken
   if (gesamt > 0) {
     fwrap.style.display = 'block';
-    fill.style.width = Math.round((erledigt / gesamt) * 100) + '%';
+    fill.style.width = Math.round((erledigtAnzahl / gesamt) * 100) + '%';
   } else {
     fwrap.style.display = 'none';
   }
 
   // Zähler
-  info.textContent = gesamt === 0 ? '' : erledigt + ' von ' + gesamt + ' erledigt';
+  info.textContent = gesamt === 0 ? '' : erledigtAnzahl + ' von ' + gesamt + ' erledigt';
 
   // Leer-Hinweis
   if (gesamt === 0) {
@@ -155,8 +161,8 @@ function render(key) {
 
   // Einträge rendern
   container.innerHTML = liste.map(function(eintrag) {
-    const erledigt_klasse = eintrag.done ? ' erledigt' : '';
-    const checkbox_klasse = eintrag.done ? ' checked' : '';
+    const erledigt_klasse = eintrag.erledigt ? ' erledigt' : '';
+    const checkbox_klasse = eintrag.erledigt ? ' checked' : '';
     // Text HTML-escapen
     const sichererText = eintrag.text
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -169,38 +175,65 @@ function render(key) {
 }
 
 // ── AKTIONEN ──────────────────────────────────────────────
-function hinzufuegen(key) {
+// INSERT INTO listen_eintraege
+async function hinzufuegen(key) {
   const feld = document.getElementById(key + '-eingabe');
   const text = feld.value.trim();
   if (!text) { feld.focus(); return; }
 
-  const liste = laden(key);
-  liste.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), text: text, done: false });
-  speichern(key, liste);
+  const userId = await aktuellerUserId();
+  const { error } = await supabase.from('listen_eintraege').insert({
+    ersteller_id: userId,
+    kategorie: key,
+    text: text,
+    erledigt: false
+  });
+  if (error) { console.error('Hinzufügen fehlgeschlagen:', error); return; }
+
   feld.value = '';
   feld.focus();
-  render(key);
+  await render(key);
 }
 
-function toggleDone(key, id) {
-  const liste = laden(key);
+// UPDATE listen_eintraege SET erledigt = NOT erledigt WHERE id = ...
+// (der Supabase-JS-Client kann kein "NOT erledigt" als Ausdruck senden,
+// daher wird der aktuelle Wert erst gelesen und dann negiert geschrieben -
+// funktional identisch zum bisherigen Verhalten, das denselben Umweg über
+// die geladene Liste ging.)
+async function toggleDone(key, id) {
+  const liste = await laden(key);
   const eintrag = liste.find(function(e){ return e.id === id; });
-  if (eintrag) { eintrag.done = !eintrag.done; }
-  speichern(key, liste);
-  render(key);
+  if (!eintrag) return;
+  const { error } = await supabase.from('listen_eintraege').update({ erledigt: !eintrag.erledigt }).eq('id', id);
+  if (error) { console.error('Aktualisieren fehlgeschlagen:', error); return; }
+  await render(key);
 }
 
-function loeschen(key, id) {
-  const liste = laden(key).filter(function(e){ return e.id !== id; });
-  speichern(key, liste);
-  render(key);
+// DELETE FROM listen_eintraege WHERE id = ...
+async function loeschen(key, id) {
+  const { error } = await supabase.from('listen_eintraege').delete().eq('id', id);
+  if (error) { console.error('Löschen fehlgeschlagen:', error); return; }
+  await render(key);
 }
 
-function alleErledigtenLoeschen(key) {
-  const liste = laden(key).filter(function(e){ return !e.done; });
-  speichern(key, liste);
-  render(key);
+async function alleErledigtenLoeschen(key) {
+  const userId = await aktuellerUserId();
+  const { error } = await supabase
+    .from('listen_eintraege')
+    .delete()
+    .eq('ersteller_id', userId)
+    .eq('kategorie', key)
+    .eq('erledigt', true);
+  if (error) { console.error('Erledigte löschen fehlgeschlagen:', error); return; }
+  await render(key);
 }
+
+// Module-Skripte sind nicht global sichtbar - die inline onclick-Attribute
+// im HTML (statisch und dynamisch generiert) brauchen die Funktionen auf window.
+window.hinzufuegen = hinzufuegen;
+window.toggleDone = toggleDone;
+window.loeschen = loeschen;
+window.alleErledigtenLoeschen = alleErledigtenLoeschen;
 
 // ── INIT ─────────────────────────────────────────────────
 render('todo');

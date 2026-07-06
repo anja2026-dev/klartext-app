@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLARTEXT · Tagesjournal</title>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="firebase.js"></script>
 
 <style>
   :root{
@@ -288,34 +284,49 @@
 
 
 
-<script>
-(function(){
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
 
-  var LS_KEY = 'kt_tagesjournal';
   var aktuellerKindId = '';
   var aktuelleBarometerFarbe = '';
   var aktuelleBarometerEmoji = '';
   var aktuelleBarometerZeit = '';
+  var aktiveDringlichkeit = 'normal';
 
+  // Anzeige nutzt weiterhin die deutschen Labels mit Umlaut (unverändertes UI);
+  // die DB-Spalte barometer_farbe erlaubt nur ASCII-Werte (CHECK-Constraint) ->
+  // beide Schreibweisen werden in FARB_HEX geführt, damit sowohl frisch
+  // gewählte als auch aus Supabase geladene Einträge dieselbe Farbe anzeigen.
   var FARB_HEX = {
-    'grün':'#3B8A68', 'gelb':'#C9A227', 'orange':'#C47A1E',
+    'grün':'#3B8A68', 'gruen':'#3B8A68',
+    'gelb':'#C9A227', 'orange':'#C47A1E',
     'rot':'#C62828', 'grau':'#9A97A0', '':'#DDD8CE'
   };
+  var FARBE_ANZEIGE_ZU_DB = { 'grün':'gruen', 'gelb':'gelb', 'orange':'orange', 'rot':'rot', 'grau':'grau' };
+  var FARBE_DB_ZU_EMOJI   = { 'gruen':'🟢', 'gelb':'🟡', 'orange':'🟠', 'rot':'🔴', 'grau':'🩶' };
 
   // ───────────────────────────────────────────
-  // Kinderliste aus zentralem localStorage
-  // Quelle: TK_Kinder.html → key "children"
+  // Aktuelle:r Nutzer:in (Supabase Auth)
   // ───────────────────────────────────────────
-  function kinderListeLaden(){
+  async function aktuellerUserId(){
+    var { data } = await supabase.auth.getUser();
+    return data.user ? data.user.id : null;
+  }
+
+  // ───────────────────────────────────────────
+  // Kinderliste aus Supabase
+  // Ersetzt localStorage['children'] -> Tabelle "kinder"
+  // ───────────────────────────────────────────
+  async function kinderListeLaden(){
     var select = document.getElementById('kindSelect');
-    var kinder = [];
-    try{ kinder = JSON.parse(localStorage.getItem('children')) || []; }catch(e){}
+    var { data: kinder, error } = await supabase.from('kinder').select('id, name, klasse');
+    if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
     select.innerHTML = '';
-    if(!kinder.length){
+    if(!kinder || !kinder.length){
       select.innerHTML = '<option value="">Noch keine Kinder angelegt – bitte im TK-Bereich anlegen</option>';
-      journalListeRendern();
-      wocheRendern();
+      await journalListeRendern();
+      await wocheRendern();
       return;
     }
     var platzhalter = document.createElement('option');
@@ -328,20 +339,15 @@
       opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
       select.appendChild(opt);
     });
-    journalListeRendern();
-    wocheRendern();
+    await journalListeRendern();
+    await wocheRendern();
   }
 
-  document.getElementById('kindSelect').addEventListener('change', function(){
+  document.getElementById('kindSelect').addEventListener('change', async function(){
     aktuellerKindId = this.value;
-    journalListeRendern();
-    wocheRendern();
+    await journalListeRendern();
+    await wocheRendern();
   });
-
-  // aktuellerKindId beim Laden aus Select übernehmen (nach Firebase-Callback)
-  function kindSelectAktualisieren(){
-    aktuellerKindId = document.getElementById('kindSelect').value;
-  }
 
   // ───────────────────────────────────────────
   // Barometer
@@ -361,26 +367,41 @@
   };
 
   // ───────────────────────────────────────────
-  // localStorage Helfer
+  // Supabase-Helfer: Tagesjournal-Einträge lesen
+  // Ersetzt localStorage['kt_tagesjournal']
   // ───────────────────────────────────────────
-  function alleEintraegeLaden(){
-    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
-    catch(e){ return []; }
+  async function alleEintraegeLaden(){
+    var { data, error } = await supabase
+      .from('tagesjournal_eintraege')
+      .select('id, kind_id, ersteller_id, datum, barometer_farbe, barometer_zeit, notiz, besonderheit, besonderheit_details, created_at')
+      .order('datum', { ascending: false });
+    if (error) { console.error('Tagesjournal laden fehlgeschlagen:', error); return []; }
+    return data || [];
   }
-  function alleEintraegeSpeichern(arr){
-    try{ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
-    catch(e){ /* localStorage nicht verfügbar */ }
+
+  // Ersetzt localStorage['kt_uebergaben_verlauf']. Wird aktuell in dieser
+  // Seite von keiner Ansicht konsumiert (war auch vorher reiner Schreib-ohne-
+  // Anzeige-Spiegel) - hier bereitgestellt als direkter Supabase-Ersatz.
+  async function uebergabenVerlaufLaden(){
+    var { data, error } = await supabase
+      .from('weiterleitungen')
+      .select('*')
+      .eq('typ', 'uebergabe')
+      .order('created_at', { ascending: false });
+    if (error) { console.error('Übergaben-Verlauf laden fehlgeschlagen:', error); return []; }
+    return data || [];
   }
+
   function heuteISO(){
     var d = new Date();
     return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   }
 
   // ───────────────────────────────────────────
-  // Speichern
+  // Speichern -> supabase.from('tagesjournal_eintraege').insert(...)
   // ───────────────────────────────────────────
-  window.tagesjournalSpeichern = function(){
-    var statusEl = document.getElementById('statusSpeichern');
+  window.tagesjournalSpeichern = async function(){
+    var statusEl = document.getElementById('statusUebergabe');
 
     if(!aktuelleBarometerFarbe){
       statusEl.textContent = '⚠ Bitte zuerst ein Barometer auswählen.';
@@ -388,36 +409,41 @@
       return;
     }
 
+    var userId = await aktuellerUserId();
     var eintrag = {
-      id: 'tj'+Date.now(),
-      childId: aktuellerKindId || '',
+      kind_id: aktuellerKindId || null,
+      ersteller_id: userId,
       datum: heuteISO(),
-      barometerFarbe: aktuelleBarometerFarbe,
-      barometerEmoji: aktuelleBarometerEmoji,
-      barometerZeit: aktuelleBarometerZeit,
+      barometer_farbe: FARBE_ANZEIGE_ZU_DB[aktuelleBarometerFarbe] || null,
+      barometer_zeit: aktuelleBarometerZeit || null,
       notiz: document.getElementById('tagesnotiz').value.trim(),
       besonderheit: document.getElementById('besonderheitSelect').value,
-      besonderheitDetails: document.getElementById('besonderheitDetails').value.trim(),
-      uebergabe: document.getElementById('uebergabeText').value.trim()
+      besonderheit_details: document.getElementById('besonderheitDetails').value.trim()
     };
 
-    var liste = alleEintraegeLaden();
-    liste.push(eintrag);
-    alleEintraegeSpeichern(liste);
+    var { error } = await supabase.from('tagesjournal_eintraege').insert(eintrag);
+
+    if (error) {
+      statusEl.textContent = '⚠ Fehler beim Speichern: ' + error.message;
+      statusEl.className = 'kt-status err';
+      return;
+    }
 
     statusEl.textContent = '✓ Tagesjournal gespeichert (' + eintrag.datum + ').';
     statusEl.className = 'kt-status ok';
 
-    journalListeRendern();
-    wocheRendern();
+    await journalListeRendern();
+    await wocheRendern();
   };
 
   // ───────────────────────────────────────────
+  // Übergabe an TK -> supabase.from('weiterleitungen').insert(...)
+  // (ersetzt sendForward()/Firebase; kind_id/von_profil/von_rolle/ziel_rolle/
+  // typ/text/dringlichkeit/status/besonderheiten/details/anhang_pfad sind
+  // exakt die Spalten aus der weiterleitungen-Migration - kein datum/uhrzeit/
+  // childName mehr, da dafür keine Spalten existieren; created_at übernimmt
+  // das, childName käme bei Bedarf per Join über kind_id.)
   // ───────────────────────────────────────────
-  // Übergabe an TK (neue Logik, kein Leselink)
-  // ───────────────────────────────────────────
-  var aktiveDringlichkeit = 'normal';
-
   window.dringlichkeitWaehlen = function(btn, wert) {
     document.querySelectorAll('.dring-btn').forEach(function(b){
       b.classList.remove('aktiv');
@@ -426,7 +452,7 @@
     aktiveDringlichkeit = wert;
   };
 
-  window.uebergabeAnTK = function() {
+  window.uebergabeAnTK = async function() {
     var statusEl = document.getElementById('statusUebergabe');
     var text     = (document.getElementById('uebergabeText').value || '').trim();
     if (!text) {
@@ -435,83 +461,53 @@
       return;
     }
 
-    var datum      = heuteISO();
-    var uhrzeit    = new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
-    var fromRole   = sessionStorage.getItem('klartext_role') || 'ingra';
-    var fromUser   = sessionStorage.getItem('klartext_user') || fromRole + '-demo';
-    var kindId     = aktuellerKindId || '';
+    var userId   = await aktuellerUserId();
+    var vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
 
-    // Kinddaten aus localStorage.children für TK
-    var kindName   = '';
-    try {
-      var kinder = JSON.parse(localStorage.getItem('children') || '[]');
-      var kind   = kinder.find(function(k){ return String(k.id) === String(kindId); });
-      if (kind) kindName = kind.name || '';
-    } catch(e) {}
-
-    var forwardDaten = {
-      targetRole:      'tk',
-      fromUser:        fromUser,
-      fromRole:        fromRole,
-      childId:         kindId,
-      childName:       kindName,
-      datum:           datum,
-      uhrzeit:         uhrzeit,
-      text:            text,
-      besonderheiten:  (document.getElementById('uebergabeBesonderheiten').value || '').trim(),
-      details:         (document.getElementById('uebergabeDetails').value || '').trim(),
-      dringlichkeit:   aktiveDringlichkeit,
-      anhang:          (document.getElementById('uebergabeAnhang').value || '').trim(),
-      type:            'tagesjournal',
-      status:          'offen'
+    var weiterleitungDaten = {
+      kind_id:        aktuellerKindId || null,
+      von_profil:     userId,
+      von_rolle:      vonRolle,
+      ziel_rolle:     'tk',
+      typ:            'uebergabe',
+      text:           text,
+      besonderheiten: (document.getElementById('uebergabeBesonderheiten').value || '').trim(),
+      details:        (document.getElementById('uebergabeDetails').value || '').trim(),
+      dringlichkeit:  aktiveDringlichkeit,
+      anhang_pfad:    (document.getElementById('uebergabeAnhang').value || '').trim() || null,
+      status:         'offen'
     };
 
     statusEl.textContent = '⏳ Wird übergeben …';
     statusEl.className   = 'kt-status';
 
-    sendForward(forwardDaten)
-      .then(function(ref) {
-        // Verlaufseintrag in localStorage
-        try {
-          var verlauf = JSON.parse(localStorage.getItem('kt_uebergaben_verlauf') || '[]');
-          verlauf.unshift({
-            id:        ref.key,
-            datum:     datum,
-            uhrzeit:   uhrzeit,
-            childId:   kindId,
-            childName: kindName,
-            text:      text,
-            dringlichkeit: aktiveDringlichkeit,
-            status:    'offen'
-          });
-          localStorage.setItem('kt_uebergaben_verlauf', JSON.stringify(verlauf));
-        } catch(e) {}
+    var { error } = await supabase.from('weiterleitungen').insert(weiterleitungDaten);
 
-        statusEl.textContent = '✓ Übergabe an TK gespeichert. TK wird informiert.';
-        statusEl.className   = 'kt-status ok';
+    if (error) {
+      statusEl.textContent = '⚠ Fehler: ' + error.message;
+      statusEl.className   = 'kt-status err';
+      return;
+    }
 
-        // Felder zurücksetzen
-        document.getElementById('uebergabeText').value          = '';
-        document.getElementById('uebergabeBesonderheiten').value = '';
-        document.getElementById('uebergabeDetails').value       = '';
-        document.getElementById('uebergabeAnhang').value        = '';
-        aktiveDringlichkeit = 'normal';
-        document.querySelectorAll('.dring-btn').forEach(function(b){ b.classList.remove('aktiv'); });
-        document.querySelector('.dring-btn.normal').classList.add('aktiv');
-      })
-      .catch(function(error) {
-        statusEl.textContent = '⚠ Fehler: ' + error.message;
-        statusEl.className   = 'kt-status err';
-      });
+    statusEl.textContent = '✓ Übergabe an TK gespeichert. TK wird informiert.';
+    statusEl.className   = 'kt-status ok';
+
+    document.getElementById('uebergabeText').value          = '';
+    document.getElementById('uebergabeBesonderheiten').value = '';
+    document.getElementById('uebergabeDetails').value       = '';
+    document.getElementById('uebergabeAnhang').value        = '';
+    aktiveDringlichkeit = 'normal';
+    document.querySelectorAll('.dring-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+    document.querySelector('.dring-btn.normal').classList.add('aktiv');
   };
 
   // ───────────────────────────────────────────
   // Liste rendern
   // ───────────────────────────────────────────
-  function journalListeRendern(){
+  async function journalListeRendern(){
     var container = document.getElementById('journalListe');
-    var liste = alleEintraegeLaden()
-      .filter(function(e){ return !aktuellerKindId || e.childId === aktuellerKindId; })
+    var liste = (await alleEintraegeLaden())
+      .filter(function(e){ return !aktuellerKindId || e.kind_id === aktuellerKindId; })
       .sort(function(a,b){ return b.datum.localeCompare(a.datum); });
 
     if(!liste.length){
@@ -522,10 +518,11 @@
     var html = '';
     liste.forEach(function(e){
       var notizKurz = (e.notiz || '').slice(0, 70) + ((e.notiz||'').length > 70 ? '…' : '');
+      var emoji = FARBE_DB_ZU_EMOJI[e.barometer_farbe] || '';
       html += '<div class="journal-eintrag">';
-      html += '<span class="punkt" style="background:'+(FARB_HEX[e.barometerFarbe]||'#DDD8CE')+';"></span>';
+      html += '<span class="punkt" style="background:'+(FARB_HEX[e.barometer_farbe]||'#DDD8CE')+';"></span>';
       html += '<div class="inhalt">';
-      html += '<div class="datum">'+e.datum+' '+(e.barometerEmoji||'')+'</div>';
+      html += '<div class="datum">'+e.datum+' '+emoji+'</div>';
       html += '<div class="notiz">'+(notizKurz || '–')+'</div>';
       html += '<div class="besonderheit">'+(e.besonderheit && e.besonderheit !== 'keine' ? e.besonderheit : 'keine Besonderheit')+'</div>';
       html += '</div>';
@@ -535,11 +532,11 @@
     container.innerHTML = html;
   }
 
-  window.journalEintragLoeschen = function(id){
-    var liste = alleEintraegeLaden().filter(function(e){ return e.id !== id; });
-    alleEintraegeSpeichern(liste);
-    journalListeRendern();
-    wocheRendern();
+  window.journalEintragLoeschen = async function(id){
+    var { error } = await supabase.from('tagesjournal_eintraege').delete().eq('id', id);
+    if (error) { console.error('Löschen fehlgeschlagen:', error); return; }
+    await journalListeRendern();
+    await wocheRendern();
   };
 
   // ───────────────────────────────────────────
@@ -558,13 +555,13 @@
     return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
   }
 
-  function wocheRendern(){
+  async function wocheRendern(){
     var grid   = document.getElementById('wocheGrid');
     var labels = ['Mo','Di','Mi','Do','Fr'];
     var montag = montagDerWoche();
     var heute  = isoDatum(new Date());
-    var liste  = alleEintraegeLaden().filter(function(e){
-      return !aktuellerKindId || e.childId === aktuellerKindId;
+    var liste  = (await alleEintraegeLaden()).filter(function(e){
+      return !aktuellerKindId || e.kind_id === aktuellerKindId;
     });
 
     var html = '';
@@ -573,7 +570,7 @@
       tagDatum.setDate(montag.getDate() + i);
       var iso        = isoDatum(tagDatum);
       var eintrag    = liste.filter(function(e){ return e.datum === iso; }).pop();
-      var farbe      = eintrag ? eintrag.barometerFarbe : '';
+      var farbe      = eintrag ? eintrag.barometer_farbe : '';
       var hex        = farbe ? FARB_HEX[farbe] : '#C9C6C0';
       var hatEintrag = !!eintrag;
       var istHeute   = iso === heute;
@@ -602,12 +599,12 @@
     if(ziel) ziel.scrollIntoView({ behavior:'smooth', block:'start' });
   };
 
-    // ───────────────────────────────────────────
+  // ───────────────────────────────────────────
   // PDF-Export Woche
   // ───────────────────────────────────────────
-  window.pdfExportWoche = function(){
+  window.pdfExportWoche = async function(){
     var montag = montagDerWoche();
-    var liste = alleEintraegeLaden().filter(function(e){ return !aktuellerKindId || e.childId === aktuellerKindId; });
+    var liste = (await alleEintraegeLaden()).filter(function(e){ return !aktuellerKindId || e.kind_id === aktuellerKindId; });
     var labels = ['Mo','Di','Mi','Do','Fr'];
 
     var html = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">';
@@ -629,7 +626,7 @@
       tagDatum.setDate(montag.getDate() + i);
       var iso = isoDatum(tagDatum);
       var eintrag = liste.filter(function(e){ return e.datum === iso; }).pop();
-      var farbe = eintrag ? eintrag.barometerFarbe : '';
+      var farbe = eintrag ? eintrag.barometer_farbe : '';
       var hex = farbe ? FARB_HEX[farbe] : '#C9C6C0';
       var notiz = eintrag ? (eintrag.notiz || '–') : '–';
       var beson = eintrag && eintrag.besonderheit && eintrag.besonderheit !== 'keine' ? eintrag.besonderheit : 'keine';
@@ -656,13 +653,9 @@
   };
 
   // ───────────────────────────────────────────
-  // Init
+  // Init (kinderListeLaden() rendert Liste+Woche bereits selbst danach)
   // ───────────────────────────────────────────
   kinderListeLaden();
-  journalListeRendern();
-  wocheRendern();
-
-})();
 </script>
 
 </body>

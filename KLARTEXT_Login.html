@@ -118,8 +118,9 @@ function weiterleiten(rolle) {
 }
 
 async function login() {
+  var btn = document.getElementById('login-btn');
   var email = document.getElementById('email-input').value.trim();
-  var passwort = document.getElementById('pw-input').value;
+  var passwort = document.getElementById('pw-input').value.trim();
   document.getElementById('err').classList.remove('show');
 
   if (!email || !passwort) {
@@ -127,25 +128,28 @@ async function login() {
     return;
   }
 
-  var btn = document.getElementById('login-btn');
   btn.disabled = true;
-  try {
-    var anmeldung = await supabase.auth.signInWithPassword({ email: email, password: passwort });
-    if (anmeldung.error) throw anmeldung.error;
 
-    var profilAbfrage = await supabase
-      .from('profiles')
-      .select('rolle, vorname, nachname')
-      .eq('id', anmeldung.data.user.id)
-      .single();
-    if (profilAbfrage.error) throw profilAbfrage.error;
-
-    setzeUebergangsSession(profilAbfrage.data, anmeldung.data.user.id);
-    weiterleiten(profilAbfrage.data.rolle);
-  } catch (e) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: passwort });
+  if (error) {
     zeigeFehler('Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.');
     btn.disabled = false;
+    return;
   }
+
+  const { data: profil, error: profilError } = await supabase
+    .from('profiles')
+    .select('rolle, vorname, nachname')
+    .eq('id', data.user.id)
+    .single();
+  if (profilError) {
+    zeigeFehler('Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.');
+    btn.disabled = false;
+    return;
+  }
+
+  setzeUebergangsSession(profil, data.user.id);
+  weiterleiten(profil.rolle);
 }
 
 // Module-Skripte sind nicht global sichtbar — für die inline onclick/onkeydown-

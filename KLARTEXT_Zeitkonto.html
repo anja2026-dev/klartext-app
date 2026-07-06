@@ -221,7 +221,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 </div><!-- /shell -->
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
 // ═══════════════════════════════════════
 // DATEN
 // ═══════════════════════════════════════
@@ -281,13 +283,26 @@ let aktFilter = 'alle';
 let wocheOffset = 0;
 
 // ═══════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════
+async function aktuellerUserId(){
+  const { data } = await supabase.auth.getUser();
+  return data.user ? data.user.id : null;
+}
+
+// ═══════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════
-function ladeEintraege() {
-  try { return JSON.parse(localStorage.getItem('kt_eintraege') || '[]'); } catch(e) { return []; }
-}
-function speichereEintraege(arr) {
-  try { localStorage.setItem('kt_eintraege', JSON.stringify(arr)); } catch(e) {}
+// Ersetzt localStorage['kt_eintraege']
+async function ladeEintraege() {
+  const userId = await aktuellerUserId();
+  const { data, error } = await supabase
+    .from('zeiteintraege')
+    .select('id, ingra_id, kind_id, datum, von_uhrzeit, bis_uhrzeit, pause_minuten, dauer_stunden, typ, notiz, created_at')
+    .eq('ingra_id', userId)
+    .order('datum', { ascending: false });
+  if (error) { console.error('Einträge laden fehlgeschlagen:', error); return []; }
+  return data || [];
 }
 
 // ═══════════════════════════════════════
@@ -375,7 +390,8 @@ function updatePreview() {
 // ═══════════════════════════════════════
 // SPEICHERN
 // ═══════════════════════════════════════
-function speichern() {
+// INSERT INTO zeiteintraege (Dauerberechnung bleibt clientseitig über calcH)
+async function speichern() {
   const datum = document.getElementById('e-datum').value;
   const von   = document.getElementById('e-von').value;
   const bis   = document.getElementById('e-bis').value;
@@ -387,20 +403,24 @@ function speichern() {
   if (h <= 0) { alert('Die Bis-Zeit muss nach der Von-Zeit liegen.'); return; }
 
   const kindId = document.getElementById('e-kind').value;
-  const eintrag = {
-    id: Date.now(),
-    datum, von, bis, pause, stunden: h,
-    typ: aktTyp,
-    kind:  kindId, // ab Etappe 6.1: enthält die childId statt freiem Text
-    notiz: document.getElementById('e-notiz').value.trim()
-  };
+  const notiz  = document.getElementById('e-notiz').value.trim();
+  const userId = await aktuellerUserId();
 
-  const liste = ladeEintraege();
-  liste.unshift(eintrag);
-  speichereEintraege(liste);
+  const { error } = await supabase.from('zeiteintraege').insert({
+    ingra_id: userId,
+    kind_id: kindId || null, // ab Etappe 6.1: enthält die childId statt freiem Text
+    datum,
+    von_uhrzeit: von,
+    bis_uhrzeit: bis,
+    pause_minuten: pause,
+    dauer_stunden: h,
+    typ: aktTyp,
+    notiz
+  });
+  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
 
   // Zusätzlich nach Firebase schreiben + Weiterleitung an TK erzeugen (Etappe 6.1)
-  // localStorage bleibt unverändert für die bestehende Monats-/Jahresansicht
+  // unverändert - dient der TK-Benachrichtigung, nicht der Zeitkonto-Speicherung
   if (kindId) {
     try {
       db.ref('time_entry/' + kindId).push({
@@ -411,7 +431,7 @@ function speichern() {
         pause: pause,
         duration: h,
         type: aktTyp,
-        note: eintrag.notiz,
+        note: notiz,
         timestamp: Date.now(),
         createdBy: 'ingra',
         role: 'ingra'
@@ -439,33 +459,35 @@ function speichern() {
   document.getElementById('e-notiz').value = '';
   document.getElementById('preview').style.display = 'none';
 
-  renderAlles();
+  await renderAlles();
 }
 
 // ═══════════════════════════════════════
 // LÖSCHEN
 // ═══════════════════════════════════════
-function loeschen(id) {
+// DELETE FROM zeiteintraege WHERE id = ...
+async function loeschen(id) {
   if (!confirm('Diesen Eintrag löschen?')) return;
-  speichereEintraege(ladeEintraege().filter(e => e.id !== id));
-  renderAlles();
+  const { error } = await supabase.from('zeiteintraege').delete().eq('id', id);
+  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
+  await renderAlles();
 }
 
 // ═══════════════════════════════════════
 // FILTER
 // ═══════════════════════════════════════
-function setFilter(f, btn) {
+async function setFilter(f, btn) {
   aktFilter = f;
   document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('ak'));
   btn.classList.add('ak');
-  renderListe();
+  await renderListe();
 }
 
 // ═══════════════════════════════════════
 // STATS
 // ═══════════════════════════════════════
-function renderStats() {
-  const alle = ladeEintraege();
+async function renderStats() {
+  const alle = await ladeEintraege();
   const jetzt = new Date();
 
   // Diese Woche (Mo–So)
@@ -477,13 +499,13 @@ function renderStats() {
   const woche = alle.filter(e => {
     const d = new Date(e.datum);
     return d >= mo && d <= so;
-  }).reduce((s,e) => s + e.stunden, 0);
+  }).reduce((s,e) => s + e.dauer_stunden, 0);
 
   // Dieser Monat
   const monat = alle.filter(e => {
     const d = new Date(e.datum);
     return d.getMonth() === jetzt.getMonth() && d.getFullYear() === jetzt.getFullYear();
-  }).reduce((s,e) => s + e.stunden, 0);
+  }).reduce((s,e) => s + e.dauer_stunden, 0);
 
   const soll = 25 * 4.33; // 25h/Woche * 4.33 Wochen
   const saldo = monat - soll;
@@ -497,8 +519,8 @@ function renderStats() {
 // ═══════════════════════════════════════
 // WOCHENANSICHT
 // ═══════════════════════════════════════
-function renderWoche() {
-  const alle = ladeEintraege();
+async function renderWoche() {
+  const alle = await ladeEintraege();
   const jetzt = new Date();
   const mo = new Date(jetzt);
   mo.setDate(jetzt.getDate() - (jetzt.getDay()||7) + 1 + wocheOffset*7);
@@ -512,7 +534,7 @@ function renderWoche() {
     const d = new Date(mo); d.setDate(mo.getDate()+i);
     const ds = d.toISOString().split('T')[0];
     const eintraege = alle.filter(e => e.datum === ds);
-    const h = eintraege.reduce((s,e) => s+e.stunden, 0);
+    const h = eintraege.reduce((s,e) => s+e.dauer_stunden, 0);
     const istHeute = ds === heutStr;
     html += `<div class="wtag ${istHeute?'heute':''} ${eintraege.length?'hat-eintraege':''}">
       <div class="wtag-name">${tage[i]}</div>
@@ -523,18 +545,18 @@ function renderWoche() {
   document.getElementById('woche-tage').innerHTML = html;
 }
 
-function wocheNav(delta) {
+async function wocheNav(delta) {
   if (delta === 0) { wocheOffset = 0; }
   else { wocheOffset += delta; }
-  renderWoche();
-  renderStats();
+  await renderWoche();
+  await renderStats();
 }
 
 // ═══════════════════════════════════════
 // EINTRÄGE-LISTE
 // ═══════════════════════════════════════
-function renderListe() {
-  const alle = ladeEintraege();
+async function renderListe() {
+  const alle = await ladeEintraege();
   const gefiltert = aktFilter === 'alle' ? alle : alle.filter(e => e.typ === aktFilter);
   const el = document.getElementById('eintraege-liste');
 
@@ -555,14 +577,14 @@ function renderListe() {
       <div class="e-body">
         <div class="e-oben">
           <span class="e-datum">${dStr}</span>
-          <span class="e-zeit">${e.von}–${e.bis}</span>
+          <span class="e-zeit">${e.von_uhrzeit}–${e.bis_uhrzeit}</span>
           <span class="e-typ-badge" style="background:${t.farbe};">${t.label}</span>
-          ${e.kind ? `<span class="e-kind">${zkKindNamen[e.kind] || e.kind}</span>` : ''}
+          ${e.kind_id ? `<span class="e-kind">${zkKindNamen[e.kind_id] || e.kind_id}</span>` : ''}
         </div>
         ${e.notiz ? `<div class="e-notiz">${e.notiz}</div>` : ''}
       </div>
-      <div class="e-stunden">${fmtH(e.stunden)}</div>
-      <button class="del-btn" onclick="loeschen(${e.id})">✕</button>
+      <div class="e-stunden">${fmtH(e.dauer_stunden)}</div>
+      <button class="del-btn" onclick="loeschen('${e.id}')">✕</button>
     </div>`;
   }).join('');
 }
@@ -570,8 +592,8 @@ function renderListe() {
 // ═══════════════════════════════════════
 // MONATSÜBERSICHT
 // ═══════════════════════════════════════
-function renderMonat() {
-  const alle = ladeEintraege();
+async function renderMonat() {
+  const alle = await ladeEintraege();
   const jetzt = new Date();
   const monat = alle.filter(e => {
     const d = new Date(e.datum);
@@ -580,7 +602,7 @@ function renderMonat() {
 
   const summen = {};
   TYPEN.forEach(t => summen[t.id] = 0);
-  monat.forEach(e => { if(summen[e.typ] !== undefined) summen[e.typ] += e.stunden; });
+  monat.forEach(e => { if(summen[e.typ] !== undefined) summen[e.typ] += e.dauer_stunden; });
   const gesamt = Object.values(summen).reduce((a,b)=>a+b,0);
 
   const el = document.getElementById('monat-liste');
@@ -603,12 +625,12 @@ function renderMonat() {
 // ═══════════════════════════════════════
 // CSV EXPORT
 // ═══════════════════════════════════════
-function exportCSV() {
-  const alle = ladeEintraege();
+async function exportCSV() {
+  const alle = await ladeEintraege();
   if (!alle.length) { alert('Keine Einträge zum Exportieren.'); return; }
   const header = 'Datum;Typ;Von;Bis;Pause(Min);Stunden;Kind/Schule;Notiz';
   const rows = alle.map(e =>
-    `${e.datum};${getTyp(e.typ).label};${e.von};${e.bis};${e.pause};${e.stunden};${e.kind||''};${e.notiz||''}`
+    `${e.datum};${getTyp(e.typ).label};${e.von_uhrzeit};${e.bis_uhrzeit};${e.pause_minuten};${e.dauer_stunden};${e.kind_id||''};${e.notiz||''}`
   );
   const csv = '\uFEFF' + [header, ...rows].join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
@@ -621,20 +643,28 @@ function exportCSV() {
 // ═══════════════════════════════════════
 // RENDER ALLES
 // ═══════════════════════════════════════
-function renderAlles() {
-  renderStats();
-  renderWoche();
-  renderListe();
-  renderMonat();
+async function renderAlles() {
+  await renderStats();
+  await renderWoche();
+  await renderListe();
+  await renderMonat();
 }
+
+window.wocheNav = wocheNav;
+window.adjustTime = adjustTime;
+window.waehleTyp = waehleTyp;
+window.speichern = speichern;
+window.exportCSV = exportCSV;
+window.setFilter = setFilter;
+window.loeschen = loeschen;
 
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('e-datum').value = heute();
   renderTypChips();
-  renderAlles();
+  await renderAlles();
 
   // Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.1)
   try {

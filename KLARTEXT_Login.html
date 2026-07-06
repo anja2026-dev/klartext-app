@@ -137,19 +137,18 @@ async function login() {
     return;
   }
 
+  // Profil-Abfrage darf den Login nicht blockieren: falls 'profiles' (noch)
+  // nicht existiert oder keine Zeile liefert, mit Standard-Rolle fortfahren,
+  // statt eine erfolgreiche Anmeldung als Fehler auszugeben.
   const { data: profil, error: profilError } = await supabase
     .from('profiles')
     .select('rolle, vorname, nachname')
     .eq('id', data.user.id)
     .single();
-  if (profilError) {
-    zeigeFehler('Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.');
-    btn.disabled = false;
-    return;
-  }
+  const aktivesProfil = profilError ? { rolle: 'ingra', vorname: '', nachname: '' } : profil;
 
-  setzeUebergangsSession(profil, data.user.id);
-  weiterleiten(profil.rolle);
+  setzeUebergangsSession(aktivesProfil, data.user.id);
+  weiterleiten(aktivesProfil.rolle);
 }
 
 // Module-Skripte sind nicht global sichtbar — für die inline onclick/onkeydown-
@@ -167,10 +166,10 @@ window.togglePw = togglePw;
       .select('rolle, vorname, nachname')
       .eq('id', sitzung.data.session.user.id)
       .single();
-    if (profilAbfrage.data) {
-      setzeUebergangsSession(profilAbfrage.data, sitzung.data.session.user.id);
-      weiterleiten(profilAbfrage.data.rolle);
-    }
+    // Profil-Abfrage darf den Auto-Login nicht blockieren (siehe login()).
+    var aktivesProfil = profilAbfrage.data || { rolle: 'ingra', vorname: '', nachname: '' };
+    setzeUebergangsSession(aktivesProfil, sitzung.data.session.user.id);
+    weiterleiten(aktivesProfil.rolle);
   } catch (e) {}
 })();
 </script>

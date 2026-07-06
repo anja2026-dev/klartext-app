@@ -277,7 +277,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
   </a>
 </div>
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+async function aktuellerUserId(){
+  const { data } = await supabase.auth.getUser();
+  return data.user ? data.user.id : null;
+}
+
 // ══ TABS
 function switchTab(t){
   document.getElementById('view-ingra').style.display=t==='ingra'?'block':'none';
@@ -350,18 +357,40 @@ function copyMsg(id){
 }
 
 // ══ SPEICHERN / LADEN
-function ladeMeld(){try{return JSON.parse(localStorage.getItem('kz_meldungen')||'[]');}catch(e){return[];}}
-function speichKrank(typ){
-  let e;
+// Ersetzt localStorage['kz_meldungen']
+async function ladeMeld(){
+  const userId = await aktuellerUserId();
+  const { data, error } = await supabase
+    .from('krankmeldungen')
+    .select('id, ingra_id, typ, kind_id, von_datum, bis_datum, datum, grund, zeit, notiz, created_at')
+    .eq('ingra_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) { console.error('Meldungen laden fehlgeschlagen:', error); return []; }
+  return data || [];
+}
+
+// INSERT INTO krankmeldungen (kein UPDATE - wie im Originalcode)
+async function speichKrank(typ){
+  const userId = await aktuellerUserId();
+
   if(typ==='ingra'){
     const von=document.getElementById('ik-von').value;
     if(!von){alert('Bitte Datum angeben.');return;}
     const bis=document.getElementById('ik-bis').value;
     const notiz=document.getElementById('ik-notiz').value;
-    e={id:Date.now(),typ:'ingra',von,bis,notiz,datum:new Date().toISOString().split('T')[0]};
+
+    const { error } = await supabase.from('krankmeldungen').insert({
+      ingra_id: userId,
+      typ: 'ingra',
+      von_datum: von,
+      bis_datum: bis || null,
+      notiz
+    });
+    if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
     document.getElementById('ik-notiz').value='';
 
-    // Firebase-Speichern + Weiterleitung (Etappe 6.2)
+    // Firebase-Speichern + Weiterleitung (Etappe 6.2) - unverändert
     try {
       db.ref('sick_note_ingra').push({
         typ: 'ingra',
@@ -396,11 +425,21 @@ function speichKrank(typ){
     const grund=document.getElementById('ka-grund').value;
     const zeit=document.getElementById('ka-zeit').value;
     const notiz=document.getElementById('ka-notiz').value;
-    // e.kind bleibt lesbarer Name (für unveränderte lokale Anzeige), e.childId zusätzlich für Firebase-Bezug
-    e={id:Date.now(),typ:'kind',kind:kindName,childId:childId,datum,grund,zeit,notiz};
+
+    const { error } = await supabase.from('krankmeldungen').insert({
+      ingra_id: userId,
+      typ: 'kind',
+      kind_id: childId,
+      datum,
+      grund,
+      zeit,
+      notiz
+    });
+    if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
     document.getElementById('ka-kind').value='';document.getElementById('ka-notiz').value='';
 
-    // Firebase-Speichern + Weiterleitung (Etappe 6.2)
+    // Firebase-Speichern + Weiterleitung (Etappe 6.2) - unverändert
     try {
       db.ref('sick_note/' + childId).push({
         typ: 'kind',
@@ -430,43 +469,61 @@ function speichKrank(typ){
       console.error('Firebase-Speicherung fehlgeschlagen:', err);
     }
   }
-  const l=ladeMeld();l.unshift(e);
-  try{localStorage.setItem('kz_meldungen',JSON.stringify(l));}catch(e){}
-  renderListen();
+
+  await renderListen();
 }
 
-function delMeld(id){if(!confirm('Eintrag löschen?'))return;localStorage.setItem('kz_meldungen',JSON.stringify(ladeMeld().filter(e=>e.id!==id)));renderListen();}
+// DELETE FROM krankmeldungen WHERE id = ...
+async function delMeld(id){
+  if(!confirm('Eintrag löschen?'))return;
+  const { error } = await supabase.from('krankmeldungen').delete().eq('id', id);
+  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
+  await renderListen();
+}
 
 const GRUND_L={krank:'Kind krank',ferien:'Ferien/Schulausfall',termin:'Arzttermin/Therapie',sonstiges:'Sonstiges'};
 const ZEIT_L={ausfall:'Ausfalltag',vertretung:'Vertretungseinsatz',nachgeholt:'Zeit nachgeholt',bezahlt:'Bezahlter Ausfall'};
 
-function renderListen(){
-  const l=ladeMeld();
+async function renderListen(){
+  const l=await ladeMeld();
   // INGRA
   const ingra=l.filter(e=>e.typ==='ingra');
   const el_i=document.getElementById('liste-ingra');
   el_i.innerHTML=ingra.length?ingra.map(e=>`
     <div class="meldung" style="border-left-color:#C49A00;">
-      <div class="m-hdr"><div class="m-icon">🤒</div><div class="m-name">Ich krank</div><div class="m-dat">${e.von}${e.bis&&e.bis!==e.von?' – '+e.bis:''}</div><button class="m-del" onclick="delMeld(${e.id})">✕</button></div>
+      <div class="m-hdr"><div class="m-icon">🤒</div><div class="m-name">Ich krank</div><div class="m-dat">${e.von_datum}${e.bis_datum&&e.bis_datum!==e.von_datum?' – '+e.bis_datum:''}</div><button class="m-del" onclick="delMeld('${e.id}')">✕</button></div>
       ${e.notiz?`<div class="m-txt">${e.notiz}</div>`:''}
     </div>`).join(''):'<div class="leer">Noch keine Kranktage erfasst.</div>';
   // KIND
   const kind=l.filter(e=>e.typ==='kind');
   const el_k=document.getElementById('liste-kind');
-  el_k.innerHTML=kind.length?kind.map(e=>`
+  el_k.innerHTML=kind.length?kind.map(e=>{
+    const kindName = window.kzKinderDaten && window.kzKinderDaten[e.kind_id] ? window.kzKinderDaten[e.kind_id].name : e.kind_id;
+    return `
     <div class="meldung" style="border-left-color:#C62828;">
-      <div class="m-hdr"><div class="m-icon">🧒</div><div class="m-name">${e.kind}</div><div class="m-dat">${e.datum}</div><button class="m-del" onclick="delMeld(${e.id})">✕</button></div>
+      <div class="m-hdr"><div class="m-icon">🧒</div><div class="m-name">${kindName}</div><div class="m-dat">${e.datum}</div><button class="m-del" onclick="delMeld('${e.id}')">✕</button></div>
       <div class="m-txt">${GRUND_L[e.grund]||e.grund} · ${ZEIT_L[e.zeit]||e.zeit}${e.notiz?' · '+e.notiz:''}</div>
-    </div>`).join(''):'<div class="leer">Noch keine Ausfälle erfasst.</div>';
+    </div>`;
+  }).join(''):'<div class="leer">Noch keine Ausfälle erfasst.</div>';
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
+window.switchTab = switchTab;
+window.telTK = telTK;
+window.showMsgIngra = showMsgIngra;
+window.genMsgIngra = genMsgIngra;
+window.showMsgKind = showMsgKind;
+window.genMsgKind = genMsgKind;
+window.copyMsg = copyMsg;
+window.speichKrank = speichKrank;
+window.delMeld = delMeld;
+
+document.addEventListener('DOMContentLoaded', async ()=>{
   const h=new Date().toISOString().split('T')[0];
   document.getElementById('ik-von').value=h;
   document.getElementById('ka-datum').value=h;
-  renderListen();
+  await renderListen();
 
-  // Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.2)
+  // Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.2) - unverändert (Firebase)
   try {
     db.ref('children').once('value').then(function(snapshot) {
       const kinder = snapshot.val() || {};
@@ -479,7 +536,8 @@ document.addEventListener('DOMContentLoaded',()=>{
         option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
         select.appendChild(option);
       });
-      window.kzKinderDaten = kinder; // für Namensauflösung beim Speichern
+      window.kzKinderDaten = kinder; // für Namensauflösung beim Speichern und Anzeigen
+      renderListen(); // Liste neu zeichnen, damit Namen statt IDs angezeigt werden
     });
   } catch(e) {}
 });

@@ -587,6 +587,8 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div id="fa-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+
     <!-- Platzhalter – Formular wird in einem folgenden Schritt eingefügt -->
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
@@ -595,10 +597,10 @@ footer strong{color:var(--kt-accent);}
       </div>
       <div class="karte-body">
         <ul class="stw-list">
-          <li><strong>Name:</strong> – wird hier erfasst</li>
-          <li><strong>Klasse / Gruppe:</strong> – wird hier erfasst</li>
-          <li><strong>Bezugsperson:</strong> – wird hier erfasst</li>
-          <li><strong>Besonderheiten:</strong> – wird hier erfasst</li>
+          <li><strong>Name:</strong> <span id="fa-name">– wird hier erfasst</span></li>
+          <li><strong>Klasse / Gruppe:</strong> <span id="fa-klasse">– wird hier erfasst</span></li>
+          <li><strong>Bezugsperson:</strong> <span id="fa-bezugsperson">– wird hier erfasst</span></li>
+          <li><strong>Besonderheiten:</strong> <span id="fa-besonderheiten">– wird hier erfasst</span></li>
         </ul>
       </div>
     </div>
@@ -609,8 +611,8 @@ footer strong{color:var(--kt-accent);}
       </div>
       <div class="karte-body">
         <ul class="stw-list">
-          <li><strong>Ziele:</strong> – werden hier definiert</li>
-          <li><strong>Ressourcen:</strong> – werden hier erfasst</li>
+          <li><strong>Ziele:</strong> <span id="fa-ziele">– werden hier definiert</span></li>
+          <li><strong>Ressourcen:</strong> <span id="fa-ressourcen">– wird hier erfasst</span></li>
         </ul>
         <div class="hinweis" style="border-color:#00695C;">Formular wird in Schritt 2 vollständig ausgefüllt. Daten werden in localStorage gespeichert.</div>
       </div>
@@ -1108,6 +1110,90 @@ document.addEventListener('DOMContentLoaded', function() {
   var hash = window.location.hash.replace('#','');
   if (hash && views[hash]) { zeige(hash); } else { zeige('case_start'); }
 });
+</script>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Phase 3 / Schritt 3.2.1: Fallakte-Daten aus Supabase laden, basierend
+// auf sessionStorage.klartext_kind_id. Nur die case_file-Ansicht (Fallakte)
+// - keine Maßnahmen-/Timeline-/Risiko-Logik, keine Strukturänderung.
+//
+// WICHTIG: Die reale Tabelle heißt "fallakten" (nicht "fallakte") -
+// siehe supabase/migrations/0004_fallmanagement.sql. Ein Kind kann
+// mehrere Fallakten haben; geladen wird die aktuell aktive
+// (aktiv = true, neueste zuerst).
+function fallakteStatusAnzeigen(text){
+  var status = document.getElementById('fa-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function fallakteFelderSetzen(werte){
+  var felder = {
+    'fa-name': werte.name,
+    'fa-klasse': werte.klasse,
+    'fa-bezugsperson': werte.bezugsperson,
+    'fa-besonderheiten': werte.besonderheiten,
+    'fa-ziele': werte.ziele,
+    'fa-ressourcen': werte.ressourcen
+  };
+  Object.keys(felder).forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.textContent = felder[id] || '–';
+  });
+}
+
+async function fallakteLaden(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+
+  if (!kindId) {
+    fallakteStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+    return;
+  }
+
+  var kindErgebnis = await supabase.from('kinder').select('name, klasse').eq('id', kindId).maybeSingle();
+
+  var fallakteErgebnis = await supabase
+    .from('fallakten')
+    .select('bezugsperson, bezugsperson_kontakt, besonderheiten, ziele, ressourcen')
+    .eq('kind_id', kindId)
+    .eq('aktiv', true)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (fallakteErgebnis.error) {
+    fallakteStatusAnzeigen('Fallakte konnte nicht geladen werden.');
+    return;
+  }
+  if (!fallakteErgebnis.data) {
+    fallakteStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
+    fallakteFelderSetzen({
+      name: kindErgebnis.data ? kindErgebnis.data.name : '',
+      klasse: kindErgebnis.data ? kindErgebnis.data.klasse : ''
+    });
+    return;
+  }
+
+  var bezugsperson = fallakteErgebnis.data.bezugsperson || '';
+  if (bezugsperson && fallakteErgebnis.data.bezugsperson_kontakt) {
+    bezugsperson += ' · ' + fallakteErgebnis.data.bezugsperson_kontakt;
+  }
+
+  fallakteStatusAnzeigen('');
+  fallakteFelderSetzen({
+    name: kindErgebnis.data ? kindErgebnis.data.name : '',
+    klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
+    bezugsperson: bezugsperson,
+    besonderheiten: fallakteErgebnis.data.besonderheiten,
+    ziele: fallakteErgebnis.data.ziele,
+    ressourcen: fallakteErgebnis.data.ressourcen
+  });
+}
+fallakteLaden();
 </script>
 </body>
 </html>

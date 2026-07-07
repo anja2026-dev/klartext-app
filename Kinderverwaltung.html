@@ -446,6 +446,18 @@
     </div>
   </div>
 
+  <!-- KINDER AUS SUPABASE (additiv, unabhängig von der obigen localStorage-Liste) -->
+  <div class="kv-section">
+    <div class="kv-section-head">
+      <span class="kv-section-head-icon">☁️</span>
+      <span class="kv-section-head-title">Kinder aus Supabase</span>
+    </div>
+    <div class="kv-section-body">
+      <div id="sb-kinder-status" class="kind-karte-leer" style="display:none;"></div>
+      <div id="sb-kinder-output"></div>
+    </div>
+  </div>
+
 </div><!-- /kv-main -->
 
 <script>
@@ -688,6 +700,82 @@ function exportCSV() {
 document.getElementById('kind-speichern').addEventListener('click', addChild);
 document.getElementById('kind-abbrechen').addEventListener('click', abbrechen);
 document.addEventListener('DOMContentLoaded', function(){ renderChildren(); toggleFeldgruppen(); });
+</script>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Phase 3 / Schritt 3.6: Kinderliste aus Supabase (Tabelle "kinder") laden
+// und additiv anzeigen - unabhängig von der bestehenden, localStorage-
+// basierten Kinderverwaltung oben (unverändert, inkl. Buttons/Formular).
+// Klick auf ein TK-Modul bei einem Kind setzt sessionStorage.klartext_kind_id
+// und öffnet das Modul mit ?kind=<ID>. Firebase wird in dieser Datei nicht
+// verwendet (nie der Fall gewesen) - "nur noch für Weiterleitungs-
+// Benachrichtigungen" betrifft hier daher nichts.
+var SB_TK_MODULE = [
+  { ziel: 'TK_Fallmanagement.html', label: 'Fallmanagement' },
+  { ziel: 'TK-Recruiting.html', label: 'Recruiting' },
+  { ziel: 'TK_Vertretungsassistent.html', label: 'Vertretungsassistent' }
+];
+
+function sbEsc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function sbKinderStatusAnzeigen(text){
+  var status = document.getElementById('sb-kinder-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function sbKindOeffnen(kindId, ziel){
+  try { sessionStorage.setItem('klartext_kind_id', kindId); } catch(e) {}
+  window.location.href = ziel + '?kind=' + encodeURIComponent(kindId);
+}
+window.sbKindOeffnen = sbKindOeffnen;
+
+function sbKinderRendern(kinder){
+  var el = document.getElementById('sb-kinder-output');
+  if (!el) return;
+  if (!kinder.length) { el.innerHTML = ''; return; }
+  el.innerHTML = kinder.map(function(k){
+    var meta = [k.klasse ? 'Klasse ' + k.klasse : '', k.bedarfsart || ''].filter(Boolean).join(' · ');
+    var buttons = SB_TK_MODULE.map(function(m){
+      return '<button class="btn-secondary" onclick="sbKindOeffnen(\'' + k.id + '\',\'' + m.ziel + '\')">' + m.label + '</button>';
+    }).join('');
+    return '<div class="kind-karte">'
+      + '<div class="kind-karte-info">'
+      + '<div class="kind-karte-name">' + sbEsc(k.name) + '</div>'
+      + (meta ? '<div class="kind-karte-meta">' + sbEsc(meta) + '</div>' : '')
+      + '</div>'
+      + '<div class="kind-karte-actions">' + buttons + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+async function sbKinderLaden(){
+  var ergebnis = await supabase
+    .from('kinder')
+    .select('id, name, klasse, bedarfsart')
+    .eq('aktiv', true)
+    .order('name', { ascending: true });
+
+  if (ergebnis.error) {
+    sbKinderStatusAnzeigen('Kinderliste konnte nicht geladen werden.');
+    sbKinderRendern([]);
+    return;
+  }
+  if (!ergebnis.data || !ergebnis.data.length) {
+    sbKinderStatusAnzeigen('Noch keine Kinder in Supabase erfasst.');
+    sbKinderRendern([]);
+    return;
+  }
+
+  sbKinderStatusAnzeigen('');
+  sbKinderRendern(ergebnis.data);
+}
+sbKinderLaden();
 </script>
 
 </body>

@@ -47,9 +47,6 @@
   .m-main{ padding:72px 16px 16px; display:flex; flex-direction:column; gap:24px; box-sizing:border-box; }
   .m-section{ display:flex; flex-direction:column; gap:12px; }
 
-  .m-rolle-btn{ width:100%; padding:14px; font-size:16px; font-weight:700; border-radius:12px; border:1.5px solid var(--mk-navy); background:#fff; color:var(--mk-navy); cursor:pointer; box-sizing:border-box; }
-  .m-rolle-btn.aktiv{ background:var(--mk-navy); color:#fff; }
-
   .m-dropdown{ background:#fff; border:1.5px solid var(--mk-border); border-radius:12px; padding:12px 16px; box-sizing:border-box; }
   .m-dropdown summary{ font-size:16px; font-weight:700; color:var(--mk-navy); cursor:pointer; list-style:none; }
   .m-dropdown summary::-webkit-details-marker{ display:none; }
@@ -86,6 +83,14 @@
   </nav>
 
   <main class="m-main">
+    <section class="m-section">
+      <a class="m-btn-full" href="DASHBOARD.html" style="border-color:#1A8C8C;color:#1A8C8C;">INGRA</a>
+      <a class="m-btn-full" href="TK_Landing.html" style="border-color:#8C1A1A;color:#8C1A1A;">TK</a>
+      <a class="m-btn-full" href="DASHBOARD.html" style="border-color:#1A4C8C;color:#1A4C8C;">Trainer</a>
+      <a class="m-btn-full" href="KLARTEXT_Lehrerkurs.html" style="border-color:#8C8C1A;color:#8C8C1A;">LK</a>
+      <a class="m-btn-full" href="KLARTEXT_Elternkurs.html" style="border-color:#8C4C1A;color:#8C4C1A;">Eltern</a>
+    </section>
+
     <section class="m-section">
       <details class="m-dropdown">
         <summary>Module öffnen</summary>
@@ -155,11 +160,6 @@ function mobileSucheFokus(){
   const feld = document.getElementById('m-suche');
   if (feld) { feld.scrollIntoView({behavior:'smooth'}); feld.focus(); }
 }
-function mobileRolleWaehlen(btn){
-  document.querySelectorAll('.m-rolle-btn').forEach(b=>b.classList.remove('aktiv'));
-  btn.classList.add('aktiv');
-}
-
 // Phase 2 / Schritt 1: reine Sichtbarkeitslogik anhand sessionStorage.klartext_role.
 // Kacheln mit [data-rollen] werden ausgeblendet, wenn die aktuelle Rolle nicht in
 // der kommagetrennten Liste enthalten ist. Kacheln ohne data-rollen bleiben immer sichtbar.

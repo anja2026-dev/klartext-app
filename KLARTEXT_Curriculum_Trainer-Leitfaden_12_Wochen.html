@@ -109,7 +109,10 @@ textarea:focus{border-color:#1B3A4B;}
 <script>
 (function(){
   try{
-    if(sessionStorage.getItem('klartext_login')!=='true'){
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login!=='true' || !['trainer','admin'].includes(role)){
       window.location.href='KLARTEXT_Login.html';
     }
   }catch(e){}

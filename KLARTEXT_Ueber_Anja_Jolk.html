@@ -100,6 +100,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);l
 <meta name="apple-mobile-web-app-title" content="KLARTEXT">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#1B3A4B">
+<script>(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['admin','ingra','ingra-beta','trainer','lk','eltern','tk'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
+}catch(e){}})();</script>
 </head>
 <body>
 

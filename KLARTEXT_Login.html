@@ -151,6 +151,12 @@ async function login() {
 
   // Rolle kommt bewusst aus der Auswahl im Login, nicht aus profiles.rolle.
   setzeUebergangsSession(rolle, data.user.id, email);
+  // Phase 3 / Schritt 3.5: Eine neue, explizite Anmeldung (Login-Formular
+  // ausgefüllt, nicht Auto-Login) beginnt eine frische Session - eine
+  // zuvor im mobilen Dashboard gewählte Kind-ID der vorherigen Sitzung
+  // darf hier nicht mitgeschleppt werden. Schließt die Lücke aus PR #7,
+  // wo dies mangels Zugriff auf diese Datei nicht möglich war.
+  try { sessionStorage.removeItem('klartext_kind_id'); } catch (e) {}
   weiterleiten(rolle);
 }
 

@@ -88,7 +88,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);l
 <script>
 (function(){
   try{
-    if(sessionStorage.getItem('klartext_login')!=='true'){
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login!=='true' || !['admin','ingra','ingra-beta','trainer','lk','eltern'].includes(role)){
       window.location.href='KLARTEXT_Login.html';
     }
   }catch(e){}

@@ -652,6 +652,16 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="karte" id="risiko-karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🚦</span>
+        <span class="karte-header-titel" style="color:#00695C;">Risiko-Verlauf</span>
+      </div>
+      <div class="karte-body">
+        <div id="risiko-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+        <ul class="stw-list" id="risiko-liste"></ul>
+      </div>
+    </div>
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🚦</span>
@@ -1079,6 +1089,9 @@ function zeige(key) {
   // Verlaufs-Ansicht geöffnet wird (window.timelineLaden aus dem
   // type="module"-Script weiter unten in der Datei).
   if (key === 'case_timeline' && window.timelineLaden) window.timelineLaden();
+  // Phase 3 / Schritt 3.2.4: Risiko-Verlauf aus Supabase laden, sobald
+  // die Risiko-Ansicht geöffnet wird (window.risikoLaden, siehe unten).
+  if (key === 'case_risk' && window.risikoLaden) window.risikoLaden();
 }
 
 // ── Tab-System ─────────────────────────────────────────────
@@ -1359,6 +1372,84 @@ async function timelineLaden(){
   timelineRendern(ergebnis.data);
 }
 window.timelineLaden = timelineLaden;
+
+// Phase 3 / Schritt 3.2.4: Risiko-Daten aus Supabase laden, sobald die
+// case_risk-Ansicht (Risiko-Ampel) geöffnet wird - keine Maßnahmen-/
+// Timeline-/Chat-/Weiterleitungs-Logik.
+//
+// WICHTIG: Die reale Tabelle heißt "fall_risikostatus" (nicht
+// "fall_risiko") - siehe supabase/migrations/0004_fallmanagement.sql.
+// Wie bei der Timeline hat sie keine kind_id-Spalte, nur fallakte_id -
+// die aktive Fallakte des Kindes wird daher zuerst aufgelöst (gleiche
+// Abfrage wie in fallakteLaden/timelineLaden).
+var AMPEL_LABEL = { gruen: '✔ Grün', gelb: '⚑ Gelb', rot: '✗ Rot' };
+
+function risikoStatusAnzeigen(text){
+  var status = document.getElementById('risiko-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function risikoRendern(liste){
+  var el = document.getElementById('risiko-liste');
+  if (!el) return;
+  if (!liste.length) { el.innerHTML = ''; return; }
+  el.innerHTML = liste.map(function(r){
+    var gesetzt = r.profiles ? [r.profiles.vorname, r.profiles.nachname].filter(Boolean).join(' ') : '';
+    var datum = r.created_at ? new Date(r.created_at).toLocaleDateString('de-DE') : '';
+    return '<li><strong>' + datum + ':</strong> ' + (AMPEL_LABEL[r.ampel] || r.ampel) +
+      (r.begruendung ? ' · ' + r.begruendung : '') +
+      (gesetzt ? ' · Gesetzt von: ' + gesetzt : '') + '</li>';
+  }).join('');
+}
+
+async function risikoLaden(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+
+  if (!kindId) {
+    risikoStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+    risikoRendern([]);
+    return;
+  }
+
+  var fallakteRef = await supabase
+    .from('fallakten')
+    .select('id')
+    .eq('kind_id', kindId)
+    .eq('aktiv', true)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (fallakteRef.error || !fallakteRef.data) {
+    risikoStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
+    risikoRendern([]);
+    return;
+  }
+
+  var ergebnis = await supabase
+    .from('fall_risikostatus')
+    .select('ampel, begruendung, created_at, profiles:gesetzt_von(vorname, nachname)')
+    .eq('fallakte_id', fallakteRef.data.id)
+    .order('created_at', { ascending: false });
+
+  if (ergebnis.error) {
+    risikoStatusAnzeigen('Risiko-Verlauf konnte nicht geladen werden.');
+    risikoRendern([]);
+    return;
+  }
+  if (!ergebnis.data || !ergebnis.data.length) {
+    risikoStatusAnzeigen('Noch keine Risiko-Einschätzung für diese Fallakte.');
+    risikoRendern([]);
+    return;
+  }
+
+  risikoStatusAnzeigen('');
+  risikoRendern(ergebnis.data);
+}
+window.risikoLaden = risikoLaden;
 </script>
 </body>
 </html>

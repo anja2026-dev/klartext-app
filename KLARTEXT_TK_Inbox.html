@@ -70,6 +70,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
     <div class="leer-hinweis">Lade Einträge …</div>
   </div>
 
+  <div class="hero" style="background:var(--navy);margin-top:1.5rem;">
+    <div>
+      <div class="hero-titel">Weiterleitungen zum ausgewählten Kind</div>
+      <div class="hero-sub">Gefiltert nach sessionStorage.klartext_kind_id und klartext_role</div>
+    </div>
+    <div class="hero-zaehler" id="wl-zaehler">0 Einträge</div>
+  </div>
+  <div id="wl-liste">
+    <div class="leer-hinweis">Lade Einträge …</div>
+  </div>
+
 </div>
 
 <script>
@@ -160,6 +171,78 @@ db.ref('children').once('value').then(function(snapshot) {
   document.getElementById('inbox-liste').innerHTML =
     '<div class="leer-hinweis">Fehler beim Laden: ' + error.message + '</div>';
 });
+</script>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Phase 3 / Schritt 3.2.5: Weiterleitungen aus Supabase laden, gefiltert
+// nach sessionStorage.klartext_kind_id und klartext_role. Ergänzt die
+// bestehende Firebase-Inbox oben um diese Kind-/Rollen-gefilterte Sicht,
+// ohne die bestehende renderInbox()/getInbox()-Logik anzufassen.
+//
+// WICHTIG: Der Status-Wert "geschlossen" existiert nicht - das reale
+// CHECK-Constraint auf weiterleitungen.status erlaubt nur
+// 'offen','gelesen','erledigt' (siehe supabase/migrations/0008_weiterleitungen.sql).
+// Als nächstliegender "abgeschlossen"-Zustand wird daher 'erledigt'
+// ausgeschlossen (status != 'erledigt'), statt 'geschlossen'.
+var WL_TYP_LABEL = { uebergabe: 'Übergabe', barometer: 'Barometer', hinweis: 'Hinweis' };
+
+function wlZeitFormatieren(iso){
+  if (!iso) return '';
+  var d = new Date(iso);
+  return d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'}) +
+         ' · ' + d.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+}
+
+function wlRendern(liste){
+  var el = document.getElementById('wl-liste');
+  var zaehler = document.getElementById('wl-zaehler');
+  if (zaehler) zaehler.textContent = liste.length + (liste.length === 1 ? ' Eintrag' : ' Einträge');
+  if (!el) return;
+  if (!liste.length) { el.innerHTML = '<div class="leer-hinweis">Keine Weiterleitungen für dieses Kind und diese Rolle.</div>'; return; }
+  el.innerHTML = liste.map(function(w){
+    var typLabel = WL_TYP_LABEL[w.typ] || w.typ;
+    return '<div class="eintrag">' +
+      '<div class="eintrag-head">' +
+        '<span class="eintrag-typ typ-' + w.typ + '">' + typLabel + '</span>' +
+        '<span class="eintrag-zeit">' + wlZeitFormatieren(w.created_at) + '</span>' +
+      '</div>' +
+      '<div class="eintrag-text">' + (w.text || '') + '</div>' +
+      '<div class="eintrag-von">Von: ' + (w.von_rolle || '?') + ' · Status: ' + w.status + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function weiterleitungenLaden(){
+  var kindId = '';
+  var rolle = '';
+  try {
+    kindId = sessionStorage.getItem('klartext_kind_id') || '';
+    rolle = sessionStorage.getItem('klartext_role') || '';
+  } catch(e) {}
+
+  if (!kindId) {
+    document.getElementById('wl-liste').innerHTML = '<div class="leer-hinweis">Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.</div>';
+    return;
+  }
+
+  var ergebnis = await supabase
+    .from('weiterleitungen')
+    .select('typ, text, von_rolle, status, created_at')
+    .eq('kind_id', kindId)
+    .eq('ziel_rolle', rolle)
+    .neq('status', 'erledigt')
+    .order('created_at', { ascending: false });
+
+  if (ergebnis.error) {
+    document.getElementById('wl-liste').innerHTML = '<div class="leer-hinweis">Fehler beim Laden: ' + ergebnis.error.message + '</div>';
+    return;
+  }
+
+  wlRendern(ergebnis.data || []);
+}
+weiterleitungenLaden();
 </script>
 </body>
 </html>

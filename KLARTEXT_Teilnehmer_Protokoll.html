@@ -56,7 +56,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   .tn-eintrag{box-shadow:none;border:1.5px solid #999;page-break-inside:avoid;}
 }
 </style>
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script>(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['ingra','ingra-beta','admin'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
+}catch(e){}})();</script>
 </head>
 <body>
 

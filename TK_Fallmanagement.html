@@ -1152,6 +1152,24 @@ document.addEventListener('DOMContentLoaded', function() {
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
+// Phase 3 / Schritt 3.7: kind_id wird nun sowohl aus dem URL-Parameter
+// ?kind=<ID> (z.B. bei Ankunft von DASHBOARD_mobile.html/PR#7 oder
+// Kinderverwaltung.html/PR#17) als auch aus sessionStorage.klartext_kind_id
+// ermittelt. Ist ?kind= gesetzt, hat es Vorrang und wird zusätzlich in
+// sessionStorage gespiegelt, damit die interne Ansichten-Navigation
+// (zeige()) danach konsistent bleibt, ohne dass Buttons/Links verändert
+// werden müssen.
+function kindIdErmitteln(){
+  try {
+    var ausUrl = new URLSearchParams(window.location.search).get('kind');
+    if (ausUrl) {
+      sessionStorage.setItem('klartext_kind_id', ausUrl);
+      return ausUrl;
+    }
+    return sessionStorage.getItem('klartext_kind_id') || '';
+  } catch(e) { return ''; }
+}
+
 // Phase 3 / Schritt 3.2.1: Fallakte-Daten aus Supabase laden, basierend
 // auf sessionStorage.klartext_kind_id. Nur die case_file-Ansicht (Fallakte)
 // - keine Maßnahmen-/Timeline-/Risiko-Logik, keine Strukturänderung.
@@ -1183,8 +1201,7 @@ function fallakteFelderSetzen(werte){
 }
 
 async function fallakteLaden(){
-  var kindId = '';
-  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  var kindId = kindIdErmitteln();
 
   if (!kindId) {
     fallakteStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
@@ -1266,8 +1283,7 @@ function massnahmenRendern(liste){
 }
 
 async function massnahmenLaden(){
-  var kindId = '';
-  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  var kindId = kindIdErmitteln();
 
   if (!kindId) {
     massnahmenStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
@@ -1327,8 +1343,7 @@ function timelineRendern(liste){
 }
 
 async function timelineLaden(){
-  var kindId = '';
-  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  var kindId = kindIdErmitteln();
 
   if (!kindId) {
     timelineStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
@@ -1405,8 +1420,7 @@ function risikoRendern(liste){
 }
 
 async function risikoLaden(){
-  var kindId = '';
-  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  var kindId = kindIdErmitteln();
 
   if (!kindId) {
     risikoStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');

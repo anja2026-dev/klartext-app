@@ -251,6 +251,11 @@ footer strong{color:var(--kt-accent);}
         </div>
         <div class="modul-karte-titel">Fallmanagement</div>
         <div class="modul-karte-sub">Fallakte · Risiko-Ampel · Maßnahmenplan · Verlauf · Barometer · PDF-Export</div>
+        <div id="fm-badges" style="display:flex;gap:.35rem;flex-wrap:wrap;">
+          <span id="fm-badge-massnahmen" style="display:none;background:var(--fm-light);color:var(--fm-color);font-size:.65rem;font-weight:700;border-radius:10px;padding:.15rem .55rem;"></span>
+          <span id="fm-badge-risiko" style="display:none;background:var(--fm-light);color:var(--fm-color);font-size:.65rem;font-weight:700;border-radius:10px;padding:.15rem .55rem;"></span>
+          <span id="fm-badge-timeline" style="display:none;background:var(--fm-light);color:var(--fm-color);font-size:.65rem;font-weight:700;border-radius:10px;padding:.15rem .55rem;"></span>
+        </div>
         <div class="modul-karte-cta">Modul öffnen →</div>
       </div>
     </a>
@@ -325,5 +330,58 @@ footer strong{color:var(--kt-accent);}
   Klar. Warm. Menschlich. · Neutral · Trägeroffen
 </footer>
 
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Phase 3 / Schritt 3.4: Badge-Counts aus Supabase auf der bestehenden
+// Fallmanagement-Kachel (Maßnahmen/Risiko/Timeline), basierend auf
+// sessionStorage.klartext_kind_id. Buttons/Links bleiben unverändert -
+// nur zusätzliche, additive Badges.
+//
+// WICHTIG: KLARTEXT_TK_Dashboard.html existiert nicht - nach Rückfrage
+// wurde TK_Landing.html als reales "TK-Dashboard" verwendet. Es gibt
+// dort keine eigenen Kacheln für Weiterleitungen/Chat, daher werden
+// nur die drei Fallmanagement-Unterbereiche gezählt, für die eine
+// Kachel existiert. Die Rollen-Filterung erfolgt bereits über die
+// bestehende Auth-Guard (nur tk/admin öffnen diese Seite) und die
+// RLS-Policies der jeweiligen Tabellen - kein zusätzlicher
+// Client-Rollenfilter nötig.
+function fmBadgeSetzen(id, text){
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (text) { el.textContent = text; el.style.display = 'inline-block'; }
+  else { el.style.display = 'none'; }
+}
+
+async function tkLandingBadgesLaden(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  if (!kindId) return;
+
+  var fallakteRef = await supabase
+    .from('fallakten')
+    .select('id')
+    .eq('kind_id', kindId)
+    .eq('aktiv', true)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (fallakteRef.error || !fallakteRef.data) return;
+  var fallakteId = fallakteRef.data.id;
+
+  var ergebnisse = await Promise.all([
+    supabase.from('fall_massnahmen').select('id', { count: 'exact', head: true }).eq('kind_id', kindId).eq('status', 'offen'),
+    supabase.from('fall_risikostatus').select('id', { count: 'exact', head: true }).eq('fallakte_id', fallakteId),
+    supabase.from('fall_timeline').select('id', { count: 'exact', head: true }).eq('fallakte_id', fallakteId)
+  ]);
+  var massnahmen = ergebnisse[0], risiko = ergebnisse[1], timeline = ergebnisse[2];
+
+  if (!massnahmen.error && massnahmen.count) fmBadgeSetzen('fm-badge-massnahmen', massnahmen.count + ' Maßnahme' + (massnahmen.count === 1 ? '' : 'n') + ' offen');
+  if (!risiko.error && risiko.count) fmBadgeSetzen('fm-badge-risiko', risiko.count + ' Risiko-Eintrag' + (risiko.count === 1 ? '' : 'e'));
+  if (!timeline.error && timeline.count) fmBadgeSetzen('fm-badge-timeline', timeline.count + ' Verlaufseintrag' + (timeline.count === 1 ? '' : 'e'));
+}
+tkLandingBadgesLaden();
+</script>
 </body>
 </html>

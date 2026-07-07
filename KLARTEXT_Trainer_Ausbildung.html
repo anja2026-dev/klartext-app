@@ -11,7 +11,11 @@
       sessionStorage.setItem('klartext_role','admin');
     }return;
   }
-  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['trainer','admin'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
 }catch(e){}})();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">

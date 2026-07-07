@@ -793,6 +793,16 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="karte" id="timeline-karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">🕐</span>
+        <span class="karte-header-titel" style="color:#00695C;">Verlauf</span>
+      </div>
+      <div class="karte-body">
+        <div id="timeline-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+        <ul class="stw-list" id="timeline-liste"></ul>
+      </div>
+    </div>
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🕐</span>
@@ -1065,6 +1075,10 @@ function zeige(key) {
   document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('aktiv'); });
   var ziel = document.getElementById(views[key] || 'view-start');
   if (ziel) { ziel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
+  // Phase 3 / Schritt 3.2.3: Timeline aus Supabase laden, sobald die
+  // Verlaufs-Ansicht geöffnet wird (window.timelineLaden aus dem
+  // type="module"-Script weiter unten in der Datei).
+  if (key === 'case_timeline' && window.timelineLaden) window.timelineLaden();
 }
 
 // ── Tab-System ─────────────────────────────────────────────
@@ -1269,6 +1283,82 @@ async function massnahmenLaden(){
   massnahmenRendern(ergebnis.data);
 }
 massnahmenLaden();
+
+// Phase 3 / Schritt 3.2.3: Timeline-Daten aus Supabase laden, sobald die
+// case_timeline-Ansicht (Verlauf) geöffnet wird - keine Risiko-/Chat-/
+// Weiterleitungs-Logik.
+//
+// WICHTIG: "fall_timeline" hat keine kind_id-Spalte - nur fallakte_id
+// (siehe supabase/migrations/0004_fallmanagement.sql). Die aktive
+// Fallakte des Kindes wird daher zuerst aufgelöst (gleiche Abfrage wie
+// in fallakteLaden), erst danach wird die Timeline über fallakte_id
+// gefiltert.
+function timelineStatusAnzeigen(text){
+  var status = document.getElementById('timeline-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function timelineRendern(liste){
+  var el = document.getElementById('timeline-liste');
+  if (!el) return;
+  if (!liste.length) { el.innerHTML = ''; return; }
+  el.innerHTML = liste.map(function(t){
+    var erstellt = t.profiles ? [t.profiles.vorname, t.profiles.nachname].filter(Boolean).join(' ') : '';
+    return '<li><strong>' + t.datum + ':</strong> ' + (t.ereignis || '') +
+      (t.beobachtung ? ' · Beobachtung: ' + t.beobachtung : '') +
+      (t.rueckmeldung ? ' · Rückmeldung: ' + t.rueckmeldung : '') +
+      (erstellt ? ' · Erstellt von: ' + erstellt : '') + '</li>';
+  }).join('');
+}
+
+async function timelineLaden(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+
+  if (!kindId) {
+    timelineStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+    timelineRendern([]);
+    return;
+  }
+
+  var fallakteRef = await supabase
+    .from('fallakten')
+    .select('id')
+    .eq('kind_id', kindId)
+    .eq('aktiv', true)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (fallakteRef.error || !fallakteRef.data) {
+    timelineStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
+    timelineRendern([]);
+    return;
+  }
+
+  var ergebnis = await supabase
+    .from('fall_timeline')
+    .select('datum, ereignis, beobachtung, rueckmeldung, profiles:erstellt_von(vorname, nachname)')
+    .eq('fallakte_id', fallakteRef.data.id)
+    .order('datum', { ascending: false });
+
+  if (ergebnis.error) {
+    timelineStatusAnzeigen('Verlauf konnte nicht geladen werden.');
+    timelineRendern([]);
+    return;
+  }
+  if (!ergebnis.data || !ergebnis.data.length) {
+    timelineStatusAnzeigen('Noch keine Verlaufseinträge für diese Fallakte.');
+    timelineRendern([]);
+    return;
+  }
+
+  timelineStatusAnzeigen('');
+  timelineRendern(ergebnis.data);
+}
+window.timelineLaden = timelineLaden;
 </script>
 </body>
 </html>

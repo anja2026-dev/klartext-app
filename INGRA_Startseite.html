@@ -133,6 +133,22 @@
 </head>
 <body>
 
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AUTH-GUARD: Nur INGRA/Admin - Weiterleitung wenn keine gültige Rolle -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || !['ingra','ingra-beta','admin'].includes(role)){
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
+
 <header class="kt-header">
   <div class="kt-logo">KLARTEXT <span>INGRA · Startseite</span></div>
   <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
@@ -210,10 +226,9 @@ function esc(s) {
 // ── INGRA-Module ───────────────────────────────────────────
 var INGRA_MODULE = [
   { label:'📘 Tagesjournal',   href:'KLARTEXT_Tagesjournal.html' },
-  { label:'🌡️ Barometer',      href:'KLARTEXT_Barometer.html' },
+  { label:'🌡️ Barometer',      href:'BAROMETER_INGRA.html' },
   { label:'📝 Notizblock',     href:'KLARTEXT_Notizblock.html' },
   { label:'✅ To-dos',         href:'KLARTEXT_Listen.html' },
-  { label:'📋 Formulare',      href:'KLARTEXT_Formulare.html' },
   { label:'📌 Maßnahmen',      href:'FM_Massnahmen_DB.html' }
 ];
 
@@ -244,7 +259,14 @@ function renderKinderliste() {
       btn.className = 'ingra-btn';
       btn.textContent = m.label;
       btn.setAttribute('data-kind-id', k.id);
-      btn.onclick = function() { if (m.href) window.location.href = m.href; };
+      // kind_id ist hier relevant (Klick geschieht von der Karte eines
+      // bestimmten Kindes aus) - anders als bei den globalen Nav-Buttons
+      // oben (navigateTo), die keinem Kind zugeordnet sind.
+      btn.onclick = function() {
+        if (!m.href) return;
+        try { sessionStorage.setItem('klartext_kind_id', k.id); } catch(e) {}
+        window.location.href = m.href + '?kind=' + encodeURIComponent(k.id);
+      };
       btnContainer.appendChild(btn);
     });
 

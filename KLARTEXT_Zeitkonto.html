@@ -119,6 +119,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="firebase.js"></script>
+<script>(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['ingra','ingra-beta','admin'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
+}catch(e){}})();</script>
 </head>
 <body>
 
@@ -223,6 +231,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
+
+function kindIdErmitteln(){
+  try {
+    var ausUrl = new URLSearchParams(window.location.search).get('kind');
+    if (ausUrl) {
+      sessionStorage.setItem('klartext_kind_id', ausUrl);
+      return ausUrl;
+    }
+    return sessionStorage.getItem('klartext_kind_id') || '';
+  } catch(e) { return ''; }
+}
 
 // ═══════════════════════════════════════
 // DATEN
@@ -680,6 +699,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         select.appendChild(option);
         zkKindNamen[childId] = kind.name; // für lesbare Anzeige in der Liste
       });
+
+      // Etappe 4.6: Kind-Vorauswahl aus ?kind=<ID> bzw. sessionStorage.klartext_kind_id
+      var vorausgewaehlteId = kindIdErmitteln();
+      if (vorausgewaehlteId && kinder[vorausgewaehlteId]) {
+        select.value = vorausgewaehlteId;
+      }
+
       renderAlles(); // Liste neu zeichnen, damit Namen statt IDs angezeigt werden
     });
   } catch(e) {}

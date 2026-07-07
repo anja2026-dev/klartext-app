@@ -293,6 +293,12 @@ html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0
 
 </div>
 
+<div id="fall-chat-wrap" style="max-width:900px;margin:1rem auto;padding:0 1rem 2rem;">
+  <div style="font-weight:700;color:#1B3A4B;font-size:.9rem;margin-bottom:.5rem;">Fall-Chat (ausgewähltes Kind)</div>
+  <div id="fall-chat-status" style="font-size:.8rem;color:#6A6878;padding:.5rem 0;display:none;"></div>
+  <div id="fall-chat-liste" style="display:flex;flex-direction:column;gap:.5rem;"></div>
+</div>
+
 <script>
 const aktuellerUser = chatAktuellerUser();
 let conversationId = new URLSearchParams(window.location.search).get('cid') || null;
@@ -645,6 +651,80 @@ window.addEventListener('beforeunload',function(){
   if(chatNachrichtenListenerRef) chatNachrichtenListenerRef.off('child_added');
   if(chatAenderungListenerRef) chatAenderungListenerRef.off('child_changed');
 });
+</script>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Phase 3 / Schritt 3.2.6: Chat-Daten aus Supabase laden, basierend auf
+// sessionStorage.klartext_kind_id. Ergänzt die bestehende Firebase-
+// Konversationen (chatOeffnen()/chatLadeNachrichtenLive() etc.) um eine
+// separate, kind-bezogene Ansicht - ohne die bestehende Chat-Logik
+// anzufassen.
+//
+// WICHTIG: TK_Fallmanagement.html hat keine view-case_chat-Ansicht
+// (bestätigt: die views{}-Map dort kennt nur case_start/file/risk/
+// actions/timeline/barometer/pdf/help). Die reale Tabelle heißt
+// "chat_nachrichten" (nicht "fall_chat", siehe
+// supabase/migrations/0009_chat.sql) und hat bereits eine direkte
+// kind_id-Spalte - keine Fallakte-Auflösung nötig. Nach Rückfrage
+// wurde die Umsetzung daher hier in CHAT_View.html vorgenommen
+// (der bereits vom Dashboard als "KlarApp" verlinkten Datei), als
+// eigene, additive Sektion unterhalb des bestehenden Chat-Workspace.
+function fallChatStatusAnzeigen(text){
+  var status = document.getElementById('fall-chat-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function fallChatRendern(liste){
+  var el = document.getElementById('fall-chat-liste');
+  if (!el) return;
+  if (!liste.length) { el.innerHTML = ''; return; }
+  el.innerHTML = liste.map(function(n){
+    var senderName = n.profiles ? [n.profiles.vorname, n.profiles.nachname].filter(Boolean).join(' ') : '';
+    var zeit = n.erstellt_am ? new Date(n.erstellt_am).toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'}) +
+      ' · ' + new Date(n.erstellt_am).toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'}) : '';
+    var rollen = (n.empfaenger_rollen || []).join(', ');
+    return '<div style="background:#fff;border-radius:10px;padding:.7rem 1rem;box-shadow:0 1px 6px rgba(0,0,0,.05);">' +
+      '<div style="font-size:.68rem;color:#6A6878;margin-bottom:.3rem;">' + (senderName || '?') + ' → ' + rollen + ' · ' + zeit + '</div>' +
+      '<div style="font-size:.85rem;color:#1A1A2E;">' + (n.text || '') + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function fallChatLaden(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+
+  if (!kindId) {
+    fallChatStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+    fallChatRendern([]);
+    return;
+  }
+
+  var ergebnis = await supabase
+    .from('chat_nachrichten')
+    .select('text, empfaenger_rollen, erstellt_am, profiles:sender_id(vorname, nachname)')
+    .eq('kind_id', kindId)
+    .order('erstellt_am', { ascending: false });
+
+  if (ergebnis.error) {
+    fallChatStatusAnzeigen('Fall-Chat konnte nicht geladen werden.');
+    fallChatRendern([]);
+    return;
+  }
+  if (!ergebnis.data || !ergebnis.data.length) {
+    fallChatStatusAnzeigen('Noch keine Fall-Chat-Nachrichten für dieses Kind.');
+    fallChatRendern([]);
+    return;
+  }
+
+  fallChatStatusAnzeigen('');
+  fallChatRendern(ergebnis.data);
+}
+fallChatLaden();
 </script>
 </body>
 </html>

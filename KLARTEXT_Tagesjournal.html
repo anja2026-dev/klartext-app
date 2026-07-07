@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLARTEXT · Tagesjournal</title>
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script>(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['ingra','ingra-beta','admin'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
+}catch(e){}})();</script>
 
 <style>
   :root{
@@ -287,6 +294,23 @@
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
+  // Phase 4 / Schritt 4.2: kind_id wird beim Laden bevorzugt aus dem
+  // URL-Parameter ?kind=<ID> ermittelt (gespiegelt in sessionStorage),
+  // sonst aus sessionStorage.klartext_kind_id - gleiches Muster wie
+  // kindIdErmitteln() in TK_Fallmanagement.html (PR #18). Das bestehende
+  // Kind-Dropdown (#kindSelect) bleibt die einzige UI dafür; hier wird
+  // nur seine Vorauswahl gesetzt, nichts an der UI verändert.
+  function kindIdErmitteln(){
+    try {
+      var ausUrl = new URLSearchParams(window.location.search).get('kind');
+      if (ausUrl) {
+        sessionStorage.setItem('klartext_kind_id', ausUrl);
+        return ausUrl;
+      }
+      return sessionStorage.getItem('klartext_kind_id') || '';
+    } catch(e) { return ''; }
+  }
+
   var aktuellerKindId = '';
   var aktuelleBarometerFarbe = '';
   var aktuelleBarometerEmoji = '';
@@ -339,6 +363,16 @@ import { supabase } from './supabase/auth_client.js';
       opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
       select.appendChild(opt);
     });
+
+    // Vorauswahl aus ?kind=<ID> oder sessionStorage.klartext_kind_id,
+    // sofern das Kind in der Liste vorhanden ist. Der Nutzer kann die
+    // Auswahl über das bestehende Dropdown weiterhin frei ändern.
+    var vorausgewaehlteId = kindIdErmitteln();
+    if (vorausgewaehlteId && kinder.some(function(k){ return k.id === vorausgewaehlteId; })) {
+      select.value = vorausgewaehlteId;
+      aktuellerKindId = vorausgewaehlteId;
+    }
+
     await journalListeRendern();
     await wocheRendern();
   }

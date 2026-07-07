@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Abmelden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 0%,#1B3A4B 60%,#2A5570 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;}
+.logo-wrap{text-align:center;margin-bottom:2rem;}
+.logo-mark{width:56px;height:56px;border:2.5px solid #6EC6A0;border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:20px;font-weight:700;color:#fff;}
+.logo-name{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.62rem;color:rgba(255,255,255,.4);letter-spacing:.2em;text-transform:uppercase;margin-top:3px;}
+.card{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center;}
+.card-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#1B3A4B;margin-bottom:.5rem;}
+.card-sub{font-size:.82rem;color:#7A7060;line-height:1.6;}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<div class="logo-wrap">
+  <div class="logo-mark"><span>K</span></div>
+  <div class="logo-name">KLARTEXT</div>
+  <div class="logo-sub">Mentoring-System</div>
+</div>
+
+<div class="card">
+  <div class="card-titel">Wird abgemeldet …</div>
+  <div class="card-sub">Bitte einen Moment Geduld.</div>
+</div>
+
+<script type="module">
+  import { supabase } from './supabase/auth_client.js';
+
+  async function abmelden() {
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {}
+
+    try {
+      sessionStorage.removeItem('klartext_login');
+      sessionStorage.removeItem('klartext_role');
+      sessionStorage.removeItem('klartext_kind_id');
+    } catch (e) {}
+
+    window.location.href = 'KLARTEXT_Landing.html';
+  }
+
+  abmelden();
+</script>
+</body>
+</html>

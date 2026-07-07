@@ -58,6 +58,8 @@
 
   .m-footer{ text-align:center; padding:16px; font-size:13px; color:var(--mk-muted); }
   .m-footer a{ color:var(--mk-muted); text-decoration:underline; }
+
+  .rollen-hidden{ display:none !important; }
 }
 </style>
 
@@ -69,12 +71,12 @@
 
   <nav id="m-menu" class="m-menu">
     <button class="m-menu-close" onclick="mobileMenuToggle()" aria-label="Schließen">✕</button>
-    <a href="CHAT_View.html">💬 KlarApp</a>
+    <a href="CHAT_View.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">💬 KlarApp</a>
     <a href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
     <a href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
     <a href="DASHBOARD.html#sek-fk">🚒 Feuerwehrkarten</a>
     <a href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
-    <a href="KLARTEXT_Tagesjournal.html">📓 Tagesjournal</a>
+    <a href="KLARTEXT_Tagesjournal.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">📓 Tagesjournal</a>
     <a href="#" onclick="mobileSucheFokus();return false;">🔍 Suche</a>
     <a href="#" onclick="sessionStorage.clear();window.location.href='KLARTEXT_Login.html';return false;">🚪 Logout</a>
   </nav>
@@ -88,7 +90,7 @@
           <a href="DASHBOARD.html#sek-m3" style="border-color:#B07D2A;color:#B07D2A;">M3</a><a href="DASHBOARD.html#sek-m4" style="border-color:#5D3A7A;color:#5D3A7A;">M4</a><a href="DASHBOARD.html#sek-m5" style="border-color:#B7500A;color:#B7500A;">M5</a>
           <a href="DASHBOARD.html#sek-m6" style="border-color:#D81B60;color:#D81B60;">M6</a><a href="DASHBOARD.html#sek-m7" style="border-color:#8B4A38;color:#8B4A38;">M7</a><a href="DASHBOARD.html#sek-m8" style="border-color:#6B3F6B;color:#6B3F6B;">M8</a>
           <a href="DASHBOARD.html#sek-mh" style="border-color:#C47A00;color:#C47A00;">Humor</a><a href="DASHBOARD.html#sek-kd" style="border-color:#4FC3C7;color:#4FC3C7;">Kinderkarten</a><a href="DASHBOARD.html#sek-fk" style="border-color:#C62828;color:#C62828;">Feuerwehrkarten</a>
-          <a href="TK_Landing.html" style="border-color:#4A148C;color:#4A148C;">TK</a><a href="TK_Fallmanagement.html" style="border-color:#4A148C;color:#4A148C;">FM</a>
+          <a href="TK_Landing.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">TK</a><a href="TK_Fallmanagement.html" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">FM</a>
         </div>
       </details>
     </section>
@@ -100,17 +102,17 @@
       <a class="m-btn-full" href="KLARTEXT_Krankmeldung.html" style="border-color:#C62828;color:#C62828;">Krankmeldung</a>
       <a class="m-btn-full" href="KLARTEXT_Urlaubsantrag_INGRA.html">Urlaub</a>
       <a class="m-btn-full" href="KLARTEXT_Zeitkonto.html" style="border-color:#1B3A4B;color:#1B3A4B;">Zeitkonto</a>
-      <a class="m-btn-full" href="TK_Vertretungsassistent.html" style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html" style="border-color:#4A148C;color:#4A148C;">Fallmanagement</a>
-      <a class="m-btn-full" href="TK-Recruiting.html" style="border-color:#4A148C;color:#4A148C;">Recruiting</a>
-      <a class="m-btn-full" href="KLARTEXT_TK_Inbox.html" style="border-color:#4A148C;color:#4A148C;">TK-Inbox</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_actions" style="border-color:#4A148C;color:#4A148C;">Maßnahmen</a>
-      <a class="m-btn-full" href="Kinderverwaltung.html" style="border-color:#4A148C;color:#4A148C;">Kinderverwaltung</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_file" style="border-color:#4A148C;color:#4A148C;">Fallakte</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_timeline" style="border-color:#4A148C;color:#4A148C;">Timeline</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_risk" style="border-color:#4A148C;color:#4A148C;">Risiko</a>
-      <a class="m-btn-full" href="CHAT_View.html">KlarApp</a>
-      <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html">Tagesjournal</a>
+      <a class="m-btn-full" href="TK_Vertretungsassistent.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Fallmanagement</a>
+      <a class="m-btn-full" href="TK-Recruiting.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Recruiting</a>
+      <a class="m-btn-full" href="KLARTEXT_TK_Inbox.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">TK-Inbox</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_actions" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Maßnahmen</a>
+      <a class="m-btn-full" href="Kinderverwaltung.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Kinderverwaltung</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_file" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Fallakte</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_timeline" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Timeline</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_risk" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Risiko</a>
+      <a class="m-btn-full" href="CHAT_View.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">KlarApp</a>
+      <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">Tagesjournal</a>
       <a class="m-btn-full" href="KLARTEXT_Teilnehmer_Protokoll.html" style="border-color:#C47A00;color:#C47A00;">Teilnehmer-Protokoll</a>
       <a class="m-btn-full" href="KLARTEXT_Workbook.html" style="border-color:#1B3A4B;color:#1B3A4B;">Workbook</a>
       <a class="m-btn-full" href="KLARTEXT_Lernhandbuch_KOMPLETT.html" style="border-color:#1B3A4B;color:#1B3A4B;">Lernhandbuch</a>
@@ -137,6 +139,19 @@ function mobileRolleWaehlen(btn){
   document.querySelectorAll('.m-rolle-btn').forEach(b=>b.classList.remove('aktiv'));
   btn.classList.add('aktiv');
 }
+
+// Phase 2 / Schritt 1: reine Sichtbarkeitslogik anhand sessionStorage.klartext_role.
+// Kacheln mit [data-rollen] werden ausgeblendet, wenn die aktuelle Rolle nicht in
+// der kommagetrennten Liste enthalten ist. Kacheln ohne data-rollen bleiben immer sichtbar.
+function mobileRollenSichtbarkeit(){
+  var rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  document.querySelectorAll('[data-rollen]').forEach(function(el){
+    var erlaubt = el.getAttribute('data-rollen').split(',');
+    el.classList.toggle('rollen-hidden', erlaubt.indexOf(rolle) === -1);
+  });
+}
+mobileRollenSichtbarkeit();
 </script>
 
 </body>

@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLARTEXT · Dashboard (Mobile)</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
 </head>
 <body>
 
@@ -90,9 +94,25 @@
           <a href="DASHBOARD.html#sek-m3" style="border-color:#B07D2A;color:#B07D2A;">M3</a><a href="DASHBOARD.html#sek-m4" style="border-color:#5D3A7A;color:#5D3A7A;">M4</a><a href="DASHBOARD.html#sek-m5" style="border-color:#B7500A;color:#B7500A;">M5</a>
           <a href="DASHBOARD.html#sek-m6" style="border-color:#D81B60;color:#D81B60;">M6</a><a href="DASHBOARD.html#sek-m7" style="border-color:#8B4A38;color:#8B4A38;">M7</a><a href="DASHBOARD.html#sek-m8" style="border-color:#6B3F6B;color:#6B3F6B;">M8</a>
           <a href="DASHBOARD.html#sek-mh" style="border-color:#C47A00;color:#C47A00;">Humor</a><a href="DASHBOARD.html#sek-kd" style="border-color:#4FC3C7;color:#4FC3C7;">Kinderkarten</a><a href="DASHBOARD.html#sek-fk" style="border-color:#C62828;color:#C62828;">Feuerwehrkarten</a>
-          <a href="TK_Landing.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">TK</a><a href="TK_Fallmanagement.html" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">FM</a>
+          <a href="TK_Landing.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">TK</a><a href="TK_Fallmanagement.html" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">FM</a>
         </div>
       </details>
+    </section>
+
+    <section class="m-section" id="m-kind-auswahl">
+      <div class="m-dropdown">
+        <div style="font-size:16px;font-weight:700;color:var(--mk-navy);margin-bottom:8px;">Kind auswählen</div>
+        <select id="m-kind-select" class="m-suchfeld" style="margin-bottom:8px;">
+          <option value="">Bitte wählen …</option>
+        </select>
+        <button class="m-btn-full" type="button" style="border:none;background:var(--mk-navy);color:#fff;cursor:pointer;" onclick="mobileKindUebernehmen()">Übernehmen</button>
+      </div>
+    </section>
+    <section class="m-section rollen-hidden" id="m-kind-status">
+      <div style="font-size:14px;color:var(--mk-muted);display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <span id="m-kind-status-text"></span>
+        <a href="#" onclick="mobileKindWechseln();return false;" style="color:var(--mk-navy);font-weight:700;text-decoration:none;">Kind wechseln</a>
+      </div>
     </section>
 
     <section class="m-section">
@@ -102,15 +122,15 @@
       <a class="m-btn-full" href="KLARTEXT_Krankmeldung.html" style="border-color:#C62828;color:#C62828;">Krankmeldung</a>
       <a class="m-btn-full" href="KLARTEXT_Urlaubsantrag_INGRA.html">Urlaub</a>
       <a class="m-btn-full" href="KLARTEXT_Zeitkonto.html" style="border-color:#1B3A4B;color:#1B3A4B;">Zeitkonto</a>
-      <a class="m-btn-full" href="TK_Vertretungsassistent.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Fallmanagement</a>
-      <a class="m-btn-full" href="TK-Recruiting.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Recruiting</a>
-      <a class="m-btn-full" href="KLARTEXT_TK_Inbox.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">TK-Inbox</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_actions" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Maßnahmen</a>
-      <a class="m-btn-full" href="Kinderverwaltung.html" data-rollen="tk,admin" style="border-color:#4A148C;color:#4A148C;">Kinderverwaltung</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_file" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Fallakte</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_timeline" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Timeline</a>
-      <a class="m-btn-full" href="TK_Fallmanagement.html#case_risk" data-rollen="tk,fm,admin" style="border-color:#4A148C;color:#4A148C;">Risiko</a>
+      <a class="m-btn-full" href="TK_Vertretungsassistent.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Fallmanagement</a>
+      <a class="m-btn-full" href="TK-Recruiting.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Recruiting</a>
+      <a class="m-btn-full" href="KLARTEXT_TK_Inbox.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">TK-Inbox</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_actions" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Maßnahmen</a>
+      <a class="m-btn-full" href="Kinderverwaltung.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Kinderverwaltung</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_file" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Fallakte</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_timeline" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Timeline</a>
+      <a class="m-btn-full" href="TK_Fallmanagement.html#case_risk" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Risiko</a>
       <a class="m-btn-full" href="CHAT_View.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">KlarApp</a>
       <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">Tagesjournal</a>
       <a class="m-btn-full" href="KLARTEXT_Teilnehmer_Protokoll.html" style="border-color:#C47A00;color:#C47A00;">Teilnehmer-Protokoll</a>
@@ -152,6 +172,90 @@ function mobileRollenSichtbarkeit(){
   });
 }
 mobileRollenSichtbarkeit();
+
+// Phase 2 / Schritt 2: Kinder-ID-Auswahl und Weitergabe.
+// WICHTIG - bewusste Lücken gegenüber der Anfrage, da mit "nur
+// DASHBOARD_mobile.html bearbeiten" und "keine Supabase-Logik" nicht
+// vereinbar (siehe Chat-Antwort für Details):
+// - Die Kinderliste wird NICHT nach Rolle gefiltert (alle Rollen sehen
+//   dieselbe volle Liste aus Firebase /children). Eine Filterung auf
+//   "zugewiesene Kinder" (ingra/trainer) oder "eigenes Kind" (eltern)
+//   würde die Zuordnungstabellen ingra_kinder/eltern_kinder/
+//   trainer_kinder abfragen müssen - die existieren nur in Supabase.
+// - sessionStorage.klartext_kind_id wird NICHT beim Login gelöscht,
+//   da das eine Änderung an KLARTEXT_Login.html wäre. Stattdessen gibt
+//   es hier den Link "Kind wechseln", um die Auswahl manuell zurückzusetzen.
+function mobileKindAuswahlAnzeigen(zeigen){
+  var auswahl = document.getElementById('m-kind-auswahl');
+  var status  = document.getElementById('m-kind-status');
+  if (auswahl) auswahl.classList.toggle('rollen-hidden', !zeigen);
+  if (status)  status.classList.toggle('rollen-hidden', zeigen);
+}
+
+function mobileKindLinksAktualisieren(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  document.querySelectorAll('[data-kind-link]').forEach(function(el){
+    if (!el.getAttribute('data-basis-href')) el.setAttribute('data-basis-href', el.getAttribute('href'));
+    var basis = el.getAttribute('data-basis-href');
+    if (!kindId) { el.setAttribute('href', basis); return; }
+    var teile   = basis.split('#');
+    var pfad    = teile[0];
+    var hash    = teile.length > 1 ? '#' + teile[1] : '';
+    var trenner = pfad.indexOf('?') === -1 ? '?' : '&';
+    el.setAttribute('href', pfad + trenner + 'kind=' + encodeURIComponent(kindId) + hash);
+  });
+}
+
+function mobileKindStatusAnzeigen(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  var text = document.getElementById('m-kind-status-text');
+  if (!text) return;
+  var name = (window.mobileKinderDaten && window.mobileKinderDaten[kindId]) ? window.mobileKinderDaten[kindId].name : kindId;
+  text.textContent = kindId ? ('Ausgewählt: ' + name) : '';
+}
+
+function mobileKindUebernehmen(){
+  var sel = document.getElementById('m-kind-select');
+  if (!sel || !sel.value) return;
+  try { sessionStorage.setItem('klartext_kind_id', sel.value); } catch(e) {}
+  mobileKindAuswahlAnzeigen(false);
+  mobileKindStatusAnzeigen();
+  mobileKindLinksAktualisieren();
+}
+
+function mobileKindWechseln(){
+  mobileKindAuswahlAnzeigen(true);
+}
+
+function mobileKindInit(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+  mobileKindAuswahlAnzeigen(!kindId);
+  mobileKindStatusAnzeigen();
+  mobileKindLinksAktualisieren();
+
+  try {
+    db.ref('children').once('value').then(function(snapshot){
+      var kinder = snapshot.val() || {};
+      window.mobileKinderDaten = kinder;
+      var select = document.getElementById('m-kind-select');
+      if (select) {
+        Object.keys(kinder).forEach(function(id){
+          var kind = kinder[id];
+          if (kind.active === false) return;
+          var option = document.createElement('option');
+          option.value = id;
+          option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+          select.appendChild(option);
+        });
+      }
+      mobileKindStatusAnzeigen();
+    });
+  } catch(e) {}
+}
+mobileKindInit();
 </script>
 
 </body>

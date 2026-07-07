@@ -125,7 +125,7 @@
       <a class="m-btn-full" href="TK_Vertretungsassistent.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
       <a class="m-btn-full" href="TK_Fallmanagement.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Fallmanagement</a>
       <a class="m-btn-full" href="TK-Recruiting.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Recruiting</a>
-      <a class="m-btn-full" href="KLARTEXT_TK_Inbox.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">TK-Inbox</a>
+      <a class="m-btn-full" href="KLARTEXT_TK_Inbox.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">TK-Inbox <span id="m-tk-inbox-badge" class="rollen-hidden" style="display:inline-block;background:#C62828;color:#fff;font-size:12px;font-weight:700;border-radius:10px;padding:1px 8px;margin-left:6px;">0</span></a>
       <a class="m-btn-full" href="TK_Fallmanagement.html#case_actions" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Maßnahmen</a>
       <a class="m-btn-full" href="Kinderverwaltung.html" data-rollen="tk,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Kinderverwaltung</a>
       <a class="m-btn-full" href="TK_Fallmanagement.html#case_file" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Fallakte</a>
@@ -256,6 +256,51 @@ function mobileKindInit(){
   } catch(e) {}
 }
 mobileKindInit();
+</script>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Phase 3 / Schritt 3.1: Badge mit der Anzahl offener Weiterleitungen am
+// TK-Inbox-Button, abhängig von sessionStorage.klartext_role.
+//
+// WICHTIG - zwei reale Einschränkungen des aktuellen Schemas, nicht
+// änderbar ohne Migrationen (die für diesen Schritt ausgeschlossen sind):
+// 1. 'weiterleitungen' hat keine Spalte "empfaenger" - die tatsächliche
+//    Spalte heißt "ziel_rolle" (supabase/migrations/0008_weiterleitungen.sql).
+//    Diese Abfrage nutzt daher ziel_rolle statt empfaenger.
+// 2. Die aktuelle RLS-Policy erlaubt nur tk/admin einen vollen SELECT auf
+//    die Tabelle. Für "ingra" und "fm" gibt es keine rollenbasierte
+//    Lese-Policy - diese Rollen sehen laut RLS nur ihre selbst gesendeten
+//    Einträge (von_profil = auth.uid()). Die Abfrage unten liefert für
+//    "fm"/"ingra" deshalb mit dem aktuellen RLS-Stand praktisch immer 0,
+//    unabhängig vom tatsächlichen Bestand offener Weiterleitungen.
+async function tkInboxBadgeAktualisieren(){
+  var rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+
+  var badge = document.getElementById('m-tk-inbox-badge');
+  if (!badge) return;
+
+  if (['tk','fm','ingra','admin'].indexOf(rolle) === -1) {
+    badge.classList.add('rollen-hidden');
+    return;
+  }
+
+  var query = supabase.from('weiterleitungen').select('id', { count: 'exact', head: true }).eq('status', 'offen');
+  if (rolle !== 'admin') query = query.eq('ziel_rolle', rolle);
+
+  var ergebnis = await query;
+  var anzahl = (!ergebnis.error && ergebnis.count) ? ergebnis.count : 0;
+
+  if (anzahl > 0) {
+    badge.textContent = anzahl;
+    badge.classList.remove('rollen-hidden');
+  } else {
+    badge.classList.add('rollen-hidden');
+  }
+}
+tkInboxBadgeAktualisieren();
 </script>
 
 </body>

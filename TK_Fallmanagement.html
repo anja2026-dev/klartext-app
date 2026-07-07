@@ -717,6 +717,16 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="karte" id="massnahmen-karte">
+      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+        <span class="karte-header-icon">📌</span>
+        <span class="karte-header-titel" style="color:#00695C;">Maßnahmen</span>
+      </div>
+      <div class="karte-body">
+        <div id="massnahmen-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+        <ul class="stw-list" id="massnahmen-liste"></ul>
+      </div>
+    </div>
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📋</span>
@@ -1194,6 +1204,71 @@ async function fallakteLaden(){
   });
 }
 fallakteLaden();
+
+// Phase 3 / Schritt 3.2.2: Maßnahmen-Daten aus Supabase laden, basierend
+// auf sessionStorage.klartext_kind_id. Nur die case_actions-Ansicht
+// (Maßnahmenplan) - keine Timeline-/Risiko-/Fallakte-Logik.
+//
+// WICHTIG: Die reale Tabelle heißt "fall_massnahmen" (nicht "massnahmen") -
+// siehe supabase/migrations/0004_fallmanagement.sql. Der Status-Platzhalter
+// in der UI nennt 4 Zustände (inkl. "Pausiert"), das DB-Check-Constraint
+// erlaubt aber nur 3: 'offen','in_arbeit','abgeschlossen' - "Pausiert"
+// kann mit echten Daten daher nie vorkommen.
+var MASSNAHMEN_STATUS_LABEL = { offen: 'Offen', in_arbeit: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
+
+function massnahmenStatusAnzeigen(text){
+  var status = document.getElementById('massnahmen-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function massnahmenRendern(liste){
+  var el = document.getElementById('massnahmen-liste');
+  if (!el) return;
+  if (!liste.length) { el.innerHTML = ''; return; }
+  el.innerHTML = liste.map(function(m){
+    var verantwortlich = m.profiles ? [m.profiles.vorname, m.profiles.nachname].filter(Boolean).join(' ') : '';
+    var zeitraum = (m.zeitraum_von || '–') + ' – ' + (m.zeitraum_bis || '–');
+    var statusLabel = MASSNAHMEN_STATUS_LABEL[m.status] || m.status;
+    return '<li><strong>' + m.titel + ':</strong> ' + (m.beschreibung || '') +
+      ' · Verantwortlich: ' + (verantwortlich || '–') +
+      ' · Zeitraum: ' + zeitraum +
+      ' · Status: ' + statusLabel + '</li>';
+  }).join('');
+}
+
+async function massnahmenLaden(){
+  var kindId = '';
+  try { kindId = sessionStorage.getItem('klartext_kind_id') || ''; } catch(e) {}
+
+  if (!kindId) {
+    massnahmenStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+    massnahmenRendern([]);
+    return;
+  }
+
+  var ergebnis = await supabase
+    .from('fall_massnahmen')
+    .select('titel, beschreibung, kategorie, prioritaet, status, zeitraum_von, zeitraum_bis, profiles:verantwortlich(vorname, nachname)')
+    .eq('kind_id', kindId)
+    .order('created_at', { ascending: false });
+
+  if (ergebnis.error) {
+    massnahmenStatusAnzeigen('Maßnahmen konnten nicht geladen werden.');
+    massnahmenRendern([]);
+    return;
+  }
+  if (!ergebnis.data || !ergebnis.data.length) {
+    massnahmenStatusAnzeigen('Keine Maßnahmen für dieses Kind gefunden.');
+    massnahmenRendern([]);
+    return;
+  }
+
+  massnahmenStatusAnzeigen('');
+  massnahmenRendern(ergebnis.data);
+}
+massnahmenLaden();
 </script>
 </body>
 </html>

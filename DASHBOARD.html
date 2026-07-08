@@ -175,11 +175,6 @@ footer strong{color:var(--kt-accent);}
   .m-suche-icon{ position:absolute; left:14px; top:50%; transform:translateY(-50%); opacity:.55; pointer-events:none; font-size:15px; }
   .m-suchfeld{ width:100%; padding:12px 14px 12px 40px; font-size:16px; border-radius:12px; border:1.5px solid var(--mk-border); box-sizing:border-box; font-family:inherit; background:#fff; }
 
-  .m-rollen-tabs{ display:flex; border:1.5px solid var(--mk-navy); border-radius:12px; overflow:hidden; }
-  .m-rolle-btn{ flex:1; padding:11px 4px; font-size:14.5px; font-weight:700; border:none; border-right:1px solid rgba(27,58,75,.2); background:#fff; color:var(--mk-navy); cursor:pointer; }
-  .m-rolle-btn:last-child{ border-right:none; }
-  .m-rolle-btn.aktiv{ background:var(--mk-navy); color:#fff; }
-
   .m-grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 
   .m-chip{ display:flex; align-items:center; gap:8px; padding:11px 10px; background:#fff; border:1.5px solid var(--mk-border); border-radius:10px; color:var(--mk-navy); text-decoration:none; font-size:13.5px; font-weight:600; line-height:1.2; box-sizing:border-box; }
@@ -231,12 +226,12 @@ footer strong{color:var(--kt-accent);}
     </div>
 
     <section class="m-section">
-      <span class="m-label">Rolle</span>
-      <div class="m-rollen-tabs">
-        <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">INGRA</button>
-        <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">TK</button>
-        <button class="m-rolle-btn" onclick="mobileRolleWaehlen(this)">FM</button>
-      </div>
+      <span class="m-label">Bereiche</span>
+      <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html" style="border-color:#1B3A4B;color:#1B3A4B;">INGRA</a>
+      <a class="m-btn-full" href="TK_Landing.html" style="border-color:#4A148C;color:#4A148C;">TK</a>
+      <a class="m-btn-full" href="DASHBOARD.html" style="border-color:#B8922A;color:#B8922A;">Trainer</a>
+      <a class="m-btn-full" href="KLARTEXT_LK_Info.html" style="border-color:#1565C0;color:#1565C0;">LK</a>
+      <a class="m-btn-full" href="KLARTEXT_Eltern_Info.html" style="border-color:#AD1457;color:#AD1457;">Eltern</a>
     </section>
 
     <section class="m-section">
@@ -298,10 +293,6 @@ function mobileSucheFokus(){
   mobileMenuToggle();
   const feld = document.getElementById('m-suche');
   if (feld) { feld.scrollIntoView({behavior:'smooth'}); feld.focus(); }
-}
-function mobileRolleWaehlen(btn){
-  document.querySelectorAll('.m-rolle-btn').forEach(b=>b.classList.remove('aktiv'));
-  btn.classList.add('aktiv');
 }
 </script>
 

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Kinder-Zuordnung</title>
+<script>(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['tk','admin'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
+}catch(e){}})();</script>
+</head>
+<body>
+
+<h1>Kinder-Zuordnung</h1>
+
+<form id="zuordnung-form">
+  <label>Kind
+    <select id="kind_id" required></select>
+  </label>
+  <label>Schule
+    <select id="schule_id" required></select>
+  </label>
+  <label>INGRA
+    <select id="ingra_id" required></select>
+  </label>
+  <button type="submit">Zuordnen</button>
+</form>
+<div id="status"></div>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+async function ladeDropdowns() {
+  const { data: kinder } = await supabase.from('kinder').select('id, name');
+  const kindSelect = document.getElementById('kind_id');
+  (kinder || []).forEach(k => {
+    const o = document.createElement('option');
+    o.value = k.id;
+    o.textContent = k.name;
+    kindSelect.appendChild(o);
+  });
+
+  const { data: schulen } = await supabase.from('schulen').select('id, name');
+  const schuleSelect = document.getElementById('schule_id');
+  (schulen || []).forEach(s => {
+    const o = document.createElement('option');
+    o.value = s.id;
+    o.textContent = s.name;
+    schuleSelect.appendChild(o);
+  });
+
+  const { data: ingra } = await supabase.from('profiles').select('id, vorname, nachname').eq('rolle', 'ingra');
+  const ingraSelect = document.getElementById('ingra_id');
+  (ingra || []).forEach(i => {
+    const o = document.createElement('option');
+    o.value = i.id;
+    o.textContent = [i.vorname, i.nachname].filter(Boolean).join(' ');
+    ingraSelect.appendChild(o);
+  });
+}
+ladeDropdowns();
+
+document.getElementById('zuordnung-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { error } = await supabase.from('kinder_zuordnung').insert({
+    kind_id: document.getElementById('kind_id').value,
+    schule_id: document.getElementById('schule_id').value,
+    ingra_id: document.getElementById('ingra_id').value,
+    tk_id: user.id,
+    aktiv: true
+  });
+  document.getElementById('status').textContent = error ? 'Fehler: ' + error.message : 'Zugeordnet.';
+});
+</script>
+
+</body>
+</html>

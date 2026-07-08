@@ -181,6 +181,14 @@ footer strong{color:var(--kt-accent);}
   .m-chip-emoji{ font-size:17px; flex-shrink:0; }
   .m-chip-fk{ background:#FDEAEA; border-color:#F1B3B0; color:#8E2020; }
 
+  .m-baro-grid{ display:grid; grid-template-columns:3fr 2fr; gap:8px; }
+  .m-chip-kind-baro{ flex-direction:column; align-items:flex-start; gap:5px; padding:13px 12px; }
+  .m-baro-status-badge{ display:none; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:3px 8px; border-radius:10px; }
+  .m-baro-status-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; display:inline-block; }
+
+  .m-rolle-hinweis{ display:none; background:#FFF4E0; border:1.5px solid #E0A72D; border-radius:12px; padding:12px 14px; font-size:12.5px; color:#6B4E00; line-height:1.5; box-sizing:border-box; }
+  .m-rolle-hinweis a{ color:#6B4E00; font-weight:700; text-decoration:underline; }
+
   .m-dropdown{ background:#fff; border:1.5px solid var(--mk-border); border-radius:12px; padding:12px 16px; box-sizing:border-box; }
   .m-dropdown summary{ font-size:15px; font-weight:700; color:var(--mk-navy); cursor:pointer; list-style:none; }
   .m-dropdown summary::-webkit-details-marker{ display:none; }
@@ -215,29 +223,30 @@ footer strong{color:var(--kt-accent);}
     <a href="#sek-fk">🚒 Feuerwehrkarten</a>
     <a href="KLARTEXT_Notizblock.html">📝 Notizblock</a>
     <a href="KLARTEXT_Tagesjournal.html">📓 Tagesjournal</a>
+    <a href="KLARTEXT_Workbook.html">📓 Workbook</a>
+    <a href="KLARTEXT_Lernhandbuch_KOMPLETT.html">📖 Lernhandbuch</a>
+    <a href="KLARTEXT_Fachbuch_Neu.html">📕 Fachbuch</a>
     <a href="#" onclick="mobileSucheFokus();return false;">🔍 Suche</a>
     <a href="#" onclick="sessionStorage.clear();window.location.href='KLARTEXT_Login.html';return false;">🚪 Logout</a>
   </nav>
 
   <main class="m-main">
+    <div id="m-rolle-hinweis" class="m-rolle-hinweis">
+      ⚠️ Diese mobile Ansicht ist für INGRA optimiert. Für TK/Trainer nutze bitte die <a href="DASHBOARD.html">Desktop-Version</a>.
+    </div>
+
     <div class="m-suche-wrap">
       <span class="m-suche-icon">🔍</span>
       <input type="search" id="m-suche" class="m-suchfeld" placeholder="Suchen: Barometer, ADHS, Mobbing …">
     </div>
 
     <section class="m-section">
-      <span class="m-label">Bereiche</span>
-      <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html" style="border-color:#1B3A4B;color:#1B3A4B;">INGRA</a>
-      <a class="m-btn-full" href="TK_Landing.html" style="border-color:#4A148C;color:#4A148C;">TK</a>
-      <a class="m-btn-full" href="DASHBOARD.html" style="border-color:#B8922A;color:#B8922A;">Trainer</a>
-      <a class="m-btn-full" href="KLARTEXT_LK_Info.html" style="border-color:#1565C0;color:#1565C0;">LK</a>
-      <a class="m-btn-full" href="KLARTEXT_Eltern_Info.html" style="border-color:#AD1457;color:#AD1457;">Eltern</a>
-    </section>
-
-    <section class="m-section">
       <span class="m-label">Barometer</span>
-      <div class="m-grid-2">
-        <a class="m-chip" href="BAROMETER_KIND.html"><span class="m-chip-emoji">🌡️</span><span>Kind-Barometer</span></a>
+      <div class="m-baro-grid">
+        <a class="m-chip m-chip-kind-baro" href="BAROMETER_KIND.html">
+          <span class="m-chip-emoji">🌡️</span><span>Kind-Barometer</span>
+          <span id="m-baro-kind-status" class="m-baro-status-badge"><span class="m-baro-status-dot"></span><span id="m-baro-kind-status-text"></span></span>
+        </a>
         <a class="m-chip" href="BAROMETER_INGRA.html"><span class="m-chip-emoji">🌡️</span><span>INGRA-Barometer</span></a>
       </div>
     </section>
@@ -250,10 +259,20 @@ footer strong{color:var(--kt-accent);}
         <a class="m-chip" href="KLARTEXT_Weiterleitungen.html"><span class="m-chip-emoji">📤</span><span>Weiterleitungen</span></a>
         <a class="m-chip" href="KLARTEXT_Notizblock.html"><span class="m-chip-emoji">📝</span><span>Notizblock</span></a>
         <a class="m-chip" href="KLARTEXT_Tagesjournal.html"><span class="m-chip-emoji">📓</span><span>Tagesjournal</span></a>
+        <a class="m-chip m-chip-fk" href="#sek-fk-mobile"><span class="m-chip-emoji">🚒</span><span>Feuerwehrkarten</span></a>
       </div>
+      <a class="m-btn-full m-btn-m3" href="DASHBOARD-M3.html">🧰 M3 · Alle 20 Werkzeugkarten</a>
     </section>
 
     <section class="m-section">
+      <span class="m-label">Tools</span>
+      <a class="m-btn-full" href="KLARTEXT_Krankmeldung.html" style="border-color:#C62828;color:#C62828;">Krankmeldung</a>
+      <a class="m-btn-full" href="KLARTEXT_Urlaubsantrag_INGRA.html">Urlaub</a>
+      <a class="m-btn-full" href="KLARTEXT_Zeitkonto.html" style="border-color:#1B3A4B;color:#1B3A4B;">Zeitkonto</a>
+      <a class="m-btn-full" href="TK_Vertretungsassistent.html" style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
+    </section>
+
+    <section class="m-section" id="sek-fk-mobile">
       <span class="m-label m-label-fk">🚒 Feuerwehrkarten · Notfall</span>
       <div class="m-grid-2">
         <a class="m-chip m-chip-fk" href="FK-01.html"><span class="m-chip-emoji">⚡</span><span>Akute Eskalation</span></a>
@@ -273,13 +292,14 @@ footer strong{color:var(--kt-accent);}
       <details class="m-dropdown">
         <summary>📚 Alle Module öffnen</summary>
         <div class="m-dropdown-inhalt">
-          <a href="#modul-m0">M0</a><a href="#modul-m1">M1</a><a href="#modul-m2">M2</a>
-          <a href="#modul-m3">M3</a><a href="#modul-m4">M4</a><a href="#modul-m5">M5</a>
-          <a href="#modul-m6">M6</a><a href="#modul-m7">M7</a><a href="#modul-m8">M8</a>
-          <a href="#modul-humor">Humor</a><a href="#sek-kk">Kinderkarten</a><a href="#sek-fk">Feuerwehrkarten</a>
+          <a href="#sek-m0" style="border-color:#1B3A4B;color:#1B3A4B;">M0</a><a href="#sek-m1" style="border-color:#2E5E8A;color:#2E5E8A;">M1</a><a href="#sek-m2" style="border-color:#3B8A68;color:#3B8A68;">M2</a>
+          <a href="#sek-m3" style="border-color:#B07D2A;color:#B07D2A;">M3</a><a href="#sek-m4" style="border-color:#5D3A7A;color:#5D3A7A;">M4</a><a href="#sek-m5" style="border-color:#B7500A;color:#B7500A;">M5</a>
+          <a href="#sek-m6" style="border-color:#D81B60;color:#D81B60;">M6</a><a href="#sek-m7" style="border-color:#8B4A38;color:#8B4A38;">M7</a><a href="#sek-m8" style="border-color:#6B3F6B;color:#6B3F6B;">M8</a>
+          <a href="#sek-mh" style="border-color:#C47A00;color:#C47A00;">Humor</a><a href="#sek-kd" style="border-color:#4FC3C7;color:#4FC3C7;">Kinderkarten</a><a href="#sek-fk" style="border-color:#C62828;color:#C62828;">FK</a>
         </div>
       </details>
     </section>
+
   </main>
 
   <footer class="m-footer">
@@ -294,6 +314,67 @@ function mobileSucheFokus(){
   const feld = document.getElementById('m-suche');
   if (feld) { feld.scrollIntoView({behavior:'smooth'}); feld.focus(); }
 }
+
+// Mobile Ansicht ist für INGRA optimiert - TK/Trainer bekommen einen
+// Hinweis mit Link zur Desktop-Version (dieselbe Datei, per Breakpoint
+// gesteuert - auf einem echten Desktop-Browser geöffnet zeigt sie sich
+// automatisch im Desktop-Layout).
+function mobileRolleHinweisPruefen(){
+  var hinweis = document.getElementById('m-rolle-hinweis');
+  if (!hinweis) return;
+  var rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  hinweis.style.display = ['tk','trainer'].includes(rolle) ? 'block' : 'none';
+}
+mobileRolleHinweisPruefen();
+
+// Kind-Barometer: aktuellen Status (5-Stufen-System) farbig auf der Kachel
+// anzeigen, ohne dass man erst reinklicken muss. DASHBOARD.html hat aktuell
+// keinen eigenen Kind-Selector (anders als DASHBOARD_mobile.html) - daher
+// wird die kind_id wie auf allen anderen Seiten über ?kind=<ID> bzw.
+// sessionStorage.klartext_kind_id ermittelt. Ohne aktives Kind bleibt das
+// Badge einfach ausgeblendet.
+function kindIdErmitteln(){
+  try {
+    var ausUrl = new URLSearchParams(window.location.search).get('kind');
+    if (ausUrl) {
+      sessionStorage.setItem('klartext_kind_id', ausUrl);
+      return ausUrl;
+    }
+    return sessionStorage.getItem('klartext_kind_id') || '';
+  } catch(e) { return ''; }
+}
+
+var BARO_STATUS = {
+  gruen:  {label:'Grün · Stabil',     farbe:'#2E9E5A', bg:'#E8F5EC'},
+  gelb:   {label:'Gelb · Angespannt', farbe:'#D4A800', bg:'#FDF8E1'},
+  orange: {label:'Orange · Belastet', farbe:'#D4651A', bg:'#FEF0E6'},
+  rot:    {label:'Rot · Akute Krise', farbe:'#C0392B', bg:'#FDECEA'},
+  grau:   {label:'Grau · Erschöpft',  farbe:'#757575', bg:'#F2F2F2'}
+};
+
+function mobileBarometerStatusLaden(){
+  var badge = document.getElementById('m-baro-kind-status');
+  var text  = document.getElementById('m-baro-kind-status-text');
+  if (!badge || !text) return;
+  var kindId = kindIdErmitteln();
+  if (!kindId) { badge.style.display = 'none'; return; }
+  try {
+    db.ref('barometer_kind').orderByChild('childId').equalTo(kindId).limitToLast(1).once('value').then(function(snapshot){
+      var eintraege = snapshot.val();
+      if (!eintraege) { badge.style.display = 'none'; return; }
+      var letzter = Object.values(eintraege)[0];
+      var info = BARO_STATUS[letzter.value];
+      if (!info) { badge.style.display = 'none'; return; }
+      text.textContent = info.label;
+      badge.style.background = info.bg;
+      badge.style.color = info.farbe;
+      badge.querySelector('.m-baro-status-dot').style.background = info.farbe;
+      badge.style.display = 'inline-flex';
+    }).catch(function(){ badge.style.display = 'none'; });
+  } catch(e) { badge.style.display = 'none'; }
+}
+mobileBarometerStatusLaden();
 </script>
 
 <div id="dashboard-desktop">

@@ -226,52 +226,54 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   <a href="BAROMETER_INGRA.html" title="INGRA-Barometer" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);font-size:1.1rem;">🌡️</a>
 </div>
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
 const FARBEN_K = {gruen:'#2E9E5A',gelb:'#D4A800',orange:'#D4651A',rot:'#C0392B',grau:'#757575'};
 var aktuelleWahl = null;
 
-// KIND-AUSWAHL (Etappe 5.3) — lädt /children, befüllt Dropdown, merkt Auswahl
+// KIND-AUSWAHL — lädt echte Kinder aus Supabase (Tabelle "kinder"), befüllt
+// Dropdown, merkt Auswahl. Bewusst ohne Login/INGRA-Filter: Diese Seite ist
+// ein Kind-Self-Service-Gerät ("Wer bist du?"), kein INGRA-Werkzeug - ein
+// Filter über kinder_zuordnung würde eine eingeloggte INGRA-Session
+// voraussetzen, die es hier absichtlich nicht gibt.
 var aktuellesKindId = '';
+var kinderNamen = {}; // id -> name, ersetzt die vorherige localStorage-Namenszwischenspeicherung (baro_kind_name)
 
 function aktualisiereBegruessung(name){
   document.getElementById('begruess-name').textContent = name ? ('Hallo '+name+' 👋') : 'Hallo! 👋';
 }
 
-(function(){
+(async function(){
   try{
-    db.ref('children').once('value').then(function(snapshot){
-      var kinder = snapshot.val() || {};
-      var select = document.getElementById('kind-select');
-      var gespeicherteId = localStorage.getItem('baro_kind_id') || '';
+    var { data: kinder, error } = await supabase.from('kinder').select('id, name, klasse').eq('aktiv', true);
+    if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
-      Object.keys(kinder).forEach(function(childId){
-        var kind = kinder[childId];
-        if (kind.active === false) return;
-        var option = document.createElement('option');
-        option.value = childId;
-        option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
-        select.appendChild(option);
-      });
+    var select = document.getElementById('kind-select');
+    var gespeicherteId = localStorage.getItem('baro_kind_id') || '';
 
-      // Vorherige Auswahl wiederherstellen, falls vorhanden
-      if (gespeicherteId && kinder[gespeicherteId]) {
-        select.value = gespeicherteId;
-        aktuellesKindId = gespeicherteId;
-        aktualisiereBegruessung(kinder[gespeicherteId].name);
-        try{localStorage.setItem('baro_kind_name', kinder[gespeicherteId].name);}catch(e){}
-        starteFbHistorie(); // erneut starten, da select.value keinen change-Event auslöst
-      }
+    (kinder || []).forEach(function(kind){
+      kinderNamen[kind.id] = kind.name;
+      var option = document.createElement('option');
+      option.value = kind.id;
+      option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '');
+      select.appendChild(option);
+    });
 
-      select.addEventListener('change', function(){
-        aktuellesKindId = select.value;
-        var kindName = aktuellesKindId && kinder[aktuellesKindId] ? kinder[aktuellesKindId].name : '';
-        try{
-          localStorage.setItem('baro_kind_id', aktuellesKindId);
-          localStorage.setItem('baro_kind_name', kindName);
-        }catch(e){}
-        aktualisiereBegruessung(kindName);
-        starteFbHistorie();
-      });
+    // Vorherige Auswahl wiederherstellen, falls vorhanden
+    if (gespeicherteId && kinderNamen[gespeicherteId]) {
+      select.value = gespeicherteId;
+      aktuellesKindId = gespeicherteId;
+      aktualisiereBegruessung(kinderNamen[gespeicherteId]);
+      starteFbHistorie(); // erneut starten, da select.value keinen change-Event auslöst
+    }
+
+    select.addEventListener('change', function(){
+      aktuellesKindId = select.value;
+      var kindName = kinderNamen[aktuellesKindId] || '';
+      try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
+      aktualisiereBegruessung(kindName);
+      starteFbHistorie();
     });
   }catch(e){}
 })();
@@ -460,7 +462,7 @@ function druckeKind(){
   var e=ladeKind();
   var sieben=Date.now()-7*24*60*60*1000;
   var w=e.filter(x=>x.id>sieben);
-  var name='';try{name=localStorage.getItem('baro_kind_name')||'';}catch(e){}
+  var name = kinderNamen[aktuellesKindId] || '';
   var chips=w.map(x=>`<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;border-radius:10px;background:${x.color};margin:3px;">
     <img src="${brainyBild(x.emoji)}" style="width:24px;height:24px;object-fit:contain;">
     <span style="font-size:.6rem;color:#fff;font-weight:700;">${x.name}</span>
@@ -484,6 +486,14 @@ function druckeKind(){
   <div class="chips">${chips}</div>
   <script>window.onload=()=>window.print();<\/script></body></html>`);
 }
+
+// Module-Skripte sind nicht global sichtbar - die inline onclick/oninput-
+// Attribute im HTML brauchen die Funktionen auf window.
+window.waehleKind = waehleKind;
+window.checkSpeichern = checkSpeichern;
+window.speichereKind = speichereKind;
+window.waehleIngra = waehleIngra;
+window.druckeKind = druckeKind;
 
 window.addEventListener('DOMContentLoaded', () => {
   renderWoche();

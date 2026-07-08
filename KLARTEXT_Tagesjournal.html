@@ -343,7 +343,13 @@ import { supabase } from './supabase/auth_client.js';
   // ───────────────────────────────────────────
   async function kinderListeLaden(){
     var select = document.getElementById('kindSelect');
-    var { data: kinder, error } = await supabase.from('kinder').select('id, name, klasse');
+    var userId = await aktuellerUserId();
+    // Nur Kinder, die dieser INGRA über kinder_zuordnung zugeordnet sind
+    // (ersetzt die vorherige ungefilterte Liste aller Kinder).
+    var { data: kinder, error } = await supabase
+      .from('kinder')
+      .select('id, name, klasse, kinder_zuordnung!inner()')
+      .eq('kinder_zuordnung.ingra_id', userId);
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
     select.innerHTML = '';

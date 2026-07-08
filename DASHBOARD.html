@@ -269,7 +269,7 @@ footer strong{color:var(--kt-accent);}
       <a class="m-btn-full" href="KLARTEXT_Krankmeldung.html" style="border-color:#C62828;color:#C62828;">Krankmeldung</a>
       <a class="m-btn-full" href="KLARTEXT_Urlaubsantrag_INGRA.html">Urlaub</a>
       <a class="m-btn-full" href="KLARTEXT_Zeitkonto.html" style="border-color:#1B3A4B;color:#1B3A4B;">Zeitkonto</a>
-      <a class="m-btn-full" href="TK_Vertretungsassistent.html" style="border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
+      <a id="m-tools-va" class="m-btn-full" href="TK_Vertretungsassistent.html" style="display:none;border-color:#4A148C;color:#4A148C;">Vertretungsassistent</a>
     </section>
 
     <section class="m-section" id="sek-fk-mobile">
@@ -292,10 +292,10 @@ footer strong{color:var(--kt-accent);}
       <details class="m-dropdown">
         <summary>📚 Alle Module öffnen</summary>
         <div class="m-dropdown-inhalt">
-          <a href="#sek-m0" style="border-color:#1B3A4B;color:#1B3A4B;">M0</a><a href="#sek-m1" style="border-color:#2E5E8A;color:#2E5E8A;">M1</a><a href="#sek-m2" style="border-color:#3B8A68;color:#3B8A68;">M2</a>
-          <a href="#sek-m3" style="border-color:#B07D2A;color:#B07D2A;">M3</a><a href="#sek-m4" style="border-color:#5D3A7A;color:#5D3A7A;">M4</a><a href="#sek-m5" style="border-color:#B7500A;color:#B7500A;">M5</a>
-          <a href="#sek-m6" style="border-color:#D81B60;color:#D81B60;">M6</a><a href="#sek-m7" style="border-color:#8B4A38;color:#8B4A38;">M7</a><a href="#sek-m8" style="border-color:#6B3F6B;color:#6B3F6B;">M8</a>
-          <a href="#sek-mh" style="border-color:#C47A00;color:#C47A00;">Humor</a><a href="#sek-kd" style="border-color:#4FC3C7;color:#4FC3C7;">Kinderkarten</a><a href="#sek-fk" style="border-color:#C62828;color:#C62828;">FK</a>
+          <a href="M0-00_Systemelemente.html" style="border-color:#1B3A4B;color:#1B3A4B;">M0</a><a href="M1-00_Recht-Rolle.html" style="border-color:#2E5E8A;color:#2E5E8A;">M1</a><a href="M2-01_Entwicklungsstufen.html" style="border-color:#3B8A68;color:#3B8A68;">M2</a>
+          <a href="DASHBOARD-M3.html" style="border-color:#B07D2A;color:#B07D2A;">M3</a><a href="M4-01_Grundprinzipien_der_Kommunikation.html" style="border-color:#5D3A7A;color:#5D3A7A;">M4</a><a href="M5-01_Tagesdokumentation.html" style="border-color:#B7500A;color:#B7500A;">M5</a>
+          <a href="M6-01_Mobbing_erkennen.html" style="border-color:#D81B60;color:#D81B60;">M6</a><a href="M7-01_Schwieriger_Start_in_den_Tag.html" style="border-color:#8B4A38;color:#8B4A38;">M7</a><a href="M8-01_Warum_Selbstfuersorge_wichtig_ist.html" style="border-color:#6B3F6B;color:#6B3F6B;">M8</a>
+          <a href="MH-01_Humor-Regeln.html" style="border-color:#C47A00;color:#C47A00;">Humor</a><a href="KD-01.html" style="border-color:#4FC3C7;color:#4FC3C7;">Kinderkarten</a><a href="FK-01.html" style="border-color:#C62828;color:#C62828;">FK</a>
         </div>
       </details>
     </section>
@@ -327,6 +327,19 @@ function mobileRolleHinweisPruefen(){
   hinweis.style.display = ['tk','trainer'].includes(rolle) ? 'block' : 'none';
 }
 mobileRolleHinweisPruefen();
+
+// Vertretungsassistent ist ein TK-Werkzeug (siehe Auth-Guard in
+// TK_Vertretungsassistent.html: nur 'tk'/'admin') - Kachel in den Tools
+// daher nur für dieselben Rollen sichtbar, sonst nicht nur ausgegraut,
+// sondern ganz verborgen.
+function mobileVertretungsassistentSichtbarkeit(){
+  var kachel = document.getElementById('m-tools-va');
+  if (!kachel) return;
+  var rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  kachel.style.display = ['tk','admin'].includes(rolle) ? 'block' : 'none';
+}
+mobileVertretungsassistentSichtbarkeit();
 
 // Kind-Barometer: aktuellen Status (5-Stufen-System) farbig auf der Kachel
 // anzeigen, ohne dass man erst reinklicken muss. DASHBOARD.html hat aktuell

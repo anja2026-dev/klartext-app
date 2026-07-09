@@ -666,31 +666,23 @@ footer strong{color:var(--kt-accent);}
        FM-04 · VERLAUF / CHRONIK
   ══════════════════════════════════════════════════════════ -->
   <div class="tab-panel" id="tab-verlauf">
-    <div class="karte" id="timeline-karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🕐</span>
-        <span class="karte-header-titel" style="color:#00695C;">Verlauf</span>
-      </div>
-      <div class="karte-body">
-        <div id="timeline-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
-        <ul class="stw-list" id="timeline-liste"></ul>
-      </div>
-    </div>
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🕐</span>
-        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: fall_timeline</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Datum:</strong> Eintrags- / Ereignisdatum</li>
-          <li><strong>Ereignis:</strong> Was ist passiert? (kurz, neutral)</li>
-          <li><strong>Beobachtung:</strong> Was wurde wahrgenommen?</li>
-          <li><strong>Rückmeldung:</strong> Reaktion, Konsequenz, nächster Schritt</li>
-          <li><strong>Erstellt von:</strong> TK (Kürzel / Funktion)</li>
-        </ul>
+    <div id="timeline-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">🕐</span><span class="form-section-titel">Verlauf (neueste zuerst)</span></div>
+      <div class="form-body">
+        <div class="liste-kopfzeile">
+          <span>Datum</span><span>Ereignistyp</span><span>Fakten</span><span>Einschätzung</span>
+        </div>
+        <div id="fa-timeline-liste"></div>
+        <button type="button" class="act-btn ghost" onclick="timelineZeileHinzufuegen()">+ Eintrag hinzufügen</button>
       </div>
     </div>
+
+    <div class="form-actions">
+      <button class="act-btn primary" onclick="timelineSpeichern()">💾 Speichern</button>
+    </div>
+
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📌</span>
@@ -698,10 +690,9 @@ footer strong{color:var(--kt-accent);}
       </div>
       <div class="karte-body">
         <ul class="stw-list">
-          <li>Beobachtungsbasiert – keine Interpretationen als Tatsachen</li>
+          <li>Beobachtungsbasiert – Fakten und Einschätzung bewusst getrennt eintragen</li>
           <li>Zeitnah – möglichst am gleichen Tag erfassen</li>
-          <li>Neutral – keine wertenden Formulierungen</li>
-          <li>Vollständig – Datum und Kürzel immer eintragen</li>
+          <li>Neutral – Fakten ohne Wertung, Einschätzung als das kenntlich, was sie ist</li>
         </ul>
       </div>
     </div>
@@ -1037,6 +1028,12 @@ function listenZeileErzeugen(container, felder, werte){
 }
 
 function listenWerteLesen(container, felder){
+  // Pflichtfeld ist standardmäßig das erste Feld (Name bei Bezugsperson/
+  // Netzwerk, Ziel bei Ziele, Maßnahme bei Maßnahmen); Felder können sich
+  // mit `required:true` explizit als Pflichtfeld markieren (z.B. "fakten"
+  // bei Verlauf, wo "datum" einen DB-Default hat und daher nicht das
+  // sinnvolle Pflichtfeld wäre).
+  var pflichtFeld = felder.find(function(f){ return f.required; }) || felder[0];
   var ergebnisse = [];
   container.querySelectorAll('.liste-zeile').forEach(function(zeile){
     var eintrag = {};
@@ -1044,7 +1041,7 @@ function listenWerteLesen(container, felder){
       var input = zeile.querySelector('[data-feld="' + f.key + '"]');
       eintrag[f.key] = input && input.value.trim() ? input.value.trim() : null;
     });
-    if (eintrag[felder[0].key]) ergebnisse.push(eintrag);
+    if (eintrag[pflichtFeld.key]) ergebnisse.push(eintrag);
   });
   return ergebnisse;
 }
@@ -1431,7 +1428,22 @@ window.massnahmenSpeichern = massnahmenSpeichern;
 // (siehe supabase/migrations/0004_fallmanagement.sql). Die aktive
 // Fallakte des Kindes wird daher zuerst aufgelöst (gleiche Abfrage wie
 // in fallakteLaden), erst danach wird die Timeline über fallakte_id
-// gefiltert.
+// gefiltert. ereignistyp/fakten/einschaetzung sind neue Spalten
+// (0029_fall_timeline_formular.sql) - Fakten bewusst von Einschätzung
+// getrennt, statt in einem Freitextfeld vermischt.
+var EREIGNISTYP_LABEL = { beobachtung: 'Beobachtung', gespraech: 'Gespräch', vorfall: 'Vorfall', uebergabe: 'Übergabe' };
+var TIMELINE_FELDER = [
+  { key: 'datum', type: 'date' },
+  { key: 'ereignistyp', type: 'select', options: [
+    { value: 'beobachtung', label: 'Beobachtung' },
+    { value: 'gespraech', label: 'Gespräch' },
+    { value: 'vorfall', label: 'Vorfall' },
+    { value: 'uebergabe', label: 'Übergabe' }
+  ] },
+  { key: 'fakten', placeholder: 'Fakten (beobachtbar, neutral)', required: true },
+  { key: 'einschaetzung', placeholder: 'Einschätzung (fachliche Deutung)' }
+];
+
 function timelineStatusAnzeigen(text){
   var status = document.getElementById('timeline-status');
   if (!status) return;
@@ -1439,23 +1451,22 @@ function timelineStatusAnzeigen(text){
   else { status.style.display = 'none'; }
 }
 
-function timelineRendern(liste){
-  var el = document.getElementById('timeline-liste');
-  if (!el) return;
-  if (!liste.length) { el.innerHTML = ''; return; }
-  el.innerHTML = liste.map(function(t){
-    var erstellt = t.profiles ? [t.profiles.vorname, t.profiles.nachname].filter(Boolean).join(' ') : '';
-    return '<li><strong>' + t.datum + ':</strong> ' + (t.ereignis || '') +
-      (t.beobachtung ? ' · Beobachtung: ' + t.beobachtung : '') +
-      (t.rueckmeldung ? ' · Rückmeldung: ' + t.rueckmeldung : '') +
-      (erstellt ? ' · Erstellt von: ' + erstellt : '') + '</li>';
-  }).join('');
+// Neue Einträge werden oben eingefügt (neueste zuerst); geladene
+// Einträge kommen bereits absteigend sortiert aus der DB-Abfrage und
+// werden daher einfach angehängt.
+function timelineZeileHinzufuegen(){
+  var container = document.getElementById('fa-timeline-liste');
+  var heute = new Date().toISOString().slice(0, 10);
+  var zeile = listenZeileErzeugen(container, TIMELINE_FELDER, { datum: heute });
+  container.insertBefore(zeile, container.firstChild);
 }
+window.timelineZeileHinzufuegen = timelineZeileHinzufuegen;
 
 async function timelineLaden(){
+  document.getElementById('fa-timeline-liste').innerHTML = '';
+
   if (!aktuellesKindId) {
     timelineStatusAnzeigen('');
-    timelineRendern([]);
     datenCache.timeline = [];
     return;
   }
@@ -1471,34 +1482,99 @@ async function timelineLaden(){
 
   if (fallakteRef.error || !fallakteRef.data) {
     timelineStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
-    timelineRendern([]);
     datenCache.timeline = [];
     return;
   }
 
   var ergebnis = await supabase
     .from('fall_timeline')
-    .select('datum, ereignis, beobachtung, rueckmeldung, profiles:erstellt_von(vorname, nachname)')
+    .select('datum, ereignistyp, fakten, einschaetzung, profiles:erstellt_von(vorname, nachname)')
     .eq('fallakte_id', fallakteRef.data.id)
     .order('datum', { ascending: false });
 
   if (ergebnis.error) {
     timelineStatusAnzeigen('Verlauf konnte nicht geladen werden.');
-    timelineRendern([]);
     datenCache.timeline = [];
     return;
   }
   if (!ergebnis.data || !ergebnis.data.length) {
     timelineStatusAnzeigen('Noch keine Verlaufseinträge für diese Fallakte.');
-    timelineRendern([]);
     datenCache.timeline = [];
     return;
   }
 
   timelineStatusAnzeigen('');
-  timelineRendern(ergebnis.data);
-  datenCache.timeline = ergebnis.data;
+  ergebnis.data.forEach(function(t){
+    listenZeileErzeugen(document.getElementById('fa-timeline-liste'), TIMELINE_FELDER, {
+      datum: t.datum,
+      ereignistyp: t.ereignistyp,
+      fakten: t.fakten,
+      einschaetzung: t.einschaetzung
+    });
+  });
+  datenCache.timeline = ergebnis.data.map(function(t){
+    return {
+      datum: t.datum,
+      ereignistyp: t.ereignistyp,
+      fakten: t.fakten,
+      einschaetzung: t.einschaetzung,
+      erstelltVonName: t.profiles ? [t.profiles.vorname, t.profiles.nachname].filter(Boolean).join(' ') : ''
+    };
+  });
 }
+
+// Speichert die komplette Liste (löschen + neu einfügen), wie bei
+// Maßnahmen/Fallakte-Listen.
+async function timelineSpeichern(){
+  if (!aktuellesKindId) { timelineStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
+
+  var fallakteRef = await supabase
+    .from('fallakten')
+    .select('id')
+    .eq('kind_id', aktuellesKindId)
+    .eq('aktiv', true)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (fallakteRef.error || !fallakteRef.data) {
+    timelineStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden - bitte zuerst im Fallakte-Tab anlegen.');
+    return;
+  }
+  var fallakteId = fallakteRef.data.id;
+
+  var { data: userData } = await supabase.auth.getUser();
+  var erstelltVon = userData && userData.user ? userData.user.id : null;
+
+  var eintraege = listenWerteLesen(document.getElementById('fa-timeline-liste'), TIMELINE_FELDER);
+
+  await supabase.from('fall_timeline').delete().eq('fallakte_id', fallakteId);
+  if (eintraege.length) {
+    var zeilen = eintraege.map(function(t){
+      var zeile = {
+        fallakte_id: fallakteId,
+        ereignistyp: t.ereignistyp,
+        fakten: t.fakten,
+        einschaetzung: t.einschaetzung,
+        erstellt_von: erstelltVon
+      };
+      // datum hat einen DB-Default (current_date) - nur setzen, wenn
+      // tatsächlich ein Wert eingetragen wurde, sonst NOT-NULL-Fehler
+      // durch explizites null vermeiden.
+      if (t.datum) zeile.datum = t.datum;
+      return zeile;
+    });
+    var insertErgebnis = await supabase.from('fall_timeline').insert(zeilen);
+    if (insertErgebnis.error) {
+      timelineStatusAnzeigen('Verlauf konnte nicht gespeichert werden.');
+      return;
+    }
+  }
+
+  timelineStatusAnzeigen('✔ Gespeichert.');
+  timelineLaden();
+}
+window.timelineSpeichern = timelineSpeichern;
 
 // ── FM-02 Risiko-Ampel ────────────────────────────────────────────
 // WICHTIG: Die reale Tabelle heißt "fall_risikostatus" (nicht
@@ -1709,7 +1785,9 @@ function ladePdfVorschau(){
   html += '<div class="pdf-sektion"><strong>Verlauf / Chronik (' + timeline.length + ' Einträge)</strong>';
   if (timeline.length) {
     timeline.forEach(function(t){
-      html += '<div class="pdf-zeile">• ' + (t.datum || '–') + ' — ' + escapeHtml(t.ereignis || '') + '</div>';
+      html += '<div class="pdf-zeile">• ' + (t.datum || '–') + ' — ' + (EREIGNISTYP_LABEL[t.ereignistyp] || t.ereignistyp || '') +
+        (t.fakten ? ': ' + escapeHtml(t.fakten) : '') +
+        (t.einschaetzung ? ' · Einschätzung: ' + escapeHtml(t.einschaetzung) : '') + '</div>';
     });
   } else {
     html += '<div class="pdf-zeile tl-leer">Keine Verlaufseinträge erfasst.</div>';

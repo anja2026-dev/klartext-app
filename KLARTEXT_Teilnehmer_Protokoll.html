@@ -29,7 +29,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .editor{background:var(--surface);border-radius:14px;padding:1.25rem;box-shadow:0 1px 8px rgba(0,0,0,.06);margin-bottom:1.5rem;display:none;}
 .editor.aktiv{display:block;}
 .editor-row{display:flex;gap:.6rem;margin-bottom:.7rem;flex-wrap:wrap;}
-.editor-row input{flex:1;min-width:140px;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.82rem;background:#FAFAFA;}
+.editor-row input,.editor-row select{flex:1;min-width:140px;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.82rem;background:#FAFAFA;}
 .editor-label{font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem;display:block;}
 .editor-text{width:100%;min-height:100px;border:1.5px solid var(--border);border-radius:10px;padding:.7rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;line-height:1.6;background:#FFFEFA;resize:vertical;margin-bottom:.7rem;}
 .editor-text:focus,.editor-row input:focus{outline:none;border-color:var(--acc);}
@@ -91,6 +91,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <span class="editor-label">Name der Teilnehmerin / des Teilnehmers</span>
   <div class="editor-row">
     <input type="text" id="tn-name" placeholder="Name">
+    <select id="tn-kind"><option value="">Kein Kind / Allgemein</option></select>
     <input type="text" id="tn-datum" placeholder="Datum">
     <input type="text" id="tn-einrichtung" placeholder="Einrichtung / Träger (optional)">
   </div>
@@ -141,12 +142,47 @@ async function aktuellerUserId(){
   return data.user ? data.user.id : null;
 }
 
+// Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
+// INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
+// wird daher über die Login-E-Mail (sessionStorage.klartext_name, trotz
+// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "INGRA" abgeglichen.
+async function aktuelleIngraId(){
+  const email = sessionStorage.getItem('klartext_name') || '';
+  if (!email) return null;
+  const { data, error } = await supabase.from('INGRA').select('id').eq('email', email).maybeSingle();
+  if (error || !data) return null;
+  return data.id;
+}
+
+// Kind (optional) - teilnehmer_protokoll.kind_id ist neu (0031_neues_schema_kind_fk.sql),
+// das bestehende name-Feld bleibt unabhängig davon nutzbar (z.B. bei
+// Teilnehmenden, die kein erfasstes Kind sind).
+const tnKinderNamen = {}; // id -> name, für lesbare Anzeige in der Liste
+async function kinderDropdownLaden(){
+  const ingraId = await aktuelleIngraId();
+  const { data: kinder, error } = await supabase
+    .from('Kinder')
+    .select('id, name, klasse')
+    .eq('ingra_id', ingraId)
+    .eq('aktiv', true)
+    .order('name');
+  if (error) return;
+  const select = document.getElementById('tn-kind');
+  (kinder || []).forEach(function(kind) {
+    const option = document.createElement('option');
+    option.value = kind.id;
+    option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '');
+    select.appendChild(option);
+    tnKinderNamen[kind.id] = kind.name;
+  });
+}
+
 // Ersetzt localStorage['kt_tn_protokoll']
 async function ladeListe() {
   const userId = await aktuellerUserId();
   const { data, error } = await supabase
     .from('teilnehmer_protokoll')
-    .select('id, ersteller_id, name, datum, einrichtung, vorschlaege, anmerkungen, created_at')
+    .select('id, ersteller_id, name, kind_id, datum, einrichtung, vorschlaege, anmerkungen, created_at')
     .eq('ersteller_id', userId)
     .order('created_at', { ascending: false });
   if (error) { console.error('Liste laden fehlgeschlagen:', error); return []; }
@@ -156,6 +192,7 @@ async function ladeListe() {
 function neuerEintrag() {
   bearbeiteId = null;
   document.getElementById('tn-name').value = '';
+  document.getElementById('tn-kind').value = '';
   document.getElementById('tn-datum').value = heute();
   document.getElementById('tn-einrichtung').value = '';
   document.getElementById('tn-vorschlaege').value = '';
@@ -169,12 +206,13 @@ function neuerEintrag() {
 async function bearbeiten(id) {
   const { data: n, error } = await supabase
     .from('teilnehmer_protokoll')
-    .select('id, ersteller_id, name, datum, einrichtung, vorschlaege, anmerkungen, created_at')
+    .select('id, ersteller_id, name, kind_id, datum, einrichtung, vorschlaege, anmerkungen, created_at')
     .eq('id', id)
     .single();
   if (error || !n) { console.error('Eintrag laden fehlgeschlagen:', error); return; }
   bearbeiteId = id;
   document.getElementById('tn-name').value = n.name;
+  document.getElementById('tn-kind').value = n.kind_id || '';
   document.getElementById('tn-datum').value = datumAnzeigeVonISO(n.datum);
   document.getElementById('tn-einrichtung').value = n.einrichtung || '';
   document.getElementById('tn-vorschlaege').value = n.vorschlaege || '';
@@ -190,6 +228,7 @@ async function speichern() {
 
   const eintrag = {
     name: name,
+    kind_id: document.getElementById('tn-kind').value || null,
     datum: datumFeldZuISO(document.getElementById('tn-datum').value),
     einrichtung: document.getElementById('tn-einrichtung').value.trim(),
     vorschlaege: document.getElementById('tn-vorschlaege').value.trim(),
@@ -233,7 +272,7 @@ async function renderListe() {
   el.innerHTML = liste.map(n => `
     <div class="tn-eintrag">
       <div class="te-head">
-        <span class="te-name">${n.name}${n.einrichtung ? ' · ' + n.einrichtung : ''}</span>
+        <span class="te-name">${n.name}${n.kind_id && tnKinderNamen[n.kind_id] ? ' (' + tnKinderNamen[n.kind_id] + ')' : ''}${n.einrichtung ? ' · ' + n.einrichtung : ''}</span>
         <span class="te-datum">${datumAnzeigeVonISO(n.datum)}</span>
       </div>
       ${n.vorschlaege ? `<div class="te-feld"><div class="te-feld-label">Vorschläge / Wünsche</div><div class="te-feld-text">${n.vorschlaege}</div></div>` : ''}
@@ -251,7 +290,10 @@ window.speichern = speichern;
 window.abbrechen = abbrechen;
 window.loeschen = loeschen;
 
-document.addEventListener('DOMContentLoaded', renderListe);
+document.addEventListener('DOMContentLoaded', async function(){
+  await kinderDropdownLaden();
+  await renderListe();
+});
 </script>
 </body>
 </html>

@@ -250,6 +250,16 @@ footer strong{color:var(--kt-accent);}
 .form-row.full{grid-template-columns:1fr;}
 .form-row.drei{grid-template-columns:1fr 1fr 1fr;}
 
+/* Mehrfach-Listen (Bezugspersonen, Netzwerk, Ziele) */
+.liste-zeile{display:flex;gap:.4rem;margin-bottom:.4rem;align-items:center;}
+.liste-zeile input{
+  flex:1;font-family:'DM Sans',sans-serif;font-size:.82rem;
+  padding:.38rem .6rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);
+  background:var(--kt-paper);color:var(--kt-ink);outline:none;
+}
+.liste-zeile input:focus{border-color:var(--tk-color);}
+.liste-zeile-entfernen{flex-shrink:0;background:none;border:none;color:#C62828;font-weight:700;cursor:pointer;font-size:.85rem;padding:.2rem .5rem;}
+
 .fld{display:flex;flex-direction:column;gap:.2rem;}
 .fld label{
   font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
@@ -447,29 +457,98 @@ footer strong{color:var(--kt-accent);}
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📁</span>
-        <span class="karte-header-titel" style="color:#00695C;">Stammdaten</span>
+        <span class="karte-header-titel" style="color:#00695C;">Kind</span>
       </div>
       <div class="karte-body">
         <ul class="stw-list">
-          <li><strong>Name:</strong> <span id="fa-name">– wird hier erfasst</span></li>
-          <li><strong>Klasse / Gruppe:</strong> <span id="fa-klasse">– wird hier erfasst</span></li>
-          <li><strong>Bezugsperson:</strong> <span id="fa-bezugsperson">– wird hier erfasst</span></li>
-          <li><strong>Besonderheiten:</strong> <span id="fa-besonderheiten">– wird hier erfasst</span></li>
+          <li><strong>Name:</strong> <span id="fa-name">–</span></li>
+          <li><strong>Klasse / Gruppe:</strong> <span id="fa-klasse">–</span></li>
+          <li><strong>Geburtsdatum:</strong> <span id="fa-geburtsdatum">–</span></li>
         </ul>
       </div>
     </div>
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🎯</span>
-        <span class="karte-header-titel" style="color:#00695C;">Ziele & Ressourcen</span>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">👥</span><span class="form-section-titel">Bezugsperson(en)</span></div>
+      <div class="form-body">
+        <div id="fa-bezugspersonen-liste"></div>
+        <button type="button" class="act-btn ghost" onclick="bezugspersonZeileHinzufuegen()">+ Bezugsperson hinzufügen</button>
       </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Ziele:</strong> <span id="fa-ziele">– werden hier definiert</span></li>
-          <li><strong>Ressourcen:</strong> <span id="fa-ressourcen">– wird hier erfasst</span></li>
-        </ul>
-        <div class="hinweis" style="border-color:#00695C;">Daten werden aus der Fallakte in Supabase geladen (Tabelle <strong>fallakten</strong>).</div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">⚖️</span><span class="form-section-titel">Rechtsgrundlage & Rahmen</span></div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="fld">
+            <label>Rechtsgrundlage</label>
+            <select id="fa-rechtsgrundlage">
+              <option value="">– bitte wählen –</option>
+              <option value="sgb_viii_35a">§35a SGB VIII</option>
+              <option value="sgb_ix_54">§54 SGB IX</option>
+              <option value="sonstige">Sonstige</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label>Kostenträger</label>
+            <input type="text" id="fa-kostentraeger" placeholder="z.B. Jugendamt Musterstadt">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="fld">
+            <label>Stundenumfang</label>
+            <input type="text" id="fa-stundenumfang" placeholder="z.B. 10 Std./Woche">
+          </div>
+          <div class="fld">
+            <label>Befristet bis</label>
+            <input type="date" id="fa-befristet-bis">
+          </div>
+        </div>
+        <div id="fa-befristet-hinweis" class="hinweis" style="display:none;"></div>
       </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">🧑‍⚕️</span><span class="form-section-titel">Zuständigkeit</span></div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="fld">
+            <label>Zuständige INGRA</label>
+            <select id="fa-ingra"></select>
+          </div>
+          <div class="fld">
+            <label>Vertretung</label>
+            <select id="fa-vertretung"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">🕸️</span><span class="form-section-titel">Netzwerk</span></div>
+      <div class="form-body">
+        <div id="fa-netzwerk-liste"></div>
+        <button type="button" class="act-btn ghost" onclick="netzwerkZeileHinzufuegen()">+ Kontakt hinzufügen</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">🎯</span><span class="form-section-titel">Ziele</span></div>
+      <div class="form-body">
+        <div id="fa-ziele-liste"></div>
+        <button type="button" class="act-btn ghost" onclick="zielZeileHinzufuegen()">+ Ziel hinzufügen</button>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">💡</span><span class="form-section-titel">Ressourcen</span></div>
+      <div class="form-body">
+        <div class="fld"><textarea id="fa-ressourcen" placeholder="Stärken, Unterstützungssystem, vorhandene Hilfen …"></textarea></div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="act-btn primary" onclick="fallakteSpeichern()">💾 Speichern</button>
     </div>
 
     <div class="brainy-box">
@@ -755,7 +834,7 @@ footer strong{color:var(--kt-accent);}
       <div class="karte-header"><span class="karte-header-icon">💾</span><span class="karte-header-titel">Datenherkunft</span></div>
       <div class="karte-body">
         <ul class="stw-list">
-          <li><strong>Fallakte</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakten</code></li>
+          <li><strong>Fallakte</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakten</code>, plus <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakte_bezugspersonen</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakte_netzwerk</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_ziele</code></li>
           <li><strong>Risiko-Ampel</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_risikostatus</code></li>
           <li><strong>Maßnahmenplan</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_massnahmen</code></li>
           <li><strong>Verlauf</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_timeline</code></li>
@@ -871,6 +950,7 @@ async function kindAuswahlLaden(){
     alleDatenLaden();
   });
 
+  await ingraDropdownsLaden();
   alleDatenLaden();
 }
 
@@ -895,22 +975,139 @@ function fallakteStatusAnzeigen(text){
   else { status.style.display = 'none'; }
 }
 
+var RECHTSGRUNDLAGE_LABEL = { sgb_viii_35a: '§35a SGB VIII', sgb_ix_54: '§54 SGB IX', sonstige: 'Sonstige' };
+var BEZUGSPERSON_FELDER = [
+  { key: 'name', placeholder: 'Name' },
+  { key: 'rolle', placeholder: 'Rolle (z.B. Mutter, Klassenlehrer:in)' }
+];
+var NETZWERK_FELDER = [
+  { key: 'name', placeholder: 'Name' },
+  { key: 'rolle', placeholder: 'Rolle' },
+  { key: 'kontakt', placeholder: 'Kontakt (Telefon/E-Mail)' }
+];
+var ZIEL_FELDER = [
+  { key: 'ziel', placeholder: 'Ziel' },
+  { key: 'indikator', placeholder: 'Indikator' },
+  { key: 'zieldatum', type: 'date' }
+];
+
+// Aktuell geladene/gespeicherte Fallakte-ID - null solange für das gewählte
+// Kind noch keine aktive Fallakte existiert (wird beim ersten Speichern neu
+// angelegt).
+var aktuelleFallakteId = null;
+
 function fallakteFelderSetzen(werte){
-  var felder = {
-    'fa-name': werte.name,
-    'fa-klasse': werte.klasse,
-    'fa-bezugsperson': werte.bezugsperson,
-    'fa-besonderheiten': werte.besonderheiten,
-    'fa-ziele': werte.ziele,
-    'fa-ressourcen': werte.ressourcen
-  };
+  var felder = { 'fa-name': werte.name, 'fa-klasse': werte.klasse, 'fa-geburtsdatum': werte.geburtsdatum };
   Object.keys(felder).forEach(function(id){
     var el = document.getElementById(id);
     if (el) el.textContent = felder[id] || '–';
   });
 }
 
+// ── Mehrfach-Listen: gemeinsame Bau-/Auslese-Helfer für Bezugspersonen,
+// Netzwerk und Ziele (gleiche Zeilen-Struktur, nur andere Felder) ──────
+function listenZeileErzeugen(container, felder, werte){
+  werte = werte || {};
+  var zeile = document.createElement('div');
+  zeile.className = 'liste-zeile';
+  felder.forEach(function(f){
+    var input = document.createElement('input');
+    input.type = f.type || 'text';
+    input.placeholder = f.placeholder || '';
+    input.dataset.feld = f.key;
+    input.value = werte[f.key] || '';
+    zeile.appendChild(input);
+  });
+  var entfernen = document.createElement('button');
+  entfernen.type = 'button';
+  entfernen.className = 'liste-zeile-entfernen';
+  entfernen.textContent = '✕';
+  entfernen.onclick = function(){ zeile.remove(); };
+  zeile.appendChild(entfernen);
+  container.appendChild(zeile);
+}
+
+function listenWerteLesen(container, felder){
+  var ergebnisse = [];
+  container.querySelectorAll('.liste-zeile').forEach(function(zeile){
+    var eintrag = {};
+    felder.forEach(function(f){
+      var input = zeile.querySelector('[data-feld="' + f.key + '"]');
+      eintrag[f.key] = input && input.value.trim() ? input.value.trim() : null;
+    });
+    if (eintrag[felder[0].key]) ergebnisse.push(eintrag);
+  });
+  return ergebnisse;
+}
+
+function bezugspersonZeileHinzufuegen(werte){ listenZeileErzeugen(document.getElementById('fa-bezugspersonen-liste'), BEZUGSPERSON_FELDER, werte); }
+function netzwerkZeileHinzufuegen(werte){ listenZeileErzeugen(document.getElementById('fa-netzwerk-liste'), NETZWERK_FELDER, werte); }
+function zielZeileHinzufuegen(werte){ listenZeileErzeugen(document.getElementById('fa-ziele-liste'), ZIEL_FELDER, werte); }
+window.bezugspersonZeileHinzufuegen = bezugspersonZeileHinzufuegen;
+window.netzwerkZeileHinzufuegen = netzwerkZeileHinzufuegen;
+window.zielZeileHinzufuegen = zielZeileHinzufuegen;
+
+// ── Befristung: 30-Tage-Erinnerung farblich hervorheben ────────────
+function befristetHinweisAktualisieren(){
+  var input = document.getElementById('fa-befristet-bis');
+  var hinweis = document.getElementById('fa-befristet-hinweis');
+  if (!input.value) { hinweis.style.display = 'none'; return; }
+  var bis = new Date(input.value + 'T00:00:00');
+  var heute = new Date(); heute.setHours(0,0,0,0);
+  var tageBis = Math.round((bis - heute) / 86400000);
+  if (tageBis < 0) {
+    hinweis.textContent = '⚠ Befristung seit ' + Math.abs(tageBis) + ' Tag(en) abgelaufen.';
+    hinweis.style.display = 'block';
+    hinweis.style.borderColor = '#C62828'; hinweis.style.background = 'rgba(198,40,40,.08)'; hinweis.style.color = '#C62828';
+  } else if (tageBis <= 30) {
+    hinweis.textContent = '⚠ Befristung läuft in ' + tageBis + ' Tag(en) aus.';
+    hinweis.style.display = 'block';
+    hinweis.style.borderColor = '#F57F17'; hinweis.style.background = '#FFF8E1'; hinweis.style.color = '#F57F17';
+  } else {
+    hinweis.style.display = 'none';
+  }
+}
+document.getElementById('fa-befristet-bis').addEventListener('change', befristetHinweisAktualisieren);
+
+// ── INGRA-Dropdowns (Zuständige INGRA / Vertretung) - unabhängig vom
+// gewählten Kind, einmalig beim Laden der Seite befüllt ───────────────
+async function ingraDropdownsLaden(){
+  var ingraSelect = document.getElementById('fa-ingra');
+  var vertretungSelect = document.getElementById('fa-vertretung');
+  [ingraSelect, vertretungSelect].forEach(function(select){
+    var leer = document.createElement('option');
+    leer.value = '';
+    leer.textContent = '– bitte wählen –';
+    select.appendChild(leer);
+  });
+
+  var { data: ingras, error } = await supabase.from('profiles').select('id, vorname, nachname').eq('rolle', 'ingra');
+  if (error) return;
+  (ingras || []).forEach(function(i){
+    var name = [i.vorname, i.nachname].filter(Boolean).join(' ') || i.id;
+    [ingraSelect, vertretungSelect].forEach(function(select){
+      var o = document.createElement('option');
+      o.value = i.id;
+      o.textContent = name;
+      select.appendChild(o);
+    });
+  });
+}
+
 async function fallakteLaden(){
+  ['fa-bezugspersonen-liste', 'fa-netzwerk-liste', 'fa-ziele-liste'].forEach(function(id){
+    document.getElementById(id).innerHTML = '';
+  });
+  document.getElementById('fa-rechtsgrundlage').value = '';
+  document.getElementById('fa-kostentraeger').value = '';
+  document.getElementById('fa-stundenumfang').value = '';
+  document.getElementById('fa-befristet-bis').value = '';
+  document.getElementById('fa-ingra').value = '';
+  document.getElementById('fa-vertretung').value = '';
+  document.getElementById('fa-ressourcen').value = '';
+  befristetHinweisAktualisieren();
+  aktuelleFallakteId = null;
+
   if (!aktuellesKindId) {
     fallakteStatusAnzeigen('');
     fallakteFelderSetzen({});
@@ -918,11 +1115,16 @@ async function fallakteLaden(){
     return;
   }
 
-  var kindErgebnis = await supabase.from('kinder').select('name, klasse').eq('id', aktuellesKindId).maybeSingle();
+  var kindErgebnis = await supabase.from('kinder').select('name, klasse, geburtsdatum').eq('id', aktuellesKindId).maybeSingle();
+  fallakteFelderSetzen({
+    name: kindErgebnis.data ? kindErgebnis.data.name : '',
+    klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
+    geburtsdatum: kindErgebnis.data ? kindErgebnis.data.geburtsdatum : ''
+  });
 
   var fallakteErgebnis = await supabase
     .from('fallakten')
-    .select('bezugsperson, bezugsperson_kontakt, besonderheiten, ziele, ressourcen')
+    .select('id, rechtsgrundlage, kostentraeger, stundenumfang, befristet_bis, ingra_id, vertretung_ingra_id, ressourcen')
     .eq('kind_id', aktuellesKindId)
     .eq('aktiv', true)
     .order('created_at', { ascending: false })
@@ -934,33 +1136,129 @@ async function fallakteLaden(){
     datenCache.fallakte = null;
     return;
   }
+
+  var zuordnungErgebnis = await supabase
+    .from('kinder_zuordnung')
+    .select('ingra_id')
+    .eq('kind_id', aktuellesKindId)
+    .eq('aktiv', true)
+    .limit(1)
+    .maybeSingle();
+
   if (!fallakteErgebnis.data) {
-    fallakteStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
+    fallakteStatusAnzeigen('Noch keine Fallakte für dieses Kind – wird beim Speichern angelegt.');
+    if (zuordnungErgebnis.data && zuordnungErgebnis.data.ingra_id) {
+      document.getElementById('fa-ingra').value = zuordnungErgebnis.data.ingra_id;
+    }
     datenCache.fallakte = null;
-    fallakteFelderSetzen({
-      name: kindErgebnis.data ? kindErgebnis.data.name : '',
-      klasse: kindErgebnis.data ? kindErgebnis.data.klasse : ''
-    });
     return;
   }
 
-  var bezugsperson = fallakteErgebnis.data.bezugsperson || '';
-  if (bezugsperson && fallakteErgebnis.data.bezugsperson_kontakt) {
-    bezugsperson += ' · ' + fallakteErgebnis.data.bezugsperson_kontakt;
-  }
+  var f = fallakteErgebnis.data;
+  aktuelleFallakteId = f.id;
+  document.getElementById('fa-rechtsgrundlage').value = f.rechtsgrundlage || '';
+  document.getElementById('fa-kostentraeger').value = f.kostentraeger || '';
+  document.getElementById('fa-stundenumfang').value = f.stundenumfang || '';
+  document.getElementById('fa-befristet-bis').value = f.befristet_bis || '';
+  document.getElementById('fa-ingra').value = f.ingra_id || (zuordnungErgebnis.data ? zuordnungErgebnis.data.ingra_id : '') || '';
+  document.getElementById('fa-vertretung').value = f.vertretung_ingra_id || '';
+  document.getElementById('fa-ressourcen').value = f.ressourcen || '';
+  befristetHinweisAktualisieren();
+
+  var [bezugspersonenErgebnis, netzwerkErgebnis, zieleErgebnis] = await Promise.all([
+    supabase.from('fallakte_bezugspersonen').select('name, rolle').eq('fallakte_id', f.id).order('created_at'),
+    supabase.from('fallakte_netzwerk').select('name, rolle, kontakt').eq('fallakte_id', f.id).order('created_at'),
+    supabase.from('fall_ziele').select('ziel, indikator, zieldatum').eq('fallakte_id', f.id).order('created_at')
+  ]);
+  (bezugspersonenErgebnis.data || []).forEach(bezugspersonZeileHinzufuegen);
+  (netzwerkErgebnis.data || []).forEach(netzwerkZeileHinzufuegen);
+  (zieleErgebnis.data || []).forEach(zielZeileHinzufuegen);
 
   fallakteStatusAnzeigen('');
-  var felder = {
+  var ingraName = '';
+  var ingraOption = document.getElementById('fa-ingra').selectedOptions[0];
+  if (ingraOption && ingraOption.value) ingraName = ingraOption.textContent;
+  var vertretungName = '';
+  var vertretungOption = document.getElementById('fa-vertretung').selectedOptions[0];
+  if (vertretungOption && vertretungOption.value) vertretungName = vertretungOption.textContent;
+
+  datenCache.fallakte = {
     name: kindErgebnis.data ? kindErgebnis.data.name : '',
     klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
-    bezugsperson: bezugsperson,
-    besonderheiten: fallakteErgebnis.data.besonderheiten,
-    ziele: fallakteErgebnis.data.ziele,
-    ressourcen: fallakteErgebnis.data.ressourcen
+    geburtsdatum: kindErgebnis.data ? kindErgebnis.data.geburtsdatum : '',
+    rechtsgrundlage: f.rechtsgrundlage,
+    kostentraeger: f.kostentraeger,
+    stundenumfang: f.stundenumfang,
+    befristet_bis: f.befristet_bis,
+    ingraName: ingraName,
+    vertretungName: vertretungName,
+    bezugspersonen: bezugspersonenErgebnis.data || [],
+    netzwerk: netzwerkErgebnis.data || [],
+    ziele: zieleErgebnis.data || [],
+    ressourcen: f.ressourcen
   };
-  fallakteFelderSetzen(felder);
-  datenCache.fallakte = felder;
 }
+
+async function fallakteSpeichern(){
+  if (!aktuellesKindId) { fallakteStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
+
+  var { data: userData } = await supabase.auth.getUser();
+
+  var werte = {
+    kind_id: aktuellesKindId,
+    rechtsgrundlage: document.getElementById('fa-rechtsgrundlage').value || null,
+    kostentraeger: document.getElementById('fa-kostentraeger').value.trim() || null,
+    stundenumfang: document.getElementById('fa-stundenumfang').value.trim() || null,
+    befristet_bis: document.getElementById('fa-befristet-bis').value || null,
+    ingra_id: document.getElementById('fa-ingra').value || null,
+    vertretung_ingra_id: document.getElementById('fa-vertretung').value || null,
+    ressourcen: document.getElementById('fa-ressourcen').value.trim() || null,
+    aktiv: true
+  };
+
+  var ergebnis;
+  if (aktuelleFallakteId) {
+    ergebnis = await supabase.from('fallakten').update(werte).eq('id', aktuelleFallakteId).select('id').maybeSingle();
+  } else {
+    werte.erstellt_von = userData && userData.user ? userData.user.id : null;
+    ergebnis = await supabase.from('fallakten').insert(werte).select('id').maybeSingle();
+  }
+
+  if (ergebnis.error || !ergebnis.data) {
+    fallakteStatusAnzeigen('Fallakte konnte nicht gespeichert werden.');
+    return;
+  }
+  aktuelleFallakteId = ergebnis.data.id;
+
+  var bezugspersonen = listenWerteLesen(document.getElementById('fa-bezugspersonen-liste'), BEZUGSPERSON_FELDER);
+  var netzwerk = listenWerteLesen(document.getElementById('fa-netzwerk-liste'), NETZWERK_FELDER);
+  var ziele = listenWerteLesen(document.getElementById('fa-ziele-liste'), ZIEL_FELDER);
+
+  await supabase.from('fallakte_bezugspersonen').delete().eq('fallakte_id', aktuelleFallakteId);
+  if (bezugspersonen.length) {
+    await supabase.from('fallakte_bezugspersonen').insert(bezugspersonen.map(function(b){
+      return { fallakte_id: aktuelleFallakteId, name: b.name, rolle: b.rolle };
+    }));
+  }
+
+  await supabase.from('fallakte_netzwerk').delete().eq('fallakte_id', aktuelleFallakteId);
+  if (netzwerk.length) {
+    await supabase.from('fallakte_netzwerk').insert(netzwerk.map(function(n){
+      return { fallakte_id: aktuelleFallakteId, name: n.name, rolle: n.rolle, kontakt: n.kontakt };
+    }));
+  }
+
+  await supabase.from('fall_ziele').delete().eq('fallakte_id', aktuelleFallakteId);
+  if (ziele.length) {
+    await supabase.from('fall_ziele').insert(ziele.map(function(z){
+      return { fallakte_id: aktuelleFallakteId, ziel: z.ziel, indikator: z.indikator, zieldatum: z.zieldatum };
+    }));
+  }
+
+  fallakteStatusAnzeigen('✔ Gespeichert.');
+  fallakteLaden();
+}
+window.fallakteSpeichern = fallakteSpeichern;
 
 // ── FM-03 Maßnahmenplan ───────────────────────────────────────────
 // WICHTIG: Die reale Tabelle heißt "fall_massnahmen" (nicht "massnahmen") -
@@ -1261,8 +1559,23 @@ function ladePdfVorschau(){
   if (f) {
     html += '<div class="pdf-zeile"><strong>Name:</strong> ' + escapeHtml(f.name || '–') + '</div>';
     html += '<div class="pdf-zeile"><strong>Klasse:</strong> ' + escapeHtml(f.klasse || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Bezugsperson:</strong> ' + escapeHtml(f.bezugsperson || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Ziele:</strong> ' + escapeHtml(f.ziele || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Geburtsdatum:</strong> ' + escapeHtml(f.geburtsdatum || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Rechtsgrundlage:</strong> ' + escapeHtml(RECHTSGRUNDLAGE_LABEL[f.rechtsgrundlage] || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Kostenträger:</strong> ' + escapeHtml(f.kostentraeger || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Stundenumfang:</strong> ' + escapeHtml(f.stundenumfang || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Befristet bis:</strong> ' + escapeHtml(f.befristet_bis || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Zuständige INGRA:</strong> ' + escapeHtml(f.ingraName || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Vertretung:</strong> ' + escapeHtml(f.vertretungName || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Bezugsperson(en):</strong> ' + (f.bezugspersonen.length ? escapeHtml(f.bezugspersonen.map(function(b){ return b.name + (b.rolle ? ' (' + b.rolle + ')' : ''); }).join(', ')) : '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Netzwerk:</strong> ' + (f.netzwerk.length ? escapeHtml(f.netzwerk.map(function(n){ return n.name + (n.rolle ? ' (' + n.rolle + ')' : ''); }).join(', ')) : '–') + '</div>';
+    if (f.ziele.length) {
+      html += '<div class="pdf-zeile"><strong>Ziele:</strong></div>';
+      f.ziele.forEach(function(z){
+        html += '<div class="pdf-zeile">• ' + escapeHtml(z.ziel) + (z.indikator ? ' · Indikator: ' + escapeHtml(z.indikator) : '') + (z.zieldatum ? ' · bis ' + z.zieldatum : '') + '</div>';
+      });
+    } else {
+      html += '<div class="pdf-zeile"><strong>Ziele:</strong> –</div>';
+    }
     html += '<div class="pdf-zeile"><strong>Ressourcen:</strong> ' + escapeHtml(f.ressourcen || '–') + '</div>';
   } else {
     html += '<div class="pdf-zeile tl-leer">Keine aktive Fallakte für dieses Kind gefunden.</div>';

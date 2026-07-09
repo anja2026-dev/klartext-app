@@ -84,70 +84,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
 .brainy-msg strong{color:#E1BEE7;}
 
-/* ── VIEWS: Start & Unterseite ────────────────────── */
-.view{display:none;}
-.view.aktiv{display:block;}
-
-/* ── START-KARTE (Übersicht) ──────────────────────── */
-.start-wrap{max-width:880px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
-.start-header{margin-bottom:1.4rem;}
-.start-modul-tag{
-  display:inline-block;
-  font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  padding:.2rem .6rem;border-radius:4px;
-  background:var(--tk-light);color:var(--tk-color);
-  margin-bottom:.5rem;
-}
-.start-titel{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);font-weight:700;color:var(--kt-primary);line-height:1.2;margin-bottom:.35rem;}
-.start-lead{font-size:.9rem;color:var(--kt-muted);max-width:560px;}
-
-.btn-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
-  gap:.75rem;
-  margin-top:1.2rem;
-}
-.btn-kachel{
-  background:var(--kt-surface);
-  border:2px solid var(--kt-border);
-  border-radius:var(--r-lg);
-  padding:.85rem 1rem;
-  cursor:pointer;
-  text-align:left;
-  display:flex;flex-direction:column;gap:.3rem;
-  transition:transform .15s,box-shadow .15s,border-color .15s;
-  box-shadow:var(--shadow);
-  text-decoration:none;
-  color:inherit;
-}
-.btn-kachel:hover{
-  transform:translateY(-3px);
-  box-shadow:var(--shadow-lg);
-  border-color:var(--tk-color);
-}
-.btn-kachel-nr{
-  font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--tk-color);
-}
-.btn-kachel-emoji{font-size:1.5rem;line-height:1;margin-bottom:.1rem;}
-.btn-kachel-titel{
-  font-family:'Playfair Display',serif;
-  font-size:.95rem;font-weight:700;
-  color:var(--kt-primary);line-height:1.25;
-}
-.btn-kachel-sub{font-size:.72rem;color:var(--kt-muted);line-height:1.4;}
-.btn-kachel-stripe{height:3px;background:var(--tk-color);border-radius:3px;margin-top:.4rem;}
-
-/* ── UNTERSEITE ───────────────────────────────────── */
+/* ── SEITE (eine Seite, keine Unterseiten mehr) ───── */
 .unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
-
-.unter-breadcrumb{
-  display:flex;align-items:center;gap:.4rem;
-  font-size:.7rem;color:var(--kt-muted);margin-bottom:1rem;flex-wrap:wrap;
-}
-.unter-breadcrumb a{color:var(--tk-color);text-decoration:none;font-weight:600;}
-.unter-breadcrumb a:hover{text-decoration:underline;}
-.unter-breadcrumb span{opacity:.5;}
 
 .unter-header{
   background:var(--kt-surface);
@@ -249,25 +187,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
 .brainy-box-text em{font-style:italic;color:var(--kt-muted);}
 
-/* ── NAV-LEISTE (Unterseite) ──────────────────────── */
-.unter-nav{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;
-}
-.unter-nav-btn{
-  display:inline-flex;align-items:center;gap:.3rem;
-  padding:.32rem .8rem;border-radius:20px;
-  border:1.5px solid var(--tk-color);
-  color:var(--tk-color);
-  background:var(--kt-surface);
-  font-size:.72rem;font-weight:700;
-  cursor:pointer;transition:all .15s;
-  text-decoration:none;
-}
-.unter-nav-btn:hover{background:var(--tk-color);color:#fff;}
-.unter-nav-btn.zurueck{border-color:var(--kt-muted);color:var(--kt-muted);}
-.unter-nav-btn.zurueck:hover{background:var(--kt-muted);color:#fff;}
-
 /* ── FOOTER ───────────────────────────────────────── */
 footer{
   background:var(--kt-primary);color:rgba(255,255,255,.55);
@@ -277,12 +196,8 @@ footer{
 footer strong{color:var(--kt-accent);}
 
 @media(max-width:600px){
-  .btn-grid{grid-template-columns:1fr 1fr;}
   .form-row{grid-template-columns:1fr;}
   .form-row.drei{grid-template-columns:1fr;}
-}
-@media(max-width:430px){
-  .btn-grid{grid-template-columns:1fr;}
 }
 @media(max-width:480px){
   .kt-header{height:auto;flex-wrap:wrap;row-gap:.4rem;padding:.6rem clamp(.75rem,4vw,1.25rem);}
@@ -435,11 +350,16 @@ footer strong{color:var(--kt-accent);}
 }
 .toast.sichtbar{opacity:1;transform:translateX(-50%) translateY(0);}
 
+/* PDF-Vorschau (FM-06) */
+.pdf-vorschau{background:#fff;border:1.5px solid var(--kt-border);border-radius:var(--r-md);padding:1rem 1.1rem;font-size:.8rem;line-height:1.6;}
+.pdf-vorschau h3{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--tk-color);margin-bottom:.4rem;padding-bottom:.25rem;border-bottom:2px solid var(--tk-color);}
+.pdf-vorschau .pdf-zeile{margin-bottom:.25rem;}
+.pdf-vorschau .pdf-zeile strong{color:var(--kt-primary);}
+.pdf-vorschau .pdf-sektion{margin-top:.8rem;}
+
 /* Print */
 @media print {
-  .kt-header,.brainy-banner,.tab-bar,.form-actions,.unter-nav,
-  .btn-kachel,.start-wrap,.tab-panel:not(.aktiv),footer{display:none!important;}
-  .view:not(.aktiv){display:none!important;}
+  .kt-header,.brainy-banner,.tab-bar,.form-actions,#kind-auswahl-karte,.tab-panel:not(.aktiv),footer{display:none!important;}
   .form-section{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
   body{background:#fff;font-size:12px;}
   .unter-wrap{padding:.5rem;}
@@ -483,113 +403,47 @@ footer strong{color:var(--kt-accent);}
   </div>
 </div>
 
-<div id="app">
-<div class="view" id="view-case_start">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Fallmanagement
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · Startseite</div>
-        <div class="unter-titel">Fallmanagement-Assistent</div>
-        <div class="unter-sub">Fallakte · Risiko · Maßnahmen · Verlauf · Barometer · PDF</div>
-      </div>
-    </div>
-
-    <div class="btn-grid">
-      <button class="btn-kachel" onclick="zeige('case_file')" style="--kachel-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM · 01</div>
-        <div class="btn-kachel-emoji">📁</div>
-        <div class="btn-kachel-titel">Fallakte öffnen</div>
-        <div class="btn-kachel-sub">Stammdaten · Ziele · Ressourcen</div>
-        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
-      </button>
-      <button class="btn-kachel" onclick="zeige('case_risk')" style="--kachel-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM · 02</div>
-        <div class="btn-kachel-emoji">🚦</div>
-        <div class="btn-kachel-titel">Risiko-Ampel</div>
-        <div class="btn-kachel-sub">Grün · Gelb · Rot · Einschätzung</div>
-        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
-      </button>
-      <button class="btn-kachel" onclick="zeige('case_actions')" style="--kachel-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM · 03</div>
-        <div class="btn-kachel-emoji">📋</div>
-        <div class="btn-kachel-titel">Maßnahmenplan</div>
-        <div class="btn-kachel-sub">Maßnahme · Verantwortung · Status</div>
-        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
-      </button>
-      <button class="btn-kachel" onclick="zeige('case_timeline')" style="--kachel-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM · 04</div>
-        <div class="btn-kachel-emoji">🕐</div>
-        <div class="btn-kachel-titel">Verlauf / Chronik</div>
-        <div class="btn-kachel-sub">Datum · Ereignis · Beobachtung</div>
-        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
-      </button>
-      <button class="btn-kachel" onclick="zeige('case_barometer')" style="--kachel-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM · 05</div>
-        <div class="btn-kachel-emoji">🌡️</div>
-        <div class="btn-kachel-titel">Tages-Barometer</div>
-        <div class="btn-kachel-sub">Stimmung · Belastung · Tagesverlauf</div>
-        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
-      </button>
-      <button class="btn-kachel" onclick="zeige('case_pdf')" style="--kachel-color:#00695C;">
-        <div class="btn-kachel-nr" style="color:#00695C;">FM · 06</div>
-        <div class="btn-kachel-emoji">📄</div>
-        <div class="btn-kachel-titel">PDF-Fallakte</div>
-        <div class="btn-kachel-sub">Export · Drucken · Weitergabe</div>
-        <div class="btn-kachel-stripe" style="background:#00695C;"></div>
-      </button>
-      <button class="btn-kachel" onclick="zeige('case_help')" style="border-color:#1B3A4B;">
-        <div class="btn-kachel-nr" style="color:#1B3A4B;">FM · ℹ</div>
-        <div class="btn-kachel-emoji">📖</div>
-        <div class="btn-kachel-titel">Anleitung Fallmanagement</div>
-        <div class="btn-kachel-sub">Schritt-für-Schritt · Prozessübersicht</div>
-        <div class="btn-kachel-stripe" style="background:#1B3A4B;"></div>
-      </button>
-    </div>
-
-    <div class="brainy-box" style="margin-top:1.2rem;">
-      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
-      <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text">
-          <strong>Brainy unterstützt TK</strong> beim strukturierten Fallmanagement –
-          mit Reflexionsfragen, Risikohinweisen, Maßnahmenimpulsen und Weiterleitungen.
-        </p>
-      </div>
-    </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('start')">← TK-Recruiting Übersicht</button>
+<div class="unter-wrap">
+  <div class="unter-header">
+    <div class="unter-header-stripe" style="background:#00695C;"></div>
+    <div class="unter-header-inner">
+      <div class="unter-nr" style="color:#00695C;">Fallmanagement</div>
+      <div class="unter-titel">Fallmanagement-Assistent</div>
+      <div class="unter-sub">Fallakte · Risiko-Ampel · Maßnahmen · Verlauf · Tages-Barometer · PDF-Fallakte</div>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_file – FALLAKTE / STAMMDATEN
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_file">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Fallakte
+  <!-- Zentrale Kind-Auswahl: gilt für alle Tabs (ein zentraler kind_id-State) -->
+  <div class="karte" id="kind-auswahl-karte">
+    <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
+      <span class="karte-header-icon">👤</span>
+      <span class="karte-header-titel" style="color:#00695C;">Kind-Auswahl</span>
     </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · 01 · Fallakte</div>
-        <div class="unter-titel">Stammdaten & Fallprofil</div>
-        <div class="unter-sub">Name · Klasse · Bezugsperson · Ziele · Ressourcen</div>
+    <div class="karte-body">
+      <div class="fld">
+        <label>Kind (gilt für alle Tabs)</label>
+        <select id="kind-auswahl"></select>
       </div>
+      <div id="kind-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
     </div>
+  </div>
 
+  <div class="tab-bar">
+    <button class="tab-btn aktiv" data-panel="tab-fallakte" onclick="switchTab(this,'tab-fallakte')">📁 Fallakte</button>
+    <button class="tab-btn" data-panel="tab-risiko" onclick="switchTab(this,'tab-risiko')">🚦 Risiko-Ampel</button>
+    <button class="tab-btn" data-panel="tab-massnahmen" onclick="switchTab(this,'tab-massnahmen')">📋 Maßnahmen</button>
+    <button class="tab-btn" data-panel="tab-verlauf" onclick="switchTab(this,'tab-verlauf')">🕐 Verlauf</button>
+    <button class="tab-btn" data-panel="tab-barometer" onclick="switchTab(this,'tab-barometer')">🌡️ Barometer</button>
+    <button class="tab-btn" data-panel="tab-pdf" onclick="switchTab(this,'tab-pdf')">📄 PDF</button>
+    <button class="tab-btn" data-panel="tab-anleitung" onclick="switchTab(this,'tab-anleitung')">📖 Anleitung</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FM-01 · FALLAKTE / STAMMDATEN
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel aktiv" id="tab-fallakte">
     <div id="fa-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
 
-    <!-- Platzhalter – Formular wird in einem folgenden Schritt eingefügt -->
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📁</span>
@@ -614,7 +468,7 @@ footer strong{color:var(--kt-accent);}
           <li><strong>Ziele:</strong> <span id="fa-ziele">– werden hier definiert</span></li>
           <li><strong>Ressourcen:</strong> <span id="fa-ressourcen">– wird hier erfasst</span></li>
         </ul>
-        <div class="hinweis" style="border-color:#00695C;">Formular wird in Schritt 2 vollständig ausgefüllt. Daten werden in localStorage gespeichert.</div>
+        <div class="hinweis" style="border-color:#00695C;">Daten werden aus der Fallakte in Supabase geladen (Tabelle <strong>fallakten</strong>).</div>
       </div>
     </div>
 
@@ -625,33 +479,12 @@ footer strong{color:var(--kt-accent);}
         <p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p>
       </div>
     </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_start')">← Fallmanagement</button>
-      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_risk')">02 Risiko-Ampel →</button>
-    </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_risk – RISIKO-AMPEL
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_risk">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Risiko-Ampel
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · 02 · Risiko-Ampel</div>
-        <div class="unter-titel">Risikoeinschätzung</div>
-        <div class="unter-sub">Grün · Gelb · Rot · Neutrale Kriterien</div>
-      </div>
-    </div>
-
+  <!-- ══════════════════════════════════════════════════════════
+       FM-02 · RISIKO-AMPEL
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-risiko">
     <div class="karte" id="risiko-karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🚦</span>
@@ -665,7 +498,7 @@ footer strong{color:var(--kt-accent);}
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🚦</span>
-        <span class="karte-header-titel" style="color:#00695C;">Ampel-Kriterien (riskStatus)</span>
+        <span class="karte-header-titel" style="color:#00695C;">Ampel-Kriterien</span>
       </div>
       <div class="karte-body">
         <div class="ampel" style="flex-direction:column;gap:.5rem;">
@@ -673,7 +506,6 @@ footer strong{color:var(--kt-accent);}
           <span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – Erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span>
           <span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – Akuter Handlungsbedarf, sofortige Maßnahmen erforderlich</span>
         </div>
-        <div class="hinweis" style="border-color:#00695C;margin-top:.7rem;">Ampel-Einschätzung + Begründung werden in localStorage als <strong>riskStatus</strong> gespeichert.</div>
       </div>
     </div>
     <div class="karte">
@@ -697,36 +529,15 @@ footer strong{color:var(--kt-accent);}
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
         <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder auf Vermutungen?"</em><br><em>„Bei Rot: sofort Rücksprache mit TK-Leitung."</em></p>
+        <p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder auf Vermutungen?"</em><br><em>„Bei Rot: nicht allein entscheiden – intern abstimmen und dokumentieren."</em></p>
       </div>
-    </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_file')">← 01 Fallakte</button>
-      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_actions')">03 Maßnahmenplan →</button>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_actions – MASSNAHMENPLAN
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_actions">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Maßnahmenplan
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · 03 · Maßnahmenplan</div>
-        <div class="unter-titel">Maßnahmen planen & verfolgen</div>
-        <div class="unter-sub">Maßnahme · Verantwortlich · Zeitraum · Status</div>
-      </div>
-    </div>
-
+  <!-- ══════════════════════════════════════════════════════════
+       FM-03 · MASSNAHMENPLAN
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-massnahmen">
     <div class="karte" id="massnahmen-karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📌</span>
@@ -740,32 +551,29 @@ footer strong{color:var(--kt-accent);}
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📋</span>
-        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: actions</span>
+        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: fall_massnahmen</span>
       </div>
       <div class="karte-body">
         <ul class="stw-list">
           <li><strong>Maßnahme:</strong> Was wird konkret getan?</li>
           <li><strong>Verantwortlich:</strong> Wer ist zuständig?</li>
           <li><strong>Zeitraum:</strong> Von – Bis (Datum)</li>
-          <li><strong>Status:</strong> Offen · In Bearbeitung · Abgeschlossen · Pausiert</li>
+          <li><strong>Status:</strong> Offen · In Bearbeitung · Abgeschlossen</li>
           <li><strong>Notiz:</strong> Kurze Ergänzung / Rückmeldung</li>
         </ul>
-        <div class="hinweis" style="border-color:#00695C;">Maßnahmen werden als Array in localStorage (<strong>actions</strong>) gespeichert. Mehrere Einträge möglich.</div>
       </div>
     </div>
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🎯</span>
-        <span class="karte-header-titel" style="color:#00695C;">Status-Übersicht (Platzhalter)</span>
+        <span class="karte-header-titel" style="color:#00695C;">Status-Übersicht</span>
       </div>
       <div class="karte-body">
         <div class="ampel">
           <span class="ampel-chip blau">📌 Offen</span>
           <span class="ampel-chip gelb">⚙️ In Bearbeitung</span>
           <span class="ampel-chip gruen">✔ Abgeschlossen</span>
-          <span class="ampel-chip rot" style="background:#F3E5F5;color:#6A1B9A;">⏸ Pausiert</span>
         </div>
-        <div class="hinweis" style="border-color:#00695C;margin-top:.6rem;">Formulare und Logik werden in Schritt 2 eingefügt.</div>
       </div>
     </div>
 
@@ -776,33 +584,12 @@ footer strong{color:var(--kt-accent);}
         <p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p>
       </div>
     </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_risk')">← 02 Risiko-Ampel</button>
-      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_timeline')">04 Verlauf →</button>
-    </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_timeline – VERLAUF / CHRONIK
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_timeline">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Verlauf / Chronik
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · 04 · Verlauf</div>
-        <div class="unter-titel">Chronik & Verlaufsdokumentation</div>
-        <div class="unter-sub">Datum · Ereignis · Beobachtung · Rückmeldung</div>
-      </div>
-    </div>
-
+  <!-- ══════════════════════════════════════════════════════════
+       FM-04 · VERLAUF / CHRONIK
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-verlauf">
     <div class="karte" id="timeline-karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🕐</span>
@@ -816,7 +603,7 @@ footer strong{color:var(--kt-accent);}
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🕐</span>
-        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: timeline</span>
+        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: fall_timeline</span>
       </div>
       <div class="karte-body">
         <ul class="stw-list">
@@ -826,7 +613,6 @@ footer strong{color:var(--kt-accent);}
           <li><strong>Rückmeldung:</strong> Reaktion, Konsequenz, nächster Schritt</li>
           <li><strong>Erstellt von:</strong> TK (Kürzel / Funktion)</li>
         </ul>
-        <div class="hinweis" style="border-color:#00695C;">Einträge werden chronologisch als Array in localStorage (<strong>timeline</strong>) gespeichert.</div>
       </div>
     </div>
     <div class="karte">
@@ -851,47 +637,20 @@ footer strong{color:var(--kt-accent);}
         <p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em><br><em>„Wann wurde der letzte Verlaufseintrag gemacht?"</em></p>
       </div>
     </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_actions')">← 03 Maßnahmenplan</button>
-      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_barometer')">05 Barometer →</button>
-    </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_barometer – TAGES-BAROMETER
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_barometer">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Tages-Barometer
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · 05 · Barometer</div>
-        <div class="unter-titel">Tagesstatus & Barometer</div>
-        <div class="unter-sub">Stimmung · Belastung · Tagesverlauf</div>
-      </div>
-    </div>
-
-    <div class="karte">
+  <!-- ══════════════════════════════════════════════════════════
+       FM-05 · TAGES-BAROMETER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-barometer">
+    <div class="karte" id="barometer-karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🌡️</span>
-        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: barometer</span>
+        <span class="karte-header-titel" style="color:#00695C;">Tages-Barometer</span>
       </div>
       <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Datum:</strong> Tageseintrag (täglich)</li>
-          <li><strong>Stimmung:</strong> sehr gut · gut · neutral · angespannt · belastet</li>
-          <li><strong>Belastung:</strong> gering · mittel · hoch · sehr hoch</li>
-          <li><strong>Tagesverlauf:</strong> ruhig · ereignisreich · schwierig · Ausnahmesituation</li>
-          <li><strong>Kurznotiz:</strong> Optional – ein Satz zum Tag</li>
-        </ul>
-        <div class="hinweis" style="border-color:#00695C;">Barometer-Einträge werden täglich in localStorage (<strong>barometer</strong>) gespeichert und bilden den Verlauf ab.</div>
+        <div id="barometer-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+        <ul class="stw-list" id="barometer-liste"></ul>
       </div>
     </div>
     <div class="karte">
@@ -902,9 +661,9 @@ footer strong{color:var(--kt-accent);}
       <div class="karte-body">
         <ul class="stw-list">
           <li>Schneller Tagesstatus – auch für kurze Dokumentation geeignet</li>
-          <li>Muster erkennen: Wann ist die Belastung regelmäßig hoch?</li>
-          <li>Gesprächsgrundlage für Fachberatung / TK-Leitung</li>
+          <li>Muster erkennen: Wann treten häufiger belastete Einträge auf?</li>
           <li>Ergänzung zur Chronik – kein Ersatz</li>
+          <li>Einträge stammen aus der Kind-Selbstauskunft bzw. der INGRA-Einschätzung</li>
         </ul>
       </div>
     </div>
@@ -913,52 +672,15 @@ footer strong{color:var(--kt-accent);}
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
         <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Was hat heute den Ausschlag gegeben – positiv oder negativ?"</em><br><em>„Sehe ich ein Muster in den letzten Einträgen?"</em></p>
+        <p class="brainy-box-text"><em>„Was hat sich im Barometer-Verlauf verändert?"</em><br><em>„Sehe ich ein Muster in den letzten Einträgen?"</em></p>
       </div>
-    </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_timeline')">← 04 Verlauf</button>
-      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_pdf')">06 PDF-Fallakte →</button>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_pdf – PDF-FALLAKTE
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_pdf">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> PDF-Fallakte
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#00695C;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr" style="color:#00695C;">FM · 06 · PDF-Export</div>
-        <div class="unter-titel">PDF-Fallakte erstellen</div>
-        <div class="unter-sub">Export · Drucken · Weitergabe · Datenschutz</div>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📄</span>
-        <span class="karte-header-titel" style="color:#00695C;">Was wird exportiert?</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Stammdaten</strong> (caseFile) – Name, Klasse, Bezugsperson, Ziele</li>
-          <li><strong>Risiko-Ampel</strong> (riskStatus) – aktuelle Einschätzung + Begründung</li>
-          <li><strong>Maßnahmenplan</strong> (actions) – alle Einträge mit Status</li>
-          <li><strong>Chronik</strong> (timeline) – alle Verlaufseinträge chronologisch</li>
-          <li><strong>Barometer</strong> (barometer) – Tagesstatus-Übersicht (optional)</li>
-        </ul>
-        <div class="hinweis" style="border-color:#00695C;">PDF-Export und Druckfunktion werden in Schritt 2 implementiert. Datenschutzhinweis wird automatisch eingefügt.</div>
-      </div>
-    </div>
+  <!-- ══════════════════════════════════════════════════════════
+       FM-06 · PDF-FALLAKTE
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-pdf">
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🔒</span>
@@ -974,6 +696,15 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">📄</span><span class="form-section-titel">Vorschau der Fallakte</span></div>
+      <div class="form-body">
+        <div class="pdf-vorschau" id="pdf-inhalt">
+          <p class="tl-leer">Kein Kind ausgewählt.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="brainy-box">
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
@@ -982,41 +713,25 @@ footer strong{color:var(--kt-accent);}
       </div>
     </div>
 
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_barometer')">← 05 Barometer</button>
-      <button class="unter-nav-btn" style="border-color:#00695C;color:#00695C;" onclick="zeige('case_help')">Anleitung →</button>
+    <div class="form-actions">
+      <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
+      <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
     </div>
   </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════════
-     FALLMANAGEMENT · case_help – ANLEITUNG FALLMANAGEMENT
-══════════════════════════════════════════════════════════ -->
-<div class="view" id="view-case_help">
-  <div class="unter-wrap">
-    <div class="unter-breadcrumb">
-      <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> <a href="#" onclick="zeige('case_start');return false;">Fallmanagement</a>
-      <span>›</span> Anleitung
-    </div>
-    <div class="unter-header">
-      <div class="unter-header-stripe" style="background:#1B3A4B;"></div>
-      <div class="unter-header-inner">
-        <div class="unter-nr">FM · Anleitung</div>
-        <div class="unter-titel">Fallmanagement – Schritt für Schritt</div>
-        <div class="unter-sub">Neutral · Prozessbezogen · Ohne trägerspezifische Inhalte</div>
-      </div>
-    </div>
-
+  <!-- ══════════════════════════════════════════════════════════
+       ANLEITUNG FALLMANAGEMENT
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-anleitung">
     <div class="karte">
       <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Prozessübersicht</span></div>
       <div class="karte-body">
         <ol class="schritt-list">
           <li><strong>Fallakte anlegen</strong> – Stammdaten, Bezugsperson, Besonderheiten, Ziele und Ressourcen erfassen</li>
-          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot sofort Rücksprache</li>
+          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot intern abstimmen</li>
           <li><strong>Maßnahmen planen</strong> – konkrete Schritte, Verantwortlichkeiten und Zeiträume festlegen</li>
           <li><strong>Verlauf dokumentieren</strong> – Ereignisse zeitnah, beobachtungsbasiert und neutral eintragen</li>
-          <li><strong>Tages-Barometer pflegen</strong> – kurzen Tagesstatus erfassen, Muster erkennen</li>
+          <li><strong>Tages-Barometer einsehen</strong> – Verlauf der Kind-Barometer-Einträge zur Musterbildung nutzen</li>
           <li><strong>PDF exportieren</strong> – Fallakte für Weitergabe oder Archiv erstellen (datenschutzkonform)</li>
         </ol>
       </div>
@@ -1028,25 +743,25 @@ footer strong{color:var(--kt-accent);}
         <ul class="stw-list">
           <li>Beobachtungen statt Bewertungen – sachlich, neutral, nachvollziehbar</li>
           <li>Zeitnah dokumentieren – möglichst am gleichen Tag</li>
-          <li>Ampel-Rot: immer Rücksprache mit TK-Leitung, nie allein entscheiden</li>
+          <li>Ampel-Rot: immer intern abstimmen, nie allein entscheiden</li>
           <li>Datenschutz: nur zweckbezogene Daten, Einwilligung vor Weitergabe</li>
           <li>Maßnahmen: konkret, zeitgebunden, verantwortlich zugeordnet</li>
-          <li>Alle Daten werden lokal gespeichert – regelmäßig sichern</li>
+          <li>Fallmanagement bleibt intern für TK – keine Weiterleitung an Dritte</li>
         </ul>
       </div>
     </div>
 
     <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">💾</span><span class="karte-header-titel">Datenstruktur-Übersicht</span></div>
+      <div class="karte-header"><span class="karte-header-icon">💾</span><span class="karte-header-titel">Datenherkunft</span></div>
       <div class="karte-body">
         <ul class="stw-list">
-          <li><strong>caseFile</strong> – Stammdaten (Name, Klasse, Bezugsperson, Ziele, Ressourcen)</li>
-          <li><strong>riskStatus</strong> – Ampel-Einschätzung (grün / gelb / rot + Begründung)</li>
-          <li><strong>actions</strong> – Maßnahmenplan (Array: Maßnahme, Verantwortlich, Zeitraum, Status)</li>
-          <li><strong>timeline</strong> – Chronik (Array: Datum, Ereignis, Beobachtung, Rückmeldung)</li>
-          <li><strong>barometer</strong> – Tagesstatus (Array: Datum, Stimmung, Belastung, Verlauf)</li>
+          <li><strong>Fallakte</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakten</code></li>
+          <li><strong>Risiko-Ampel</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_risikostatus</code></li>
+          <li><strong>Maßnahmenplan</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_massnahmen</code></li>
+          <li><strong>Verlauf</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_timeline</code></li>
+          <li><strong>Tages-Barometer</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">barometer_kind</code></li>
         </ul>
-        <div class="hinweis">Alle Strukturen werden in <strong>localStorage</strong> gespeichert. Schlüssel: <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-caseFile</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fm-riskStatus</code> etc.</div>
+        <div class="hinweis">Alle Daten werden direkt aus Supabase geladen (kein localStorage).</div>
       </div>
     </div>
 
@@ -1054,111 +769,56 @@ footer strong{color:var(--kt-accent);}
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
         <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen, Risikohinweisen und Weiterleitungsimpulsen – direkt im jeweiligen Bereich abrufbar.</p>
+        <p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen und Risikohinweisen – direkt im jeweiligen Tab abrufbar.</p>
       </div>
-    </div>
-
-    <div class="unter-nav">
-      <button class="unter-nav-btn zurueck" onclick="zeige('case_start')">← Fallmanagement Übersicht</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     MINI-KARTE: ANLEITUNG RECRUITING
-══════════════════════════════════════════════════════════ -->
-
-</div>
-
 <script>
-var views = {
-  'case_start':           'view-case_start',
-  'case_file':            'view-case_file',
-  'case_risk':            'view-case_risk',
-  'case_actions':         'view-case_actions',
-  'case_timeline':        'view-case_timeline',
-  'case_barometer':       'view-case_barometer',
-  'case_pdf':             'view-case_pdf',
-  'case_help':            'view-case_help'
+// Alte Unterseiten-Namen bleiben als Hash gültig, damit bestehende Links
+// (z.B. DASHBOARD_mobile.html#case_risk) weiterhin auf den passenden Tab
+// zeigen.
+var hashZuPanel = {
+  'case_file':      'tab-fallakte',
+  'case_risk':      'tab-risiko',
+  'case_actions':   'tab-massnahmen',
+  'case_timeline':  'tab-verlauf',
+  'case_barometer': 'tab-barometer',
+  'case_pdf':       'tab-pdf'
 };
-function zeige(key) {
-  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('aktiv'); });
-  var ziel = document.getElementById(views[key] || 'view-start');
-  if (ziel) { ziel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
-  // Phase 3 / Schritt 3.2.3: Timeline aus Supabase laden, sobald die
-  // Verlaufs-Ansicht geöffnet wird (window.timelineLaden aus dem
-  // type="module"-Script weiter unten in der Datei).
-  if (key === 'case_timeline' && window.timelineLaden) window.timelineLaden();
-  // Phase 3 / Schritt 3.2.4: Risiko-Verlauf aus Supabase laden, sobald
-  // die Risiko-Ansicht geöffnet wird (window.risikoLaden, siehe unten).
-  if (key === 'case_risk' && window.risikoLaden) window.risikoLaden();
-}
 
-// ── Tab-System ─────────────────────────────────────────────
+// ── Tab-System (identisch zum Muster aus Fallmanagement-Assistent.html) ──
 function switchTab(btn, panelId) {
-  var bar = btn.closest('.tab-bar');
-  var wrap = btn.closest('.unter-wrap');
-  bar.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
-  wrap.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
+  document.querySelectorAll('.tab-bar .tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
   btn.classList.add('aktiv');
   var panel = document.getElementById(panelId);
-  if (panel) panel.classList.add('aktiv');
-}
-
-// ── Speichern (localStorage) ───────────────────────────────
-function speichern(bereich) {
-  try {
-    var view = document.getElementById('view-' + (bereich === 'gespräch' ? 'gespräch' : bereich));
-    if (!view) return;
-    var data = {};
-    view.querySelectorAll('input,select,textarea').forEach(function(el) {
-      var key = el.id || el.name || el.placeholder || Math.random();
-      if (el.type === 'checkbox' || el.type === 'radio') {
-        if (el.checked) data[key] = el.value || 'checked';
-      } else {
-        data[key] = el.value;
-      }
-    });
-    localStorage.setItem('tkr-' + bereich, JSON.stringify(data));
-    zeigeToast('✔ Gespeichert');
-  } catch(e) { zeigeToast('⚠ Konnte nicht speichern'); }
-}
-
-function formReset(panelId) {
-  var panel = document.getElementById(panelId);
-  if (!panel) return;
-  panel.querySelectorAll('input,select,textarea').forEach(function(el) {
-    if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
-    else el.value = '';
-  });
-  zeigeToast('↺ Formular zurückgesetzt');
-}
-
-// ── Toast ──────────────────────────────────────────────────
-function zeigeToast(msg) {
-  var t = document.getElementById('toast');
-  if (!t) { t = document.createElement('div'); t.id='toast'; t.className='toast'; document.body.appendChild(t); }
-  t.textContent = msg;
-  t.classList.add('sichtbar');
-  setTimeout(function(){ t.classList.remove('sichtbar'); }, 2200);
+  if (panel) { panel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
+  // FM-06 fasst Daten aus allen anderen Tabs zusammen - beim Öffnen neu
+  // aufbauen (window.ladePdfVorschau aus dem type="module"-Script unten).
+  if (panelId === 'tab-pdf' && window.ladePdfVorschau) window.ladePdfVorschau();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   var hash = window.location.hash.replace('#','');
-  if (hash && views[hash]) { zeige(hash); } else { zeige('case_start'); }
+  var panelId = hashZuPanel[hash];
+  if (panelId) {
+    var btn = document.querySelector('.tab-btn[data-panel="' + panelId + '"]');
+    if (btn) switchTab(btn, panelId);
+  }
 });
 </script>
 
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
-// Phase 3 / Schritt 3.7: kind_id wird nun sowohl aus dem URL-Parameter
-// ?kind=<ID> (z.B. bei Ankunft von DASHBOARD_mobile.html/PR#7 oder
-// Kinderverwaltung.html/PR#17) als auch aus sessionStorage.klartext_kind_id
-// ermittelt. Ist ?kind= gesetzt, hat es Vorrang und wird zusätzlich in
-// sessionStorage gespiegelt, damit die interne Ansichten-Navigation
-// (zeige()) danach konsistent bleibt, ohne dass Buttons/Links verändert
-// werden müssen.
+// kind_id wird sowohl aus dem URL-Parameter ?kind=<ID> (z.B. bei Ankunft von
+// DASHBOARD_mobile.html oder Kinderverwaltung.html) als auch aus
+// sessionStorage.klartext_kind_id ermittelt. Ist ?kind= gesetzt, hat es
+// Vorrang und wird zusätzlich in sessionStorage gespiegelt, damit die
+// zentrale Kind-Auswahl oben auf der Seite (kindAuswahlLaden) danach
+// konsistent vorbelegt ist.
 function kindIdErmitteln(){
   try {
     var ausUrl = new URLSearchParams(window.location.search).get('kind');
@@ -1170,10 +830,60 @@ function kindIdErmitteln(){
   } catch(e) { return ''; }
 }
 
-// Phase 3 / Schritt 3.2.1: Fallakte-Daten aus Supabase laden, basierend
-// auf sessionStorage.klartext_kind_id. Nur die case_file-Ansicht (Fallakte)
-// - keine Maßnahmen-/Timeline-/Risiko-Logik, keine Strukturänderung.
-//
+// Zentraler kind_id-State: EINE Kind-Auswahl oben auf der Seite gilt für
+// alle 6 Tabs. Ersetzt die vorher pro Tab wiederholte, eigenständige
+// kindIdErmitteln()-Abfrage und die pro Tab wiederholte
+// "Kein Kind ausgewählt"-Anzeige (jetzt zentral über #kind-status).
+var aktuellesKindId = '';
+var datenCache = { fallakte: null, risiko: [], massnahmen: [], timeline: [], barometer: [] };
+
+function kindStatusAnzeigen(text){
+  var el = document.getElementById('kind-status');
+  if (!el) return;
+  if (text) { el.textContent = text; el.style.display = 'block'; }
+  else { el.style.display = 'none'; }
+}
+
+async function kindAuswahlLaden(){
+  var select = document.getElementById('kind-auswahl');
+  var leer = document.createElement('option');
+  leer.value = '';
+  leer.textContent = '– Kind wählen –';
+  select.appendChild(leer);
+
+  var { data: kinder, error } = await supabase.from('kinder').select('id, name, klasse').order('name');
+  if (!error) {
+    (kinder || []).forEach(function(k){
+      var o = document.createElement('option');
+      o.value = k.id;
+      o.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+      select.appendChild(o);
+    });
+  }
+
+  var vorausgewaehlt = kindIdErmitteln();
+  if (vorausgewaehlt) select.value = vorausgewaehlt;
+  aktuellesKindId = select.value;
+
+  select.addEventListener('change', function(){
+    aktuellesKindId = select.value;
+    try { sessionStorage.setItem('klartext_kind_id', aktuellesKindId); } catch(e){}
+    alleDatenLaden();
+  });
+
+  alleDatenLaden();
+}
+
+function alleDatenLaden(){
+  kindStatusAnzeigen(aktuellesKindId ? '' : 'Kein Kind ausgewählt — bitte oben ein Kind wählen.');
+  fallakteLaden();
+  risikoLaden();
+  massnahmenLaden();
+  timelineLaden();
+  barometerLaden();
+}
+
+// ── FM-01 Fallakte ────────────────────────────────────────────────
 // WICHTIG: Die reale Tabelle heißt "fallakten" (nicht "fallakte") -
 // siehe supabase/migrations/0004_fallmanagement.sql. Ein Kind kann
 // mehrere Fallakten haben; geladen wird die aktuell aktive
@@ -1201,19 +911,19 @@ function fallakteFelderSetzen(werte){
 }
 
 async function fallakteLaden(){
-  var kindId = kindIdErmitteln();
-
-  if (!kindId) {
-    fallakteStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+  if (!aktuellesKindId) {
+    fallakteStatusAnzeigen('');
+    fallakteFelderSetzen({});
+    datenCache.fallakte = null;
     return;
   }
 
-  var kindErgebnis = await supabase.from('kinder').select('name, klasse').eq('id', kindId).maybeSingle();
+  var kindErgebnis = await supabase.from('kinder').select('name, klasse').eq('id', aktuellesKindId).maybeSingle();
 
   var fallakteErgebnis = await supabase
     .from('fallakten')
     .select('bezugsperson, bezugsperson_kontakt, besonderheiten, ziele, ressourcen')
-    .eq('kind_id', kindId)
+    .eq('kind_id', aktuellesKindId)
     .eq('aktiv', true)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -1221,10 +931,12 @@ async function fallakteLaden(){
 
   if (fallakteErgebnis.error) {
     fallakteStatusAnzeigen('Fallakte konnte nicht geladen werden.');
+    datenCache.fallakte = null;
     return;
   }
   if (!fallakteErgebnis.data) {
     fallakteStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
+    datenCache.fallakte = null;
     fallakteFelderSetzen({
       name: kindErgebnis.data ? kindErgebnis.data.name : '',
       klasse: kindErgebnis.data ? kindErgebnis.data.klasse : ''
@@ -1238,26 +950,22 @@ async function fallakteLaden(){
   }
 
   fallakteStatusAnzeigen('');
-  fallakteFelderSetzen({
+  var felder = {
     name: kindErgebnis.data ? kindErgebnis.data.name : '',
     klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
     bezugsperson: bezugsperson,
     besonderheiten: fallakteErgebnis.data.besonderheiten,
     ziele: fallakteErgebnis.data.ziele,
     ressourcen: fallakteErgebnis.data.ressourcen
-  });
+  };
+  fallakteFelderSetzen(felder);
+  datenCache.fallakte = felder;
 }
-fallakteLaden();
 
-// Phase 3 / Schritt 3.2.2: Maßnahmen-Daten aus Supabase laden, basierend
-// auf sessionStorage.klartext_kind_id. Nur die case_actions-Ansicht
-// (Maßnahmenplan) - keine Timeline-/Risiko-/Fallakte-Logik.
-//
+// ── FM-03 Maßnahmenplan ───────────────────────────────────────────
 // WICHTIG: Die reale Tabelle heißt "fall_massnahmen" (nicht "massnahmen") -
-// siehe supabase/migrations/0004_fallmanagement.sql. Der Status-Platzhalter
-// in der UI nennt 4 Zustände (inkl. "Pausiert"), das DB-Check-Constraint
-// erlaubt aber nur 3: 'offen','in_arbeit','abgeschlossen' - "Pausiert"
-// kann mit echten Daten daher nie vorkommen.
+// siehe supabase/migrations/0004_fallmanagement.sql. Das DB-Check-Constraint
+// erlaubt nur 3 Status: 'offen','in_arbeit','abgeschlossen'.
 var MASSNAHMEN_STATUS_LABEL = { offen: 'Offen', in_arbeit: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
 
 function massnahmenStatusAnzeigen(text){
@@ -1283,40 +991,38 @@ function massnahmenRendern(liste){
 }
 
 async function massnahmenLaden(){
-  var kindId = kindIdErmitteln();
-
-  if (!kindId) {
-    massnahmenStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+  if (!aktuellesKindId) {
+    massnahmenStatusAnzeigen('');
     massnahmenRendern([]);
+    datenCache.massnahmen = [];
     return;
   }
 
   var ergebnis = await supabase
     .from('fall_massnahmen')
     .select('titel, beschreibung, kategorie, prioritaet, status, zeitraum_von, zeitraum_bis, profiles:verantwortlich(vorname, nachname)')
-    .eq('kind_id', kindId)
+    .eq('kind_id', aktuellesKindId)
     .order('created_at', { ascending: false });
 
   if (ergebnis.error) {
     massnahmenStatusAnzeigen('Maßnahmen konnten nicht geladen werden.');
     massnahmenRendern([]);
+    datenCache.massnahmen = [];
     return;
   }
   if (!ergebnis.data || !ergebnis.data.length) {
     massnahmenStatusAnzeigen('Keine Maßnahmen für dieses Kind gefunden.');
     massnahmenRendern([]);
+    datenCache.massnahmen = [];
     return;
   }
 
   massnahmenStatusAnzeigen('');
   massnahmenRendern(ergebnis.data);
+  datenCache.massnahmen = ergebnis.data;
 }
-massnahmenLaden();
 
-// Phase 3 / Schritt 3.2.3: Timeline-Daten aus Supabase laden, sobald die
-// case_timeline-Ansicht (Verlauf) geöffnet wird - keine Risiko-/Chat-/
-// Weiterleitungs-Logik.
-//
+// ── FM-04 Verlauf / Chronik ───────────────────────────────────────
 // WICHTIG: "fall_timeline" hat keine kind_id-Spalte - nur fallakte_id
 // (siehe supabase/migrations/0004_fallmanagement.sql). Die aktive
 // Fallakte des Kindes wird daher zuerst aufgelöst (gleiche Abfrage wie
@@ -1343,18 +1049,17 @@ function timelineRendern(liste){
 }
 
 async function timelineLaden(){
-  var kindId = kindIdErmitteln();
-
-  if (!kindId) {
-    timelineStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+  if (!aktuellesKindId) {
+    timelineStatusAnzeigen('');
     timelineRendern([]);
+    datenCache.timeline = [];
     return;
   }
 
   var fallakteRef = await supabase
     .from('fallakten')
     .select('id')
-    .eq('kind_id', kindId)
+    .eq('kind_id', aktuellesKindId)
     .eq('aktiv', true)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -1363,6 +1068,7 @@ async function timelineLaden(){
   if (fallakteRef.error || !fallakteRef.data) {
     timelineStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
     timelineRendern([]);
+    datenCache.timeline = [];
     return;
   }
 
@@ -1375,28 +1081,25 @@ async function timelineLaden(){
   if (ergebnis.error) {
     timelineStatusAnzeigen('Verlauf konnte nicht geladen werden.');
     timelineRendern([]);
+    datenCache.timeline = [];
     return;
   }
   if (!ergebnis.data || !ergebnis.data.length) {
     timelineStatusAnzeigen('Noch keine Verlaufseinträge für diese Fallakte.');
     timelineRendern([]);
+    datenCache.timeline = [];
     return;
   }
 
   timelineStatusAnzeigen('');
   timelineRendern(ergebnis.data);
+  datenCache.timeline = ergebnis.data;
 }
-window.timelineLaden = timelineLaden;
 
-// Phase 3 / Schritt 3.2.4: Risiko-Daten aus Supabase laden, sobald die
-// case_risk-Ansicht (Risiko-Ampel) geöffnet wird - keine Maßnahmen-/
-// Timeline-/Chat-/Weiterleitungs-Logik.
-//
+// ── FM-02 Risiko-Ampel ────────────────────────────────────────────
 // WICHTIG: Die reale Tabelle heißt "fall_risikostatus" (nicht
 // "fall_risiko") - siehe supabase/migrations/0004_fallmanagement.sql.
-// Wie bei der Timeline hat sie keine kind_id-Spalte, nur fallakte_id -
-// die aktive Fallakte des Kindes wird daher zuerst aufgelöst (gleiche
-// Abfrage wie in fallakteLaden/timelineLaden).
+// Wie bei der Timeline hat sie keine kind_id-Spalte, nur fallakte_id.
 var AMPEL_LABEL = { gruen: '✔ Grün', gelb: '⚑ Gelb', rot: '✗ Rot' };
 
 function risikoStatusAnzeigen(text){
@@ -1420,18 +1123,17 @@ function risikoRendern(liste){
 }
 
 async function risikoLaden(){
-  var kindId = kindIdErmitteln();
-
-  if (!kindId) {
-    risikoStatusAnzeigen('Kein Kind ausgewählt — bitte im Dashboard ein Kind wählen.');
+  if (!aktuellesKindId) {
+    risikoStatusAnzeigen('');
     risikoRendern([]);
+    datenCache.risiko = [];
     return;
   }
 
   var fallakteRef = await supabase
     .from('fallakten')
     .select('id')
-    .eq('kind_id', kindId)
+    .eq('kind_id', aktuellesKindId)
     .eq('aktiv', true)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -1440,6 +1142,7 @@ async function risikoLaden(){
   if (fallakteRef.error || !fallakteRef.data) {
     risikoStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
     risikoRendern([]);
+    datenCache.risiko = [];
     return;
   }
 
@@ -1452,18 +1155,164 @@ async function risikoLaden(){
   if (ergebnis.error) {
     risikoStatusAnzeigen('Risiko-Verlauf konnte nicht geladen werden.');
     risikoRendern([]);
+    datenCache.risiko = [];
     return;
   }
   if (!ergebnis.data || !ergebnis.data.length) {
     risikoStatusAnzeigen('Noch keine Risiko-Einschätzung für diese Fallakte.');
     risikoRendern([]);
+    datenCache.risiko = [];
     return;
   }
 
   risikoStatusAnzeigen('');
   risikoRendern(ergebnis.data);
+  datenCache.risiko = ergebnis.data;
 }
-window.risikoLaden = risikoLaden;
+
+// ── FM-05 Tages-Barometer ─────────────────────────────────────────
+// Liest die bestehende Tabelle "barometer_kind" (siehe
+// supabase/migrations/0007_barometer.sql), befüllt von
+// BAROMETER_KIND.html (Kind-Selbstauskunft) und BAROMETER_INGRA.html.
+// Rein lesend - keine neue Eingabemaske für Fallmanagement.
+var FARBE_LABEL = { gruen: '🟢 Grün', gelb: '🟡 Gelb', orange: '🟠 Orange', rot: '🔴 Rot', grau: '⚪ Grau' };
+var BAROMETER_QUELLE_LABEL = { 'kind-self': 'Kind (Selbstauskunft)', 'ingra': 'INGRA' };
+
+function barometerStatusAnzeigen(text){
+  var status = document.getElementById('barometer-status');
+  if (!status) return;
+  if (text) { status.textContent = text; status.style.display = 'block'; }
+  else { status.style.display = 'none'; }
+}
+
+function barometerRendern(liste){
+  var el = document.getElementById('barometer-liste');
+  if (!el) return;
+  if (!liste.length) { el.innerHTML = ''; return; }
+  el.innerHTML = liste.map(function(b){
+    var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '';
+    return '<li><strong>' + datum + ':</strong> ' + (FARBE_LABEL[b.farbe] || b.farbe) +
+      ' · Quelle: ' + (BAROMETER_QUELLE_LABEL[b.source] || b.source) +
+      (b.notiz ? ' · ' + b.notiz : '') + '</li>';
+  }).join('');
+}
+
+async function barometerLaden(){
+  if (!aktuellesKindId) {
+    barometerStatusAnzeigen('');
+    barometerRendern([]);
+    datenCache.barometer = [];
+    return;
+  }
+
+  var ergebnis = await supabase
+    .from('barometer_kind')
+    .select('farbe, notiz, source, created_at')
+    .eq('kind_id', aktuellesKindId)
+    .order('created_at', { ascending: false })
+    .limit(30);
+
+  if (ergebnis.error) {
+    barometerStatusAnzeigen('Barometer-Verlauf konnte nicht geladen werden.');
+    barometerRendern([]);
+    datenCache.barometer = [];
+    return;
+  }
+  if (!ergebnis.data || !ergebnis.data.length) {
+    barometerStatusAnzeigen('Noch keine Barometer-Einträge für dieses Kind.');
+    barometerRendern([]);
+    datenCache.barometer = [];
+    return;
+  }
+
+  barometerStatusAnzeigen('');
+  barometerRendern(ergebnis.data);
+  datenCache.barometer = ergebnis.data;
+}
+
+// ── FM-06 PDF-Fallakte ────────────────────────────────────────────
+// Fasst die bereits geladenen Daten der anderen 5 Tabs (datenCache)
+// zu einer Druckvorschau zusammen - keine eigene Datenquelle.
+function escapeHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function ladePdfVorschau(){
+  var container = document.getElementById('pdf-inhalt');
+  if (!container) return;
+
+  if (!aktuellesKindId) {
+    container.innerHTML = '<p class="tl-leer">Kein Kind ausgewählt — bitte oben ein Kind wählen.</p>';
+    return;
+  }
+
+  var f = datenCache.fallakte;
+  var risiko = datenCache.risiko;
+  var massnahmen = datenCache.massnahmen;
+  var timeline = datenCache.timeline;
+  var barometer = datenCache.barometer;
+
+  var html = '<h3>Fallakte – Übersicht</h3>';
+
+  html += '<div class="pdf-sektion"><strong>Stammdaten</strong>';
+  if (f) {
+    html += '<div class="pdf-zeile"><strong>Name:</strong> ' + escapeHtml(f.name || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Klasse:</strong> ' + escapeHtml(f.klasse || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Bezugsperson:</strong> ' + escapeHtml(f.bezugsperson || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Ziele:</strong> ' + escapeHtml(f.ziele || '–') + '</div>';
+    html += '<div class="pdf-zeile"><strong>Ressourcen:</strong> ' + escapeHtml(f.ressourcen || '–') + '</div>';
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine aktive Fallakte für dieses Kind gefunden.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Risiko-Ampel</strong>';
+  if (risiko && risiko.length) {
+    html += '<div class="pdf-zeile"><strong>Aktuell:</strong> ' + (AMPEL_LABEL[risiko[0].ampel] || risiko[0].ampel) + (risiko[0].begruendung ? ' · ' + escapeHtml(risiko[0].begruendung) : '') + '</div>';
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Risiko-Einschätzung erfasst.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Maßnahmenplan (' + massnahmen.length + ')</strong>';
+  if (massnahmen.length) {
+    massnahmen.forEach(function(m){
+      html += '<div class="pdf-zeile">• ' + escapeHtml(m.titel) + ' — ' + (MASSNAHMEN_STATUS_LABEL[m.status] || m.status) + '</div>';
+    });
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Maßnahmen erfasst.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Verlauf / Chronik (' + timeline.length + ' Einträge)</strong>';
+  if (timeline.length) {
+    timeline.forEach(function(t){
+      html += '<div class="pdf-zeile">• ' + (t.datum || '–') + ' — ' + escapeHtml(t.ereignis || '') + '</div>';
+    });
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Verlaufseinträge erfasst.</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="pdf-sektion"><strong>Tages-Barometer (' + barometer.length + ' Einträge)</strong>';
+  if (barometer.length) {
+    barometer.forEach(function(b){
+      var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '–';
+      html += '<div class="pdf-zeile">• ' + datum + ' — ' + (FARBE_LABEL[b.farbe] || b.farbe) + '</div>';
+    });
+  } else {
+    html += '<div class="pdf-zeile tl-leer">Keine Barometer-Einträge erfasst.</div>';
+  }
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+window.ladePdfVorschau = ladePdfVorschau;
+
+kindAuswahlLaden();
 </script>
 </body>
 </html>

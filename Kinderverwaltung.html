@@ -756,7 +756,7 @@ function sbKinderRendern(kinder){
 
 async function sbKinderLaden(){
   var ergebnis = await supabase
-    .from('kinder')
+    .from('Kinder')
     .select('id, name, klasse, bedarfsart')
     .eq('aktiv', true)
     .order('name', { ascending: true });

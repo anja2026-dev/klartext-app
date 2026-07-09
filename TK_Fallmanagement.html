@@ -158,8 +158,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 }
 .ampel-chip.gruen{background:#E8F5E9;color:#2E7D32;}
 .ampel-chip.gelb{background:#FFF8E1;color:#F57F17;}
+.ampel-chip.orange{background:#FFF3E0;color:#E65100;}
 .ampel-chip.rot{background:#FDEAEA;color:#C62828;}
+.ampel-chip.grau{background:#ECEFF1;color:#455A64;}
 .ampel-chip.blau{background:#E3F2FD;color:#1565C0;}
+
+/* Barometer-Mini-Chart: ein farbiges Feld pro Eintrag der letzten 14 Tage */
+.barometer-strip{display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.7rem;}
+.barometer-marker{width:22px;height:22px;border-radius:5px;flex-shrink:0;}
+.barometer-marker.gruen{background:#2E7D32;}
+.barometer-marker.gelb{background:#F57F17;}
+.barometer-marker.orange{background:#E65100;}
+.barometer-marker.rot{background:#C62828;}
+.barometer-marker.grau{background:#78909C;}
 
 /* Hinweis-Box */
 .hinweis{
@@ -310,8 +321,12 @@ footer strong{color:var(--kt-accent);}
 .ampel-radio .opt-gruen:has(input:checked){background:#2E7D32;color:#fff;}
 .ampel-radio .opt-gelb{background:#FFF8E1;color:#F57F17;border-color:#FFE082;}
 .ampel-radio .opt-gelb:has(input:checked){background:#F57F17;color:#fff;}
+.ampel-radio .opt-orange{background:#FFF3E0;color:#E65100;border-color:#FFCC80;}
+.ampel-radio .opt-orange:has(input:checked){background:#E65100;color:#fff;}
 .ampel-radio .opt-rot{background:#FDEAEA;color:#C62828;border-color:#EF9A9A;}
 .ampel-radio .opt-rot:has(input:checked){background:#C62828;color:#fff;}
+.ampel-radio .opt-grau{background:#ECEFF1;color:#455A64;border-color:#B0BEC5;}
+.ampel-radio .opt-grau:has(input:checked){background:#455A64;color:#fff;}
 
 /* Weiterleitung Checkboxen */
 .wl-group{display:flex;flex-wrap:wrap;gap:.4rem;}
@@ -710,16 +725,39 @@ footer strong{color:var(--kt-accent);}
        FM-05 · TAGES-BAROMETER
   ══════════════════════════════════════════════════════════ -->
   <div class="tab-panel" id="tab-barometer">
+    <div id="barometer-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">🌡️</span><span class="form-section-titel">Heutiger Eintrag</span></div>
+      <div class="form-body">
+        <div class="ampel-radio">
+          <label class="opt-gruen"><input type="radio" name="ba-farbe" value="gruen"> 🟢 Grün · Stabil</label>
+          <label class="opt-gelb"><input type="radio" name="ba-farbe" value="gelb"> 🟡 Gelb · Angespannt</label>
+          <label class="opt-orange"><input type="radio" name="ba-farbe" value="orange"> 🟠 Orange · Belastet</label>
+          <label class="opt-rot"><input type="radio" name="ba-farbe" value="rot"> 🔴 Rot · Akute Krise</label>
+          <label class="opt-grau"><input type="radio" name="ba-farbe" value="grau"> ⚪ Grau · Erschöpft</label>
+        </div>
+        <div class="fld" style="margin-top:.6rem;">
+          <label>Notiz (optional)</label>
+          <input type="text" id="ba-notiz" placeholder="Kurze Ergänzung">
+        </div>
+        <div class="form-actions">
+          <button class="act-btn primary" onclick="barometerSpeichern()">💾 Eintrag speichern</button>
+        </div>
+      </div>
+    </div>
+
     <div class="karte" id="barometer-karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🌡️</span>
-        <span class="karte-header-titel" style="color:#00695C;">Tages-Barometer</span>
+        <span class="karte-header-icon">📊</span>
+        <span class="karte-header-titel" style="color:#00695C;">Verlauf der letzten 14 Tage</span>
       </div>
       <div class="karte-body">
-        <div id="barometer-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+        <div class="barometer-strip" id="barometer-strip"></div>
         <ul class="stw-list" id="barometer-liste"></ul>
       </div>
     </div>
+
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">📊</span>
@@ -730,7 +768,7 @@ footer strong{color:var(--kt-accent);}
           <li>Schneller Tagesstatus – auch für kurze Dokumentation geeignet</li>
           <li>Muster erkennen: Wann treten häufiger belastete Einträge auf?</li>
           <li>Ergänzung zur Chronik – kein Ersatz</li>
-          <li>Einträge stammen aus der Kind-Selbstauskunft bzw. der INGRA-Einschätzung</li>
+          <li>Einträge stammen aus der Kind-Selbstauskunft, der INGRA-Einschätzung oder direkt von TK</li>
         </ul>
       </div>
     </div>
@@ -1651,12 +1689,22 @@ async function risikoLaden(){
 }
 
 // ── FM-05 Tages-Barometer ─────────────────────────────────────────
-// Liest die bestehende Tabelle "barometer_kind" (siehe
-// supabase/migrations/0007_barometer.sql), befüllt von
-// BAROMETER_KIND.html (Kind-Selbstauskunft) und BAROMETER_INGRA.html.
-// Rein lesend - keine neue Eingabemaske für Fallmanagement.
-var FARBE_LABEL = { gruen: '🟢 Grün', gelb: '🟡 Gelb', orange: '🟠 Orange', rot: '🔴 Rot', grau: '⚪ Grau' };
-var BAROMETER_QUELLE_LABEL = { 'kind-self': 'Kind (Selbstauskunft)', 'ingra': 'INGRA' };
+// Liest/schreibt die bestehende Tabelle "barometer_kind" (siehe
+// supabase/migrations/0007_barometer.sql) - bereits voll kompatibel:
+// farbe deckt exakt die geforderten 5 Stufen ab, RLS gewährt TK/Admin
+// bereits vollen Zugriff. Einzige Erweiterung: source erlaubt jetzt
+// zusätzlich 'tk' (siehe 0030_barometer_kind_tk_source.sql), damit ein
+// direkt hier im Fallmanagement erfasster Eintrag korrekt zugeordnet
+// bleibt statt fälschlich als 'ingra' gespeichert zu werden.
+var FARBE_LABEL = {
+  gruen: '🟢 Grün · Stabil',
+  gelb: '🟡 Gelb · Angespannt',
+  orange: '🟠 Orange · Belastet',
+  rot: '🔴 Rot · Akute Krise',
+  grau: '⚪ Grau · Erschöpft'
+};
+var BAROMETER_QUELLE_LABEL = { 'kind-self': 'Kind (Selbstauskunft)', 'ingra': 'INGRA', 'tk': 'TK' };
+var BAROMETER_TAGE_ZURUECK = 14;
 
 function barometerStatusAnzeigen(text){
   var status = document.getElementById('barometer-status');
@@ -1665,7 +1713,21 @@ function barometerStatusAnzeigen(text){
   else { status.style.display = 'none'; }
 }
 
-function barometerRendern(liste){
+// Mini-Chart: ein farbiges Feld pro Eintrag, chronologisch (älteste
+// links, neueste rechts) - macht Muster auf einen Blick sichtbar,
+// ohne eine Chart-Bibliothek einzubinden.
+function barometerStripRendern(liste){
+  var el = document.getElementById('barometer-strip');
+  if (!el) return;
+  var chronologisch = liste.slice().reverse();
+  el.innerHTML = chronologisch.map(function(b){
+    var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '';
+    var titel = datum + ': ' + (FARBE_LABEL[b.farbe] || b.farbe) + (b.notiz ? ' – ' + b.notiz : '');
+    return '<div class="barometer-marker ' + b.farbe + '" title="' + titel.replace(/"/g, '&quot;') + '"></div>';
+  }).join('');
+}
+
+function barometerListeRendern(liste){
   var el = document.getElementById('barometer-liste');
   if (!el) return;
   if (!liste.length) { el.innerHTML = ''; return; }
@@ -1678,37 +1740,68 @@ function barometerRendern(liste){
 }
 
 async function barometerLaden(){
+  document.querySelectorAll('input[name="ba-farbe"]').forEach(function(r){ r.checked = false; });
+  document.getElementById('ba-notiz').value = '';
+
   if (!aktuellesKindId) {
     barometerStatusAnzeigen('');
-    barometerRendern([]);
+    barometerStripRendern([]);
+    barometerListeRendern([]);
     datenCache.barometer = [];
     return;
   }
 
+  var seit = new Date(Date.now() - BAROMETER_TAGE_ZURUECK * 86400000).toISOString();
   var ergebnis = await supabase
     .from('barometer_kind')
     .select('farbe, notiz, source, created_at')
     .eq('kind_id', aktuellesKindId)
-    .order('created_at', { ascending: false })
-    .limit(30);
+    .gte('created_at', seit)
+    .order('created_at', { ascending: false });
 
   if (ergebnis.error) {
     barometerStatusAnzeigen('Barometer-Verlauf konnte nicht geladen werden.');
-    barometerRendern([]);
+    barometerStripRendern([]);
+    barometerListeRendern([]);
     datenCache.barometer = [];
     return;
   }
   if (!ergebnis.data || !ergebnis.data.length) {
-    barometerStatusAnzeigen('Noch keine Barometer-Einträge für dieses Kind.');
-    barometerRendern([]);
+    barometerStatusAnzeigen('Noch keine Barometer-Einträge in den letzten ' + BAROMETER_TAGE_ZURUECK + ' Tagen.');
+    barometerStripRendern([]);
+    barometerListeRendern([]);
     datenCache.barometer = [];
     return;
   }
 
   barometerStatusAnzeigen('');
-  barometerRendern(ergebnis.data);
+  barometerStripRendern(ergebnis.data);
+  barometerListeRendern(ergebnis.data);
   datenCache.barometer = ergebnis.data;
 }
+
+async function barometerSpeichern(){
+  if (!aktuellesKindId) { barometerStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
+
+  var gewaehlt = document.querySelector('input[name="ba-farbe"]:checked');
+  if (!gewaehlt) { barometerStatusAnzeigen('Bitte eine Stufe auswählen.'); return; }
+
+  var ergebnis = await supabase.from('barometer_kind').insert({
+    kind_id: aktuellesKindId,
+    farbe: gewaehlt.value,
+    notiz: document.getElementById('ba-notiz').value.trim() || null,
+    source: 'tk'
+  });
+
+  if (ergebnis.error) {
+    barometerStatusAnzeigen('Eintrag konnte nicht gespeichert werden.');
+    return;
+  }
+
+  barometerStatusAnzeigen('✔ Gespeichert.');
+  barometerLaden();
+}
+window.barometerSpeichern = barometerSpeichern;
 
 // ── FM-06 PDF-Fallakte ────────────────────────────────────────────
 // Fasst die bereits geladenen Daten der anderen 5 Tabs (datenCache)

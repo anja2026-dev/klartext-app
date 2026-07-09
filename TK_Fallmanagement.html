@@ -819,8 +819,8 @@ footer strong{color:var(--kt-accent);}
     </div>
 
     <div class="form-actions">
-      <button class="act-btn primary" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
-      <button class="act-btn secondary" onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
+      <button class="act-btn ghost" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
+      <button class="act-btn primary" onclick="pdfExportieren()">📄 PDF erzeugen/exportieren</button>
     </div>
   </div>
 
@@ -1887,20 +1887,42 @@ function ladePdfVorschau(){
   }
   html += '</div>';
 
-  html += '<div class="pdf-sektion"><strong>Tages-Barometer (' + barometer.length + ' Einträge)</strong>';
+  html += '<div class="pdf-sektion"><strong>Tages-Barometer (letzte 14 Tage, ' + barometer.length + ' Einträge)</strong>';
   if (barometer.length) {
+    // barometer ist absteigend sortiert (neueste zuerst) - Index 0 ist
+    // damit bereits der aktuelle Status. Der Trend ist bewusst nur eine
+    // chronologische Farbfolge (kein errechneter Score), um keine
+    // fachliche Bewertung vorwegzunehmen.
+    var aktuellerDatum = barometer[0].created_at ? new Date(barometer[0].created_at).toLocaleDateString('de-DE') : '–';
+    html += '<div class="pdf-zeile"><strong>Aktueller Status:</strong> ' + (FARBE_LABEL[barometer[0].farbe] || barometer[0].farbe) + ' (' + aktuellerDatum + ')</div>';
+    var trendEmoji = { gruen: '🟢', gelb: '🟡', orange: '🟠', rot: '🔴', grau: '⚪' };
+    var trend = barometer.slice().reverse().map(function(b){ return trendEmoji[b.farbe] || '?'; }).join(' ');
+    html += '<div class="pdf-zeile"><strong>Trend (chronologisch):</strong> ' + trend + '</div>';
     barometer.forEach(function(b){
       var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '–';
-      html += '<div class="pdf-zeile">• ' + datum + ' — ' + (FARBE_LABEL[b.farbe] || b.farbe) + '</div>';
+      html += '<div class="pdf-zeile">• ' + datum + ' — ' + (FARBE_LABEL[b.farbe] || b.farbe) + (b.notiz ? ': ' + escapeHtml(b.notiz) : '') + '</div>';
     });
   } else {
-    html += '<div class="pdf-zeile tl-leer">Keine Barometer-Einträge erfasst.</div>';
+    html += '<div class="pdf-zeile tl-leer">Keine Barometer-Einträge in den letzten 14 Tagen.</div>';
   }
   html += '</div>';
 
   container.innerHTML = html;
 }
 window.ladePdfVorschau = ladePdfVorschau;
+
+// PDF-Export: im gesamten Repo gibt es keine PDF-Bibliothek (kein jsPDF/
+// html2pdf/pdfmake) - jede Seite mit Exportbedarf nutzt stattdessen den
+// Browser-Druckdialog (window.print(), "Als PDF speichern"), siehe z.B.
+// @media print weiter oben in dieser Datei. Gleiche Methode hier, keine
+// neue Bibliothek eingeführt. Vorschau wird vor dem Drucken einmal
+// aktualisiert, damit der Export garantiert die aktuellen Tab-Daten
+// zeigt statt einer möglicherweise veralteten Vorschau.
+function pdfExportieren(){
+  ladePdfVorschau();
+  window.print();
+}
+window.pdfExportieren = pdfExportieren;
 
 kindAuswahlLaden();
 </script>

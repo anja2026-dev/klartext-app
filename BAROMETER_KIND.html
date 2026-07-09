@@ -246,7 +246,7 @@ function aktualisiereBegruessung(name){
 
 (async function(){
   try{
-    var { data: kinder, error } = await supabase.from('kinder').select('id, name, klasse').eq('aktiv', true);
+    var { data: kinder, error } = await supabase.from('Kinder').select('id, name, klasse').eq('aktiv', true);
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
     var select = document.getElementById('kind-select');

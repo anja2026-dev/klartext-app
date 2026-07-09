@@ -956,7 +956,7 @@ async function kindAuswahlLaden(){
   leer.textContent = '– Kind wählen –';
   select.appendChild(leer);
 
-  var { data: kinder, error } = await supabase.from('kinder').select('id, name, klasse').order('name');
+  var { data: kinder, error } = await supabase.from('Kinder').select('id, name, klasse').order('name');
   if (!error) {
     (kinder || []).forEach(function(k){
       var o = document.createElement('option');
@@ -1173,11 +1173,13 @@ async function fallakteLaden(){
     return;
   }
 
-  var kindErgebnis = await supabase.from('kinder').select('name, klasse, geburtsdatum').eq('id', aktuellesKindId).maybeSingle();
+  // TODO: Geburtsdatum fehlt in der Kinder-Tabelle (neues Schema) - ggf.
+  // per Migration ergänzen. Bis dahin bleibt das Feld leer.
+  var kindErgebnis = await supabase.from('Kinder').select('name, klasse').eq('id', aktuellesKindId).maybeSingle();
   fallakteFelderSetzen({
     name: kindErgebnis.data ? kindErgebnis.data.name : '',
     klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
-    geburtsdatum: kindErgebnis.data ? kindErgebnis.data.geburtsdatum : ''
+    geburtsdatum: ''
   });
 
   var fallakteErgebnis = await supabase
@@ -1425,7 +1427,7 @@ async function massnahmenLaden(){
 async function massnahmenSpeichern(){
   if (!aktuellesKindId) { massnahmenStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
 
-  var kindErgebnis = await supabase.from('kinder').select('traeger_id').eq('id', aktuellesKindId).maybeSingle();
+  var kindErgebnis = await supabase.from('Kinder').select('traeger_id').eq('id', aktuellesKindId).maybeSingle();
   if (kindErgebnis.error || !kindErgebnis.data) {
     massnahmenStatusAnzeigen('Maßnahmen konnten nicht gespeichert werden (Träger nicht ermittelbar).');
     return;

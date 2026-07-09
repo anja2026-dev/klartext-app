@@ -35,7 +35,7 @@
 import { supabase } from './supabase/auth_client.js';
 
 async function ladeDropdowns() {
-  const { data: kinder } = await supabase.from('kinder').select('id, name');
+  const { data: kinder } = await supabase.from('Kinder').select('id, name');
   const kindSelect = document.getElementById('kind_id');
   (kinder || []).forEach(k => {
     const o = document.createElement('option');

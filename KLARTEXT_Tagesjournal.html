@@ -337,19 +337,33 @@ import { supabase } from './supabase/auth_client.js';
     return data.user ? data.user.id : null;
   }
 
+  // Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung.
+  // Die INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte
+  // Person wird daher über die Login-E-Mail (sessionStorage.klartext_name,
+  // trotz des Namens tatsächlich die E-Mail - siehe KLARTEXT_Login.html)
+  // mit ihrer Zeile in "INGRA" abgeglichen.
+  async function aktuelleIngraId(){
+    var email = sessionStorage.getItem('klartext_name') || '';
+    if (!email) return null;
+    var { data, error } = await supabase.from('INGRA').select('id').eq('email', email).maybeSingle();
+    if (error || !data) return null;
+    return data.id;
+  }
+
   // ───────────────────────────────────────────
   // Kinderliste aus Supabase
-  // Ersetzt localStorage['children'] -> Tabelle "kinder"
+  // Tabelle "Kinder" (großes K, neues Schema) statt "kinder" +
+  // kinder_zuordnung - Zuordnung läuft jetzt direkt über Kinder.ingra_id.
   // ───────────────────────────────────────────
   async function kinderListeLaden(){
     var select = document.getElementById('kindSelect');
-    var userId = await aktuellerUserId();
-    // Nur Kinder, die dieser INGRA über kinder_zuordnung zugeordnet sind
-    // (ersetzt die vorherige ungefilterte Liste aller Kinder).
+    var ingraId = await aktuelleIngraId();
     var { data: kinder, error } = await supabase
-      .from('kinder')
-      .select('id, name, klasse, kinder_zuordnung!inner()')
-      .eq('kinder_zuordnung.ingra_id', userId);
+      .from('Kinder')
+      .select('id, name, klasse')
+      .eq('ingra_id', ingraId)
+      .eq('aktiv', true)
+      .order('name');
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
     select.innerHTML = '';

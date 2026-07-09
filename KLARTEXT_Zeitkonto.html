@@ -309,6 +309,18 @@ async function aktuellerUserId(){
   return data.user ? data.user.id : null;
 }
 
+// Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
+// INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
+// wird daher über die Login-E-Mail (sessionStorage.klartext_name, trotz
+// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "INGRA" abgeglichen.
+async function aktuelleIngraId(){
+  const email = sessionStorage.getItem('klartext_name') || '';
+  if (!email) return null;
+  const { data, error } = await supabase.from('INGRA').select('id').eq('email', email).maybeSingle();
+  if (error || !data) return null;
+  return data.id;
+}
+
 // ═══════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════
@@ -685,29 +697,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderTypChips();
   await renderAlles();
 
-  // Kind-Dropdown dynamisch aus /children befüllen (Etappe 6.1)
+  // Kind-Dropdown aus Supabase "Kinder" (großes K, neues Schema) befüllen,
+  // gefiltert auf die eingeloggte INGRA über Kinder.ingra_id - ersetzt die
+  // vorherige Firebase-Quelle (/children).
   try {
-    db.ref('children').once('value').then(function(snapshot) {
-      const kinder = snapshot.val() || {};
+    const ingraId = await aktuelleIngraId();
+    const { data: kinder, error } = await supabase
+      .from('Kinder')
+      .select('id, name, klasse')
+      .eq('ingra_id', ingraId)
+      .eq('aktiv', true)
+      .order('name');
+    if (!error) {
       const select = document.getElementById('e-kind');
-      Object.keys(kinder).forEach(function(childId) {
-        const kind = kinder[childId];
-        if (kind.active === false) return;
+      (kinder || []).forEach(function(kind) {
         const option = document.createElement('option');
-        option.value = childId;
-        option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+        option.value = kind.id;
+        option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '');
         select.appendChild(option);
-        zkKindNamen[childId] = kind.name; // für lesbare Anzeige in der Liste
+        zkKindNamen[kind.id] = kind.name; // für lesbare Anzeige in der Liste
       });
 
       // Etappe 4.6: Kind-Vorauswahl aus ?kind=<ID> bzw. sessionStorage.klartext_kind_id
       var vorausgewaehlteId = kindIdErmitteln();
-      if (vorausgewaehlteId && kinder[vorausgewaehlteId]) {
+      if (vorausgewaehlteId && zkKindNamen[vorausgewaehlteId]) {
         select.value = vorausgewaehlteId;
       }
 
       renderAlles(); // Liste neu zeichnen, damit Namen statt IDs angezeigt werden
-    });
+    }
   } catch(e) {}
 
   ['e-von','e-bis','e-pause'].forEach(id =>

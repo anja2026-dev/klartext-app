@@ -250,15 +250,19 @@ footer strong{color:var(--kt-accent);}
 .form-row.full{grid-template-columns:1fr;}
 .form-row.drei{grid-template-columns:1fr 1fr 1fr;}
 
-/* Mehrfach-Listen (Bezugspersonen, Netzwerk, Ziele) */
-.liste-zeile{display:flex;gap:.4rem;margin-bottom:.4rem;align-items:center;}
-.liste-zeile input{
+/* Mehrfach-Listen (Bezugspersonen, Netzwerk, Ziele, Maßnahmen) */
+.liste-zeile{display:flex;gap:.4rem;margin-bottom:.4rem;align-items:center;padding:.2rem;border-radius:var(--r-sm);}
+.liste-zeile input,.liste-zeile select{
   flex:1;font-family:'DM Sans',sans-serif;font-size:.82rem;
   padding:.38rem .6rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);
   background:var(--kt-paper);color:var(--kt-ink);outline:none;
 }
-.liste-zeile input:focus{border-color:var(--tk-color);}
+.liste-zeile input:focus,.liste-zeile select:focus{border-color:var(--tk-color);}
 .liste-zeile-entfernen{flex-shrink:0;background:none;border:none;color:#C62828;font-weight:700;cursor:pointer;font-size:.85rem;padding:.2rem .5rem;}
+.liste-zeile.ueberfaellig{background:rgba(198,40,40,.08);border:1.5px solid #C62828;}
+.liste-zeile.ueberfaellig input,.liste-zeile.ueberfaellig select{border-color:#C62828;}
+.liste-kopfzeile{display:flex;gap:.4rem;margin-bottom:.3rem;padding:0 .2rem;}
+.liste-kopfzeile span{flex:1;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--kt-muted);}
 
 .fld{display:flex;flex-direction:column;gap:.2rem;}
 .fld label{
@@ -617,31 +621,23 @@ footer strong{color:var(--kt-accent);}
        FM-03 · MASSNAHMENPLAN
   ══════════════════════════════════════════════════════════ -->
   <div class="tab-panel" id="tab-massnahmen">
-    <div class="karte" id="massnahmen-karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📌</span>
-        <span class="karte-header-titel" style="color:#00695C;">Maßnahmen</span>
-      </div>
-      <div class="karte-body">
-        <div id="massnahmen-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
-        <ul class="stw-list" id="massnahmen-liste"></ul>
-      </div>
-    </div>
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📋</span>
-        <span class="karte-header-titel" style="color:#00695C;">Datenstruktur: fall_massnahmen</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Maßnahme:</strong> Was wird konkret getan?</li>
-          <li><strong>Verantwortlich:</strong> Wer ist zuständig?</li>
-          <li><strong>Zeitraum:</strong> Von – Bis (Datum)</li>
-          <li><strong>Status:</strong> Offen · In Bearbeitung · Abgeschlossen</li>
-          <li><strong>Notiz:</strong> Kurze Ergänzung / Rückmeldung</li>
-        </ul>
+    <div id="massnahmen-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">📌</span><span class="form-section-titel">Maßnahmen</span></div>
+      <div class="form-body">
+        <div class="liste-kopfzeile">
+          <span>Maßnahme</span><span>Verantwortlich</span><span>Von</span><span>Bis</span><span>Status</span><span>Notiz</span>
+        </div>
+        <div id="fa-massnahmen-liste"></div>
+        <button type="button" class="act-btn ghost" onclick="massnahmeZeileHinzufuegen()">+ Maßnahme hinzufügen</button>
       </div>
     </div>
+
+    <div class="form-actions">
+      <button class="act-btn primary" onclick="massnahmenSpeichern()">💾 Speichern</button>
+    </div>
+
     <div class="karte">
       <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
         <span class="karte-header-icon">🎯</span>
@@ -652,6 +648,7 @@ footer strong{color:var(--kt-accent);}
           <span class="ampel-chip blau">📌 Offen</span>
           <span class="ampel-chip gelb">⚙️ In Bearbeitung</span>
           <span class="ampel-chip gruen">✔ Abgeschlossen</span>
+          <span class="ampel-chip rot">⚠ Überfällig (Zeitraum bis abgelaufen, nicht abgeschlossen)</span>
         </div>
       </div>
     </div>
@@ -950,7 +947,7 @@ async function kindAuswahlLaden(){
     alleDatenLaden();
   });
 
-  await ingraDropdownsLaden();
+  await Promise.all([ingraDropdownsLaden(), profilDropdownsLaden()]);
   alleDatenLaden();
 }
 
@@ -1011,9 +1008,20 @@ function listenZeileErzeugen(container, felder, werte){
   var zeile = document.createElement('div');
   zeile.className = 'liste-zeile';
   felder.forEach(function(f){
-    var input = document.createElement('input');
-    input.type = f.type || 'text';
-    input.placeholder = f.placeholder || '';
+    var input;
+    if (f.type === 'select') {
+      input = document.createElement('select');
+      (f.options || []).forEach(function(opt){
+        var o = document.createElement('option');
+        o.value = opt.value;
+        o.textContent = opt.label;
+        input.appendChild(o);
+      });
+    } else {
+      input = document.createElement('input');
+      input.type = f.type || 'text';
+      input.placeholder = f.placeholder || '';
+    }
     input.dataset.feld = f.key;
     input.value = werte[f.key] || '';
     zeile.appendChild(input);
@@ -1025,6 +1033,7 @@ function listenZeileErzeugen(container, felder, werte){
   entfernen.onclick = function(){ zeile.remove(); };
   zeile.appendChild(entfernen);
   container.appendChild(zeile);
+  return zeile;
 }
 
 function listenWerteLesen(container, felder){
@@ -1091,6 +1100,20 @@ async function ingraDropdownsLaden(){
       o.textContent = name;
       select.appendChild(o);
     });
+  });
+}
+
+// ── Profil-Dropdown für "Verantwortlich" (FM-03 Maßnahmen) - alle
+// Profile, nicht nur INGRA, da Verantwortung für eine Maßnahme bei
+// jeder Rolle liegen kann. Array wird in-place befüllt, damit
+// MASSNAHME_FELDER (unten) dieselbe Referenz bereits vor dem Laden
+// halten kann. ──────────────────────────────────────────────────────
+var PROFIL_OPTIONEN = [{ value: '', label: '– bitte wählen –' }];
+async function profilDropdownsLaden(){
+  var { data: profile, error } = await supabase.from('profiles').select('id, vorname, nachname').order('vorname');
+  if (error) return;
+  (profile || []).forEach(function(p){
+    PROFIL_OPTIONEN.push({ value: p.id, label: [p.vorname, p.nachname].filter(Boolean).join(' ') || p.id });
   });
 }
 
@@ -1262,9 +1285,27 @@ window.fallakteSpeichern = fallakteSpeichern;
 
 // ── FM-03 Maßnahmenplan ───────────────────────────────────────────
 // WICHTIG: Die reale Tabelle heißt "fall_massnahmen" (nicht "massnahmen") -
-// siehe supabase/migrations/0004_fallmanagement.sql. Das DB-Check-Constraint
-// erlaubt nur 3 Status: 'offen','in_arbeit','abgeschlossen'.
+// siehe supabase/migrations/0004_fallmanagement.sql. Sie existierte
+// bereits (Phase 3) mit passenden Spalten (titel, verantwortlich,
+// zeitraum_von/bis, status, beschreibung) und eigenem RLS
+// (traeger_id-basiert) - keine neue Tabelle/Migration nötig. "Notiz"
+// aus der Aufgabenstellung entspricht der bestehenden Spalte
+// "beschreibung"; das Status-Check-Constraint erlaubt nur
+// 'offen'/'in_arbeit'/'abgeschlossen' (nicht "in_bearbeitung" wie in
+// der Aufgabenstellung benannt) - Anzeige-Label bleibt "In Bearbeitung".
 var MASSNAHMEN_STATUS_LABEL = { offen: 'Offen', in_arbeit: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
+var MASSNAHME_FELDER = [
+  { key: 'titel', placeholder: 'Maßnahme' },
+  { key: 'verantwortlich', type: 'select', options: PROFIL_OPTIONEN },
+  { key: 'zeitraum_von', type: 'date' },
+  { key: 'zeitraum_bis', type: 'date' },
+  { key: 'status', type: 'select', options: [
+    { value: 'offen', label: 'Offen' },
+    { value: 'in_arbeit', label: 'In Bearbeitung' },
+    { value: 'abgeschlossen', label: 'Abgeschlossen' }
+  ] },
+  { key: 'beschreibung', placeholder: 'Notiz' }
+];
 
 function massnahmenStatusAnzeigen(text){
   var status = document.getElementById('massnahmen-status');
@@ -1273,52 +1314,117 @@ function massnahmenStatusAnzeigen(text){
   else { status.style.display = 'none'; }
 }
 
-function massnahmenRendern(liste){
-  var el = document.getElementById('massnahmen-liste');
-  if (!el) return;
-  if (!liste.length) { el.innerHTML = ''; return; }
-  el.innerHTML = liste.map(function(m){
-    var verantwortlich = m.profiles ? [m.profiles.vorname, m.profiles.nachname].filter(Boolean).join(' ') : '';
-    var zeitraum = (m.zeitraum_von || '–') + ' – ' + (m.zeitraum_bis || '–');
-    var statusLabel = MASSNAHMEN_STATUS_LABEL[m.status] || m.status;
-    return '<li><strong>' + m.titel + ':</strong> ' + (m.beschreibung || '') +
-      ' · Verantwortlich: ' + (verantwortlich || '–') +
-      ' · Zeitraum: ' + zeitraum +
-      ' · Status: ' + statusLabel + '</li>';
-  }).join('');
+// Überfällig: zeitraum_bis liegt in der Vergangenheit und der Status
+// ist nicht "abgeschlossen" - wird bei jeder Änderung von Bis-Datum
+// oder Status neu geprüft.
+function massnahmeZeileAktualisieren(zeile){
+  var statusInput = zeile.querySelector('[data-feld="status"]');
+  var bisInput = zeile.querySelector('[data-feld="zeitraum_bis"]');
+  var ueberfaellig = false;
+  if (bisInput && bisInput.value && statusInput && statusInput.value !== 'abgeschlossen') {
+    var heute = new Date(); heute.setHours(0,0,0,0);
+    var bis = new Date(bisInput.value + 'T00:00:00');
+    ueberfaellig = bis < heute;
+  }
+  zeile.classList.toggle('ueberfaellig', ueberfaellig);
 }
 
+function massnahmeZeileHinzufuegen(werte){
+  var zeile = listenZeileErzeugen(document.getElementById('fa-massnahmen-liste'), MASSNAHME_FELDER, werte);
+  var statusInput = zeile.querySelector('[data-feld="status"]');
+  var bisInput = zeile.querySelector('[data-feld="zeitraum_bis"]');
+  statusInput.addEventListener('change', function(){ massnahmeZeileAktualisieren(zeile); });
+  bisInput.addEventListener('change', function(){ massnahmeZeileAktualisieren(zeile); });
+  massnahmeZeileAktualisieren(zeile);
+}
+window.massnahmeZeileHinzufuegen = massnahmeZeileHinzufuegen;
+
 async function massnahmenLaden(){
+  document.getElementById('fa-massnahmen-liste').innerHTML = '';
+
   if (!aktuellesKindId) {
     massnahmenStatusAnzeigen('');
-    massnahmenRendern([]);
     datenCache.massnahmen = [];
     return;
   }
 
   var ergebnis = await supabase
     .from('fall_massnahmen')
-    .select('titel, beschreibung, kategorie, prioritaet, status, zeitraum_von, zeitraum_bis, profiles:verantwortlich(vorname, nachname)')
+    .select('titel, beschreibung, status, zeitraum_von, zeitraum_bis, verantwortlich, profiles:verantwortlich(vorname, nachname)')
     .eq('kind_id', aktuellesKindId)
     .order('created_at', { ascending: false });
 
   if (ergebnis.error) {
     massnahmenStatusAnzeigen('Maßnahmen konnten nicht geladen werden.');
-    massnahmenRendern([]);
     datenCache.massnahmen = [];
     return;
   }
   if (!ergebnis.data || !ergebnis.data.length) {
     massnahmenStatusAnzeigen('Keine Maßnahmen für dieses Kind gefunden.');
-    massnahmenRendern([]);
     datenCache.massnahmen = [];
     return;
   }
 
   massnahmenStatusAnzeigen('');
-  massnahmenRendern(ergebnis.data);
-  datenCache.massnahmen = ergebnis.data;
+  ergebnis.data.forEach(function(m){
+    massnahmeZeileHinzufuegen({
+      titel: m.titel,
+      verantwortlich: m.verantwortlich,
+      zeitraum_von: m.zeitraum_von,
+      zeitraum_bis: m.zeitraum_bis,
+      status: m.status,
+      beschreibung: m.beschreibung
+    });
+  });
+  datenCache.massnahmen = ergebnis.data.map(function(m){
+    return {
+      titel: m.titel,
+      status: m.status,
+      verantwortlichName: m.profiles ? [m.profiles.vorname, m.profiles.nachname].filter(Boolean).join(' ') : ''
+    };
+  });
 }
+
+// Speichert die komplette Liste (löschen + neu einfügen, wie bei den
+// Fallakte-Listen) statt einzelne Zeilen zu diffen.
+async function massnahmenSpeichern(){
+  if (!aktuellesKindId) { massnahmenStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
+
+  var kindErgebnis = await supabase.from('kinder').select('traeger_id').eq('id', aktuellesKindId).maybeSingle();
+  if (kindErgebnis.error || !kindErgebnis.data) {
+    massnahmenStatusAnzeigen('Maßnahmen konnten nicht gespeichert werden (Träger nicht ermittelbar).');
+    return;
+  }
+  var traegerId = kindErgebnis.data.traeger_id;
+
+  var massnahmen = listenWerteLesen(document.getElementById('fa-massnahmen-liste'), MASSNAHME_FELDER);
+
+  await supabase.from('fall_massnahmen').delete().eq('kind_id', aktuellesKindId);
+  if (massnahmen.length) {
+    var zeilen = massnahmen.map(function(m){
+      return {
+        traeger_id: traegerId,
+        kind_id: aktuellesKindId,
+        fallakte_id: aktuelleFallakteId || null,
+        titel: m.titel,
+        beschreibung: m.beschreibung,
+        verantwortlich: m.verantwortlich || null,
+        status: m.status || 'offen',
+        zeitraum_von: m.zeitraum_von,
+        zeitraum_bis: m.zeitraum_bis
+      };
+    });
+    var insertErgebnis = await supabase.from('fall_massnahmen').insert(zeilen);
+    if (insertErgebnis.error) {
+      massnahmenStatusAnzeigen('Maßnahmen konnten nicht gespeichert werden.');
+      return;
+    }
+  }
+
+  massnahmenStatusAnzeigen('✔ Gespeichert.');
+  massnahmenLaden();
+}
+window.massnahmenSpeichern = massnahmenSpeichern;
 
 // ── FM-04 Verlauf / Chronik ───────────────────────────────────────
 // WICHTIG: "fall_timeline" hat keine kind_id-Spalte - nur fallakte_id
@@ -1593,7 +1699,7 @@ function ladePdfVorschau(){
   html += '<div class="pdf-sektion"><strong>Maßnahmenplan (' + massnahmen.length + ')</strong>';
   if (massnahmen.length) {
     massnahmen.forEach(function(m){
-      html += '<div class="pdf-zeile">• ' + escapeHtml(m.titel) + ' — ' + (MASSNAHMEN_STATUS_LABEL[m.status] || m.status) + '</div>';
+      html += '<div class="pdf-zeile">• ' + escapeHtml(m.titel) + ' — ' + (MASSNAHMEN_STATUS_LABEL[m.status] || m.status) + (m.verantwortlichName ? ' · Verantwortlich: ' + escapeHtml(m.verantwortlichName) : '') + '</div>';
     });
   } else {
     html += '<div class="pdf-zeile tl-leer">Keine Maßnahmen erfasst.</div>';

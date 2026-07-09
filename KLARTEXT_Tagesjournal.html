@@ -8,7 +8,7 @@
   if(window.location.protocol==='file:') return;
   var login = sessionStorage.getItem('klartext_login');
   var role  = sessionStorage.getItem('klartext_role') || '';
-  if(login!=='true' || !['ingra','ingra-beta','admin'].includes(role)){
+  if(login!=='true' || !['ingra','ingra-beta','admin','tk','trainer','fm'].includes(role)){
     window.location.href='KLARTEXT_Login.html';
   }
 }catch(e){}})();</script>

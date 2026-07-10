@@ -105,6 +105,11 @@ input[type="file"]{display:none;}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="firebase.js"></script>
 </head>
+<!--
+  TK-Inbox liest jetzt aus Supabase `weiterleitungen` (neue Einträge, z.B. aus
+  Tagesjournal, landen dort). "Weiterleiten"/"Bereich senden" (Sende-Seite) und
+  "Mein Verlauf" bleiben unverändert auf Firebase `forward`.
+-->
 <body>
 
 <header class="kt-header">
@@ -277,7 +282,8 @@ input[type="file"]{display:none;}
   </div>
 </div>
 
-<script>
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
 // ── ZUSTAND ──────────────────────────────────────────────
 const ME = {
   id:   sessionStorage.getItem('klartext_user_id') || 'ingra_1',
@@ -303,7 +309,6 @@ db.ref('children').once('value').then(function(snapshot) {
 
 let gewaehlterEmpfaenger = null;  // 'tk' | 'lk' | 'eltern'
 let letzteForwardId       = null;
-let inboxGeladenHook      = null;
 let verlaufGeladenHook    = null;
 
 const ART_ZU_EMPF = {
@@ -529,46 +534,95 @@ function antwortSenden(forwardId) {
   }).catch(function(e) { alert('Fehler: ' + e.message); });
 }
 
-// ── TK-INBOX laden ───────────────────────────────────────
-function ladeInbox() {
+// ── TK-INBOX laden (Supabase: weiterleitungen) ───────────
+// Neue Einträge (z.B. aus Tagesjournal) landen in Supabase `weiterleitungen`,
+// nicht mehr in Firebase `forward` - daher liest die Inbox von hier.
+const WL_TYP_LABEL = { uebergabe: 'Übergabe', barometer: 'Barometer', hinweis: 'Hinweis' };
+let kinderNamenCacheSupabase = null;
+
+async function kinderNamenLadenSupabase() {
+  if (kinderNamenCacheSupabase) return kinderNamenCacheSupabase;
+  kinderNamenCacheSupabase = {};
+  const { data } = await supabase.from('Kinder').select('id, name');
+  (data || []).forEach(function(k) { kinderNamenCacheSupabase[k.id] = k.name; });
+  return kinderNamenCacheSupabase;
+}
+
+function fmtDatumIso(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})
+       + ' ' + d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+
+function statusHtmlWl(status) {
+  if (status === 'erledigt') return '<span class="status-bea">Erledigt</span>';
+  if (status === 'gelesen')  return '<span class="status-gel">Gelesen</span>';
+  return '<span class="status-neu">Neu</span>';
+}
+
+function detailToggleWl(id) {
+  const el = document.getElementById('detail-' + id);
+  if (el) el.classList.toggle('offen');
+}
+
+async function antwortSendenWl(id) {
+  const feld = document.getElementById('antwort-' + id);
+  if (!feld || !feld.value.trim()) return;
+  const antwortText = feld.value.trim();
+  const { error } = await supabase.from('weiterleitungen').update({
+    antwort: antwortText,
+    beantwortet_von: ME.name,
+    beantwortet_am: new Date().toISOString(),
+    status: 'erledigt'
+  }).eq('id', id);
+  if (error) { alert('Fehler: ' + error.message); return; }
+  ladeInbox();
+}
+
+async function ladeInbox() {
   if (ME.role !== 'tk' && ME.role !== 'admin') return; // zweite Sicherheitsebene
   const wrap = document.getElementById('inbox-wrap');
   wrap.innerHTML = '<div class="leer">Lade …</div>';
-  if (inboxGeladenHook) { inboxGeladenHook.off('value'); }
 
-  inboxGeladenHook = db.ref('forward').orderByChild('targetRole').equalTo('tk');
-  inboxGeladenHook.on('value', function(snap) {
-    const alle = snap.val() || {};
-    const ids  = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0)-(alle[a].timestamp||0); });
-    if (ids.length === 0) {
-      wrap.innerHTML = '<div class="leer">Noch keine eingegangenen Weiterleitungen.</div>';
-      return;
-    }
-    wrap.innerHTML = '<table class="tabelle"><thead><tr>'
-      + '<th>Datum</th><th>Absender</th><th>Art</th><th>Status</th><th></th>'
-      + '</tr></thead><tbody>'
-      + ids.map(function(id) {
-          const e = alle[id];
-          return '<tr>'
-            + '<td style="white-space:nowrap;">' + fmtDatum(e.timestamp) + '</td>'
-            + '<td>' + (e.fromName||e.fromRole||'—') + '</td>'
-            + '<td><span class="typ-chip">' + (e.type||'—') + '</span></td>'
-            + '<td>' + statusHtml(e, true) + '</td>'
-            + '<td><button class="details-btn" onclick="detailToggle(\'' + id + '\')">Details ▾</button></td>'
-            + '</tr>'
-            + '<tr><td colspan="5" style="padding:0 .5rem;">'
-            + '<div class="detail-panel" id="detail-' + id + '">'
-            + (e.childId ? '<div style="font-size:.78rem;color:var(--navy);font-weight:700;margin-bottom:.4rem;">👶 Kind: ' + (kinderNamenCache[e.childId] || e.childId) + '</div>' : '')
-            + '<div class="detail-text">' + (e.text||'') + '</div>'
-            + (e.targetRole !== 'tk' ? '<button class="link-btn-s" onclick="linkKopieren(\'' + id + '\')">🔗 Leselink</button><span class="kop-best" id="kob-' + id + '">Kopiert!</span><br><br>' : '')
-            + '<textarea class="antwort-feld" id="antwort-' + id + '" placeholder="Antwort …">'
-            + (e.beantwortet && e.antwort ? e.antwort : '') + '</textarea>'
-            + '<button class="antwort-btn" id="antwort-btn-' + id + '" onclick="antwortSenden(\'' + id + '\')">'
-            + (e.beantwortet ? '✓ Beantwortet' : 'Antworten') + '</button>'
-            + '</div></td></tr>';
-        }).join('')
-      + '</tbody></table>';
-  });
+  const kindNamen = await kinderNamenLadenSupabase();
+  const { data, error } = await supabase
+    .from('weiterleitungen')
+    .select('id, kind_id, von_rolle, typ, text, status, antwort, created_at')
+    .eq('ziel_rolle', 'tk')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    wrap.innerHTML = '<div class="leer">Fehler beim Laden: ' + error.message + '</div>';
+    return;
+  }
+  const eintraege = data || [];
+  if (eintraege.length === 0) {
+    wrap.innerHTML = '<div class="leer">Noch keine eingegangenen Weiterleitungen.</div>';
+    return;
+  }
+  wrap.innerHTML = '<table class="tabelle"><thead><tr>'
+    + '<th>Datum</th><th>Absender</th><th>Art</th><th>Status</th><th></th>'
+    + '</tr></thead><tbody>'
+    + eintraege.map(function(e) {
+        return '<tr>'
+          + '<td style="white-space:nowrap;">' + fmtDatumIso(e.created_at) + '</td>'
+          + '<td>' + (e.von_rolle||'—') + '</td>'
+          + '<td><span class="typ-chip">' + (WL_TYP_LABEL[e.typ]||e.typ||'—') + '</span></td>'
+          + '<td>' + statusHtmlWl(e.status) + '</td>'
+          + '<td><button class="details-btn" onclick="detailToggleWl(\'' + e.id + '\')">Details ▾</button></td>'
+          + '</tr>'
+          + '<tr><td colspan="5" style="padding:0 .5rem;">'
+          + '<div class="detail-panel" id="detail-' + e.id + '">'
+          + (e.kind_id ? '<div style="font-size:.78rem;color:var(--navy);font-weight:700;margin-bottom:.4rem;">👶 Kind: ' + (kindNamen[e.kind_id] || e.kind_id) + '</div>' : '')
+          + '<div class="detail-text">' + (e.text||'') + '</div>'
+          + '<textarea class="antwort-feld" id="antwort-' + e.id + '" placeholder="Antwort …">'
+          + (e.status === 'erledigt' && e.antwort ? e.antwort : '') + '</textarea>'
+          + '<button class="antwort-btn" id="antwort-btn-' + e.id + '" onclick="antwortSendenWl(\'' + e.id + '\')">'
+          + (e.status === 'erledigt' ? '✓ Beantwortet' : 'Antworten') + '</button>'
+          + '</div></td></tr>';
+      }).join('')
+    + '</tbody></table>';
 }
 
 // ── MEIN VERLAUF laden ───────────────────────────────────
@@ -713,9 +767,25 @@ function brZeigeFehler(msg) {
 }
 
 window.addEventListener('beforeunload', function() {
-  if (inboxGeladenHook)   inboxGeladenHook.off('value');
   if (verlaufGeladenHook) verlaufGeladenHook.off('value');
 });
+
+// ── globale Exports (für onclick/onchange-Attribute im HTML) ──
+window.tab                = tab;
+window.artGeaendert       = artGeaendert;
+window.empfWaehlen        = empfWaehlen;
+window.dateiGewaehlt      = dateiGewaehlt;
+window.weiterleitungSenden = weiterleitungSenden;
+window.overlayLinkKopieren = overlayLinkKopieren;
+window.overlaySchliessen  = overlaySchliessen;
+window.linkKopieren       = linkKopieren;
+window.detailToggle       = detailToggle;
+window.detailToggleWl     = detailToggleWl;
+window.antwortSenden      = antwortSenden;
+window.antwortSendenWl    = antwortSendenWl;
+window.bereichGewaehlt    = bereichGewaehlt;
+window.brEmpfWaehlen      = brEmpfWaehlen;
+window.bereichSenden      = bereichSenden;
 </script>
 </body>
 </html>

@@ -537,8 +537,6 @@ function antwortSenden(forwardId) {
 // ── TK-INBOX laden (Supabase: weiterleitungen) ───────────
 // Neue Einträge (z.B. aus Tagesjournal) landen in Supabase `weiterleitungen`,
 // nicht mehr in Firebase `forward` - daher liest die Inbox von hier.
-// Hinweis: `weiterleitungen` hat kein Antwort-Feld (anders als Firebase `forward`),
-// daher gibt es in dieser Ansicht kein Antwort-Formular.
 const WL_TYP_LABEL = { uebergabe: 'Übergabe', barometer: 'Barometer', hinweis: 'Hinweis' };
 let kinderNamenCacheSupabase = null;
 
@@ -568,6 +566,20 @@ function detailToggleWl(id) {
   if (el) el.classList.toggle('offen');
 }
 
+async function antwortSendenWl(id) {
+  const feld = document.getElementById('antwort-' + id);
+  if (!feld || !feld.value.trim()) return;
+  const antwortText = feld.value.trim();
+  const { error } = await supabase.from('weiterleitungen').update({
+    antwort: antwortText,
+    beantwortet_von: ME.name,
+    beantwortet_am: new Date().toISOString(),
+    status: 'erledigt'
+  }).eq('id', id);
+  if (error) { alert('Fehler: ' + error.message); return; }
+  ladeInbox();
+}
+
 async function ladeInbox() {
   if (ME.role !== 'tk' && ME.role !== 'admin') return; // zweite Sicherheitsebene
   const wrap = document.getElementById('inbox-wrap');
@@ -576,7 +588,7 @@ async function ladeInbox() {
   const kindNamen = await kinderNamenLadenSupabase();
   const { data, error } = await supabase
     .from('weiterleitungen')
-    .select('id, kind_id, von_rolle, typ, text, status, created_at')
+    .select('id, kind_id, von_rolle, typ, text, status, antwort, created_at')
     .eq('ziel_rolle', 'tk')
     .order('created_at', { ascending: false });
 
@@ -604,6 +616,10 @@ async function ladeInbox() {
           + '<div class="detail-panel" id="detail-' + e.id + '">'
           + (e.kind_id ? '<div style="font-size:.78rem;color:var(--navy);font-weight:700;margin-bottom:.4rem;">👶 Kind: ' + (kindNamen[e.kind_id] || e.kind_id) + '</div>' : '')
           + '<div class="detail-text">' + (e.text||'') + '</div>'
+          + '<textarea class="antwort-feld" id="antwort-' + e.id + '" placeholder="Antwort …">'
+          + (e.status === 'erledigt' && e.antwort ? e.antwort : '') + '</textarea>'
+          + '<button class="antwort-btn" id="antwort-btn-' + e.id + '" onclick="antwortSendenWl(\'' + e.id + '\')">'
+          + (e.status === 'erledigt' ? '✓ Beantwortet' : 'Antworten') + '</button>'
           + '</div></td></tr>';
       }).join('')
     + '</tbody></table>';
@@ -766,6 +782,7 @@ window.linkKopieren       = linkKopieren;
 window.detailToggle       = detailToggle;
 window.detailToggleWl     = detailToggleWl;
 window.antwortSenden      = antwortSenden;
+window.antwortSendenWl    = antwortSendenWl;
 window.bereichGewaehlt    = bereichGewaehlt;
 window.brEmpfWaehlen      = brEmpfWaehlen;
 window.bereichSenden      = bereichSenden;

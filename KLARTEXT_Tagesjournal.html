@@ -341,11 +341,11 @@ import { supabase } from './supabase/auth_client.js';
   // Die INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte
   // Person wird daher über die Login-E-Mail (sessionStorage.klartext_name,
   // trotz des Namens tatsächlich die E-Mail - siehe KLARTEXT_Login.html)
-  // mit ihrer Zeile in "INGRA" abgeglichen.
+  // mit ihrer Zeile in "ingra" abgeglichen.
   async function aktuelleIngraId(){
     var email = sessionStorage.getItem('klartext_name') || '';
     if (!email) return null;
-    var { data, error } = await supabase.from('INGRA').select('id').eq('email', email).maybeSingle();
+    var { data, error } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
     if (error || !data) return null;
     return data.id;
   }

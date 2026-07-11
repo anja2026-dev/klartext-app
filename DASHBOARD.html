@@ -414,7 +414,19 @@ function chatBadgeAktualisieren(){
     });
   });
 }
-chatBadgeAktualisieren();
+
+// Nur für Rollen mit Chat-Zugriff aufrufen - identische Liste wie die
+// data-rollen-Attribute auf den KlarApp-Links, damit Kachel-Sichtbarkeit
+// und Badge-Logik nicht auseinanderlaufen. Diese Datei hat sonst keinen
+// generischen data-rollen-Mechanismus - daher ein eigenständiger Check
+// nur für diese Funktion, statt den Mechanismus nachzubauen.
+(function(){
+  var chatRolle = '';
+  try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
+    chatBadgeAktualisieren();
+  }
+})();
 </script>
 
 <div id="dashboard-desktop">

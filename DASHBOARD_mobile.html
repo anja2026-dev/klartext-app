@@ -327,7 +327,18 @@ function chatBadgeAktualisieren(){
     });
   });
 }
-chatBadgeAktualisieren();
+
+// Nur für Rollen mit Chat-Zugriff aufrufen - identische Liste wie das
+// data-rollen-Attribut auf dem KlarApp-Link, damit Kachel-Sichtbarkeit
+// und Badge-Logik nicht auseinanderlaufen (gleiches Rollen-Auslesen wie
+// in tkInboxBadgeAktualisieren() oben).
+(function(){
+  var chatRolle = '';
+  try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
+    chatBadgeAktualisieren();
+  }
+})();
 </script>
 
 </body>

@@ -23,6 +23,11 @@
 -- aber im selben Dashboard-Vorgang wie "Kinder"/"INGRA" angelegt und
 -- vermutlich hat dieselbe Lücke - Policy wird hier vorsorglich mit
 -- ergänzt (rein additiv, kein Risiko falls bereits etwas existiert).
+--
+-- Nachtrag: per Browser-Konsole bestätigt (404 auf .from('INGRA')) heißt
+-- die INGRA-Tabelle tatsächlich "ingra" (klein, unquotiert), nicht "INGRA"
+-- - anders als bei "Kinder"/"TK". Policy-Ziel unten entsprechend korrigiert,
+-- bevor diese Migration angewendet wird (sonst "relation does not exist").
 -- ════════════════════════════════════════════════════════════
 
 create policy authenticated_can_select_kinder
@@ -31,7 +36,7 @@ create policy authenticated_can_select_kinder
   using (true);
 
 create policy authenticated_can_select_ingra
-  on "INGRA" for select
+  on ingra for select
   to authenticated
   using (true);
 

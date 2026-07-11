@@ -288,11 +288,11 @@ async function aktuellerUserId(){
 // Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
 // INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
 // wird daher über die Login-E-Mail (sessionStorage.klartext_name, trotz
-// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "INGRA" abgeglichen.
+// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "ingra" abgeglichen.
 async function aktuelleIngraId(){
   const email = sessionStorage.getItem('klartext_name') || '';
   if (!email) return null;
-  const { data, error } = await supabase.from('INGRA').select('id').eq('email', email).maybeSingle();
+  const { data, error } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
   if (error || !data) return null;
   return data.id;
 }

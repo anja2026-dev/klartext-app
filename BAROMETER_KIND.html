@@ -209,12 +209,14 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   <div class="woche-grid" id="woche-grid">
     <div class="bilanz-leer" style="width:100%;">Noch nichts gespeichert.</div>
   </div>
+  <button class="sp-btn aktiv" id="wl-tk-btn" style="background:#1B3A4B;margin-top:.6rem;" onclick="wochenverlaufManuellSenden()">📤 An TK weiterleiten</button>
+  <div class="bilanz-leer" id="wl-status" style="display:none;width:100%;margin-top:.5rem;"></div>
 </div>
 
-<!-- FIREBASE-HISTORIE -->
-<div class="bilanz-wrap" id="fb-historie-wrap">
-  <div class="bilanz-titel">Verlauf (Firebase) ☁️</div>
-  <div id="fb-historie-liste">
+<!-- VERLAUF (Supabase "barometer_kind" - ersetzt die vorherige Firebase-Historie) -->
+<div class="bilanz-wrap" id="historie-wrap">
+  <div class="bilanz-titel">Verlauf ☁️</div>
+  <div id="historie-liste">
     <div class="bilanz-leer" style="width:100%;">Lade Verlauf …</div>
   </div>
 </div>
@@ -265,7 +267,8 @@ function aktualisiereBegruessung(name){
       select.value = gespeicherteId;
       aktuellesKindId = gespeicherteId;
       aktualisiereBegruessung(kinderNamen[gespeicherteId]);
-      starteFbHistorie(); // erneut starten, da select.value keinen change-Event auslöst
+      starteHistorie(); // erneut starten, da select.value keinen change-Event auslöst
+      pruefeAutomatischeWochenauswertung();
     }
 
     select.addEventListener('change', function(){
@@ -273,7 +276,8 @@ function aktualisiereBegruessung(name){
       var kindName = kinderNamen[aktuellesKindId] || '';
       try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
       aktualisiereBegruessung(kindName);
-      starteFbHistorie();
+      starteHistorie();
+      pruefeAutomatischeWochenauswertung();
     });
   }catch(e){}
 })();
@@ -297,7 +301,7 @@ function checkSpeichern(){
   if(aktuelleWahl){btn.classList.add('aktiv');btn.style.background=aktuelleWahl.color;}
 }
 
-function speichereKind(){
+async function speichereKind(){
   if(!aktuelleWahl)return;
   var notiz=document.getElementById('notiz-kind').value.trim();
   var eintrag={
@@ -322,6 +326,26 @@ function speichereKind(){
       source: 'kind-self'
     });
   }catch(e){}
+
+  // Zusätzlich nach Supabase "barometer_kind" schreiben - dieselbe Tabelle, die
+  // TK_Fallmanagement.html bereits liest/schreibt (siehe barometerLaden()/
+  // barometerSpeichern() dort). Ohne diesen Eintrag sähe TK die Selbstauskunft
+  // des Kindes im Fallmanagement nie. Grundlage für Verlauf-Anzeige unten und
+  // die Wochenverlauf-Weiterleitung an TK.
+  if (aktuellesKindId) {
+    var sbErgebnis = await supabase.from('barometer_kind').insert({
+      kind_id: aktuellesKindId,
+      farbe: aktuelleWahl.id,
+      notiz: notiz || null,
+      source: 'kind-self'
+    });
+    if (sbErgebnis.error) {
+      console.error('Supabase-Barometer speichern fehlgeschlagen:', sbErgebnis.error);
+    } else {
+      starteHistorie();
+      pruefeAutomatischeWochenauswertung();
+    }
+  }
 
   konfetti(aktuelleWahl.color);
   document.getElementById('notiz-kind').value='';
@@ -380,55 +404,166 @@ function ladeKind(){
   try{return JSON.parse(localStorage.getItem('baro_kind_eintraege')||'[]');}catch(e){return [];}
 }
 
-// FIREBASE-HISTORIE (Etappe 5.2) — lädt /barometer_kind gefiltert nach aktuellem Kind-Namen, live
-function formatZeitFb(timestamp){
-  if(!timestamp)return '';
-  var d=new Date(timestamp);
+// VERLAUF (Supabase "barometer_kind") — ersetzt die vorherige Firebase-Historie
+// (/barometer_kind, live-Listener). TK_Fallmanagement.html liest/schreibt bereits
+// dieselbe Tabelle (siehe barometerLaden()/barometerSpeichern() dort) - gleiches
+// Muster hier übernommen. Kein Live-Listener nötig: einmaliger Reload reicht,
+// wird nach jedem Speichern und bei Kindwechsel erneut aufgerufen.
+var FARBE_LABEL = {
+  gruen: '🟢 Grün · Stabil',
+  gelb: '🟡 Gelb · Angespannt',
+  orange: '🟠 Orange · Belastet',
+  rot: '🔴 Rot · Akute Krise',
+  grau: '⚪ Grau · Erschöpft'
+};
+
+function escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatZeitHistorie(iso){
+  if(!iso)return '';
+  var d=new Date(iso);
   return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+' · '+d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
 }
 
-function renderFbHistorie(eintraege){
-  var liste=document.getElementById('fb-historie-liste');
+function historieRendern(eintraege){
+  var liste=document.getElementById('historie-liste');
   if(!liste)return;
-  var ids=Object.keys(eintraege||{});
-  if(ids.length===0){
+  if(!eintraege.length){
     liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Noch kein Verlauf vorhanden.</div>';
     return;
   }
-  ids.sort(function(a,b){return (eintraege[b].timestamp||0)-(eintraege[a].timestamp||0);});
-  liste.innerHTML=ids.map(function(id){
-    var e=eintraege[id];
-    var farbe=FARBEN_K[e.value]||'#ccc';
+  liste.innerHTML=eintraege.map(function(e){
+    var farbe=FARBEN_K[e.farbe]||'#ccc';
     return '<div class="fb-eintrag" style="border-left-color:'+farbe+';">'
       +'<div class="fb-farbpunkt" style="background:'+farbe+';"></div>'
       +'<div class="fb-eintrag-inhalt">'
-      +'<div class="fb-eintrag-zeile1"><span class="fb-eintrag-wert">'+(e.value||'—')+'</span><span class="fb-eintrag-zeit">'+formatZeitFb(e.timestamp)+'</span></div>'
-      +(e.text?'<div class="fb-eintrag-text">'+e.text+'</div>':'')
+      +'<div class="fb-eintrag-zeile1"><span class="fb-eintrag-wert">'+(FARBE_LABEL[e.farbe]||e.farbe||'—')+'</span><span class="fb-eintrag-zeit">'+formatZeitHistorie(e.created_at)+'</span></div>'
+      +(e.notiz?'<div class="fb-eintrag-text">'+escHtml(e.notiz)+'</div>':'')
       +'</div></div>';
   }).join('');
 }
 
-var aktiverFbHistorieRef = null; // merkt sich die aktive Firebase-Referenz, um alte Listener sauber abzumelden
-
-function starteFbHistorie(){
-  // alten Listener abmelden, falls Kind gewechselt wird
-  if (aktiverFbHistorieRef) {
-    aktiverFbHistorieRef.off('value');
-    aktiverFbHistorieRef = null;
-  }
+async function starteHistorie(){
+  var liste=document.getElementById('historie-liste');
   if(!aktuellesKindId){
-    var liste=document.getElementById('fb-historie-liste');
     if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Noch kein Kind ausgewählt.</div>';
     return;
   }
-  try{
-    aktiverFbHistorieRef = db.ref('barometer_kind').orderByChild('childId').equalTo(aktuellesKindId);
-    aktiverFbHistorieRef.on('value',function(snapshot){
-      renderFbHistorie(snapshot.val()||{});
-    });
-  }catch(e){}
+  if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Lade Verlauf …</div>';
+  var ergebnis = await supabase
+    .from('barometer_kind')
+    .select('farbe, notiz, created_at')
+    .eq('kind_id', aktuellesKindId)
+    .order('created_at', { ascending: false });
+  if (ergebnis.error) {
+    console.error('Verlauf laden fehlgeschlagen:', ergebnis.error);
+    if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Verlauf konnte nicht geladen werden.</div>';
+    return;
+  }
+  historieRendern(ergebnis.data || []);
 }
-starteFbHistorie();
+starteHistorie();
+
+// WOCHENVERLAUF AN TK (manuell + automatisch freitags) — schreibt in
+// Supabase "weiterleitungen" (ziel_rolle='tk'), gleiches Muster wie die
+// Übergabe aus KLARTEXT_Tagesjournal.html (uebergabeAnTK()). Kein Login auf
+// dieser Seite vorhanden (Kind-Self-Service-Gerät) - daher von_profil=null,
+// von_rolle='kind-self' statt eines echten Nutzer-Ids.
+function montagDieserWoche(){
+  var d=new Date();
+  var tag=d.getDay(); // 0=So,1=Mo,...,6=Sa
+  var diff=(tag===0)?-6:(1-tag);
+  var montag=new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
+  montag.setHours(0,0,0,0);
+  return montag;
+}
+
+async function wochenverlaufLaden(kindId){
+  var montag=montagDieserWoche();
+  var ergebnis = await supabase
+    .from('barometer_kind')
+    .select('farbe, notiz, created_at')
+    .eq('kind_id', kindId)
+    .gte('created_at', montag.toISOString())
+    .order('created_at', { ascending: true });
+  if (ergebnis.error) {
+    console.error('Wochenverlauf laden fehlgeschlagen:', ergebnis.error);
+    return [];
+  }
+  return ergebnis.data || [];
+}
+
+function wochenverlaufText(eintraege){
+  if(!eintraege.length)return 'Noch keine Barometer-Einträge in dieser Woche.';
+  return eintraege.map(function(e){
+    var tag=new Date(e.created_at).toLocaleDateString('de-DE',{weekday:'long'});
+    var zeile=tag+': '+(FARBE_LABEL[e.farbe]||e.farbe);
+    if(e.notiz)zeile+=' – '+e.notiz;
+    return zeile;
+  }).join('\n');
+}
+
+async function wochenverlaufAnTkSenden(){
+  if(!aktuellesKindId)return {ok:false};
+  var eintraege=await wochenverlaufLaden(aktuellesKindId);
+  var kindName=kinderNamen[aktuellesKindId]||'';
+  var text='Wochenverlauf Barometer'+(kindName?' – '+kindName:'')+':\n'+wochenverlaufText(eintraege);
+  var ergebnis=await supabase.from('weiterleitungen').insert({
+    kind_id: aktuellesKindId,
+    von_profil: null,
+    von_rolle: 'kind-self',
+    ziel_rolle: 'tk',
+    typ: 'barometer',
+    text: text,
+    dringlichkeit: 'normal',
+    status: 'offen'
+  });
+  return {ok: !ergebnis.error, error: ergebnis.error};
+}
+
+async function wochenverlaufManuellSenden(){
+  var status=document.getElementById('wl-status');
+  if(!aktuellesKindId){
+    if(status){status.textContent='Bitte zuerst oben ein Kind wählen.';status.style.display='block';}
+    return;
+  }
+  if(status){status.textContent='⏳ Wird gesendet …';status.style.display='block';}
+  var ergebnis=await wochenverlaufAnTkSenden();
+  if(status){
+    status.textContent=ergebnis.ok ? '✓ Wochenverlauf an TK weitergeleitet.' : '⚠ Fehler beim Weiterleiten.';
+    setTimeout(function(){status.style.display='none';},3000);
+  }
+}
+
+// Automatische Wochenauswertung: ohne Cron-Server gelöst - beim Laden der
+// Seite (bzw. bei Kindwechsel/nach dem Speichern) wird geprüft, ob heute
+// Freitag ist und für dieses Kind/diese Woche noch nichts automatisch
+// gesendet wurde. Flag pro Kind+Kalenderwoche in localStorage, damit ein
+// erneuter Aufruf am selben Freitag nicht doppelt sendet.
+function heuteIstFreitag(){
+  return new Date().getDay()===5;
+}
+
+function wochenFlagKey(kindId){
+  var montag=montagDieserWoche();
+  var iso=montag.getFullYear()+'-'+String(montag.getMonth()+1).padStart(2,'0')+'-'+String(montag.getDate()).padStart(2,'0');
+  return 'baro_woche_gesendet_'+kindId+'_'+iso;
+}
+
+async function pruefeAutomatischeWochenauswertung(){
+  if(!aktuellesKindId)return;
+  if(!heuteIstFreitag())return;
+  var flagKey=wochenFlagKey(aktuellesKindId);
+  var schonGesendet=false;
+  try{schonGesendet=localStorage.getItem(flagKey)==='true';}catch(e){}
+  if(schonGesendet)return;
+  var ergebnis=await wochenverlaufAnTkSenden();
+  if(ergebnis.ok){
+    try{localStorage.setItem(flagKey,'true');}catch(e){}
+  }
+}
 
 function renderWoche(){
   var e=ladeKind();
@@ -494,6 +629,7 @@ window.checkSpeichern = checkSpeichern;
 window.speichereKind = speichereKind;
 window.waehleIngra = waehleIngra;
 window.druckeKind = druckeKind;
+window.wochenverlaufManuellSenden = wochenverlaufManuellSenden;
 
 window.addEventListener('DOMContentLoaded', () => {
   renderWoche();

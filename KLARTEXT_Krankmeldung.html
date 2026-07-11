@@ -402,7 +402,7 @@ async function speichKrank(typ){
 
     document.getElementById('ik-notiz').value='';
 
-    // Firebase-Speichern + Weiterleitung (Etappe 6.2) - unverändert
+    // Firebase-Speichern (Etappe 6.2) - unverändert, separates Log, nicht die Weiterleitung
     try {
       db.ref('sick_note_ingra').push({
         typ: 'ingra',
@@ -413,20 +413,24 @@ async function speichKrank(typ){
         createdBy: 'ingra',
         role: 'ingra'
       });
-
-      sendForward({
-        context: 'sick_note_ingra',
-        type: 'sick_note_ingra',
-        text: 'Krankmeldung INGRA: ' + von + (bis ? (' bis ' + bis) : '')
-      }).then(function(ref) {
-        kzLetzteForwardId = ref.key;
-        kzZeigeErfolg('Krankmeldung gespeichert');
-      }).catch(function(error) {
-        console.error('Weiterleitung fehlgeschlagen:', error);
-      });
     } catch(err) {
       console.error('Firebase-Speicherung fehlgeschlagen:', err);
     }
+
+    // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward)
+    const vonRolleIngra = sessionStorage.getItem('klartext_role') || 'ingra';
+    const { error: wlErrorIngra } = await supabase.from('weiterleitungen').insert({
+      kind_id: null,
+      von_profil: userId,
+      von_rolle: vonRolleIngra,
+      ziel_rolle: 'tk',
+      typ: 'hinweis',
+      text: 'Krankmeldung INGRA: ' + von + (bis ? (' bis ' + bis) : ''),
+      dringlichkeit: 'normal',
+      status: 'offen'
+    });
+    if (wlErrorIngra) { console.error('Weiterleitung fehlgeschlagen:', wlErrorIngra); }
+    kzZeigeErfolg('Krankmeldung gespeichert');
 
   }else{
     const kindSelect=document.getElementById('ka-kind');
@@ -451,7 +455,7 @@ async function speichKrank(typ){
 
     document.getElementById('ka-kind').value='';document.getElementById('ka-notiz').value='';
 
-    // Firebase-Speichern + Weiterleitung (Etappe 6.2) - unverändert
+    // Firebase-Speichern (Etappe 6.2) - unverändert, separates Log, nicht die Weiterleitung
     try {
       db.ref('sick_note/' + childId).push({
         typ: 'kind',
@@ -465,21 +469,24 @@ async function speichKrank(typ){
         createdBy: 'ingra',
         role: 'ingra'
       });
-
-      sendForward({
-        context: 'sick_note',
-        type: 'sick_note',
-        childId: childId,
-        text: 'Kind fehlt: ' + kindName + ' am ' + datum + ' – Grund: ' + grund
-      }).then(function(ref) {
-        kzLetzteForwardId = ref.key;
-        kzZeigeErfolg('Ausfall gespeichert');
-      }).catch(function(error) {
-        console.error('Weiterleitung fehlgeschlagen:', error);
-      });
     } catch(err) {
       console.error('Firebase-Speicherung fehlgeschlagen:', err);
     }
+
+    // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward)
+    const vonRolleKind = sessionStorage.getItem('klartext_role') || 'ingra';
+    const { error: wlErrorKind } = await supabase.from('weiterleitungen').insert({
+      kind_id: childId,
+      von_profil: userId,
+      von_rolle: vonRolleKind,
+      ziel_rolle: 'tk',
+      typ: 'hinweis',
+      text: 'Kind fehlt: ' + kindName + ' am ' + datum + ' – Grund: ' + grund,
+      dringlichkeit: 'normal',
+      status: 'offen'
+    });
+    if (wlErrorKind) { console.error('Weiterleitung fehlgeschlagen:', wlErrorKind); }
+    kzZeigeErfolg('Ausfall gespeichert');
   }
 
   await renderListen();
@@ -571,43 +578,21 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 .kz-erfolg-titel{font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
 .kz-erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
 .kz-erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin:.25rem;}
-.kz-erfolg-btn.link-btn{background:#C47A00;width:100%;margin:.5rem 0 0;}
-.kz-link-bestaetigung{font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.5rem;opacity:0;transition:opacity .25s;}
-.kz-link-bestaetigung.zeigen{opacity:1;}
 </style>
 <div class="kz-erfolg-overlay" id="kz-erfolg-overlay">
   <div class="kz-erfolg-karte">
     <div class="kz-erfolg-icon">✅</div>
     <div class="kz-erfolg-titel" id="kz-erfolg-titel">Gespeichert</div>
     <div class="kz-erfolg-text">Die Meldung wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
-    <button class="kz-erfolg-btn link-btn" id="kz-btn-link-kopieren" onclick="kzLeselinkKopieren()">🔗 Leselink kopieren</button>
-    <div class="kz-link-bestaetigung" id="kz-link-bestaetigung">Link kopiert!</div>
     <div style="margin-top:1rem;">
       <button class="kz-erfolg-btn" onclick="document.getElementById('kz-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
     </div>
   </div>
 </div>
 <script>
-// Merkt sich die forwardId der zuletzt erzeugten Krankmeldungs-Weiterleitung
-let kzLetzteForwardId = null;
-
 function kzZeigeErfolg(titel) {
   document.getElementById('kz-erfolg-titel').textContent = titel;
   document.getElementById('kz-erfolg-overlay').classList.add('zeigen');
-}
-
-function kzLeselinkKopieren() {
-  if (!kzLetzteForwardId) return;
-  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + kzLetzteForwardId;
-
-  navigator.clipboard.writeText(leseLink).then(function() {
-    const bestaetigung = document.getElementById('kz-link-bestaetigung');
-    bestaetigung.classList.add('zeigen');
-    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
-  }).catch(function() {
-    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
-  });
 }
 </script>
 </body>

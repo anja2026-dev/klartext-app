@@ -130,6 +130,7 @@ footer strong{color:var(--kt-accent);}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="firebase.js"></script>
+<script src="chat.js"></script>
 </head>
 <body>
 
@@ -254,7 +255,7 @@ footer strong{color:var(--kt-accent);}
     <section class="m-section">
       <span class="m-label">Schnellzugriff</span>
       <div class="m-grid-2">
-        <a class="m-chip" href="CHAT_View.html"><span class="m-chip-emoji">💬</span><span>KlarApp</span></a>
+        <a class="m-chip" href="CHAT_View.html"><span class="m-chip-emoji">💬</span><span>KlarApp</span><span id="m-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:4px;">0</span></a>
         <a class="m-chip" href="KLARTEXT_Listen.html"><span class="m-chip-emoji">📋</span><span>To-do-Liste</span></a>
         <a class="m-chip" href="KLARTEXT_Weiterleitungen.html"><span class="m-chip-emoji">📤</span><span>Weiterleitungen</span></a>
         <a class="m-chip" href="KLARTEXT_Notizblock.html"><span class="m-chip-emoji">📝</span><span>Notizblock</span></a>
@@ -388,6 +389,44 @@ function mobileBarometerStatusLaden(){
   } catch(e) { badge.style.display = 'none'; }
 }
 mobileBarometerStatusLaden();
+
+// Ungelesene Chat-Nachrichten auf der KlarApp-Kachel (chat.js: readBy pro
+// Nachricht, siehe chatZaehleUngelesen() - bereits genutzt für die
+// Badges in CHAT_List.html). Summiert die ungelesenen Nachrichten über
+// alle Konversationen des aktuellen Users.
+function chatBadgeAktualisieren(){
+  var badge = document.getElementById('m-chat-badge');
+  if (!badge) return;
+  chatLadeConversations(function(conversations){
+    var ids = Object.keys(conversations || {});
+    if (!ids.length) { badge.style.display = 'none'; return; }
+    var gesamt = 0;
+    var ausstehend = ids.length;
+    ids.forEach(function(cid){
+      chatZaehleUngelesen(cid, function(anzahl){
+        gesamt += anzahl;
+        ausstehend--;
+        if (ausstehend === 0) {
+          if (gesamt > 0) { badge.textContent = gesamt; badge.style.display = 'inline-block'; }
+          else { badge.style.display = 'none'; }
+        }
+      });
+    });
+  });
+}
+
+// Nur für Rollen mit Chat-Zugriff aufrufen - identische Liste wie die
+// data-rollen-Attribute auf den KlarApp-Links, damit Kachel-Sichtbarkeit
+// und Badge-Logik nicht auseinanderlaufen. Diese Datei hat sonst keinen
+// generischen data-rollen-Mechanismus - daher ein eigenständiger Check
+// nur für diese Funktion, statt den Mechanismus nachzubauen.
+(function(){
+  var chatRolle = '';
+  try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
+    chatBadgeAktualisieren();
+  }
+})();
 </script>
 
 <div id="dashboard-desktop">

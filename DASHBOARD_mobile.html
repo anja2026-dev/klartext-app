@@ -9,6 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="firebase.js"></script>
+<script src="chat.js"></script>
 </head>
 <body>
 
@@ -136,7 +137,7 @@
       <a class="m-btn-full" href="TK_Fallmanagement.html#case_file" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Fallakte</a>
       <a class="m-btn-full" href="TK_Fallmanagement.html#case_timeline" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Timeline</a>
       <a class="m-btn-full" href="TK_Fallmanagement.html#case_risk" data-rollen="tk,fm,admin" data-kind-link style="border-color:#4A148C;color:#4A148C;">Risiko</a>
-      <a class="m-btn-full" href="CHAT_View.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">KlarApp</a>
+      <a class="m-btn-full" href="CHAT_View.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">KlarApp <span id="m-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:12px;font-weight:700;border-radius:10px;padding:1px 8px;margin-left:6px;">0</span></a>
       <a class="m-btn-full" href="KLARTEXT_Tagesjournal.html" data-rollen="tk,fm,ingra,ingra-beta,trainer,admin">Tagesjournal</a>
       <a class="m-btn-full" href="KLARTEXT_Teilnehmer_Protokoll.html" style="border-color:#C47A00;color:#C47A00;">Teilnehmer-Protokoll</a>
       <a class="m-btn-full" href="KLARTEXT_Workbook.html" style="border-color:#1B3A4B;color:#1B3A4B;">Workbook</a>
@@ -301,6 +302,43 @@ async function tkInboxBadgeAktualisieren(){
   }
 }
 tkInboxBadgeAktualisieren();
+
+// Ungelesene Chat-Nachrichten auf der KlarApp-Kachel (chat.js: readBy pro
+// Nachricht, siehe chatZaehleUngelesen() - bereits genutzt für die
+// Badges in CHAT_List.html). Summiert die ungelesenen Nachrichten über
+// alle Konversationen des aktuellen Users.
+function chatBadgeAktualisieren(){
+  var badge = document.getElementById('m-chat-badge');
+  if (!badge) return;
+  chatLadeConversations(function(conversations){
+    var ids = Object.keys(conversations || {});
+    if (!ids.length) { badge.style.display = 'none'; return; }
+    var gesamt = 0;
+    var ausstehend = ids.length;
+    ids.forEach(function(cid){
+      chatZaehleUngelesen(cid, function(anzahl){
+        gesamt += anzahl;
+        ausstehend--;
+        if (ausstehend === 0) {
+          if (gesamt > 0) { badge.textContent = gesamt; badge.style.display = 'inline-block'; }
+          else { badge.style.display = 'none'; }
+        }
+      });
+    });
+  });
+}
+
+// Nur für Rollen mit Chat-Zugriff aufrufen - identische Liste wie das
+// data-rollen-Attribut auf dem KlarApp-Link, damit Kachel-Sichtbarkeit
+// und Badge-Logik nicht auseinanderlaufen (gleiches Rollen-Auslesen wie
+// in tkInboxBadgeAktualisieren() oben).
+(function(){
+  var chatRolle = '';
+  try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
+    chatBadgeAktualisieren();
+  }
+})();
 </script>
 
 </body>

@@ -450,8 +450,8 @@ async function speichern() {
   });
   if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
 
-  // Zusätzlich nach Firebase schreiben + Weiterleitung an TK erzeugen (Etappe 6.1)
-  // unverändert - dient der TK-Benachrichtigung, nicht der Zeitkonto-Speicherung
+  // Zusätzlich nach Firebase schreiben (Etappe 6.1) - unverändert, separates Log,
+  // nicht die Weiterleitung an TK
   if (kindId) {
     try {
       db.ref('time_entry/' + kindId).push({
@@ -467,21 +467,24 @@ async function speichern() {
         createdBy: 'ingra',
         role: 'ingra'
       });
-
-      sendForward({
-        context: 'time_entry',
-        type: 'time_entry',
-        childId: kindId,
-        text: 'Arbeitszeit ' + von + '–' + bis + ' (' + h + 'h)'
-      }).then(function(ref) {
-        zkLetzteForwardId = ref.key;
-        document.getElementById('zk-erfolg-overlay').classList.add('zeigen');
-      }).catch(function(error) {
-        console.error('Weiterleitung fehlgeschlagen:', error);
-      });
     } catch(e) {
       console.error('Firebase-Speicherung fehlgeschlagen:', e);
     }
+
+    // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward)
+    const vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
+    const { error: wlError } = await supabase.from('weiterleitungen').insert({
+      kind_id: kindId,
+      von_profil: userId,
+      von_rolle: vonRolle,
+      ziel_rolle: 'tk',
+      typ: 'hinweis',
+      text: 'Arbeitszeit ' + von + '–' + bis + ' (' + h + 'h)',
+      dringlichkeit: 'normal',
+      status: 'offen'
+    });
+    if (wlError) { console.error('Weiterleitung fehlgeschlagen:', wlError); }
+    document.getElementById('zk-erfolg-overlay').classList.add('zeigen');
   }
 
   // Reset
@@ -743,39 +746,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 .zk-erfolg-titel{font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
 .zk-erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
 .zk-erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin:.25rem;}
-.zk-erfolg-btn.link-btn{background:#C47A00;width:100%;margin:.5rem 0 0;}
-.zk-link-bestaetigung{font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.5rem;opacity:0;transition:opacity .25s;}
-.zk-link-bestaetigung.zeigen{opacity:1;}
 </style>
 <div class="zk-erfolg-overlay" id="zk-erfolg-overlay">
   <div class="zk-erfolg-karte">
     <div class="zk-erfolg-icon">✅</div>
     <div class="zk-erfolg-titel">Zeitkonto gespeichert</div>
     <div class="zk-erfolg-text">Der Eintrag wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
-    <button class="zk-erfolg-btn link-btn" id="zk-btn-link-kopieren" onclick="zkLeselinkKopieren()">🔗 Leselink kopieren</button>
-    <div class="zk-link-bestaetigung" id="zk-link-bestaetigung">Link kopiert!</div>
     <div style="margin-top:1rem;">
       <button class="zk-erfolg-btn" onclick="document.getElementById('zk-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
     </div>
   </div>
 </div>
-<script>
-// Merkt sich die forwardId des zuletzt erzeugten Zeitkonto-Weiterleitungseintrags
-let zkLetzteForwardId = null;
-
-function zkLeselinkKopieren() {
-  if (!zkLetzteForwardId) return;
-  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + zkLetzteForwardId;
-
-  navigator.clipboard.writeText(leseLink).then(function() {
-    const bestaetigung = document.getElementById('zk-link-bestaetigung');
-    bestaetigung.classList.add('zeigen');
-    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
-  }).catch(function() {
-    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
-  });
-}
-</script>
 </body>
 </html>

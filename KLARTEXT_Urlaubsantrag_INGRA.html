@@ -180,25 +180,24 @@ async function generiere() {
   });
   if (error) { console.error('Speichern fehlgeschlagen:', error); }
 
-  // Firebase-Weiterleitung (Etappe 6.3) - unverändert, unabhängig vom Kind-Status
-  try {
-    sendForward({
-      context: 'vacation_request',
-      type: 'vacation_request',
-      childId: childId || null,
-      text: 'Urlaubsantrag: ' + fmtDatum(von) + '–' + fmtDatum(bis) +
-            ' (' + tage + ' Arbeitstage)' +
-            (childName ? ' – ' + childName : '') +
-            (vertretung ? ' – Vertretung: ' + vertretung : '')
-    }).then(function(ref) {
-      uLetzteForwardId = ref.key;
-      uZeigeErfolg();
-    }).catch(function(error) {
-      console.error('Weiterleitung fehlgeschlagen:', error);
-    });
-  } catch(err) {
-    console.error('Weiterleitung fehlgeschlagen:', err);
-  }
+  // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward),
+  // unabhängig vom Kind-Status
+  const vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
+  const { error: wlError } = await supabase.from('weiterleitungen').insert({
+    kind_id: childId || null,
+    von_profil: userId,
+    von_rolle: vonRolle,
+    ziel_rolle: 'tk',
+    typ: 'hinweis',
+    text: 'Urlaubsantrag: ' + fmtDatum(von) + '–' + fmtDatum(bis) +
+          ' (' + tage + ' Arbeitstage)' +
+          (childName ? ' – ' + childName : '') +
+          (vertretung ? ' – Vertretung: ' + vertretung : ''),
+    dringlichkeit: 'normal',
+    status: 'offen'
+  });
+  if (wlError) { console.error('Weiterleitung fehlgeschlagen:', wlError); }
+  uZeigeErfolg();
 }
 
 function kopiere() {
@@ -263,42 +262,20 @@ document.addEventListener('DOMContentLoaded', async function() {
 .u-erfolg-titel{font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
 .u-erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
 .u-erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin:.25rem;}
-.u-erfolg-btn.link-btn{background:#C47A00;width:100%;margin:.5rem 0 0;}
-.u-link-bestaetigung{font-size:.78rem;color:#1B5E2E;font-weight:700;margin-top:.5rem;opacity:0;transition:opacity .25s;}
-.u-link-bestaetigung.zeigen{opacity:1;}
 </style>
 <div class="u-erfolg-overlay" id="u-erfolg-overlay">
   <div class="u-erfolg-karte">
     <div class="u-erfolg-icon">✅</div>
     <div class="u-erfolg-titel">Urlaubsantrag gespeichert</div>
     <div class="u-erfolg-text">Der Antrag wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
-    <button class="u-erfolg-btn link-btn" id="u-btn-link-kopieren" onclick="uLeselinkKopieren()">🔗 Leselink kopieren</button>
-    <div class="u-link-bestaetigung" id="u-link-bestaetigung">Link kopiert!</div>
     <div style="margin-top:1rem;">
       <button class="u-erfolg-btn" onclick="document.getElementById('u-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
     </div>
   </div>
 </div>
 <script>
-// Merkt sich die forwardId der zuletzt erzeugten Urlaubsantrags-Weiterleitung
-let uLetzteForwardId = null;
-
 function uZeigeErfolg() {
   document.getElementById('u-erfolg-overlay').classList.add('zeigen');
-}
-
-function uLeselinkKopieren() {
-  if (!uLetzteForwardId) return;
-  const basisUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-  const leseLink = basisUrl + 'KLARTEXT_Forward_Read.html?id=' + uLetzteForwardId;
-
-  navigator.clipboard.writeText(leseLink).then(function() {
-    const bestaetigung = document.getElementById('u-link-bestaetigung');
-    bestaetigung.classList.add('zeigen');
-    setTimeout(function() { bestaetigung.classList.remove('zeigen'); }, 2500);
-  }).catch(function() {
-    prompt('Link konnte nicht automatisch kopiert werden — bitte manuell kopieren:', leseLink);
-  });
 }
 </script>
 </body>

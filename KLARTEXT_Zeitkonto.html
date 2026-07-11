@@ -206,8 +206,12 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 <div class="form-card">
   <div class="liste-head">
     <div class="liste-titel">📋 Alle Einträge</div>
-    <button class="exp-btn" onclick="exportCSV()">📥 Export CSV</button>
+    <div style="display:flex;gap:.4rem;">
+      <button class="exp-btn" onclick="wochenuebersichtAnTkSenden()">📤 An TK weiterleiten</button>
+      <button class="exp-btn" onclick="exportCSV()">📥 Export CSV</button>
+    </div>
   </div>
+  <div class="leer" id="wl-status" style="display:none;padding:.4rem 0;font-size:.78rem;"></div>
 
   <div class="filter-row">
     <button class="f-btn ak" onclick="setFilter('alle',this)">Alle</button>
@@ -657,6 +661,60 @@ async function renderMonat() {
 }
 
 // ═══════════════════════════════════════
+// AN TK WEITERLEITEN (manuell) -> Supabase weiterleitungen
+// Bisher lief die Weiterleitung an TK nur unsichtbar in speichern()
+// mit (und nur mit) Kind-Bezug. Dieser Button fasst die Einträge der
+// aktuellen Kalenderwoche zusammen und sendet sie manuell, unabhängig
+// von Kind-Bezug - gleiches UI-Muster wie in KLARTEXT_Tagesjournal.html
+// (uebergabeAnTK()) und BAROMETER_KIND.html (wochenverlaufAnTkSenden()).
+// ═══════════════════════════════════════
+function montagAktuelleWoche() {
+  const d = new Date();
+  const tag = d.getDay(); // 0=So,1=Mo,...,6=Sa
+  const diff = (tag === 0) ? -6 : (1 - tag);
+  const montag = new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+  montag.setHours(0,0,0,0);
+  return montag;
+}
+
+async function wochenuebersichtAnTkSenden() {
+  const status = document.getElementById('wl-status');
+  if (status) { status.textContent = '⏳ Wird gesendet …'; status.style.display = 'block'; }
+
+  const alle = await ladeEintraege();
+  const montagStr = montagAktuelleWoche().toISOString().split('T')[0];
+  const woche = alle.filter(e => e.datum >= montagStr);
+  const gesamt = woche.reduce((s,e) => s + e.dauer_stunden, 0);
+
+  const zeilen = woche.slice().reverse().map(e => {
+    const t = getTyp(e.typ);
+    const d = new Date(e.datum+'T12:00:00');
+    const dStr = d.toLocaleDateString('de-DE',{weekday:'long',day:'2-digit',month:'2-digit'});
+    return dStr + ': ' + t.label + ' ' + e.von_uhrzeit + '–' + e.bis_uhrzeit + ' (' + fmtH(e.dauer_stunden) + ')' + (e.notiz ? ' – ' + e.notiz : '');
+  });
+  const text = 'Zeitkonto-Wochenübersicht (' + fmtH(gesamt) + ' gesamt):\n'
+    + (zeilen.length ? zeilen.join('\n') : 'Noch keine Einträge in dieser Woche.');
+
+  const userId = await aktuellerUserId();
+  const vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
+  const { error } = await supabase.from('weiterleitungen').insert({
+    kind_id: null,
+    von_profil: userId,
+    von_rolle: vonRolle,
+    ziel_rolle: 'tk',
+    typ: 'hinweis',
+    text: text,
+    dringlichkeit: 'normal',
+    status: 'offen'
+  });
+
+  if (status) {
+    status.textContent = error ? '⚠ Fehler beim Weiterleiten.' : '✓ Wochenübersicht an TK weitergeleitet.';
+    setTimeout(() => { status.style.display = 'none'; }, 3000);
+  }
+}
+
+// ═══════════════════════════════════════
 // CSV EXPORT
 // ═══════════════════════════════════════
 async function exportCSV() {
@@ -689,6 +747,7 @@ window.adjustTime = adjustTime;
 window.waehleTyp = waehleTyp;
 window.speichern = speichern;
 window.exportCSV = exportCSV;
+window.wochenuebersichtAnTkSenden = wochenuebersichtAnTkSenden;
 window.setFilter = setFilter;
 window.loeschen = loeschen;
 

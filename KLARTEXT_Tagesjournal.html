@@ -359,6 +359,7 @@ import { supabase } from './supabase/auth_client.js';
     console.log('kinderListeLaden gestartet');
     var select = document.getElementById('kindSelect');
     var ingraId = await aktuelleIngraId();
+    console.log('Verwendete ingraId:', ingraId);
     var { data: kinder, error } = await supabase
       .from('Kinder')
       .select('id, name, klasse')

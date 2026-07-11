@@ -356,6 +356,7 @@ import { supabase } from './supabase/auth_client.js';
   // kinder_zuordnung - Zuordnung läuft jetzt direkt über Kinder.ingra_id.
   // ───────────────────────────────────────────
   async function kinderListeLaden(){
+    console.log('kinderListeLaden gestartet');
     var select = document.getElementById('kindSelect');
     var ingraId = await aktuelleIngraId();
     var { data: kinder, error } = await supabase
@@ -364,6 +365,7 @@ import { supabase } from './supabase/auth_client.js';
       .eq('ingra_id', ingraId)
       .eq('aktiv', true)
       .order('name');
+    console.log('Kinder-Antwort:', { data: kinder, error: error });
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
     select.innerHTML = '';
@@ -377,6 +379,7 @@ import { supabase } from './supabase/auth_client.js';
     platzhalter.value = '';
     platzhalter.textContent = 'Bitte wählen …';
     select.appendChild(platzhalter);
+    console.log('Rendere ' + kinder.length + ' Kinder');
     kinder.forEach(function(k){
       var opt = document.createElement('option');
       opt.value = k.id;

@@ -178,6 +178,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
       </div>
       <div class="fr s1"><div class="fg"><label>Notiz</label><textarea class="fta" id="ik-notiz" placeholder="Attest eingereicht? Vertretung geklärt?"></textarea></div></div>
       <button class="btn-sp" onclick="speichKrank('ingra')">+ Kranktag speichern</button>
+      <span id="kz-inline-bestaetigung-ingra" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;margin-left:.6rem;">✓ Weitergeleitet an TK</span>
     </div>
 
     <div style="font-size:.8rem;font-weight:700;color:var(--m);margin-bottom:.5rem;">📋 Meine Krankmeldungen</div>
@@ -263,6 +264,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
       </div>
       <div class="fr s1"><div class="fg"><label>Notiz</label><textarea class="fta" id="ka-notiz" placeholder="TK informiert? Vertretung? Besonderheiten?"></textarea></div></div>
       <button class="btn-sp rot" onclick="speichKrank('kind')">+ Ausfall speichern</button>
+      <span id="kz-inline-bestaetigung-kind" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;margin-left:.6rem;">✓ Weitergeleitet an TK</span>
     </div>
 
     <div style="font-size:.8rem;font-weight:700;color:var(--m);margin-bottom:.5rem;">📋 Kind-Ausfälle</div>
@@ -431,7 +433,7 @@ async function speichKrank(typ){
       status: 'offen'
     });
     if (wlErrorIngra) { console.error('Weiterleitung fehlgeschlagen:', wlErrorIngra); }
-    kzZeigeErfolg('Krankmeldung gespeichert');
+    kzZeigeErfolg('Krankmeldung gespeichert', 'ingra');
 
   }else{
     const kindSelect=document.getElementById('ka-kind');
@@ -487,7 +489,7 @@ async function speichKrank(typ){
       status: 'offen'
     });
     if (wlErrorKind) { console.error('Weiterleitung fehlgeschlagen:', wlErrorKind); }
-    kzZeigeErfolg('Ausfall gespeichert');
+    kzZeigeErfolg('Ausfall gespeichert', 'kind');
   }
 
   await renderListen();
@@ -586,14 +588,25 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     <div class="kz-erfolg-titel" id="kz-erfolg-titel">Gespeichert</div>
     <div class="kz-erfolg-text">Die Meldung wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
     <div style="margin-top:1rem;">
-      <button class="kz-erfolg-btn" onclick="document.getElementById('kz-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
+      <button class="kz-erfolg-btn" onclick="kzErfolgSchliessen()">Schließen</button>
     </div>
   </div>
 </div>
 <script>
-function kzZeigeErfolg(titel) {
+let kzLetzterTyp = null;
+function kzZeigeErfolg(titel, typ) {
+  kzLetzterTyp = typ;
   document.getElementById('kz-erfolg-titel').textContent = titel;
   document.getElementById('kz-erfolg-overlay').classList.add('zeigen');
+}
+// Overlay schließen + zusätzlich das dezente inline-Häkchen neben dem
+// jeweiligen Absenden-Button einblenden - bleibt bis zum Neuladen der
+// Seite sichtbar.
+function kzErfolgSchliessen() {
+  document.getElementById('kz-erfolg-overlay').classList.remove('zeigen');
+  const inlineId = kzLetzterTyp === 'kind' ? 'kz-inline-bestaetigung-kind' : 'kz-inline-bestaetigung-ingra';
+  const inline = document.getElementById(inlineId);
+  if (inline) inline.style.display = 'inline';
 }
 </script>
 </body>

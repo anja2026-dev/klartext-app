@@ -474,21 +474,19 @@ function chatBadgeAktualisieren(){
         if(btn) btn.style.display = 'inline-flex';
       }
 
-      // Dezente Konto-Anzeige im Header - kompaktes "Name (Rolle)"-Format
-      // statt "Eingeloggt als: ...", da die Nav-Leiste hier bereits mehrere
-      // Pill-Links enthält und auf schmalen Bildschirmen scrollbar wird.
-      // Mobile hat keinen Platz in der fest 56px hohen .m-header-Leiste
-      // (nur Logo + Burger) - dort steht die Anzeige stattdessen oben im
-      // aufklappbaren Menü (#m-menu).
-      var ROLLEN_LABEL = { ingra:'INGRA', 'ingra-beta':'INGRA (Beta)', tk:'TK', trainer:'Trainer', admin:'Admin' };
-      var name = sessionStorage.getItem('klartext_name') || '';
-      if (name) {
-        var rolleLabel = ROLLEN_LABEL[role] || role;
-        var text = name + (rolleLabel ? ' (' + rolleLabel + ')' : '');
+      // Dezente Konto-Anzeige im Header - nur der Anzeigename, ohne Rolle
+      // und ohne E-Mail. klartext_name ist immer die Login-E-Mail (siehe
+      // KLARTEXT_Login.html), daher klartext_display_name nutzen - der
+      // dort bei jedem Login separat aus ermittleAnzeigename() gesetzte,
+      // echte Anzeigename. Mobile hat keinen Platz in der fest 56px hohen
+      // .m-header-Leiste (nur Logo + Burger) - dort steht die Anzeige
+      // stattdessen oben im aufklappbaren Menü (#m-menu).
+      var anzeigename = sessionStorage.getItem('klartext_display_name') || '';
+      if (anzeigename) {
         var kontoEl = document.getElementById('konto-anzeige');
-        if (kontoEl) kontoEl.textContent = text;
+        if (kontoEl) kontoEl.textContent = anzeigename;
         var mKontoEl = document.getElementById('m-konto-anzeige');
-        if (mKontoEl) mKontoEl.textContent = text;
+        if (mKontoEl) mKontoEl.textContent = anzeigename;
       }
     } catch(e) {}
   })();

@@ -124,16 +124,32 @@ input[type="file"]{display:none;}
     <button class="tab-btn aktiv" id="tbtn-weiterleiten" onclick="tab('weiterleiten')">📤 Weiterleiten</button>
     <button class="tab-btn" id="tbtn-bereich" onclick="tab('bereich')">📦 Bereich senden</button>
     <button class="tab-btn" id="tbtn-inbox" onclick="tab('inbox')">📥 TK-Inbox</button>
+    <button class="tab-btn" id="tbtn-broadcast" onclick="tab('broadcast')">📢 An alle INGRAs senden</button>
     <button class="tab-btn" id="tbtn-verlauf" onclick="tab('verlauf')">📋 Mein Verlauf</button>
+    <button class="tab-btn" id="tbtn-ankuendigungen" onclick="tab('ankuendigungen')">📢 Team-Ankündigungen</button>
   </div>
   <script>
-  // Zugriffsschutz TK-Inbox: sofort entfernen, bevor der Rest der Seite rendert (kein kurzes Aufblitzen)
+  // Zugriffsschutz TK-Inbox / Broadcast / Team-Ankündigungen: sofort entfernen,
+  // bevor der Rest der Seite rendert (kein kurzes Aufblitzen)
   (function(){
     try {
       const rolle = sessionStorage.getItem('klartext_role') || '';
+      const INGRA_ROLLEN = ['ingra','ingra-beta','springer_ingra','pool_ingra','vertretung_ingra'];
+      const BROADCAST_ROLLEN = ['tk','admin','trainer'];
+
+      // TK-Inbox bleibt exklusiv tk/admin (unverändert)
       if (rolle !== 'tk' && rolle !== 'admin') {
-        const btn = document.getElementById('tbtn-inbox');
-        if (btn) btn.remove();
+        const btnInbox = document.getElementById('tbtn-inbox');
+        if (btnInbox) btnInbox.remove();
+      }
+      // Broadcast-Senden: tk, admin, trainer
+      if (!BROADCAST_ROLLEN.includes(rolle)) {
+        const btnBroadcast = document.getElementById('tbtn-broadcast');
+        if (btnBroadcast) btnBroadcast.remove();
+      }
+      if (!INGRA_ROLLEN.includes(rolle)) {
+        const btnAnk = document.getElementById('tbtn-ankuendigungen');
+        if (btnAnk) btnAnk.remove();
       }
     } catch(e) {}
   })();
@@ -264,9 +280,43 @@ input[type="file"]{display:none;}
     <div id="inbox-wrap"><div class="leer">Lade Einträge …</div></div>
   </div>
 
+  <!-- ══ TAB: AN ALLE INGRAS SENDEN (nur TK/Admin) ══ -->
+  <div id="tab-broadcast" class="tab-inhalt">
+    <div class="karte">
+      <div class="karte-titel">📢 An alle INGRAs senden</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.55;">
+        Diese Nachricht erscheint bei allen INGRAs im Tab „Team-Ankündigungen" — echtes Broadcast,
+        keine Einzel-Zustellung, kein individueller Lesestatus.
+      </p>
+
+      <div class="fehler-box" id="bc-fehler"></div>
+
+      <div class="fg">
+        <label for="bc-dringlichkeit">Dringlichkeit<span class="pflicht">*</span></label>
+        <select id="bc-dringlichkeit">
+          <option value="normal">Normal</option>
+          <option value="erhoben">Erhöht</option>
+          <option value="dringend">Dringend</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label for="bc-text">Nachricht<span class="pflicht">*</span></label>
+        <textarea id="bc-text" placeholder="Ankündigung an alle INGRAs …"></textarea>
+      </div>
+
+      <button class="btn-senden" id="bc-btn" onclick="broadcastSenden()">An alle INGRAs senden</button>
+    </div>
+  </div>
+
   <!-- ══ TAB: MEIN VERLAUF ══ -->
   <div id="tab-verlauf" class="tab-inhalt">
     <div id="verlauf-wrap"><div class="leer">Lade Verlauf …</div></div>
+  </div>
+
+  <!-- ══ TAB: TEAM-ANKÜNDIGUNGEN (nur INGRA-Rollen) ══ -->
+  <div id="tab-ankuendigungen" class="tab-inhalt">
+    <div id="ankuendigungen-wrap"><div class="leer">Lade Ankündigungen …</div></div>
   </div>
 
 </div>
@@ -329,17 +379,27 @@ const ART_ZU_EMPF = {
 const IMMER_TK = ['Krankmeldung INGRA','Krankmeldung Kind','Urlaub','Zeitkonto-Meldung','Schulausfall'];
 
 // ── TABS ─────────────────────────────────────────────────
+const INGRA_ROLLEN     = ['ingra','ingra-beta','springer_ingra','pool_ingra','vertretung_ingra'];
+const BROADCAST_ROLLEN = ['tk','admin','trainer'];
+
 function tab(id) {
   if (id === 'inbox' && ME.role !== 'tk' && ME.role !== 'admin') {
     return; // Zugriff verweigert, auch bei direktem Aufruf ohne sichtbaren Button
   }
-  ['weiterleiten','bereich','inbox','verlauf'].forEach(function(t) {
+  if (id === 'broadcast' && !BROADCAST_ROLLEN.includes(ME.role)) {
+    return;
+  }
+  if (id === 'ankuendigungen' && !INGRA_ROLLEN.includes(ME.role)) {
+    return;
+  }
+  ['weiterleiten','bereich','inbox','verlauf','broadcast','ankuendigungen'].forEach(function(t) {
     document.getElementById('tab-'+t).classList.toggle('aktiv', t===id);
     const btn = document.getElementById('tbtn-'+t);
     if (btn) btn.classList.toggle('aktiv', t===id);
   });
-  if (id==='inbox')   ladeInbox();
-  if (id==='verlauf') ladeVerlauf();
+  if (id==='inbox')          ladeInbox();
+  if (id==='verlauf')        ladeVerlauf();
+  if (id==='ankuendigungen') ladeAnkuendigungen();
 }
 
 // ── FORMULAR-LOGIK ────────────────────────────────────────
@@ -628,6 +688,94 @@ async function ladeInbox() {
     + '</tbody></table>';
 }
 
+// ── BROADCAST: An alle INGRAs senden (Supabase: weiterleitungen) ────────
+function bcZeigeFehler(msg) {
+  const el = document.getElementById('bc-fehler');
+  el.textContent = msg;
+  el.classList.add('zeigen');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+async function broadcastSenden() {
+  if (!BROADCAST_ROLLEN.includes(ME.role)) return; // zweite Sicherheitsebene
+  const fehler = document.getElementById('bc-fehler');
+  fehler.classList.remove('zeigen');
+
+  const dringlichkeit = document.getElementById('bc-dringlichkeit').value;
+  const text = document.getElementById('bc-text').value.trim();
+
+  if (!text) { bcZeigeFehler('Bitte eine Nachricht eingeben.'); return; }
+
+  const btn = document.getElementById('bc-btn');
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet …';
+
+  const { error } = await supabase.from('weiterleitungen').insert({
+    ziel_rolle: 'ingra',
+    von_rolle: ME.role,   // 'tk' | 'admin' | 'trainer' — Absenderrolle bleibt erkennbar
+    typ: 'hinweis',
+    dringlichkeit: dringlichkeit,
+    text: text,
+    status: 'offen',
+    kind_id: null
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'An alle INGRAs senden';
+
+  if (error) {
+    bcZeigeFehler('Fehler beim Senden: ' + error.message);
+    return;
+  }
+
+  document.getElementById('bc-text').value = '';
+  document.getElementById('bc-dringlichkeit').value = 'normal';
+
+  // Bestehendes Erfolgs-Overlay wiederverwenden, ohne Leselink-Button
+  document.getElementById('overlay-sub').textContent = 'Ankündigung an alle INGRAs gesendet.';
+  document.getElementById('overlay-link-btn').style.display = 'none';
+  document.getElementById('fw-overlay').classList.add('zeigen');
+}
+
+// ── TEAM-ANKÜNDIGUNGEN laden (Supabase: weiterleitungen) ─────────────────
+function dringlichkeitBadgeHtml(d) {
+  if (d === 'dringend') return '<span class="status-neu">Dringend</span>';
+  if (d === 'erhoben')  return '<span class="typ-chip">Erhöht</span>';
+  return '';
+}
+
+async function ladeAnkuendigungen() {
+  if (!INGRA_ROLLEN.includes(ME.role)) return; // zweite Sicherheitsebene
+  const wrap = document.getElementById('ankuendigungen-wrap');
+  wrap.innerHTML = '<div class="leer">Lade …</div>';
+
+  const { data, error } = await supabase
+    .from('weiterleitungen')
+    .select('id, text, dringlichkeit, created_at')
+    .eq('ziel_rolle', 'ingra')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    wrap.innerHTML = '<div class="leer">Fehler beim Laden: ' + error.message + '</div>';
+    return;
+  }
+  const eintraege = data || [];
+  if (eintraege.length === 0) {
+    wrap.innerHTML = '<div class="leer">Noch keine Team-Ankündigungen.</div>';
+    return;
+  }
+
+  wrap.innerHTML = eintraege.map(function(e) {
+    return '<div class="karte">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">'
+      + '<span style="font-size:.72rem;color:var(--muted);">' + fmtDatumIso(e.created_at) + '</span>'
+      + dringlichkeitBadgeHtml(e.dringlichkeit)
+      + '</div>'
+      + '<div class="detail-text" style="background:none;padding:0;">' + (e.text||'') + '</div>'
+      + '</div>';
+  }).join('');
+}
+
 // ── MEIN VERLAUF laden ───────────────────────────────────
 function ladeVerlauf() {
   const wrap = document.getElementById('verlauf-wrap');
@@ -789,6 +937,7 @@ window.antwortSendenWl    = antwortSendenWl;
 window.bereichGewaehlt    = bereichGewaehlt;
 window.brEmpfWaehlen      = brEmpfWaehlen;
 window.bereichSenden      = bereichSenden;
+window.broadcastSenden    = broadcastSenden;
 </script>
 </body>
 </html>

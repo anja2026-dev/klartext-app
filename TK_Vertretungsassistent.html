@@ -10,7 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <style>
 /* ── ROOT ─────────────────────────────────────────────────── */
 :root {
@@ -1201,7 +1201,7 @@ function renderPersonenListe() {
 }
 
 // Personen live laden — Basis für Rollenliste UND Vertretungssuche-Dropdown
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   db.ref('personen').on('value', function(snapshot){
     personenCache = snapshot.val() || {};
     renderPersonenListe();
@@ -1247,7 +1247,7 @@ function bestaetigen(name) {
 function logAction(wer, was) {
   db.ref('vertretung_log').push({ wer, was, zeit: now(), timestamp: Date.now() }).catch(function(){});
 }
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   db.ref('vertretung_log').orderByChild('timestamp').limitToLast(100).on('value', function(snapshot){
     const alle = snapshot.val() || {};
     const ids = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0) - (alle[a].timestamp||0); });

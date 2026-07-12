@@ -104,7 +104,7 @@ input[type="file"]{display:none;}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 </head>
 <!--
   TK-Inbox liest jetzt aus Supabase `weiterleitungen` (neue Einträge, z.B. aus
@@ -294,7 +294,7 @@ const ME = {
 
 // Kinder-Dropdown für "Krankmeldung Kind" befüllen + Namen-Cache für die Anzeige in Inbox/Verlauf
 const kinderNamenCache = {};
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   db.ref('children').once('value').then(function(snapshot) {
     const kinder = snapshot.val() || {};
     const select = document.getElementById('fw-kind');

@@ -10,7 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <script src="chat.js"></script>
 <style>
 html,body{margin:0;height:100%;font-family:"DM Sans",sans-serif;background:#F5F0E8;overflow:hidden;}
@@ -636,7 +636,7 @@ document.getElementById('chat-eingabe').addEventListener('input', function(){
 });
 
 // Initialisierung
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   ingraGruppeSicherstellen().then(function(){
     db.ref('children').once('value').then(function(snapshot){
       const kinder=snapshot.val()||{};

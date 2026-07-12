@@ -11,7 +11,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <script src="chat.js"></script>
 <style>
 body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
@@ -84,7 +84,7 @@ function chatPartnerWaehlen(partnerId, partnerName, partnerRole) {
   // Prüfen, ob bereits eine direct-Konversation mit dieser Person existiert.
   // Defensiv erst nach window.firebaseAuthReady starten, falls jemand direkt
   // nach dem Laden der Seite klickt, bevor signInAnonymously() fertig ist.
-  window.firebaseAuthReady.then(function(){
+  (window.firebaseAuthReady || Promise.resolve()).then(function(){
     db.ref('conversations').once('value').then(function(snapshot) {
       const alle = snapshot.val() || {};
       let bestehendeId = null;

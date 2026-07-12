@@ -1201,10 +1201,12 @@ function renderPersonenListe() {
 }
 
 // Personen live laden — Basis für Rollenliste UND Vertretungssuche-Dropdown
-db.ref('personen').on('value', function(snapshot){
-  personenCache = snapshot.val() || {};
-  renderPersonenListe();
-  renderVaIngraDropdown();
+window.firebaseAuthReady.then(function(){
+  db.ref('personen').on('value', function(snapshot){
+    personenCache = snapshot.val() || {};
+    renderPersonenListe();
+    renderVaIngraDropdown();
+  });
 });
 
 function renderVaIngraDropdown() {
@@ -1245,23 +1247,25 @@ function bestaetigen(name) {
 function logAction(wer, was) {
   db.ref('vertretung_log').push({ wer, was, zeit: now(), timestamp: Date.now() }).catch(function(){});
 }
-db.ref('vertretung_log').orderByChild('timestamp').limitToLast(100).on('value', function(snapshot){
-  const alle = snapshot.val() || {};
-  const ids = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0) - (alle[a].timestamp||0); });
-  const el = document.getElementById('logListe');
-  if (!el) return;
-  if (ids.length === 0) {
-    el.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:10px 0;">Noch keine Einträge.</div>';
-    return;
-  }
-  el.innerHTML = ids.map(function(id){
-    const e = alle[id];
-    return `<div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,51,71,.5);font-size:12px;">
-      <span style="color:var(--muted);min-width:130px;">${e.zeit}</span>
-      <span style="color:var(--tk);">${e.wer}</span>
-      <span style="color:var(--text);">${e.was}</span>
-    </div>`;
-  }).join('');
+window.firebaseAuthReady.then(function(){
+  db.ref('vertretung_log').orderByChild('timestamp').limitToLast(100).on('value', function(snapshot){
+    const alle = snapshot.val() || {};
+    const ids = Object.keys(alle).sort(function(a,b){ return (alle[b].timestamp||0) - (alle[a].timestamp||0); });
+    const el = document.getElementById('logListe');
+    if (!el) return;
+    if (ids.length === 0) {
+      el.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:10px 0;">Noch keine Einträge.</div>';
+      return;
+    }
+    el.innerHTML = ids.map(function(id){
+      const e = alle[id];
+      return `<div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(42,51,71,.5);font-size:12px;">
+        <span style="color:var(--muted);min-width:130px;">${e.zeit}</span>
+        <span style="color:var(--tk);">${e.wer}</span>
+        <span style="color:var(--text);">${e.was}</span>
+      </div>`;
+    }).join('');
+  });
 });
 function clearLog() {
   db.ref('vertretung_log').remove().then(function(){

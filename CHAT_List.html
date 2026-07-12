@@ -126,12 +126,14 @@ function renderChatListe(conversations) {
   });
 }
 
-ingraGruppeSicherstellen().then(function(){
-  db.ref('children').once('value').then(function(snapshot){
-    const kinder=snapshot.val()||{};
-    Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
-    chatLadeConversations(renderChatListe);
-  }).catch(function(){chatLadeConversations(renderChatListe);});
+window.firebaseAuthReady.then(function(){
+  ingraGruppeSicherstellen().then(function(){
+    db.ref('children').once('value').then(function(snapshot){
+      const kinder=snapshot.val()||{};
+      Object.keys(kinder).forEach(function(cid){kinderNamenCache[cid]=kinder[cid].name;});
+      chatLadeConversations(renderChatListe);
+    }).catch(function(){chatLadeConversations(renderChatListe);});
+  });
 });
 </script>
 </body>

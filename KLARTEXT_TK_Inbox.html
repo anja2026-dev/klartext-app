@@ -161,16 +161,18 @@ function idAnzeigeUmschalten(forwardId) {
 }
 
 // Erst Kinder-Namen laden, dann Inbox live abonnieren
-db.ref('children').once('value').then(function(snapshot) {
-  const kinder = snapshot.val() || {};
-  Object.keys(kinder).forEach(function(childId) {
-    kinderNamen[childId] = kinder[childId].name;
+window.firebaseAuthReady.then(function(){
+  db.ref('children').once('value').then(function(snapshot) {
+    const kinder = snapshot.val() || {};
+    Object.keys(kinder).forEach(function(childId) {
+      kinderNamen[childId] = kinder[childId].name;
+    });
+    // getInbox liefert live Updates über callback
+    getInbox('tk', renderInbox);
+  }).catch(function(error) {
+    document.getElementById('inbox-liste').innerHTML =
+      '<div class="leer-hinweis">Fehler beim Laden: ' + error.message + '</div>';
   });
-  // getInbox liefert live Updates über callback
-  getInbox('tk', renderInbox);
-}).catch(function(error) {
-  document.getElementById('inbox-liste').innerHTML =
-    '<div class="leer-hinweis">Fehler beim Laden: ' + error.message + '</div>';
 });
 </script>
 

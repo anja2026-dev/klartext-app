@@ -81,27 +81,31 @@ if (sichtbarePartner.length === 0) {
 }
 
 function chatPartnerWaehlen(partnerId, partnerName, partnerRole) {
-  // Prüfen, ob bereits eine direct-Konversation mit dieser Person existiert
-  db.ref('conversations').once('value').then(function(snapshot) {
-    const alle = snapshot.val() || {};
-    let bestehendeId = null;
+  // Prüfen, ob bereits eine direct-Konversation mit dieser Person existiert.
+  // Defensiv erst nach window.firebaseAuthReady starten, falls jemand direkt
+  // nach dem Laden der Seite klickt, bevor signInAnonymously() fertig ist.
+  window.firebaseAuthReady.then(function(){
+    db.ref('conversations').once('value').then(function(snapshot) {
+      const alle = snapshot.val() || {};
+      let bestehendeId = null;
 
-    Object.keys(alle).forEach(function(cid) {
-      const conv = alle[cid];
-      if (conv.type === 'direct' && conv.members &&
-          conv.members[aktuellerUser.id] && conv.members[partnerId]) {
-        bestehendeId = cid;
+      Object.keys(alle).forEach(function(cid) {
+        const conv = alle[cid];
+        if (conv.type === 'direct' && conv.members &&
+            conv.members[aktuellerUser.id] && conv.members[partnerId]) {
+          bestehendeId = cid;
+        }
+      });
+
+      if (bestehendeId) {
+        window.location.href = 'CHAT_View.html?cid=' + bestehendeId;
+      } else {
+        chatNeueConversation({ id: partnerId, name: partnerName, role: partnerRole }, 'direct')
+          .then(function(neueId) {
+            window.location.href = 'CHAT_View.html?cid=' + neueId;
+          });
       }
     });
-
-    if (bestehendeId) {
-      window.location.href = 'CHAT_View.html?cid=' + bestehendeId;
-    } else {
-      chatNeueConversation({ id: partnerId, name: partnerName, role: partnerRole }, 'direct')
-        .then(function(neueId) {
-          window.location.href = 'CHAT_View.html?cid=' + neueId;
-        });
-    }
   });
 }
 </script>

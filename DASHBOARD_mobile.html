@@ -239,21 +239,23 @@ function mobileKindInit(){
   mobileKindLinksAktualisieren();
 
   try {
-    db.ref('children').once('value').then(function(snapshot){
-      var kinder = snapshot.val() || {};
-      window.mobileKinderDaten = kinder;
-      var select = document.getElementById('m-kind-select');
-      if (select) {
-        Object.keys(kinder).forEach(function(id){
-          var kind = kinder[id];
-          if (kind.active === false) return;
-          var option = document.createElement('option');
-          option.value = id;
-          option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
-          select.appendChild(option);
-        });
-      }
-      mobileKindStatusAnzeigen();
+    window.firebaseAuthReady.then(function(){
+      db.ref('children').once('value').then(function(snapshot){
+        var kinder = snapshot.val() || {};
+        window.mobileKinderDaten = kinder;
+        var select = document.getElementById('m-kind-select');
+        if (select) {
+          Object.keys(kinder).forEach(function(id){
+            var kind = kinder[id];
+            if (kind.active === false) return;
+            var option = document.createElement('option');
+            option.value = id;
+            option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+            select.appendChild(option);
+          });
+        }
+        mobileKindStatusAnzeigen();
+      });
     });
   } catch(e) {}
 }
@@ -337,7 +339,7 @@ function chatBadgeAktualisieren(){
   var chatRolle = '';
   try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
   if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
-    chatBadgeAktualisieren();
+    window.firebaseAuthReady.then(chatBadgeAktualisieren);
   }
 })();
 </script>

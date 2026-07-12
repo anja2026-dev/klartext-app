@@ -71,6 +71,11 @@ function chatLadeConversations(callback) {
       }
     });
     callback(gefiltert);
+  }, function(fehler) {
+    console.error('Fehler beim Laden der Konversationen:', fehler);
+    document.querySelectorAll('.chat-liste-shell, .chat-sidebar-liste').forEach(function(el) {
+      el.innerHTML = '<div style="padding:1.5rem;text-align:center;font-size:.8rem;color:#C0392B;">Fehler beim Laden. Bitte Seite neu laden.</div>';
+    });
   });
 }
 

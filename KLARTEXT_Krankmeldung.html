@@ -594,20 +594,39 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 </div>
 <script>
 let kzLetzterTyp = null;
+function kzGesendetKey(typ) {
+  return 'kz_gesendet_' + typ + '_' + new Date().toISOString().split('T')[0];
+}
 function kzZeigeErfolg(titel, typ) {
   kzLetzterTyp = typ;
+  // In localStorage merken (tagesbezogen) - verhindert, dass das
+  // Häkchen nach dem Neuladen der Seite verschwindet, und ist die
+  // Grundlage für den "Bereits heute weitergeleitet"-Hinweis unten.
+  localStorage.setItem(kzGesendetKey(typ), 'true');
   document.getElementById('kz-erfolg-titel').textContent = titel;
   document.getElementById('kz-erfolg-overlay').classList.add('zeigen');
 }
 // Overlay schließen + zusätzlich das dezente inline-Häkchen neben dem
 // jeweiligen Absenden-Button einblenden - bleibt bis zum Neuladen der
-// Seite sichtbar.
+// Seite sichtbar (und darüber hinaus, siehe kzGesendetHinweiseAnzeigen()).
 function kzErfolgSchliessen() {
   document.getElementById('kz-erfolg-overlay').classList.remove('zeigen');
   const inlineId = kzLetzterTyp === 'kind' ? 'kz-inline-bestaetigung-kind' : 'kz-inline-bestaetigung-ingra';
   const inline = document.getElementById(inlineId);
-  if (inline) inline.style.display = 'inline';
+  if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
 }
+// Beim Laden der Seite: falls heute schon einmal gesendet wurde (z.B.
+// nach einem Reload), das Häkchen sofort wieder anzeigen statt erst
+// nach einem erneuten Absenden - verhindert außerdem versehentliche
+// Doppel-/Dreifachsendungen an TK am selben Tag.
+(function kzGesendetHinweiseAnzeigen() {
+  ['ingra', 'kind'].forEach(function(typ) {
+    if (localStorage.getItem(kzGesendetKey(typ))) {
+      const inline = document.getElementById('kz-inline-bestaetigung-' + typ);
+      if (inline) { inline.textContent = 'Bereits heute weitergeleitet ✓'; inline.style.display = 'inline'; }
+    }
+  });
+})();
 </script>
 </body>
 </html>

@@ -100,9 +100,11 @@ var aktiverFilter  = 'alle';
 var offeneKarten   = {};
 
 // ── Firebase laden ──────────────────────────────────────
-getInbox('tk', function(daten) {
-  alleUebergaben = daten || {};
-  renderListe();
+window.firebaseAuthReady.then(function(){
+  getInbox('tk', function(daten) {
+    alleUebergaben = daten || {};
+    renderListe();
+  });
 });
 
 // ── Filter ──────────────────────────────────────────────

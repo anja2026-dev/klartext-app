@@ -116,21 +116,23 @@ select:focus, textarea:focus{outline:none;border-color:var(--navy);}
 
 <script>
 // Kinder-Dropdown dynamisch aus /children befüllen
-db.ref('children').once('value').then(function(snapshot) {
-  const kinder = snapshot.val() || {};
-  const select = document.getElementById('child-select');
-  Object.keys(kinder).forEach(function(childId) {
-    const kind = kinder[childId];
-    if (kind.active === false) return; // inaktive Kinder nicht anzeigen
-    const option = document.createElement('option');
-    option.value = childId;
-    option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
-    select.appendChild(option);
+window.firebaseAuthReady.then(function(){
+  db.ref('children').once('value').then(function(snapshot) {
+    const kinder = snapshot.val() || {};
+    const select = document.getElementById('child-select');
+    Object.keys(kinder).forEach(function(childId) {
+      const kind = kinder[childId];
+      if (kind.active === false) return; // inaktive Kinder nicht anzeigen
+      const option = document.createElement('option');
+      option.value = childId;
+      option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+      select.appendChild(option);
+    });
+  }).catch(function(error) {
+    const fehlerBox = document.getElementById('fehler-box');
+    fehlerBox.textContent = 'Kinderliste konnte nicht geladen werden: ' + error.message;
+    fehlerBox.classList.add('zeigen');
   });
-}).catch(function(error) {
-  const fehlerBox = document.getElementById('fehler-box');
-  fehlerBox.textContent = 'Kinderliste konnte nicht geladen werden: ' + error.message;
-  fehlerBox.classList.add('zeigen');
 });
 
 // Speichert die forwardId der zuletzt gesendeten Weiterleitung, für den Leselink-Button

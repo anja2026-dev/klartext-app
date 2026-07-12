@@ -15,16 +15,23 @@ const db = firebase.database();
 
 // Anonyme Firebase-Auth-Anmeldung (Stufe 1 der Absicherung, siehe Analyse).
 // Transparent, kein UI, kein sichtbares Login für Nutzer - läuft nur intern,
-// damit "auth" für Firebase-Regeln nicht mehr grundsätzlich null ist. db und
-// alle db.ref(...)-Aufrufe bleiben sofort synchron nutzbar (Referenzen
-// erzeugen selbst keinen Netzwerk-Request); das Firebase-SDK verknüpft
-// offene Verbindungen automatisch mit dem Anmeldestatus, sobald
-// signInAnonymously() abgeschlossen ist - kein Warten an den einzelnen
-// Aufrufstellen nötig. Setzt voraus, dass "Anonymous" als Sign-in-Methode
-// in der Firebase-Konsole (Authentication → Sign-in method) aktiviert ist.
-firebase.auth().signInAnonymously().catch(function(fehler) {
-  console.error('Anonyme Firebase-Anmeldung fehlgeschlagen:', fehler);
-});
+// damit "auth" für Firebase-Regeln nicht mehr grundsätzlich null ist. Setzt
+// voraus, dass "Anonymous" als Sign-in-Methode in der Firebase-Konsole
+// (Authentication → Sign-in method) aktiviert ist.
+//
+// window.firebaseAuthReady löst erst auf, wenn signInAnonymously()
+// abgeschlossen ist (egal ob erfolgreich oder fehlgeschlagen - die App soll
+// nicht komplett blockieren, falls die anonyme Anmeldung mal nicht
+// erreichbar ist). Automatische db.ref()-Zugriffe, die direkt beim Laden
+// einer Seite feuern, sollen erst nach window.firebaseAuthReady starten,
+// damit sie nicht der Anmeldung vorausrennen und an Regeln wie
+// "auth != null" scheitern.
+window.firebaseAuthReady = firebase.auth().signInAnonymously()
+  .then(function() { return true; })
+  .catch(function(fehler) {
+    console.error('Anonyme Firebase-Anmeldung fehlgeschlagen:', fehler);
+    return true;
+  });
 
 // Weiterleitung speichern
 function sendForward(data) {

@@ -25,15 +25,37 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .seite-titel{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:.35rem;}
 .seite-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.55;}
 
+/* ─── TK/ADMIN: BEARBEITEN-LEISTE + NEU-FORMULAR (gleiches Muster wie .karte/.fg/.btn-senden in KLARTEXT_Weiterleitungen.html) ─── */
+.karte{background:var(--surface);border-radius:14px;padding:1.4rem;box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:1rem;}
+.karte-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1.1rem;}
+.fg{margin-bottom:1rem;}
+.fg label{display:block;font-size:.74rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
+input[type="text"]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.65rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;background:#FAFAFA;color:#1A1A2E;}
+input[type="text"]:focus{outline:none;border-color:var(--navy);}
+.btn-senden{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.3rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .15s;}
+.btn-senden:hover{background:#0F2230;}
+.btn-abbrechen{background:none;border:1.5px solid var(--border);border-radius:10px;padding:.6rem 1.2rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;color:var(--navy);cursor:pointer;}
+
 /* ─── PORTAL-KACHELN ─── */
 .portal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
 @media(max-width:480px){.portal-grid{grid-template-columns:1fr;}}
 
-.portal-kachel{background:var(--surface);border-radius:14px;padding:1.4rem 1.1rem;box-shadow:0 1px 8px rgba(0,0,0,.05);text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center;transition:transform .15s,box-shadow .15s;}
+.portal-kachel{position:relative;background:var(--surface);border-radius:14px;padding:1.4rem 1.1rem;box-shadow:0 1px 8px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s;}
 .portal-kachel:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.09);}
+.portal-open-area{text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center;}
 .portal-icon{width:48px;height:48px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
 .portal-name{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--navy);}
 .portal-hinweis{font-size:.68rem;color:var(--muted);}
+
+.portal-admin-btns{position:absolute;top:.5rem;right:.5rem;display:flex;gap:.3rem;}
+.portal-admin-btn{background:var(--paper);border:1px solid var(--border);border-radius:8px;width:26px;height:26px;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.portal-admin-btn:hover{background:var(--border);}
+
+.portal-kachel-edit{display:flex;flex-direction:column;gap:.15rem;}
+.portal-kachel-edit .fg{margin-bottom:.6rem;}
+.portal-edit-btns{display:flex;gap:.5rem;}
+
+.leer{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.84rem;background:var(--surface);border-radius:14px;grid-column:1 / -1;}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 </head>
@@ -52,31 +74,169 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
     in einem neuen Tab.
   </div>
 
-  <div class="portal-grid" id="portal-grid"></div>
+  <div id="tk-bearbeiten-leiste" style="display:none;margin-bottom:1rem;">
+    <button class="btn-senden" id="btn-bearbeiten-modus" onclick="bearbeitenModusUmschalten()">✏️ Bearbeiten</button>
+  </div>
+
+  <div class="karte" id="portal-neu-karte" style="display:none;">
+    <div class="karte-titel">➕ Neues Portal</div>
+    <div class="fg"><label for="portal-neu-name">Name</label><input type="text" id="portal-neu-name" placeholder="z.B. Outlook"></div>
+    <div class="fg"><label for="portal-neu-url">URL</label><input type="text" id="portal-neu-url" placeholder="https://…"></div>
+    <button class="btn-senden" onclick="portalHinzufuegen()">Portal speichern</button>
+  </div>
+
+  <div class="portal-grid" id="portal-grid"><div class="leer">Lade Portale …</div></div>
 </div>
 
-<script>
-// Portal-Konfiguration - für andere Träger/Deployments hier einfach
-// austauschen, ohne den Rest der Seite anzufassen.
-//
-// WICHTIG: Die URLs unten sind Platzhalter (TODO) und müssen durch die
-// echten Login-Adressen der jeweiligen Portale ersetzt werden, bevor
-// diese Seite produktiv genutzt wird - sie wurden nicht verifiziert.
-const PORTALE = [
-  { name: 'Outlook',         icon: '📧', url: 'https://TODO-echte-outlook-url-eintragen.beispiel/' },
-  { name: 'Malteser Campus', icon: '🎓', url: 'https://TODO-echte-malteser-campus-url-eintragen.beispiel/' },
-  { name: 'Socura',          icon: '💼', url: 'https://TODO-echte-socura-url-eintragen.beispiel/' },
-  { name: 'Vivendi',         icon: '📋', url: 'https://TODO-echte-vivendi-url-eintragen.beispiel/' }
-];
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
 
-const grid = document.getElementById('portal-grid');
-grid.innerHTML = PORTALE.map(function(p) {
-  return '<a class="portal-kachel" href="' + p.url + '" target="_blank" rel="noopener noreferrer">'
-    + '<div class="portal-icon">' + p.icon + '</div>'
+// Portale kommen jetzt aus der Supabase-Tabelle "portale"
+// (id, name, url, sortierung, created_at) statt fest im Code zu stehen -
+// RLS erlaubt allen eingeloggten Usern select/insert/update/delete.
+// Der Bearbeiten-Modus (hinzufügen/ändern/löschen) ist zusätzlich per
+// sessionStorage.klartext_role auf tk/admin beschränkt (gleiches
+// Guard-Muster wie bei den anderen TK-Bereichen, z.B. TK-Inbox in
+// KLARTEXT_Weiterleitungen.html) - RLS selbst unterscheidet nicht nach
+// Rolle, das ist also nur der UI-Schutz, keine zusätzliche DB-Schranke.
+
+let bearbeitenModus = false;
+let bearbeiteId = null;
+let PORTALE = [];
+
+function istTkOderAdmin() {
+  let rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  return rolle === 'tk' || rolle === 'admin';
+}
+
+function escapeAttr(text) {
+  return (text || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+}
+
+async function ladePortale() {
+  const grid = document.getElementById('portal-grid');
+  const { data, error } = await supabase
+    .from('portale')
+    .select('id, name, url, sortierung')
+    .order('sortierung', { ascending: true });
+
+  if (error) {
+    grid.innerHTML = '<div class="leer">Fehler beim Laden: ' + error.message + '</div>';
+    return;
+  }
+  PORTALE = data || [];
+  renderPortale();
+}
+
+function portalKachelHtml(p) {
+  const adminBtns = bearbeitenModus
+    ? '<div class="portal-admin-btns">'
+      + '<button class="portal-admin-btn" onclick="portalBearbeitenStarten(\'' + p.id + '\')" title="Bearbeiten">✏️</button>'
+      + '<button class="portal-admin-btn" onclick="portalLoeschen(\'' + p.id + '\')" title="Löschen">🗑️</button>'
+      + '</div>'
+    : '';
+  return '<div class="portal-kachel">'
+    + adminBtns
+    + '<a class="portal-open-area" href="' + p.url + '" target="_blank" rel="noopener noreferrer">'
+    + '<div class="portal-icon">🔗</div>'
     + '<div class="portal-name">' + p.name + '</div>'
     + '<div class="portal-hinweis">Öffnet in neuem Tab</div>'
-    + '</a>';
-}).join('');
+    + '</a>'
+    + '</div>';
+}
+
+function portalEditFormHtml(p) {
+  return '<div class="portal-kachel portal-kachel-edit">'
+    + '<div class="fg"><label>Name</label><input type="text" id="edit-name-' + p.id + '" value="' + escapeAttr(p.name) + '"></div>'
+    + '<div class="fg"><label>URL</label><input type="text" id="edit-url-' + p.id + '" value="' + escapeAttr(p.url) + '"></div>'
+    + '<div class="portal-edit-btns">'
+    + '<button class="btn-senden" onclick="portalBearbeitenSpeichern(\'' + p.id + '\')">Speichern</button>'
+    + '<button class="btn-abbrechen" onclick="portalBearbeitenAbbrechen()">Abbrechen</button>'
+    + '</div>'
+    + '</div>';
+}
+
+function renderPortale() {
+  const grid = document.getElementById('portal-grid');
+  if (PORTALE.length === 0) {
+    grid.innerHTML = '<div class="leer">Noch keine Portale hinterlegt.</div>';
+    return;
+  }
+  grid.innerHTML = PORTALE.map(function(p) {
+    return (bearbeitenModus && bearbeiteId === p.id) ? portalEditFormHtml(p) : portalKachelHtml(p);
+  }).join('');
+}
+
+function bearbeitenModusUmschalten() {
+  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
+  bearbeitenModus = !bearbeitenModus;
+  bearbeiteId = null;
+  document.getElementById('btn-bearbeiten-modus').textContent = bearbeitenModus ? '✓ Fertig' : '✏️ Bearbeiten';
+  document.getElementById('portal-neu-karte').style.display = bearbeitenModus ? 'block' : 'none';
+  renderPortale();
+}
+
+async function portalHinzufuegen() {
+  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
+  const name = document.getElementById('portal-neu-name').value.trim();
+  const url = document.getElementById('portal-neu-url').value.trim();
+  if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
+
+  const naechsteSortierung = PORTALE.length
+    ? Math.max.apply(null, PORTALE.map(function(p){ return p.sortierung || 0; })) + 1
+    : 1;
+
+  const { error } = await supabase.from('portale').insert({ name: name, url: url, sortierung: naechsteSortierung });
+  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
+  document.getElementById('portal-neu-name').value = '';
+  document.getElementById('portal-neu-url').value = '';
+  await ladePortale();
+}
+
+function portalBearbeitenStarten(id) {
+  bearbeiteId = id;
+  renderPortale();
+}
+
+function portalBearbeitenAbbrechen() {
+  bearbeiteId = null;
+  renderPortale();
+}
+
+async function portalBearbeitenSpeichern(id) {
+  const name = document.getElementById('edit-name-' + id).value.trim();
+  const url = document.getElementById('edit-url-' + id).value.trim();
+  if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
+
+  const { error } = await supabase.from('portale').update({ name: name, url: url }).eq('id', id);
+  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
+  bearbeiteId = null;
+  await ladePortale();
+}
+
+async function portalLoeschen(id) {
+  if (!confirm('Dieses Portal wirklich löschen?')) return;
+  const { error } = await supabase.from('portale').delete().eq('id', id);
+  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
+  await ladePortale();
+}
+
+if (istTkOderAdmin()) {
+  document.getElementById('tk-bearbeiten-leiste').style.display = 'block';
+}
+ladePortale();
+
+// Modul-Scripts sind nicht global sichtbar - für die inline onclick-Attribute
+// müssen die Funktionen explizit an window gehängt werden.
+window.bearbeitenModusUmschalten = bearbeitenModusUmschalten;
+window.portalHinzufuegen        = portalHinzufuegen;
+window.portalBearbeitenStarten   = portalBearbeitenStarten;
+window.portalBearbeitenAbbrechen = portalBearbeitenAbbrechen;
+window.portalBearbeitenSpeichern = portalBearbeitenSpeichern;
+window.portalLoeschen            = portalLoeschen;
 </script>
 </body>
 </html>

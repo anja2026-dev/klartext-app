@@ -396,11 +396,18 @@ function mobileBarometerStatusLaden(){
 // Badges in CHAT_List.html). Summiert die ungelesenen Nachrichten über
 // alle Konversationen des aktuellen Users.
 function chatBadgeAktualisieren(){
-  var badge = document.getElementById('m-chat-badge');
-  if (!badge) return;
+  // Zwei Badges gleichzeitig aktuell halten: die mobile Menü-Kachel
+  // (m-chat-badge) und der "💬 KLARapp"-Link in der Desktop-Navigation
+  // (gnav-chat-badge) - je nach Viewport ist nur eines davon sichtbar,
+  // beide existieren aber im DOM.
+  var badges = [
+    document.getElementById('m-chat-badge'),
+    document.getElementById('gnav-chat-badge')
+  ].filter(Boolean);
+  if (!badges.length) return;
   chatLadeConversations(function(conversations){
     var ids = Object.keys(conversations || {});
-    if (!ids.length) { badge.style.display = 'none'; return; }
+    if (!ids.length) { badges.forEach(function(b){ b.style.display = 'none'; }); return; }
     var gesamt = 0;
     var ausstehend = ids.length;
     ids.forEach(function(cid){
@@ -408,8 +415,10 @@ function chatBadgeAktualisieren(){
         gesamt += anzahl;
         ausstehend--;
         if (ausstehend === 0) {
-          if (gesamt > 0) { badge.textContent = gesamt; badge.style.display = 'inline-block'; }
-          else { badge.style.display = 'none'; }
+          badges.forEach(function(b){
+            if (gesamt > 0) { b.textContent = gesamt; b.style.display = 'inline-block'; }
+            else { b.style.display = 'none'; }
+          });
         }
       });
     });
@@ -469,7 +478,7 @@ function chatBadgeAktualisieren(){
 <nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
   <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
   <a class="gnav-link aktiv" href="DASHBOARD.html">🏠 Dashboard</a>
-  <a class="gnav-link" href="CHAT_View.html">💬 KLARapp</a>
+  <a class="gnav-link" href="CHAT_View.html">💬 KLARapp<span id="gnav-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:4px;">0</span></a>
   <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
   <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>

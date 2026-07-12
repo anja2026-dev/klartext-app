@@ -201,16 +201,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="preview" id="preview"></div>
 
   <button class="sav-btn" onclick="speichern()">+ Eintrag speichern</button>
-  <span id="zk-inline-bestaetigung" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;margin-left:.6rem;">✓ Weitergeleitet an TK</span>
+  <span id="zk-gespeichert-hinweis" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;margin-left:.6rem;">✓ Gespeichert</span>
 </div>
 
 <!-- EINTRÄGE -->
 <div class="form-card">
   <div class="liste-head">
     <div class="liste-titel">📋 Alle Einträge</div>
-    <div style="display:flex;gap:.4rem;">
+    <div style="display:flex;gap:.4rem;align-items:center;">
       <button class="exp-btn" onclick="wochenuebersichtAnTkSenden()">📤 An TK weiterleiten</button>
       <button class="exp-btn" onclick="exportCSV()">📥 Export CSV</button>
+      <span id="zk-inline-bestaetigung" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;">✓ Weitergeleitet an TK</span>
     </div>
   </div>
   <div class="leer" id="wl-status" style="display:none;padding:.4rem 0;font-size:.78rem;"></div>
@@ -456,8 +457,9 @@ async function speichern() {
   });
   if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
 
-  // Zusätzlich nach Firebase schreiben (Etappe 6.1) - unverändert, separates Log,
-  // nicht die Weiterleitung an TK
+  // Zusätzlich nach Firebase schreiben (Etappe 6.1) - unverändert, separates Log.
+  // Keine automatische Weiterleitung an TK mehr hier - die läuft jetzt
+  // ausschließlich gebündelt über wochenuebersichtAnTkSenden().
   if (kindId) {
     try {
       db.ref('time_entry/' + kindId).push({
@@ -476,26 +478,9 @@ async function speichern() {
     } catch(e) {
       console.error('Firebase-Speicherung fehlgeschlagen:', e);
     }
-
-    // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward)
-    const vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
-    const { error: wlError } = await supabase.from('weiterleitungen').insert({
-      kind_id: kindId,
-      von_profil: userId,
-      von_rolle: vonRolle,
-      ziel_rolle: 'tk',
-      typ: 'hinweis',
-      text: 'Arbeitszeit ' + von + '–' + bis + ' (' + h + 'h)',
-      dringlichkeit: 'normal',
-      status: 'offen'
-    });
-    if (wlError) { console.error('Weiterleitung fehlgeschlagen:', wlError); }
-    // In localStorage merken (tagesbezogen) - verhindert, dass das
-    // Häkchen nach dem Neuladen der Seite verschwindet, und ist die
-    // Grundlage für den "Bereits heute weitergeleitet"-Hinweis.
-    localStorage.setItem('zk_gesendet_' + heute(), 'true');
-    document.getElementById('zk-erfolg-overlay').classList.add('zeigen');
   }
+
+  zkGespeichertHinweisAnzeigen();
 
   // Reset
   document.getElementById('e-datum').value = heute();
@@ -718,6 +703,15 @@ async function wochenuebersichtAnTkSenden() {
     status.textContent = error ? '⚠ Fehler beim Weiterleiten.' : '✓ Wochenübersicht an TK weitergeleitet.';
     setTimeout(() => { status.style.display = 'none'; }, 3000);
   }
+
+  if (!error) {
+    // In localStorage merken (tagesbezogen) - verhindert, dass das
+    // Häkchen nach dem Neuladen der Seite verschwindet, und ist die
+    // Grundlage für den "Bereits heute weitergeleitet"-Hinweis.
+    localStorage.setItem('zk_gesendet_' + heute(), 'true');
+    const inline = document.getElementById('zk-inline-bestaetigung');
+    if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
+  }
 }
 
 // ═══════════════════════════════════════
@@ -748,17 +742,17 @@ async function renderAlles() {
   await renderMonat();
 }
 
-// Overlay schließen + zusätzlich das dezente inline-Häkchen neben dem
-// Absenden-Button einblenden - bleibt bis zum Neuladen der Seite sichtbar.
-function zkErfolgSchliessen() {
-  document.getElementById('zk-erfolg-overlay').classList.remove('zeigen');
-  const inline = document.getElementById('zk-inline-bestaetigung');
-  if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
+// Dezenter, unaufdringlicher Hinweis direkt nach dem lokalen Speichern
+// eines Eintrags (zeiteintraege + Firebase time_entry) - keine
+// Weiterleitung an TK ausgelöst, daher kein "Weitergeleitet"-Text.
+function zkGespeichertHinweisAnzeigen() {
+  const inline = document.getElementById('zk-gespeichert-hinweis');
+  if (inline) inline.style.display = 'inline';
 }
-// Beim Laden der Seite: falls heute schon einmal gesendet wurde (z.B.
-// nach einem Reload), das Häkchen sofort wieder anzeigen statt erst
-// nach einem erneuten Absenden - verhindert außerdem versehentliche
-// Doppel-/Dreifachsendungen an TK am selben Tag.
+// Beim Laden der Seite: falls die Wochenübersicht heute schon einmal an
+// TK gesendet wurde (z.B. nach einem Reload), das Häkchen sofort wieder
+// anzeigen statt erst nach einem erneuten Senden - verhindert außerdem
+// versehentliche Doppel-/Dreifachsendungen am selben Tag.
 function zkGesendetHinweisAnzeigen() {
   if (localStorage.getItem('zk_gesendet_' + heute())) {
     const inline = document.getElementById('zk-inline-bestaetigung');
@@ -774,7 +768,6 @@ window.exportCSV = exportCSV;
 window.wochenuebersichtAnTkSenden = wochenuebersichtAnTkSenden;
 window.setFilter = setFilter;
 window.loeschen = loeschen;
-window.zkErfolgSchliessen = zkErfolgSchliessen;
 
 // ═══════════════════════════════════════
 // INIT
@@ -821,26 +814,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   );
 });
 </script>
-
-<!-- ERFOLGS-OVERLAY (Etappe 6.1) -->
-<style>
-.zk-erfolg-overlay{position:fixed;inset:0;background:rgba(27,58,75,.85);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;}
-.zk-erfolg-overlay.zeigen{display:flex;}
-.zk-erfolg-karte{background:#fff;border-radius:16px;padding:2rem 1.75rem;max-width:380px;text-align:center;}
-.zk-erfolg-icon{font-size:2.5rem;margin-bottom:.75rem;}
-.zk-erfolg-titel{font-family:inherit;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;}
-.zk-erfolg-text{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:1.25rem;}
-.zk-erfolg-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.5rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;margin:.25rem;}
-</style>
-<div class="zk-erfolg-overlay" id="zk-erfolg-overlay">
-  <div class="zk-erfolg-karte">
-    <div class="zk-erfolg-icon">✅</div>
-    <div class="zk-erfolg-titel">Zeitkonto gespeichert</div>
-    <div class="zk-erfolg-text">Der Eintrag wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
-    <div style="margin-top:1rem;">
-      <button class="zk-erfolg-btn" onclick="zkErfolgSchliessen()">Schließen</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>

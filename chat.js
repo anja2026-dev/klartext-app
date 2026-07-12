@@ -129,10 +129,14 @@ function chatNachrichtSenden(conversationId, text) {
   };
 
   return db.ref('messages/' + conversationId).push(nachricht).then(function(ref) {
-    // lastMessage/lastTimestamp der Conversation aktualisieren, für die Chatliste
+    // lastMessage/lastTimestamp/lastSenderId/lastSenderName der Conversation
+    // aktualisieren, für die Chatliste (u.a. Absender-Anzeige bei
+    // ungelesenen Nachrichten in CHAT_List.html)
     db.ref('conversations/' + conversationId).update({
       lastMessage: nachricht.text,
-      lastTimestamp: nachricht.timestamp
+      lastTimestamp: nachricht.timestamp,
+      lastSenderId: nachricht.senderId,
+      lastSenderName: nachricht.senderName
     });
     return ref.key;
   });

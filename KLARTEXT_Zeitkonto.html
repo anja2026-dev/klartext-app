@@ -490,6 +490,10 @@ async function speichern() {
       status: 'offen'
     });
     if (wlError) { console.error('Weiterleitung fehlgeschlagen:', wlError); }
+    // In localStorage merken (tagesbezogen) - verhindert, dass das
+    // Häkchen nach dem Neuladen der Seite verschwindet, und ist die
+    // Grundlage für den "Bereits heute weitergeleitet"-Hinweis.
+    localStorage.setItem('zk_gesendet_' + heute(), 'true');
     document.getElementById('zk-erfolg-overlay').classList.add('zeigen');
   }
 
@@ -749,7 +753,17 @@ async function renderAlles() {
 function zkErfolgSchliessen() {
   document.getElementById('zk-erfolg-overlay').classList.remove('zeigen');
   const inline = document.getElementById('zk-inline-bestaetigung');
-  if (inline) inline.style.display = 'inline';
+  if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
+}
+// Beim Laden der Seite: falls heute schon einmal gesendet wurde (z.B.
+// nach einem Reload), das Häkchen sofort wieder anzeigen statt erst
+// nach einem erneuten Absenden - verhindert außerdem versehentliche
+// Doppel-/Dreifachsendungen an TK am selben Tag.
+function zkGesendetHinweisAnzeigen() {
+  if (localStorage.getItem('zk_gesendet_' + heute())) {
+    const inline = document.getElementById('zk-inline-bestaetigung');
+    if (inline) { inline.textContent = 'Bereits heute weitergeleitet ✓'; inline.style.display = 'inline'; }
+  }
 }
 
 window.wocheNav = wocheNav;
@@ -767,6 +781,7 @@ window.zkErfolgSchliessen = zkErfolgSchliessen;
 // ═══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('e-datum').value = heute();
+  zkGesendetHinweisAnzeigen();
   renderTypChips();
   await renderAlles();
 

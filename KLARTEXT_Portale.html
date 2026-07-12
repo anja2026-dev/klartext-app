@@ -25,37 +25,48 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .seite-titel{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:.35rem;}
 .seite-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.55;}
 
-/* ─── TK/ADMIN: BEARBEITEN-LEISTE + NEU-FORMULAR (gleiches Muster wie .karte/.fg/.btn-senden in KLARTEXT_Weiterleitungen.html) ─── */
-.karte{background:var(--surface);border-radius:14px;padding:1.4rem;box-shadow:0 1px 8px rgba(0,0,0,.05);margin-bottom:1rem;}
-.karte-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:1.1rem;}
-.fg{margin-bottom:1rem;}
-.fg label{display:block;font-size:.74rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
-input[type="text"]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.65rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;background:#FAFAFA;color:#1A1A2E;}
-input[type="text"]:focus{outline:none;border-color:var(--navy);}
-.btn-senden{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.65rem 1.3rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .15s;}
-.btn-senden:hover{background:#0F2230;}
-.btn-abbrechen{background:none;border:1.5px solid var(--border);border-radius:10px;padding:.6rem 1.2rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;color:var(--navy);cursor:pointer;}
+/* ─── KATEGORIE-SEKTIONEN ─── */
+.kategorie-sektion{margin-bottom:1.75rem;}
+.kategorie-kopf{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.75rem;}
+.kategorie-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--navy);}
+.portal-verwalten-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:.3rem .8rem;font-family:"DM Sans",sans-serif;font-size:.72rem;font-weight:700;color:var(--navy);cursor:pointer;display:inline-flex;align-items:center;gap:.3rem;flex-shrink:0;}
+.portal-verwalten-btn:hover{border-color:var(--navy);}
 
 /* ─── PORTAL-KACHELN ─── */
 .portal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
 @media(max-width:480px){.portal-grid{grid-template-columns:1fr;}}
 
-.portal-kachel{position:relative;background:var(--surface);border-radius:14px;padding:1.4rem 1.1rem;box-shadow:0 1px 8px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s;}
+.portal-kachel{background:var(--surface);border-radius:14px;padding:1.4rem 1.1rem;box-shadow:0 1px 8px rgba(0,0,0,.05);text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center;transition:transform .15s,box-shadow .15s;}
 .portal-kachel:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.09);}
-.portal-open-area{text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center;}
 .portal-icon{width:48px;height:48px;border-radius:50%;background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
 .portal-name{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--navy);}
 .portal-hinweis{font-size:.68rem;color:var(--muted);}
 
-.portal-admin-btns{position:absolute;top:.5rem;right:.5rem;display:flex;gap:.3rem;}
-.portal-admin-btn{background:var(--paper);border:1px solid var(--border);border-radius:8px;width:26px;height:26px;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.portal-admin-btn:hover{background:var(--border);}
+.leer{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.84rem;background:var(--surface);border-radius:14px;}
+.leer-klein{padding:1.1rem;font-size:.8rem;grid-column:1 / -1;}
 
-.portal-kachel-edit{display:flex;flex-direction:column;gap:.15rem;}
-.portal-kachel-edit .fg{margin-bottom:.6rem;}
-.portal-edit-btns{display:flex;gap:.5rem;}
+/* ─── VERWALTEN-OVERLAY (gleiches Muster wie .overlay in KLARTEXT_Weiterleitungen.html) ─── */
+.overlay{position:fixed;inset:0;background:rgba(27,58,75,.88);display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;}
+.overlay.zeigen{display:flex;}
+.overlay-karte{background:#fff;border-radius:16px;padding:1.75rem;max-width:480px;width:100%;text-align:left;max-height:85vh;overflow-y:auto;}
+.overlay-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:1.1rem;}
 
-.leer{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.84rem;background:var(--surface);border-radius:14px;grid-column:1 / -1;}
+.fg{margin-bottom:1rem;}
+.fg label{display:block;font-size:.74rem;font-weight:700;color:var(--navy);margin-bottom:.4rem;}
+input[type="text"]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.65rem .85rem;font-family:"DM Sans",sans-serif;font-size:.84rem;background:#FAFAFA;color:#1A1A2E;}
+input[type="text"]:focus{outline:none;border-color:var(--navy);}
+.btn-senden{width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:.7rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .15s;}
+.btn-senden:hover{background:#0F2230;}
+.btn-abbrechen{background:none;border:1.5px solid var(--border);border-radius:10px;padding:.6rem 1.2rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;color:var(--navy);cursor:pointer;}
+
+.verwalten-liste{margin-bottom:1.25rem;}
+.verwalten-zeile{display:grid;grid-template-columns:1fr 1fr auto auto;gap:.5rem;align-items:center;margin-bottom:.6rem;}
+.verwalten-zeile input{font-size:.8rem;padding:.5rem .6rem;}
+.verwalten-btn{background:var(--paper);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.verwalten-btn:hover{background:var(--border);}
+@media(max-width:480px){.verwalten-zeile{grid-template-columns:1fr;}}
+
+.neu-titel{font-size:.78rem;font-weight:700;color:var(--navy);margin:1.25rem 0 .75rem;}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 </head>
@@ -74,35 +85,46 @@ input[type="text"]:focus{outline:none;border-color:var(--navy);}
     in einem neuen Tab.
   </div>
 
-  <div id="tk-bearbeiten-leiste" style="display:none;margin-bottom:1rem;">
-    <button class="btn-senden" id="btn-bearbeiten-modus" onclick="bearbeitenModusUmschalten()">✏️ Bearbeiten</button>
-  </div>
+  <div id="portal-kategorien"><div class="leer">Lade Portale …</div></div>
+</div>
 
-  <div class="karte" id="portal-neu-karte" style="display:none;">
-    <div class="karte-titel">➕ Neues Portal</div>
-    <div class="fg"><label for="portal-neu-name">Name</label><input type="text" id="portal-neu-name" placeholder="z.B. Outlook"></div>
-    <div class="fg"><label for="portal-neu-url">URL</label><input type="text" id="portal-neu-url" placeholder="https://…"></div>
-    <button class="btn-senden" onclick="portalHinzufuegen()">Portal speichern</button>
-  </div>
+<!-- VERWALTEN-OVERLAY (nur tk/admin) -->
+<div class="overlay" id="verwalten-overlay">
+  <div class="overlay-karte">
+    <div class="overlay-titel" id="verwalten-titel">Verwalten</div>
 
-  <div class="portal-grid" id="portal-grid"><div class="leer">Lade Portale …</div></div>
+    <div class="verwalten-liste" id="verwalten-liste"></div>
+
+    <div class="neu-titel">➕ Neuen Link hinzufügen</div>
+    <div class="fg"><label for="verwalten-neu-name">Name</label><input type="text" id="verwalten-neu-name" placeholder="z.B. Grundschule Musterstadt"></div>
+    <div class="fg"><label for="verwalten-neu-url">URL</label><input type="text" id="verwalten-neu-url" placeholder="https://…"></div>
+    <button class="btn-senden" onclick="verwaltenLinkHinzufuegen()">Speichern</button>
+
+    <div style="margin-top:1.1rem;text-align:right;">
+      <button class="btn-abbrechen" onclick="verwaltenSchliessen()">Schließen</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
-// Portale kommen jetzt aus der Supabase-Tabelle "portale"
-// (id, name, url, sortierung, created_at) statt fest im Code zu stehen -
-// RLS erlaubt allen eingeloggten Usern select/insert/update/delete.
-// Der Bearbeiten-Modus (hinzufügen/ändern/löschen) ist zusätzlich per
-// sessionStorage.klartext_role auf tk/admin beschränkt (gleiches
-// Guard-Muster wie bei den anderen TK-Bereichen, z.B. TK-Inbox in
-// KLARTEXT_Weiterleitungen.html) - RLS selbst unterscheidet nicht nach
-// Rolle, das ist also nur der UI-Schutz, keine zusätzliche DB-Schranke.
+// Portale kommen aus der Supabase-Tabelle "portale"
+// (id, name, url, sortierung, kategorie, aktiv, created_at). RLS: SELECT
+// für alle eingeloggten Rollen (aktiv=true), INSERT/UPDATE/DELETE nur
+// tk/admin. Der Verwalten-Button pro Kategorie ist zusätzlich per
+// sessionStorage.klartext_role auf tk/admin beschränkt (reiner UI-Schutz,
+// RLS ist die eigentliche Schranke).
+const KATEGORIEN = [
+  { key: 'outlook',         label: 'Outlook',         icon: '📧' },
+  { key: 'malteser_campus', label: 'Malteser Campus', icon: '🎓' },
+  { key: 'postbox',         label: 'Postbox',         icon: '📮' },
+  { key: 'jugendamt',       label: 'Jugendamt',       icon: '🏛️' },
+  { key: 'schulen',         label: 'Schulen',         icon: '🏫' }
+];
 
-let bearbeitenModus = false;
-let bearbeiteId = null;
 let PORTALE = [];
+let verwaltenKategorie = null;
 
 function istTkOderAdmin() {
   let rolle = '';
@@ -115,128 +137,150 @@ function escapeAttr(text) {
 }
 
 async function ladePortale() {
-  const grid = document.getElementById('portal-grid');
+  const wrap = document.getElementById('portal-kategorien');
   const { data, error } = await supabase
     .from('portale')
-    .select('id, name, url, sortierung')
+    .select('id, name, url, sortierung, kategorie')
+    .eq('aktiv', true)
     .order('sortierung', { ascending: true });
 
   if (error) {
-    grid.innerHTML = '<div class="leer">Fehler beim Laden: ' + error.message + '</div>';
+    wrap.innerHTML = '<div class="leer">Fehler beim Laden: ' + error.message + '</div>';
     return;
   }
   PORTALE = data || [];
-  renderPortale();
+  renderKategorien();
+  if (verwaltenKategorie) renderVerwaltenListe();
+}
+
+function eintraegeFuer(katKey) {
+  return PORTALE.filter(function(p) { return p.kategorie === katKey; });
 }
 
 function portalKachelHtml(p) {
-  const adminBtns = bearbeitenModus
-    ? '<div class="portal-admin-btns">'
-      + '<button class="portal-admin-btn" onclick="portalBearbeitenStarten(\'' + p.id + '\')" title="Bearbeiten">✏️</button>'
-      + '<button class="portal-admin-btn" onclick="portalLoeschen(\'' + p.id + '\')" title="Löschen">🗑️</button>'
-      + '</div>'
-    : '';
-  return '<div class="portal-kachel">'
-    + adminBtns
-    + '<a class="portal-open-area" href="' + p.url + '" target="_blank" rel="noopener noreferrer">'
+  return '<a class="portal-kachel" href="' + p.url + '" target="_blank" rel="noopener noreferrer">'
     + '<div class="portal-icon">🔗</div>'
     + '<div class="portal-name">' + p.name + '</div>'
     + '<div class="portal-hinweis">Öffnet in neuem Tab</div>'
-    + '</a>'
-    + '</div>';
+    + '</a>';
 }
 
-function portalEditFormHtml(p) {
-  return '<div class="portal-kachel portal-kachel-edit">'
-    + '<div class="fg"><label>Name</label><input type="text" id="edit-name-' + p.id + '" value="' + escapeAttr(p.name) + '"></div>'
-    + '<div class="fg"><label>URL</label><input type="text" id="edit-url-' + p.id + '" value="' + escapeAttr(p.url) + '"></div>'
-    + '<div class="portal-edit-btns">'
-    + '<button class="btn-senden" onclick="portalBearbeitenSpeichern(\'' + p.id + '\')">Speichern</button>'
-    + '<button class="btn-abbrechen" onclick="portalBearbeitenAbbrechen()">Abbrechen</button>'
+function kategorieSektionHtml(kat) {
+  const eintraege = eintraegeFuer(kat.key);
+  const tkAdmin = istTkOderAdmin();
+
+  if (eintraege.length === 0 && !tkAdmin) return ''; // leere Kategorien für normale Nutzer ausblenden
+
+  const verwaltenBtn = tkAdmin
+    ? '<button class="portal-verwalten-btn" onclick="verwaltenOeffnen(\'' + kat.key + '\')">✏️ Verwalten</button>'
+    : '';
+  const kacheln = eintraege.length
+    ? eintraege.map(portalKachelHtml).join('')
+    : '<div class="leer leer-klein">Noch keine Links in dieser Kategorie.</div>';
+
+  return '<section class="kategorie-sektion">'
+    + '<div class="kategorie-kopf">'
+    + '<span class="kategorie-titel">' + kat.icon + ' ' + kat.label + '</span>'
+    + verwaltenBtn
     + '</div>'
-    + '</div>';
+    + '<div class="portal-grid">' + kacheln + '</div>'
+    + '</section>';
 }
 
-function renderPortale() {
-  const grid = document.getElementById('portal-grid');
-  if (PORTALE.length === 0) {
-    grid.innerHTML = '<div class="leer">Noch keine Portale hinterlegt.</div>';
+function renderKategorien() {
+  const wrap = document.getElementById('portal-kategorien');
+  const html = KATEGORIEN.map(kategorieSektionHtml).join('');
+  wrap.innerHTML = html || '<div class="leer">Noch keine Portale hinterlegt.</div>';
+}
+
+// ── VERWALTEN-OVERLAY ────────────────────────────────────────
+function verwaltenOeffnen(katKey) {
+  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
+  verwaltenKategorie = katKey;
+  const kat = KATEGORIEN.find(function(k) { return k.key === katKey; });
+  document.getElementById('verwalten-titel').textContent = 'Verwalten: ' + (kat ? kat.label : katKey);
+  renderVerwaltenListe();
+  document.getElementById('verwalten-overlay').classList.add('zeigen');
+}
+
+function verwaltenSchliessen() {
+  document.getElementById('verwalten-overlay').classList.remove('zeigen');
+  document.getElementById('verwalten-neu-name').value = '';
+  document.getElementById('verwalten-neu-url').value = '';
+  verwaltenKategorie = null;
+}
+
+function renderVerwaltenListe() {
+  const liste = document.getElementById('verwalten-liste');
+  const eintraege = eintraegeFuer(verwaltenKategorie);
+  if (eintraege.length === 0) {
+    liste.innerHTML = '<div class="leer leer-klein">Noch keine Links in dieser Kategorie.</div>';
     return;
   }
-  grid.innerHTML = PORTALE.map(function(p) {
-    return (bearbeitenModus && bearbeiteId === p.id) ? portalEditFormHtml(p) : portalKachelHtml(p);
+  liste.innerHTML = eintraege.map(function(p) {
+    return '<div class="verwalten-zeile">'
+      + '<input type="text" id="v-name-' + p.id + '" value="' + escapeAttr(p.name) + '">'
+      + '<input type="text" id="v-url-' + p.id + '" value="' + escapeAttr(p.url) + '">'
+      + '<button class="verwalten-btn" onclick="verwaltenSpeichern(\'' + p.id + '\')" title="Speichern">💾</button>'
+      + '<button class="verwalten-btn" onclick="verwaltenLoeschen(\'' + p.id + '\')" title="Löschen">🗑️</button>'
+      + '</div>';
   }).join('');
 }
 
-function bearbeitenModusUmschalten() {
+async function verwaltenSpeichern(id) {
   if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
-  bearbeitenModus = !bearbeitenModus;
-  bearbeiteId = null;
-  document.getElementById('btn-bearbeiten-modus').textContent = bearbeitenModus ? '✓ Fertig' : '✏️ Bearbeiten';
-  document.getElementById('portal-neu-karte').style.display = bearbeitenModus ? 'block' : 'none';
-  renderPortale();
-}
-
-async function portalHinzufuegen() {
-  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
-  const name = document.getElementById('portal-neu-name').value.trim();
-  const url = document.getElementById('portal-neu-url').value.trim();
-  if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
-
-  const naechsteSortierung = PORTALE.length
-    ? Math.max.apply(null, PORTALE.map(function(p){ return p.sortierung || 0; })) + 1
-    : 1;
-
-  const { error } = await supabase.from('portale').insert({ name: name, url: url, sortierung: naechsteSortierung });
-  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
-
-  document.getElementById('portal-neu-name').value = '';
-  document.getElementById('portal-neu-url').value = '';
-  await ladePortale();
-}
-
-function portalBearbeitenStarten(id) {
-  bearbeiteId = id;
-  renderPortale();
-}
-
-function portalBearbeitenAbbrechen() {
-  bearbeiteId = null;
-  renderPortale();
-}
-
-async function portalBearbeitenSpeichern(id) {
-  const name = document.getElementById('edit-name-' + id).value.trim();
-  const url = document.getElementById('edit-url-' + id).value.trim();
+  const name = document.getElementById('v-name-' + id).value.trim();
+  const url = document.getElementById('v-url-' + id).value.trim();
   if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
 
   const { error } = await supabase.from('portale').update({ name: name, url: url }).eq('id', id);
   if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
-
-  bearbeiteId = null;
   await ladePortale();
 }
 
-async function portalLoeschen(id) {
-  if (!confirm('Dieses Portal wirklich löschen?')) return;
+async function verwaltenLoeschen(id) {
+  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
+  if (!confirm('Diesen Link wirklich löschen?')) return;
+
   const { error } = await supabase.from('portale').delete().eq('id', id);
   if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
   await ladePortale();
 }
 
-if (istTkOderAdmin()) {
-  document.getElementById('tk-bearbeiten-leiste').style.display = 'block';
+async function verwaltenLinkHinzufuegen() {
+  if (!istTkOderAdmin() || !verwaltenKategorie) return; // zweite Sicherheitsebene
+  const name = document.getElementById('verwalten-neu-name').value.trim();
+  const url = document.getElementById('verwalten-neu-url').value.trim();
+  if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
+
+  const eintraegeKat = eintraegeFuer(verwaltenKategorie);
+  const naechsteSortierung = eintraegeKat.length
+    ? Math.max.apply(null, eintraegeKat.map(function(p){ return p.sortierung || 0; })) + 1
+    : 1;
+
+  const { error } = await supabase.from('portale').insert({
+    name: name,
+    url: url,
+    kategorie: verwaltenKategorie,
+    sortierung: naechsteSortierung,
+    aktiv: true
+  });
+  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+
+  document.getElementById('verwalten-neu-name').value = '';
+  document.getElementById('verwalten-neu-url').value = '';
+  await ladePortale();
 }
+
 ladePortale();
 
 // Modul-Scripts sind nicht global sichtbar - für die inline onclick-Attribute
 // müssen die Funktionen explizit an window gehängt werden.
-window.bearbeitenModusUmschalten = bearbeitenModusUmschalten;
-window.portalHinzufuegen        = portalHinzufuegen;
-window.portalBearbeitenStarten   = portalBearbeitenStarten;
-window.portalBearbeitenAbbrechen = portalBearbeitenAbbrechen;
-window.portalBearbeitenSpeichern = portalBearbeitenSpeichern;
-window.portalLoeschen            = portalLoeschen;
+window.verwaltenOeffnen         = verwaltenOeffnen;
+window.verwaltenSchliessen      = verwaltenSchliessen;
+window.verwaltenSpeichern       = verwaltenSpeichern;
+window.verwaltenLoeschen        = verwaltenLoeschen;
+window.verwaltenLinkHinzufuegen = verwaltenLinkHinzufuegen;
 </script>
 </body>
 </html>

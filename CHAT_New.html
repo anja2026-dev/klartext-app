@@ -42,19 +42,26 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
   <div id="partner-liste"></div>
 </div>
 
-<script>
-// Feste Liste möglicher Chatpartner — solange es keine echte /users-Verwaltung gibt,
-// nutzen wir die bekannten festen Demo-Identitäten aus dem Login-System.
-const CHAT_PARTNER = [
-  { id: 'ingra_1',   name: 'INGRA',              role: 'ingra' },
-  { id: 'ingra_anna',name: 'Anna',               role: 'ingra' },
-  { id: 'ingra_ben', name: 'Ben',                role: 'ingra' },
-  { id: 'ingra_clara',name: 'Clara',             role: 'ingra' },
-  { id: 'tk_1',      name: 'Teamkoordination',   role: 'tk' },
-  { id: 'lk_1',      name: 'Lehrkraft',          role: 'lk' },
-  { id: 'trainer_1', name: 'Trainer',            role: 'trainer' },
-  { id: 'admin_1',   name: 'Admin',              role: 'admin' }
-];
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Echte INGRA-Kontaktliste (erster Baustein, siehe
+// supabase/migrations/0036_person_auth_map.sql): Name/E-Mail kommen aus
+// der Tabelle "ingra", die echte, Firebase-fähige ID (= Supabase-Auth-
+// UID) aus person_auth_map (E-Mail -> auth_uid, beim Login geschrieben).
+// Kontakte ohne Eintrag in person_auth_map (= noch nie eingeloggt)
+// werden ausgeblendet, da für sie keine gültige Chat-ID existiert.
+// Vorerst nur INGRA - TK/LK/Trainer/Gruppen/Broadcast folgen später.
+//
+// In EINEM type="module"-Script zusammengefasst statt auf zwei Scripts
+// verteilt: ein normales (nicht-Modul-)Script läuft synchron beim
+// Parsen und damit immer VOR jedem type="module"-Script (Module sind
+// wie defer immer nachgelagert) - eine spätere Übergabe per window-
+// Promise würde daher genau das Race-Problem aus window.firebaseAuthReady
+// wiederholen. db/chatAktuellerUser/chatRollenfarbe/chatNeueConversation/
+// window.firebaseAuthReady stammen aus firebase.js/chat.js (klassische
+// Scripts weiter oben) und sind daher beim Start dieses Moduls bereits
+// sicher vorhanden.
 
 const aktuellerUser = chatAktuellerUser();
 
@@ -70,15 +77,57 @@ function partnerKarteHtml(partner) {
   </div>`;
 }
 
-// eigene Identität aus der Liste ausschließen — man kann sich nicht selbst anschreiben
-const liste = document.getElementById('partner-liste');
-const sichtbarePartner = CHAT_PARTNER.filter(function(p) { return p.id !== aktuellerUser.id; });
+async function ladeIngraKontakte() {
+  const [ingraErgebnis, mapErgebnis] = await Promise.all([
+    supabase.from('ingra').select('id, name, email'),
+    supabase.from('person_auth_map').select('email, auth_uid')
+  ]);
 
-if (sichtbarePartner.length === 0) {
-  liste.innerHTML = '<div class="chat-liste-leer">Keine weiteren Chatpartner verfügbar.</div>';
-} else {
-  liste.innerHTML = sichtbarePartner.map(partnerKarteHtml).join('');
+  if (ingraErgebnis.error || mapErgebnis.error) {
+    console.error('Kontaktliste konnte nicht geladen werden:', ingraErgebnis.error || mapErgebnis.error);
+    return null;
+  }
+
+  const authUidByEmail = {};
+  (mapErgebnis.data || []).forEach(function(zeile) {
+    authUidByEmail[zeile.email] = zeile.auth_uid;
+  });
+
+  const kontakte = [];
+  let uebersprungen = 0;
+  (ingraErgebnis.data || []).forEach(function(zeile) {
+    const authUid = authUidByEmail[zeile.email];
+    if (!authUid) { uebersprungen++; return; } // noch nie eingeloggt - keine gültige Chat-ID
+    kontakte.push({ id: authUid, name: zeile.name || zeile.email, role: 'ingra' });
+  });
+  return { kontakte: kontakte, uebersprungen: uebersprungen };
 }
+
+(async function(){
+  const liste = document.getElementById('partner-liste');
+  const ergebnis = await ladeIngraKontakte();
+
+  if (ergebnis === null) {
+    liste.innerHTML = '<div class="chat-liste-leer">Kontaktliste konnte nicht geladen werden.</div>';
+    return;
+  }
+
+  // eigene Identität ausschließen — man kann sich nicht selbst anschreiben
+  const sichtbarePartner = ergebnis.kontakte.filter(function(p) { return p.id !== aktuellerUser.id; });
+
+  if (sichtbarePartner.length === 0) {
+    liste.innerHTML = '<div class="chat-liste-leer">Keine weiteren Chatpartner verfügbar.</div>';
+  } else {
+    liste.innerHTML = sichtbarePartner.map(partnerKarteHtml).join('');
+  }
+
+  if (ergebnis.uebersprungen > 0) {
+    const hinweis = document.createElement('div');
+    hinweis.style.cssText = 'font-size:.75rem;color:#7A7060;margin-top:.75rem;';
+    hinweis.textContent = 'ℹ️ ' + ergebnis.uebersprungen + ' Person(en) haben sich noch nie eingeloggt und werden hier noch nicht angezeigt.';
+    liste.after(hinweis);
+  }
+})();
 
 function chatPartnerWaehlen(partnerId, partnerName, partnerRole) {
   // Prüfen, ob bereits eine direct-Konversation mit dieser Person existiert.
@@ -108,6 +157,10 @@ function chatPartnerWaehlen(partnerId, partnerName, partnerRole) {
     });
   });
 }
+// Modul-Scripts sind nicht global sichtbar — für das inline onclick-Attribut
+// in partnerKarteHtml() muss die Funktion explizit an window gehängt werden
+// (gleiches Muster wie window.login in KLARTEXT_Login.html).
+window.chatPartnerWaehlen = chatPartnerWaehlen;
 </script>
 </body>
 </html>

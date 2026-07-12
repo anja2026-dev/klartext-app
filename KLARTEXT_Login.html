@@ -170,6 +170,12 @@ async function login() {
   // darf den Login nicht blockieren.
   try {
     const anzeigename = await ermittleAnzeigename(rolle, email);
+    // Echten Anzeigenamen zusätzlich unter einem eigenen Key ablegen -
+    // klartext_name bleibt unverändert die E-Mail, da andere Seiten sich
+    // ggf. darauf verlassen (siehe Kommentare in KLARTEXT_Tagesjournal.html
+    // etc.). klartext_display_name ist für reine Anzeigezwecke gedacht
+    // (z.B. Kontoanzeige im DASHBOARD.html-Header).
+    try { sessionStorage.setItem('klartext_display_name', anzeigename); } catch (e) {}
     await supabase.from('person_auth_map').upsert(
       { email: email, auth_uid: data.user.id, name: anzeigename, role: rolle },
       { onConflict: 'email' }

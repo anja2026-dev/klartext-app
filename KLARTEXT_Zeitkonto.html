@@ -201,6 +201,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="preview" id="preview"></div>
 
   <button class="sav-btn" onclick="speichern()">+ Eintrag speichern</button>
+  <span id="zk-inline-bestaetigung" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;margin-left:.6rem;">✓ Weitergeleitet an TK</span>
 </div>
 
 <!-- EINTRÄGE -->
@@ -743,6 +744,14 @@ async function renderAlles() {
   await renderMonat();
 }
 
+// Overlay schließen + zusätzlich das dezente inline-Häkchen neben dem
+// Absenden-Button einblenden - bleibt bis zum Neuladen der Seite sichtbar.
+function zkErfolgSchliessen() {
+  document.getElementById('zk-erfolg-overlay').classList.remove('zeigen');
+  const inline = document.getElementById('zk-inline-bestaetigung');
+  if (inline) inline.style.display = 'inline';
+}
+
 window.wocheNav = wocheNav;
 window.adjustTime = adjustTime;
 window.waehleTyp = waehleTyp;
@@ -751,6 +760,7 @@ window.exportCSV = exportCSV;
 window.wochenuebersichtAnTkSenden = wochenuebersichtAnTkSenden;
 window.setFilter = setFilter;
 window.loeschen = loeschen;
+window.zkErfolgSchliessen = zkErfolgSchliessen;
 
 // ═══════════════════════════════════════
 // INIT
@@ -813,7 +823,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     <div class="zk-erfolg-titel">Zeitkonto gespeichert</div>
     <div class="zk-erfolg-text">Der Eintrag wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
     <div style="margin-top:1rem;">
-      <button class="zk-erfolg-btn" onclick="document.getElementById('zk-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
+      <button class="zk-erfolg-btn" onclick="zkErfolgSchliessen()">Schließen</button>
     </div>
   </div>
 </div>

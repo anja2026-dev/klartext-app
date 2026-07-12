@@ -81,6 +81,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="btn-row">
     <button class="btn-primary" onclick="generiere()">📝 Text generieren</button>
     <button class="btn-secondary" onclick="reset()">↺ Zurücksetzen</button>
+    <span id="u-inline-bestaetigung" style="display:none;color:#2E7D32;font-size:.85rem;font-weight:700;margin-left:.6rem;">✓ Weitergeleitet an TK</span>
   </div>
 
   <div class="result-box" id="result-box">
@@ -270,13 +271,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     <div class="u-erfolg-titel">Urlaubsantrag gespeichert</div>
     <div class="u-erfolg-text">Der Antrag wurde gespeichert und an die Teamkoordination weitergeleitet.</div>
     <div style="margin-top:1rem;">
-      <button class="u-erfolg-btn" onclick="document.getElementById('u-erfolg-overlay').classList.remove('zeigen')">Schließen</button>
+      <button class="u-erfolg-btn" onclick="uErfolgSchliessen()">Schließen</button>
     </div>
   </div>
 </div>
 <script>
 function uZeigeErfolg() {
   document.getElementById('u-erfolg-overlay').classList.add('zeigen');
+}
+// Overlay schließen + zusätzlich das dezente inline-Häkchen neben dem
+// Absenden-Button einblenden - bleibt bis zum Neuladen der Seite sichtbar.
+function uErfolgSchliessen() {
+  document.getElementById('u-erfolg-overlay').classList.remove('zeigen');
+  const inline = document.getElementById('u-inline-bestaetigung');
+  if (inline) inline.style.display = 'inline';
 }
 </script>
 </body>

@@ -149,6 +149,19 @@ async function login() {
     return;
   }
 
+  // Baustein für die echte KlarApp-Kontaktliste (siehe
+  // supabase/migrations/0036_person_auth_map.sql): eigene Zeile
+  // E-Mail → echte Auth-UID upserten. Best-effort - ein Fehler hier
+  // darf den Login nicht blockieren.
+  try {
+    await supabase.from('person_auth_map').upsert(
+      { email: email, auth_uid: data.user.id, name: email, role: rolle },
+      { onConflict: 'email' }
+    );
+  } catch (e) {
+    console.error('person_auth_map-Upsert fehlgeschlagen:', e);
+  }
+
   // Rolle kommt bewusst aus der Auswahl im Login, nicht aus profiles.rolle.
   setzeUebergangsSession(rolle, data.user.id, email);
   // Phase 3 / Schritt 3.5: Eine neue, explizite Anmeldung (Login-Formular

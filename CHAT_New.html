@@ -45,13 +45,16 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
-// Echte INGRA-Kontaktliste (erster Baustein, siehe
-// supabase/migrations/0036_person_auth_map.sql): Name/E-Mail kommen aus
-// der Tabelle "ingra", die echte, Firebase-fähige ID (= Supabase-Auth-
-// UID) aus person_auth_map (E-Mail -> auth_uid, beim Login geschrieben).
-// Kontakte ohne Eintrag in person_auth_map (= noch nie eingeloggt)
-// werden ausgeblendet, da für sie keine gültige Chat-ID existiert.
-// Vorerst nur INGRA - TK/LK/Trainer/Gruppen/Broadcast folgen später.
+// Echte Kontaktliste (siehe supabase/migrations/0036_person_auth_map.sql):
+// person_auth_map enthält bereits für JEDEN Login (unabhängig von der
+// Rolle) eine Zeile mit E-Mail, echter Auth-UID, Anzeigename und Rolle -
+// jede Person, die dort auftaucht, hat sich mindestens einmal
+// eingeloggt, ist also automatisch Firebase-chat-fähig. Kein separater
+// Join gegen die "ingra"-Tabelle nötig, und kein "noch nie eingeloggt"-
+// Ausblenden mehr, da person_auth_map selbst schon nur eingeloggte
+// Personen enthält. Anzeigename kommt aus person_auth_map.name, bei
+// leerem Namen Fallback auf die E-Mail - niemals die UUID anzeigen.
+// Gruppen/Broadcast folgen später.
 //
 // In EINEM type="module"-Script zusammengefasst statt auf zwei Scripts
 // verteilt: ein normales (nicht-Modul-)Script läuft synchron beim
@@ -72,60 +75,40 @@ function partnerKarteHtml(partner) {
     <div class="chat-new-avatar" style="background:${farbe};">${initiale}</div>
     <div>
       <div class="chat-partner-name">${partner.name}</div>
-      <div class="chat-partner-rolle">${partner.role} · ${partner.id}</div>
+      <div class="chat-partner-rolle">${partner.role}</div>
     </div>
   </div>`;
 }
 
-async function ladeIngraKontakte() {
-  const [ingraErgebnis, mapErgebnis] = await Promise.all([
-    supabase.from('ingra').select('id, name, email'),
-    supabase.from('person_auth_map').select('email, auth_uid')
-  ]);
+async function ladeKontakte() {
+  const { data, error } = await supabase.from('person_auth_map').select('email, auth_uid, name, role');
 
-  if (ingraErgebnis.error || mapErgebnis.error) {
-    console.error('Kontaktliste konnte nicht geladen werden:', ingraErgebnis.error || mapErgebnis.error);
+  if (error) {
+    console.error('Kontaktliste konnte nicht geladen werden:', error);
     return null;
   }
 
-  const authUidByEmail = {};
-  (mapErgebnis.data || []).forEach(function(zeile) {
-    authUidByEmail[zeile.email] = zeile.auth_uid;
+  return (data || []).map(function(zeile) {
+    return { id: zeile.auth_uid, name: zeile.name || zeile.email, role: zeile.role || '' };
   });
-
-  const kontakte = [];
-  let uebersprungen = 0;
-  (ingraErgebnis.data || []).forEach(function(zeile) {
-    const authUid = authUidByEmail[zeile.email];
-    if (!authUid) { uebersprungen++; return; } // noch nie eingeloggt - keine gültige Chat-ID
-    kontakte.push({ id: authUid, name: zeile.name || zeile.email, role: 'ingra' });
-  });
-  return { kontakte: kontakte, uebersprungen: uebersprungen };
 }
 
 (async function(){
   const liste = document.getElementById('partner-liste');
-  const ergebnis = await ladeIngraKontakte();
+  const kontakte = await ladeKontakte();
 
-  if (ergebnis === null) {
+  if (kontakte === null) {
     liste.innerHTML = '<div class="chat-liste-leer">Kontaktliste konnte nicht geladen werden.</div>';
     return;
   }
 
   // eigene Identität ausschließen — man kann sich nicht selbst anschreiben
-  const sichtbarePartner = ergebnis.kontakte.filter(function(p) { return p.id !== aktuellerUser.id; });
+  const sichtbarePartner = kontakte.filter(function(p) { return p.id !== aktuellerUser.id; });
 
   if (sichtbarePartner.length === 0) {
     liste.innerHTML = '<div class="chat-liste-leer">Keine weiteren Chatpartner verfügbar.</div>';
   } else {
     liste.innerHTML = sichtbarePartner.map(partnerKarteHtml).join('');
-  }
-
-  if (ergebnis.uebersprungen > 0) {
-    const hinweis = document.createElement('div');
-    hinweis.style.cssText = 'font-size:.75rem;color:#7A7060;margin-top:.75rem;';
-    hinweis.textContent = 'ℹ️ ' + ergebnis.uebersprungen + ' Person(en) haben sich noch nie eingeloggt und werden hier noch nicht angezeigt.';
-    liste.after(hinweis);
   }
 })();
 

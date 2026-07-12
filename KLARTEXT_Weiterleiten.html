@@ -52,7 +52,7 @@ select:focus, textarea:focus{outline:none;border-color:var(--navy);}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 </head>
 <body>
 
@@ -116,7 +116,7 @@ select:focus, textarea:focus{outline:none;border-color:var(--navy);}
 
 <script>
 // Kinder-Dropdown dynamisch aus /children befüllen
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   db.ref('children').once('value').then(function(snapshot) {
     const kinder = snapshot.val() || {};
     const select = document.getElementById('child-select');

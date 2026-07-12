@@ -10,7 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <script src="chat.js"></script>
 <style>
 body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
@@ -126,7 +126,7 @@ function renderChatListe(conversations) {
   });
 }
 
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   ingraGruppeSicherstellen().then(function(){
     db.ref('children').once('value').then(function(snapshot){
       const kinder=snapshot.val()||{};

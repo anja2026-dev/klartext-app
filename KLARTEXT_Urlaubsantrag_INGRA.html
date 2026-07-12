@@ -276,16 +276,34 @@ document.addEventListener('DOMContentLoaded', async function() {
   </div>
 </div>
 <script>
+function uGesendetKey() {
+  return 'urlaub_gesendet_' + new Date().toISOString().split('T')[0];
+}
 function uZeigeErfolg() {
+  // In localStorage merken (tagesbezogen) - verhindert, dass das
+  // Häkchen nach dem Neuladen der Seite verschwindet, und ist die
+  // Grundlage für den "Bereits heute weitergeleitet"-Hinweis.
+  localStorage.setItem(uGesendetKey(), 'true');
   document.getElementById('u-erfolg-overlay').classList.add('zeigen');
 }
 // Overlay schließen + zusätzlich das dezente inline-Häkchen neben dem
-// Absenden-Button einblenden - bleibt bis zum Neuladen der Seite sichtbar.
+// Absenden-Button einblenden - bleibt bis zum Neuladen der Seite sichtbar
+// (und darüber hinaus, siehe die IIFE unten).
 function uErfolgSchliessen() {
   document.getElementById('u-erfolg-overlay').classList.remove('zeigen');
   const inline = document.getElementById('u-inline-bestaetigung');
-  if (inline) inline.style.display = 'inline';
+  if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
 }
+// Beim Laden der Seite: falls heute schon einmal gesendet wurde (z.B.
+// nach einem Reload), das Häkchen sofort wieder anzeigen statt erst
+// nach einem erneuten Absenden - verhindert außerdem versehentliche
+// Doppel-/Dreifachsendungen an TK am selben Tag.
+(function() {
+  if (localStorage.getItem(uGesendetKey())) {
+    const inline = document.getElementById('u-inline-bestaetigung');
+    if (inline) { inline.textContent = 'Bereits heute weitergeleitet ✓'; inline.style.display = 'inline'; }
+  }
+})();
 </script>
 </body>
 </html>

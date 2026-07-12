@@ -23,6 +23,10 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;margin:0;}
 .nav-link:hover,.nav-link.aktiv{background:rgba(255,255,255,.12);color:#fff;}
 /* Auf Desktop sofort zu CHAT_View weiterleiten (Zwei-Spalten ist dort) */
 @media(min-width:701px){body{display:none;}}
+/* Ungelesene Konversationen: fett hervorgehoben + grüner Punkt vor dem Namen */
+.chat-eintrag-ungelesen{background:#F0F9F4;}
+.chat-eintrag-ungelesen .chat-eintrag-vorschau{font-weight:700;color:#1B3A4B;}
+.chat-eintrag-punkt{width:8px;height:8px;border-radius:50%;background:#3B8A68;flex-shrink:0;display:inline-block;}
 </style>
 </head>
 <body>
@@ -88,14 +92,41 @@ function renderChatListe(conversations) {
     wrap.innerHTML = '<div class="chat-liste-leer">Noch keine Nachrichten.<br>Klicke auf „＋ Neu".</div>';
     return;
   }
-  ids.sort(function(a,b){return (conversations[b].lastTimestamp||0)-(conversations[a].lastTimestamp||0);});
+
+  // Erst für ALLE Konversationen die Anzahl ungelesener Nachrichten ermitteln,
+  // bevor sortiert/gerendert wird - nötig, damit ungelesene Konversationen
+  // oben in der Liste stehen können.
+  const ungelesenByCid = {};
+  let ausstehend = ids.length;
+  ids.forEach(function(cid){
+    chatZaehleUngelesen(cid, function(anzahl){
+      ungelesenByCid[cid] = anzahl;
+      ausstehend--;
+      if (ausstehend === 0) chatListeRendern(conversations, ids, ungelesenByCid);
+    });
+  });
+}
+
+function chatListeRendern(conversations, ids, ungelesenByCid) {
+  const wrap = document.getElementById('chat-liste');
+  const user = chatAktuellerUser();
+
+  // Ungelesene Konversationen zuerst, innerhalb jeder Gruppe nach Zeit sortiert
+  ids.sort(function(a,b){
+    const ungelesenA = ungelesenByCid[a] > 0 ? 1 : 0;
+    const ungelesenB = ungelesenByCid[b] > 0 ? 1 : 0;
+    if (ungelesenA !== ungelesenB) return ungelesenB - ungelesenA;
+    return (conversations[b].lastTimestamp||0) - (conversations[a].lastTimestamp||0);
+  });
+
   wrap.innerHTML = ids.map(function(cid){
     const conv = conversations[cid];
+    const anzahl = ungelesenByCid[cid] || 0;
+    const istUngelesen = anzahl > 0;
     const name = chatKonversationsName(conv, kinderNamenCache);
     const initiale = (name||'?').charAt(0).toUpperCase();
     let avatarFarbe='#6A6878';
     let avatarInhalt = initiale;
-    const user = chatAktuellerUser();
     if (conv.type === 'group') {
       avatarFarbe = '#6EC6A0';
       avatarInhalt = '<img src="brainy.png" alt="INGRA-Austausch" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
@@ -103,27 +134,28 @@ function renderChatListe(conversations) {
       const andereId = Object.keys(conv.members||{}).find(function(id){return id!==user.id;});
       if (andereId&&conv.memberRoles&&conv.memberRoles[andereId]) avatarFarbe=chatRollenfarbe(conv.memberRoles[andereId]);
     }
-    const vorschau = brainyVorschauText((conv.lastMessage||'').substring(0,60));
-    return `<a class="chat-eintrag" href="CHAT_View.html?cid=${cid}">
+    let vorschau = brainyVorschauText((conv.lastMessage||'').substring(0,60));
+    // Absender der letzten Nachricht voranstellen, wenn ungelesen und nicht
+    // von einem selbst - vor allem bei der Gruppe relevant, wo der Name in
+    // der Kopfzeile der Gruppenname ist, nicht der einzelne Absender.
+    if (istUngelesen && conv.lastSenderName && conv.lastSenderId !== user.id) {
+      vorschau = '<b>' + conv.lastSenderName + ':</b> ' + vorschau;
+    }
+    return `<a class="chat-eintrag${istUngelesen ? ' chat-eintrag-ungelesen' : ''}" href="CHAT_View.html?cid=${cid}">
       <div class="chat-avatar" style="background:${avatarFarbe};">${avatarInhalt}</div>
       <div class="chat-eintrag-inhalt">
         <div class="chat-eintrag-kopf">
+          ${istUngelesen ? '<span class="chat-eintrag-punkt"></span>' : ''}
           <span class="chat-eintrag-name">${name}</span>
           <span class="chat-eintrag-zeit">${chatFormatZeitKurz(conv.lastTimestamp)}</span>
         </div>
         <div class="chat-eintrag-zeile2">
           <span class="chat-eintrag-vorschau">${vorschau}</span>
-          <span class="chat-badge" id="badge-${cid}" style="display:none;"></span>
+          <span class="chat-badge" id="badge-${cid}" style="${anzahl > 0 ? '' : 'display:none;'}">${anzahl > 0 ? anzahl : ''}</span>
         </div>
       </div>
     </a>`;
   }).join('');
-
-  ids.forEach(function(cid){
-    chatZaehleUngelesen(cid,function(anzahl){
-      if(anzahl>0){const b=document.getElementById('badge-'+cid);if(b){b.textContent=anzahl;b.style.display='flex';}}
-    });
-  });
 }
 
 (window.firebaseAuthReady || Promise.resolve()).then(function(){

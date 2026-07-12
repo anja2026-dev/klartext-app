@@ -290,14 +290,15 @@ async function aktuellerUserId(){
 
 // Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
 // INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
-// wird daher über die Login-E-Mail (sessionStorage.klartext_name, trotz
-// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "ingra" abgeglichen.
+// wird daher über die echte Login-E-Mail (aus der Supabase-Auth-Session)
+// mit ihrer Zeile in "ingra" abgeglichen. krankmeldungen.ingra_id
+// referenziert live ingra(id), nicht profiles(id) (Repo-Migrationen
+// 0018/0025 sind hier veraltet, siehe 0037_krankmeldungen_schema_korrektur.sql).
 async function aktuelleIngraId(){
-  const email = sessionStorage.getItem('klartext_name') || '';
-  if (!email) return null;
-  const { data, error } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
-  if (error || !data) return null;
-  return data.id;
+  const { data: userData } = await supabase.auth.getUser();
+  const email = userData.user ? userData.user.email : null;
+  const { data } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
+  return data ? data.id : null;
 }
 
 // ══ TABS
@@ -374,11 +375,11 @@ function copyMsg(id){
 // ══ SPEICHERN / LADEN
 // Ersetzt localStorage['kz_meldungen']
 async function ladeMeld(){
-  const userId = await aktuellerUserId();
+  const ingraId = await aktuelleIngraId();
   const { data, error } = await supabase
     .from('krankmeldungen')
     .select('id, ingra_id, typ, kind_id, von_datum, bis_datum, datum, grund, zeit, notiz, created_at')
-    .eq('ingra_id', userId)
+    .eq('ingra_id', ingraId)
     .order('created_at', { ascending: false });
   if (error) { console.error('Meldungen laden fehlgeschlagen:', error); return []; }
   return data || [];
@@ -386,7 +387,11 @@ async function ladeMeld(){
 
 // INSERT INTO krankmeldungen (kein UPDATE - wie im Originalcode)
 async function speichKrank(typ){
+  // userId (echte Auth-UID) bleibt für weiterleitungen.von_profil nötig
+  // (RLS dort verlangt weiterhin auth.uid()). ingraId (ingra(id), neues
+  // Schema) wird für krankmeldungen.ingra_id verwendet.
   const userId = await aktuellerUserId();
+  const ingraId = await aktuelleIngraId();
 
   if(typ==='ingra'){
     const von=document.getElementById('ik-von').value;
@@ -395,7 +400,7 @@ async function speichKrank(typ){
     const notiz=document.getElementById('ik-notiz').value;
 
     const { error } = await supabase.from('krankmeldungen').insert({
-      ingra_id: userId,
+      ingra_id: ingraId,
       typ: 'ingra',
       von_datum: von,
       bis_datum: bis || null,
@@ -446,7 +451,7 @@ async function speichKrank(typ){
     const notiz=document.getElementById('ka-notiz').value;
 
     const { error } = await supabase.from('krankmeldungen').insert({
-      ingra_id: userId,
+      ingra_id: ingraId,
       typ: 'kind',
       kind_id: childId,
       datum,

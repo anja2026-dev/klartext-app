@@ -354,24 +354,40 @@ import { supabase } from './supabase/auth_client.js';
   // Kinderliste aus Supabase
   // Tabelle "Kinder" (großes K, neues Schema) statt "kinder" +
   // kinder_zuordnung - Zuordnung läuft jetzt direkt über Kinder.ingra_id.
+  //
+  // Rollenspezifisch (Produktentscheidung): ingra/ingra-beta füllen das
+  // Tagesjournal aus und sehen daher weiterhin nur ihre eigenen
+  // zugeordneten Kinder (gefiltert auf ingra_id). tk/trainer/admin
+  // füllen nichts aus, sondern haben reine Einsicht - sie sehen alle
+  // aktiven Kinder aller INGRAs, gruppiert per <optgroup> nach INGRA.
   // ───────────────────────────────────────────
+  async function ingraNamenLaden(){
+    var { data, error } = await supabase.from('ingra').select('id, name');
+    var namen = {};
+    if (!error && data) {
+      data.forEach(function(i){ namen[i.id] = i.name; });
+    }
+    return namen;
+  }
+
   async function kinderListeLaden(){
-    console.log('kinderListeLaden gestartet');
     var select = document.getElementById('kindSelect');
-    var ingraId = await aktuelleIngraId();
-    console.log('Verwendete ingraId:', ingraId);
-    var { data: kinder, error } = await supabase
-      .from('Kinder')
-      .select('id, name, klasse')
-      .eq('ingra_id', ingraId)
-      .eq('aktiv', true)
-      .order('name');
-    console.log('Kinder-Antwort:', { data: kinder, error: error });
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    var istIngraRolle = (rolle === 'ingra' || rolle === 'ingra-beta');
+
+    var query = supabase.from('Kinder').select('id, name, klasse, ingra_id').eq('aktiv', true);
+    if (istIngraRolle) {
+      var ingraId = await aktuelleIngraId();
+      query = query.eq('ingra_id', ingraId);
+    }
+    var { data: kinder, error } = await query.order('name');
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
     select.innerHTML = '';
     if(!kinder || !kinder.length){
-      select.innerHTML = '<option value="">Noch keine Kinder angelegt – bitte im TK-Bereich anlegen</option>';
+      select.innerHTML = istIngraRolle
+        ? '<option value="">Noch keine Kinder angelegt – bitte im TK-Bereich anlegen</option>'
+        : '<option value="">Noch keine aktiven Kinder vorhanden</option>';
       await journalListeRendern();
       await wocheRendern();
       return;
@@ -380,13 +396,37 @@ import { supabase } from './supabase/auth_client.js';
     platzhalter.value = '';
     platzhalter.textContent = 'Bitte wählen …';
     select.appendChild(platzhalter);
-    console.log('Rendere ' + kinder.length + ' Kinder');
-    kinder.forEach(function(k){
-      var opt = document.createElement('option');
-      opt.value = k.id;
-      opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
-      select.appendChild(opt);
-    });
+
+    if (istIngraRolle) {
+      // Eigene Kinder: flache Liste wie bisher, kein Gruppieren nötig.
+      kinder.forEach(function(k){
+        var opt = document.createElement('option');
+        opt.value = k.id;
+        opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+        select.appendChild(opt);
+      });
+    } else {
+      // TK/Trainer/Admin: nach INGRA gruppieren, damit erkennbar ist,
+      // welches Kind zu welcher INGRA gehört.
+      var ingraNamen = await ingraNamenLaden();
+      var gruppen = {};
+      kinder.forEach(function(k){
+        var ingraName = ingraNamen[k.ingra_id] || 'Ohne INGRA';
+        if (!gruppen[ingraName]) gruppen[ingraName] = [];
+        gruppen[ingraName].push(k);
+      });
+      Object.keys(gruppen).sort().forEach(function(ingraName){
+        var optgroup = document.createElement('optgroup');
+        optgroup.label = ingraName;
+        gruppen[ingraName].forEach(function(k){
+          var opt = document.createElement('option');
+          opt.value = k.id;
+          opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+          optgroup.appendChild(opt);
+        });
+        select.appendChild(optgroup);
+      });
+    }
 
     // Vorauswahl aus ?kind=<ID> oder sessionStorage.klartext_kind_id,
     // sofern das Kind in der Liste vorhanden ist. Der Nutzer kann die

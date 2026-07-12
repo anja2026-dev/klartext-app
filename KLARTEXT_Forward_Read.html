@@ -105,36 +105,38 @@ const forwardId = urlParams.get('id');
 if (!forwardId) {
   zeigeFehler('Kein Link erkannt', 'Diese Seite benötigt einen gültigen Link mit Kennung. Bitte verwenden Sie den vollständigen Link, den Sie erhalten haben.');
 } else {
-  db.ref('forward/' + forwardId).once('value')
-    .then(function(snapshot) {
-      const eintrag = snapshot.val();
-      if (!eintrag) {
-        zeigeFehler('Information nicht gefunden', 'Dieser Link ist nicht mehr gültig oder wurde bereits entfernt.');
-        return;
-      }
-      // Kindname nachladen
-      return db.ref('children/' + eintrag.childId).once('value').then(function(childSnap) {
-        const kind = childSnap.val();
-        const kindName = kind ? kind.name : (eintrag.childId || 'Unbekannt');
-        const typKlasse = TYP_KLASSEN[eintrag.type] || 'typ-hinweis';
+  window.firebaseAuthReady.then(function(){
+    db.ref('forward/' + forwardId).once('value')
+      .then(function(snapshot) {
+        const eintrag = snapshot.val();
+        if (!eintrag) {
+          zeigeFehler('Information nicht gefunden', 'Dieser Link ist nicht mehr gültig oder wurde bereits entfernt.');
+          return;
+        }
+        // Kindname nachladen
+        return db.ref('children/' + eintrag.childId).once('value').then(function(childSnap) {
+          const kind = childSnap.val();
+          const kindName = kind ? kind.name : (eintrag.childId || 'Unbekannt');
+          const typKlasse = TYP_KLASSEN[eintrag.type] || 'typ-hinweis';
 
-        document.getElementById('inhalt-bereich').innerHTML = `
-          <div class="info-karte">
-            <span class="info-typ ${typKlasse}">${eintrag.type || '—'}</span>
-            <div class="info-kind">${kindName}</div>
-            <div class="info-zeit">${formatZeit(eintrag.timestamp)}</div>
-            <div class="info-text">${eintrag.text || ''}</div>
-          </div>`;
+          document.getElementById('inhalt-bereich').innerHTML = `
+            <div class="info-karte">
+              <span class="info-typ ${typKlasse}">${eintrag.type || '—'}</span>
+              <div class="info-kind">${kindName}</div>
+              <div class="info-zeit">${formatZeit(eintrag.timestamp)}</div>
+              <div class="info-text">${eintrag.text || ''}</div>
+            </div>`;
 
-        // Feedback-Popup nach kurzer Verzögerung einblenden
-        setTimeout(function() {
-          document.getElementById('feedback-popup').classList.remove('versteckt');
-        }, 1500);
+          // Feedback-Popup nach kurzer Verzögerung einblenden
+          setTimeout(function() {
+            document.getElementById('feedback-popup').classList.remove('versteckt');
+          }, 1500);
+        });
+      })
+      .catch(function(error) {
+        zeigeFehler('Fehler beim Laden', 'Die Information konnte nicht geladen werden: ' + error.message);
       });
-    })
-    .catch(function(error) {
-      zeigeFehler('Fehler beim Laden', 'Die Information konnte nicht geladen werden: ' + error.message);
-    });
+  });
 }
 
 // Feedback-Logik

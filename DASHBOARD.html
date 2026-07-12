@@ -389,7 +389,7 @@ function mobileBarometerStatusLaden(){
     }).catch(function(){ badge.style.display = 'none'; });
   } catch(e) { badge.style.display = 'none'; }
 }
-mobileBarometerStatusLaden();
+window.firebaseAuthReady.then(mobileBarometerStatusLaden);
 
 // Ungelesene Chat-Nachrichten auf der KlarApp-Kachel (chat.js: readBy pro
 // Nachricht, siehe chatZaehleUngelesen() - bereits genutzt für die
@@ -425,7 +425,7 @@ function chatBadgeAktualisieren(){
   var chatRolle = '';
   try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
   if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
-    chatBadgeAktualisieren();
+    window.firebaseAuthReady.then(chatBadgeAktualisieren);
   }
 })();
 </script>

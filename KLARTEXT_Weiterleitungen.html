@@ -294,19 +294,21 @@ const ME = {
 
 // Kinder-Dropdown für "Krankmeldung Kind" befüllen + Namen-Cache für die Anzeige in Inbox/Verlauf
 const kinderNamenCache = {};
-db.ref('children').once('value').then(function(snapshot) {
-  const kinder = snapshot.val() || {};
-  const select = document.getElementById('fw-kind');
-  Object.keys(kinder).forEach(function(childId) {
-    const kind = kinder[childId];
-    kinderNamenCache[childId] = kind.name;
-    if (kind.active === false) return;
-    const option = document.createElement('option');
-    option.value = childId;
-    option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
-    select.appendChild(option);
-  });
-}).catch(function(){ /* Fehler hier nicht kritisch fürs restliche Formular */ });
+window.firebaseAuthReady.then(function(){
+  db.ref('children').once('value').then(function(snapshot) {
+    const kinder = snapshot.val() || {};
+    const select = document.getElementById('fw-kind');
+    Object.keys(kinder).forEach(function(childId) {
+      const kind = kinder[childId];
+      kinderNamenCache[childId] = kind.name;
+      if (kind.active === false) return;
+      const option = document.createElement('option');
+      option.value = childId;
+      option.textContent = kind.name + (kind.group ? ' (' + kind.group + ')' : '');
+      select.appendChild(option);
+    });
+  }).catch(function(){ /* Fehler hier nicht kritisch fürs restliche Formular */ });
+});
 
 let gewaehlterEmpfaenger = null;  // 'tk' | 'lk' | 'eltern'
 let letzteForwardId       = null;

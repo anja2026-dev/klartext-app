@@ -93,14 +93,14 @@ h1{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--navy);margi
   </div>
 </main>
 
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <script>
 var alleUebergaben = {};
 var aktiverFilter  = 'alle';
 var offeneKarten   = {};
 
 // ── Firebase laden ──────────────────────────────────────
-window.firebaseAuthReady.then(function(){
+(window.firebaseAuthReady || Promise.resolve()).then(function(){
   getInbox('tk', function(daten) {
     alleUebergaben = daten || {};
     renderListe();

@@ -50,7 +50,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 </head>
 <body>
 
@@ -105,7 +105,7 @@ const forwardId = urlParams.get('id');
 if (!forwardId) {
   zeigeFehler('Kein Link erkannt', 'Diese Seite benötigt einen gültigen Link mit Kennung. Bitte verwenden Sie den vollständigen Link, den Sie erhalten haben.');
 } else {
-  window.firebaseAuthReady.then(function(){
+  (window.firebaseAuthReady || Promise.resolve()).then(function(){
     db.ref('forward/' + forwardId).once('value')
       .then(function(snapshot) {
         const eintrag = snapshot.val();

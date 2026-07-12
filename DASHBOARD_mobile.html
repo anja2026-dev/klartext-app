@@ -9,7 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <script src="chat.js"></script>
 </head>
 <body>
@@ -239,7 +239,7 @@ function mobileKindInit(){
   mobileKindLinksAktualisieren();
 
   try {
-    window.firebaseAuthReady.then(function(){
+    (window.firebaseAuthReady || Promise.resolve()).then(function(){
       db.ref('children').once('value').then(function(snapshot){
         var kinder = snapshot.val() || {};
         window.mobileKinderDaten = kinder;
@@ -339,7 +339,7 @@ function chatBadgeAktualisieren(){
   var chatRolle = '';
   try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
   if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
-    window.firebaseAuthReady.then(chatBadgeAktualisieren);
+    (window.firebaseAuthReady || Promise.resolve()).then(chatBadgeAktualisieren);
   }
 })();
 </script>

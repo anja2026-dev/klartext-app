@@ -130,7 +130,7 @@ footer strong{color:var(--kt-accent);}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
+<script src="firebase.js?v=2"></script>
 <script src="chat.js"></script>
 </head>
 <body>
@@ -389,7 +389,7 @@ function mobileBarometerStatusLaden(){
     }).catch(function(){ badge.style.display = 'none'; });
   } catch(e) { badge.style.display = 'none'; }
 }
-window.firebaseAuthReady.then(mobileBarometerStatusLaden);
+(window.firebaseAuthReady || Promise.resolve()).then(mobileBarometerStatusLaden);
 
 // Ungelesene Chat-Nachrichten auf der KlarApp-Kachel (chat.js: readBy pro
 // Nachricht, siehe chatZaehleUngelesen() - bereits genutzt für die
@@ -425,7 +425,7 @@ function chatBadgeAktualisieren(){
   var chatRolle = '';
   try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
   if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
-    window.firebaseAuthReady.then(chatBadgeAktualisieren);
+    (window.firebaseAuthReady || Promise.resolve()).then(chatBadgeAktualisieren);
   }
 })();
 </script>

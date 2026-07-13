@@ -260,7 +260,7 @@ footer strong{color:var(--kt-accent);}
       <div class="m-grid-2">
         <a class="m-chip" href="CHAT_View.html"><span class="m-chip-emoji">💬</span><span>KlarApp</span><span id="m-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:4px;">0</span></a>
         <a class="m-chip" href="KLARTEXT_Listen.html"><span class="m-chip-emoji">📋</span><span>To-do-Liste</span></a>
-        <a class="m-chip" href="KLARTEXT_Weiterleitungen.html"><span class="m-chip-emoji">📤</span><span>Weiterleitungen</span></a>
+        <a class="m-chip" href="KLARTEXT_Weiterleitungen.html"><span class="m-chip-emoji">📤</span><span>Weiterleitungen</span><span id="m-wl-badge" style="display:none;background:#C62828;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:4px;">0</span></a>
         <a class="m-chip" href="KLARTEXT_Notizblock.html"><span class="m-chip-emoji">📝</span><span>Notizblock</span></a>
         <a class="m-chip" href="KLARTEXT_Tagesjournal.html"><span class="m-chip-emoji">📓</span><span>Tagesjournal</span></a>
         <a class="m-chip m-chip-fk" href="#sek-fk"><span class="m-chip-emoji">🚒</span><span>Feuerwehrkarten</span></a>
@@ -441,6 +441,37 @@ function chatBadgeAktualisieren(){
 })();
 </script>
 
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+// Ungelesene Weiterleitungen auf der Weiterleitungen-Kachel - exakt gleiches
+// Muster wie chatBadgeAktualisieren() oben (zwei Badges: mobile Menü-Kachel
+// m-wl-badge und Desktop-Navigation gnav-wl-badge), nur mit Supabase
+// weiterleitungen statt Firebase chat conversations als Datenquelle.
+function weiterleitungenBadgeAktualisieren(){
+  var badges = [
+    document.getElementById('m-wl-badge'),
+    document.getElementById('gnav-wl-badge')
+  ].filter(Boolean);
+  if (!badges.length) return;
+
+  var rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  if (!rolle) return;
+
+  supabase.from('weiterleitungen').select('id', { count: 'exact', head: true })
+    .eq('status', 'offen').eq('ziel_rolle', rolle)
+    .then(function(ergebnis){
+      var anzahl = (!ergebnis.error && ergebnis.count) ? ergebnis.count : 0;
+      badges.forEach(function(b){
+        if (anzahl > 0) { b.textContent = anzahl; b.style.display = 'inline-block'; }
+        else { b.style.display = 'none'; }
+      });
+    });
+}
+weiterleitungenBadgeAktualisieren();
+</script>
+
 <div id="dashboard-desktop">
 
 <header class="kt-header">
@@ -497,7 +528,7 @@ function chatBadgeAktualisieren(){
   <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
   <a class="gnav-link aktiv" href="DASHBOARD.html">🏠 Dashboard</a>
   <a class="gnav-link" href="CHAT_View.html">💬 KLARapp<span id="gnav-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:4px;">0</span></a>
-  <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
+  <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen<span id="gnav-wl-badge" style="display:none;background:#C62828;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:4px;">0</span></a>
   <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
   <a class="gnav-link" href="KLARTEXT_Notizblock.html">📝 Notizblock</a>

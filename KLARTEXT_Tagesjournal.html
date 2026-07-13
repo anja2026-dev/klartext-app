@@ -376,12 +376,41 @@ import { supabase } from './supabase/auth_client.js';
     var istIngraRolle = (rolle === 'ingra' || rolle === 'ingra-beta');
 
     var query = supabase.from('Kinder').select('id, name, klasse, ingra_id').eq('aktiv', true);
+    var ingraId = null;
     if (istIngraRolle) {
-      var ingraId = await aktuelleIngraId();
+      ingraId = await aktuelleIngraId();
       query = query.eq('ingra_id', ingraId);
     }
     var { data: kinder, error } = await query.order('name');
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
+    kinder = kinder || [];
+
+    // Zusätzlich Kinder aus aktiven Vertretungen (kind_ingra_zuteilung) einblenden,
+    // damit eine INGRA auch für Kinder, die sie gerade vertritt, Journal führen kann.
+    if (istIngraRolle && ingraId) {
+      var { data: zuteilungen, error: zError } = await supabase
+        .from('kind_ingra_zuteilung')
+        .select('kind_id')
+        .eq('ingra_id', ingraId)
+        .eq('rolle', 'vertretung')
+        .eq('aktiv', true);
+      if (!zError && zuteilungen && zuteilungen.length) {
+        var vertretKindIds = zuteilungen.map(function(z){ return z.kind_id; });
+        var { data: vertretKinder, error: vkError } = await supabase
+          .from('Kinder')
+          .select('id, name, klasse, ingra_id')
+          .in('id', vertretKindIds)
+          .eq('aktiv', true);
+        if (!vkError && vertretKinder) {
+          vertretKinder.forEach(function(vk){
+            if (!kinder.some(function(k){ return k.id === vk.id; })) {
+              vk.istVertretung = true;
+              kinder.push(vk);
+            }
+          });
+        }
+      }
+    }
 
     select.innerHTML = '';
     if(!kinder || !kinder.length){
@@ -402,7 +431,7 @@ import { supabase } from './supabase/auth_client.js';
       kinder.forEach(function(k){
         var opt = document.createElement('option');
         opt.value = k.id;
-        opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+        opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '') + (k.istVertretung ? ' (Vertretung)' : '');
         select.appendChild(opt);
       });
     } else {

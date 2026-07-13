@@ -562,12 +562,38 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       .eq('aktiv', true)
       .order('name');
     if (!error) {
+      const alleKinder = kinder || [];
+
+      // Zusätzlich Kinder aus aktiven Vertretungen (kind_ingra_zuteilung) einblenden.
+      const { data: zuteilungen, error: zError } = await supabase
+        .from('kind_ingra_zuteilung')
+        .select('kind_id')
+        .eq('ingra_id', ingraId)
+        .eq('rolle', 'vertretung')
+        .eq('aktiv', true);
+      if (!zError && zuteilungen && zuteilungen.length) {
+        const vertretKindIds = zuteilungen.map(z => z.kind_id);
+        const { data: vertretKinder, error: vkError } = await supabase
+          .from('Kinder')
+          .select('id, name, klasse')
+          .in('id', vertretKindIds)
+          .eq('aktiv', true);
+        if (!vkError && vertretKinder) {
+          vertretKinder.forEach(function(vk) {
+            if (!alleKinder.some(k => k.id === vk.id)) {
+              vk.istVertretung = true;
+              alleKinder.push(vk);
+            }
+          });
+        }
+      }
+
       const select = document.getElementById('ka-kind');
       window.kzKinderDaten = {};
-      (kinder || []).forEach(function(kind) {
+      alleKinder.forEach(function(kind) {
         const option = document.createElement('option');
         option.value = kind.id;
-        option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '');
+        option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '') + (kind.istVertretung ? ' (Vertretung)' : '');
         select.appendChild(option);
         window.kzKinderDaten[kind.id] = kind; // für Namensauflösung beim Speichern und Anzeigen
       });

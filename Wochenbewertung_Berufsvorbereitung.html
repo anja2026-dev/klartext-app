@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Wochenbewertung – Berufsvorbereitung · KLARTEXT-Mentoring</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
+@media print{.no-print{display:none!important;}body{background:white;padding:0;}@page{margin:8mm;size:A4 landscape;}}
+input[type=text],input[type=date],select,textarea{
+  font-family:Arial,sans-serif;font-size:12px;padding:6px 7px;border:1.5px solid #ddd;border-radius:6px;color:#1a2e44;width:100%;background:white;
+}
+select.bew-select{font-size:11px;padding:5px 4px;}
+select.bew-select.v-sehrgut{background:#DFF5EA;border-color:#1d9e75;}
+select.bew-select.v-gut{background:#E4F1FB;border-color:#3498DB;}
+select.bew-select.v-teilweise{background:#FCF3D9;border-color:#F1C40F;}
+select.bew-select.v-schwierig{background:#FBE2E0;border-color:#E74C3C;}
+table.bew-table{border-collapse:collapse;width:100%;}
+table.bew-table th,table.bew-table td{border:1px solid #e2ded6;padding:6px;text-align:center;}
+table.bew-table th{background:#EAF0F4;color:#1a2e44;font-size:11px;font-weight:800;}
+table.bew-table td.krit-name{
+  text-align:left;font-size:11.5px;font-weight:700;color:#1a2e44;
+  position:sticky;left:0;background:white;min-width:170px;z-index:2;
+}
+.table-scroll{overflow-x:auto;border-radius:10px;border:1px solid #e2ded6;}
+.legende{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:#1a2e44;margin-top:8px;}
+.legende span.dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px;}
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1a2e44;color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;
+  opacity:0;transition:opacity .25s ease, transform .25s ease;pointer-events:none;z-index:999;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<div style="max-width:1000px;margin:0 auto 10px;display:flex;gap:8px;" class="no-print">
+  <a href="KLARTEXT_Downloads.html#kd" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;background:white;border:1.5px solid #1a2e44;color:#1a2e44;text-decoration:none;">← Downloads</a>
+</div>
+
+<div style="max-width:1000px;margin:0 auto;">
+
+  <div style="background:#1a2e44;border-radius:12px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:16px;">
+    <img src="brainy.png" style="width:52px;height:52px;object-fit:contain;" alt="">
+    <div>
+      <div style="font-size:19px;font-weight:900;color:white;">📋 Wochenbewertung – Berufsvorbereitung</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;">ADS/ADHS angepasst · interaktiv ausfüllbar</div>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:14px;padding:20px;box-shadow:0 1px 10px rgba(0,0,0,0.08);margin-bottom:16px;">
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;">
+      <div><label style="font-size:11px;font-weight:700;color:#5D3A7A;">Name</label><input type="text" id="f-name"></div>
+      <div><label style="font-size:11px;font-weight:700;color:#5D3A7A;">Woche</label><input type="text" id="f-woche" placeholder="z.B. KW 29"></div>
+      <div><label style="font-size:11px;font-weight:700;color:#5D3A7A;">Klasse</label><input type="text" id="f-klasse"></div>
+      <div><label style="font-size:11px;font-weight:700;color:#5D3A7A;">Bereich</label><input type="text" id="f-bereich"></div>
+    </div>
+
+    <div class="table-scroll" style="margin-bottom:6px;">
+      <table class="bew-table" id="bewTable"></table>
+    </div>
+    <div class="legende">
+      <span><span class="dot" style="background:#1d9e75;"></span>sehr gut</span>
+      <span><span class="dot" style="background:#3498DB;"></span>gut</span>
+      <span><span class="dot" style="background:#F1C40F;"></span>teilweise</span>
+      <span><span class="dot" style="background:#E74C3C;"></span>schwierig</span>
+    </div>
+
+    <div style="font-size:13px;font-weight:800;color:#5D3A7A;margin:22px 0 8px;">Unterstützungsbedarf durch Fachkraft</div>
+    <div class="table-scroll">
+      <table class="bew-table" id="unterstTable"></table>
+    </div>
+
+    <div style="margin-top:22px;">
+      <label style="font-size:11px;font-weight:700;color:#5D3A7A;">Notizen / Förderziele / Pädagogische Beobachtungen</label>
+      <textarea id="f-notizen" rows="4" style="margin-top:4px;"></textarea>
+    </div>
+
+    <div class="no-print" style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+      <button id="saveBtn" style="font-size:13px;font-weight:700;padding:10px 20px;border-radius:14px;background:#1a2e44;color:white;border:none;cursor:pointer;">💾 Speichern</button>
+      <a href="Wochenbewertung_Berufsvorbereitung.pdf" download style="display:inline-flex;align-items:center;font-size:13px;font-weight:700;padding:10px 20px;border-radius:14px;background:#1d9e75;color:white;text-decoration:none;">📄 PDF herunterladen</a>
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:10px;color:#999;margin-top:8px;">Formular ursprünglich entwickelt von Daniel Mann (INGRA) für KLARTEXT · Klar. Warm. Menschlich.</div>
+
+</div>
+
+<div id="toast">Gespeichert ✓</div>
+
+<script>
+const kriterien = [
+  "Pünktlichkeit","Arbeitsbeginn selbstständig","Zuverlässigkeit","Konzentration bei Arbeitsaufträgen",
+  "Durchhaltevermögen","Umgang mit Ablenkungen","Teamfähigkeit","Respektvoller Umgang",
+  "Selbstständiges Arbeiten","Ordnung am Arbeitsplatz","Material vollständig","Arbeitsaufträge verstehen",
+  "Fragen angemessen stellen","Regeln einhalten","Verantwortungsbewusstsein",
+  "Motivation / Einsatzbereitschaft","Gesamteindruck"
+];
+const tage = ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag"];
+const bewOptionen = ["","sehr gut","gut","teilweise","schwierig"];
+
+function baueBewTabelle(){
+  const t = document.getElementById("bewTable");
+  let html = "<tr><th style='text-align:left;position:sticky;left:0;background:#EAF0F4;'>Bewertungskriterium</th>";
+  tage.forEach(tag => html += `<th>${tag}</th>`);
+  html += "</tr>";
+  kriterien.forEach((k, r) => {
+    html += `<tr><td class="krit-name">${k}</td>`;
+    tage.forEach((tag, d) => {
+      html += `<td><select class="bew-select" data-row="${r}" data-day="${d}">`;
+      bewOptionen.forEach(opt => html += `<option value="${opt}">${opt || "–"}</option>`);
+      html += `</select></td>`;
+    });
+    html += "</tr>";
+  });
+  t.innerHTML = html;
+
+  document.querySelectorAll(".bew-select").forEach(sel => {
+    sel.addEventListener("change", () => faerbeSelect(sel));
+  });
+}
+
+function faerbeSelect(sel){
+  sel.classList.remove("v-sehrgut","v-gut","v-teilweise","v-schwierig");
+  const map = {"sehr gut":"v-sehrgut","gut":"v-gut","teilweise":"v-teilweise","schwierig":"v-schwierig"};
+  if (map[sel.value]) sel.classList.add(map[sel.value]);
+}
+
+const unterstZeilen = ["Wie oft musste unterstützt / erinnert werden?","Art der Unterstützung"];
+const haeufigkeitOptionen = ["","0×","1–2×","3–5×","häufig / durchgehend"];
+
+function baueUnterstTabelle(){
+  const t = document.getElementById("unterstTable");
+  let html = "<tr><th style='text-align:left;position:sticky;left:0;background:#EAF0F4;'>Unterstützungsbedarf</th>";
+  tage.forEach(tag => html += `<th>${tag}</th>`);
+  html += "</tr>";
+
+  html += `<tr><td class="krit-name">${unterstZeilen[0]}</td>`;
+  tage.forEach((tag, d) => {
+    html += `<td><select class="unterst-haeufigkeit" data-day="${d}">`;
+    haeufigkeitOptionen.forEach(opt => html += `<option value="${opt}">${opt || "–"}</option>`);
+    html += `</select></td>`;
+  });
+  html += "</tr>";
+
+  html += `<tr><td class="krit-name">${unterstZeilen[1]}</td>`;
+  tage.forEach((tag, d) => {
+    html += `<td><input type="text" class="unterst-art" data-day="${d}"></td>`;
+  });
+  html += "</tr>";
+
+  t.innerHTML = html;
+}
+
+function showToast(){
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+function sammleDaten(){
+  const bewertung = {};
+  document.querySelectorAll(".bew-select").forEach(sel => {
+    bewertung[`${sel.dataset.row}_${sel.dataset.day}`] = sel.value;
+  });
+  const unterstHaeufigkeit = {};
+  document.querySelectorAll(".unterst-haeufigkeit").forEach(sel => {
+    unterstHaeufigkeit[sel.dataset.day] = sel.value;
+  });
+  const unterstArt = {};
+  document.querySelectorAll(".unterst-art").forEach(inp => {
+    unterstArt[inp.dataset.day] = inp.value;
+  });
+  return {
+    kopf: {
+      name: document.getElementById("f-name").value,
+      woche: document.getElementById("f-woche").value,
+      klasse: document.getElementById("f-klasse").value,
+      bereich: document.getElementById("f-bereich").value
+    },
+    bewertung, unterstHaeufigkeit, unterstArt,
+    notizen: document.getElementById("f-notizen").value
+  };
+}
+
+function ladeDaten(){
+  let data;
+  try{ data = JSON.parse(localStorage.getItem("wochenbewertung_data")); }catch(e){ data = null; }
+  if (!data) return;
+
+  if (data.kopf){
+    document.getElementById("f-name").value = data.kopf.name || "";
+    document.getElementById("f-woche").value = data.kopf.woche || "";
+    document.getElementById("f-klasse").value = data.kopf.klasse || "";
+    document.getElementById("f-bereich").value = data.kopf.bereich || "";
+  }
+  if (data.bewertung){
+    document.querySelectorAll(".bew-select").forEach(sel => {
+      const key = `${sel.dataset.row}_${sel.dataset.day}`;
+      if (data.bewertung[key]){ sel.value = data.bewertung[key]; faerbeSelect(sel); }
+    });
+  }
+  if (data.unterstHaeufigkeit){
+    document.querySelectorAll(".unterst-haeufigkeit").forEach(sel => {
+      if (data.unterstHaeufigkeit[sel.dataset.day]) sel.value = data.unterstHaeufigkeit[sel.dataset.day];
+    });
+  }
+  if (data.unterstArt){
+    document.querySelectorAll(".unterst-art").forEach(inp => {
+      if (data.unterstArt[inp.dataset.day]) inp.value = data.unterstArt[inp.dataset.day];
+    });
+  }
+  document.getElementById("f-notizen").value = data.notizen || "";
+}
+
+baueBewTabelle();
+baueUnterstTabelle();
+ladeDaten();
+
+document.getElementById("saveBtn").addEventListener("click", () => {
+  localStorage.setItem("wochenbewertung_data", JSON.stringify(sammleDaten()));
+  showToast();
+});
+</script>
+
+</body>
+</html>

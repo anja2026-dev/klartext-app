@@ -39,10 +39,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
 .sek-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;}
 .sek-sub{font-size:.72rem;margin-top:1px;opacity:.7;}
 .dl-grid{display:flex;flex-direction:column;gap:.5rem;}
-.dl-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:.9rem;padding:.75rem 1rem;transition:all .15s;}
+.dl-item{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:.9rem;padding:.75rem 1rem;transition:all .15s;flex-wrap:wrap;}
 .dl-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);}
 .dl-icon{font-size:1.3rem;flex-shrink:0;}
-.dl-info{flex:1;}
+.dl-info{flex:1;min-width:160px;}
 .dl-name{font-size:.87rem;font-weight:600;margin-bottom:.15rem;}
 .dl-desc{font-size:.72rem;color:var(--muted);}
 .dl-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:6px;font-size:.75rem;font-weight:700;text-decoration:none;transition:all .15s;flex-shrink:0;color:#fff;}
@@ -182,16 +182,19 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
       <div class="dl-item">
         <div class="dl-icon">📝</div>
         <div class="dl-info"><div class="dl-name">HPG-Checkliste & Wochenbericht</div><div class="dl-desc">Vorbereitung Hilfeplangespräch · Wochenbericht strukturiert zusammenfassen</div></div>
+        <a class="dl-btn" href="HPG_Checkliste_Wochenbericht.html" style="background:#6EC6A0;color:#1B3A4B;">✏️ Ausfüllen</a>
         <a class="dl-btn" href="HPG_Checkliste_Wochenbericht.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
       </div>
       <div class="dl-item">
         <div class="dl-icon">📊</div>
         <div class="dl-info"><div class="dl-name">Wochenbewertung Berufsvorbereitung</div><div class="dl-desc">Wöchentliche Bewertung im Berufsvorbereitungs-Programm</div></div>
+        <a class="dl-btn" href="Wochenbewertung_Berufsvorbereitung.html" style="background:#6EC6A0;color:#1B3A4B;">✏️ Ausfüllen</a>
         <a class="dl-btn" href="Wochenbewertung_Berufsvorbereitung.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
       </div>
       <div class="dl-item">
         <div class="dl-icon">📊</div>
         <div class="dl-info"><div class="dl-name">Wochenbewertung Berufsvorbereitung (mit Fächern)</div><div class="dl-desc">Wie oben, zusätzlich mit Bewertung nach Schulfächern</div></div>
+        <a class="dl-btn" href="Wochenbewertung_Berufsvorbereitung_mit_Faechern.html" style="background:#6EC6A0;color:#1B3A4B;">✏️ Ausfüllen</a>
         <a class="dl-btn" href="Wochenbewertung_Berufsvorbereitung_mit_Faechern.pdf" style="background:#1B3A4B;" download>📄 PDF</a>
       </div>
     </div>

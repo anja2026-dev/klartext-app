@@ -222,5 +222,38 @@ function toggleFall(nr) {
   chev.classList.toggle('offen');
 }
 </script>
+
+<script>
+// Fachbuch-Suche: falls diese Seite über einen Suchtreffer mit
+// ?fbsuche=... aufgerufen wurde, den Begriff hervorheben und dorthin scrollen.
+(function(){
+  const params = new URLSearchParams(location.search);
+  const q = params.get('fbsuche');
+  if (!q) return;
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const ql = q.toLowerCase();
+      let knoten;
+      while (knoten = walker.nextNode()) {
+        const eltern = knoten.parentElement;
+        if (!eltern || ['SCRIPT','STYLE','MARK'].includes(eltern.tagName)) continue;
+        const idx = knoten.nodeValue.toLowerCase().indexOf(ql);
+        if (idx !== -1) {
+          const range = document.createRange();
+          range.setStart(knoten, idx);
+          range.setEnd(knoten, idx + q.length);
+          const mark = document.createElement('mark');
+          mark.style.cssText = 'background:#FFE082;padding:0 2px;border-radius:3px;';
+          range.surroundContents(mark);
+          mark.scrollIntoView({behavior:'smooth', block:'center'});
+          break;
+        }
+      }
+    }, 200);
+  });
+})();
+</script>
+
 </body>
 </html>

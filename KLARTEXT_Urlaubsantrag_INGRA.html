@@ -234,6 +234,15 @@ window.reset = reset;
 document.addEventListener('DOMContentLoaded', async function() {
   try {
     const ingraId = await aktuelleIngraId();
+
+    // "Mein Name" automatisch aus der ingra-Tabelle befüllen, nur wenn leer
+    // (kein Überschreiben, falls die Person bereits manuell etwas eingegeben hat).
+    const nameFeld = document.getElementById('u-name');
+    if (ingraId && nameFeld && !nameFeld.value.trim()) {
+      const { data: ingraZeile } = await supabase.from('ingra').select('name').eq('id', ingraId).maybeSingle();
+      if (ingraZeile && ingraZeile.name) nameFeld.value = ingraZeile.name;
+    }
+
     const { data: kinder, error } = await supabase
       .from('Kinder')
       .select('id, name, klasse')

@@ -121,6 +121,18 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .fb-glossar-item{display:flex;gap:.75rem;background:var(--paper);border-radius:8px;padding:.65rem .9rem;align-items:baseline;}
 .fb-glossar-begriff{font-weight:800;color:var(--navy);font-size:.84rem;min-width:140px;flex-shrink:0;}
 .fb-glossar-def{font-size:.8rem;color:#3A3A4A;line-height:1.5;}
+
+.fb-suche{background:#fff;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.fb-suche-input{width:100%;padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.9rem;outline:none;color:#1A1A2E;}
+.fb-suche-input:focus{border-color:var(--navy);}
+.fb-suche-status{font-size:.72rem;color:var(--muted);margin-top:.6rem;}
+.fb-suche-ergebnisse{margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem;max-height:420px;overflow-y:auto;}
+.fb-suche-treffer{display:block;background:var(--paper);border-radius:8px;padding:.65rem .9rem;text-decoration:none;color:inherit;border-left:3px solid var(--navy);}
+.fb-suche-treffer:hover{background:#EFEAE0;}
+.fb-suche-treffer-titel{font-weight:700;color:var(--navy);font-size:.82rem;margin-bottom:.25rem;}
+.fb-suche-treffer-snippet{font-size:.78rem;color:#3A3A4A;line-height:1.5;}
+.fb-suche-treffer-snippet mark{background:#FFE082;padding:0 2px;border-radius:2px;}
+.fb-suche-treffer-quelle{font-size:.64rem;color:var(--muted);margin-top:.3rem;text-transform:uppercase;letter-spacing:.05em;}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 </head>
@@ -147,6 +159,12 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 <div class="fb-hinweis">
   <img src="brainy.png" alt="Brainy">
   <div>Im KLARTEXT-Kartensystem wird der Begriff <b>INGRA</b> verwendet. Dieses Fachbuch nutzt den offiziellen Begriff <b>Schulbegleitung</b> gemäß SGB IX.</div>
+</div>
+
+<div class="fb-suche">
+  <input type="text" class="fb-suche-input" id="fb-suche-input" placeholder="🔍 Fachbuch durchsuchen — alle 12 Kapitel & Unterseiten ...">
+  <div class="fb-suche-status" id="fb-suche-status"></div>
+  <div class="fb-suche-ergebnisse" id="fb-suche-ergebnisse"></div>
 </div>
 
 <div class="fb-nav-titel">Inhaltsverzeichnis</div>
@@ -842,6 +860,176 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   </section>
 
 </div>
+
+<script>
+// ── FACHBUCH-VOLLTEXTSUCHE ──────────────────────────────────────────
+// Durchsucht die 12 inline auf dieser Seite vorhandenen Kapitel PLUS
+// die 10 ausgelagerten Unterseiten (per fetch, gleiche Origin, kein
+// CORS-Problem). Ergebnisse aus dieser Seite verlinken auf #kap-N,
+// Ergebnisse von Unterseiten verlinken mit ?fbsuche=... - die
+// Zielseite hebt den Treffer dann selbst beim Laden hervor und
+// scrollt automatisch dorthin (siehe Skript am Ende jeder Unterseite).
+
+const FB_EXTERNE_DATEIEN = [
+  'KLARTEXT_Fachbuch_3a_Bindungstrauma.html',
+  'KLARTEXT_Fachbuch_3b_Hochkonflikt.html',
+  'KLARTEXT_Fachbuch_3c_Esstoerungen.html',
+  'KLARTEXT_Fachbuch_System_Paedagogik.html',
+  'KLARTEXT_Fachbuch_System_Verbruederung.html',
+  'KLARTEXT_Fachbuch_System_Selbsthilfe.html',
+  'KLARTEXT_Fachbuch_System_Mobbing.html',
+  'KLARTEXT_Fachbuch_System_Sinnesbehinderung_Kinderschutz.html',
+  'KLARTEXT_Fachbuch_Fallbeispiele.html',
+  'KLARTEXT_Fachbuch_Trainingsmodule.html'
+];
+
+let fbSucheIndex = null;
+let fbSucheIndexWirdGeladen = null;
+
+function fbBaueInternenIndex() {
+  const eintraege = [];
+  document.querySelectorAll('.fb-kapitel').forEach(function(sec){
+    const titelEl = sec.querySelector('.fb-kapitel-header h2');
+    eintraege.push({
+      typ: 'intern',
+      anker: '#' + sec.id,
+      titel: titelEl ? titelEl.textContent.trim() : sec.id,
+      text: sec.innerText || sec.textContent || ''
+    });
+  });
+  return eintraege;
+}
+
+async function fbLadeExternenIndex() {
+  const eintraege = [];
+  await Promise.all(FB_EXTERNE_DATEIEN.map(async function(datei){
+    try {
+      const antwort = await fetch(datei);
+      if (!antwort.ok) return;
+      const html = await antwort.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const shell = doc.querySelector('.shell') || doc.body;
+      const titelEl = shell.querySelector('.fb-kapitel-header h2') || doc.querySelector('title');
+      eintraege.push({
+        typ: 'extern',
+        datei: datei,
+        titel: titelEl ? titelEl.textContent.trim() : datei,
+        text: shell.innerText || shell.textContent || ''
+      });
+    } catch (e) {
+      console.error('Fachbuch-Suche: Datei konnte nicht geladen werden:', datei, e);
+    }
+  }));
+  return eintraege;
+}
+
+function fbSicherstellenIndex() {
+  if (fbSucheIndex) return Promise.resolve(fbSucheIndex);
+  if (fbSucheIndexWirdGeladen) return fbSucheIndexWirdGeladen;
+  fbSucheIndexWirdGeladen = (async function(){
+    const intern = fbBaueInternenIndex();
+    const extern = await fbLadeExternenIndex();
+    fbSucheIndex = intern.concat(extern);
+    return fbSucheIndex;
+  })();
+  return fbSucheIndexWirdGeladen;
+}
+
+function fbEscapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function fbSchnipsel(text, treffer, breite) {
+  const idx = text.toLowerCase().indexOf(treffer.toLowerCase());
+  if (idx === -1) return text.slice(0, breite * 2);
+  const start = Math.max(0, idx - breite);
+  const ende = Math.min(text.length, idx + treffer.length + breite);
+  let ausschnitt = text.slice(start, ende).replace(/\s+/g, ' ').trim();
+  if (start > 0) ausschnitt = '…' + ausschnitt;
+  if (ende < text.length) ausschnitt = ausschnitt + '…';
+  const re = new RegExp('(' + fbEscapeRegex(treffer) + ')', 'ig');
+  return ausschnitt.replace(re, '<mark>$1</mark>');
+}
+
+function fbHervorhebenUndSpringen(wurzel, begriff) {
+  const walker = document.createTreeWalker(wurzel, NodeFilter.SHOW_TEXT);
+  const ql = begriff.toLowerCase();
+  let knoten;
+  while (knoten = walker.nextNode()) {
+    const eltern = knoten.parentElement;
+    if (!eltern || ['SCRIPT','STYLE','MARK'].includes(eltern.tagName)) continue;
+    const idx = knoten.nodeValue.toLowerCase().indexOf(ql);
+    if (idx !== -1) {
+      const range = document.createRange();
+      range.setStart(knoten, idx);
+      range.setEnd(knoten, idx + begriff.length);
+      const mark = document.createElement('mark');
+      mark.style.cssText = 'background:#FFE082;padding:0 2px;border-radius:3px;';
+      range.surroundContents(mark);
+      mark.scrollIntoView({behavior:'smooth', block:'center'});
+      break;
+    }
+  }
+}
+
+let fbSucheTimeout = null;
+document.getElementById('fb-suche-input').addEventListener('input', function(e){
+  clearTimeout(fbSucheTimeout);
+  const wert = e.target.value.trim();
+  const status = document.getElementById('fb-suche-status');
+  const ergebnisse = document.getElementById('fb-suche-ergebnisse');
+  if (!wert) { status.textContent = ''; ergebnisse.innerHTML = ''; return; }
+  status.textContent = 'Suche läuft …';
+  fbSucheTimeout = setTimeout(async function(){
+    const index = await fbSicherstellenIndex();
+    const wl = wert.toLowerCase();
+    const treffer = index.filter(function(e){
+      return e.text.toLowerCase().includes(wl) || e.titel.toLowerCase().includes(wl);
+    });
+    if (!treffer.length) {
+      status.textContent = 'Keine Treffer für „' + wert + '".';
+      ergebnisse.innerHTML = '';
+      return;
+    }
+    status.textContent = treffer.length + ' Treffer für „' + wert + '":';
+    ergebnisse.innerHTML = treffer.map(function(t){
+      const href = t.typ === 'intern' ? t.anker : (t.datei + '?fbsuche=' + encodeURIComponent(wert));
+      const quelle = t.typ === 'intern' ? 'Im Fachbuch' : 'Unterseite';
+      return '<a class="fb-suche-treffer" href="' + href + '">' +
+        '<div class="fb-suche-treffer-titel">' + t.titel + '</div>' +
+        '<div class="fb-suche-treffer-snippet">' + fbSchnipsel(t.text, wert, 70) + '</div>' +
+        '<div class="fb-suche-treffer-quelle">' + quelle + '</div>' +
+      '</a>';
+    }).join('');
+  }, 300);
+});
+
+// Klick auf einen internen Treffer (#kap-N): sanft dorthin scrollen und
+// den Begriff innerhalb des Kapitels hervorheben, statt hartem Sprung.
+document.getElementById('fb-suche-ergebnisse').addEventListener('click', function(e){
+  const link = e.target.closest('.fb-suche-treffer');
+  if (!link) return;
+  const href = link.getAttribute('href');
+  if (href.charAt(0) === '#') {
+    e.preventDefault();
+    const ziel = document.querySelector(href);
+    if (ziel) {
+      ziel.scrollIntoView({behavior:'smooth', block:'start'});
+      const wert = document.getElementById('fb-suche-input').value.trim();
+      setTimeout(function(){ fbHervorhebenUndSpringen(ziel, wert); }, 400);
+    }
+  }
+});
+
+// Falls diese Seite selbst mit ?fbsuche=... aufgerufen wurde (z.B. Link
+// von einer Unterseite aus zurück), Treffer ebenfalls hervorheben.
+(function(){
+  const params = new URLSearchParams(location.search);
+  const q = params.get('fbsuche');
+  if (!q) return;
+  window.addEventListener('load', function(){
+    setTimeout(function(){ fbHervorhebenUndSpringen(document.body, q); }, 200);
+  });
+})();
+</script>
 
 </body>
 </html>

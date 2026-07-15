@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Ruhe-Ballon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto;}
+.shell{max-width:560px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+
+.brainy-box{display:flex;gap:.85rem;align-items:center;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:1.5rem;text-align:left;box-shadow:0 2px 10px rgba(27,58,75,.06);}
+.brainy-emoji{font-size:1.8rem;flex-shrink:0;}
+.brainy-msg{font-size:.86rem;color:var(--ink);line-height:1.5;}
+
+.ballon-buehne{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem 1rem 2rem;}
+.ballon-wrap{position:relative;width:min(72vw,260px);height:min(72vw,260px);display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;}
+.ballon{
+  width:55%;height:55%;border-radius:50%;
+  border:4px solid var(--border);
+  box-shadow:0 8px 26px rgba(27,58,75,.18), inset 0 -10px 20px rgba(0,0,0,.06);
+  background:var(--paper);
+  animation:atmen 10s ease-in-out infinite;
+  animation-play-state:paused;
+  position:relative;
+}
+.ballon::after{
+  content:'';position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
+  width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:14px solid var(--border);
+}
+.ballon.laeuft{animation-play-state:running;}
+@keyframes atmen{
+  0%   { transform:scale(.55); background:var(--paper); }
+  40%  { transform:scale(1);   background:var(--acc); }
+  42%  { transform:scale(1);   background:var(--m); }
+  58%  { transform:scale(1);   background:var(--m); }
+  60%  { transform:scale(1);   background:var(--acc); }
+  100% { transform:scale(.55); background:var(--paper); }
+}
+.phase-text{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:var(--m);min-height:1.7em;text-align:center;}
+
+.knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem;}
+.timer-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit;transition:opacity .15s,transform .15s;}
+.timer-btn:hover{opacity:.9;transform:translateY(-1px);}
+.timer-btn.start{background:var(--m);color:#fff;}
+.timer-btn.stop-btn{background:var(--acc);color:var(--m);}
+.timer-btn.reset{background:var(--surface);color:var(--muted);border:1.5px solid var(--border);}
+
+.zaehler-card{background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:1.1rem 1.3rem;text-align:center;margin-top:1.5rem;}
+.zaehler-anzeige{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--m);margin-bottom:.6rem;}
+.zaehler-reset-btn{background:none;border:none;color:var(--muted);font-size:.72rem;text-decoration:underline;cursor:pointer;font-family:inherit;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="KLARTEXT_Spiele.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Spiele</div>
+  </a>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Spiele</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">🎈</div>
+  <h1 class="hero-titel">Ruhe-Ballon</h1>
+  <p class="hero-sub">Eine kleine Atemübung zum Entspannen — einatmen, halten, ausatmen, im eigenen Tempo.</p>
+</div>
+
+<div class="shell">
+
+  <div class="brainy-box">
+    <span class="brainy-emoji">🧠</span>
+    <span class="brainy-msg" id="brainy-msg">Atme mit dem Ballon. Ganz ruhig.</span>
+  </div>
+
+  <div class="ballon-buehne">
+    <div class="ballon-wrap">
+      <div class="ballon" id="ballon"></div>
+    </div>
+    <div class="phase-text" id="phase-text">Bereit?</div>
+
+    <div class="knopf-row">
+      <button class="timer-btn start" id="start-btn" onclick="starten()">▶️ Start</button>
+      <button class="timer-btn stop-btn" id="stop-btn" onclick="anhalten()" style="display:none;">⏸️ Stop</button>
+    </div>
+  </div>
+
+  <div class="zaehler-card">
+    <div class="zaehler-anzeige">🌿 Du hast <span id="atemzuege-zahl">0</span> Mal tief geatmet</div>
+    <button class="zaehler-reset-btn" onclick="zaehlerZuruecksetzen()">Zähler zurücksetzen</button>
+  </div>
+
+</div>
+
+<script>
+var PHASE_MS = { einatmen: 4000, halten: 2000, ausatmen: 4000 };
+var ZYKLUS_MS = PHASE_MS.einatmen + PHASE_MS.halten + PHASE_MS.ausatmen;
+
+var laeuft = false;
+var timeoutId = null;
+var atemzuege = 0;
+
+var ballon = document.getElementById('ballon');
+var phaseText = document.getElementById('phase-text');
+
+function atemzuegeAnzeigen(){
+  document.getElementById('atemzuege-zahl').textContent = atemzuege;
+}
+
+function atemzuegeLaden(){
+  try { atemzuege = parseInt(localStorage.getItem('ruheballon_atemzuege') || '0', 10) || 0; } catch(e) { atemzuege = 0; }
+  atemzuegeAnzeigen();
+}
+
+function atemzuegeSpeichern(){
+  try { localStorage.setItem('ruheballon_atemzuege', String(atemzuege)); } catch(e) {}
+}
+
+function zaehlerZuruecksetzen(){
+  atemzuege = 0;
+  atemzuegeSpeichern();
+  atemzuegeAnzeigen();
+}
+
+function brainySagen(text){
+  document.getElementById('brainy-msg').textContent = text;
+}
+
+function meilensteinPruefen(){
+  if (atemzuege === 5) {
+    brainySagen('Toll! Du wirst ruhiger. Weiter so 💚');
+  } else if (atemzuege === 10) {
+    brainySagen('Super! 10 Atemzüge — das ist echte Stärke 🌟');
+  }
+}
+
+function zyklusSchritt(){
+  if (!laeuft) return;
+  phaseText.textContent = 'Einatmen …';
+  timeoutId = setTimeout(function(){
+    if (!laeuft) return;
+    phaseText.textContent = 'Halten …';
+    timeoutId = setTimeout(function(){
+      if (!laeuft) return;
+      phaseText.textContent = 'Ausatmen …';
+      timeoutId = setTimeout(function(){
+        if (!laeuft) return;
+        atemzuege++;
+        atemzuegeSpeichern();
+        atemzuegeAnzeigen();
+        meilensteinPruefen();
+        zyklusSchritt();
+      }, PHASE_MS.ausatmen);
+    }, PHASE_MS.halten);
+  }, PHASE_MS.einatmen);
+}
+
+function starten(){
+  laeuft = true;
+  document.getElementById('start-btn').style.display = 'none';
+  document.getElementById('stop-btn').style.display = 'inline-flex';
+
+  ballon.classList.remove('laeuft');
+  void ballon.offsetWidth;
+  ballon.classList.add('laeuft');
+
+  zyklusSchritt();
+}
+
+function anhalten(){
+  laeuft = false;
+  clearTimeout(timeoutId);
+  document.getElementById('start-btn').style.display = 'inline-flex';
+  document.getElementById('stop-btn').style.display = 'none';
+  ballon.classList.remove('laeuft');
+  phaseText.textContent = 'Bereit?';
+}
+
+atemzuegeLaden();
+</script>
+
+</body>
+</html>

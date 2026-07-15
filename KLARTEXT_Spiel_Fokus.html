@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Fokus-Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;transition:background .4s;}
+.hero.phase-pause{background:linear-gradient(135deg,#2E7D5F 0%,var(--acc) 100%);}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto;}
+.shell{max-width:640px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+
+.timer-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:2rem 1.5rem;text-align:center;box-shadow:0 2px 10px rgba(27,58,75,.08);margin-bottom:1.25rem;}
+.timer-phase-label{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.1rem;}
+.ring-wrap{position:relative;width:240px;height:240px;margin:0 auto 1.4rem;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:14;}
+.ring-fortschritt{fill:none;stroke:var(--m);stroke-width:14;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s;}
+.ring-fortschritt.pause{stroke:var(--acc);}
+.ring-zeit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-size:2.6rem;font-weight:700;color:var(--m);}
+
+.brainy-box{display:flex;gap:.85rem;align-items:center;background:var(--paper);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:1.4rem;text-align:left;}
+.brainy-emoji{font-size:1.8rem;flex-shrink:0;}
+.brainy-msg{font-size:.86rem;color:var(--ink);line-height:1.5;}
+
+.knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;}
+.timer-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit;transition:opacity .15s,transform .15s;}
+.timer-btn:hover{opacity:.9;transform:translateY(-1px);}
+.timer-btn.start{background:var(--m);color:#fff;}
+.timer-btn.pause-btn{background:var(--acc);color:var(--m);}
+.timer-btn.reset{background:var(--surface);color:var(--muted);border:1.5px solid var(--border);}
+
+.sterne-card{background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:1.1rem 1.3rem;text-align:center;}
+.sterne-anzeige{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--m);margin-bottom:.6rem;}
+.sterne-reset-btn{background:none;border:none;color:var(--muted);font-size:.72rem;text-decoration:underline;cursor:pointer;font-family:inherit;}
+
+.konfetti-stueck{position:fixed;top:-20px;font-size:1.2rem;pointer-events:none;z-index:9999;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(105vh) rotate(360deg);opacity:.2;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="KLARTEXT_Spiele.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Spiele</div>
+  </a>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Spiele</a>
+</header>
+
+<div class="hero" id="hero">
+  <div class="hero-icon">🎯</div>
+  <h1 class="hero-titel">Fokus-Trainer</h1>
+  <p class="hero-sub">25 Minuten konzentriert arbeiten, 5 Minuten Pause — Brainy begleitet dich durch jede Runde.</p>
+</div>
+
+<div class="shell">
+
+  <div class="timer-card">
+    <div class="timer-phase-label" id="phase-label">Fokus-Phase</div>
+    <div class="ring-wrap">
+      <svg width="240" height="240" viewBox="0 0 240 240">
+        <circle class="ring-bg" cx="120" cy="120" r="105"></circle>
+        <circle class="ring-fortschritt" id="ring-fortschritt" cx="120" cy="120" r="105"></circle>
+      </svg>
+      <div class="ring-zeit" id="ring-zeit">25:00</div>
+    </div>
+
+    <div class="brainy-box">
+      <span class="brainy-emoji">🧠</span>
+      <span class="brainy-msg" id="brainy-msg">Bereit? Ich bin dabei! 🧠</span>
+    </div>
+
+    <div class="knopf-row">
+      <button class="timer-btn start" id="start-btn" onclick="startenKlick()">▶️ Start</button>
+      <button class="timer-btn pause-btn" id="pause-btn" onclick="pausierenKlick()" style="display:none;">⏸️ Pause</button>
+      <button class="timer-btn reset" onclick="zuruecksetzen()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="sterne-card">
+    <div class="sterne-anzeige">⭐ Du hast heute <span id="sterne-zahl">0</span> Sterne gesammelt</div>
+    <button class="sterne-reset-btn" onclick="sterneZuruecksetzen()">Sterne zurücksetzen</button>
+  </div>
+
+</div>
+
+<script>
+var FOKUS_DAUER = 25 * 60;
+var PAUSE_DAUER = 5 * 60;
+var UMFANG = 2 * Math.PI * 105;
+
+var phase = 'fokus';
+var restSekunden = FOKUS_DAUER;
+var laeuft = false;
+var intervallId = null;
+var audioCtx = null;
+
+var ring = document.getElementById('ring-fortschritt');
+ring.style.strokeDasharray = UMFANG;
+ring.style.strokeDashoffset = 0;
+
+function gesamtDauer(){
+  return phase === 'fokus' ? FOKUS_DAUER : PAUSE_DAUER;
+}
+
+function zeitFormatieren(sek){
+  var m = Math.floor(sek / 60);
+  var s = sek % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function anzeigeAktualisieren(){
+  document.getElementById('ring-zeit').textContent = zeitFormatieren(restSekunden);
+  var anteil = restSekunden / gesamtDauer();
+  ring.style.strokeDashoffset = UMFANG * anteil;
+
+  var hero = document.getElementById('hero');
+  var label = document.getElementById('phase-label');
+  if (phase === 'fokus') {
+    hero.classList.remove('phase-pause');
+    ring.classList.remove('pause');
+    label.textContent = 'Fokus-Phase';
+  } else {
+    hero.classList.add('phase-pause');
+    ring.classList.add('pause');
+    label.textContent = 'Pause-Phase';
+  }
+}
+
+function brainySagen(text){
+  document.getElementById('brainy-msg').textContent = text;
+}
+
+function sicherstellenAudioCtx(){
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
+}
+
+function pieps(){
+  if (!audioCtx) return;
+  try {
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.55);
+  } catch(e) {}
+}
+
+function sterneAnzeigen(){
+  var anzahl = 0;
+  try { anzahl = parseInt(localStorage.getItem('fokus_sterne') || '0', 10) || 0; } catch(e) {}
+  document.getElementById('sterne-zahl').textContent = anzahl;
+}
+
+function sternHinzufuegen(){
+  var anzahl = 0;
+  try { anzahl = parseInt(localStorage.getItem('fokus_sterne') || '0', 10) || 0; } catch(e) {}
+  anzahl++;
+  try { localStorage.setItem('fokus_sterne', String(anzahl)); } catch(e) {}
+  sterneAnzeigen();
+}
+
+function sterneZuruecksetzen(){
+  try { localStorage.setItem('fokus_sterne', '0'); } catch(e) {}
+  sterneAnzeigen();
+}
+
+function konfettiAusloesen(){
+  var symbole = ['⭐','🎉','✨','🌟'];
+  for (var i = 0; i < 18; i++) {
+    (function(){
+      var stueck = document.createElement('div');
+      stueck.className = 'konfetti-stueck';
+      stueck.textContent = symbole[Math.floor(Math.random() * symbole.length)];
+      stueck.style.left = (Math.random() * window.innerWidth) + 'px';
+      stueck.style.animationDuration = (1.1 + Math.random() * .8) + 's';
+      document.body.appendChild(stueck);
+      setTimeout(function(){ stueck.remove(); }, 2200);
+    })();
+  }
+}
+
+function knopfZustandAktualisieren(){
+  document.getElementById('start-btn').style.display = laeuft ? 'none' : 'inline-flex';
+  document.getElementById('pause-btn').style.display = laeuft ? 'inline-flex' : 'none';
+}
+
+function starten(){
+  sicherstellenAudioCtx();
+  laeuft = true;
+  knopfZustandAktualisieren();
+  if (phase === 'fokus') {
+    brainySagen('Konzentriert bleiben — du schaffst das!');
+  } else {
+    brainySagen('Durchatmen, kurz bewegen, Wasser trinken 💧');
+  }
+  intervallId = setInterval(tick, 1000);
+}
+
+function anhalten(){
+  laeuft = false;
+  knopfZustandAktualisieren();
+  clearInterval(intervallId);
+}
+
+function tick(){
+  restSekunden--;
+  if (restSekunden <= 0) {
+    restSekunden = 0;
+    anzeigeAktualisieren();
+    phasenEndeBehandeln();
+    return;
+  }
+  anzeigeAktualisieren();
+}
+
+function phasenEndeBehandeln(){
+  clearInterval(intervallId);
+  laeuft = false;
+  knopfZustandAktualisieren();
+  pieps();
+
+  if (phase === 'fokus') {
+    sternHinzufuegen();
+    konfettiAusloesen();
+    brainySagen('Wow, super gemacht! ⭐ Kurze Pause verdient!');
+    phase = 'pause';
+    restSekunden = PAUSE_DAUER;
+    anzeigeAktualisieren();
+    setTimeout(function(){
+      starten();
+    }, 2200);
+  } else {
+    brainySagen('Bereit für die nächste Runde? Los geht\'s!');
+    phase = 'fokus';
+    restSekunden = FOKUS_DAUER;
+    anzeigeAktualisieren();
+  }
+}
+
+function startenKlick(){
+  starten();
+}
+
+function pausierenKlick(){
+  anhalten();
+  brainySagen('Pausiert — weiter geht\'s, wenn du bereit bist.');
+}
+
+function zuruecksetzen(){
+  anhalten();
+  phase = 'fokus';
+  restSekunden = FOKUS_DAUER;
+  anzeigeAktualisieren();
+  brainySagen('Bereit? Ich bin dabei! 🧠');
+}
+
+anzeigeAktualisieren();
+knopfZustandAktualisieren();
+sterneAnzeigen();
+</script>
+
+</body>
+</html>

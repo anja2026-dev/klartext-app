@@ -39,6 +39,16 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .fb-brainy{display:flex;gap:.85rem;align-items:center;background:var(--surface);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
 .fb-brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
 .fb-brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+.fb-tabelle{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:.4rem;}
+.fb-tabelle th{background:var(--navy);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+.fb-tabelle td{padding:.5rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55;color:#2D2D2D;}
+.fb-tabelle tr:nth-child(even) td{background:var(--paper);}
+.fb-tabelle td:last-child{white-space:nowrap;color:var(--muted);font-size:.75rem;}
+.fb-liste{padding-left:1.15rem;font-size:.84rem;line-height:1.65;color:#2D2D2D;}
+.fb-liste li{margin-bottom:.35rem;}
+.fb-hinweis-abschnitt{background:#FFF4E0;border-radius:8px;padding:.7rem .9rem;}
+.fb-hinweis-abschnitt b{color:var(--gold);}
+.fb-quelle{font-size:.72rem;color:var(--muted);font-style:italic;margin-top:.6rem;}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 </head>
@@ -204,6 +214,71 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
         <div class="fb-fall-abschnitt"><b>Intervention</b><p>Ein ruhiges Nachgespräch schafft Klarheit und stärkt die Zusammenarbeit.</p></div>
         <div class="fb-fall-abschnitt fb-doku-abschnitt"><b>📋 Dokumentation</b><p class="fb-doku-text">„11:50 — Lehrkraft kritisiert mich vor Klasse. Ich spreche nach Unterricht ruhig an. Absprachen getroffen.“</p></div>
         <div class="fb-fall-abschnitt fb-reflexion-abschnitt"><b>💭 Reflexion</b><p>Die Schulbegleitung hat professionell gehandelt und die Beziehung geschützt.</p></div>
+      </div>
+    </div>
+<div class="fb-fall-karte">
+      <div class="fb-fall-header" onclick="toggleFall(11)">
+        <span class="fb-fall-nr">11</span>
+        <span class="fb-fall-titel">Praxisbeispiel: Aufgabenverteilung bei ADHS – Der Fall Felix</span>
+        <span class="fb-fall-chevron" id="chev-11">▼</span>
+      </div>
+      <div class="fb-fall-body" id="fall-11">
+        <div class="fb-fall-abschnitt">
+          <p style="font-style:italic;color:var(--muted);margin-bottom:.5rem;">Ein strukturierter Ansatz zur Aufgabenverteilung zwischen Eltern, Kind und Lehrkraft</p>
+          <p>Das folgende Fallbeispiel zeigt, wie sich pädagogische Ziele – Respekt, Frustrationstoleranz, Eigenverantwortung, Konzentration – in konkrete, alltagstaugliche Handlungsschritte übersetzen lassen. Entscheidend ist dabei die klare Rollenverteilung: Jede beteiligte Person weiß genau, welchen Beitrag sie leistet, wann und wie.</p>
+        </div>
+        <div class="fb-fall-abschnitt">
+          <b>A. Aufgaben der Eltern</b>
+          <table class="fb-tabelle">
+            <tr><th>Konzept</th><th>Konkrete Aktion</th><th>Wann</th></tr>
+            <tr><td>An Respekt erinnern</td><td>Respektlosigkeiten sofort ansprechen: was war falsch, warum ist Respekt wichtig</td><td>Bei Bedarf</td></tr>
+            <tr><td>Durchhaltevermögen stärken</td><td>Bei Lernfrust nicht die Aufgabe abnehmen, sondern fragen: „Was ist der nächste kleine Schritt?“ oder an frühere Erfolge erinnern</td><td>Bei Lernfrust</td></tr>
+            <tr><td>Ruhig bleiben bei Konflikten</td><td>Vor dem Gespräch kurz durchatmen, „Ich“-Botschaften statt Vorwürfe</td><td>Bei Konflikten</td></tr>
+            <tr><td>Alternativen anbieten</td><td>Statt „Nein, das geht nicht“: Optionen geben („Hausaufgaben oder Zimmer aufräumen – was wählst du?“)</td><td>Täglich / nach Bedarf</td></tr>
+            <tr><td>Reflektierende Gespräche führen</td><td>Kurzes Abendgespräch: „Was hast du heute gut gemacht? Was war schwierig? Was machst du morgen anders?“ – als Austausch, nicht als Verhör</td><td>Täglich, abends</td></tr>
+            <tr><td>An Schulmaterial erinnern</td><td>Gemeinsame Checkliste für die Schultasche, morgens abgehakt</td><td>Täglich, morgens</td></tr>
+          </table>
+        </div>
+        <div class="fb-fall-abschnitt">
+          <b>B. Aufgaben für Felix selbst</b>
+          <table class="fb-tabelle">
+            <tr><th>Konzept</th><th>Konkrete Aktion</th><th>Wann</th></tr>
+            <tr><td>Materialordnung</td><td>Checkliste für die Tasche, Ordnungssystem für den Schreibtisch (anfangs mit Eltern)</td><td>Täglich / wöchentlich</td></tr>
+            <tr><td>Respekt einhalten</td><td>Bei Regelverstößen das Gespräch suchen: „Wir hatten die Regel – was ist passiert, wie lösen wir das?“</td><td>Bei Bedarf</td></tr>
+            <tr><td>Konzentration lernen</td><td>Nonverbale Signale der Fachkraft (z. B. leichtes Klopfen, Blickkontakt) statt lauter Ansprache</td><td>Im Unterricht</td></tr>
+            <tr><td>Eigenverantwortung üben</td><td>Feste kleine Aufgaben zu Hause übernehmen (z. B. Mülleimer dienstags rausbringen)</td><td>Wöchentlich</td></tr>
+          </table>
+        </div>
+        <div class="fb-fall-abschnitt">
+          <b>C. Aufgaben der Klassenlehrkraft / Fachkraft</b>
+          <table class="fb-tabelle">
+            <tr><th>Konzept</th><th>Konkrete Aktion</th><th>Wann</th></tr>
+            <tr><td>Unterstützung bei Regeln/Lerninhalten</td><td>Klare Ansagen, Aufgabenstellung zusätzlich in einfacher Sprache erklären, kurze Verständnis-Rückfragen</td><td>Im Unterricht</td></tr>
+            <tr><td>Eigenverantwortung stärken</td><td>Positive Verstärkung: konkret loben, wenn Felix selbstständig arbeitet oder sich fokussiert</td><td>Täglich</td></tr>
+            <tr><td>Toleranz fördern</td><td>Aktive Einbindung bei Gruppenarbeiten; bei Konflikten Mediator-Rolle, Empathie-Fragen stellen („Wie hat sich dein Mitschüler dabei gefühlt?“)</td><td>Im Unterricht / bei Konflikten</td></tr>
+          </table>
+        </div>
+        <div class="fb-fall-abschnitt">
+          <b>Kommunikation und Einbindung</b>
+          <ul class="fb-liste">
+            <li>Kick-off-Meeting: Kurzes Treffen mit allen Beteiligten (Eltern, Felix, Lehrkräfte), um die Punkte gemeinsam zu besprechen</li>
+            <li>Gemeinsames Verständnis: Alle nutzen dieselben Signale und verfolgen dieselben Regeln</li>
+            <li>Felix' Einverständnis: Entscheidend ist, dass Felix die Regeln und Ziele versteht und ihnen im Rahmen seiner Möglichkeiten zustimmt</li>
+          </ul>
+        </div>
+        <div class="fb-fall-abschnitt">
+          <b>Umsetzung und Überwachung</b>
+          <ul class="fb-liste">
+            <li>Klares Startdatum festlegen</li>
+            <li>Wöchentlicher kurzer Austausch zwischen Eltern und Fachkraft (z. B. freitags): Was lief gut, was war schwierig?</li>
+            <li>Nach 3–4 Wochen: gemeinsame Überprüfung der Wirksamkeit, Anpassung bei Bedarf</li>
+          </ul>
+        </div>
+        <div class="fb-fall-abschnitt fb-hinweis-abschnitt">
+          <b>📝 Redaktionelle Ergänzung</b>
+          <p>Beim wöchentlichen Austausch lohnt sich ein zusätzlicher, kurzer Schritt: Felix selbst nach seiner Einschätzung zu fragen – was für ihn gut lief, was schwer war. Diese eigene Perspektive stärkt genau die Eigenverantwortung, die das Konzept zum Ziel hat.</p>
+        </div>
+        <div class="fb-quelle">Konzept ursprünglich entwickelt von Daniel Mann (INGRA) für KLARTEXT.</div>
       </div>
     </div>
 

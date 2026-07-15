@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Spiele</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#4FC3C7;--green:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--gold:#C47A00;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:520px;margin:0 auto;}
+.shell{max-width:900px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+.spiel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;}
+.spiel-karte{background:var(--surface);border:2px solid var(--border);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(27,58,75,.08);transition:transform .18s,box-shadow .18s,border-color .18s;}
+.spiel-karte:hover{transform:translateY(-4px);box-shadow:0 6px 22px rgba(27,58,75,.16);}
+.spiel-karte-stripe{height:6px;}
+.spiel-karte-inner{padding:1.3rem 1.4rem 1.5rem;display:flex;flex-direction:column;gap:.6rem;flex:1;}
+.spiel-karte-emoji{font-size:2.4rem;line-height:1;}
+.spiel-karte-titel{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;}
+.spiel-karte-sub{font-size:.82rem;color:var(--muted);line-height:1.55;flex:1;}
+.spiel-karte-cta{font-size:.76rem;font-weight:700;display:flex;align-items:center;gap:.3rem;margin-top:.3rem;}
+.spiel-karte.teal{border-color:var(--acc);}
+.spiel-karte.teal .spiel-karte-stripe{background:var(--acc);}
+.spiel-karte.teal .spiel-karte-titel,.spiel-karte.teal .spiel-karte-cta{color:#1a8c8c;}
+.spiel-karte.gruen{border-color:var(--green);}
+.spiel-karte.gruen .spiel-karte-stripe{background:var(--green);}
+.spiel-karte.gruen .spiel-karte-titel,.spiel-karte.gruen .spiel-karte-cta{color:#2E7D47;}
+footer{background:var(--m);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--acc);}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Spiele</div>
+  </a>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">🎮</div>
+  <h1 class="hero-titel">Spiele</h1>
+  <p class="hero-sub">Kleine, spielerische Werkzeuge für Kinder und Jugendliche — zum Ausmalen, Planen und Ausprobieren.</p>
+</div>
+
+<div class="shell">
+  <div class="spiel-grid">
+
+    <a class="spiel-karte teal" href="KD-11_Mutmach-Tier.html">
+      <div class="spiel-karte-stripe"></div>
+      <div class="spiel-karte-inner">
+        <span class="spiel-karte-emoji">🦁</span>
+        <div class="spiel-karte-titel">Mutmach-Tier</div>
+        <div class="spiel-karte-sub">Ein Tier aussuchen und durch Antippen digital ausmalen — dein persönliches Kraftsymbol für schwierige Momente.</div>
+        <div class="spiel-karte-cta">Spiel öffnen →</div>
+      </div>
+    </a>
+
+    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Wochenplan.html">
+      <div class="spiel-karte-stripe"></div>
+      <div class="spiel-karte-inner">
+        <span class="spiel-karte-emoji">🗓️</span>
+        <div class="spiel-karte-titel">Wochenplan-Baukasten</div>
+        <div class="spiel-karte-sub">Aufgaben-Kärtchen auf die Wochentage verteilen, abhaken und den ganzen Wochenplan ausdrucken.</div>
+        <div class="spiel-karte-cta">Spiel öffnen →</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <strong>KLARTEXT</strong> · Spiele<br>
+  Klar. Warm. Menschlich.
+</footer>
+
+</body>
+</html>

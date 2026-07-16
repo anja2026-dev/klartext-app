@@ -11,7 +11,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --m:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--gold:#C47A00;
-  --baro-gruen:#2E9E5A;--baro-gelb:#D4A800;--baro-orange:#D4651A;
+  --baro-gruen:#2E9E5A;--baro-gelb:#D4A800;--baro-orange:#D4651A;--baro-rot:#C0392B;--baro-grau:#757575;
 }
 body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
 .header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
@@ -26,36 +26,57 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto;}
 .shell{max-width:640px;margin:0 auto;padding:1.75rem clamp(.75rem,3vw,2rem) 5rem;}
 
+/* ── AUSWAHL-KACHELN (Gesprächstyp) ─────────────────────────────── */
+.typ-grid{display:flex;flex-direction:column;gap:1rem;}
+.typ-kachel{display:flex;align-items:center;gap:1rem;background:var(--surface);border:2.5px solid var(--border);border-radius:18px;padding:1.2rem 1.4rem;cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;}
+.typ-kachel:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 4px 16px rgba(27,58,75,.1);}
+.typ-emoji{font-size:2.2rem;flex-shrink:0;}
+.typ-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.typ-sub{font-size:.8rem;color:var(--muted);}
+
+/* ── BAROMETER-VORAB-CHECK ─────────────────────────────── */
+.baro-card{background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:1.2rem 1.3rem;margin-top:1.2rem;text-align:center;}
+.baro-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);margin-bottom:.3rem;}
+.baro-sub{font-size:.78rem;color:var(--muted);margin-bottom:1rem;}
+.baro-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:.9rem;}
+@media(max-width:480px){.baro-grid{grid-template-columns:repeat(3,1fr);}}
+.baro-opt{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.6rem .3rem;border-radius:14px;border:2.5px solid transparent;cursor:pointer;font-family:inherit;font-size:.68rem;font-weight:700;color:#fff;transition:all .15s;}
+.baro-opt:hover{transform:translateY(-2px);}
+.baro-opt .baro-emoji{font-size:1.4rem;}
+.baro-skip-btn{background:none;border:none;color:var(--muted);font-size:.78rem;text-decoration:underline;cursor:pointer;font-family:inherit;}
+.baro-hinweis{display:none;background:#FFF4E0;border-radius:14px;padding:.9rem 1rem;margin-top:.9rem;text-align:left;}
+.baro-hinweis.zeigen{display:block;}
+.baro-hinweis-text{font-size:.84rem;color:#8A5A00;line-height:1.5;margin-bottom:.8rem;}
+.baro-hinweis-row{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;}
+.baro-hinweis-btn{padding:.55rem 1.1rem;border-radius:16px;border:2px solid var(--gold);background:#fff;color:var(--gold);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;}
+.baro-hinweis-btn.primary{background:var(--gold);color:#fff;}
+.baro-hinweis-btn:hover{opacity:.9;}
+
 /* ── FORTSCHRITT ─────────────────────────────── */
-.fortschritt-row{display:flex;justify-content:center;gap:.5rem;margin-bottom:1.2rem;flex-wrap:wrap;}
-.fortschritt-schritt{position:relative;width:42px;height:42px;border-radius:50%;background:var(--surface);border:2.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--muted);cursor:pointer;transition:all .15s;}
-.fortschritt-schritt:hover{border-color:var(--acc);}
-.fortschritt-schritt.aktiv{border-color:var(--m);background:var(--m);color:#fff;}
-.fortschritt-schritt.gemeistert:not(.aktiv){border-color:var(--acc);color:var(--m);}
-.fortschritt-schritt .haken{position:absolute;top:-6px;right:-6px;background:var(--acc);color:#fff;border-radius:50%;width:18px;height:18px;font-size:.65rem;display:flex;align-items:center;justify-content:center;}
+.fortschritt-wrap{margin-bottom:1.2rem;}
+.fortschritt-label{font-size:.74rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;text-align:center;}
+.fortschritt-bar{height:10px;background:var(--border);border-radius:20px;overflow:hidden;}
+.fortschritt-fill{height:100%;background:var(--acc);border-radius:20px;transition:width .3s ease;}
 
-/* ── BAROMETER-ANZEIGE ─────────────────────────────── */
-.baro-card{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:.8rem 1.1rem;margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;}
-.baro-label{font-size:.74rem;font-weight:700;color:var(--muted);flex-shrink:0;}
-.baro-dots{display:flex;gap:.4rem;flex:1;}
-.baro-dot{flex:1;height:10px;border-radius:6px;background:var(--border);transition:all .3s;}
-.baro-dot.an{box-shadow:0 0 0 2px rgba(0,0,0,.05);}
-.baro-text{font-size:.78rem;font-weight:700;flex-shrink:0;}
-
-/* ── DIALOG-KARTE ─────────────────────────────── */
-.station-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);text-align:center;margin-bottom:.9rem;}
-.platzhalter-badge{display:inline-block;background:#FFF4E0;color:var(--gold);font-size:.65rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.2rem .6rem;border-radius:12px;margin-bottom:.7rem;}
+/* ── FRAGE-KARTE ─────────────────────────────── */
+.thema-badge{display:inline-block;background:#EAF7F1;color:#2E7D47;font-size:.65rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.2rem .6rem;border-radius:12px;margin-bottom:.7rem;}
 .dialog-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:1.6rem 1.4rem;box-shadow:0 2px 10px rgba(27,58,75,.08);text-align:center;}
 .npc-frage{font-size:1.02rem;line-height:1.55;color:var(--ink);margin-bottom:1.3rem;}
 .option-grid{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1rem;}
 .option-btn{display:block;width:100%;text-align:left;padding:.9rem 1.1rem;border:2.5px solid var(--border);border-radius:16px;background:var(--surface);color:var(--ink);font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .15s;line-height:1.4;}
 .option-btn:hover{border-color:var(--acc);transform:translateY(-1px);}
+.option-btn.gewaehlt{border-color:var(--acc);background:#EAF7F1;}
 .joker-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border:2px dashed var(--gold);border-radius:16px;background:#FFF9EE;color:var(--gold);font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;}
 .joker-btn:hover{background:#FFF4E0;}
 
-.brainy-box{display:flex;gap:.7rem;align-items:center;background:var(--paper);border-radius:14px;padding:.8rem 1rem;margin-top:1.1rem;text-align:left;}
-.brainy-emoji{font-size:1.6rem;flex-shrink:0;}
-.brainy-msg{font-size:.85rem;color:var(--ink);line-height:1.5;}
+.feedback-box{display:none;background:var(--paper);border-radius:14px;padding:.9rem 1.1rem;margin-top:1.1rem;text-align:left;}
+.feedback-box.zeigen{display:block;animation:einblenden .3s ease;}
+@keyframes einblenden{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+.feedback-text{font-size:.85rem;color:var(--ink);line-height:1.55;}
+.weiter-row{display:flex;justify-content:center;margin-top:1rem;}
+.weiter-btn{display:none;align-items:center;gap:.4rem;padding:.7rem 1.7rem;border:none;border-radius:22px;background:var(--m);color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;}
+.weiter-btn.zeigen{display:inline-flex;}
+.weiter-btn:hover{opacity:.9;}
 
 /* ── ATEM-PAUSE ─────────────────────────────── */
 .atem-overlay{display:none;flex-direction:column;align-items:center;gap:1rem;padding:1.5rem;}
@@ -64,30 +85,40 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 @keyframes atmen{0%{transform:scale(.7);opacity:.7;}50%{transform:scale(1.15);opacity:1;}100%{transform:scale(.7);opacity:.7;}}
 .atem-text{font-size:.85rem;color:var(--muted);font-style:italic;}
 
-/* ── ERFOLGSANIMATION ─────────────────────────────── */
-.gemeistert-pop{display:none;text-align:center;padding:.5rem;font-size:.8rem;font-weight:700;color:#2E7D47;animation:pop .4s ease;}
-.gemeistert-pop.zeigen{display:block;}
-@keyframes pop{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.08);opacity:1;}100%{transform:scale(1);}}
+/* ── ZUSAMMENFASSUNG ─────────────────────────────── */
+.zusammenfassung-card{background:var(--surface);border:2px solid var(--acc);border-radius:20px;padding:1.8rem 1.5rem;box-shadow:0 2px 10px rgba(27,58,75,.08);}
+.zusammenfassung-icon{font-size:2.2rem;text-align:center;margin-bottom:.5rem;}
+.zusammenfassung-titel{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:var(--m);text-align:center;margin-bottom:1.2rem;}
+.zsf-abschnitt{margin-bottom:1.1rem;}
+.zsf-abschnitt-titel{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem;}
+.zsf-abschnitt-titel.gut{color:#2E7D47;}
+.zsf-abschnitt-titel.uebung{color:var(--gold);}
+.zsf-liste{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.zsf-liste li{font-size:.85rem;color:var(--ink);line-height:1.5;padding-left:1.2rem;position:relative;}
+.zsf-liste li::before{content:'✓';position:absolute;left:0;color:var(--acc);font-weight:700;}
+.zsf-abschnitt-titel.uebung ~ .zsf-liste li::before{content:'💡';color:transparent;}
+.zsf-liste.uebung li::before{content:'💡';}
+.brainy-box{display:flex;gap:.7rem;align-items:center;background:var(--paper);border-radius:14px;padding:.8rem 1rem;margin-top:.5rem;text-align:left;}
+.brainy-emoji{font-size:1.6rem;flex-shrink:0;}
+.brainy-msg{font-size:.85rem;color:var(--ink);line-height:1.5;}
+.zsf-knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:1.3rem;}
+.zsf-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.4rem;border:none;border-radius:22px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit;}
+.zsf-btn.nochmal{background:var(--acc);color:var(--m);}
+.zsf-btn.neu{background:var(--surface);color:var(--m);border:1.5px solid var(--border);}
+.zsf-btn:hover{opacity:.9;}
+
+/* ── KONFETTI ─────────────────────────────── */
 .konfetti-stueck{position:fixed;top:-20px;font-size:1.1rem;pointer-events:none;z-index:9999;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(105vh) rotate(360deg);opacity:.2;}}
 
-/* ── REFLEXION ─────────────────────────────── */
-.reflexion-card{background:var(--surface);border:2px solid var(--acc);border-radius:20px;padding:1.6rem 1.4rem;box-shadow:0 2px 10px rgba(27,58,75,.08);}
-.reflexion-titel{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:var(--m);text-align:center;margin-bottom:1.1rem;}
-.reflexion-frage{margin-bottom:1.2rem;}
-.reflexion-frage-text{font-size:.9rem;font-weight:700;color:var(--ink);margin-bottom:.6rem;text-align:center;}
-.smiley-row{display:flex;justify-content:center;gap:.8rem;}
-.smiley-btn{width:56px;height:56px;border-radius:50%;border:2.5px solid var(--border);background:var(--surface);font-size:1.6rem;cursor:pointer;transition:all .15s;}
-.smiley-btn:hover{border-color:var(--acc);transform:translateY(-2px);}
-.smiley-btn.gewaehlt{border-color:var(--gold);background:#FFF4E0;box-shadow:0 0 0 3px rgba(196,122,0,.2);}
-
-/* ── AKTIONEN ─────────────────────────────── */
+/* ── BESTLEISTUNG / AKTIONEN ─────────────────────────────── */
+.info-zeile{text-align:center;font-size:.76rem;color:var(--muted);margin-top:1rem;}
 .aktionen-row{display:flex;justify-content:center;margin-top:1.5rem;}
 .print-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.4rem;border:none;border-radius:20px;background:var(--m);color:#fff;font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit;}
 .print-btn:hover{opacity:.9;}
 
 @media print{
-  .header,.back-btn,.fortschritt-row,.baro-card,.aktionen-row,.joker-btn{display:none!important;}
+  .header,.back-btn,.typ-grid,.baro-card,.aktionen-row,.joker-btn,.zsf-knopf-row{display:none!important;}
   .hero{background:none!important;padding:.5rem 0;}
   .hero-titel{color:var(--m)!important;}
   .hero-sub{color:var(--muted)!important;}
@@ -113,19 +144,38 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 <div class="shell" id="shell">
 
-  <div class="fortschritt-row" id="fortschritt-row"></div>
-
-  <div class="baro-card">
-    <span class="baro-label">Nervosität</span>
-    <div class="baro-dots" id="baro-dots"></div>
-    <span class="baro-text" id="baro-text"></span>
+  <!-- ══ PHASE 1: GESPRÄCHSTYP-AUSWAHL ══ -->
+  <div id="typ-bereich">
+    <div class="typ-grid" id="typ-grid"></div>
   </div>
 
-  <div id="spiel-bereich">
-    <div class="station-titel" id="station-titel"></div>
-    <div id="platzhalter-hinweis"></div>
+  <!-- ══ PHASE 2: BAROMETER-VORAB-CHECK (optional) ══ -->
+  <div id="baro-bereich" style="display:none;">
+    <div class="baro-card">
+      <div class="baro-titel">Wie geht es dir gerade? (optional)</div>
+      <div class="baro-sub">Du kannst das auch überspringen.</div>
+      <div class="baro-grid" id="baro-grid"></div>
+      <button class="baro-skip-btn" onclick="baroUeberspringen()">Überspringen →</button>
+      <div class="baro-hinweis" id="baro-hinweis">
+        <div class="baro-hinweis-text">Möchtest du heute vielleicht nur eine kurze Runde mit 3 Fragen üben statt der vollen Runde?</div>
+        <div class="baro-hinweis-row">
+          <button class="baro-hinweis-btn primary" onclick="rundeStarten(true)">Kurze Runde (3 Fragen)</button>
+          <button class="baro-hinweis-btn" onclick="rundeStarten(false)">Volle Runde</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div class="dialog-card" id="dialog-karte">
+  <!-- ══ PHASE 3: FRAGE-DURCHGANG ══ -->
+  <div id="spiel-bereich" style="display:none;">
+    <div class="fortschritt-wrap">
+      <div class="fortschritt-label" id="fortschritt-label"></div>
+      <div class="fortschritt-bar"><div class="fortschritt-fill" id="fortschritt-fill"></div></div>
+    </div>
+
+    <div style="text-align:center;"><span class="thema-badge" id="thema-badge"></span></div>
+
+    <div class="dialog-card">
       <div class="npc-frage" id="npc-frage"></div>
       <div class="option-grid" id="option-grid"></div>
       <button class="joker-btn" id="joker-btn" onclick="jokerPauseStarten()">🃏 Ich brauche kurz einen Moment</button>
@@ -135,38 +185,43 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
         <div class="atem-text">Kurz durchatmen …</div>
       </div>
 
-      <div class="gemeistert-pop" id="gemeistert-pop">⭐ Station gemeistert!</div>
-      <div class="brainy-box" id="brainy-box" style="display:none;">
-        <span class="brainy-emoji">🧠</span>
-        <span class="brainy-msg" id="brainy-msg"></span>
+      <div class="feedback-box" id="feedback-box">
+        <div class="feedback-text" id="feedback-text"></div>
       </div>
+    </div>
+
+    <div class="weiter-row">
+      <button class="weiter-btn" id="weiter-btn" onclick="naechsteFrage()">Weiter →</button>
     </div>
   </div>
 
-  <div id="reflexion-bereich" style="display:none;">
-    <div class="reflexion-card">
-      <div class="reflexion-titel">Kurzer Rückblick</div>
-      <div class="reflexion-frage">
-        <div class="reflexion-frage-text">Was ist dir leichtgefallen?</div>
-        <div class="smiley-row" data-frage="leicht">
-          <button class="smiley-btn" data-wert="😊">😊</button>
-          <button class="smiley-btn" data-wert="😐">😐</button>
-          <button class="smiley-btn" data-wert="😟">😟</button>
-        </div>
+  <!-- ══ PHASE 4: ZUSAMMENFASSUNG ══ -->
+  <div id="zusammenfassung-bereich" style="display:none;">
+    <div class="zusammenfassung-card">
+      <div class="zusammenfassung-icon">🌟</div>
+      <div class="zusammenfassung-titel">Runde geschafft!</div>
+
+      <div class="zsf-abschnitt">
+        <div class="zsf-abschnitt-titel gut">Das hast du gut gemacht</div>
+        <ul class="zsf-liste" id="zsf-gut-liste"></ul>
       </div>
-      <div class="reflexion-frage">
-        <div class="reflexion-frage-text">Was war schwer?</div>
-        <div class="smiley-row" data-frage="schwer">
-          <button class="smiley-btn" data-wert="😊">😊</button>
-          <button class="smiley-btn" data-wert="😐">😐</button>
-          <button class="smiley-btn" data-wert="😟">😟</button>
-        </div>
+
+      <div class="zsf-abschnitt">
+        <div class="zsf-abschnitt-titel uebung">Das kannst du noch üben</div>
+        <ul class="zsf-liste uebung" id="zsf-uebung-liste"></ul>
       </div>
+
       <div class="brainy-box">
         <span class="brainy-emoji">🧠</span>
-        <span class="brainy-msg" id="reflexion-brainy">Danke, dass du das Gespräch geübt hast — jede Runde macht dich sicherer! 🌟</span>
+        <span class="brainy-msg" id="zsf-brainy"></span>
+      </div>
+
+      <div class="zsf-knopf-row">
+        <button class="zsf-btn nochmal" onclick="rundeStarten(letzteRundeWarKurz)">↺ Nochmal (neue Fragen)</button>
+        <button class="zsf-btn neu" onclick="zurueckZurAuswahl()">🎤 Anderes Gespräch wählen</button>
       </div>
     </div>
+    <div class="info-zeile" id="info-zeile"></div>
   </div>
 
   <div class="aktionen-row">
@@ -176,81 +231,266 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────
-// STATIONEN
-// WICHTIG: Station 4 ("Schwierige Frage") enthält reine
-// PLATZHALTERTEXTE (Frage, Antworten, Brainy-Kommentare) - werden
-// von Anja vor dem Merge inhaltlich geprüft und ggf. ersetzt.
-// Alle klar mit "[PLATZHALTER]" markiert.
-// ─────────────────────────────────────────────────────────────
-var STATIONEN = [
-  {
-    id: 1, titel: 'Begrüßung', platzhalter: false,
-    frage: 'Hallo! Schön, dass du da bist. Wie geht es dir heute?',
-    optionen: [
-      { text: 'Danke, mir geht\'s gut! Ich freue mich auf das Gespräch.', ampel: -1, brainy: 'Schön, dass du das offen sagst — das wirkt sympathisch! 😊' },
-      { text: 'Ehrlich gesagt bin ich etwas nervös.', ampel: 1, brainy: 'Nervosität ist total normal — das darfst du ruhig zeigen. 💚' },
-      { text: 'Es geht, ich bin bereit.', ampel: 0, brainy: 'Klar und direkt — ein guter Start!' }
-    ]
+// ═════════════════════════════════════════════════════════════
+// BAROMETER — Werte 1:1 aus BAROMETER_KIND.html übernommen
+// (dort: waehleKind('id','#hex','Name','emoji','Text'))
+// ═════════════════════════════════════════════════════════════
+var BAROMETER_STUFEN = [
+  { id: 'gruen',  farbe: 'var(--baro-gruen)',  name: 'Grün',   emoji: '😊', text: 'Ich bin gut drauf!' },
+  { id: 'gelb',   farbe: 'var(--baro-gelb)',   name: 'Gelb',   emoji: '😐', text: 'Ein bisschen schwierig' },
+  { id: 'orange', farbe: 'var(--baro-orange)', name: 'Orange', emoji: '😟', text: 'Ich brauche Hilfe' },
+  { id: 'rot',    farbe: 'var(--baro-rot)',    name: 'Rot',    emoji: '😰', text: 'Ich bin in einer Krise' },
+  { id: 'grau',   farbe: 'var(--baro-grau)',   name: 'Grau',   emoji: '😶', text: 'Ich bin sehr müde' }
+];
+
+// ═════════════════════════════════════════════════════════════
+// QUALITÄTEN — kurze Einordnungstexte für die Abschluss-Auswertung.
+// Jede Antwortoption trägt ein "tag" (stark/entwicklung) und eine
+// "qualitaet" - daraus baut sich am Ende "Das hast du gut gemacht" /
+// "Das kannst du noch üben" zusammen (kein Punktesystem).
+// ═════════════════════════════════════════════════════════════
+var QUALITAET_TEXTE = {
+  stark: {
+    selbstbewusstsein: 'Du triffst deine Aussagen klar und selbstbewusst.',
+    ehrlichkeit: 'Du bist ehrlich, auch wenn eine Frage unangenehm ist.',
+    teamgeist: 'Du denkst mit an das Team, nicht nur an dich selbst.',
+    zuverlaessigkeit: 'Man kann sich auf das verlassen, was du sagst und zusagst.',
+    eigeninitiative: 'Du zeigst, dass du selbst mitdenkst und die Initiative ergreifst.',
+    offenheit: 'Du gehst offen und reflektiert mit Herausforderungen und eigenen Grenzen um.'
   },
-  {
-    id: 2, titel: 'Über dich', platzhalter: false,
-    frage: 'Erzähl mir kurz etwas über dich.',
-    optionen: [
-      { text: 'Ich bin zuverlässig und arbeite gerne im Team.', ampel: -1, brainy: 'Kurz und klar — genau richtig für den Anfang!' },
-      { text: 'Ich weiß nicht genau, was ich sagen soll.', ampel: 1, brainy: 'Das ist okay — so eine Frage braucht manchmal etwas Zeit.' },
-      { text: 'Ich lerne gerne Neues und packe gerne mit an.', ampel: -1, brainy: 'Das zeigt Motivation — kommt gut an!' }
-    ]
-  },
-  {
-    id: 3, titel: 'Warum diese Stelle?', platzhalter: false,
-    frage: 'Warum interessierst du dich für diese Stelle bei uns?',
-    optionen: [
-      { text: 'Weil mir die Arbeit mit Menschen Spaß macht.', ampel: -1, brainy: 'Ehrliches Interesse ist genau das, was zählt!' },
-      { text: 'Ich bin mir nicht sicher, ob ich das richtig sagen kann.', ampel: 1, brainy: 'Du musst keine perfekte Antwort haben — Ehrlichkeit reicht oft schon.' },
-      { text: 'Weil ich hier viel lernen und mich weiterentwickeln kann.', ampel: -1, brainy: 'Lernbereitschaft ist eine tolle Stärke!' }
-    ]
-  },
-  {
-    id: 4, titel: 'Schwierige Frage', platzhalter: true,
-    frage: '[PLATZHALTER] Erzähl mir von einer Situation, die für dich schwierig war.',
-    optionen: [
-      { text: '[PLATZHALTER] Ich beschreibe die Situation ruhig und sachlich.', ampel: -1, brainy: '[PLATZHALTER] Ruhig bleiben kommt gut an.' },
-      { text: '[PLATZHALTER] Ich werde unsicher und weiß nicht, was ich sagen soll.', ampel: 1, brainy: '[PLATZHALTER] Das darf auch mal passieren.' },
-      { text: '[PLATZHALTER] Ich sage, was ich daraus gelernt habe.', ampel: -1, brainy: '[PLATZHALTER] Aus Erfahrungen lernen ist wertvoll.' }
-    ]
-  },
-  {
-    id: 5, titel: 'Deine Frage an uns', platzhalter: false,
-    frage: 'Hast du noch eine Frage an uns?',
-    optionen: [
-      { text: 'Ja, wie sieht ein typischer Arbeitstag aus?', ampel: -1, brainy: 'Eine gute Frage zu stellen zeigt echtes Interesse!' },
-      { text: 'Nein, ich glaube alles ist klar.', ampel: 0, brainy: 'Auch das ist in Ordnung — nicht jeder braucht am Ende noch eine Frage.' },
-      { text: 'Ja, gibt es Weiterbildungsmöglichkeiten?', ampel: -1, brainy: 'Das zeigt, dass du langfristig denkst — stark!' }
-    ]
+  entwicklung: {
+    unsicherheit: 'Wenn du unsicher bist, hilft ein kurzer Atemzug — und dann eine Antwort zu wagen, auch eine unfertige.',
+    vermeidung: 'Schwierigen Momenten direkt zu begegnen statt ihnen auszuweichen, wird mit etwas Übung leichter.',
+    zurueckhaltung: 'Du darfst dich ruhig noch etwas mehr zeigen und deine Stärken selbstbewusst benennen.'
   }
+};
+
+// ═════════════════════════════════════════════════════════════
+// FRAGENPOOLS — je ca. 20 Fragen, 3 Antworten je Frage.
+// Pro Durchgang werden zufällig 6-8 (bzw. 3 im Kurz-Modus) gezogen.
+// ═════════════════════════════════════════════════════════════
+var POOL_PRAKTIKUM = [
+  { thema: 'Begrüßung', frage: 'Hallo! Schön, dass du da bist. Wie geht\'s dir gerade?', optionen: [
+    { text: 'Danke, mir geht\'s gut! Ich freu mich total aufs Gespräch.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Positive Energie zu zeigen kommt gut an — dein Gegenüber merkt sofort, dass du motiviert bist. Genau so darfst du reingehen!' },
+    { text: 'Ehrlich gesagt bin ich schon ein bisschen aufgeregt.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Das ist total menschlich und völlig okay zuzugeben. Ein kurzer Atemzug hilft — und meistens legt sich die Aufregung nach den ersten Sätzen.' },
+    { text: 'Passt schon, bin bereit.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Kurz, klar, entspannt — ein lockerer Einstieg, der gut zu einem Praktikumsgespräch passt.' }
+  ]},
+  { thema: 'Begrüßung', frage: 'Kennst du schon jemanden hier im Betrieb, oder ist heute alles neu für dich?', optionen: [
+    { text: 'Ist alles neu, aber ich bin gespannt drauf!', tag: 'stark', qualitaet: 'offenheit', feedback: 'Neugier statt Nervosität — genau diese Einstellung macht einen guten ersten Eindruck.' },
+    { text: 'Ich kenne hier niemanden und weiß nicht so recht, was mich erwartet.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Ganz am Anfang ist das oft so. Du darfst ruhig nachfragen, wenn dir etwas nicht klar ist — das zeigt Interesse, keine Schwäche.' },
+    { text: 'Ja, ein Freund von mir hat hier schon mal ein Praktikum gemacht.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Schön, dass du dich vorher informiert hast — das zeigt, dass dir die Stelle wichtig ist.' }
+  ]},
+  { thema: 'Stärken/Schwächen', frage: 'Was würdest du sagen, kannst du besonders gut?', optionen: [
+    { text: 'Ich bin ziemlich zuverlässig — wenn ich was zusage, halte ich mich dran.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Zuverlässigkeit ist eine der wichtigsten Eigenschaften für ein Praktikum — genau das hören Betriebe gerne.' },
+    { text: 'Puh, schwer zu sagen, mir fällt gerade nichts ein.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Diese Frage ist wirklich nicht leicht! Ein Tipp fürs nächste Mal: Denk an eine Situation, in der dich jemand gelobt hat — daraus lässt sich oft eine Stärke ableiten.' },
+    { text: 'Ich lerne schnell und frage nach, wenn ich was nicht verstehe.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Lernbereitschaft und Nachfragen sind super Praktikums-Qualitäten — dein Gegenüber merkt, dass du mitdenkst.' }
+  ]},
+  { thema: 'Stärken/Schwächen', frage: 'Und woran arbeitest du gerade, wo du noch nicht so sicher bist?', optionen: [
+    { text: 'Ich bin manchmal etwas schüchtern, wenn ich was Neues anfange.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Diese Ehrlichkeit ist stark! Eine Schwäche offen zu benennen, zeigt Selbstreflexion — das kommt gut an.' },
+    { text: 'Ich hab eigentlich keine Schwächen.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Das hört sich erstmal gut an, wirkt aber oft unsicher, weil jeder irgendwo noch wächst. Eine kleine, ehrliche Schwäche zu nennen macht dich sogar sympathischer.' },
+    { text: 'Manchmal dauert es bei mir etwas länger, bis ich mich traue, Fragen zu stellen.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Das ist eine ehrliche und nachvollziehbare Antwort — und zeigt gleichzeitig, dass du dir dessen bewusst bist.' }
+  ]},
+  { thema: 'Stärken/Schwächen', frage: 'Was hat dir in der Schule oder in der Freizeit zuletzt richtig Spaß gemacht?', optionen: [
+    { text: 'Ein Gruppenprojekt, bei dem wir zusammen was auf die Beine gestellt haben.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Ein tolles Beispiel für Teamarbeit — genau solche Erfahrungen sind für ein Praktikum wertvoll.' },
+    { text: 'Puh, mir fällt spontan nichts ein.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Kein Problem — solche Fragen kommen manchmal überraschend. Es hilft, sich vorher schon ein, zwei Beispiele zu überlegen.' },
+    { text: 'Ich hab kürzlich was Neues ausprobiert und das hat richtig Spaß gemacht.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Offenheit für Neues ist eine schöne Eigenschaft — das darfst du ruhig zeigen.' }
+  ]},
+  { thema: 'Warum diese Stelle?', frage: 'Warum hast du dich für ein Praktikum genau bei uns entschieden?', optionen: [
+    { text: 'Weil mich der Bereich hier wirklich interessiert.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Echtes Interesse zu zeigen ist der beste Grund — das merkt man dir garantiert an.' },
+    { text: 'Ehrlich gesagt war\'s der Betrieb in der Nähe, der noch einen Platz frei hatte.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Ehrlich ist gut — aber versuch, noch einen Punkt zu finden, der dich am Betrieb selbst interessiert. Das macht deine Antwort runder.' },
+    { text: 'Ich hab von anderen gehört, dass es hier eine gute Atmosphäre gibt.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Schön, dass du dich vorher erkundigt hast — das zeigt echtes Interesse an der Stelle.' }
+  ]},
+  { thema: 'Warum diese Stelle?', frage: 'Was erhoffst du dir von diesem Praktikum?', optionen: [
+    { text: 'Ich will einfach mal reinschnuppern und sehen, ob der Beruf zu mir passt.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Das ist genau der Sinn eines Praktikums — eine ehrliche und kluge Erwartung.' },
+    { text: 'Keine Ahnung, ich mach halt mit, weil ich muss.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Diese Ehrlichkeit ist mutig — versuch trotzdem, etwas zu finden, worauf du neugierig bist. Das macht das Praktikum für dich spannender.' },
+    { text: 'Ich möchte lernen, wie der Arbeitsalltag hier wirklich aussieht.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine klare, motivierte Antwort — genau das wollen Betriebe hören.' }
+  ]},
+  { thema: 'Warum diese Stelle?', frage: 'Was weißt du schon über unseren Betrieb?', optionen: [
+    { text: 'Ich hab mir eure Webseite angeschaut und ein bisschen recherchiert.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Vorbereitung wird immer positiv bemerkt — das zeigt, dass dir das Praktikum wichtig ist.' },
+    { text: 'Nicht so viel, ehrlich gesagt.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Kein Drama — aber ein kurzer Blick auf die Webseite vorher gibt dir mehr Sicherheit fürs Gespräch.' },
+    { text: 'Ich weiß, dass ihr hier viel mit einem spannenden Bereich zu tun habt.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Konkretes Wissen zeigt echtes Interesse — sehr guter Einstieg.' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Was machst du, wenn du bei einer Aufgabe nicht weiterkommst?', optionen: [
+    { text: 'Ich frage einfach nach, statt lange allein rumzuprobieren.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Nachfragen ist keine Schwäche, sondern eine super Praktikums-Strategie — genau richtig!' },
+    { text: 'Ich versuch\'s erstmal selbst und ärgere mich, wenn\'s nicht klappt.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Eigenständig zu probieren ist gut — aber scheu dich nicht, rechtzeitig um Hilfe zu bitten, statt dich allein zu ärgern.' },
+    { text: 'Ich schau mir an, wie andere das machen, und frag dann gezielt nach.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Beobachten und dann gezielt fragen — eine kluge Kombination!' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Stell dir vor, dir passiert im Praktikum ein Fehler. Was tust du?', optionen: [
+    { text: 'Ich sag sofort Bescheid und frag, wie wir das lösen können.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Genau richtig! Fehler offen ansprechen zeigt Verantwortungsbewusstsein — das schätzen Betriebe sehr.' },
+    { text: 'Ich hoffe, dass es keiner merkt.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Das ist ein ganz normaler erster Impuls — aber Fehler früh anzusprechen erspart später größeren Ärger und zeigt Stärke.' },
+    { text: 'Ich versuch\'s erstmal heimlich selbst zu korrigieren.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Der Wunsch, es allein zu regeln, ist verständlich — meistens hilft es aber mehr, direkt Bescheid zu geben.' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Wie gehst du damit um, wenn dir etwas zu viel wird?', optionen: [
+    { text: 'Ich sag dann kurz, dass ich eine Pause brauche.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Auf dich selbst zu achten und das offen zu sagen, ist eine echte Stärke — nicht jeder traut sich das.' },
+    { text: 'Ich beiß mich meistens einfach durch.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Durchhalten kann man bewundern — aber eine kurze Pause zur richtigen Zeit macht dich am Ende sogar leistungsfähiger.' },
+    { text: 'Ich atme kurz durch und mach dann weiter.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Eine kleine Pause zum Durchatmen — einfach und wirkungsvoll. Genau richtig!' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Wie reagierst du, wenn jemand dein Vorgehen kritisiert?', optionen: [
+    { text: 'Ich hör mir das an und frag nach, was ich besser machen kann.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Kritik anzunehmen und daraus zu lernen ist eine der wertvollsten Eigenschaften im Berufsleben.' },
+    { text: 'Das trifft mich schon, aber ich versuch, cool zu bleiben.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Dass dich Kritik berührt, ist menschlich. Mit der Zeit wird es leichter, sie als Hilfe statt als Angriff zu sehen.' },
+    { text: 'Ich erklär kurz, warum ich es so gemacht hab, und höre trotzdem zu.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Eine gute Balance aus Erklären und Zuhören — genau das macht einen reifen Umgang mit Kritik aus.' }
+  ]},
+  { thema: 'Teamfähigkeit', frage: 'Arbeitest du lieber allein oder im Team?', optionen: [
+    { text: 'Beides eigentlich — kommt drauf an, was ansteht.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Flexibilität ist Gold wert — du zeigst, dass du dich an unterschiedliche Situationen anpassen kannst.' },
+    { text: 'Ehrlich gesagt lieber allein, im Team wird\'s schnell chaotisch.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Deine Präferenz ist völlig okay — vielleicht hilft es, im Team eine kleine, klare Rolle zu übernehmen, dann fühlt es sich weniger chaotisch an.' },
+    { text: 'Ich mag Teamarbeit, weil man sich gegenseitig hilft.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Diese Einstellung wird in fast jedem Betrieb geschätzt — Zusammenarbeit ist meistens der Schlüssel.' }
+  ]},
+  { thema: 'Teamfähigkeit', frage: 'Was tust du, wenn es im Team mal nicht rund läuft?', optionen: [
+    { text: 'Ich sprech das direkt an, aber ruhig.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Ruhig und direkt anzusprechen, was nicht passt, ist genau der richtige Weg.' },
+    { text: 'Ich halte mich meistens raus.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Sich rauszuhalten fühlt sich manchmal sicherer an — aber ein kurzes, freundliches Ansprechen löst Probleme oft schneller.' },
+    { text: 'Ich versuch zu vermitteln, wenn zwei unterschiedlicher Meinung sind.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Vermitteln zu können ist eine echte Führungsqualität — auch im Praktikum ein großes Plus.' }
+  ]},
+  { thema: 'Teamfähigkeit', frage: 'Wie reagierst du, wenn dir jemand aus dem Team hilft?', optionen: [
+    { text: 'Ich bedank mich und helfe beim nächsten Mal auch gern zurück.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Gegenseitigkeit zu zeigen stärkt jedes Team — schöne Einstellung!' },
+    { text: 'Ist mir manchmal unangenehm, um Hilfe zu bitten oder sie anzunehmen.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Das geht vielen so! Hilfe anzunehmen ist keine Schwäche, sondern macht die Zusammenarbeit einfacher für alle.' },
+    { text: 'Ich freu mich, weil ich so schneller was lerne.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Genau diese Offenheit fürs Lernen von anderen ist eine tolle Praktikums-Haltung.' }
+  ]},
+  { thema: 'Pünktlichkeit/Zuverlässigkeit', frage: 'Wie wichtig ist dir Pünktlichkeit?', optionen: [
+    { text: 'Sehr wichtig — ich bin lieber ein paar Minuten zu früh da.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Diese Einstellung schafft sofort Vertrauen — ein starkes Signal an jeden Betrieb.' },
+    { text: 'Ich versuch\'s, aber manchmal klappt\'s knapp.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Ehrlich gesagt — das ist schon mal ein guter Anfang. Ein Wecker mit ein bisschen Puffer hilft oft, um wirklich entspannt pünktlich zu sein.' },
+    { text: 'Ich plane meinen Weg immer mit etwas Puffer.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Vorausschauend geplant — genau so bleibt man zuverlässig pünktlich.' }
+  ]},
+  { thema: 'Pünktlichkeit/Zuverlässigkeit', frage: 'Was machst du, wenn du doch mal zu spät dran bist?', optionen: [
+    { text: 'Ich melde mich sofort und sag Bescheid.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Genau richtig! Frühzeitig Bescheid zu geben zeigt Verantwortungsbewusstsein, auch wenn es unangenehm ist.' },
+    { text: 'Ich hoffe, dass es keiner merkt.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Der Impuls ist verständlich — aber ein kurzer Anruf oder eine Nachricht macht bei Verspätungen fast immer einen besseren Eindruck.' },
+    { text: 'Ich beeil mich und entschuldige mich, sobald ich da bin.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Eine ehrliche Entschuldigung kommt gut an — das zeigt, dass es dir wichtig ist.' }
+  ]},
+  { thema: 'Pünktlichkeit/Zuverlässigkeit', frage: 'Wie gehst du mit festen Absprachen um, z. B. wer wann welche Aufgabe macht?', optionen: [
+    { text: 'Ich halte mich dran und sag Bescheid, falls doch mal was dazwischenkommt.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Genau das macht dich zuverlässig — Absprachen einhalten und rechtzeitig kommunizieren, wenn\'s nicht klappt.' },
+    { text: 'Manchmal vergesse ich Absprachen, wenn viel los ist.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Das passiert vielen — eine kurze Notiz auf dem Handy oder Zettel kann hier schon richtig viel helfen.' },
+    { text: 'Ich schreib mir sowas meistens direkt auf, damit ich\'s nicht vergesse.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Ein einfacher, aber sehr effektiver Trick — genau so bleibt man organisiert.' }
+  ]},
+  { thema: 'Eigene Frage', frage: 'Hast du noch eine Frage an uns?', optionen: [
+    { text: 'Ja — wie sieht ein normaler Tag hier bei euch aus?', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine super Frage — sie zeigt echtes Interesse am Praktikumsalltag.' },
+    { text: 'Nee, ich glaub, das war\'s schon.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Auch das ist völlig in Ordnung. Falls dir später doch was einfällt, kannst du natürlich jederzeit nachfragen.' },
+    { text: 'Ja — gibt\'s Sachen, auf die ich mich vorbereiten sollte?', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine kluge, vorausschauende Frage — sie zeigt, dass du gut vorbereitet starten willst.' }
+  ]},
+  { thema: 'Eigene Frage', frage: 'Gibt es sonst noch etwas, das du uns sagen möchtest?', optionen: [
+    { text: 'Ich freu mich einfach richtig auf das Praktikum!', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Ein positiver Abschluss bleibt im Gedächtnis — genau so darfst du das Gespräch beenden.' },
+    { text: 'Nicht wirklich, ich glaub wir haben alles besprochen.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Auch ein knapper, klarer Abschluss ist völlig in Ordnung — nicht jedes Gespräch braucht ein großes Schlusswort.' },
+    { text: 'Danke, dass ich hier mein Praktikum machen darf.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Ein herzliches Dankeschön hinterlässt einen wirklich schönen letzten Eindruck.' }
+  ]}
 ];
 
-var AMPEL_STUFEN = [
-  { id: 'gruen',  farbe: 'var(--baro-gruen)',  text: 'Ruhig' },
-  { id: 'gelb',   farbe: 'var(--baro-gelb)',   text: 'Angespannt' },
-  { id: 'orange', farbe: 'var(--baro-orange)', text: 'Nervös' }
+var POOL_AUSBILDUNG = [
+  { thema: 'Begrüßung', frage: 'Herzlich willkommen bei uns. Wie war deine Anreise?', optionen: [
+    { text: 'Danke, alles hat gut geklappt, ich bin pünktlich hier.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Ein ruhiger, zuverlässiger Einstieg — genau das signalisiert Verlässlichkeit von Anfang an.' },
+    { text: 'Ehrlich gesagt bin ich noch etwas aufgeregt.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Nervosität vor einem Ausbildungsgespräch ist ganz normal. Ein tiefer Atemzug hilft — die Anspannung legt sich meist schnell.' },
+    { text: 'Gut, danke der Nachfrage. Ich freue mich auf das Gespräch.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Höflich und motiviert zugleich — ein gelungener erster Eindruck.' }
+  ]},
+  { thema: 'Begrüßung', frage: 'Bevor wir beginnen: Hast du dir schon einen Überblick über unser Unternehmen verschaffen können?', optionen: [
+    { text: 'Ja, ich habe mir eure Webseite und euer Ausbildungsangebot genau angeschaut.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Gründliche Vorbereitung wird bei einem Ausbildungsgespräch besonders positiv wahrgenommen.' },
+    { text: 'Nur oberflächlich, ich wollte lieber im Gespräch mehr erfahren.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Das ist eine Möglichkeit — noch überzeugender wirkt es aber, wenn du schon ein, zwei konkrete Punkte nennen kannst.' },
+    { text: 'Ja, ich habe außerdem mit jemandem gesprochen, der hier schon ausgebildet wurde.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Das zeigt außergewöhnliches Engagement — ein wirklich starker Vorbereitungsschritt.' }
+  ]},
+  { thema: 'Stärken/Schwächen', frage: 'Was sind aus deiner Sicht deine größten Stärken?', optionen: [
+    { text: 'Ich bin sehr strukturiert und behalte auch bei mehreren Aufgaben den Überblick.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Struktur und Überblick sind in der Ausbildung besonders gefragte Fähigkeiten — eine starke Antwort.' },
+    { text: 'Das ist schwer zu sagen, ich reflektiere mich selbst eher selten.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Diese Offenheit ist ehrlich. Ein Tipp: Freunde oder Familie fragen oft, was ihnen an einem auffällt — das hilft bei der Vorbereitung.' },
+    { text: 'Ich bin sehr lernbereit und arbeite mich gern in neue Themen ein.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Lernbereitschaft ist bei einer Ausbildung eine der wichtigsten Eigenschaften überhaupt — sehr gute Antwort.' }
+  ]},
+  { thema: 'Stärken/Schwächen', frage: 'Und wo siehst du noch Entwicklungspotenzial bei dir?', optionen: [
+    { text: 'Ich bin manchmal zu perfektionistisch und brauche länger als nötig.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Diese Selbsteinschätzung ist ehrlich und nachvollziehbar — genau das schätzen Ausbildungsbetriebe an Bewerber:innen.' },
+    { text: 'Mir fällt gerade wirklich nichts ein.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Diese Frage überrascht viele. Es hilft, sich vorab zu überlegen: Was hat dir zuletzt etwas Mühe gemacht? Daraus lässt sich oft eine gute Antwort ableiten.' },
+    { text: 'Ich könnte mich in Gruppen noch etwas mehr einbringen.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Sich selbst ehrlich einzuschätzen ist eine wichtige Fähigkeit — diese Antwort zeigt echte Reife.' }
+  ]},
+  { thema: 'Stärken/Schwächen', frage: 'Wie würden Freunde oder Lehrkräfte dich beschreiben?', optionen: [
+    { text: 'Wahrscheinlich als zuverlässig und hilfsbereit.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Eine fremde Perspektive einzubauen macht deine Antwort besonders glaubwürdig — gut gemacht!' },
+    { text: 'Keine Ahnung, das müsste man die fragen.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Ein humorvoller Gedanke, aber versuch trotzdem eine Einschätzung zu wagen — auch eine vorsichtige Vermutung zeigt Selbstreflexion.' },
+    { text: 'Wahrscheinlich als ruhig, aber engagiert, wenn\'s drauf ankommt.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Eine differenzierte Selbsteinschätzung — das wirkt reif und durchdacht.' }
+  ]},
+  { thema: 'Warum diese Stelle?', frage: 'Warum hast du dich für eine Ausbildung in diesem Bereich entschieden?', optionen: [
+    { text: 'Weil mich der Beruf schon lange interessiert und ich hier viel lernen kann.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Klares, begründetes Interesse — genau das wollen Ausbildungsbetriebe hören.' },
+    { text: 'Ehrlich gesagt bin ich mir noch nicht ganz sicher, ob es das Richtige für mich ist.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Unsicherheit vor einer so großen Entscheidung ist völlig normal. Es hilft, konkret zu benennen, was dich bisher trotzdem überzeugt hat.' },
+    { text: 'Weil ich nach einem Praktikum gemerkt habe, dass der Beruf zu mir passt.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine Erfahrung als Grundlage zu nennen macht deine Antwort sehr überzeugend.' }
+  ]},
+  { thema: 'Warum diese Stelle?', frage: 'Warum genau unser Unternehmen und nicht ein anderes?', optionen: [
+    { text: 'Weil mir eure Ausbildungsstruktur und der gute Ruf hier besonders gefallen.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Konkrete, recherchierte Gründe zu nennen macht großen Eindruck — sehr gute Vorbereitung.' },
+    { text: 'Ich hab mich ehrlich gesagt bei mehreren Betrieben beworben.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Das ist eine ehrliche Antwort — versuch trotzdem, einen Punkt zu nennen, der gerade diesen Betrieb für dich besonders macht.' },
+    { text: 'Weil ich hier die Möglichkeit sehe, mich langfristig weiterzuentwickeln.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Langfristig zu denken zeigt echtes Interesse an einer Ausbildung, nicht nur an einem Job.' }
+  ]},
+  { thema: 'Warum diese Stelle?', frage: 'Was weißt du über unsere Ausbildungsinhalte?', optionen: [
+    { text: 'Ich habe mir den Ausbildungsplan auf eurer Webseite genau durchgelesen.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Diese Vorbereitung fällt sofort positiv auf — sehr gute Antwort.' },
+    { text: 'Nicht im Detail, aber ich bin offen, das im Gespräch zu erfahren.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Offenheit ist gut — noch stärker wirkt es aber, wenn du dich vorher schon mit ein, zwei Eckpunkten vertraut gemacht hast.' },
+    { text: 'Ich weiß, dass die Ausbildung mehrere Abteilungen durchläuft, das finde ich spannend.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Konkretes Wissen über den Ablauf zeigt echtes, informiertes Interesse.' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Wie gehst du mit Aufgaben um, die dich zunächst überfordern?', optionen: [
+    { text: 'Ich zerlege die Aufgabe in kleinere Schritte und frage bei Unklarheiten nach.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine strukturierte, kluge Herangehensweise — genau das wird in einer Ausbildung gebraucht.' },
+    { text: 'Ich versuche es meistens erstmal ganz allein zu lösen.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Eigenständigkeit ist eine gute Eigenschaft — achte aber darauf, rechtzeitig um Unterstützung zu bitten, bevor zu viel Zeit verloren geht.' },
+    { text: 'Ich hole mir gezielt Rat von erfahreneren Kolleginnen und Kollegen.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Von anderen zu lernen ist eine der wertvollsten Fähigkeiten am Ausbildungsplatz.' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Angenommen, dir unterläuft während der Ausbildung ein Fehler. Wie gehst du damit um?', optionen: [
+    { text: 'Ich melde den Fehler sofort und überlege gemeinsam mit meiner Ausbildungsperson eine Lösung.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Genau der richtige Weg — offen mit Fehlern umzugehen zeigt Verantwortungsbewusstsein und Reife.' },
+    { text: 'Ich würde erst versuchen, den Fehler selbst zu beheben.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Der Wunsch, es selbst zu regeln, ist verständlich. In der Ausbildung ist frühes Ansprechen aber meist der bessere Weg.' },
+    { text: 'Ich würde mir Notizen machen, damit mir das kein zweites Mal passiert.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Aus Fehlern konkret zu lernen zeigt echte Reife — eine sehr gute Einstellung.' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Wie gehst du mit Zeitdruck oder mehreren gleichzeitigen Aufgaben um?', optionen: [
+    { text: 'Ich priorisiere und frage nach, falls ich unsicher bin, was zuerst wichtig ist.', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Priorisieren und gleichzeitig nachfragen — eine sehr professionelle Kombination.' },
+    { text: 'Unter Zeitdruck werde ich schnell etwas unruhig.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Das geht vielen so. Eine kurze Pause zum Durchatmen und eine To-do-Liste können hier wirklich helfen.' },
+    { text: 'Ich mache mir eine kurze Liste, was zuerst erledigt werden muss.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Ein einfaches, aber sehr wirkungsvolles Mittel gegen Stress — gut überlegt.' }
+  ]},
+  { thema: 'Herausforderungen/Fehler', frage: 'Wie reagierst du auf konstruktive Kritik von deiner Ausbildungsperson?', optionen: [
+    { text: 'Ich nehme sie ernst und frage nach, wie ich es beim nächsten Mal besser machen kann.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Kritik aktiv anzunehmen und daraus zu lernen — genau diese Haltung führt zu echtem Fortschritt in der Ausbildung.' },
+    { text: 'Ich brauche manchmal etwas Zeit, bis ich Kritik gut annehmen kann.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Das ist eine ehrliche Selbsteinschätzung. Mit der Zeit wird es leichter, Kritik als Unterstützung statt als Vorwurf zu sehen.' },
+    { text: 'Ich sehe Kritik als Chance, mich weiterzuentwickeln.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Eine reife, positive Einstellung zu Kritik — genau das wird in einer Ausbildung besonders geschätzt.' }
+  ]},
+  { thema: 'Teamfähigkeit', frage: 'Wie wichtig ist dir die Zusammenarbeit im Team?', optionen: [
+    { text: 'Sehr wichtig — ich finde, gemeinsam kommt man meistens weiter.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Diese Teamorientierung wird in fast jeder Ausbildung sehr geschätzt.' },
+    { text: 'Ich arbeite ehrlich gesagt lieber für mich allein.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Das ist eine legitime Präferenz — in einer Ausbildung hilft es trotzdem, sich auch im Team eine klare, aktive Rolle zu suchen.' },
+    { text: 'Sehr wichtig, weil man im Team voneinander lernen kann.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Zusammenarbeit als Lernchance zu sehen ist eine wirklich wertvolle Haltung.' }
+  ]},
+  { thema: 'Teamfähigkeit', frage: 'Wie gehst du vor, wenn es innerhalb des Teams zu Meinungsverschiedenheiten kommt?', optionen: [
+    { text: 'Ich spreche das ruhig und sachlich an und suche gemeinsam nach einer Lösung.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Ruhig und lösungsorientiert zu bleiben ist eine echte Stärke im Umgang mit Konflikten.' },
+    { text: 'Ich halte mich in solchen Situationen eher zurück.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Zurückhaltung ist verständlich — mit der Zeit hilft es aber, die eigene Meinung ruhig einzubringen, statt sie ganz zurückzuhalten.' },
+    { text: 'Ich versuche zu vermitteln, wenn zwei unterschiedlicher Meinung sind.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Vermitteln zu können ist eine besonders wertvolle Fähigkeit — auch über die Ausbildung hinaus.' }
+  ]},
+  { thema: 'Teamfähigkeit', frage: 'Wie unterstützt du neue Kolleginnen oder Kollegen im Team?', optionen: [
+    { text: 'Ich erkläre gerne, wie Dinge hier laufen, und bin ansprechbar bei Fragen.', tag: 'stark', qualitaet: 'teamgeist', feedback: 'Wissen weiterzugeben zeigt echte Teamorientierung — genau das macht ein gutes Arbeitsklima aus.' },
+    { text: 'Ich bin selbst noch neu, deshalb würde ich mich da eher zurückhalten.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Auch als "neue" Person kann man schon unterstützen, zum Beispiel indem man einfach freundlich und offen ist — das zählt schon viel.' },
+    { text: 'Ich erinnere mich, wie es war neu zu sein, und versuche entsprechend zu helfen.', tag: 'stark', qualitaet: 'offenheit', feedback: 'Empathie aus eigener Erfahrung zu schöpfen ist eine besonders schöne Stärke.' }
+  ]},
+  { thema: 'Pünktlichkeit/Zuverlässigkeit', frage: 'Wie stellst du sicher, dass du stets pünktlich zur Ausbildung erscheinst?', optionen: [
+    { text: 'Ich plane meinen Arbeitsweg immer mit einem Zeitpuffer.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Vorausschauende Planung ist eine der wichtigsten Grundlagen für Zuverlässigkeit.' },
+    { text: 'Ich versuche es, aber es klappt nicht immer.', tag: 'entwicklung', qualitaet: 'zurueckhaltung', feedback: 'Ein ehrlicher Ausgangspunkt. Ein fester Wecker mit etwas Puffer und eine feste Morgenroutine helfen häufig sehr.' },
+    { text: 'Ich bereite abends schon alles für den nächsten Tag vor.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Ein kluger, praktischer Ansatz — genau so wird Pünktlichkeit zur Routine.' }
+  ]},
+  { thema: 'Pünktlichkeit/Zuverlässigkeit', frage: 'Was tust du, wenn du unerwartet zu spät kommen würdest?', optionen: [
+    { text: 'Ich informiere umgehend meine Ausbildungsperson.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Frühzeitige, klare Kommunikation ist genau das, was in so einer Situation zählt.' },
+    { text: 'Ich hoffe, dass es nicht auffällt.', tag: 'entwicklung', qualitaet: 'vermeidung', feedback: 'Dieser Impuls ist nachvollziehbar — eine kurze Nachricht macht in der Realität aber fast immer einen besseren Eindruck.' },
+    { text: 'Ich beeile mich und entschuldige mich direkt bei meiner Ankunft.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Eine ehrliche, direkte Entschuldigung zeigt Verantwortungsbewusstsein.' }
+  ]},
+  { thema: 'Pünktlichkeit/Zuverlässigkeit', frage: 'Wie gehst du mit festen Absprachen und Terminen um?', optionen: [
+    { text: 'Ich halte mich verlässlich daran und melde mich rechtzeitig, falls sich etwas ändert.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Genau diese Verlässlichkeit macht dich zu einer vertrauenswürdigen Auszubildenden bzw. einem vertrauenswürdigen Auszubildenden.' },
+    { text: 'Manchmal übersehe ich Termine, wenn viel gleichzeitig los ist.', tag: 'entwicklung', qualitaet: 'unsicherheit', feedback: 'Das passiert vielen. Ein digitaler Kalender mit Erinnerungen kann hier eine echte Erleichterung sein.' },
+    { text: 'Ich trage mir feste Termine sofort in meinen Kalender ein.', tag: 'stark', qualitaet: 'zuverlaessigkeit', feedback: 'Ein einfaches, aber sehr effektives System — genau richtig für einen zuverlässigen Ausbildungsalltag.' }
+  ]},
+  { thema: 'Eigene Frage', frage: 'Hast du noch Fragen an uns?', optionen: [
+    { text: 'Ja — wie läuft die Berufsschule parallel zur Ausbildung im Betrieb ab?', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine konkrete, gut überlegte Frage — sie zeigt, dass du dich ernsthaft mit der Ausbildung auseinandergesetzt hast.' },
+    { text: 'Nein, ich glaube, es wurde schon alles Wichtige besprochen.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Auch das ist völlig in Ordnung — nicht jedes Gespräch braucht am Ende noch offene Fragen.' },
+    { text: 'Ja — welche Entwicklungsmöglichkeiten gibt es nach der Ausbildung?', tag: 'stark', qualitaet: 'eigeninitiative', feedback: 'Eine Frage, die zeigt, dass du langfristig denkst — das kommt bei Ausbildungsbetrieben sehr gut an.' }
+  ]},
+  { thema: 'Eigene Frage', frage: 'Möchtest du uns abschließend noch etwas mitteilen?', optionen: [
+    { text: 'Ich freue mich sehr auf die Möglichkeit, hier meine Ausbildung zu beginnen.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Ein motivierter, positiver Schlusssatz bleibt im Gedächtnis — ein sehr guter Abschluss.' },
+    { text: 'Nicht wirklich, ich denke wir haben alles besprochen.', tag: 'stark', qualitaet: 'selbstbewusstsein', feedback: 'Ein knapper, klarer Abschluss ist ebenfalls völlig in Ordnung.' },
+    { text: 'Vielen Dank für das Gespräch und die Möglichkeit, mich vorzustellen.', tag: 'stark', qualitaet: 'ehrlichkeit', feedback: 'Ein herzlicher Dank hinterlässt einen wirklich professionellen letzten Eindruck.' }
+  ]}
 ];
 
-var SPEICHER_KEY = 'klartext_bewerbungsgespraech_v1';
+var GESPRAECHSTYPEN = [
+  { id: 'praktikum', emoji: '🧑‍🔧', titel: 'Praktikumsgespräch', sub: 'Lockerer Ton — für ein Schulpraktikum', pool: POOL_PRAKTIKUM },
+  { id: 'ausbildung', emoji: '💼', titel: 'Ausbildungsgespräch', sub: 'Etwas formeller — für eine Ausbildungsstelle', pool: POOL_AUSBILDUNG }
+];
 
-var aktuelleStationIndex = 0;
-var ampelIndex = 1; // Start bei "Gelb" - leichte Grundnervosität vor dem Gespräch
-var stationenGemeistert = [];
-var reflexionAntworten = { leicht: null, schwer: null };
+var SPEICHER_KEY = 'klartext_bewerbungsgespraech_v2';
+
+var aktuellerTyp = null;
+var aktuelleFragen = [];
+var aktuellerIndex = 0;
+var gewaehlteOptionen = [];
+var letzteRundeWarKurz = false;
+var durchgaengeAbsolviert = 0;
 
 function speichern(){
-  try {
-    localStorage.setItem(SPEICHER_KEY, JSON.stringify({
-      stationenGemeistert: stationenGemeistert,
-      reflexionAntworten: reflexionAntworten
-    }));
-  } catch(e) {}
+  try { localStorage.setItem(SPEICHER_KEY, JSON.stringify({ durchgaengeAbsolviert: durchgaengeAbsolviert })); } catch(e) {}
 }
 
 function laden(){
@@ -258,105 +498,132 @@ function laden(){
     var roh = localStorage.getItem(SPEICHER_KEY);
     if (!roh) return;
     var geladen = JSON.parse(roh);
-    if (geladen) {
-      stationenGemeistert = geladen.stationenGemeistert || [];
-      reflexionAntworten = geladen.reflexionAntworten || { leicht: null, schwer: null };
-    }
+    if (geladen && typeof geladen.durchgaengeAbsolviert === 'number') durchgaengeAbsolviert = geladen.durchgaengeAbsolviert;
   } catch(e) {}
 }
 
-function escapeHtml(s){
-  var d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
+function mischen(array){
+  var kopie = array.slice();
+  for (var i = kopie.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = kopie[i]; kopie[i] = kopie[j]; kopie[j] = tmp;
+  }
+  return kopie;
 }
 
-function fortschrittRendern(){
-  var row = document.getElementById('fortschritt-row');
-  row.innerHTML = '';
-  STATIONEN.forEach(function(st, idx){
-    var el = document.createElement('div');
-    el.className = 'fortschritt-schritt' + (idx === aktuelleStationIndex ? ' aktiv' : '') + (stationenGemeistert.indexOf(st.id) !== -1 ? ' gemeistert' : '');
-    el.textContent = st.id;
-    if (stationenGemeistert.indexOf(st.id) !== -1) {
-      el.innerHTML += '<span class="haken">✓</span>';
-    }
-    el.addEventListener('click', function(){ stationWechseln(idx); });
-    row.appendChild(el);
+function zufallszahlZwischen(min, max){
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// ── PHASE 1: Gesprächstyp wählen ──────────────────────────────
+function typAuswahlRendern(){
+  var grid = document.getElementById('typ-grid');
+  grid.innerHTML = '';
+  GESPRAECHSTYPEN.forEach(function(typ){
+    var btn = document.createElement('button');
+    btn.className = 'typ-kachel';
+    btn.innerHTML = '<span class="typ-emoji">' + typ.emoji + '</span>' +
+      '<span><span class="typ-titel" style="display:block;">' + typ.titel + '</span>' +
+      '<span class="typ-sub">' + typ.sub + '</span></span>';
+    btn.addEventListener('click', function(){ typWaehlen(typ.id); });
+    grid.appendChild(btn);
   });
 }
 
-function baroRendern(){
-  var dots = document.getElementById('baro-dots');
-  dots.innerHTML = '';
-  AMPEL_STUFEN.forEach(function(stufe, idx){
-    var dot = document.createElement('div');
-    dot.className = 'baro-dot' + (idx === ampelIndex ? ' an' : '');
-    dot.style.background = idx <= ampelIndex ? stufe.farbe : 'var(--border)';
-    dots.appendChild(dot);
-  });
-  document.getElementById('baro-text').textContent = AMPEL_STUFEN[ampelIndex].text;
-  document.getElementById('baro-text').style.color = AMPEL_STUFEN[ampelIndex].farbe;
+function typWaehlen(id){
+  aktuellerTyp = GESPRAECHSTYPEN.filter(function(t){ return t.id === id; })[0];
+  document.getElementById('typ-bereich').style.display = 'none';
+  baroCheckAnzeigen();
 }
 
-function stationWechseln(idx){
-  aktuelleStationIndex = idx;
-  document.getElementById('reflexion-bereich').style.display = 'none';
+// ── PHASE 2: Barometer-Vorab-Check (optional) ─────────────────
+function baroCheckAnzeigen(){
+  var grid = document.getElementById('baro-grid');
+  grid.innerHTML = '';
+  BAROMETER_STUFEN.forEach(function(stufe){
+    var btn = document.createElement('button');
+    btn.className = 'baro-opt';
+    btn.style.background = stufe.farbe;
+    btn.innerHTML = '<span class="baro-emoji">' + stufe.emoji + '</span><span>' + stufe.name + '</span>';
+    btn.addEventListener('click', function(){ baroAuswaehlen(stufe.id); });
+    grid.appendChild(btn);
+  });
+  document.getElementById('baro-hinweis').classList.remove('zeigen');
+  document.getElementById('baro-bereich').style.display = 'block';
+}
+
+function baroAuswaehlen(stufeId){
+  if (stufeId === 'rot' || stufeId === 'grau') {
+    document.getElementById('baro-hinweis').classList.add('zeigen');
+  } else {
+    rundeStarten(false);
+  }
+}
+
+function baroUeberspringen(){
+  rundeStarten(false);
+}
+
+// ── PHASE 3: Frage-Durchgang ────────────────────────────────
+function rundeStarten(kurzModus){
+  letzteRundeWarKurz = kurzModus;
+  var anzahl = kurzModus ? 3 : zufallszahlZwischen(6, 8);
+  aktuelleFragen = mischen(aktuellerTyp.pool).slice(0, anzahl);
+  aktuellerIndex = 0;
+  gewaehlteOptionen = [];
+
+  document.getElementById('typ-bereich').style.display = 'none';
+  document.getElementById('baro-bereich').style.display = 'none';
+  document.getElementById('zusammenfassung-bereich').style.display = 'none';
   document.getElementById('spiel-bereich').style.display = 'block';
-  fortschrittRendern();
-  stationRendern();
+
+  fragenRundeRendern();
 }
 
-function stationRendern(){
-  var station = STATIONEN[aktuelleStationIndex];
-  document.getElementById('station-titel').textContent = 'Station ' + station.id + ' von ' + STATIONEN.length + ' · ' + station.titel;
+function fragenRundeRendern(){
+  var frage = aktuelleFragen[aktuellerIndex];
+  document.getElementById('fortschritt-label').textContent = 'Frage ' + (aktuellerIndex + 1) + ' von ' + aktuelleFragen.length;
+  document.getElementById('fortschritt-fill').style.width = ((aktuellerIndex + 1) / aktuelleFragen.length * 100) + '%';
+  document.getElementById('thema-badge').textContent = frage.thema;
+  document.getElementById('npc-frage').textContent = frage.frage;
 
-  var platzhalterHinweis = document.getElementById('platzhalter-hinweis');
-  platzhalterHinweis.innerHTML = station.platzhalter
-    ? '<div style="text-align:center;"><span class="platzhalter-badge">📝 Platzhaltertext — wird noch ersetzt</span></div>'
-    : '';
-
-  document.getElementById('npc-frage').textContent = station.frage;
   document.getElementById('atem-overlay').classList.remove('zeigen');
-  document.getElementById('gemeistert-pop').classList.remove('zeigen');
-  document.getElementById('brainy-box').style.display = 'none';
+  document.getElementById('feedback-box').classList.remove('zeigen');
+  document.getElementById('weiter-btn').classList.remove('zeigen');
   document.getElementById('joker-btn').style.display = 'inline-flex';
 
   var grid = document.getElementById('option-grid');
   grid.innerHTML = '';
-  station.optionen.forEach(function(opt){
+  grid.style.display = 'flex';
+  frage.optionen.forEach(function(opt){
     var btn = document.createElement('button');
     btn.className = 'option-btn';
     btn.textContent = opt.text;
-    btn.addEventListener('click', function(){ antwortWaehlen(opt); });
+    btn.addEventListener('click', function(){ antwortWaehlen(opt, btn); });
     grid.appendChild(btn);
   });
-  grid.style.display = 'flex';
 }
 
-function antwortWaehlen(option){
-  ampelIndex = Math.max(0, Math.min(AMPEL_STUFEN.length - 1, ampelIndex + option.ampel));
-  baroRendern();
+function antwortWaehlen(option, btnEl){
+  gewaehlteOptionen.push(option);
 
-  document.getElementById('option-grid').style.display = 'none';
+  document.querySelectorAll('#option-grid .option-btn').forEach(function(b){ b.disabled = true; });
+  btnEl.classList.add('gewaehlt');
   document.getElementById('joker-btn').style.display = 'none';
 
-  var brainyBox = document.getElementById('brainy-box');
-  document.getElementById('brainy-msg').textContent = option.brainy;
-  brainyBox.style.display = 'flex';
+  var feedbackBox = document.getElementById('feedback-box');
+  document.getElementById('feedback-text').textContent = option.feedback;
+  feedbackBox.classList.add('zeigen');
 
-  var station = STATIONEN[aktuelleStationIndex];
-  if (stationenGemeistert.indexOf(station.id) === -1) {
-    stationenGemeistert.push(station.id);
-    speichern();
-    fortschrittRendern();
-    var pop = document.getElementById('gemeistert-pop');
-    pop.classList.add('zeigen');
-    konfettiAusloesen();
-  }
+  document.getElementById('weiter-btn').classList.add('zeigen');
+}
 
-  if (aktuelleStationIndex === STATIONEN.length - 1) {
-    setTimeout(reflexionAnzeigen, 1400);
+function naechsteFrage(){
+  if (aktuellerIndex < aktuelleFragen.length - 1) {
+    aktuellerIndex++;
+    fragenRundeRendern();
+  } else {
+    zusammenfassungAnzeigen();
   }
 }
 
@@ -366,17 +633,79 @@ function jokerPauseStarten(){
   document.getElementById('atem-overlay').classList.add('zeigen');
 
   setTimeout(function(){
-    ampelIndex = Math.max(0, ampelIndex - 1);
-    baroRendern();
     document.getElementById('atem-overlay').classList.remove('zeigen');
     document.getElementById('option-grid').style.display = 'flex';
     document.getElementById('joker-btn').style.display = 'inline-flex';
   }, 2600);
 }
 
+// ── PHASE 4: Zusammenfassung ────────────────────────────────
+function zusammenfassungAnzeigen(){
+  durchgaengeAbsolviert++;
+  speichern();
+
+  var starkGesehen = {};
+  var entwicklungGesehen = {};
+  gewaehlteOptionen.forEach(function(opt){
+    if (opt.tag === 'stark') starkGesehen[opt.qualitaet] = true;
+    else entwicklungGesehen[opt.qualitaet] = true;
+  });
+
+  var gutListe = document.getElementById('zsf-gut-liste');
+  var uebungListe = document.getElementById('zsf-uebung-liste');
+  gutListe.innerHTML = '';
+  uebungListe.innerHTML = '';
+
+  var gutKeys = Object.keys(starkGesehen);
+  var uebungKeys = Object.keys(entwicklungGesehen);
+
+  if (gutKeys.length) {
+    gutKeys.forEach(function(k){
+      var li = document.createElement('li');
+      li.textContent = QUALITAET_TEXTE.stark[k];
+      gutListe.appendChild(li);
+    });
+  } else {
+    var li0 = document.createElement('li');
+    li0.textContent = 'Du hast dich ehrlich auf schwierige Fragen eingelassen — das allein ist schon eine Stärke!';
+    gutListe.appendChild(li0);
+  }
+
+  var uebungAbschnitt = uebungListe.closest('.zsf-abschnitt');
+  if (uebungKeys.length) {
+    uebungAbschnitt.style.display = 'block';
+    uebungKeys.forEach(function(k){
+      var li = document.createElement('li');
+      li.textContent = QUALITAET_TEXTE.entwicklung[k];
+      uebungListe.appendChild(li);
+    });
+  } else {
+    uebungAbschnitt.style.display = 'none';
+  }
+
+  var brainySaetze = uebungKeys.length
+    ? ['Super, dass du das geübt hast — jede Runde macht dich sicherer! 🌟', 'Toll gemacht! Übung ist der beste Weg, um im echten Gespräch entspannt zu bleiben. 💚']
+    : ['Wow, richtig stark durchgespielt! Du wirkst schon sehr sicher. 🌟', 'Das war eine richtig überzeugende Runde — weiter so! 🌟'];
+  document.getElementById('zsf-brainy').textContent = brainySaetze[Math.floor(Math.random() * brainySaetze.length)];
+
+  document.getElementById('info-zeile').textContent = '🏆 Du hast schon ' + durchgaengeAbsolviert + ' Durchgang' + (durchgaengeAbsolviert === 1 ? '' : 'e') + ' geübt.';
+
+  document.getElementById('spiel-bereich').style.display = 'none';
+  document.getElementById('zusammenfassung-bereich').style.display = 'block';
+  konfettiAusloesen();
+}
+
+function zurueckZurAuswahl(){
+  aktuellerTyp = null;
+  document.getElementById('zusammenfassung-bereich').style.display = 'none';
+  document.getElementById('spiel-bereich').style.display = 'none';
+  document.getElementById('baro-bereich').style.display = 'none';
+  document.getElementById('typ-bereich').style.display = 'block';
+}
+
 function konfettiAusloesen(){
   var symbole = ['⭐', '🎉', '✨'];
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 12; i++) {
     (function(){
       var stueck = document.createElement('div');
       stueck.className = 'konfetti-stueck';
@@ -389,30 +718,8 @@ function konfettiAusloesen(){
   }
 }
 
-function reflexionAnzeigen(){
-  document.getElementById('spiel-bereich').style.display = 'none';
-  document.getElementById('reflexion-bereich').style.display = 'block';
-  reflexionSmileysRendern();
-}
-
-function reflexionSmileysRendern(){
-  document.querySelectorAll('.smiley-row').forEach(function(row){
-    var frage = row.dataset.frage;
-    row.querySelectorAll('.smiley-btn').forEach(function(btn){
-      btn.classList.toggle('gewaehlt', reflexionAntworten[frage] === btn.dataset.wert);
-      btn.onclick = function(){
-        reflexionAntworten[frage] = btn.dataset.wert;
-        speichern();
-        reflexionSmileysRendern();
-      };
-    });
-  });
-}
-
 laden();
-fortschrittRendern();
-baroRendern();
-stationRendern();
+typAuswahlRendern();
 </script>
 
 </body>

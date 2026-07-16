@@ -29,6 +29,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .szenario-emoji{font-size:2.2rem;flex-shrink:0;}
 .szenario-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
 .szenario-sub{font-size:.8rem;color:var(--muted);}
+.deck-zurueck-btn{display:inline-flex;align-items:center;gap:.3rem;background:none;border:none;color:var(--m);font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;padding:0 0 1rem;}
+.deck-zurueck-btn:hover{color:var(--acc);}
 
 /* Spiel-Bereich */
 .fortschritt-wrap{margin-bottom:1.2rem;}
@@ -74,12 +76,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <div class="hero">
   <div class="hero-icon">🎭</div>
   <h1 class="hero-titel">Was tun bei...?</h1>
-  <p class="hero-sub">Kleine Entscheidungsgeschichten aus dem Praktikums- und Ausbildungsalltag — such dir ein Szenario aus.</p>
+  <p class="hero-sub">Kleine Entscheidungsgeschichten aus dem Praktikums- und Schulalltag — wähle ein Deck und ein Szenario aus.</p>
 </div>
 
 <div class="shell" id="shell">
 
-  <div id="auswahl-bereich">
+  <div id="deck-bereich">
+    <div class="szenario-grid" id="deck-grid"></div>
+  </div>
+
+  <div id="auswahl-bereich" style="display:none;">
+    <button class="deck-zurueck-btn" id="deck-zurueck-btn" onclick="zurueckZuDecks()">← Anderes Deck wählen</button>
     <div class="szenario-grid" id="szenario-grid"></div>
   </div>
 
@@ -116,7 +123,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 </div>
 
 <script>
-var SZENARIEN = [
+var SZENARIEN_PRAKTIKUM = [
   {
     id: 's1', emoji: '⏰', titel: 'Zu spät!', sub: 'Der Wecker hat nicht geklingelt …',
     knoten: {
@@ -216,17 +223,233 @@ var SZENARIEN = [
   }
 ];
 
+var SZENARIEN_SCHULE = [
+  {
+    id: 'schu1', emoji: '🌅', titel: 'Schwieriger Start', sub: 'Der Morgen fühlt sich schon jetzt zu voll an …',
+    knoten: {
+      start: {
+        text: 'Du kommst morgens in die Schule. Du hast schlecht geschlafen, zuhause gab es Streit, und eigentlich willst du nur noch nach Hause.',
+        optionen: [
+          { label: 'Ich sage kurz Bescheid, dass es mir gerade nicht gut geht', ziel: 'stufe2b' },
+          { label: 'Ich setze mich einfach hin und sage nichts', ziel: 'stufe2a' },
+          { label: 'Ich tue so, als wäre alles okay, und mache direkt mit', ziel: 'stufe2c' }
+        ]
+      },
+      stufe2a: {
+        text: 'Deine Lehrkraft merkt, dass du still bist, fragt aber nicht nach. Die erste Stunde fühlt sich anstrengend an, weil niemand weiß, wie es dir geht.',
+        optionen: [
+          { label: 'Ich sage jetzt doch kurz Bescheid', ziel: 'endeB' },
+          { label: 'Ich beiße mich weiter durch', ziel: 'endeC' }
+        ]
+      },
+      stufe2b: {
+        text: 'Deine Lehrkraft nickt: „Danke, dass du’s sagst. Nimm dir ein paar Minuten, ich komme gleich zu dir.“ Du bekommst kurz Ruhe, bevor es losgeht.',
+        ziel: 'endeAplus'
+      },
+      stufe2c: {
+        text: 'Du merkst schnell, dass du dich kaum konzentrieren kannst. Die Aufgabe wächst dir über den Kopf, obwohl sie eigentlich nicht schwer ist.',
+        optionen: [
+          { label: 'Ich sage jetzt Bescheid, dass ich eine kurze Pause brauche', ziel: 'endeB' },
+          { label: 'Ich mache trotzdem weiter, bis es nicht mehr geht', ziel: 'endeC' }
+        ]
+      }
+    },
+    enden: {
+      endeC: { text: 'Der Tag fühlt sich immer schwerer an. Am Ende bist du erschöpft — dabei hättest du dir schon morgens eine kurze Pause holen können.', brainy: 'Ein schwerer Start wird leichter, wenn du früh Bescheid sagst. Das ist kein Zeichen von Schwäche! 💙', bewertung: 'schlecht' },
+      endeB: { text: 'Auch wenn es dir schwerfällt, meldest du dich. Deine Lehrkraft gibt dir einen ruhigen Moment. Der Tag wird dadurch etwas leichter.', brainy: 'Gut, dass du es gesagt hast! Nächstes Mal darfst du dir das ruhig gleich am Anfang holen. 💡', bewertung: 'mittel' },
+      endeAplus: { text: 'Du bekommst den Raum, den du brauchst, um erstmal anzukommen. Danach fällt dir der Einstieg in den Unterricht viel leichter.', brainy: 'Genau richtig! Ankommen braucht manchmal ein paar ruhige Minuten. 🌟', bewertung: 'sehr gut' }
+    }
+  },
+  {
+    id: 'schu2', emoji: '🚫', titel: 'Keine Lust mehr', sub: 'Die Aufgabe fühlt sich unmöglich an …',
+    knoten: {
+      start: {
+        text: 'Ihr sollt eine Aufgabe bearbeiten, aber du hast das Gefühl: Das schaffe ich sowieso nicht. Am liebsten würdest du das Blatt einfach wegschieben.',
+        optionen: [
+          { label: 'Ich sage: „Ich mach das nicht“, und lege den Stift weg', ziel: 'stufe2a' },
+          { label: 'Ich sage leise, dass die Aufgabe mir zu schwer ist', ziel: 'stufe2b' },
+          { label: 'Ich tue so, als würde ich arbeiten, mache aber nichts', ziel: 'stufe2c' }
+        ]
+      },
+      stufe2a: {
+        text: 'Deine Lehrkraft bleibt ruhig und sagt: „Okay. Ich komme gleich nochmal zu dir.“ Kurz darauf fragt sie in Ruhe nach, was gerade schwierig ist.',
+        optionen: [
+          { label: 'Ich erzähle, dass ich Angst habe, es falsch zu machen', ziel: 'endeAplus' },
+          { label: 'Ich sage weiter nichts', ziel: 'endeB' }
+        ]
+      },
+      stufe2b: {
+        text: 'Deine Lehrkraft nimmt sich Zeit und schlägt vor, die Aufgabe in kleinere Schritte aufzuteilen.',
+        ziel: 'endeAplus'
+      },
+      stufe2c: {
+        text: 'Nach einer Weile merkt deine Lehrkraft, dass dein Blatt leer ist. Sie fragt nach — ohne Vorwurf.',
+        optionen: [
+          { label: 'Ich erzähle, was mich gerade blockiert', ziel: 'endeB' },
+          { label: 'Ich sage, es sei einfach langweilig gewesen', ziel: 'endeC' }
+        ]
+      }
+    },
+    enden: {
+      endeC: { text: 'Das eigentliche Problem bleibt ungesagt. Die Aufgabe liegt weiter unerledigt da, und du fühlst dich schlecht dabei.', brainy: 'Verweigerung ist oft ein Schutz vor dem Scheitern. Sag ruhig, was wirklich los ist — das hilft mehr als Schweigen. 💙', bewertung: 'schlecht' },
+      endeB: { text: 'Es ist nicht leicht für dich, aber am Ende sprichst du darüber. Die Aufgabe wird kleiner gemacht, und du kannst doch noch anfangen.', brainy: 'Gut, dass du es gesagt hast! Ehrlichkeit über Ängste braucht Mut. 💡', bewertung: 'mittel' },
+      endeAplus: { text: 'Du sagst offen, was schwierig ist. Gemeinsam findet ihr einen Einstieg, der zu dir passt — und die Aufgabe wird plötzlich machbar.', brainy: 'Stark, dass du das ausgesprochen hast! Hinter jedem „Ich will nicht“ steckt oft ein Bedürfnis. 🌟', bewertung: 'sehr gut' }
+    }
+  },
+  {
+    id: 'schu3', emoji: '😤', titel: 'Die Wut kocht hoch', sub: 'Alles in dir will explodieren …',
+    knoten: {
+      start: {
+        text: 'Etwas ist gerade schiefgelaufen, und die Wut steigt in dir hoch. Du merkst, wie dein Herz schneller schlägt und du am liebsten laut werden würdest.',
+        optionen: [
+          { label: 'Ich schreie meinen Ärger einfach raus', ziel: 'stufe2a' },
+          { label: 'Ich sage kurz, dass ich raus muss, und gehe vor die Tür', ziel: 'stufe2b' },
+          { label: 'Ich schlucke alles runter und mache weiter', ziel: 'stufe2c' }
+        ]
+      },
+      stufe2a: {
+        text: 'Es wird laut. Alle schauen zu dir. Danach fühlst du dich nicht besser, sondern noch aufgewühlter.',
+        optionen: [
+          { label: 'Ich hole mir jetzt eine ruhige Minute, um runterzukommen', ziel: 'endeB' },
+          { label: 'Ich bleibe wütend und ziehe mich beleidigt zurück', ziel: 'endeC' }
+        ]
+      },
+      stufe2b: {
+        text: 'Draußen holst du ein paar Mal tief Luft. Nach ein paar Minuten wird es in dir ruhiger.',
+        ziel: 'endeAplus'
+      },
+      stufe2c: {
+        text: 'Der Ärger bleibt in dir stecken. Später am Tag platzt er bei einer Kleinigkeit heraus, die eigentlich gar nicht das Problem war.',
+        optionen: [
+          { label: 'Ich erkläre danach, was mich eigentlich wütend gemacht hat', ziel: 'endeB' },
+          { label: 'Ich lasse es einfach so stehen', ziel: 'endeC' }
+        ]
+      }
+    },
+    enden: {
+      endeC: { text: 'Die Wut ist zwar raus, aber niemand versteht, worum es eigentlich ging. Das Gefühl von vorhin bleibt ungelöst.', brainy: 'Wut darf sein — aber sie braucht einen Weg raus, der dir und anderen nicht schadet. 💙', bewertung: 'schlecht' },
+      endeB: { text: 'Es hat eine Weile gedauert, aber am Ende hast du dich beruhigt und erklärt, was los war. Das war nicht leicht, aber es hat geholfen.', brainy: 'Gut gemacht! Nach dem Sturm kommt das Gespräch — genau richtig. 💡', bewertung: 'mittel' },
+      endeAplus: { text: 'Du hast dir den Moment genommen, den du gebraucht hast. Die Wut konnte abklingen, bevor sie dich überrollt hat.', brainy: 'Stark! Rausgehen und durchatmen ist eine der besten Strategien überhaupt. 🌟', bewertung: 'sehr gut' }
+    }
+  },
+  {
+    id: 'schu4', emoji: '⚡', titel: 'Streit in der Pause', sub: 'Ein Missverständnis wird laut …',
+    knoten: {
+      start: {
+        text: 'In der Pause gibt es Streit mit einem Mitschüler oder einer Mitschülerin. Ihr werdet beide lauter, und es fühlt sich an, als würde es gleich eskalieren.',
+        optionen: [
+          { label: 'Ich werde auch laut und sage klar meine Meinung', ziel: 'stufe2a' },
+          { label: 'Ich hole eine Lehrkraft, damit wir das gemeinsam klären', ziel: 'stufe2b' },
+          { label: 'Ich gehe einfach weg und sage nichts mehr', ziel: 'stufe2c' }
+        ]
+      },
+      stufe2a: {
+        text: 'Es wird richtig laut. Andere bleiben stehen und schauen zu. Eine Lehrkraft kommt dazu, um zu schlichten.',
+        optionen: [
+          { label: 'Ich beruhige mich und erzähle, was passiert ist', ziel: 'endeB' },
+          { label: 'Ich bleibe stur bei meiner Sicht', ziel: 'endeC' }
+        ]
+      },
+      stufe2b: {
+        text: 'Die Lehrkraft nimmt sich Zeit: Erst redet einer, dann die andere — ohne Unterbrechung. Danach findet ihr gemeinsam eine Lösung.',
+        ziel: 'endeAplus'
+      },
+      stufe2c: {
+        text: 'Der Ärger bleibt zwischen euch stehen. In der nächsten Pause ist die Stimmung immer noch angespannt.',
+        optionen: [
+          { label: 'Ich spreche die Person jetzt doch noch mal ruhig an', ziel: 'endeB' },
+          { label: 'Ich lasse es einfach schwelen', ziel: 'endeC' }
+        ]
+      }
+    },
+    enden: {
+      endeC: { text: 'Der Streit ist nicht wirklich geklärt. Ihr geht euch ab jetzt aus dem Weg — das fühlt sich auf Dauer unangenehm an.', brainy: 'Ungeklärte Konflikte verschwinden nicht von allein. Ansprechen lohnt sich, auch wenn es unbequem ist. 💙', bewertung: 'schlecht' },
+      endeB: { text: 'Ihr klärt die Sache, auch wenn es erst holprig war. Am Ende versteht ihr beide besser, was beim anderen los war.', brainy: 'Gut, dass ihr doch noch geredet habt! Das braucht Mut. 💡', bewertung: 'mittel' },
+      endeAplus: { text: 'Mit Unterstützung könnt ihr in Ruhe klären, was passiert ist. Danach ist die Luft wirklich raus — ihr versteht euch sogar wieder besser.', brainy: 'Genau so geht Konfliktlösung: zuhören, klären, gemeinsam eine Lösung finden. 🌟', bewertung: 'sehr gut' }
+    }
+  },
+  {
+    id: 'schu5', emoji: '📝', titel: 'Prüfungsstress', sub: 'Morgen ist die Arbeit, und im Kopf ist alles leer …',
+    knoten: {
+      start: {
+        text: 'Morgen schreibst du eine wichtige Arbeit. Heute Abend merkst du: Sobald du ans Lernen denkst, ist dein Kopf wie leergefegt, und die Aufregung wird immer größer.',
+        optionen: [
+          { label: 'Ich büffle bis spät in die Nacht durch', ziel: 'stufe2a' },
+          { label: 'Ich mache eine kurze Atemübung und dann einen klaren Lernplan', ziel: 'stufe2b' },
+          { label: 'Ich gebe komplett auf und schaue stattdessen Serien', ziel: 'stufe2c' }
+        ]
+      },
+      stufe2a: {
+        text: 'Am nächsten Morgen bist du müde und aufgeregt zugleich. In der Arbeit fällt es dir schwer, dich zu konzentrieren.',
+        optionen: [
+          { label: 'Ich atme kurz durch, bevor ich anfange', ziel: 'endeB' },
+          { label: 'Ich mache mich noch nervöser, weil ich an die Nacht denke', ziel: 'endeC' }
+        ]
+      },
+      stufe2b: {
+        text: 'Mit einem klaren Plan lernst du in Ruhe die wichtigsten Punkte. Danach gehst du früh ins Bett.',
+        ziel: 'endeAplus'
+      },
+      stufe2c: {
+        text: 'Am Abend fühlt sich die Pause gut an, aber am nächsten Morgen merkst du: Du hast fast nichts wiederholt, und die Aufregung ist riesig.',
+        optionen: [
+          { label: 'Ich atme tief durch und mache das Beste aus dem, was ich weiß', ziel: 'endeB' },
+          { label: 'Ich gehe völlig überfordert in die Arbeit', ziel: 'endeC' }
+        ]
+      }
+    },
+    enden: {
+      endeC: { text: 'Die Aufregung blockiert dich während der ganzen Arbeit. Du merkst später: Du wusstest eigentlich mehr, als du zeigen konntest.', brainy: 'Druck blockiert das Abrufen von Wissen. Deine Ruhe ist die beste Prüfungsvorbereitung. 💙', bewertung: 'schlecht' },
+      endeB: { text: 'Auch wenn es kein perfekter Start war, hilft dir das kurze Durchatmen, dich wieder zu sammeln. Du schaffst mehr, als du dachtest.', brainy: 'Gut, dass du dir den Moment zum Durchatmen genommen hast! 💡', bewertung: 'mittel' },
+      endeAplus: { text: 'Mit Ruhe und einem klaren Plan gehst du gut vorbereitet und entspannt in die Arbeit. Du kannst zeigen, was du wirklich kannst.', brainy: 'Genau richtig! Sicherheit ermöglicht Abruf — deine Ruhe war die beste Vorbereitung. 🌟', bewertung: 'sehr gut' }
+    }
+  }
+];
+
+var DECKS = [
+  { id: 'praktikum', emoji: '💼', titel: 'Praktikumsalltag', sub: 'Entscheidungsgeschichten aus dem Arbeitsalltag im Praktikum.', szenarien: SZENARIEN_PRAKTIKUM },
+  { id: 'schule', emoji: '🏫', titel: 'Schule & Unterricht', sub: 'Entscheidungsgeschichten aus dem Schulalltag.', szenarien: SZENARIEN_SCHULE }
+];
+
 var STERNE_NACH_BEWERTUNG = { schlecht: '⭐', mittel: '⭐⭐', gut: '⭐⭐', 'sehr gut': '⭐⭐⭐' };
 
+var aktuellesDeck = null;
 var aktuellesSzenario = null;
 var aktuellerKnoten = null;
 var schrittZaehler = 1;
 var ausstehenderHinweis = null;
 
+function deckAuswahlRendern(){
+  var grid = document.getElementById('deck-grid');
+  grid.innerHTML = '';
+  DECKS.forEach(function(deck){
+    var btn = document.createElement('button');
+    btn.className = 'szenario-kachel';
+    btn.innerHTML = '<span class="szenario-emoji">' + deck.emoji + '</span>' +
+      '<span><span class="szenario-titel" style="display:block;">' + deck.titel + '</span>' +
+      '<span class="szenario-sub">' + deck.sub + '</span></span>';
+    btn.addEventListener('click', function(){ deckWaehlen(deck.id); });
+    grid.appendChild(btn);
+  });
+}
+
+function deckWaehlen(id){
+  aktuellesDeck = DECKS.filter(function(d){ return d.id === id; })[0];
+  document.getElementById('deck-bereich').style.display = 'none';
+  document.getElementById('auswahl-bereich').style.display = 'block';
+  szenarioAuswahlRendern();
+}
+
+function zurueckZuDecks(){
+  aktuellesDeck = null;
+  document.getElementById('auswahl-bereich').style.display = 'none';
+  document.getElementById('deck-bereich').style.display = 'block';
+}
+
 function szenarioAuswahlRendern(){
   var grid = document.getElementById('szenario-grid');
   grid.innerHTML = '';
-  SZENARIEN.forEach(function(sz){
+  aktuellesDeck.szenarien.forEach(function(sz){
     var btn = document.createElement('button');
     btn.className = 'szenario-kachel';
     btn.innerHTML = '<span class="szenario-emoji">' + sz.emoji + '</span>' +
@@ -238,7 +461,7 @@ function szenarioAuswahlRendern(){
 }
 
 function szenarioStarten(id){
-  aktuellesSzenario = SZENARIEN.filter(function(s){ return s.id === id; })[0];
+  aktuellesSzenario = aktuellesDeck.szenarien.filter(function(s){ return s.id === id; })[0];
   aktuellerKnoten = 'start';
   schrittZaehler = 1;
   ausstehenderHinweis = null;
@@ -321,7 +544,7 @@ function zurZurAuswahl(){
   document.getElementById('auswahl-bereich').style.display = 'block';
 }
 
-szenarioAuswahlRendern();
+deckAuswahlRendern();
 </script>
 
 </body>

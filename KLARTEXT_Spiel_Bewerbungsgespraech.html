@@ -720,6 +720,16 @@ function konfettiAusloesen(){
 
 laden();
 typAuswahlRendern();
+
+// Optionaler Deep-Link (z.B. von einem anderen Spiel aus): ?typ=praktikum oder ?typ=ausbildung
+(function(){
+  try {
+    var vorausgewaehlterTyp = new URLSearchParams(window.location.search).get('typ');
+    if (vorausgewaehlterTyp && GESPRAECHSTYPEN.some(function(t){ return t.id === vorausgewaehlterTyp; })) {
+      typWaehlen(vorausgewaehlterTyp);
+    }
+  } catch(e) {}
+})();
 </script>
 
 </body>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Werkzeuge für Eltern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#AD1457;--acc-d:#7A0A3A;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--acc) 0%,var(--acc-d) 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto;}
+.shell{max-width:640px;margin:0 auto;padding:1.75rem clamp(.75rem,3vw,2rem) 5rem;display:flex;flex-direction:column;gap:1.4rem;}
+
+.hinweis-zeile{background:var(--surface);border:1.5px dashed var(--border);border-radius:14px;padding:.8rem 1rem;font-size:.78rem;color:var(--muted);text-align:center;line-height:1.5;}
+
+.tool-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:1.5rem 1.4rem;box-shadow:0 2px 10px rgba(27,58,75,.08);}
+.tool-titel{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:var(--m);margin-bottom:.3rem;}
+.tool-sub{font-size:.83rem;color:var(--muted);line-height:1.5;margin-bottom:1.1rem;}
+
+/* Situations-Kacheln */
+.sit-grid{display:flex;flex-direction:column;gap:.6rem;}
+.sit-kachel{display:flex;align-items:center;gap:.8rem;background:var(--paper);border:2.5px solid var(--border);border-radius:14px;padding:.85rem 1rem;cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;}
+.sit-kachel:hover{border-color:var(--acc);}
+.sit-kachel.aktiv{border-color:var(--acc);background:#FCE4EC;}
+.sit-emoji{font-size:1.5rem;flex-shrink:0;}
+.sit-titel{font-weight:700;font-size:.9rem;color:var(--m);}
+
+.saetze-box{margin-top:1rem;display:none;}
+.saetze-box.zeigen{display:block;}
+.satz-karte{background:var(--paper);border-left:4px solid var(--acc);border-radius:0 12px 12px 0;padding:.8rem 1rem;margin-bottom:.7rem;}
+.satz-text{font-size:.92rem;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:.35rem;}
+.satz-warum{font-size:.75rem;color:var(--muted);line-height:1.4;}
+.zuruecksetzen-btn{background:none;border:none;color:var(--muted);font-size:.76rem;text-decoration:underline;cursor:pointer;font-family:inherit;margin-top:.3rem;}
+
+/* Barometer */
+.baro-grid{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-bottom:1rem;}
+.baro-btn{display:flex;flex-direction:column;align-items:center;gap:.3rem;border:none;border-radius:16px;padding:1rem .9rem;cursor:pointer;color:#fff;font-family:inherit;font-weight:700;font-size:.8rem;min-width:88px;transition:transform .15s;opacity:.88;}
+.baro-btn:hover{transform:translateY(-2px);opacity:1;}
+.baro-btn.aktiv{opacity:1;box-shadow:0 0 0 4px rgba(0,0,0,.12);transform:translateY(-2px) scale(1.04);}
+.baro-emoji{font-size:1.8rem;}
+.baro-anzeige{display:none;text-align:center;background:var(--paper);border-radius:14px;padding:1rem 1.2rem;}
+.baro-anzeige.zeigen{display:block;}
+.baro-anzeige-emoji{font-size:2.2rem;margin-bottom:.3rem;}
+.baro-anzeige-name{font-family:"Playfair Display",serif;font-weight:700;font-size:1.1rem;margin-bottom:.2rem;}
+.baro-anzeige-text{font-size:.88rem;color:var(--ink);margin-bottom:.6rem;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="fuer-eltern.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Für Eltern</div>
+  </a>
+  <a class="back-btn" href="fuer-eltern.html">← Eltern-Karten</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">🧰</div>
+  <h1 class="hero-titel">Werkzeuge für Eltern</h1>
+  <p class="hero-sub">Zwei einfache Hilfen für zuhause.</p>
+</div>
+
+<div class="shell">
+
+  <div class="hinweis-zeile">🔒 Keine Anmeldung nötig. Nichts wird gespeichert oder irgendwohin gesendet — alles bleibt nur in diesem Browserfenster.</div>
+
+  <div class="tool-card">
+    <div class="tool-titel">💬 So sag ich's meinem Kind</div>
+    <div class="tool-sub">Wähl eine Situation — du bekommst ein paar ruhige Gesprächseinstiege vorgeschlagen.</div>
+    <div class="sit-grid" id="sit-grid"></div>
+    <div class="saetze-box" id="saetze-box">
+      <div id="saetze-liste"></div>
+      <button class="zuruecksetzen-btn" onclick="situationZuruecksetzen()">↺ Andere Situation wählen</button>
+    </div>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-titel">🌡️ Home-Barometer</div>
+    <div class="tool-sub">Die gleichen 5 Stufen wie in der Schule — als kleines Gesprächswerkzeug für zuhause. Dein Kind zeigt dir seine Farbe.</div>
+    <div class="baro-grid" id="baro-grid"></div>
+    <div class="baro-anzeige" id="baro-anzeige">
+      <div class="baro-anzeige-emoji" id="baro-anzeige-emoji"></div>
+      <div class="baro-anzeige-name" id="baro-anzeige-name"></div>
+      <div class="baro-anzeige-text" id="baro-anzeige-text"></div>
+      <button class="zuruecksetzen-btn" onclick="baroZuruecksetzen()">↺ Zurücksetzen</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var SITUATIONEN = [
+  {
+    id: 'schule', emoji: '🎒', titel: 'Kind will nicht zur Schule',
+    saetze: [
+      { text: 'Ich merke, dass dir der Schulmorgen gerade schwerfällt. Magst du mir sagen, was dir gerade am meisten Sorgen macht?', warum: 'Eine Ich-Botschaft statt Vorwurf, verbunden mit einer konkreten statt einer allgemeinen Frage.' },
+      { text: 'Du musst jetzt nichts erklären. Ich bin da. Lass uns zusammen überlegen, was dir helfen könnte.', warum: 'Kurze, ruhige Sätze — einladen statt überreden.' },
+      { text: 'Ist es etwas Bestimmtes, das dir Sorgen macht, oder eher ein komisches Gefühl?', warum: 'Konkret statt vage — hilft, das Gefühl in Worte zu fassen.' }
+    ]
+  },
+  {
+    id: 'handy', emoji: '📱', titel: 'Streit ums Handy',
+    saetze: [
+      { text: 'Ich merke, dass ich mir Sorgen mache, wenn das Handy so viel Raum einnimmt. Wollen wir gemeinsam schauen, was für uns beide passt?', warum: 'Ich-Botschaft statt Vorwurf — öffnet das Gespräch, statt es zu schließen.' },
+      { text: 'Ich möchte mit dir über die Handyzeit sprechen — nicht um dich zu bestrafen, sondern um eine Lösung zu finden, mit der wir beide gut leben können.', warum: 'Klar und kurz, ein Gedanke pro Satz.' },
+      { text: 'Was ist dir am Handy gerade besonders wichtig?', warum: 'Konkrete Frage auf Augenhöhe statt Vorwurf.' }
+    ]
+  },
+  {
+    id: 'wut', emoji: '😤', titel: 'Kind ist wütend oder traurig',
+    saetze: [
+      { text: 'Ich bin hier. Du bist sicher. Wir haben Zeit.', warum: 'Kurze, ruhige Aussagen statt Fragen — in einem aufgewühlten Moment helfen Aussagen mehr als Nachfragen.' },
+      { text: 'Ich sehe, dass dich das gerade sehr beschäftigt. Ich bin da, wenn du reden magst.', warum: 'Erst beruhigen, dann reden — die Reihenfolge ist entscheidend.' },
+      { text: 'Du musst jetzt nichts sagen. Ich bleibe einfach hier.', warum: 'Raum geben statt einengen.' }
+    ]
+  },
+  {
+    id: 'rueckzug', emoji: '🤐', titel: 'Kind zieht sich zurück, redet nicht',
+    saetze: [
+      { text: 'Ich merke, dass du gerade lieber für dich bist. Das ist okay — ich bin in der Nähe, falls du mich brauchst.', warum: 'Ein Kind, das nicht antwortet, kommuniziert trotzdem — beobachten statt drängen.' },
+      { text: 'Du musst jetzt nichts erklären. Ich warte, so lange du brauchst.', warum: 'Pausen aushalten, statt nachzuhaken.' },
+      { text: 'Magst du mir später erzählen, was los ist? Oder lieber aufschreiben oder zeichnen, wenn Reden schwerfällt?', warum: 'Einladen statt überreden.' }
+    ]
+  }
+];
+
+var BAROMETER_STUFEN = [
+  { id: 'gruen',  farbe: '#2E9E5A', name: 'Grün',   emoji: '😊', text: 'Ich bin gut drauf!' },
+  { id: 'gelb',   farbe: '#D4A800', name: 'Gelb',   emoji: '😐', text: 'Ein bisschen schwierig' },
+  { id: 'orange', farbe: '#D4651A', name: 'Orange', emoji: '😟', text: 'Ich brauche Hilfe' },
+  { id: 'rot',    farbe: '#C0392B', name: 'Rot',    emoji: '😰', text: 'Ich bin in einer Krise' },
+  { id: 'grau',   farbe: '#757575', name: 'Grau',   emoji: '😶', text: 'Ich bin sehr müde — manchmal mag ich gar nicht reden' }
+];
+
+function escapeHtml(s){
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function situationenRendern(){
+  var grid = document.getElementById('sit-grid');
+  grid.innerHTML = '';
+  SITUATIONEN.forEach(function(sit){
+    var btn = document.createElement('button');
+    btn.className = 'sit-kachel';
+    btn.innerHTML = '<span class="sit-emoji">' + sit.emoji + '</span><span class="sit-titel">' + sit.titel + '</span>';
+    btn.addEventListener('click', function(){ situationWaehlen(sit.id); });
+    grid.appendChild(btn);
+  });
+}
+
+function situationWaehlen(id){
+  document.querySelectorAll('.sit-kachel').forEach(function(k, idx){
+    k.classList.toggle('aktiv', SITUATIONEN[idx].id === id);
+  });
+  var sit = SITUATIONEN.filter(function(s){ return s.id === id; })[0];
+  var liste = document.getElementById('saetze-liste');
+  liste.innerHTML = '';
+  sit.saetze.forEach(function(s){
+    var karte = document.createElement('div');
+    karte.className = 'satz-karte';
+    karte.innerHTML = '<div class="satz-text">„' + escapeHtml(s.text) + '"</div><div class="satz-warum">💡 ' + escapeHtml(s.warum) + '</div>';
+    liste.appendChild(karte);
+  });
+  document.getElementById('saetze-box').classList.add('zeigen');
+}
+
+function situationZuruecksetzen(){
+  document.querySelectorAll('.sit-kachel').forEach(function(k){ k.classList.remove('aktiv'); });
+  document.getElementById('saetze-box').classList.remove('zeigen');
+}
+
+function baroRendern(){
+  var grid = document.getElementById('baro-grid');
+  grid.innerHTML = '';
+  BAROMETER_STUFEN.forEach(function(stufe){
+    var btn = document.createElement('button');
+    btn.className = 'baro-btn';
+    btn.style.background = stufe.farbe;
+    btn.innerHTML = '<span class="baro-emoji">' + stufe.emoji + '</span><span>' + stufe.name + '</span>';
+    btn.addEventListener('click', function(){ baroWaehlen(stufe.id); });
+    grid.appendChild(btn);
+  });
+}
+
+function baroWaehlen(id){
+  var stufe = BAROMETER_STUFEN.filter(function(s){ return s.id === id; })[0];
+  document.querySelectorAll('.baro-btn').forEach(function(b, idx){
+    b.classList.toggle('aktiv', BAROMETER_STUFEN[idx].id === id);
+  });
+  document.getElementById('baro-anzeige-emoji').textContent = stufe.emoji;
+  document.getElementById('baro-anzeige-name').textContent = stufe.name;
+  document.getElementById('baro-anzeige-name').style.color = stufe.farbe;
+  document.getElementById('baro-anzeige-text').textContent = stufe.text;
+  document.getElementById('baro-anzeige').classList.add('zeigen');
+}
+
+function baroZuruecksetzen(){
+  document.querySelectorAll('.baro-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  document.getElementById('baro-anzeige').classList.remove('zeigen');
+}
+
+situationenRendern();
+baroRendern();
+</script>
+
+</body>
+</html>

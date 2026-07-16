@@ -48,6 +48,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .brainy-msg{font-size:.85rem;color:var(--ink);line-height:1.5;}
 .nochmal-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;background:var(--acc);color:var(--m);font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit;}
 .nochmal-btn:hover{opacity:.9;}
+.ergebnis-knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;}
+.uebung-link-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.5rem;border:1.5px solid var(--border);border-radius:22px;background:var(--surface);color:var(--m);font-weight:700;font-size:.9rem;text-decoration:none;font-family:inherit;}
+.uebung-link-btn:hover{border-color:var(--acc);}
+.vergleich-box{background:var(--paper);border:1px dashed var(--border);border-radius:12px;padding:.7rem .9rem;font-size:.82rem;color:var(--muted);margin-bottom:1.1rem;text-align:left;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -87,11 +91,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       <div class="ergebnis-icon">🌟</div>
       <div class="ergebnis-titel" id="ergebnis-titel"></div>
       <div class="ergebnis-berufe" id="ergebnis-berufe"></div>
+      <div class="vergleich-box" id="vergleich-box" style="display:none;"></div>
       <div class="brainy-box">
         <span class="brainy-emoji">🧠</span>
         <span class="brainy-msg">Das passt gut zu dir! 🌟</span>
       </div>
-      <button class="nochmal-btn" onclick="nochmalSpielen()">↺ Nochmal spielen</button>
+      <div class="ergebnis-knopf-row">
+        <button class="nochmal-btn" onclick="nochmalSpielen()">↺ Nochmal spielen</button>
+        <a class="uebung-link-btn" href="KLARTEXT_Spiel_Bewerbungsgespraech.html">Bewerbungsgespräch dazu üben →</a>
+      </div>
     </div>
   </div>
 </div>
@@ -236,6 +244,21 @@ function auswertungAnzeigen(){
   document.getElementById('ergebnis-titel').textContent = ergebnis.titel;
   document.getElementById('ergebnis-berufe').textContent = ergebnis.berufe;
 
+  var vorherigesErgebnis = null;
+  try {
+    var gespeichert = localStorage.getItem('staerken_ergebnis');
+    if (gespeichert) vorherigesErgebnis = JSON.parse(gespeichert);
+  } catch(e) {}
+
+  var vergleichBox = document.getElementById('vergleich-box');
+  var vergleichsText = vergleichstextErmitteln(vorherigesErgebnis, ergebnis.titel);
+  if (vergleichsText) {
+    vergleichBox.textContent = vergleichsText;
+    vergleichBox.style.display = 'block';
+  } else {
+    vergleichBox.style.display = 'none';
+  }
+
   document.getElementById('quiz-bereich').style.display = 'none';
   document.getElementById('ergebnis-bereich').style.display = 'block';
 
@@ -246,6 +269,18 @@ function auswertungAnzeigen(){
       datum: new Date().toISOString()
     }));
   } catch(e) {}
+}
+
+function vergleichstextErmitteln(altesErgebnis, neuerTitel){
+  if (!altesErgebnis || !altesErgebnis.ergebnis || !altesErgebnis.ergebnis.titel || !altesErgebnis.datum) return null;
+  var altDatum = new Date(altesErgebnis.datum);
+  if (isNaN(altDatum.getTime())) return null;
+  var datumText = altDatum.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  var altTitel = altesErgebnis.ergebnis.titel;
+  if (altTitel === neuerTitel) {
+    return '📅 Beim letzten Mal am ' + datumText + ' warst du auch schon eher bei „' + altTitel + '“ — das passt weiterhin gut zu dir!';
+  }
+  return '📅 Beim letzten Mal am ' + datumText + ' warst du eher bei „' + altTitel + '“, heute bei „' + neuerTitel + '“.';
 }
 
 function nochmalSpielen(){

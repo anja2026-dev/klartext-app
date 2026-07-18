@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Unser Buch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{
+  if(window.location.protocol==='file:') return;
+  var login = sessionStorage.getItem('klartext_login');
+  var role  = sessionStorage.getItem('klartext_role') || '';
+  if(login!=='true' || !['ingra','ingra-beta','admin','tk','trainer','fm'].includes(role)){
+    window.location.href='KLARTEXT_Login.html';
+  }
+}catch(e){}})();</script>
+
+<style>
+  :root{
+    --navy:#1B3A4B;
+    --acc:#6EC6A0;
+    --paper:#F5F0E8;
+    --border:#DDD8CE;
+    --muted:#6A6878;
+    --ink:#2D2D2D;
+    --surface:#FFFFFF;
+    --r-sm:8px;
+    --r-md:14px;
+    --shadow:0 2px 8px rgba(27,58,75,.10);
+    --shadow-strong:0 4px 14px rgba(27,58,75,.18);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'DM Sans',Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  header.kt-header{
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--navy);color:#fff;
+    padding:.5rem 1.2rem;flex-wrap:wrap;gap:.6rem;
+    box-shadow:var(--shadow);
+  }
+  header.kt-header .kt-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin:0;line-height:1.2;}
+  header.kt-header .kt-claim{font-size:.68rem;opacity:.8;margin-top:0;line-height:1.2;}
+  header.kt-header a.kt-back{
+    color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;
+    border:1.5px solid var(--acc);border-radius:20px;
+    padding:.25rem .65rem;
+  }
+  header.kt-header a.kt-back:hover{background:rgba(255,255,255,.12);}
+
+  main{max-width:920px;margin:0 auto;padding:1.2rem 1rem 3rem;}
+
+  .karte{
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    border-radius:var(--r-md);
+    padding:1.1rem 1.2rem;
+    margin-bottom:1.1rem;
+    box-shadow:var(--shadow);
+  }
+  .karte-header{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;}
+  .karte-header-icon{font-size:1.15rem;}
+  .karte-header-titel{font-weight:700;color:var(--navy);font-size:.92rem;}
+
+  .kt-childselect{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+  .kt-childselect label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .kt-childselect select{
+    font-family:inherit;font-size:.85rem;border:1.5px solid var(--border);
+    border-radius:var(--r-sm);padding:.4rem .6rem;background:var(--surface);color:var(--ink);
+    min-width:200px;
+  }
+
+  textarea, input[type=text], select{
+    width:100%;font-family:inherit;font-size:.85rem;color:var(--ink);
+    border:1.5px solid var(--border);border-radius:var(--r-sm);
+    padding:.55rem .7rem;background:var(--surface);
+  }
+  textarea{resize:vertical;min-height:64px;}
+  textarea:focus, input:focus, select:focus{outline:none;border-color:var(--acc);}
+
+  .kt-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.6rem;}
+  .kt-field label{font-size:.74rem;font-weight:700;color:var(--ink);}
+
+  .kt-btn{
+    display:inline-flex;align-items:center;gap:.4rem;
+    font-size:.78rem;font-weight:700;padding:.5rem 1rem;border-radius:22px;
+    cursor:pointer;border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);
+    box-shadow:var(--shadow);transition:all .15s;font-family:inherit;
+  }
+  .kt-btn:hover{background:var(--navy);color:#fff;}
+  .kt-btn.primary{background:var(--acc);border-color:var(--acc);color:var(--navy);}
+  .kt-btn.primary:hover{background:#5BB890;}
+  .kt-btn.klein{font-size:.68rem;padding:.3rem .55rem;border-radius:16px;}
+  .kt-btn.danger{border-color:#C62828;color:#C62828;}
+  .kt-btn.danger:hover{background:#C62828;color:#fff;}
+
+  .kt-status{font-size:.76rem;margin-top:.5rem;color:var(--muted);min-height:1.1em;}
+  .kt-status.ok{color:#2E7D32;font-weight:700;}
+  .kt-status.err{color:#C62828;font-weight:700;}
+
+  /* Tabs */
+  .tab-bar{display:flex;flex-wrap:wrap;gap:0;margin-bottom:1.1rem;border:1.5px solid var(--border);border-radius:var(--r-md);overflow:hidden;background:var(--surface);}
+  .tab-btn{
+    flex:1;min-width:112px;padding:.55rem .5rem;
+    background:var(--surface);border:none;border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+    font-family:inherit;font-size:.74rem;font-weight:700;color:var(--muted);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:.3rem;transition:all .15s;
+  }
+  .tab-btn:last-child{border-right:none;}
+  .tab-btn:hover{background:var(--paper);color:var(--navy);}
+  .tab-btn.aktiv{background:var(--navy);color:#fff;}
+  .tab-panel{display:none;}
+  .tab-panel.aktiv{display:block;}
+
+  /* Verfasst-von Toggle */
+  .verfasst-toggle{display:flex;gap:.4rem;margin-bottom:.7rem;}
+  .verfasst-btn{
+    flex:1;border:1.5px solid var(--border);border-radius:20px;padding:.42rem .6rem;
+    font-size:.76rem;font-weight:700;cursor:pointer;background:var(--surface);color:var(--muted);font-family:inherit;
+  }
+  .verfasst-btn.ingra.aktiv{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .verfasst-btn.kind.aktiv{background:#3B8A68;border-color:#3B8A68;color:#fff;}
+
+  /* Einträge */
+  .buch-liste{display:flex;flex-direction:column;gap:.5rem;margin-top:.9rem;}
+  .buch-eintrag{
+    display:flex;align-items:flex-start;gap:.6rem;
+    border:1.5px solid var(--border);border-radius:var(--r-sm);
+    padding:.6rem .75rem;background:var(--paper);
+  }
+  .buch-eintrag .inhalt{flex:1;min-width:180px;}
+  .buch-eintrag .meta{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.2rem;}
+  .buch-eintrag .meta.kind{color:#3B8A68;}
+  .buch-eintrag .meta.ingra{color:var(--navy);}
+  .buch-eintrag .text{font-size:.85rem;color:var(--ink);line-height:1.5;}
+  .buch-eintrag .datum{font-size:.68rem;color:var(--muted);margin-top:.25rem;}
+  .buch-leer{font-size:.8rem;color:var(--muted);font-style:italic;}
+
+  .brainy-box{
+    display:flex;gap:.5rem;align-items:center;
+    background:#f5f5f5;border-radius:6px;
+    padding:.45rem .75rem;margin-top:.6rem;
+  }
+  .brainy-box img{width:26px;height:26px;border-radius:50%;flex-shrink:0;}
+  .brainy-box .txt{font-size:.75rem;color:var(--muted);font-style:italic;}
+</style>
+</head>
+<body>
+
+<header class="kt-header">
+  <div>
+    <div class="kt-title">KLARTEXT · Unser Buch</div>
+    <div class="kt-claim">Was ich mag · Was mir hilft · Was mich stresst · Meine Stärken · Sonstiges</div>
+  </div>
+  <a class="kt-back" href="DASHBOARD.html">← Zurück zum Dashboard</a>
+</header>
+
+<main>
+
+  <!-- KIND AUSWÄHLEN -->
+  <div class="karte">
+    <div class="kt-childselect">
+      <label for="kindSelect">Kind</label>
+      <select id="kindSelect"><option value="">– wird geladen –</option></select>
+    </div>
+  </div>
+
+  <div class="karte">
+    <div class="karte-header"><span class="karte-header-icon">📔</span><span class="karte-header-titel">Unser Buch</span></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn aktiv" data-panel="tab-mag" onclick="switchTab(this,'tab-mag')">💚 Was ich mag</button>
+      <button class="tab-btn" data-panel="tab-hilft" onclick="switchTab(this,'tab-hilft')">🛟 Was mir hilft</button>
+      <button class="tab-btn" data-panel="tab-stress" onclick="switchTab(this,'tab-stress')">⚡ Was mich stresst</button>
+      <button class="tab-btn" data-panel="tab-staerken" onclick="switchTab(this,'tab-staerken')">💪 Meine Stärken</button>
+      <button class="tab-btn" data-panel="tab-sonstiges" onclick="switchTab(this,'tab-sonstiges')">📝 Sonstiges</button>
+    </div>
+
+    <div class="tab-panel aktiv" id="tab-mag">
+      <div class="kt-field">
+        <label>Neuer Eintrag</label>
+        <textarea id="buch-text-mag" placeholder="Was mag das Kind?"></textarea>
+      </div>
+      <div class="verfasst-toggle" id="buch-toggle-mag">
+        <button type="button" class="verfasst-btn ingra aktiv" onclick="verfasstVonWaehlen('mag', this, 'ingra')">Ich beobachte</button>
+        <button type="button" class="verfasst-btn kind" onclick="verfasstVonWaehlen('mag', this, 'kind')">Kind sagt</button>
+      </div>
+      <button class="kt-btn primary" onclick="eintragHinzufuegen('mag')">+ Hinzufügen</button>
+      <div class="kt-status" id="buch-status-mag"></div>
+      <div class="buch-liste" id="buch-liste-mag"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-hilft">
+      <div class="kt-field">
+        <label>Neuer Eintrag</label>
+        <textarea id="buch-text-hilft" placeholder="Was hilft dem Kind?"></textarea>
+      </div>
+      <div class="verfasst-toggle" id="buch-toggle-hilft">
+        <button type="button" class="verfasst-btn ingra aktiv" onclick="verfasstVonWaehlen('hilft', this, 'ingra')">Ich beobachte</button>
+        <button type="button" class="verfasst-btn kind" onclick="verfasstVonWaehlen('hilft', this, 'kind')">Kind sagt</button>
+      </div>
+      <button class="kt-btn primary" onclick="eintragHinzufuegen('hilft')">+ Hinzufügen</button>
+      <div class="kt-status" id="buch-status-hilft"></div>
+      <div class="buch-liste" id="buch-liste-hilft"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-stress">
+      <div class="kt-field">
+        <label>Neuer Eintrag</label>
+        <textarea id="buch-text-stress" placeholder="Was stresst das Kind?"></textarea>
+      </div>
+      <div class="verfasst-toggle" id="buch-toggle-stress">
+        <button type="button" class="verfasst-btn ingra aktiv" onclick="verfasstVonWaehlen('stress', this, 'ingra')">Ich beobachte</button>
+        <button type="button" class="verfasst-btn kind" onclick="verfasstVonWaehlen('stress', this, 'kind')">Kind sagt</button>
+      </div>
+      <button class="kt-btn primary" onclick="eintragHinzufuegen('stress')">+ Hinzufügen</button>
+      <div class="kt-status" id="buch-status-stress"></div>
+      <div class="buch-liste" id="buch-liste-stress"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-staerken">
+      <div class="kt-field">
+        <label>Neuer Eintrag</label>
+        <textarea id="buch-text-staerken" placeholder="Was kann das Kind besonders gut?"></textarea>
+      </div>
+      <div class="verfasst-toggle" id="buch-toggle-staerken">
+        <button type="button" class="verfasst-btn ingra aktiv" onclick="verfasstVonWaehlen('staerken', this, 'ingra')">Ich beobachte</button>
+        <button type="button" class="verfasst-btn kind" onclick="verfasstVonWaehlen('staerken', this, 'kind')">Kind sagt</button>
+      </div>
+      <button class="kt-btn primary" onclick="eintragHinzufuegen('staerken')">+ Hinzufügen</button>
+      <div class="kt-status" id="buch-status-staerken"></div>
+      <div class="buch-liste" id="buch-liste-staerken"></div>
+    </div>
+
+    <div class="tab-panel" id="tab-sonstiges">
+      <div class="kt-field">
+        <label>Neuer Eintrag</label>
+        <textarea id="buch-text-sonstiges" placeholder="Sonstige Beobachtung oder Notiz"></textarea>
+      </div>
+      <div class="verfasst-toggle" id="buch-toggle-sonstiges">
+        <button type="button" class="verfasst-btn ingra aktiv" onclick="verfasstVonWaehlen('sonstiges', this, 'ingra')">Ich beobachte</button>
+        <button type="button" class="verfasst-btn kind" onclick="verfasstVonWaehlen('sonstiges', this, 'kind')">Kind sagt</button>
+      </div>
+      <button class="kt-btn primary" onclick="eintragHinzufuegen('sonstiges')">+ Hinzufügen</button>
+      <div class="kt-status" id="buch-status-sonstiges"></div>
+      <div class="buch-liste" id="buch-liste-sonstiges"></div>
+    </div>
+
+    <div class="brainy-box">
+      <img src="./brainy.png" alt="Brainy" onerror="this.style.display='none';">
+      <div class="txt">Brainy: Sätze des Kindes und eigene Beobachtungen bewusst getrennt festhalten — beides ist wertvoll, aber nicht dasselbe.</div>
+    </div>
+  </div>
+
+</main>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+  var KATEGORIEN = ['mag', 'hilft', 'stress', 'staerken', 'sonstiges'];
+
+  // kind_id wird bevorzugt aus dem URL-Parameter ?kind=<ID> ermittelt
+  // (gespiegelt in sessionStorage), sonst aus sessionStorage.klartext_kind_id -
+  // identisches Muster wie kindIdErmitteln() in KLARTEXT_Tagesjournal.html.
+  function kindIdErmitteln(){
+    try {
+      var ausUrl = new URLSearchParams(window.location.search).get('kind');
+      if (ausUrl) {
+        sessionStorage.setItem('klartext_kind_id', ausUrl);
+        return ausUrl;
+      }
+      return sessionStorage.getItem('klartext_kind_id') || '';
+    } catch(e) { return ''; }
+  }
+
+  var aktuellerKindId = '';
+  var meineIngraId = null;
+  var aktiveVerfasstVon = { mag: 'ingra', hilft: 'ingra', stress: 'ingra', staerken: 'ingra', sonstiges: 'ingra' };
+
+  // Neues Schema: die eingeloggte Person wird über die Login-E-Mail
+  // (sessionStorage.klartext_name) mit ihrer Zeile in "ingra" abgeglichen -
+  // identisch zu aktuelleIngraId() in KLARTEXT_Tagesjournal.html.
+  async function aktuelleIngraId(){
+    var email = sessionStorage.getItem('klartext_name') || '';
+    if (!email) return null;
+    var { data, error } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
+    if (error || !data) return null;
+    return data.id;
+  }
+
+  async function ingraNamenLaden(){
+    var { data, error } = await supabase.from('ingra').select('id, name');
+    var namen = {};
+    if (!error && data) {
+      data.forEach(function(i){ namen[i.id] = i.name; });
+    }
+    return namen;
+  }
+
+  // Kinderliste - identisches Muster wie kinderListeLaden() in
+  // KLARTEXT_Tagesjournal.html: eigene Kinder über Kinder.ingra_id plus
+  // aktive Vertretungen aus kind_ingra_zuteilung (rolle='vertretung',
+  // aktiv=true), TK/Trainer/Admin sehen alle Kinder gruppiert nach INGRA.
+  async function kinderListeLaden(){
+    var select = document.getElementById('kindSelect');
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    var istIngraRolle = (rolle === 'ingra' || rolle === 'ingra-beta');
+
+    var query = supabase.from('Kinder').select('id, name, klasse, ingra_id').eq('aktiv', true);
+    var ingraId = null;
+    if (istIngraRolle) {
+      ingraId = await aktuelleIngraId();
+      query = query.eq('ingra_id', ingraId);
+    }
+    var { data: kinder, error } = await query.order('name');
+    if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
+    kinder = kinder || [];
+
+    if (istIngraRolle && ingraId) {
+      var { data: zuteilungen, error: zError } = await supabase
+        .from('kind_ingra_zuteilung')
+        .select('kind_id')
+        .eq('ingra_id', ingraId)
+        .eq('rolle', 'vertretung')
+        .eq('aktiv', true);
+      if (!zError && zuteilungen && zuteilungen.length) {
+        var vertretKindIds = zuteilungen.map(function(z){ return z.kind_id; });
+        var { data: vertretKinder, error: vkError } = await supabase
+          .from('Kinder')
+          .select('id, name, klasse, ingra_id')
+          .in('id', vertretKindIds)
+          .eq('aktiv', true);
+        if (!vkError && vertretKinder) {
+          vertretKinder.forEach(function(vk){
+            if (!kinder.some(function(k){ return k.id === vk.id; })) {
+              vk.istVertretung = true;
+              kinder.push(vk);
+            }
+          });
+        }
+      }
+    }
+
+    select.innerHTML = '';
+    if (!kinder || !kinder.length) {
+      select.innerHTML = istIngraRolle
+        ? '<option value="">Noch keine Kinder angelegt – bitte im TK-Bereich anlegen</option>'
+        : '<option value="">Noch keine aktiven Kinder vorhanden</option>';
+      await buchAllesRendern();
+      return;
+    }
+    var platzhalter = document.createElement('option');
+    platzhalter.value = '';
+    platzhalter.textContent = 'Bitte wählen …';
+    select.appendChild(platzhalter);
+
+    if (istIngraRolle) {
+      kinder.forEach(function(k){
+        var opt = document.createElement('option');
+        opt.value = k.id;
+        opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '') + (k.istVertretung ? ' (Vertretung)' : '');
+        select.appendChild(opt);
+      });
+    } else {
+      var ingraNamen = await ingraNamenLaden();
+      var gruppen = {};
+      kinder.forEach(function(k){
+        var ingraName = ingraNamen[k.ingra_id] || 'Ohne INGRA';
+        if (!gruppen[ingraName]) gruppen[ingraName] = [];
+        gruppen[ingraName].push(k);
+      });
+      Object.keys(gruppen).sort().forEach(function(ingraName){
+        var optgroup = document.createElement('optgroup');
+        optgroup.label = ingraName;
+        gruppen[ingraName].forEach(function(k){
+          var opt = document.createElement('option');
+          opt.value = k.id;
+          opt.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+          optgroup.appendChild(opt);
+        });
+        select.appendChild(optgroup);
+      });
+    }
+
+    var vorausgewaehlteId = kindIdErmitteln();
+    if (vorausgewaehlteId && kinder.some(function(k){ return k.id === vorausgewaehlteId; })) {
+      select.value = vorausgewaehlteId;
+      aktuellerKindId = vorausgewaehlteId;
+    }
+
+    await buchAllesRendern();
+  }
+
+  document.getElementById('kindSelect').addEventListener('change', async function(){
+    aktuellerKindId = this.value;
+    await buchAllesRendern();
+  });
+
+  // ───────────────────────────────────────────
+  // Tabs
+  // ───────────────────────────────────────────
+  window.switchTab = function(btn, panelId){
+    document.querySelectorAll('.tab-bar .tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
+    btn.classList.add('aktiv');
+    document.getElementById(panelId).classList.add('aktiv');
+  };
+
+  window.verfasstVonWaehlen = function(kategorie, btn, wert){
+    aktiveVerfasstVon[kategorie] = wert;
+    document.querySelectorAll('#buch-toggle-' + kategorie + ' .verfasst-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+    btn.classList.add('aktiv');
+  };
+
+  function escapeHtml(str){
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function fmtDatum(iso){
+    if (!iso) return '';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+  }
+
+  // ───────────────────────────────────────────
+  // Einträge lesen/schreiben -> supabase.from('kind_buch_eintraege')
+  // ───────────────────────────────────────────
+  async function alleEintraegeLaden(){
+    var { data, error } = await supabase
+      .from('kind_buch_eintraege')
+      .select('id, kind_id, kategorie, text, verfasst_von, ingra_id, erstellt_am')
+      .order('erstellt_am', { ascending: false });
+    if (error) { console.error('Unser Buch laden fehlgeschlagen:', error); return []; }
+    return data || [];
+  }
+
+  function eintragZeile(e){
+    var istKind = e.verfasst_von === 'kind';
+    var labelKlasse = istKind ? 'kind' : 'ingra';
+    var labelText = istKind ? 'Kind sagt' : 'INGRA beobachtet';
+    var loeschbar = meineIngraId && e.ingra_id === meineIngraId;
+
+    var html = '<div class="buch-eintrag">';
+    html += '<div class="inhalt">';
+    html += '<div class="meta ' + labelKlasse + '">' + labelText + '</div>';
+    html += '<div class="text">' + escapeHtml(e.text) + '</div>';
+    html += '<div class="datum">' + fmtDatum(e.erstellt_am) + '</div>';
+    html += '</div>';
+    if (loeschbar) {
+      html += '<button class="kt-btn klein danger" onclick="eintragLoeschen(\'' + e.id + '\')">✕</button>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  async function buchAllesRendern(){
+    if (meineIngraId === null) meineIngraId = await aktuelleIngraId();
+
+    var alle = (await alleEintraegeLaden()).filter(function(e){
+      return !aktuellerKindId || e.kind_id === aktuellerKindId;
+    });
+
+    KATEGORIEN.forEach(function(kategorie){
+      var container = document.getElementById('buch-liste-' + kategorie);
+      var liste = alle.filter(function(e){ return e.kategorie === kategorie; });
+      if (!liste.length) {
+        container.innerHTML = '<div class="buch-leer">Noch keine Einträge.</div>';
+        return;
+      }
+      container.innerHTML = liste.map(eintragZeile).join('');
+    });
+  }
+
+  window.eintragHinzufuegen = async function(kategorie){
+    var textEl = document.getElementById('buch-text-' + kategorie);
+    var statusEl = document.getElementById('buch-status-' + kategorie);
+    var text = (textEl.value || '').trim();
+
+    if (!aktuellerKindId) {
+      statusEl.textContent = '⚠ Bitte zuerst ein Kind auswählen.';
+      statusEl.className = 'kt-status err';
+      return;
+    }
+    if (!text) {
+      statusEl.textContent = '⚠ Bitte einen Text eingeben.';
+      statusEl.className = 'kt-status err';
+      return;
+    }
+
+    var eintrag = {
+      kind_id: aktuellerKindId,
+      kategorie: kategorie,
+      text: text,
+      verfasst_von: aktiveVerfasstVon[kategorie] || 'ingra',
+      ingra_id: meineIngraId || null
+    };
+
+    var { error } = await supabase.from('kind_buch_eintraege').insert(eintrag);
+    if (error) {
+      statusEl.textContent = '⚠ Fehler beim Speichern: ' + error.message;
+      statusEl.className = 'kt-status err';
+      return;
+    }
+
+    statusEl.textContent = '✓ Gespeichert.';
+    statusEl.className = 'kt-status ok';
+    textEl.value = '';
+    await buchAllesRendern();
+  };
+
+  window.eintragLoeschen = async function(id){
+    var { error } = await supabase.from('kind_buch_eintraege').delete().eq('id', id);
+    if (error) { console.error('Löschen fehlgeschlagen:', error); return; }
+    await buchAllesRendern();
+  };
+
+  // ───────────────────────────────────────────
+  // Init
+  // ───────────────────────────────────────────
+  kinderListeLaden();
+</script>
+
+</body>
+</html>

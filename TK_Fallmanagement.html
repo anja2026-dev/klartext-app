@@ -84,7 +84,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
 .brainy-msg strong{color:#E1BEE7;}
 
-/* ── SEITE (eine Seite, keine Unterseiten mehr) ───── */
+/* ── SEITE ─────────────────────────────────────────── */
 .unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
 
 .unter-header{
@@ -101,7 +101,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .unter-titel{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;color:var(--kt-primary);line-height:1.2;}
 .unter-sub{font-size:.8rem;color:var(--kt-muted);margin-top:.2rem;}
 
-/* ── KARTEN (Inhaltskarten) ───────────────────────── */
+/* ── KARTEN ───────────────────────────────────────── */
 .karte{
   background:var(--kt-surface);
   border:1.5px solid var(--kt-border);
@@ -120,7 +120,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .karte-header-titel{font-size:.78rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
 .karte-body{padding:.75rem .9rem .85rem;}
 
-/* Stichwort-Listen */
 .stw-list{list-style:none;display:flex;flex-direction:column;gap:.28rem;}
 .stw-list li{
   font-size:.82rem;color:var(--kt-ink);line-height:1.5;
@@ -132,24 +131,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 }
 .stw-list li strong{color:var(--kt-primary);}
 
-/* Schritt-Liste */
-.schritt-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;counter-reset:schritt;}
-.schritt-list li{
-  display:flex;align-items:flex-start;gap:.6rem;
-  font-size:.82rem;color:var(--kt-ink);line-height:1.5;
-  counter-increment:schritt;
-}
-.schritt-list li::before{
-  content:counter(schritt);
-  min-width:22px;height:22px;
-  background:var(--tk-color);color:#fff;
-  border-radius:50%;
-  font-size:.68rem;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-top:.15rem;
-}
-
-/* Ampel / Status-Reihe */
+/* Ampel / Status-Chips */
 .ampel{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem;}
 .ampel-chip{
   display:inline-flex;align-items:center;gap:.35rem;
@@ -163,15 +145,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
 .ampel-chip.grau{background:#ECEFF1;color:#455A64;}
 .ampel-chip.blau{background:#E3F2FD;color:#1565C0;}
 
-/* Barometer-Mini-Chart: ein farbiges Feld pro Eintrag der letzten 14 Tage */
-.barometer-strip{display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.7rem;}
-.barometer-marker{width:22px;height:22px;border-radius:5px;flex-shrink:0;}
-.barometer-marker.gruen{background:#2E7D32;}
-.barometer-marker.gelb{background:#F57F17;}
-.barometer-marker.orange{background:#E65100;}
-.barometer-marker.rot{background:#C62828;}
-.barometer-marker.grau{background:#78909C;}
-
 /* Hinweis-Box */
 .hinweis{
   background:rgba(74,20,140,.07);
@@ -182,6 +155,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-
   margin-top:.5rem;
 }
 .hinweis strong{color:var(--tk-color);}
+
+/* Vertraulich-Box (Meldebogen §8a) */
+.vertraulich-box{
+  background:#FDEAEA;
+  border-left:3px solid #C62828;
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;color:#7A1F1F;line-height:1.55;
+  margin-bottom:.7rem;
+  display:flex;gap:.5rem;align-items:flex-start;
+}
+.vertraulich-box strong{color:#C62828;}
 
 /* Brainy-Box (inline) */
 .brainy-box{
@@ -206,29 +191,21 @@ footer{
 }
 footer strong{color:var(--kt-accent);}
 
-@media(max-width:600px){
-  .form-row{grid-template-columns:1fr;}
-  .form-row.drei{grid-template-columns:1fr;}
-}
-@media(max-width:480px){
-  .kt-header{height:auto;flex-wrap:wrap;row-gap:.4rem;padding:.6rem clamp(.75rem,4vw,1.25rem);}
-  .kt-logo-text .claim{display:none;}
-}
-
 /* ── TAB-SYSTEM ───────────────────────────────────────── */
 .tab-bar{
-  display:flex;gap:0;margin-bottom:1rem;
+  display:flex;gap:0;margin-bottom:1rem;flex-wrap:wrap;
   border:1.5px solid var(--kt-border);
   border-radius:var(--r-md);
   overflow:hidden;
   background:var(--kt-surface);
 }
 .tab-btn{
-  flex:1;padding:.5rem .6rem;
+  flex:1;min-width:110px;padding:.5rem .6rem;
   background:var(--kt-surface);border:none;
-  font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;
+  font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;
   color:var(--kt-muted);cursor:pointer;
   border-right:1px solid var(--kt-border);
+  border-bottom:1px solid var(--kt-border);
   transition:all .15s;
   display:flex;align-items:center;justify-content:center;gap:.3rem;
 }
@@ -260,20 +237,6 @@ footer strong{color:var(--kt-accent);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
 .form-row.full{grid-template-columns:1fr;}
 .form-row.drei{grid-template-columns:1fr 1fr 1fr;}
-
-/* Mehrfach-Listen (Bezugspersonen, Netzwerk, Ziele, Maßnahmen) */
-.liste-zeile{display:flex;gap:.4rem;margin-bottom:.4rem;align-items:center;padding:.2rem;border-radius:var(--r-sm);}
-.liste-zeile input,.liste-zeile select{
-  flex:1;font-family:'DM Sans',sans-serif;font-size:.82rem;
-  padding:.38rem .6rem;border:1.5px solid var(--kt-border);border-radius:var(--r-sm);
-  background:var(--kt-paper);color:var(--kt-ink);outline:none;
-}
-.liste-zeile input:focus,.liste-zeile select:focus{border-color:var(--tk-color);}
-.liste-zeile-entfernen{flex-shrink:0;background:none;border:none;color:#C62828;font-weight:700;cursor:pointer;font-size:.85rem;padding:.2rem .5rem;}
-.liste-zeile.ueberfaellig{background:rgba(198,40,40,.08);border:1.5px solid #C62828;}
-.liste-zeile.ueberfaellig input,.liste-zeile.ueberfaellig select{border-color:#C62828;}
-.liste-kopfzeile{display:flex;gap:.4rem;margin-bottom:.3rem;padding:0 .2rem;}
-.liste-kopfzeile span{flex:1;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--kt-muted);}
 
 .fld{display:flex;flex-direction:column;gap:.2rem;}
 .fld label{
@@ -321,25 +284,8 @@ footer strong{color:var(--kt-accent);}
 .ampel-radio .opt-gruen:has(input:checked){background:#2E7D32;color:#fff;}
 .ampel-radio .opt-gelb{background:#FFF8E1;color:#F57F17;border-color:#FFE082;}
 .ampel-radio .opt-gelb:has(input:checked){background:#F57F17;color:#fff;}
-.ampel-radio .opt-orange{background:#FFF3E0;color:#E65100;border-color:#FFCC80;}
-.ampel-radio .opt-orange:has(input:checked){background:#E65100;color:#fff;}
 .ampel-radio .opt-rot{background:#FDEAEA;color:#C62828;border-color:#EF9A9A;}
 .ampel-radio .opt-rot:has(input:checked){background:#C62828;color:#fff;}
-.ampel-radio .opt-grau{background:#ECEFF1;color:#455A64;border-color:#B0BEC5;}
-.ampel-radio .opt-grau:has(input:checked){background:#455A64;color:#fff;}
-
-/* Weiterleitung Checkboxen */
-.wl-group{display:flex;flex-wrap:wrap;gap:.4rem;}
-.wl-chip{
-  display:inline-flex;align-items:center;gap:.3rem;
-  padding:.3rem .75rem;border-radius:20px;
-  border:1.5px solid var(--tk-border);
-  background:var(--kt-surface);
-  font-size:.72rem;font-weight:600;
-  cursor:pointer;transition:all .15s;color:var(--kt-muted);
-}
-.wl-chip input{display:none;}
-.wl-chip:has(input:checked){background:var(--tk-color);border-color:var(--tk-color);color:#fff;}
 
 /* Formular-Aktionsleiste */
 .form-actions{
@@ -363,32 +309,53 @@ footer strong{color:var(--kt-accent);}
 .act-btn.success{background:#2E7D32;color:#fff;}
 .act-btn.success:hover{background:#1B5E20;}
 
-/* Pflichtfeld-Hinweis */
 .pflicht-hinweis{font-size:.65rem;color:var(--kt-muted);margin-top:.3rem;}
 .pflicht-hinweis .req{color:#C62828;}
 
-/* Gespeichert-Toast */
+/* Toast */
 .toast{
-  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(3rem);
-  background:#2E7D32;color:#fff;
-  padding:.55rem 1.2rem;border-radius:20px;
-  font-size:.78rem;font-weight:700;
-  box-shadow:0 4px 16px rgba(0,0,0,.2);
-  z-index:9999;opacity:0;
-  transition:all .3s;pointer-events:none;
+  position:fixed;bottom:1.5rem;right:1.5rem;left:auto;
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-left:4px solid var(--tk-color);
+  border-radius:var(--r-md);
+  padding:.65rem 1.1rem;
+  font-size:.8rem;font-weight:600;color:var(--kt-ink);
+  box-shadow:var(--shadow-lg);
+  z-index:9999;display:none;
+  max-width:calc(100vw - 2rem);
 }
-.toast.sichtbar{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* PDF-Vorschau (FM-06) */
-.pdf-vorschau{background:#fff;border:1.5px solid var(--kt-border);border-radius:var(--r-md);padding:1rem 1.1rem;font-size:.8rem;line-height:1.6;}
-.pdf-vorschau h3{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--tk-color);margin-bottom:.4rem;padding-bottom:.25rem;border-bottom:2px solid var(--tk-color);}
-.pdf-vorschau .pdf-zeile{margin-bottom:.25rem;}
-.pdf-vorschau .pdf-zeile strong{color:var(--kt-primary);}
-.pdf-vorschau .pdf-sektion{margin-top:.8rem;}
+/* ── FALLLISTE (Fallübersicht) ────────────────────────── */
+.fallliste{display:flex;flex-direction:column;gap:.5rem;}
+.fall-zeile{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;
+  padding:.6rem .75rem;border:1.5px solid var(--kt-border);border-radius:var(--r-md);
+  background:var(--kt-paper);
+}
+.fall-zeile.aktiv-ausgewaehlt{border-color:var(--tk-color);background:var(--tk-light);}
+.fall-zeile-kind{flex:1;min-width:140px;font-size:.85rem;font-weight:700;color:var(--kt-primary);}
+.fall-zeile-kind span{display:block;font-size:.7rem;font-weight:400;color:var(--kt-muted);}
+.leer-hinweis{font-size:.8rem;color:var(--kt-muted);padding:.5rem 0;}
 
-/* Print */
+/* ── VERLAUF/CHRONIK EINTRÄGE ─────────────────────────── */
+.tl-eintrag{border:1.5px solid var(--kt-border);border-radius:var(--r-md);padding:.65rem .8rem;margin-bottom:.55rem;background:var(--kt-paper);}
+.tl-eintrag-kopf{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;flex-wrap:wrap;}
+.tl-eintrag-datum{font-size:.68rem;color:var(--kt-muted);margin-left:auto;}
+.tl-block{margin-top:.35rem;}
+.tl-block-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--kt-muted);display:block;margin-bottom:.15rem;}
+.tl-block-text{font-size:.82rem;color:var(--kt-ink);line-height:1.5;}
+
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr;}
+  .form-row.drei{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .kt-header{height:auto;flex-wrap:wrap;row-gap:.4rem;padding:.6rem clamp(.75rem,4vw,1.25rem);}
+  .kt-logo-text .claim{display:none;}
+}
 @media print {
-  .kt-header,.brainy-banner,.tab-bar,.form-actions,#kind-auswahl-karte,.tab-panel:not(.aktiv),footer{display:none!important;}
+  .kt-header,.brainy-banner,.tab-bar,.form-actions,footer,.toast{display:none!important;}
   .form-section{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
   body{background:#fff;font-size:12px;}
   .unter-wrap{padding:.5rem;}
@@ -398,7 +365,7 @@ footer strong{color:var(--kt-accent);}
 <body>
 
 <!-- ══════════════════════════════════════════════════════════ -->
-<!-- AUTH-GUARD: Nur TK/Admin - Weiterleitung wenn keine gültige Rolle -->
+<!-- AUTH-GUARD: TK/Admin (voller Zugriff) und INGRA (eingeschränkt) -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <script>
 (function(){
@@ -406,7 +373,7 @@ footer strong{color:var(--kt-accent);}
     if(window.location.protocol==='file:') return;
     var login = sessionStorage.getItem('klartext_login');
     var role  = sessionStorage.getItem('klartext_role') || '';
-    if(login !== 'true' || !['tk','admin'].includes(role)){
+    if(login !== 'true' || !['tk','admin','ingra','ingra-beta'].includes(role)){
       window.location.href = 'KLARTEXT_Login.html';
     }
   } catch(e) {}
@@ -428,242 +395,261 @@ footer strong{color:var(--kt-accent);}
   <div class="brainy-face"><img src="brainy-tk.png" alt="Brainy" style="width:32px;height:32px;object-fit:contain;"></div>
   <div class="brainy-text">
     <span class="brainy-label">Brainy · Fallmanagement</span>
-    <p class="brainy-msg">Brainy begleitet TK beim Fallmanagement — strukturiert, datenschutzkonform, prozesssicher.</p>
+    <p class="brainy-msg">Brainy begleitet strukturiert, datenschutzkonform und beobachtungsbasiert durch den Fallverlauf — <strong>ohne Weiterleitungsfunktion</strong>, jeder Fall bleibt bei den zuständigen Personen.</p>
   </div>
 </div>
 
 <div class="unter-wrap">
   <div class="unter-header">
-    <div class="unter-header-stripe" style="background:#00695C;"></div>
+    <div class="unter-header-stripe"></div>
     <div class="unter-header-inner">
-      <div class="unter-nr" style="color:#00695C;">Fallmanagement</div>
+      <div class="unter-nr">Fallmanagement</div>
       <div class="unter-titel">Fallmanagement-Assistent</div>
-      <div class="unter-sub">Fallakte · Risiko-Ampel · Maßnahmen · Verlauf · Tages-Barometer · PDF-Fallakte</div>
+      <div class="unter-sub">Fallübersicht · Chronik · Risikostatus · Fallbesprechungen · Meldebogen §8a · Fallabschluss</div>
     </div>
   </div>
 
-  <!-- Zentrale Kind-Auswahl: gilt für alle Tabs (ein zentraler kind_id-State) -->
-  <div class="karte" id="kind-auswahl-karte">
-    <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-      <span class="karte-header-icon">👤</span>
-      <span class="karte-header-titel" style="color:#00695C;">Kind-Auswahl</span>
-    </div>
-    <div class="karte-body">
-      <div class="fld">
-        <label>Kind (gilt für alle Tabs)</label>
-        <select id="kind-auswahl"></select>
-      </div>
-      <div id="kind-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
-    </div>
-  </div>
-
-  <div class="tab-bar">
-    <button class="tab-btn aktiv" data-panel="tab-fallakte" onclick="switchTab(this,'tab-fallakte')">📁 Fallakte</button>
-    <button class="tab-btn" data-panel="tab-risiko" onclick="switchTab(this,'tab-risiko')">🚦 Risiko-Ampel</button>
-    <button class="tab-btn" data-panel="tab-massnahmen" onclick="switchTab(this,'tab-massnahmen')">📋 Maßnahmen</button>
+  <div class="tab-bar" id="tab-bar">
+    <button class="tab-btn aktiv" data-panel="tab-uebersicht" onclick="switchTab(this,'tab-uebersicht')">📋 Fallübersicht</button>
+    <button class="tab-btn" data-panel="tab-detail" onclick="switchTab(this,'tab-detail')">📁 Fallakte</button>
     <button class="tab-btn" data-panel="tab-verlauf" onclick="switchTab(this,'tab-verlauf')">🕐 Verlauf</button>
-    <button class="tab-btn" data-panel="tab-barometer" onclick="switchTab(this,'tab-barometer')">🌡️ Barometer</button>
-    <button class="tab-btn" data-panel="tab-pdf" onclick="switchTab(this,'tab-pdf')">📄 PDF</button>
-    <button class="tab-btn" data-panel="tab-anleitung" onclick="switchTab(this,'tab-anleitung')">📖 Anleitung</button>
+    <button class="tab-btn" data-panel="tab-risiko" onclick="switchTab(this,'tab-risiko')">🚦 Risikostatus</button>
+    <button class="tab-btn" data-panel="tab-besprechungen" data-nur-tk="1" onclick="switchTab(this,'tab-besprechungen')">💬 Fallbesprechungen</button>
+    <button class="tab-btn" data-panel="tab-meldebogen" onclick="switchTab(this,'tab-meldebogen')">🔒 Meldebogen §8a</button>
+    <button class="tab-btn" data-panel="tab-abschluss" data-nur-tk="1" onclick="switchTab(this,'tab-abschluss')">✔ Fallabschluss</button>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       FM-01 · FALLAKTE / STAMMDATEN
+       TAB 1 · FALLÜBERSICHT
   ══════════════════════════════════════════════════════════ -->
-  <div class="tab-panel aktiv" id="tab-fallakte">
-    <div id="fa-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
-
+  <div class="tab-panel aktiv" id="tab-uebersicht">
     <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📁</span>
-        <span class="karte-header-titel" style="color:#00695C;">Kind</span>
-      </div>
+      <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Alle Fälle</span></div>
       <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Name:</strong> <span id="fa-name">–</span></li>
-          <li><strong>Klasse / Gruppe:</strong> <span id="fa-klasse">–</span></li>
-          <li><strong>Geburtsdatum:</strong> <span id="fa-geburtsdatum">–</span></li>
-        </ul>
+        <div class="fld" style="margin-bottom:.6rem;">
+          <label>Nach Kind filtern</label>
+          <input type="text" id="uebersicht-filter" placeholder="Name oder Klasse …" oninput="falluebersichtRendern()">
+        </div>
+        <div id="uebersicht-status" class="hinweis" style="display:none;"></div>
+        <div class="fallliste" id="fallliste"></div>
       </div>
     </div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">👥</span><span class="form-section-titel">Bezugsperson(en)</span></div>
+    <div class="form-section" data-nur-tk="1" id="neue-fallakte-karte">
+      <div class="form-section-header"><span class="form-section-icon">➕</span><span class="form-section-titel">Neue Fallakte anlegen</span></div>
       <div class="form-body">
-        <div id="fa-bezugspersonen-liste"></div>
-        <button type="button" class="act-btn ghost" onclick="bezugspersonZeileHinzufuegen()">+ Bezugsperson hinzufügen</button>
+        <div class="fld">
+          <label>Kind <span class="req">*</span></label>
+          <select id="neu-kind"></select>
+        </div>
+        <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+          <button class="act-btn primary" onclick="fallakteAnlegen()">💾 Fallakte anlegen</button>
+        </div>
       </div>
     </div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">⚖️</span><span class="form-section-titel">Rechtsgrundlage & Rahmen</span></div>
-      <div class="form-body">
-        <div class="form-row">
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallübersicht</span>
+        <p class="brainy-box-text"><em>„Welche Fälle brauchen aktuell besondere Aufmerksamkeit?"</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 2 · FALLAKTE-DETAIL
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-detail">
+    <div id="detail-kein-fall" class="hinweis">Kein Fall ausgewählt — bitte in der Fallübersicht einen Fall öffnen.</div>
+
+    <div id="detail-inhalt" style="display:none;">
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">👤</span><span class="karte-header-titel">Kind</span></div>
+        <div class="karte-body">
+          <ul class="stw-list">
+            <li><strong>Name:</strong> <span id="det-name">–</span></li>
+            <li><strong>Klasse / Gruppe:</strong> <span id="det-klasse">–</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">📁</span><span class="karte-header-titel">Fallstatus</span></div>
+        <div class="karte-body">
+          <div class="ampel" style="margin-bottom:.5rem;"><span class="ampel-chip" id="det-status-chip">–</span></div>
+
+          <div data-nur-tk="1">
+            <div class="fld">
+              <label>Status ändern</label>
+              <select id="det-status-auswahl">
+                <option value="laufend">Laufend</option>
+                <option value="review">Review</option>
+                <option value="abgeschlossen">Abgeschlossen</option>
+              </select>
+            </div>
+            <div class="form-actions" style="margin-top:.5rem;padding-top:.5rem;">
+              <button class="act-btn primary" onclick="fallstatusSpeichern()">💾 Status speichern</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Aktueller Risikostatus</span></div>
+        <div class="karte-body">
+          <div class="ampel"><span class="ampel-chip" id="det-risiko-chip">–</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Fallakte</span>
+        <p class="brainy-box-text"><em>„Ist der Fallstatus noch aktuell?"</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 3 · VERLAUF / CHRONIK
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-verlauf">
+    <div id="verlauf-kein-fall" class="hinweis">Kein Fall ausgewählt — bitte in der Fallübersicht einen Fall öffnen.</div>
+
+    <div id="verlauf-inhalt" style="display:none;">
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">➕</span><span class="form-section-titel">Neuer Eintrag</span></div>
+        <div class="form-body">
           <div class="fld">
-            <label>Rechtsgrundlage</label>
-            <select id="fa-rechtsgrundlage">
-              <option value="">– bitte wählen –</option>
-              <option value="sgb_viii_35a">§35a SGB VIII</option>
-              <option value="sgb_ix_54">§54 SGB IX</option>
-              <option value="sonstige">Sonstige</option>
+            <label>Ereignistyp <span class="req">*</span></label>
+            <select id="tl-ereignistyp">
+              <option value="beobachtung">Beobachtung</option>
+              <option value="gespraech">Gespräch</option>
+              <option value="vorfall">Vorfall</option>
+              <option value="uebergabe">Übergabe</option>
             </select>
           </div>
           <div class="fld">
-            <label>Kostenträger</label>
-            <input type="text" id="fa-kostentraeger" placeholder="z.B. Jugendamt Musterstadt">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="fld">
-            <label>Stundenumfang</label>
-            <input type="text" id="fa-stundenumfang" placeholder="z.B. 10 Std./Woche">
+            <label>Fakten (beobachtbar)</label>
+            <textarea id="tl-fakten" placeholder="Was ist konkret beobachtet/passiert?"></textarea>
           </div>
           <div class="fld">
-            <label>Befristet bis</label>
-            <input type="date" id="fa-befristet-bis">
+            <label>Einschätzung (Deutung)</label>
+            <textarea id="tl-einschaetzung" placeholder="Fachliche Einschätzung — getrennt von den Fakten"></textarea>
           </div>
-        </div>
-        <div id="fa-befristet-hinweis" class="hinweis" style="display:none;"></div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">🧑‍⚕️</span><span class="form-section-titel">Zuständigkeit</span></div>
-      <div class="form-body">
-        <div class="form-row">
-          <div class="fld">
-            <label>Zuständige INGRA</label>
-            <select id="fa-ingra"></select>
-          </div>
-          <div class="fld">
-            <label>Vertretung</label>
-            <select id="fa-vertretung"></select>
+          <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+            <button class="act-btn primary" onclick="timelineEintragSpeichern()">💾 Eintrag speichern</button>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">🕸️</span><span class="form-section-titel">Netzwerk</span></div>
-      <div class="form-body">
-        <div id="fa-netzwerk-liste"></div>
-        <button type="button" class="act-btn ghost" onclick="netzwerkZeileHinzufuegen()">+ Kontakt hinzufügen</button>
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">🕐</span><span class="karte-header-titel">Verlauf (neueste zuerst)</span></div>
+        <div class="karte-body">
+          <div id="verlauf-status" class="hinweis" style="display:none;"></div>
+          <div id="verlauf-liste"></div>
+        </div>
       </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">🎯</span><span class="form-section-titel">Ziele</span></div>
-      <div class="form-body">
-        <div id="fa-ziele-liste"></div>
-        <button type="button" class="act-btn ghost" onclick="zielZeileHinzufuegen()">+ Ziel hinzufügen</button>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">💡</span><span class="form-section-titel">Ressourcen</span></div>
-      <div class="form-body">
-        <div class="fld"><textarea id="fa-ressourcen" placeholder="Stärken, Unterstützungssystem, vorhandene Hilfen …"></textarea></div>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button class="act-btn primary" onclick="fallakteSpeichern()">💾 Speichern</button>
     </div>
 
     <div class="brainy-box">
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Sind alle relevanten Bezugspersonen bekannt und eingetragen?"</em><br><em>„Was sind die konkreten Ziele für diesen Fall?"</em></p>
+        <span class="brainy-box-label">Brainy · Verlauf/Chronik</span>
+        <p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em><br><em>„Fakten und Einschätzung bewusst getrennt eintragen."</em></p>
       </div>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       FM-02 · RISIKO-AMPEL
+       TAB 4 · RISIKOSTATUS
   ══════════════════════════════════════════════════════════ -->
   <div class="tab-panel" id="tab-risiko">
-    <div class="karte" id="risiko-karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🚦</span>
-        <span class="karte-header-titel" style="color:#00695C;">Risiko-Verlauf</span>
-      </div>
-      <div class="karte-body">
-        <div id="risiko-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
-        <ul class="stw-list" id="risiko-liste"></ul>
-      </div>
-    </div>
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🚦</span>
-        <span class="karte-header-titel" style="color:#00695C;">Ampel-Kriterien</span>
-      </div>
-      <div class="karte-body">
-        <div class="ampel" style="flex-direction:column;gap:.5rem;">
-          <span class="ampel-chip gruen" style="justify-content:flex-start;">✔ Grün – Situation stabil, Bedarf gedeckt, keine akuten Hinweise</span>
-          <span class="ampel-chip gelb" style="justify-content:flex-start;">⚑ Gelb – Erhöhter Beobachtungsbedarf, einzelne Risikofaktoren</span>
-          <span class="ampel-chip rot" style="justify-content:flex-start;">✗ Rot – Akuter Handlungsbedarf, sofortige Maßnahmen erforderlich</span>
+    <div id="risiko-kein-fall" class="hinweis">Kein Fall ausgewählt — bitte in der Fallübersicht einen Fall öffnen.</div>
+
+    <div id="risiko-inhalt" style="display:none;">
+      <div class="form-section" data-nur-tk="1">
+        <div class="form-section-header"><span class="form-section-icon">➕</span><span class="form-section-titel">Neue Einschätzung</span></div>
+        <div class="form-body">
+          <div class="fld">
+            <label>Ampel-Farbe <span class="req">*</span></label>
+            <div class="ampel-radio">
+              <label class="opt-gruen"><input type="radio" name="ri-ampel" value="gruen"> 🟢 Grün</label>
+              <label class="opt-gelb"><input type="radio" name="ri-ampel" value="gelb"> 🟡 Gelb</label>
+              <label class="opt-rot"><input type="radio" name="ri-ampel" value="rot"> 🔴 Rot</label>
+            </div>
+          </div>
+          <div class="fld">
+            <label>Begründung</label>
+            <textarea id="ri-begruendung" placeholder="Worauf stützt sich die Einschätzung?"></textarea>
+          </div>
+          <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+            <button class="act-btn primary" onclick="risikostatusSpeichern()">💾 Einschätzung speichern</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📋</span>
-        <span class="karte-header-titel" style="color:#00695C;">Einschätzungskriterien (neutral)</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Verhaltensauffälligkeiten: Häufigkeit, Intensität, Kontext</li>
-          <li>Soziale Einbindung: Peer-Kontakte, Teamfähigkeit, Isolation</li>
-          <li>Emotionale Stabilität: Stimmungsschwankungen, Belastbarkeit</li>
-          <li>Lern- und Teilhabemöglichkeiten: Zugänglichkeit, Förderung</li>
-          <li>Familiäres Umfeld: Kooperation Bezugspersonen, Unterstützung</li>
-          <li>Eigengefährdung / Fremdgefährdung: akute Hinweise vorhanden?</li>
-        </ul>
+
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">🚦</span><span class="karte-header-titel">Ampel-Verlauf (Historie)</span></div>
+        <div class="karte-body">
+          <div class="hinweis">Die Historie bleibt vollständig erhalten — Einträge können hier bewusst weder bearbeitet noch gelöscht werden.</div>
+          <div id="risiko-status" class="hinweis" style="display:none;"></div>
+          <div id="risiko-liste" style="margin-top:.5rem;"></div>
+        </div>
       </div>
     </div>
 
     <div class="brainy-box">
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Basiert meine Einschätzung auf Beobachtungen – oder auf Vermutungen?"</em><br><em>„Bei Rot: nicht allein entscheiden – intern abstimmen und dokumentieren."</em></p>
+        <span class="brainy-box-label">Brainy · Risikostatus</span>
+        <p class="brainy-box-text"><em>„Bei Rot: nicht allein entscheiden – intern abstimmen und dokumentieren."</em></p>
       </div>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       FM-03 · MASSNAHMENPLAN
+       TAB 5 · FALLBESPRECHUNGEN (nur TK/Admin)
   ══════════════════════════════════════════════════════════ -->
-  <div class="tab-panel" id="tab-massnahmen">
-    <div id="massnahmen-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+  <div class="tab-panel" id="tab-besprechungen" data-nur-tk="1">
+    <div id="besprechungen-kein-fall" class="hinweis">Kein Fall ausgewählt — bitte in der Fallübersicht einen Fall öffnen.</div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">📌</span><span class="form-section-titel">Maßnahmen</span></div>
-      <div class="form-body">
-        <div class="liste-kopfzeile">
-          <span>Maßnahme</span><span>Verantwortlich</span><span>Von</span><span>Bis</span><span>Status</span><span>Notiz</span>
+    <div id="besprechungen-inhalt" style="display:none;">
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">➕</span><span class="form-section-titel" id="bp-form-titel">Neues Protokoll</span></div>
+        <div class="form-body">
+          <div class="form-row">
+            <div class="fld">
+              <label>Datum</label>
+              <input type="date" id="bp-datum">
+            </div>
+            <div class="fld">
+              <label>Nächster Termin</label>
+              <input type="date" id="bp-naechster-termin">
+            </div>
+          </div>
+          <div class="fld">
+            <label>Protokoll</label>
+            <textarea id="bp-protokoll" placeholder="Besprechungsinhalt …"></textarea>
+          </div>
+          <div class="fld">
+            <label>Ziele</label>
+            <textarea id="bp-ziele" placeholder="Vereinbarte Ziele …"></textarea>
+          </div>
+          <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+            <button class="act-btn primary" onclick="fallbesprechungSpeichern()">💾 Speichern</button>
+            <button class="act-btn ghost" onclick="fallbesprechungFormularZuruecksetzen()">＋ Neues Protokoll</button>
+          </div>
         </div>
-        <div id="fa-massnahmen-liste"></div>
-        <button type="button" class="act-btn ghost" onclick="massnahmeZeileHinzufuegen()">+ Maßnahme hinzufügen</button>
       </div>
-    </div>
 
-    <div class="form-actions">
-      <button class="act-btn primary" onclick="massnahmenSpeichern()">💾 Speichern</button>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🎯</span>
-        <span class="karte-header-titel" style="color:#00695C;">Status-Übersicht</span>
-      </div>
-      <div class="karte-body">
-        <div class="ampel">
-          <span class="ampel-chip blau">📌 Offen</span>
-          <span class="ampel-chip gelb">⚙️ In Bearbeitung</span>
-          <span class="ampel-chip gruen">✔ Abgeschlossen</span>
-          <span class="ampel-chip rot">⚠ Überfällig (Zeitraum bis abgelaufen, nicht abgeschlossen)</span>
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">💬</span><span class="karte-header-titel">Protokolle (neueste zuerst)</span></div>
+        <div class="karte-body">
+          <div id="besprechungen-status" class="hinweis" style="display:none;"></div>
+          <div id="besprechungen-liste"></div>
         </div>
       </div>
     </div>
@@ -671,141 +657,94 @@ footer strong{color:var(--kt-accent);}
     <div class="brainy-box">
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Ist jede Maßnahme konkret, zeitgebunden und einer Person zugeordnet?"</em><br><em>„Welche Maßnahmen sind überfällig?"</em></p>
+        <span class="brainy-box-label">Brainy · Fallbesprechungen</span>
+        <p class="brainy-box-text"><em>„Sind die vereinbarten Ziele konkret genug, um sie beim nächsten Termin zu überprüfen?"</em></p>
       </div>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       FM-04 · VERLAUF / CHRONIK
+       TAB 6 · MELDEBOGEN §8a
   ══════════════════════════════════════════════════════════ -->
-  <div class="tab-panel" id="tab-verlauf">
-    <div id="timeline-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+  <div class="tab-panel" id="tab-meldebogen">
+    <div class="vertraulich-box">
+      <span style="font-size:1.1rem;">🔒</span>
+      <span><strong>Vertraulich — Meldebogen §8a.</strong> Zugriff ausschließlich für TK/Admin sowie die meldende Person selbst. Meldende INGRA sehen nach dem Anlegen keine fremden Einträge.</span>
+    </div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">🕐</span><span class="form-section-titel">Verlauf (neueste zuerst)</span></div>
-      <div class="form-body">
-        <div class="liste-kopfzeile">
-          <span>Datum</span><span>Ereignistyp</span><span>Fakten</span><span>Einschätzung</span>
+    <div id="meldebogen-kein-fall" class="hinweis">Kein Fall ausgewählt — bitte in der Fallübersicht einen Fall öffnen.</div>
+
+    <div id="meldebogen-inhalt" style="display:none;">
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">➕</span><span class="form-section-titel">Neue Meldung</span></div>
+        <div class="form-body">
+          <div class="fld">
+            <label>Meldedatum</label>
+            <input type="date" id="mb-datum">
+          </div>
+          <div class="fld">
+            <label>Sachverhalt <span class="req">*</span></label>
+            <textarea id="mb-sachverhalt" placeholder="Was ist konkret aufgefallen?"></textarea>
+          </div>
+          <div class="fld">
+            <label>Einschätzung</label>
+            <textarea id="mb-einschaetzung"></textarea>
+          </div>
+          <div class="fld">
+            <label>Bereits eingeleitete Maßnahmen</label>
+            <textarea id="mb-massnahmen"></textarea>
+          </div>
+          <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+            <button class="act-btn primary" onclick="meldebogenSpeichern()">💾 Meldung anlegen</button>
+          </div>
         </div>
-        <div id="fa-timeline-liste"></div>
-        <button type="button" class="act-btn ghost" onclick="timelineZeileHinzufuegen()">+ Eintrag hinzufügen</button>
       </div>
-    </div>
 
-    <div class="form-actions">
-      <button class="act-btn primary" onclick="timelineSpeichern()">💾 Speichern</button>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📌</span>
-        <span class="karte-header-titel" style="color:#00695C;">Dokumentationsgrundsätze</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Beobachtungsbasiert – Fakten und Einschätzung bewusst getrennt eintragen</li>
-          <li>Zeitnah – möglichst am gleichen Tag erfassen</li>
-          <li>Neutral – Fakten ohne Wertung, Einschätzung als das kenntlich, was sie ist</li>
-        </ul>
+      <div class="karte">
+        <div class="karte-header"><span class="karte-header-icon">🔒</span><span class="karte-header-titel">Meldungen</span></div>
+        <div class="karte-body">
+          <div id="meldebogen-status" class="hinweis" style="display:none;"></div>
+          <div id="meldebogen-liste"></div>
+        </div>
       </div>
     </div>
 
     <div class="brainy-box">
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Ist der Eintrag beobachtbar – oder meine Interpretation?"</em><br><em>„Wann wurde der letzte Verlaufseintrag gemacht?"</em></p>
+        <span class="brainy-box-label">Brainy · Meldebogen §8a</span>
+        <p class="brainy-box-text"><em>„Sachverhalt sachlich und nachvollziehbar formuliert?"</em></p>
       </div>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════
-       FM-05 · TAGES-BAROMETER
+       TAB 7 · FALLABSCHLUSS (nur TK/Admin)
   ══════════════════════════════════════════════════════════ -->
-  <div class="tab-panel" id="tab-barometer">
-    <div id="barometer-status" class="hinweis" style="border-color:#00695C;display:none;"></div>
+  <div class="tab-panel" id="tab-abschluss" data-nur-tk="1">
+    <div id="abschluss-kein-fall" class="hinweis">Kein Fall ausgewählt — bitte in der Fallübersicht einen Fall öffnen.</div>
 
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">🌡️</span><span class="form-section-titel">Heutiger Eintrag</span></div>
-      <div class="form-body">
-        <div class="ampel-radio">
-          <label class="opt-gruen"><input type="radio" name="ba-farbe" value="gruen"> 🟢 Grün · Stabil</label>
-          <label class="opt-gelb"><input type="radio" name="ba-farbe" value="gelb"> 🟡 Gelb · Angespannt</label>
-          <label class="opt-orange"><input type="radio" name="ba-farbe" value="orange"> 🟠 Orange · Belastet</label>
-          <label class="opt-rot"><input type="radio" name="ba-farbe" value="rot"> 🔴 Rot · Akute Krise</label>
-          <label class="opt-grau"><input type="radio" name="ba-farbe" value="grau"> ⚪ Grau · Erschöpft</label>
-        </div>
-        <div class="fld" style="margin-top:.6rem;">
-          <label>Notiz (optional)</label>
-          <input type="text" id="ba-notiz" placeholder="Kurze Ergänzung">
-        </div>
-        <div class="form-actions">
-          <button class="act-btn primary" onclick="barometerSpeichern()">💾 Eintrag speichern</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="karte" id="barometer-karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📊</span>
-        <span class="karte-header-titel" style="color:#00695C;">Verlauf der letzten 14 Tage</span>
-      </div>
-      <div class="karte-body">
-        <div class="barometer-strip" id="barometer-strip"></div>
-        <ul class="stw-list" id="barometer-liste"></ul>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">📊</span>
-        <span class="karte-header-titel" style="color:#00695C;">Wofür dient das Barometer?</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Schneller Tagesstatus – auch für kurze Dokumentation geeignet</li>
-          <li>Muster erkennen: Wann treten häufiger belastete Einträge auf?</li>
-          <li>Ergänzung zur Chronik – kein Ersatz</li>
-          <li>Einträge stammen aus der Kind-Selbstauskunft, der INGRA-Einschätzung oder direkt von TK</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="brainy-box">
-      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
-      <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Was hat sich im Barometer-Verlauf verändert?"</em><br><em>„Sehe ich ein Muster in den letzten Einträgen?"</em></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════
-       FM-06 · PDF-FALLAKTE
-  ══════════════════════════════════════════════════════════ -->
-  <div class="tab-panel" id="tab-pdf">
-    <div class="karte">
-      <div class="karte-header" style="background:#E0F2F1;border-color:rgba(0,105,92,.12);">
-        <span class="karte-header-icon">🔒</span>
-        <span class="karte-header-titel" style="color:#00695C;">Datenschutz beim Export</span>
-      </div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Nur mit Einwilligung der Bezugspersonen weitergeben</li>
-          <li>Kein Versand per unverschlüsselter E-Mail</li>
-          <li>Ausdrucke sicher verwahren oder vernichten</li>
-          <li>Digitale Kopien nur auf dienstlichen Geräten speichern</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="form-section-header"><span class="form-section-icon">📄</span><span class="form-section-titel">Vorschau der Fallakte</span></div>
-      <div class="form-body">
-        <div class="pdf-vorschau" id="pdf-inhalt">
-          <p class="tl-leer">Kein Kind ausgewählt.</p>
+    <div id="abschluss-inhalt" style="display:none;">
+      <div class="form-section">
+        <div class="form-section-header"><span class="form-section-icon">✔</span><span class="form-section-titel">Abschluss-Checkliste</span></div>
+        <div class="form-body">
+          <div class="fld">
+            <label>Abschlussdatum</label>
+            <input type="date" id="ab-datum">
+          </div>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" id="ab-ziele-erreicht"> Ziele erreicht</label>
+            <label class="check-item"><input type="checkbox" id="ab-uebergabe"> Übergabe dokumentiert</label>
+            <label class="check-item"><input type="checkbox" id="ab-eltern"> Eltern/Bezugspersonen informiert</label>
+            <label class="check-item"><input type="checkbox" id="ab-unterlagen"> Unterlagen vollständig</label>
+          </div>
+          <div class="fld">
+            <label>Abschlussbericht</label>
+            <textarea id="ab-bericht" placeholder="Zusammenfassung des Fallverlaufs …"></textarea>
+          </div>
+          <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+            <button class="act-btn primary" onclick="fallabschlussSpeichern()">💾 Speichern</button>
+          </div>
         </div>
       </div>
     </div>
@@ -813,1001 +752,65 @@ footer strong{color:var(--kt-accent);}
     <div class="brainy-box">
       <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
       <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text"><em>„Wer bekommt dieses Dokument – und ist die Weitergabe datenschutzkonform?"</em><br><em>„Sind alle Daten vollständig und aktuell vor dem Export?"</em></p>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button class="act-btn ghost" onclick="ladePdfVorschau()">🔄 Vorschau aktualisieren</button>
-      <button class="act-btn primary" onclick="pdfExportieren()">📄 PDF erzeugen/exportieren</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════
-       ANLEITUNG FALLMANAGEMENT
-  ══════════════════════════════════════════════════════════ -->
-  <div class="tab-panel" id="tab-anleitung">
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">📋</span><span class="karte-header-titel">Prozessübersicht</span></div>
-      <div class="karte-body">
-        <ol class="schritt-list">
-          <li><strong>Fallakte anlegen</strong> – Stammdaten, Bezugsperson, Besonderheiten, Ziele und Ressourcen erfassen</li>
-          <li><strong>Risiko-Ampel einschätzen</strong> – Situation bewerten, Ampelfarbe begründen, bei Rot intern abstimmen</li>
-          <li><strong>Maßnahmen planen</strong> – konkrete Schritte, Verantwortlichkeiten und Zeiträume festlegen</li>
-          <li><strong>Verlauf dokumentieren</strong> – Ereignisse zeitnah, beobachtungsbasiert und neutral eintragen</li>
-          <li><strong>Tages-Barometer einsehen</strong> – Verlauf der Kind-Barometer-Einträge zur Musterbildung nutzen</li>
-          <li><strong>PDF exportieren</strong> – Fallakte für Weitergabe oder Archiv erstellen (datenschutzkonform)</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">⚠️</span><span class="karte-header-titel">Wichtige Grundsätze</span></div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li>Beobachtungen statt Bewertungen – sachlich, neutral, nachvollziehbar</li>
-          <li>Zeitnah dokumentieren – möglichst am gleichen Tag</li>
-          <li>Ampel-Rot: immer intern abstimmen, nie allein entscheiden</li>
-          <li>Datenschutz: nur zweckbezogene Daten, Einwilligung vor Weitergabe</li>
-          <li>Maßnahmen: konkret, zeitgebunden, verantwortlich zugeordnet</li>
-          <li>Fallmanagement bleibt intern für TK – keine Weiterleitung an Dritte</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="karte">
-      <div class="karte-header"><span class="karte-header-icon">💾</span><span class="karte-header-titel">Datenherkunft</span></div>
-      <div class="karte-body">
-        <ul class="stw-list">
-          <li><strong>Fallakte</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakten</code>, plus <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakte_bezugspersonen</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fallakte_netzwerk</code>, <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_ziele</code></li>
-          <li><strong>Risiko-Ampel</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_risikostatus</code></li>
-          <li><strong>Maßnahmenplan</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_massnahmen</code></li>
-          <li><strong>Verlauf</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">fall_timeline</code></li>
-          <li><strong>Tages-Barometer</strong> – Tabelle <code style="font-size:.72rem;background:#f0f0f0;padding:0 .3rem;border-radius:3px;">barometer_kind</code></li>
-        </ul>
-        <div class="hinweis">Alle Daten werden direkt aus Supabase geladen (kein localStorage).</div>
-      </div>
-    </div>
-
-    <div class="brainy-box">
-      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
-      <div class="brainy-box-content">
-        <span class="brainy-box-label">Brainy · Fallmanagement-Modus</span>
-        <p class="brainy-box-text">Brainy begleitet jeden Schritt mit Reflexionsfragen und Risikohinweisen – direkt im jeweiligen Tab abrufbar.</p>
+        <span class="brainy-box-label">Brainy · Fallabschluss</span>
+        <p class="brainy-box-text"><em>„Ist die Übergabe für alle Beteiligten nachvollziehbar dokumentiert?"</em></p>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-// Alte Unterseiten-Namen bleiben als Hash gültig, damit bestehende Links
-// (z.B. DASHBOARD_mobile.html#case_risk) weiterhin auf den passenden Tab
-// zeigen.
-var hashZuPanel = {
-  'case_file':      'tab-fallakte',
-  'case_risk':      'tab-risiko',
-  'case_actions':   'tab-massnahmen',
-  'case_timeline':  'tab-verlauf',
-  'case_barometer': 'tab-barometer',
-  'case_pdf':       'tab-pdf'
-};
+<div class="toast" id="toast"></div>
 
-// ── Tab-System (identisch zum Muster aus Fallmanagement-Assistent.html) ──
+<footer>
+  <strong>KLARTEXT</strong> · TK-Bereich · Fallmanagement<br>
+  Fallmanagement bleibt intern — keine Weiterleitung an Dritte.
+</footer>
+
+<script>
 function switchTab(btn, panelId) {
   document.querySelectorAll('.tab-bar .tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
   document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
   btn.classList.add('aktiv');
   var panel = document.getElementById(panelId);
   if (panel) { panel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
-  // FM-06 fasst Daten aus allen anderen Tabs zusammen - beim Öffnen neu
-  // aufbauen (window.ladePdfVorschau aus dem type="module"-Script unten).
-  if (panelId === 'tab-pdf' && window.ladePdfVorschau) window.ladePdfVorschau();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var hash = window.location.hash.replace('#','');
-  var panelId = hashZuPanel[hash];
-  if (panelId) {
-    var btn = document.querySelector('.tab-btn[data-panel="' + panelId + '"]');
-    if (btn) switchTab(btn, panelId);
-  }
-});
+function oeffneFallakteTab(){
+  var btn = document.querySelector('.tab-btn[data-panel="tab-detail"]');
+  var panel = document.getElementById('tab-detail');
+  if (btn && panel) switchTab(btn, 'tab-detail');
+}
 </script>
 
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
-// kind_id wird sowohl aus dem URL-Parameter ?kind=<ID> (z.B. bei Ankunft von
-// DASHBOARD_mobile.html oder Kinderverwaltung.html) als auch aus
-// sessionStorage.klartext_kind_id ermittelt. Ist ?kind= gesetzt, hat es
-// Vorrang und wird zusätzlich in sessionStorage gespiegelt, damit die
-// zentrale Kind-Auswahl oben auf der Seite (kindAuswahlLaden) danach
-// konsistent vorbelegt ist.
-function kindIdErmitteln(){
-  try {
-    var ausUrl = new URLSearchParams(window.location.search).get('kind');
-    if (ausUrl) {
-      sessionStorage.setItem('klartext_kind_id', ausUrl);
-      return ausUrl;
-    }
-    return sessionStorage.getItem('klartext_kind_id') || '';
-  } catch(e) { return ''; }
+var rolle = sessionStorage.getItem('klartext_role') || '';
+var istTkAdmin = ['tk','admin'].includes(rolle);
+var meinAuthUid = sessionStorage.getItem('klartext_user_id') || '';
+
+var aktuelleFallakteId = '';
+var kinderCache = {};   // id -> {name, klasse}
+var fallakteCache = {}; // id -> fallakte-Zeile
+
+var EREIGNISTYP_LABEL = { beobachtung:'Beobachtung', gespraech:'Gespräch', vorfall:'Vorfall', uebergabe:'Übergabe' };
+var EREIGNISTYP_CHIP  = { beobachtung:'blau', gespraech:'grau', vorfall:'rot', uebergabe:'orange' };
+var STATUS_LABEL = { laufend:'Laufend', review:'Review', abgeschlossen:'Abgeschlossen' };
+var STATUS_CHIP  = { laufend:'blau', review:'gelb', abgeschlossen:'grau' };
+var AMPEL_LABEL  = { gruen:'🟢 Grün', gelb:'🟡 Gelb', rot:'🔴 Rot' };
+var MELDEBOGEN_STATUS_LABEL = { offen:'Offen', in_arbeit:'In Bearbeitung', abgeschlossen:'Abgeschlossen' };
+var MELDEBOGEN_STATUS_CHIP  = { offen:'gelb', in_arbeit:'blau', abgeschlossen:'grau' };
+
+// Rollenbasierte UI-Sichtbarkeit: komplette Entfernung aus dem DOM statt
+// nur CSS-Verstecken, wie im Task gefordert ("Tab komplett ausblenden").
+// Abweichung von 0038-RLS bewusst: fallabschluss erlaubt dort auch INGRA
+// lesenden Zugriff, dieser Task verlangt hier aber "nur TK/Admin" auf
+// UI-Ebene - strengere Client-Regel, keine Sicherheitslücke (RLS bleibt
+// unverändert bestehen).
+if (!istTkAdmin) {
+  document.querySelectorAll('[data-nur-tk]').forEach(function(el){ el.remove(); });
 }
 
-// Zentraler kind_id-State: EINE Kind-Auswahl oben auf der Seite gilt für
-// alle 6 Tabs. Ersetzt die vorher pro Tab wiederholte, eigenständige
-// kindIdErmitteln()-Abfrage und die pro Tab wiederholte
-// "Kein Kind ausgewählt"-Anzeige (jetzt zentral über #kind-status).
-var aktuellesKindId = '';
-var datenCache = { fallakte: null, risiko: [], massnahmen: [], timeline: [], barometer: [] };
-
-function kindStatusAnzeigen(text){
-  var el = document.getElementById('kind-status');
-  if (!el) return;
-  if (text) { el.textContent = text; el.style.display = 'block'; }
-  else { el.style.display = 'none'; }
-}
-
-async function kindAuswahlLaden(){
-  var select = document.getElementById('kind-auswahl');
-  var leer = document.createElement('option');
-  leer.value = '';
-  leer.textContent = '– Kind wählen –';
-  select.appendChild(leer);
-
-  var { data: kinder, error } = await supabase.from('Kinder').select('id, name, klasse').order('name');
-  if (!error) {
-    (kinder || []).forEach(function(k){
-      var o = document.createElement('option');
-      o.value = k.id;
-      o.textContent = k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
-      select.appendChild(o);
-    });
-  }
-
-  var vorausgewaehlt = kindIdErmitteln();
-  if (vorausgewaehlt) select.value = vorausgewaehlt;
-  aktuellesKindId = select.value;
-
-  select.addEventListener('change', function(){
-    aktuellesKindId = select.value;
-    try { sessionStorage.setItem('klartext_kind_id', aktuellesKindId); } catch(e){}
-    alleDatenLaden();
-  });
-
-  await Promise.all([ingraDropdownsLaden(), profilDropdownsLaden()]);
-  alleDatenLaden();
-}
-
-function alleDatenLaden(){
-  kindStatusAnzeigen(aktuellesKindId ? '' : 'Kein Kind ausgewählt — bitte oben ein Kind wählen.');
-  fallakteLaden();
-  risikoLaden();
-  massnahmenLaden();
-  timelineLaden();
-  barometerLaden();
-}
-
-// ── FM-01 Fallakte ────────────────────────────────────────────────
-// WICHTIG: Die reale Tabelle heißt "fallakten" (nicht "fallakte") -
-// siehe supabase/migrations/0004_fallmanagement.sql. Ein Kind kann
-// mehrere Fallakten haben; geladen wird die aktuell aktive
-// (aktiv = true, neueste zuerst).
-function fallakteStatusAnzeigen(text){
-  var status = document.getElementById('fa-status');
-  if (!status) return;
-  if (text) { status.textContent = text; status.style.display = 'block'; }
-  else { status.style.display = 'none'; }
-}
-
-var RECHTSGRUNDLAGE_LABEL = { sgb_viii_35a: '§35a SGB VIII', sgb_ix_54: '§54 SGB IX', sonstige: 'Sonstige' };
-var BEZUGSPERSON_FELDER = [
-  { key: 'name', placeholder: 'Name' },
-  { key: 'rolle', placeholder: 'Rolle (z.B. Mutter, Klassenlehrer:in)' }
-];
-var NETZWERK_FELDER = [
-  { key: 'name', placeholder: 'Name' },
-  { key: 'rolle', placeholder: 'Rolle' },
-  { key: 'kontakt', placeholder: 'Kontakt (Telefon/E-Mail)' }
-];
-var ZIEL_FELDER = [
-  { key: 'ziel', placeholder: 'Ziel' },
-  { key: 'indikator', placeholder: 'Indikator' },
-  { key: 'zieldatum', type: 'date' }
-];
-
-// Aktuell geladene/gespeicherte Fallakte-ID - null solange für das gewählte
-// Kind noch keine aktive Fallakte existiert (wird beim ersten Speichern neu
-// angelegt).
-var aktuelleFallakteId = null;
-
-function fallakteFelderSetzen(werte){
-  var felder = { 'fa-name': werte.name, 'fa-klasse': werte.klasse, 'fa-geburtsdatum': werte.geburtsdatum };
-  Object.keys(felder).forEach(function(id){
-    var el = document.getElementById(id);
-    if (el) el.textContent = felder[id] || '–';
-  });
-}
-
-// ── Mehrfach-Listen: gemeinsame Bau-/Auslese-Helfer für Bezugspersonen,
-// Netzwerk und Ziele (gleiche Zeilen-Struktur, nur andere Felder) ──────
-function listenZeileErzeugen(container, felder, werte){
-  werte = werte || {};
-  var zeile = document.createElement('div');
-  zeile.className = 'liste-zeile';
-  felder.forEach(function(f){
-    var input;
-    if (f.type === 'select') {
-      input = document.createElement('select');
-      (f.options || []).forEach(function(opt){
-        var o = document.createElement('option');
-        o.value = opt.value;
-        o.textContent = opt.label;
-        input.appendChild(o);
-      });
-    } else {
-      input = document.createElement('input');
-      input.type = f.type || 'text';
-      input.placeholder = f.placeholder || '';
-    }
-    input.dataset.feld = f.key;
-    input.value = werte[f.key] || '';
-    zeile.appendChild(input);
-  });
-  var entfernen = document.createElement('button');
-  entfernen.type = 'button';
-  entfernen.className = 'liste-zeile-entfernen';
-  entfernen.textContent = '✕';
-  entfernen.onclick = function(){ zeile.remove(); };
-  zeile.appendChild(entfernen);
-  container.appendChild(zeile);
-  return zeile;
-}
-
-function listenWerteLesen(container, felder){
-  // Pflichtfeld ist standardmäßig das erste Feld (Name bei Bezugsperson/
-  // Netzwerk, Ziel bei Ziele, Maßnahme bei Maßnahmen); Felder können sich
-  // mit `required:true` explizit als Pflichtfeld markieren (z.B. "fakten"
-  // bei Verlauf, wo "datum" einen DB-Default hat und daher nicht das
-  // sinnvolle Pflichtfeld wäre).
-  var pflichtFeld = felder.find(function(f){ return f.required; }) || felder[0];
-  var ergebnisse = [];
-  container.querySelectorAll('.liste-zeile').forEach(function(zeile){
-    var eintrag = {};
-    felder.forEach(function(f){
-      var input = zeile.querySelector('[data-feld="' + f.key + '"]');
-      eintrag[f.key] = input && input.value.trim() ? input.value.trim() : null;
-    });
-    if (eintrag[pflichtFeld.key]) ergebnisse.push(eintrag);
-  });
-  return ergebnisse;
-}
-
-function bezugspersonZeileHinzufuegen(werte){ listenZeileErzeugen(document.getElementById('fa-bezugspersonen-liste'), BEZUGSPERSON_FELDER, werte); }
-function netzwerkZeileHinzufuegen(werte){ listenZeileErzeugen(document.getElementById('fa-netzwerk-liste'), NETZWERK_FELDER, werte); }
-function zielZeileHinzufuegen(werte){ listenZeileErzeugen(document.getElementById('fa-ziele-liste'), ZIEL_FELDER, werte); }
-window.bezugspersonZeileHinzufuegen = bezugspersonZeileHinzufuegen;
-window.netzwerkZeileHinzufuegen = netzwerkZeileHinzufuegen;
-window.zielZeileHinzufuegen = zielZeileHinzufuegen;
-
-// ── Befristung: 30-Tage-Erinnerung farblich hervorheben ────────────
-function befristetHinweisAktualisieren(){
-  var input = document.getElementById('fa-befristet-bis');
-  var hinweis = document.getElementById('fa-befristet-hinweis');
-  if (!input.value) { hinweis.style.display = 'none'; return; }
-  var bis = new Date(input.value + 'T00:00:00');
-  var heute = new Date(); heute.setHours(0,0,0,0);
-  var tageBis = Math.round((bis - heute) / 86400000);
-  if (tageBis < 0) {
-    hinweis.textContent = '⚠ Befristung seit ' + Math.abs(tageBis) + ' Tag(en) abgelaufen.';
-    hinweis.style.display = 'block';
-    hinweis.style.borderColor = '#C62828'; hinweis.style.background = 'rgba(198,40,40,.08)'; hinweis.style.color = '#C62828';
-  } else if (tageBis <= 30) {
-    hinweis.textContent = '⚠ Befristung läuft in ' + tageBis + ' Tag(en) aus.';
-    hinweis.style.display = 'block';
-    hinweis.style.borderColor = '#F57F17'; hinweis.style.background = '#FFF8E1'; hinweis.style.color = '#F57F17';
-  } else {
-    hinweis.style.display = 'none';
-  }
-}
-document.getElementById('fa-befristet-bis').addEventListener('change', befristetHinweisAktualisieren);
-
-// ── INGRA-Dropdowns (Zuständige INGRA / Vertretung) - unabhängig vom
-// gewählten Kind, einmalig beim Laden der Seite befüllt ───────────────
-async function ingraDropdownsLaden(){
-  var ingraSelect = document.getElementById('fa-ingra');
-  var vertretungSelect = document.getElementById('fa-vertretung');
-  [ingraSelect, vertretungSelect].forEach(function(select){
-    var leer = document.createElement('option');
-    leer.value = '';
-    leer.textContent = '– bitte wählen –';
-    select.appendChild(leer);
-  });
-
-  var { data: ingras, error } = await supabase.from('profiles').select('id, vorname, nachname').eq('rolle', 'ingra');
-  if (error) return;
-  (ingras || []).forEach(function(i){
-    var name = [i.vorname, i.nachname].filter(Boolean).join(' ') || i.id;
-    [ingraSelect, vertretungSelect].forEach(function(select){
-      var o = document.createElement('option');
-      o.value = i.id;
-      o.textContent = name;
-      select.appendChild(o);
-    });
-  });
-}
-
-// ── Profil-Dropdown für "Verantwortlich" (FM-03 Maßnahmen) - alle
-// Profile, nicht nur INGRA, da Verantwortung für eine Maßnahme bei
-// jeder Rolle liegen kann. Array wird in-place befüllt, damit
-// MASSNAHME_FELDER (unten) dieselbe Referenz bereits vor dem Laden
-// halten kann. ──────────────────────────────────────────────────────
-var PROFIL_OPTIONEN = [{ value: '', label: '– bitte wählen –' }];
-async function profilDropdownsLaden(){
-  var { data: profile, error } = await supabase.from('profiles').select('id, vorname, nachname').order('vorname');
-  if (error) return;
-  (profile || []).forEach(function(p){
-    PROFIL_OPTIONEN.push({ value: p.id, label: [p.vorname, p.nachname].filter(Boolean).join(' ') || p.id });
-  });
-}
-
-async function fallakteLaden(){
-  ['fa-bezugspersonen-liste', 'fa-netzwerk-liste', 'fa-ziele-liste'].forEach(function(id){
-    document.getElementById(id).innerHTML = '';
-  });
-  document.getElementById('fa-rechtsgrundlage').value = '';
-  document.getElementById('fa-kostentraeger').value = '';
-  document.getElementById('fa-stundenumfang').value = '';
-  document.getElementById('fa-befristet-bis').value = '';
-  document.getElementById('fa-ingra').value = '';
-  document.getElementById('fa-vertretung').value = '';
-  document.getElementById('fa-ressourcen').value = '';
-  befristetHinweisAktualisieren();
-  aktuelleFallakteId = null;
-
-  if (!aktuellesKindId) {
-    fallakteStatusAnzeigen('');
-    fallakteFelderSetzen({});
-    datenCache.fallakte = null;
-    return;
-  }
-
-  // TODO: Geburtsdatum fehlt in der Kinder-Tabelle (neues Schema) - ggf.
-  // per Migration ergänzen. Bis dahin bleibt das Feld leer.
-  var kindErgebnis = await supabase.from('Kinder').select('name, klasse').eq('id', aktuellesKindId).maybeSingle();
-  fallakteFelderSetzen({
-    name: kindErgebnis.data ? kindErgebnis.data.name : '',
-    klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
-    geburtsdatum: ''
-  });
-
-  var fallakteErgebnis = await supabase
-    .from('fallakten')
-    .select('id, rechtsgrundlage, kostentraeger, stundenumfang, befristet_bis, ingra_id, vertretung_ingra_id, ressourcen')
-    .eq('kind_id', aktuellesKindId)
-    .eq('aktiv', true)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (fallakteErgebnis.error) {
-    fallakteStatusAnzeigen('Fallakte konnte nicht geladen werden.');
-    datenCache.fallakte = null;
-    return;
-  }
-
-  var zuordnungErgebnis = await supabase
-    .from('kinder_zuordnung')
-    .select('ingra_id')
-    .eq('kind_id', aktuellesKindId)
-    .eq('aktiv', true)
-    .limit(1)
-    .maybeSingle();
-
-  if (!fallakteErgebnis.data) {
-    fallakteStatusAnzeigen('Noch keine Fallakte für dieses Kind – wird beim Speichern angelegt.');
-    if (zuordnungErgebnis.data && zuordnungErgebnis.data.ingra_id) {
-      document.getElementById('fa-ingra').value = zuordnungErgebnis.data.ingra_id;
-    }
-    datenCache.fallakte = null;
-    return;
-  }
-
-  var f = fallakteErgebnis.data;
-  aktuelleFallakteId = f.id;
-  document.getElementById('fa-rechtsgrundlage').value = f.rechtsgrundlage || '';
-  document.getElementById('fa-kostentraeger').value = f.kostentraeger || '';
-  document.getElementById('fa-stundenumfang').value = f.stundenumfang || '';
-  document.getElementById('fa-befristet-bis').value = f.befristet_bis || '';
-  document.getElementById('fa-ingra').value = f.ingra_id || (zuordnungErgebnis.data ? zuordnungErgebnis.data.ingra_id : '') || '';
-  document.getElementById('fa-vertretung').value = f.vertretung_ingra_id || '';
-  document.getElementById('fa-ressourcen').value = f.ressourcen || '';
-  befristetHinweisAktualisieren();
-
-  var [bezugspersonenErgebnis, netzwerkErgebnis, zieleErgebnis] = await Promise.all([
-    supabase.from('fallakte_bezugspersonen').select('name, rolle').eq('fallakte_id', f.id).order('created_at'),
-    supabase.from('fallakte_netzwerk').select('name, rolle, kontakt').eq('fallakte_id', f.id).order('created_at'),
-    supabase.from('fall_ziele').select('ziel, indikator, zieldatum').eq('fallakte_id', f.id).order('created_at')
-  ]);
-  (bezugspersonenErgebnis.data || []).forEach(bezugspersonZeileHinzufuegen);
-  (netzwerkErgebnis.data || []).forEach(netzwerkZeileHinzufuegen);
-  (zieleErgebnis.data || []).forEach(zielZeileHinzufuegen);
-
-  fallakteStatusAnzeigen('');
-  var ingraName = '';
-  var ingraOption = document.getElementById('fa-ingra').selectedOptions[0];
-  if (ingraOption && ingraOption.value) ingraName = ingraOption.textContent;
-  var vertretungName = '';
-  var vertretungOption = document.getElementById('fa-vertretung').selectedOptions[0];
-  if (vertretungOption && vertretungOption.value) vertretungName = vertretungOption.textContent;
-
-  datenCache.fallakte = {
-    name: kindErgebnis.data ? kindErgebnis.data.name : '',
-    klasse: kindErgebnis.data ? kindErgebnis.data.klasse : '',
-    geburtsdatum: kindErgebnis.data ? kindErgebnis.data.geburtsdatum : '',
-    rechtsgrundlage: f.rechtsgrundlage,
-    kostentraeger: f.kostentraeger,
-    stundenumfang: f.stundenumfang,
-    befristet_bis: f.befristet_bis,
-    ingraName: ingraName,
-    vertretungName: vertretungName,
-    bezugspersonen: bezugspersonenErgebnis.data || [],
-    netzwerk: netzwerkErgebnis.data || [],
-    ziele: zieleErgebnis.data || [],
-    ressourcen: f.ressourcen
-  };
-}
-
-async function fallakteSpeichern(){
-  if (!aktuellesKindId) { fallakteStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
-
-  var { data: userData } = await supabase.auth.getUser();
-
-  var werte = {
-    kind_id: aktuellesKindId,
-    rechtsgrundlage: document.getElementById('fa-rechtsgrundlage').value || null,
-    kostentraeger: document.getElementById('fa-kostentraeger').value.trim() || null,
-    stundenumfang: document.getElementById('fa-stundenumfang').value.trim() || null,
-    befristet_bis: document.getElementById('fa-befristet-bis').value || null,
-    ingra_id: document.getElementById('fa-ingra').value || null,
-    vertretung_ingra_id: document.getElementById('fa-vertretung').value || null,
-    ressourcen: document.getElementById('fa-ressourcen').value.trim() || null,
-    aktiv: true
-  };
-
-  var ergebnis;
-  if (aktuelleFallakteId) {
-    ergebnis = await supabase.from('fallakten').update(werte).eq('id', aktuelleFallakteId).select('id').maybeSingle();
-  } else {
-    werte.erstellt_von = userData && userData.user ? userData.user.id : null;
-    ergebnis = await supabase.from('fallakten').insert(werte).select('id').maybeSingle();
-  }
-
-  if (ergebnis.error || !ergebnis.data) {
-    fallakteStatusAnzeigen('Fallakte konnte nicht gespeichert werden.');
-    return;
-  }
-  aktuelleFallakteId = ergebnis.data.id;
-
-  var bezugspersonen = listenWerteLesen(document.getElementById('fa-bezugspersonen-liste'), BEZUGSPERSON_FELDER);
-  var netzwerk = listenWerteLesen(document.getElementById('fa-netzwerk-liste'), NETZWERK_FELDER);
-  var ziele = listenWerteLesen(document.getElementById('fa-ziele-liste'), ZIEL_FELDER);
-
-  await supabase.from('fallakte_bezugspersonen').delete().eq('fallakte_id', aktuelleFallakteId);
-  if (bezugspersonen.length) {
-    await supabase.from('fallakte_bezugspersonen').insert(bezugspersonen.map(function(b){
-      return { fallakte_id: aktuelleFallakteId, name: b.name, rolle: b.rolle };
-    }));
-  }
-
-  await supabase.from('fallakte_netzwerk').delete().eq('fallakte_id', aktuelleFallakteId);
-  if (netzwerk.length) {
-    await supabase.from('fallakte_netzwerk').insert(netzwerk.map(function(n){
-      return { fallakte_id: aktuelleFallakteId, name: n.name, rolle: n.rolle, kontakt: n.kontakt };
-    }));
-  }
-
-  await supabase.from('fall_ziele').delete().eq('fallakte_id', aktuelleFallakteId);
-  if (ziele.length) {
-    await supabase.from('fall_ziele').insert(ziele.map(function(z){
-      return { fallakte_id: aktuelleFallakteId, ziel: z.ziel, indikator: z.indikator, zieldatum: z.zieldatum };
-    }));
-  }
-
-  fallakteStatusAnzeigen('✔ Gespeichert.');
-  fallakteLaden();
-}
-window.fallakteSpeichern = fallakteSpeichern;
-
-// ── FM-03 Maßnahmenplan ───────────────────────────────────────────
-// WICHTIG: Die reale Tabelle heißt "fall_massnahmen" (nicht "massnahmen") -
-// siehe supabase/migrations/0004_fallmanagement.sql. Sie existierte
-// bereits (Phase 3) mit passenden Spalten (titel, verantwortlich,
-// zeitraum_von/bis, status, beschreibung) und eigenem RLS
-// (traeger_id-basiert) - keine neue Tabelle/Migration nötig. "Notiz"
-// aus der Aufgabenstellung entspricht der bestehenden Spalte
-// "beschreibung"; das Status-Check-Constraint erlaubt nur
-// 'offen'/'in_arbeit'/'abgeschlossen' (nicht "in_bearbeitung" wie in
-// der Aufgabenstellung benannt) - Anzeige-Label bleibt "In Bearbeitung".
-var MASSNAHMEN_STATUS_LABEL = { offen: 'Offen', in_arbeit: 'In Bearbeitung', abgeschlossen: 'Abgeschlossen' };
-var MASSNAHME_FELDER = [
-  { key: 'titel', placeholder: 'Maßnahme' },
-  { key: 'verantwortlich', type: 'select', options: PROFIL_OPTIONEN },
-  { key: 'zeitraum_von', type: 'date' },
-  { key: 'zeitraum_bis', type: 'date' },
-  { key: 'status', type: 'select', options: [
-    { value: 'offen', label: 'Offen' },
-    { value: 'in_arbeit', label: 'In Bearbeitung' },
-    { value: 'abgeschlossen', label: 'Abgeschlossen' }
-  ] },
-  { key: 'beschreibung', placeholder: 'Notiz' }
-];
-
-function massnahmenStatusAnzeigen(text){
-  var status = document.getElementById('massnahmen-status');
-  if (!status) return;
-  if (text) { status.textContent = text; status.style.display = 'block'; }
-  else { status.style.display = 'none'; }
-}
-
-// Überfällig: zeitraum_bis liegt in der Vergangenheit und der Status
-// ist nicht "abgeschlossen" - wird bei jeder Änderung von Bis-Datum
-// oder Status neu geprüft.
-function massnahmeZeileAktualisieren(zeile){
-  var statusInput = zeile.querySelector('[data-feld="status"]');
-  var bisInput = zeile.querySelector('[data-feld="zeitraum_bis"]');
-  var ueberfaellig = false;
-  if (bisInput && bisInput.value && statusInput && statusInput.value !== 'abgeschlossen') {
-    var heute = new Date(); heute.setHours(0,0,0,0);
-    var bis = new Date(bisInput.value + 'T00:00:00');
-    ueberfaellig = bis < heute;
-  }
-  zeile.classList.toggle('ueberfaellig', ueberfaellig);
-}
-
-function massnahmeZeileHinzufuegen(werte){
-  var zeile = listenZeileErzeugen(document.getElementById('fa-massnahmen-liste'), MASSNAHME_FELDER, werte);
-  var statusInput = zeile.querySelector('[data-feld="status"]');
-  var bisInput = zeile.querySelector('[data-feld="zeitraum_bis"]');
-  statusInput.addEventListener('change', function(){ massnahmeZeileAktualisieren(zeile); });
-  bisInput.addEventListener('change', function(){ massnahmeZeileAktualisieren(zeile); });
-  massnahmeZeileAktualisieren(zeile);
-}
-window.massnahmeZeileHinzufuegen = massnahmeZeileHinzufuegen;
-
-async function massnahmenLaden(){
-  document.getElementById('fa-massnahmen-liste').innerHTML = '';
-
-  if (!aktuellesKindId) {
-    massnahmenStatusAnzeigen('');
-    datenCache.massnahmen = [];
-    return;
-  }
-
-  var ergebnis = await supabase
-    .from('fall_massnahmen')
-    .select('titel, beschreibung, status, zeitraum_von, zeitraum_bis, verantwortlich, profiles:verantwortlich(vorname, nachname)')
-    .eq('kind_id', aktuellesKindId)
-    .order('created_at', { ascending: false });
-
-  if (ergebnis.error) {
-    massnahmenStatusAnzeigen('Maßnahmen konnten nicht geladen werden.');
-    datenCache.massnahmen = [];
-    return;
-  }
-  if (!ergebnis.data || !ergebnis.data.length) {
-    massnahmenStatusAnzeigen('Keine Maßnahmen für dieses Kind gefunden.');
-    datenCache.massnahmen = [];
-    return;
-  }
-
-  massnahmenStatusAnzeigen('');
-  ergebnis.data.forEach(function(m){
-    massnahmeZeileHinzufuegen({
-      titel: m.titel,
-      verantwortlich: m.verantwortlich,
-      zeitraum_von: m.zeitraum_von,
-      zeitraum_bis: m.zeitraum_bis,
-      status: m.status,
-      beschreibung: m.beschreibung
-    });
-  });
-  datenCache.massnahmen = ergebnis.data.map(function(m){
-    return {
-      titel: m.titel,
-      status: m.status,
-      verantwortlichName: m.profiles ? [m.profiles.vorname, m.profiles.nachname].filter(Boolean).join(' ') : ''
-    };
-  });
-}
-
-// Speichert die komplette Liste (löschen + neu einfügen, wie bei den
-// Fallakte-Listen) statt einzelne Zeilen zu diffen.
-async function massnahmenSpeichern(){
-  if (!aktuellesKindId) { massnahmenStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
-
-  var kindErgebnis = await supabase.from('Kinder').select('traeger_id').eq('id', aktuellesKindId).maybeSingle();
-  if (kindErgebnis.error || !kindErgebnis.data) {
-    massnahmenStatusAnzeigen('Maßnahmen konnten nicht gespeichert werden (Träger nicht ermittelbar).');
-    return;
-  }
-  var traegerId = kindErgebnis.data.traeger_id;
-
-  var massnahmen = listenWerteLesen(document.getElementById('fa-massnahmen-liste'), MASSNAHME_FELDER);
-
-  await supabase.from('fall_massnahmen').delete().eq('kind_id', aktuellesKindId);
-  if (massnahmen.length) {
-    var zeilen = massnahmen.map(function(m){
-      return {
-        traeger_id: traegerId,
-        kind_id: aktuellesKindId,
-        fallakte_id: aktuelleFallakteId || null,
-        titel: m.titel,
-        beschreibung: m.beschreibung,
-        verantwortlich: m.verantwortlich || null,
-        status: m.status || 'offen',
-        zeitraum_von: m.zeitraum_von,
-        zeitraum_bis: m.zeitraum_bis
-      };
-    });
-    var insertErgebnis = await supabase.from('fall_massnahmen').insert(zeilen);
-    if (insertErgebnis.error) {
-      massnahmenStatusAnzeigen('Maßnahmen konnten nicht gespeichert werden.');
-      return;
-    }
-  }
-
-  massnahmenStatusAnzeigen('✔ Gespeichert.');
-  massnahmenLaden();
-}
-window.massnahmenSpeichern = massnahmenSpeichern;
-
-// ── FM-04 Verlauf / Chronik ───────────────────────────────────────
-// WICHTIG: "fall_timeline" hat keine kind_id-Spalte - nur fallakte_id
-// (siehe supabase/migrations/0004_fallmanagement.sql). Die aktive
-// Fallakte des Kindes wird daher zuerst aufgelöst (gleiche Abfrage wie
-// in fallakteLaden), erst danach wird die Timeline über fallakte_id
-// gefiltert. ereignistyp/fakten/einschaetzung sind neue Spalten
-// (0029_fall_timeline_formular.sql) - Fakten bewusst von Einschätzung
-// getrennt, statt in einem Freitextfeld vermischt.
-var EREIGNISTYP_LABEL = { beobachtung: 'Beobachtung', gespraech: 'Gespräch', vorfall: 'Vorfall', uebergabe: 'Übergabe' };
-var TIMELINE_FELDER = [
-  { key: 'datum', type: 'date' },
-  { key: 'ereignistyp', type: 'select', options: [
-    { value: 'beobachtung', label: 'Beobachtung' },
-    { value: 'gespraech', label: 'Gespräch' },
-    { value: 'vorfall', label: 'Vorfall' },
-    { value: 'uebergabe', label: 'Übergabe' }
-  ] },
-  { key: 'fakten', placeholder: 'Fakten (beobachtbar, neutral)', required: true },
-  { key: 'einschaetzung', placeholder: 'Einschätzung (fachliche Deutung)' }
-];
-
-function timelineStatusAnzeigen(text){
-  var status = document.getElementById('timeline-status');
-  if (!status) return;
-  if (text) { status.textContent = text; status.style.display = 'block'; }
-  else { status.style.display = 'none'; }
-}
-
-// Neue Einträge werden oben eingefügt (neueste zuerst); geladene
-// Einträge kommen bereits absteigend sortiert aus der DB-Abfrage und
-// werden daher einfach angehängt.
-function timelineZeileHinzufuegen(){
-  var container = document.getElementById('fa-timeline-liste');
-  var heute = new Date().toISOString().slice(0, 10);
-  var zeile = listenZeileErzeugen(container, TIMELINE_FELDER, { datum: heute });
-  container.insertBefore(zeile, container.firstChild);
-}
-window.timelineZeileHinzufuegen = timelineZeileHinzufuegen;
-
-async function timelineLaden(){
-  document.getElementById('fa-timeline-liste').innerHTML = '';
-
-  if (!aktuellesKindId) {
-    timelineStatusAnzeigen('');
-    datenCache.timeline = [];
-    return;
-  }
-
-  var fallakteRef = await supabase
-    .from('fallakten')
-    .select('id')
-    .eq('kind_id', aktuellesKindId)
-    .eq('aktiv', true)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (fallakteRef.error || !fallakteRef.data) {
-    timelineStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
-    datenCache.timeline = [];
-    return;
-  }
-
-  var ergebnis = await supabase
-    .from('fall_timeline')
-    .select('datum, ereignistyp, fakten, einschaetzung, profiles:erstellt_von(vorname, nachname)')
-    .eq('fallakte_id', fallakteRef.data.id)
-    .order('datum', { ascending: false });
-
-  if (ergebnis.error) {
-    timelineStatusAnzeigen('Verlauf konnte nicht geladen werden.');
-    datenCache.timeline = [];
-    return;
-  }
-  if (!ergebnis.data || !ergebnis.data.length) {
-    timelineStatusAnzeigen('Noch keine Verlaufseinträge für diese Fallakte.');
-    datenCache.timeline = [];
-    return;
-  }
-
-  timelineStatusAnzeigen('');
-  ergebnis.data.forEach(function(t){
-    listenZeileErzeugen(document.getElementById('fa-timeline-liste'), TIMELINE_FELDER, {
-      datum: t.datum,
-      ereignistyp: t.ereignistyp,
-      fakten: t.fakten,
-      einschaetzung: t.einschaetzung
-    });
-  });
-  datenCache.timeline = ergebnis.data.map(function(t){
-    return {
-      datum: t.datum,
-      ereignistyp: t.ereignistyp,
-      fakten: t.fakten,
-      einschaetzung: t.einschaetzung,
-      erstelltVonName: t.profiles ? [t.profiles.vorname, t.profiles.nachname].filter(Boolean).join(' ') : ''
-    };
-  });
-}
-
-// Speichert die komplette Liste (löschen + neu einfügen), wie bei
-// Maßnahmen/Fallakte-Listen.
-async function timelineSpeichern(){
-  if (!aktuellesKindId) { timelineStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
-
-  var fallakteRef = await supabase
-    .from('fallakten')
-    .select('id')
-    .eq('kind_id', aktuellesKindId)
-    .eq('aktiv', true)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (fallakteRef.error || !fallakteRef.data) {
-    timelineStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden - bitte zuerst im Fallakte-Tab anlegen.');
-    return;
-  }
-  var fallakteId = fallakteRef.data.id;
-
-  var { data: userData } = await supabase.auth.getUser();
-  var erstelltVon = userData && userData.user ? userData.user.id : null;
-
-  var eintraege = listenWerteLesen(document.getElementById('fa-timeline-liste'), TIMELINE_FELDER);
-
-  await supabase.from('fall_timeline').delete().eq('fallakte_id', fallakteId);
-  if (eintraege.length) {
-    var zeilen = eintraege.map(function(t){
-      var zeile = {
-        fallakte_id: fallakteId,
-        ereignistyp: t.ereignistyp,
-        fakten: t.fakten,
-        einschaetzung: t.einschaetzung,
-        erstellt_von: erstelltVon
-      };
-      // datum hat einen DB-Default (current_date) - nur setzen, wenn
-      // tatsächlich ein Wert eingetragen wurde, sonst NOT-NULL-Fehler
-      // durch explizites null vermeiden.
-      if (t.datum) zeile.datum = t.datum;
-      return zeile;
-    });
-    var insertErgebnis = await supabase.from('fall_timeline').insert(zeilen);
-    if (insertErgebnis.error) {
-      timelineStatusAnzeigen('Verlauf konnte nicht gespeichert werden.');
-      return;
-    }
-  }
-
-  timelineStatusAnzeigen('✔ Gespeichert.');
-  timelineLaden();
-}
-window.timelineSpeichern = timelineSpeichern;
-
-// ── FM-02 Risiko-Ampel ────────────────────────────────────────────
-// WICHTIG: Die reale Tabelle heißt "fall_risikostatus" (nicht
-// "fall_risiko") - siehe supabase/migrations/0004_fallmanagement.sql.
-// Wie bei der Timeline hat sie keine kind_id-Spalte, nur fallakte_id.
-var AMPEL_LABEL = { gruen: '✔ Grün', gelb: '⚑ Gelb', rot: '✗ Rot' };
-
-function risikoStatusAnzeigen(text){
-  var status = document.getElementById('risiko-status');
-  if (!status) return;
-  if (text) { status.textContent = text; status.style.display = 'block'; }
-  else { status.style.display = 'none'; }
-}
-
-function risikoRendern(liste){
-  var el = document.getElementById('risiko-liste');
-  if (!el) return;
-  if (!liste.length) { el.innerHTML = ''; return; }
-  el.innerHTML = liste.map(function(r){
-    var gesetzt = r.profiles ? [r.profiles.vorname, r.profiles.nachname].filter(Boolean).join(' ') : '';
-    var datum = r.created_at ? new Date(r.created_at).toLocaleDateString('de-DE') : '';
-    return '<li><strong>' + datum + ':</strong> ' + (AMPEL_LABEL[r.ampel] || r.ampel) +
-      (r.begruendung ? ' · ' + r.begruendung : '') +
-      (gesetzt ? ' · Gesetzt von: ' + gesetzt : '') + '</li>';
-  }).join('');
-}
-
-async function risikoLaden(){
-  if (!aktuellesKindId) {
-    risikoStatusAnzeigen('');
-    risikoRendern([]);
-    datenCache.risiko = [];
-    return;
-  }
-
-  var fallakteRef = await supabase
-    .from('fallakten')
-    .select('id')
-    .eq('kind_id', aktuellesKindId)
-    .eq('aktiv', true)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (fallakteRef.error || !fallakteRef.data) {
-    risikoStatusAnzeigen('Keine aktive Fallakte für dieses Kind gefunden.');
-    risikoRendern([]);
-    datenCache.risiko = [];
-    return;
-  }
-
-  var ergebnis = await supabase
-    .from('fall_risikostatus')
-    .select('ampel, begruendung, created_at, profiles:gesetzt_von(vorname, nachname)')
-    .eq('fallakte_id', fallakteRef.data.id)
-    .order('created_at', { ascending: false });
-
-  if (ergebnis.error) {
-    risikoStatusAnzeigen('Risiko-Verlauf konnte nicht geladen werden.');
-    risikoRendern([]);
-    datenCache.risiko = [];
-    return;
-  }
-  if (!ergebnis.data || !ergebnis.data.length) {
-    risikoStatusAnzeigen('Noch keine Risiko-Einschätzung für diese Fallakte.');
-    risikoRendern([]);
-    datenCache.risiko = [];
-    return;
-  }
-
-  risikoStatusAnzeigen('');
-  risikoRendern(ergebnis.data);
-  datenCache.risiko = ergebnis.data;
-}
-
-// ── FM-05 Tages-Barometer ─────────────────────────────────────────
-// Liest/schreibt die bestehende Tabelle "barometer_kind" (siehe
-// supabase/migrations/0007_barometer.sql) - bereits voll kompatibel:
-// farbe deckt exakt die geforderten 5 Stufen ab, RLS gewährt TK/Admin
-// bereits vollen Zugriff. Einzige Erweiterung: source erlaubt jetzt
-// zusätzlich 'tk' (siehe 0030_barometer_kind_tk_source.sql), damit ein
-// direkt hier im Fallmanagement erfasster Eintrag korrekt zugeordnet
-// bleibt statt fälschlich als 'ingra' gespeichert zu werden.
-var FARBE_LABEL = {
-  gruen: '🟢 Grün · Stabil',
-  gelb: '🟡 Gelb · Angespannt',
-  orange: '🟠 Orange · Belastet',
-  rot: '🔴 Rot · Akute Krise',
-  grau: '⚪ Grau · Erschöpft'
-};
-var BAROMETER_QUELLE_LABEL = { 'kind-self': 'Kind (Selbstauskunft)', 'ingra': 'INGRA', 'tk': 'TK' };
-var BAROMETER_TAGE_ZURUECK = 14;
-
-function barometerStatusAnzeigen(text){
-  var status = document.getElementById('barometer-status');
-  if (!status) return;
-  if (text) { status.textContent = text; status.style.display = 'block'; }
-  else { status.style.display = 'none'; }
-}
-
-// Mini-Chart: ein farbiges Feld pro Eintrag, chronologisch (älteste
-// links, neueste rechts) - macht Muster auf einen Blick sichtbar,
-// ohne eine Chart-Bibliothek einzubinden.
-function barometerStripRendern(liste){
-  var el = document.getElementById('barometer-strip');
-  if (!el) return;
-  var chronologisch = liste.slice().reverse();
-  el.innerHTML = chronologisch.map(function(b){
-    var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '';
-    var titel = datum + ': ' + (FARBE_LABEL[b.farbe] || b.farbe) + (b.notiz ? ' – ' + b.notiz : '');
-    return '<div class="barometer-marker ' + b.farbe + '" title="' + titel.replace(/"/g, '&quot;') + '"></div>';
-  }).join('');
-}
-
-function barometerListeRendern(liste){
-  var el = document.getElementById('barometer-liste');
-  if (!el) return;
-  if (!liste.length) { el.innerHTML = ''; return; }
-  el.innerHTML = liste.map(function(b){
-    var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '';
-    return '<li><strong>' + datum + ':</strong> ' + (FARBE_LABEL[b.farbe] || b.farbe) +
-      ' · Quelle: ' + (BAROMETER_QUELLE_LABEL[b.source] || b.source) +
-      (b.notiz ? ' · ' + b.notiz : '') + '</li>';
-  }).join('');
-}
-
-async function barometerLaden(){
-  document.querySelectorAll('input[name="ba-farbe"]').forEach(function(r){ r.checked = false; });
-  document.getElementById('ba-notiz').value = '';
-
-  if (!aktuellesKindId) {
-    barometerStatusAnzeigen('');
-    barometerStripRendern([]);
-    barometerListeRendern([]);
-    datenCache.barometer = [];
-    return;
-  }
-
-  var seit = new Date(Date.now() - BAROMETER_TAGE_ZURUECK * 86400000).toISOString();
-  var ergebnis = await supabase
-    .from('barometer_kind')
-    .select('farbe, notiz, source, created_at')
-    .eq('kind_id', aktuellesKindId)
-    .gte('created_at', seit)
-    .order('created_at', { ascending: false });
-
-  if (ergebnis.error) {
-    barometerStatusAnzeigen('Barometer-Verlauf konnte nicht geladen werden.');
-    barometerStripRendern([]);
-    barometerListeRendern([]);
-    datenCache.barometer = [];
-    return;
-  }
-  if (!ergebnis.data || !ergebnis.data.length) {
-    barometerStatusAnzeigen('Noch keine Barometer-Einträge in den letzten ' + BAROMETER_TAGE_ZURUECK + ' Tagen.');
-    barometerStripRendern([]);
-    barometerListeRendern([]);
-    datenCache.barometer = [];
-    return;
-  }
-
-  barometerStatusAnzeigen('');
-  barometerStripRendern(ergebnis.data);
-  barometerListeRendern(ergebnis.data);
-  datenCache.barometer = ergebnis.data;
-}
-
-async function barometerSpeichern(){
-  if (!aktuellesKindId) { barometerStatusAnzeigen('Bitte zuerst oben ein Kind wählen.'); return; }
-
-  var gewaehlt = document.querySelector('input[name="ba-farbe"]:checked');
-  if (!gewaehlt) { barometerStatusAnzeigen('Bitte eine Stufe auswählen.'); return; }
-
-  var ergebnis = await supabase.from('barometer_kind').insert({
-    kind_id: aktuellesKindId,
-    farbe: gewaehlt.value,
-    notiz: document.getElementById('ba-notiz').value.trim() || null,
-    source: 'tk'
-  });
-
-  if (ergebnis.error) {
-    barometerStatusAnzeigen('Eintrag konnte nicht gespeichert werden.');
-    return;
-  }
-
-  barometerStatusAnzeigen('✔ Gespeichert.');
-  barometerLaden();
-}
-window.barometerSpeichern = barometerSpeichern;
-
-// ── FM-06 PDF-Fallakte ────────────────────────────────────────────
-// Fasst die bereits geladenen Daten der anderen 5 Tabs (datenCache)
-// zu einer Druckvorschau zusammen - keine eigene Datenquelle.
 function escapeHtml(str) {
   if (!str) return '';
   var div = document.createElement('div');
@@ -1815,118 +818,470 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function ladePdfVorschau(){
-  var container = document.getElementById('pdf-inhalt');
-  if (!container) return;
+function fmtDatum(iso) {
+  if (!iso) return '–';
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
 
-  if (!aktuellesKindId) {
-    container.innerHTML = '<p class="tl-leer">Kein Kind ausgewählt — bitte oben ein Kind wählen.</p>';
+function fmtDatumZeit(iso) {
+  if (!iso) return '–';
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' }) + ' ' +
+         d.toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(function(){ t.style.display = 'none'; }, 2800);
+}
+
+function statusZeigen(elId, text) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  if (text) { el.textContent = text; el.style.display = 'block'; }
+  else { el.style.display = 'none'; }
+}
+
+async function kinderLaden() {
+  var { data, error } = await supabase.from('Kinder').select('id, name, klasse').eq('aktiv', true).order('name');
+  if (error) return;
+  kinderCache = {};
+  (data || []).forEach(function(k){ kinderCache[k.id] = k; });
+}
+
+function kindLabel(kindId) {
+  var k = kinderCache[kindId];
+  if (!k) return '–';
+  return k.name + (k.klasse ? ' (' + k.klasse + ')' : '');
+}
+
+// ── TAB 1: Fallübersicht ─────────────────────────────────────────
+async function fallakteAlleLaden() {
+  await kinderLaden();
+
+  var { data: faelle, error } = await supabase.from('fallakte').select('id, kind_id, status, created_at').order('created_at', { ascending:false });
+  if (error) {
+    statusZeigen('uebersicht-status', 'Fehler beim Laden: ' + error.message);
     return;
   }
 
-  var f = datenCache.fallakte;
-  var risiko = datenCache.risiko;
-  var massnahmen = datenCache.massnahmen;
-  var timeline = datenCache.timeline;
-  var barometer = datenCache.barometer;
+  var { data: risiken } = await supabase.from('fall_risikostatus').select('fallakte_id, ampel, created_at').order('created_at', { ascending:false });
+  var aktuellerRisiko = {};
+  (risiken || []).forEach(function(r){ if (!aktuellerRisiko[r.fallakte_id]) aktuellerRisiko[r.fallakte_id] = r; });
 
-  var html = '<h3>Fallakte – Übersicht</h3>';
+  fallakteCache = {};
+  (faelle || []).forEach(function(f){ f._risiko = aktuellerRisiko[f.id] || null; fallakteCache[f.id] = f; });
 
-  html += '<div class="pdf-sektion"><strong>Stammdaten</strong>';
-  if (f) {
-    html += '<div class="pdf-zeile"><strong>Name:</strong> ' + escapeHtml(f.name || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Klasse:</strong> ' + escapeHtml(f.klasse || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Geburtsdatum:</strong> ' + escapeHtml(f.geburtsdatum || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Rechtsgrundlage:</strong> ' + escapeHtml(RECHTSGRUNDLAGE_LABEL[f.rechtsgrundlage] || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Kostenträger:</strong> ' + escapeHtml(f.kostentraeger || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Stundenumfang:</strong> ' + escapeHtml(f.stundenumfang || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Befristet bis:</strong> ' + escapeHtml(f.befristet_bis || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Zuständige INGRA:</strong> ' + escapeHtml(f.ingraName || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Vertretung:</strong> ' + escapeHtml(f.vertretungName || '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Bezugsperson(en):</strong> ' + (f.bezugspersonen.length ? escapeHtml(f.bezugspersonen.map(function(b){ return b.name + (b.rolle ? ' (' + b.rolle + ')' : ''); }).join(', ')) : '–') + '</div>';
-    html += '<div class="pdf-zeile"><strong>Netzwerk:</strong> ' + (f.netzwerk.length ? escapeHtml(f.netzwerk.map(function(n){ return n.name + (n.rolle ? ' (' + n.rolle + ')' : ''); }).join(', ')) : '–') + '</div>';
-    if (f.ziele.length) {
-      html += '<div class="pdf-zeile"><strong>Ziele:</strong></div>';
-      f.ziele.forEach(function(z){
-        html += '<div class="pdf-zeile">• ' + escapeHtml(z.ziel) + (z.indikator ? ' · Indikator: ' + escapeHtml(z.indikator) : '') + (z.zieldatum ? ' · bis ' + z.zieldatum : '') + '</div>';
-      });
-    } else {
-      html += '<div class="pdf-zeile"><strong>Ziele:</strong> –</div>';
-    }
-    html += '<div class="pdf-zeile"><strong>Ressourcen:</strong> ' + escapeHtml(f.ressourcen || '–') + '</div>';
-  } else {
-    html += '<div class="pdf-zeile tl-leer">Keine aktive Fallakte für dieses Kind gefunden.</div>';
+  falluebersichtRendern();
+  neueFallakteDropdownFuellen();
+}
+
+function falluebersichtRendern() {
+  var wrap = document.getElementById('fallliste');
+  var filter = (document.getElementById('uebersicht-filter').value || '').toLowerCase().trim();
+
+  var zeilen = Object.values(fallakteCache).filter(function(f){
+    if (!filter) return true;
+    return kindLabel(f.kind_id).toLowerCase().indexOf(filter) !== -1;
+  });
+
+  if (!zeilen.length) {
+    wrap.innerHTML = '<p class="leer-hinweis">Keine Fälle gefunden.</p>';
+    return;
   }
-  html += '</div>';
 
-  html += '<div class="pdf-sektion"><strong>Risiko-Ampel</strong>';
+  wrap.innerHTML = zeilen.map(function(f){
+    var risikoChip = f._risiko
+      ? '<span class="ampel-chip ' + f._risiko.ampel + '">' + AMPEL_LABEL[f._risiko.ampel] + '</span>'
+      : '<span class="ampel-chip grau">Keine Einschätzung</span>';
+    return '<div class="fall-zeile' + (f.id === aktuelleFallakteId ? ' aktiv-ausgewaehlt' : '') + '">'
+      + '<div class="fall-zeile-kind">' + escapeHtml(kindLabel(f.kind_id)) + '<span>Angelegt: ' + fmtDatum(f.created_at) + '</span></div>'
+      + '<span class="ampel-chip ' + STATUS_CHIP[f.status] + '">' + STATUS_LABEL[f.status] + '</span>'
+      + risikoChip
+      + '<button class="act-btn secondary" onclick="window.fallOeffnen(\'' + f.id + '\')">Öffnen →</button>'
+      + '</div>';
+  }).join('');
+}
+
+function neueFallakteDropdownFuellen() {
+  var select = document.getElementById('neu-kind');
+  if (!select) return;
+  var bisher = select.value;
+  select.innerHTML = '<option value="">– Kind wählen –</option>' + Object.values(kinderCache).map(function(k){
+    return '<option value="' + k.id + '">' + escapeHtml(kindLabel(k.id)) + '</option>';
+  }).join('');
+  if (kinderCache[bisher]) select.value = bisher;
+}
+
+async function fallakteAnlegen() {
+  var kindId = document.getElementById('neu-kind').value;
+  if (!kindId) { showToast('⚠️ Bitte ein Kind wählen'); return; }
+
+  var { error } = await supabase.from('fallakte').insert({ kind_id: kindId, status: 'laufend' });
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+
+  showToast('✓ Fallakte angelegt');
+  await fallakteAlleLaden();
+}
+window.fallakteAnlegen = fallakteAnlegen;
+
+async function fallOeffnen(fallakteId) {
+  aktuelleFallakteId = fallakteId;
+  falluebersichtRendern();
+  oeffneFallakteTab();
+  await Promise.all([
+    fallakteDetailLaden(),
+    timelineLaden(),
+    risikostatusLaden(),
+    istTkAdmin ? fallbesprechungenLaden() : Promise.resolve(),
+    meldebogenLaden(),
+    istTkAdmin ? fallabschlussLaden() : Promise.resolve()
+  ]);
+}
+window.fallOeffnen = fallOeffnen;
+
+// ── TAB 2: Fallakte-Detail ────────────────────────────────────────
+async function fallakteDetailLaden() {
+  var f = fallakteCache[aktuelleFallakteId];
+  if (!f) return;
+
+  document.getElementById('detail-kein-fall').style.display = 'none';
+  document.getElementById('detail-inhalt').style.display = 'block';
+
+  document.getElementById('det-name').textContent = (kinderCache[f.kind_id] || {}).name || '–';
+  document.getElementById('det-klasse').textContent = (kinderCache[f.kind_id] || {}).klasse || '–';
+
+  var statusChip = document.getElementById('det-status-chip');
+  statusChip.className = 'ampel-chip ' + STATUS_CHIP[f.status];
+  statusChip.textContent = STATUS_LABEL[f.status];
+
+  var auswahl = document.getElementById('det-status-auswahl');
+  if (auswahl) auswahl.value = f.status;
+
+  var { data: risiko } = await supabase.from('fall_risikostatus').select('ampel, begruendung_text, created_at')
+    .eq('fallakte_id', aktuelleFallakteId).order('created_at', { ascending:false }).limit(1);
+  var chip = document.getElementById('det-risiko-chip');
   if (risiko && risiko.length) {
-    html += '<div class="pdf-zeile"><strong>Aktuell:</strong> ' + (AMPEL_LABEL[risiko[0].ampel] || risiko[0].ampel) + (risiko[0].begruendung ? ' · ' + escapeHtml(risiko[0].begruendung) : '') + '</div>';
+    chip.className = 'ampel-chip ' + risiko[0].ampel;
+    chip.textContent = AMPEL_LABEL[risiko[0].ampel];
   } else {
-    html += '<div class="pdf-zeile tl-leer">Keine Risiko-Einschätzung erfasst.</div>';
+    chip.className = 'ampel-chip grau';
+    chip.textContent = 'Keine Einschätzung';
   }
-  html += '</div>';
-
-  html += '<div class="pdf-sektion"><strong>Maßnahmenplan (' + massnahmen.length + ')</strong>';
-  if (massnahmen.length) {
-    massnahmen.forEach(function(m){
-      html += '<div class="pdf-zeile">• ' + escapeHtml(m.titel) + ' — ' + (MASSNAHMEN_STATUS_LABEL[m.status] || m.status) + (m.verantwortlichName ? ' · Verantwortlich: ' + escapeHtml(m.verantwortlichName) : '') + '</div>';
-    });
-  } else {
-    html += '<div class="pdf-zeile tl-leer">Keine Maßnahmen erfasst.</div>';
-  }
-  html += '</div>';
-
-  html += '<div class="pdf-sektion"><strong>Verlauf / Chronik (' + timeline.length + ' Einträge)</strong>';
-  if (timeline.length) {
-    timeline.forEach(function(t){
-      html += '<div class="pdf-zeile">• ' + (t.datum || '–') + ' — ' + (EREIGNISTYP_LABEL[t.ereignistyp] || t.ereignistyp || '') +
-        (t.fakten ? ': ' + escapeHtml(t.fakten) : '') +
-        (t.einschaetzung ? ' · Einschätzung: ' + escapeHtml(t.einschaetzung) : '') + '</div>';
-    });
-  } else {
-    html += '<div class="pdf-zeile tl-leer">Keine Verlaufseinträge erfasst.</div>';
-  }
-  html += '</div>';
-
-  html += '<div class="pdf-sektion"><strong>Tages-Barometer (letzte 14 Tage, ' + barometer.length + ' Einträge)</strong>';
-  if (barometer.length) {
-    // barometer ist absteigend sortiert (neueste zuerst) - Index 0 ist
-    // damit bereits der aktuelle Status. Der Trend ist bewusst nur eine
-    // chronologische Farbfolge (kein errechneter Score), um keine
-    // fachliche Bewertung vorwegzunehmen.
-    var aktuellerDatum = barometer[0].created_at ? new Date(barometer[0].created_at).toLocaleDateString('de-DE') : '–';
-    html += '<div class="pdf-zeile"><strong>Aktueller Status:</strong> ' + (FARBE_LABEL[barometer[0].farbe] || barometer[0].farbe) + ' (' + aktuellerDatum + ')</div>';
-    var trendEmoji = { gruen: '🟢', gelb: '🟡', orange: '🟠', rot: '🔴', grau: '⚪' };
-    var trend = barometer.slice().reverse().map(function(b){ return trendEmoji[b.farbe] || '?'; }).join(' ');
-    html += '<div class="pdf-zeile"><strong>Trend (chronologisch):</strong> ' + trend + '</div>';
-    barometer.forEach(function(b){
-      var datum = b.created_at ? new Date(b.created_at).toLocaleDateString('de-DE') : '–';
-      html += '<div class="pdf-zeile">• ' + datum + ' — ' + (FARBE_LABEL[b.farbe] || b.farbe) + (b.notiz ? ': ' + escapeHtml(b.notiz) : '') + '</div>';
-    });
-  } else {
-    html += '<div class="pdf-zeile tl-leer">Keine Barometer-Einträge in den letzten 14 Tagen.</div>';
-  }
-  html += '</div>';
-
-  container.innerHTML = html;
 }
-window.ladePdfVorschau = ladePdfVorschau;
 
-// PDF-Export: im gesamten Repo gibt es keine PDF-Bibliothek (kein jsPDF/
-// html2pdf/pdfmake) - jede Seite mit Exportbedarf nutzt stattdessen den
-// Browser-Druckdialog (window.print(), "Als PDF speichern"), siehe z.B.
-// @media print weiter oben in dieser Datei. Gleiche Methode hier, keine
-// neue Bibliothek eingeführt. Vorschau wird vor dem Drucken einmal
-// aktualisiert, damit der Export garantiert die aktuellen Tab-Daten
-// zeigt statt einer möglicherweise veralteten Vorschau.
-function pdfExportieren(){
-  ladePdfVorschau();
-  window.print();
+async function fallstatusSpeichern() {
+  var neuerStatus = document.getElementById('det-status-auswahl').value;
+  var { error } = await supabase.from('fallakte').update({ status: neuerStatus }).eq('id', aktuelleFallakteId);
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+
+  showToast('✓ Status gespeichert');
+  await fallakteAlleLaden();
+  await fallakteDetailLaden();
 }
-window.pdfExportieren = pdfExportieren;
+window.fallstatusSpeichern = fallstatusSpeichern;
 
-kindAuswahlLaden();
+// ── TAB 3: Verlauf / Chronik ──────────────────────────────────────
+async function timelineLaden() {
+  var kein = document.getElementById('verlauf-kein-fall');
+  var inhalt = document.getElementById('verlauf-inhalt');
+  if (!aktuelleFallakteId) { kein.style.display = 'block'; inhalt.style.display = 'none'; return; }
+  kein.style.display = 'none'; inhalt.style.display = 'block';
+
+  var { data, error } = await supabase.from('fall_timeline').select('id, ereignistyp, fakten_text, einschaetzung_text, created_at')
+    .eq('fallakte_id', aktuelleFallakteId).order('created_at', { ascending:false });
+
+  var wrap = document.getElementById('verlauf-liste');
+  if (error) { statusZeigen('verlauf-status', 'Fehler beim Laden: ' + error.message); return; }
+  statusZeigen('verlauf-status', '');
+
+  if (!data || !data.length) { wrap.innerHTML = '<p class="leer-hinweis">Noch keine Einträge.</p>'; return; }
+
+  wrap.innerHTML = data.map(function(t){
+    var typ = t.ereignistyp || 'beobachtung';
+    return '<div class="tl-eintrag">'
+      + '<div class="tl-eintrag-kopf"><span class="ampel-chip ' + EREIGNISTYP_CHIP[typ] + '">' + (EREIGNISTYP_LABEL[typ] || typ) + '</span>'
+      + '<span class="tl-eintrag-datum">' + fmtDatumZeit(t.created_at) + '</span></div>'
+      + (t.fakten_text ? '<div class="tl-block"><span class="tl-block-label">Fakten</span><div class="tl-block-text">' + escapeHtml(t.fakten_text) + '</div></div>' : '')
+      + (t.einschaetzung_text ? '<div class="tl-block"><span class="tl-block-label">Einschätzung</span><div class="tl-block-text">' + escapeHtml(t.einschaetzung_text) + '</div></div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+async function timelineEintragSpeichern() {
+  var ereignistyp = document.getElementById('tl-ereignistyp').value;
+  var fakten = document.getElementById('tl-fakten').value.trim();
+  var einschaetzung = document.getElementById('tl-einschaetzung').value.trim();
+
+  if (!fakten && !einschaetzung) { showToast('⚠️ Bitte Fakten oder Einschätzung eintragen'); return; }
+
+  var { error } = await supabase.from('fall_timeline').insert({
+    fallakte_id: aktuelleFallakteId,
+    ereignistyp: ereignistyp,
+    fakten_text: fakten || null,
+    einschaetzung_text: einschaetzung || null,
+    erstellt_von: meinAuthUid || undefined
+  });
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+
+  document.getElementById('tl-fakten').value = '';
+  document.getElementById('tl-einschaetzung').value = '';
+  showToast('✓ Eintrag gespeichert');
+  await timelineLaden();
+}
+window.timelineEintragSpeichern = timelineEintragSpeichern;
+
+// ── TAB 4: Risikostatus ───────────────────────────────────────────
+async function risikostatusLaden() {
+  var kein = document.getElementById('risiko-kein-fall');
+  var inhalt = document.getElementById('risiko-inhalt');
+  if (!aktuelleFallakteId) { kein.style.display = 'block'; inhalt.style.display = 'none'; return; }
+  kein.style.display = 'none'; inhalt.style.display = 'block';
+
+  var { data, error } = await supabase.from('fall_risikostatus').select('id, ampel, begruendung_text, created_at')
+    .eq('fallakte_id', aktuelleFallakteId).order('created_at', { ascending:false });
+
+  var wrap = document.getElementById('risiko-liste');
+  if (error) { statusZeigen('risiko-status', 'Fehler beim Laden: ' + error.message); return; }
+  statusZeigen('risiko-status', '');
+
+  if (!data || !data.length) { wrap.innerHTML = '<p class="leer-hinweis">Noch keine Einschätzung erfasst.</p>'; return; }
+
+  wrap.innerHTML = data.map(function(r){
+    return '<div class="tl-eintrag">'
+      + '<div class="tl-eintrag-kopf"><span class="ampel-chip ' + r.ampel + '">' + AMPEL_LABEL[r.ampel] + '</span>'
+      + '<span class="tl-eintrag-datum">' + fmtDatumZeit(r.created_at) + '</span></div>'
+      + (r.begruendung_text ? '<div class="tl-block"><div class="tl-block-text">' + escapeHtml(r.begruendung_text) + '</div></div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+async function risikostatusSpeichern() {
+  var gewaehlt = document.querySelector('input[name="ri-ampel"]:checked');
+  if (!gewaehlt) { showToast('⚠️ Bitte eine Ampel-Farbe wählen'); return; }
+
+  var { error } = await supabase.from('fall_risikostatus').insert({
+    fallakte_id: aktuelleFallakteId,
+    ampel: gewaehlt.value,
+    begruendung_text: document.getElementById('ri-begruendung').value.trim() || null,
+    gesetzt_von: meinAuthUid || undefined
+  });
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+
+  gewaehlt.checked = false;
+  document.getElementById('ri-begruendung').value = '';
+  showToast('✓ Einschätzung gespeichert');
+  await risikostatusLaden();
+  await fallakteDetailLaden();
+  await fallakteAlleLaden();
+}
+window.risikostatusSpeichern = risikostatusSpeichern;
+
+// ── TAB 5: Fallbesprechungen (nur TK/Admin) ───────────────────────
+var bpBearbeiteId = null;
+
+async function fallbesprechungenLaden() {
+  if (!istTkAdmin) return;
+  var kein = document.getElementById('besprechungen-kein-fall');
+  var inhalt = document.getElementById('besprechungen-inhalt');
+  if (!aktuelleFallakteId) { kein.style.display = 'block'; inhalt.style.display = 'none'; return; }
+  kein.style.display = 'none'; inhalt.style.display = 'block';
+
+  var { data, error } = await supabase.from('tk_fallbesprechungen').select('id, datum, protokoll_text, ziele_text, naechster_termin, created_at')
+    .eq('fallakte_id', aktuelleFallakteId).order('datum', { ascending:false });
+
+  var wrap = document.getElementById('besprechungen-liste');
+  if (error) { statusZeigen('besprechungen-status', 'Fehler beim Laden: ' + error.message); return; }
+  statusZeigen('besprechungen-status', '');
+
+  if (!data || !data.length) { wrap.innerHTML = '<p class="leer-hinweis">Noch keine Protokolle.</p>'; return; }
+
+  wrap.innerHTML = data.map(function(b){
+    return '<div class="tl-eintrag">'
+      + '<div class="tl-eintrag-kopf"><strong>' + fmtDatum(b.datum) + '</strong>'
+      + (b.naechster_termin ? '<span class="ampel-chip blau">Nächster Termin: ' + fmtDatum(b.naechster_termin) + '</span>' : '')
+      + '<button class="act-btn ghost" style="margin-left:auto;" onclick="window.fallbesprechungBearbeiten(\'' + b.id + '\')">Bearbeiten</button></div>'
+      + (b.protokoll_text ? '<div class="tl-block"><span class="tl-block-label">Protokoll</span><div class="tl-block-text">' + escapeHtml(b.protokoll_text) + '</div></div>' : '')
+      + (b.ziele_text ? '<div class="tl-block"><span class="tl-block-label">Ziele</span><div class="tl-block-text">' + escapeHtml(b.ziele_text) + '</div></div>' : '')
+      + '</div>';
+  }).join('');
+
+  window._bpDaten = {};
+  data.forEach(function(b){ window._bpDaten[b.id] = b; });
+}
+
+function fallbesprechungFormularZuruecksetzen() {
+  bpBearbeiteId = null;
+  document.getElementById('bp-form-titel').textContent = 'Neues Protokoll';
+  document.getElementById('bp-datum').value = '';
+  document.getElementById('bp-naechster-termin').value = '';
+  document.getElementById('bp-protokoll').value = '';
+  document.getElementById('bp-ziele').value = '';
+}
+window.fallbesprechungFormularZuruecksetzen = fallbesprechungFormularZuruecksetzen;
+
+function fallbesprechungBearbeiten(id) {
+  var b = (window._bpDaten || {})[id];
+  if (!b) return;
+  bpBearbeiteId = id;
+  document.getElementById('bp-form-titel').textContent = 'Protokoll bearbeiten';
+  document.getElementById('bp-datum').value = b.datum || '';
+  document.getElementById('bp-naechster-termin').value = b.naechster_termin || '';
+  document.getElementById('bp-protokoll').value = b.protokoll_text || '';
+  document.getElementById('bp-ziele').value = b.ziele_text || '';
+  var btn = document.querySelector('.tab-btn[data-panel="tab-besprechungen"]');
+  if (btn) switchTab(btn, 'tab-besprechungen');
+}
+window.fallbesprechungBearbeiten = fallbesprechungBearbeiten;
+
+async function fallbesprechungSpeichern() {
+  var eintrag = {
+    fallakte_id: aktuelleFallakteId,
+    datum: document.getElementById('bp-datum').value || undefined,
+    naechster_termin: document.getElementById('bp-naechster-termin').value || null,
+    protokoll_text: document.getElementById('bp-protokoll').value.trim() || null,
+    ziele_text: document.getElementById('bp-ziele').value.trim() || null
+  };
+
+  var ergebnis = bpBearbeiteId
+    ? await supabase.from('tk_fallbesprechungen').update(eintrag).eq('id', bpBearbeiteId)
+    : await supabase.from('tk_fallbesprechungen').insert(eintrag);
+
+  if (ergebnis.error) { showToast('⚠️ Fehler: ' + ergebnis.error.message); return; }
+
+  showToast('✓ Gespeichert');
+  fallbesprechungFormularZuruecksetzen();
+  await fallbesprechungenLaden();
+}
+window.fallbesprechungSpeichern = fallbesprechungSpeichern;
+
+// ── TAB 6: Meldebogen §8a ──────────────────────────────────────────
+async function meldebogenLaden() {
+  var kein = document.getElementById('meldebogen-kein-fall');
+  var inhalt = document.getElementById('meldebogen-inhalt');
+  if (!aktuelleFallakteId) { kein.style.display = 'block'; inhalt.style.display = 'none'; return; }
+  kein.style.display = 'none'; inhalt.style.display = 'block';
+
+  // RLS scoped: TK/Admin sehen alle Meldungen des Falls, meldende INGRA
+  // ausschließlich die eigenen - dieselbe Abfrage liefert je nach Rolle
+  // automatisch das richtige Ergebnis.
+  var { data, error } = await supabase.from('meldebogen_8a').select('id, meldedatum, sachverhalt_text, einschaetzung, massnahmen, status, created_at')
+    .eq('fallakte_id', aktuelleFallakteId).order('meldedatum', { ascending:false });
+
+  var wrap = document.getElementById('meldebogen-liste');
+  if (error) { statusZeigen('meldebogen-status', 'Fehler beim Laden: ' + error.message); return; }
+  statusZeigen('meldebogen-status', '');
+
+  if (!data || !data.length) { wrap.innerHTML = '<p class="leer-hinweis">Keine Meldungen sichtbar.</p>'; return; }
+
+  wrap.innerHTML = data.map(function(m){
+    var statusSteuerung = istTkAdmin
+      ? '<select onchange="window.meldebogenStatusAendern(\'' + m.id + '\', this.value)" style="margin-left:auto;font-size:.72rem;padding:.2rem .4rem;border:1.5px solid var(--kt-border);border-radius:6px;">'
+        + ['offen','in_arbeit','abgeschlossen'].map(function(s){
+            return '<option value="' + s + '"' + (s === m.status ? ' selected' : '') + '>' + MELDEBOGEN_STATUS_LABEL[s] + '</option>';
+          }).join('')
+        + '</select>'
+      : '<span class="ampel-chip ' + MELDEBOGEN_STATUS_CHIP[m.status] + '" style="margin-left:auto;">' + MELDEBOGEN_STATUS_LABEL[m.status] + '</span>';
+
+    return '<div class="tl-eintrag">'
+      + '<div class="tl-eintrag-kopf"><strong>' + fmtDatum(m.meldedatum) + '</strong>' + statusSteuerung + '</div>'
+      + (m.sachverhalt_text ? '<div class="tl-block"><span class="tl-block-label">Sachverhalt</span><div class="tl-block-text">' + escapeHtml(m.sachverhalt_text) + '</div></div>' : '')
+      + (m.einschaetzung ? '<div class="tl-block"><span class="tl-block-label">Einschätzung</span><div class="tl-block-text">' + escapeHtml(m.einschaetzung) + '</div></div>' : '')
+      + (m.massnahmen ? '<div class="tl-block"><span class="tl-block-label">Maßnahmen</span><div class="tl-block-text">' + escapeHtml(m.massnahmen) + '</div></div>' : '')
+      + '</div>';
+  }).join('');
+}
+
+async function meldebogenStatusAendern(id, neuerStatus) {
+  var { error } = await supabase.from('meldebogen_8a').update({ status: neuerStatus }).eq('id', id);
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+  showToast('✓ Status geändert');
+  await meldebogenLaden();
+}
+window.meldebogenStatusAendern = meldebogenStatusAendern;
+
+async function meldebogenSpeichern() {
+  var sachverhalt = document.getElementById('mb-sachverhalt').value.trim();
+  if (!sachverhalt) { showToast('⚠️ Bitte Sachverhalt eintragen'); return; }
+
+  var eintrag = {
+    fallakte_id: aktuelleFallakteId,
+    meldedatum: document.getElementById('mb-datum').value || undefined,
+    sachverhalt_text: sachverhalt,
+    einschaetzung: document.getElementById('mb-einschaetzung').value.trim() || null,
+    massnahmen: document.getElementById('mb-massnahmen').value.trim() || null
+  };
+  // Meldende INGRA muss ingra_id serverseitig auf die eigene auth.uid()
+  // erzwingen (siehe RLS meldebogen_8a_ingra_insert in 0038) - für
+  // TK/Admin greift stattdessen der Spalten-Default (auth.uid()).
+  if (!istTkAdmin) eintrag.ingra_id = meinAuthUid || undefined;
+
+  var { error } = await supabase.from('meldebogen_8a').insert(eintrag);
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+
+  document.getElementById('mb-sachverhalt').value = '';
+  document.getElementById('mb-einschaetzung').value = '';
+  document.getElementById('mb-massnahmen').value = '';
+  showToast('✓ Meldung angelegt');
+  await meldebogenLaden();
+}
+window.meldebogenSpeichern = meldebogenSpeichern;
+
+// ── TAB 7: Fallabschluss (nur TK/Admin) ───────────────────────────
+var abBestehenderId = null;
+
+async function fallabschlussLaden() {
+  if (!istTkAdmin) return;
+  var kein = document.getElementById('abschluss-kein-fall');
+  var inhalt = document.getElementById('abschluss-inhalt');
+  if (!aktuelleFallakteId) { kein.style.display = 'block'; inhalt.style.display = 'none'; return; }
+  kein.style.display = 'none'; inhalt.style.display = 'block';
+
+  var { data, error } = await supabase.from('fallabschluss').select('id, abschlussdatum, ziele_erreicht, uebergabe_dokumentiert, eltern_informiert, unterlagen_vollstaendig, abschlussbericht_text')
+    .eq('fallakte_id', aktuelleFallakteId).order('created_at', { ascending:false }).limit(1);
+
+  if (error) return;
+  var a = (data && data[0]) || null;
+  abBestehenderId = a ? a.id : null;
+
+  document.getElementById('ab-datum').value = a ? a.abschlussdatum : '';
+  document.getElementById('ab-ziele-erreicht').checked = a ? !!a.ziele_erreicht : false;
+  document.getElementById('ab-uebergabe').checked = a ? !!a.uebergabe_dokumentiert : false;
+  document.getElementById('ab-eltern').checked = a ? !!a.eltern_informiert : false;
+  document.getElementById('ab-unterlagen').checked = a ? !!a.unterlagen_vollstaendig : false;
+  document.getElementById('ab-bericht').value = a ? (a.abschlussbericht_text || '') : '';
+}
+
+async function fallabschlussSpeichern() {
+  var eintrag = {
+    fallakte_id: aktuelleFallakteId,
+    abschlussdatum: document.getElementById('ab-datum').value || undefined,
+    ziele_erreicht: document.getElementById('ab-ziele-erreicht').checked,
+    uebergabe_dokumentiert: document.getElementById('ab-uebergabe').checked,
+    eltern_informiert: document.getElementById('ab-eltern').checked,
+    unterlagen_vollstaendig: document.getElementById('ab-unterlagen').checked,
+    abschlussbericht_text: document.getElementById('ab-bericht').value.trim() || null
+  };
+
+  var ergebnis = abBestehenderId
+    ? await supabase.from('fallabschluss').update(eintrag).eq('id', abBestehenderId)
+    : await supabase.from('fallabschluss').insert(eintrag);
+
+  if (ergebnis.error) { showToast('⚠️ Fehler: ' + ergebnis.error.message); return; }
+
+  showToast('✓ Fallabschluss gespeichert');
+  await fallabschlussLaden();
+}
+window.fallabschlussSpeichern = fallabschlussSpeichern;
+
+window.falluebersichtRendern = falluebersichtRendern;
+
+fallakteAlleLaden();
 </script>
 </body>
 </html>

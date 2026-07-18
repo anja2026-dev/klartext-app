@@ -2,81 +2,593 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLARTEXT · Kinder-Zuordnung</title>
-<script>(function(){try{
-  if(window.location.protocol==='file:') return;
-  var login = sessionStorage.getItem('klartext_login');
-  var role  = sessionStorage.getItem('klartext_role') || '';
-  if(login!=='true' || !['tk','admin'].includes(role)){
-    window.location.href='KLARTEXT_Login.html';
-  }
-}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · TK · Kinderzuordnung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kt-primary:#1B3A4B;
+  --kt-accent:#6EC6A0;
+  --kt-paper:#F5F0E8;
+  --kt-ink:#2D2D2D;
+  --kt-muted:#7A7060;
+  --kt-surface:#FFFFFF;
+  --kt-border:#DDD8CE;
+  --tk-color:#4A148C;
+  --tk-light:#F3E5FF;
+  --tk-mid:#7B1FA2;
+  --shadow:0 2px 10px rgba(27,58,75,.09);
+  --shadow-lg:0 6px 28px rgba(27,58,75,.14);
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--kt-paper);color:var(--kt-ink);line-height:1.65;font-size:15px;min-height:100vh;}
+
+.kt-header{
+  background:var(--kt-primary);
+  height:80px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,4vw,2rem);
+  border-bottom:4px solid var(--tk-color);
+  position:sticky;top:0;z-index:200;
+  box-shadow:var(--shadow-lg);
+}
+.header-left{display:flex;align-items:center;gap:.9rem;}
+.kt-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.kt-logo-mark{width:36px;height:36px;background:var(--kt-primary);border:2px solid var(--tk-color);border-radius:var(--r-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 5px;flex-shrink:0;}
+.kt-logo-mark .lm-k::before{content:'K';font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#fff;line-height:1;}
+.kt-logo-bars{display:flex;flex-direction:column;gap:2px;width:100%;}
+.kt-logo-bars span{height:2px;border-radius:2px;background:var(--tk-color);display:block;}
+.kt-logo-bars span:nth-child(1){width:100%;}
+.kt-logo-bars span:nth-child(2){width:70%;opacity:.7;}
+.kt-logo-bars span:nth-child(3){width:85%;opacity:.5;}
+.kt-logo-text .wort{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.06em;line-height:1;display:block;color:#fff;}
+.kt-logo-text .claim{font-size:.65rem;color:var(--tk-color);opacity:.9;letter-spacing:.12em;display:block;margin-top:2px;}
+.header-badge{
+  background:rgba(74,20,140,.25);
+  border:1.5px solid rgba(206,147,216,.5);
+  color:#CE93D8;
+  font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .7rem;border-radius:20px;
+}
+.btn-back{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.28rem .75rem;border-radius:20px;
+  background:rgba(110,198,160,.12);
+  border:1px solid rgba(110,198,160,.3);
+  color:var(--kt-accent);
+  font-size:.72rem;font-weight:700;text-decoration:none;
+  transition:all .15s;
+}
+.btn-back:hover{background:rgba(110,198,160,.22);}
+
+.brainy-banner{
+  background:linear-gradient(135deg,#2D1B45,#4A148C);
+  border-bottom:2px solid rgba(206,147,216,.4);
+  padding:.65rem clamp(.75rem,3vw,1.5rem);
+  display:flex;align-items:flex-start;gap:.75rem;
+}
+.brainy-face{
+  width:42px;height:42px;flex-shrink:0;
+  background:rgba(255,255,255,.12);border:2px solid rgba(206,147,216,.5);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.brainy-text{flex:1;}
+.brainy-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#CE93D8;display:block;margin-bottom:.18rem;}
+.brainy-msg{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.5;}
+.brainy-msg strong{color:#E1BEE7;}
+
+.unter-wrap{max-width:800px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 4rem;}
+
+.unter-header{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow);
+}
+.unter-header-stripe{height:4px;background:var(--tk-color);}
+.unter-header-inner{padding:.9rem 1.1rem .85rem;}
+.unter-nr{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.25rem;}
+.unter-titel{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.45rem);font-weight:700;color:var(--kt-primary);line-height:1.2;}
+.unter-sub{font-size:.8rem;color:var(--kt-muted);margin-top:.2rem;}
+
+.karte{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:.7rem;
+  box-shadow:var(--shadow);
+}
+.karte-header{
+  background:var(--tk-light);
+  border-bottom:1px solid rgba(74,20,140,.12);
+  padding:.5rem .9rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.karte-header-icon{font-size:1rem;}
+.karte-header-titel{font-size:.78rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+.karte-body{padding:.75rem .9rem .85rem;}
+
+.hinweis{
+  background:rgba(74,20,140,.07);
+  border-left:3px solid var(--tk-color);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;color:var(--kt-ink);line-height:1.55;
+  margin-top:.5rem;
+}
+.hinweis strong{color:var(--tk-color);}
+
+.brainy-box{
+  background:linear-gradient(135deg,rgba(74,20,140,.07),rgba(74,20,140,.03));
+  border:1.5px solid rgba(74,20,140,.18);
+  border-radius:var(--r-md);
+  padding:.7rem .9rem;
+  margin-top:.9rem;
+  display:flex;gap:.6rem;align-items:flex-start;
+}
+.brainy-box-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
+.brainy-box-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tk-color);margin-bottom:.2rem;display:block;}
+.brainy-box-text{font-size:.78rem;color:var(--kt-ink);line-height:1.55;}
+.brainy-box-text em{font-style:italic;color:var(--kt-muted);}
+
+footer{
+  background:var(--kt-primary);color:rgba(255,255,255,.55);
+  text-align:center;padding:1.2rem 1rem;
+  font-size:.72rem;line-height:1.9;
+}
+footer strong{color:var(--kt-accent);}
+
+.tab-bar{
+  display:flex;gap:0;margin-bottom:1rem;
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-md);
+  overflow:hidden;
+  background:var(--kt-surface);
+}
+.tab-btn{
+  flex:1;padding:.5rem .6rem;
+  background:var(--kt-surface);border:none;
+  font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;
+  color:var(--kt-muted);cursor:pointer;
+  border-right:1px solid var(--kt-border);
+  transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:.3rem;
+}
+.tab-btn:last-child{border-right:none;}
+.tab-btn:hover{background:var(--tk-light);color:var(--tk-color);}
+.tab-btn.aktiv{background:var(--tk-color);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.aktiv{display:block;}
+
+.form-section{
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  margin-bottom:.75rem;
+  box-shadow:var(--shadow);
+}
+.form-section-header{
+  background:var(--tk-light);
+  border-bottom:1px solid rgba(74,20,140,.12);
+  padding:.45rem .9rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.form-section-icon{font-size:.95rem;}
+.form-section-titel{font-size:.75rem;font-weight:700;color:var(--tk-color);letter-spacing:.03em;}
+.form-body{padding:.75rem .9rem .85rem;display:flex;flex-direction:column;gap:.55rem;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.form-row.full{grid-template-columns:1fr;}
+
+.fld{display:flex;flex-direction:column;gap:.2rem;}
+.fld label{
+  font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--kt-muted);
+}
+.fld input,.fld select{
+  font-family:'DM Sans',sans-serif;font-size:.82rem;
+  padding:.38rem .6rem;
+  border:1.5px solid var(--kt-border);
+  border-radius:var(--r-sm);
+  background:var(--kt-paper);
+  color:var(--kt-ink);
+  outline:none;
+  transition:border-color .15s;
+  width:100%;
+}
+.fld input:focus,.fld select:focus{
+  border-color:var(--tk-color);
+  box-shadow:0 0 0 3px rgba(74,20,140,.1);
+}
+.fld select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A7060'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .6rem center;padding-right:1.6rem;}
+
+.form-actions{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  margin-top:1rem;
+  padding-top:.85rem;
+  border-top:1px solid var(--kt-border);
+}
+.act-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.38rem .85rem;border-radius:var(--r-md);
+  font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;
+  cursor:pointer;border:none;transition:all .15s;
+}
+.act-btn.primary{background:var(--tk-color);color:#fff;}
+.act-btn.primary:hover{background:var(--tk-mid);}
+.act-btn.ghost{background:var(--kt-surface);color:var(--kt-muted);border:1.5px solid var(--kt-border);}
+.act-btn.ghost:hover{background:var(--kt-paper);}
+.act-btn.danger{background:#FDEAEA;color:#C62828;border:1.5px solid #EF9A9A;}
+.act-btn.danger:hover{background:#F8D3D3;}
+
+.toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  background:var(--kt-surface);
+  border:1.5px solid var(--kt-border);
+  border-left:4px solid var(--tk-color);
+  border-radius:var(--r-md);
+  padding:.65rem 1.1rem;
+  font-size:.8rem;font-weight:600;color:var(--kt-ink);
+  box-shadow:var(--shadow-lg);
+  z-index:9999;display:none;
+  max-width:calc(100vw - 2rem);
+}
+
+.zu-zeile{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;
+  padding:.55rem .7rem;border:1.5px solid var(--kt-border);border-radius:var(--r-md);
+  background:var(--kt-paper);margin-bottom:.45rem;
+}
+.zu-zeile-kind{flex:1;min-width:140px;font-size:.83rem;font-weight:700;color:var(--kt-primary);}
+.zu-zeile-kind span{display:block;font-size:.68rem;font-weight:400;color:var(--kt-muted);}
+.zu-zeile select{max-width:220px;}
+.vertr-chip{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.22rem .6rem;border-radius:20px;
+  background:var(--tk-light);color:var(--tk-color);
+  font-size:.68rem;font-weight:600;
+}
+.zeitraum-text{font-size:.68rem;color:var(--kt-muted);}
+.leer-hinweis{font-size:.8rem;color:var(--kt-muted);padding:.5rem 0;}
+
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .kt-header{height:auto;flex-wrap:wrap;row-gap:.4rem;padding:.6rem clamp(.75rem,4vw,1.25rem);}
+  .kt-logo-text .claim{display:none;}
+}
+</style>
 </head>
 <body>
 
-<h1>Kinder-Zuordnung</h1>
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- AUTH-GUARD: Nur TK/Admin - Weiterleitung wenn keine gültige Rolle -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  try {
+    if(window.location.protocol==='file:') return;
+    var login = sessionStorage.getItem('klartext_login');
+    var role  = sessionStorage.getItem('klartext_role') || '';
+    if(login !== 'true' || !['tk','admin'].includes(role)){
+      window.location.href = 'KLARTEXT_Login.html';
+    }
+  } catch(e) {}
+})();
+</script>
 
-<form id="zuordnung-form">
-  <label>Kind
-    <select id="kind_id" required></select>
-  </label>
-  <label>Schule
-    <select id="schule_id" required></select>
-  </label>
-  <label>INGRA
-    <select id="ingra_id" required></select>
-  </label>
-  <button type="submit">Zuordnen</button>
-</form>
-<div id="status"></div>
+<header class="kt-header">
+  <div class="header-left">
+    <a class="kt-logo" href="TK_Landing.html">
+      <div class="kt-logo-mark"><div class="lm-k"></div><div class="kt-logo-bars"><span></span><span></span><span></span></div></div>
+      <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">TK · Kinderzuordnung</span></div>
+    </a>
+    <div class="header-badge">🔗 KZ</div>
+  </div>
+  <a class="btn-back" href="TK_Landing.html">← TK-Bereich</a>
+</header>
+
+<div class="brainy-banner">
+  <div class="brainy-face"><img src="brainy-tk.png" alt="Brainy" style="width:32px;height:32px;object-fit:contain;"></div>
+  <div class="brainy-text">
+    <span class="brainy-label">Brainy · Kinderzuordnung</span>
+    <p class="brainy-msg">Wer betreut welches Kind — regulär und bei Vertretung. Übersicht und Pflege an einem Ort.</p>
+  </div>
+</div>
+
+<div class="unter-wrap">
+  <div class="unter-header">
+    <div class="unter-header-stripe"></div>
+    <div class="unter-header-inner">
+      <div class="unter-nr">Kinderzuordnung</div>
+      <div class="unter-titel">Kind ↔ INGRA-Zuordnung</div>
+      <div class="unter-sub">Reguläre Zuordnung · Vertretungen</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="tab-btn aktiv" data-panel="tab-regulaer" onclick="switchTab(this,'tab-regulaer')">👤 Reguläre Zuordnung</button>
+    <button class="tab-btn" data-panel="tab-vertretung" onclick="switchTab(this,'tab-vertretung')">🔁 Vertretungen</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 1 · REGULÄRE ZUORDNUNG (Kinder.ingra_id)
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel aktiv" id="tab-regulaer">
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">👤</span><span class="karte-header-titel">Zuständige INGRA je Kind</span></div>
+      <div class="karte-body">
+        <div id="regulaer-status" class="hinweis" style="display:none;"></div>
+        <div id="regulaer-liste"></div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Reguläre Zuordnung</span>
+        <p class="brainy-box-text"><em>„Ist jedem Kind eine zuständige INGRA zugeordnet?"</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 2 · VERTRETUNGEN (kind_ingra_zuteilung)
+  ══════════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-vertretung">
+    <div class="form-section">
+      <div class="form-section-header"><span class="form-section-icon">➕</span><span class="form-section-titel">Neue Vertretung eintragen</span></div>
+      <div class="form-body">
+        <div class="form-row">
+          <div class="fld">
+            <label>Kind <span style="color:#C62828;">*</span></label>
+            <select id="vt-kind"></select>
+          </div>
+          <div class="fld">
+            <label>Vertretende INGRA <span style="color:#C62828;">*</span></label>
+            <select id="vt-vertreter"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="fld">
+            <label>Von <span style="color:#C62828;">*</span></label>
+            <input type="date" id="vt-von">
+          </div>
+          <div class="fld">
+            <label>Bis (optional)</label>
+            <input type="date" id="vt-bis">
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:0;padding-top:0;border-top:none;">
+          <button class="act-btn primary" onclick="vertretungEintragen()">💾 Vertretung eintragen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="karte">
+      <div class="karte-header"><span class="karte-header-icon">🔁</span><span class="karte-header-titel">Aktive Vertretungen</span></div>
+      <div class="karte-body">
+        <div id="vertretung-status" class="hinweis" style="display:none;"></div>
+        <div id="vertretung-liste"></div>
+      </div>
+    </div>
+
+    <div class="brainy-box">
+      <div class="brainy-box-icon"><img src="brainy-tk.png" alt="Brainy" style="width:22px;height:22px;object-fit:contain;"></div>
+      <div class="brainy-box-content">
+        <span class="brainy-box-label">Brainy · Vertretungen</span>
+        <p class="brainy-box-text"><em>„Ist für jede Abwesenheit eine Vertretung eingetragen — und rechtzeitig wieder beendet?"</em></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <strong>KLARTEXT</strong> · TK-Bereich · Kinderzuordnung
+</footer>
+
+<script>
+function switchTab(btn, panelId) {
+  document.querySelectorAll('.tab-bar .tab-btn').forEach(function(b){ b.classList.remove('aktiv'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('aktiv'); });
+  btn.classList.add('aktiv');
+  var panel = document.getElementById(panelId);
+  if (panel) { panel.classList.add('aktiv'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+</script>
 
 <script type="module">
 import { supabase } from './supabase/auth_client.js';
 
-async function ladeDropdowns() {
-  const { data: kinder } = await supabase.from('Kinder').select('id, name');
-  const kindSelect = document.getElementById('kind_id');
-  (kinder || []).forEach(k => {
-    const o = document.createElement('option');
-    o.value = k.id;
-    o.textContent = k.name;
-    kindSelect.appendChild(o);
-  });
-
-  const { data: schulen } = await supabase.from('schulen').select('id, name');
-  const schuleSelect = document.getElementById('schule_id');
-  (schulen || []).forEach(s => {
-    const o = document.createElement('option');
-    o.value = s.id;
-    o.textContent = s.name;
-    schuleSelect.appendChild(o);
-  });
-
-  const { data: ingra } = await supabase.from('profiles').select('id, vorname, nachname').eq('rolle', 'ingra');
-  const ingraSelect = document.getElementById('ingra_id');
-  (ingra || []).forEach(i => {
-    const o = document.createElement('option');
-    o.value = i.id;
-    o.textContent = [i.vorname, i.nachname].filter(Boolean).join(' ');
-    ingraSelect.appendChild(o);
-  });
+function escapeHtml(str) {
+  if (!str) return '';
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
-ladeDropdowns();
 
-document.getElementById('zuordnung-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const { data: { user } } = await supabase.auth.getUser();
-  const { error } = await supabase.from('kinder_zuordnung').insert({
-    kind_id: document.getElementById('kind_id').value,
-    schule_id: document.getElementById('schule_id').value,
-    ingra_id: document.getElementById('ingra_id').value,
-    tk_id: user.id,
-    aktiv: true
+function fmtDatum(iso) {
+  if (!iso) return '';
+  var d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(function(){ t.style.display = 'none'; }, 2800);
+}
+
+function statusZeigen(elId, text) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  if (text) { el.textContent = text; el.style.display = 'block'; }
+  else { el.style.display = 'none'; }
+}
+
+var KZ_INGRA = [];
+var KZ_KINDER = [];
+var KZ_ZUTEILUNGEN = [];
+
+// ── TAB 1: Reguläre Zuordnung (Kinder.ingra_id) ──────────────────
+async function regulaerLaden() {
+  var [ingraRes, kinderRes] = await Promise.all([
+    supabase.from('ingra').select('id, name').order('name'),
+    supabase.from('Kinder').select('id, name, klasse, ingra_id').eq('aktiv', true).order('name')
+  ]);
+
+  if (ingraRes.error || kinderRes.error) {
+    statusZeigen('regulaer-status', 'Fehler beim Laden: ' + ((ingraRes.error || kinderRes.error).message));
+    return;
+  }
+  statusZeigen('regulaer-status', '');
+
+  KZ_INGRA = ingraRes.data || [];
+  KZ_KINDER = kinderRes.data || [];
+  regulaerRendern();
+}
+
+function regulaerRendern() {
+  var wrap = document.getElementById('regulaer-liste');
+  if (!KZ_KINDER.length) { wrap.innerHTML = '<p class="leer-hinweis">Keine Kinder gefunden.</p>'; return; }
+
+  wrap.innerHTML = KZ_KINDER.map(function(k){
+    var optionen = '<option value="">– keine –</option>' + KZ_INGRA.map(function(i){
+      return '<option value="' + i.id + '"' + (i.id === k.ingra_id ? ' selected' : '') + '>' + escapeHtml(i.name) + '</option>';
+    }).join('');
+    return '<div class="zu-zeile">'
+      + '<div class="zu-zeile-kind">' + escapeHtml(k.name) + (k.klasse ? '<span>' + escapeHtml(k.klasse) + '</span>' : '') + '</div>'
+      + '<select onchange="window.regulaereZuordnungAendern(\'' + k.id + '\', this.value)">' + optionen + '</select>'
+      + '</div>';
+  }).join('');
+}
+
+async function regulaereZuordnungAendern(kindId, neueIngraId) {
+  var { error } = await supabase.from('Kinder').update({ ingra_id: neueIngraId || null }).eq('id', kindId);
+  if (error) { showToast('⚠️ Fehler: ' + error.message); return; }
+  showToast('✓ Zuordnung gespeichert');
+  await regulaerLaden();
+}
+window.regulaereZuordnungAendern = regulaereZuordnungAendern;
+
+// ── TAB 2: Vertretungen (kind_ingra_zuteilung) ───────────────────
+// Reguläre Zuordnung kommt aus "Kinder".ingra_id (siehe oben), aktive
+// Vertretungen aus kind_ingra_zuteilung (rolle='vertretung', aktiv=true)
+// - identisches Muster wie in TK_Vertretungsassistent.html, dort bereits
+// funktionsfähig gegen die echte Tabelle.
+async function vertretungLaden() {
+  var [ingraRes, kinderRes, zuteilungRes] = await Promise.all([
+    supabase.from('ingra').select('id, name').order('name'),
+    supabase.from('Kinder').select('id, name, klasse, ingra_id').eq('aktiv', true).order('name'),
+    supabase.from('kind_ingra_zuteilung').select('id, kind_id, ingra_id, zugeteilt_am, beendet_am').eq('rolle', 'vertretung').eq('aktiv', true)
+  ]);
+
+  var fehler = ingraRes.error || kinderRes.error || zuteilungRes.error;
+  if (fehler) {
+    statusZeigen('vertretung-status', 'Fehler beim Laden: ' + fehler.message);
+    return;
+  }
+  statusZeigen('vertretung-status', '');
+
+  KZ_INGRA = ingraRes.data || [];
+  KZ_KINDER = kinderRes.data || [];
+  KZ_ZUTEILUNGEN = zuteilungRes.data || [];
+
+  vertretungRendern();
+  vertretungDropdownsFuellen();
+}
+
+function vertretungRendern() {
+  var wrap = document.getElementById('vertretung-liste');
+  var ingraNamen = {};
+  KZ_INGRA.forEach(function(i){ ingraNamen[i.id] = i.name; });
+
+  if (!KZ_ZUTEILUNGEN.length) { wrap.innerHTML = '<p class="leer-hinweis">Keine aktiven Vertretungen.</p>'; return; }
+
+  var kinderNamen = {};
+  KZ_KINDER.forEach(function(k){ kinderNamen[k.id] = k.name + (k.klasse ? ' (' + k.klasse + ')' : ''); });
+
+  wrap.innerHTML = KZ_ZUTEILUNGEN.map(function(z){
+    var kindLabel = kinderNamen[z.kind_id] || z.kind_id;
+    var vertreterName = ingraNamen[z.ingra_id] || z.ingra_id;
+    var zeitraum = fmtDatum(z.zugeteilt_am) + (z.beendet_am ? ' – ' + fmtDatum(z.beendet_am) : ' – offen');
+    return '<div class="zu-zeile">'
+      + '<div class="zu-zeile-kind">' + escapeHtml(kindLabel) + '</div>'
+      + '<span class="vertr-chip">vertreten von ' + escapeHtml(vertreterName) + '</span>'
+      + '<span class="zeitraum-text">' + zeitraum + '</span>'
+      + '<button class="act-btn danger" onclick="window.vertretungBeenden(\'' + z.id + '\')">Beenden</button>'
+      + '</div>';
+  }).join('');
+}
+
+function vertretungDropdownsFuellen() {
+  var kindSelect = document.getElementById('vt-kind');
+  var bisherKind = kindSelect.value;
+  kindSelect.innerHTML = '<option value="">– Kind wählen –</option>' + KZ_KINDER.map(function(k){
+    return '<option value="' + k.id + '">' + escapeHtml(k.name) + (k.klasse ? ' (' + escapeHtml(k.klasse) + ')' : '') + '</option>';
+  }).join('');
+  if (KZ_KINDER.some(function(k){ return k.id === bisherKind; })) kindSelect.value = bisherKind;
+
+  var vertreterSelect = document.getElementById('vt-vertreter');
+  var bisherVertreter = vertreterSelect.value;
+  vertreterSelect.innerHTML = '<option value="">– INGRA wählen –</option>' + KZ_INGRA.map(function(i){
+    return '<option value="' + i.id + '">' + escapeHtml(i.name) + '</option>';
+  }).join('');
+  if (KZ_INGRA.some(function(i){ return i.id === bisherVertreter; })) vertreterSelect.value = bisherVertreter;
+}
+
+async function vertretungEintragen() {
+  var kindId = document.getElementById('vt-kind').value;
+  var vertreterId = document.getElementById('vt-vertreter').value;
+  var von = document.getElementById('vt-von').value;
+  var bis = document.getElementById('vt-bis').value;
+
+  if (!kindId || !vertreterId || !von) { showToast('⚠️ Bitte Kind, Vertretung und Von-Datum angeben'); return; }
+
+  var { error } = await supabase.from('kind_ingra_zuteilung').insert({
+    kind_id: kindId,
+    ingra_id: vertreterId,
+    rolle: 'vertretung',
+    aktiv: true,
+    zugeteilt_am: von,
+    beendet_am: bis || null
   });
-  document.getElementById('status').textContent = error ? 'Fehler: ' + error.message : 'Zugeordnet.';
-});
-</script>
 
+  if (error) { showToast('⚠️ Fehler beim Speichern: ' + error.message); return; }
+
+  document.getElementById('vt-von').value = '';
+  document.getElementById('vt-bis').value = '';
+  showToast('✓ Vertretung eingetragen');
+  await vertretungLaden();
+}
+window.vertretungEintragen = vertretungEintragen;
+
+async function vertretungBeenden(id) {
+  if (!confirm('Diese Vertretung wirklich beenden?')) return;
+
+  var { error } = await supabase.from('kind_ingra_zuteilung').update({ aktiv: false }).eq('id', id);
+  if (error) { showToast('⚠️ Fehler beim Beenden: ' + error.message); return; }
+
+  showToast('✓ Vertretung beendet');
+  await vertretungLaden();
+}
+window.vertretungBeenden = vertretungBeenden;
+
+regulaerLaden();
+vertretungLaden();
+</script>
 </body>
 </html>

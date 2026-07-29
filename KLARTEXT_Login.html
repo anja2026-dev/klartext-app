@@ -143,6 +143,12 @@ async function ermittleAnzeigename(rolle, email) {
   return email;
 }
 
+// Admin-Rolle bleibt auf dieses eine Konto beschränkt. Client-seitige
+// Schranke, konsistent mit dem bestehenden Muster dieser Seite (Rolle
+// kommt generell aus der Auswahl im Login, nicht aus einer serverseitig
+// geprüften Quelle) - kein Ersatz für eine echte DB-seitige Durchsetzung.
+var ADMIN_ERLAUBTE_EMAIL = 'klartext.mentoring@gmx.de';
+
 async function login() {
   var btn = document.getElementById('login-btn');
   var email = document.getElementById('email-input').value.trim();
@@ -152,6 +158,11 @@ async function login() {
 
   if (!email || !passwort) {
     zeigeFehler('Bitte E-Mail und Passwort eingeben.');
+    return;
+  }
+
+  if (rolle === 'admin' && email.toLowerCase() !== ADMIN_ERLAUBTE_EMAIL) {
+    zeigeFehler('Admin-Zugang ist auf ein bestimmtes Konto beschränkt.');
     return;
   }
 

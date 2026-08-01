@@ -24,14 +24,14 @@ F_SERIF_BOLD = "/usr/share/fonts/truetype/crosextra/Caladea-Bold.ttf"
 F_SANS_REG = "/usr/share/fonts/truetype/lato/Lato-Regular.ttf"
 F_SANS_BOLD = "/usr/share/fonts/truetype/lato/Lato-Bold.ttf"
 
-SITUATIONEN = ["M3-01 Kind kommt aufgewühlt an", "M3-02 Kind verweigert Arbeit", "M3-03 Kind eskaliert – Wutausbruch",
-               "M3-04 Kind zieht sich zurück – Freeze", "M3-05 Übergang zwischen Situationen", "M3-06 Konflikt mit Mitschüler:innen",
-               "M3-07 Kind ist überwältigt – weint", "M3-08 Krise – Rot/Grau – Feuerwehr"]
-WERKZEUGE = ["M3-09 Atemanker", "M3-10 Liegende Acht", "M3-11 5-Dinge-Grounding", "M3-12 Reizfilter",
-             "M3-13 Joker", "M3-14 Mini-Pause", "M3-15 Schritt-Plan", "M3-16 Igel-Ball",
-             "M3-17 Visualisierung", "M3-18 Lob-Sandwich", "M3-19 Brainy-Flow", "M3-20 Selbst-Regulation stärken",
-             "M3-21 Sichtbare Zeit", "M3-22 Stopp-Hand-Signal", "M3-23 Sicherer Ort",
-             "M3-24 Körper-Check-In", "M3-25 Die Kraft der Pause", "M3-26 No-Blame-Approach"]
+SITUATIONEN = ["WZ-01 Kind kommt aufgewühlt an", "WZ-02 Kind verweigert Arbeit", "WZ-03 Kind eskaliert – Wutausbruch",
+               "WZ-04 Kind zieht sich zurück – Freeze", "WZ-05 Übergang zwischen Situationen", "WZ-06 Konflikt mit Mitschüler:innen",
+               "WZ-07 Kind ist überwältigt – weint", "WZ-08 Krise – Rot/Grau – Feuerwehr"]
+WERKZEUGE = ["WZ-09 Atemanker", "WZ-10 Liegende Acht", "WZ-11 5-Dinge-Grounding", "WZ-12 Reizfilter",
+             "WZ-13 Joker", "WZ-14 Mini-Pause", "WZ-15 Schritt-Plan", "WZ-16 Igel-Ball",
+             "WZ-17 Visualisierung", "WZ-18 Lob-Sandwich", "WZ-19 Brainy-Flow", "WZ-20 Selbst-Regulation stärken",
+             "WZ-21 Sichtbare Zeit", "WZ-22 Stopp-Hand-Signal", "WZ-23 Sicherer Ort",
+             "WZ-24 Körper-Check-In", "WZ-25 Die Kraft der Pause", "WZ-26 No-Blame-Approach"]
 
 def build_cover():
     W, H = mm(210), mm(297)
@@ -94,7 +94,7 @@ def build_cover():
     f_status_l = ImageFont.truetype(F_SANS_BOLD, mm(6))
     f_status = ImageFont.truetype(F_SANS_REG, mm(5.6))
     d.text((mm(28), box_y + mm(6)), "STAND DIESER AUSGABE", font=f_status_l, fill=M3)
-    d.text((mm(28), box_y + mm(13)), "26 Karten vollständig — M3-21–26 neu ergänzt (01.08.2026).",
+    d.text((mm(28), box_y + mm(13)), "26 Karten vollständig — WZ-21–26 neu ergänzt (01.08.2026).",
            font=f_status, fill=KT_INK)
 
     f_foot = ImageFont.truetype(F_SANS_REG, mm(5))
@@ -106,7 +106,7 @@ def run():
              quellen_seite(), quellen_seite2()]
 
     fehlt = []
-    for id_text in [f"M3-{n:02d}" for n in range(1, 27)]:
+    for id_text in [f"WZ-{n:02d}" for n in range(1, 27)]:
         vorn = os.path.join(KARTEN_DIR, f"{id_text}_Vorderseite.png")
         hinten = os.path.join(KARTEN_DIR, f"{id_text}_Rueckseite.png")
         if os.path.exists(vorn) and os.path.exists(hinten):

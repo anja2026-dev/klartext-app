@@ -11,7 +11,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 
 CARDS = [
     # ═══════════════ SITUATIONEN (M3-01–08) ═══════════════
-    dict(id_text="M3-01", typ="situation", icon="sun", titel="Kind kommt aufgewühlt an",
+    dict(id_text="WZ-01", typ="situation", icon="sun", titel="Kind kommt aufgewühlt an",
          front_kontext="Gelb bis Orange – typischer Bereich",
          lead="Kind kommt morgens sichtlich aufgewühlt an – noch bevor der Tag beginnt.",
          schritte=[
@@ -26,7 +26,7 @@ CARDS = [
          werkzeuge="Atemanker (M3-09) · Mini-Pause (M3-14)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-02", typ="situation", icon="ban", titel="Kind verweigert Arbeit",
+    dict(id_text="WZ-02", typ="situation", icon="ban", titel="Kind verweigert Arbeit",
          front_kontext="Gelb bis Orange – typischer Bereich",
          lead="Kind verweigert eine Aufgabe – meist steckt mehr dahinter als Trotz.",
          schritte=[
@@ -40,7 +40,7 @@ CARDS = [
          werkzeuge="Schritt-Plan (M3-15)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-03", typ="situation", icon="bolt", titel="Kind eskaliert – Wutausbruch",
+    dict(id_text="WZ-03", typ="situation", icon="bolt", titel="Kind eskaliert – Wutausbruch",
          front_kontext="Orange bis Rot – typischer Bereich",
          lead="Kind ist im vollen Wutausbruch – schreiend, werfend, außer sich.",
          schritte=[
@@ -54,7 +54,7 @@ CARDS = [
          werkzeuge="kLAR-Modell · Feuerwehrkarten (bei Eskalation)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-04", typ="situation", icon="snowflake", titel="Kind zieht sich zurück – Freeze",
+    dict(id_text="WZ-04", typ="situation", icon="snowflake", titel="Kind zieht sich zurück – Freeze",
          front_kontext="Grau bis Orange – typischer Bereich",
          lead="Kind wirkt wie abwesend, reagiert nicht – das ist maximaler Stress, kein Desinteresse.",
          schritte=[
@@ -68,7 +68,7 @@ CARDS = [
          werkzeuge="Selbst-Regulation stärken (M3-20)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-05", typ="situation", icon="exchange", titel="Übergang zwischen Situationen",
+    dict(id_text="WZ-05", typ="situation", icon="exchange", titel="Übergang zwischen Situationen",
          front_kontext="Gelb – erhöhte Aufmerksamkeit",
          lead="Wechsel von einer Situation/einem Fach zur nächsten – für viele Kinder der schwierigste Moment.",
          schritte=[
@@ -83,7 +83,7 @@ CARDS = [
          werkzeuge="Atemanker (M3-09) · Visualisierung (M3-17)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-06", typ="situation", icon="users", titel="Konflikt mit Mitschüler:innen",
+    dict(id_text="WZ-06", typ="situation", icon="users", titel="Konflikt mit Mitschüler:innen",
          front_kontext="Orange – typischer Bereich",
          lead="Zwei Kinder geraten aneinander – Sicherheit geht vor Klärung.",
          schritte=[
@@ -97,7 +97,7 @@ CARDS = [
          werkzeuge="Selbst-Regulation stärken (M3-20)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-07", typ="situation", icon="tint", titel="Kind ist überwältigt – weint",
+    dict(id_text="WZ-07", typ="situation", icon="tint", titel="Kind ist überwältigt – weint",
          front_kontext="Orange bis Grau – typischer Bereich",
          lead="Kind weint, ist überwältigt – der Körper verarbeitet gerade etwas Großes.",
          schritte=[
@@ -112,7 +112,7 @@ CARDS = [
          werkzeuge="Atemanker (M3-09)",
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
-    dict(id_text="M3-08", typ="situation", icon="bell", titel="Krise – Rot oder Grau – Feuerwehr",
+    dict(id_text="WZ-08", typ="situation", icon="bell", titel="Krise – Rot oder Grau – Feuerwehr",
          front_kontext="Rot / Grau – typischer Bereich",
          lead="Akute Krise – hier greift ausschließlich das Feuerwehr-Protokoll, kein normaler Unterricht mehr.",
          schritte=[
@@ -129,7 +129,7 @@ CARDS = [
          brainy="In dieser Situation zuerst regulieren – dann alles andere."),
 
     # ═══════════════ WERKZEUGE (M3-09–20) ═══════════════
-    dict(id_text="M3-09", typ="werkzeug", icon="circle-notch", titel="Atemanker",
+    dict(id_text="WZ-09", typ="werkzeug", icon="circle-notch", titel="Atemanker",
          front_kontext="Gelb · Orange · vor Übergängen · nach Pause",
          lead="Einfache Atemübung, beruhigt das Nervensystem sofort. 4 Sek ein – 4 halten – "
               "6 aus. Wirkt bei Gelb, Orange, als Einstieg nach Rot.",
@@ -144,7 +144,7 @@ CARDS = [
          tipp="Nie erzwingen. „Sollen wir kurz zusammen atmen?“ Wenn nein – ok.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-10", typ="werkzeug", icon="refresh", titel="Liegende Acht",
+    dict(id_text="WZ-10", typ="werkzeug", icon="refresh", titel="Liegende Acht",
          front_kontext="Gelb · Konzentrationsprobleme · nach Übergängen · morgens",
          lead="Bewegungsübung aus der Edu-Kinestetik, verbindet beide Gehirnhälften, hilft bei "
               "Konzentrationsproblemen und Blockaden.",
@@ -158,7 +158,7 @@ CARDS = [
          tipp="Auch in der Luft möglich, kein Material nötig. 30 Sekunden reichen.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-11", typ="werkzeug", icon="eye", titel="5-Dinge-Grounding",
+    dict(id_text="WZ-11", typ="werkzeug", icon="eye", titel="5-Dinge-Grounding",
          front_kontext="Orange · Angst · Überwältigung · Dissoziation · Freeze",
          lead="Bringt das Kind zurück in den Moment, weg von Gedanken, Angst oder Überwältigung. "
               "Nutzt alle 5 Sinne.",
@@ -173,7 +173,7 @@ CARDS = [
          tipp="Langsam sprechen, Pausen lassen. Das Kind darf flüstern oder nicken.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-12", typ="werkzeug", icon="headphones", titel="Reizfilter",
+    dict(id_text="WZ-12", typ="werkzeug", icon="headphones", titel="Reizfilter",
          front_kontext="Orange · Rot · Überreizung · laute Klasse · Stress",
          lead="Reduziert sensorische Überstimulation. Kopfhörer, Sichtschutz, ruhiger Platz – "
               "einfache Mittel, große Wirkung.",
@@ -189,7 +189,7 @@ CARDS = [
               "kommentieren.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-13", typ="werkzeug", icon="flag", titel="Joker",
+    dict(id_text="WZ-13", typ="werkzeug", icon="flag", titel="Joker",
          front_kontext="Gelb · Orange · wenn Kind nicht sprechen kann · Krise droht",
          lead="Notfallsignal, das das Kind selbst einsetzt – ohne Worte, ohne Erklärung. Eine "
               "Karte, ein Zeichen, ein stilles Signal.",
@@ -204,7 +204,7 @@ CARDS = [
          tipp="Der Joker funktioniert nur, wenn er vorab erklärt und geübt wurde.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-14", typ="werkzeug", icon="pause", titel="Mini-Pause",
+    dict(id_text="WZ-14", typ="werkzeug", icon="pause", titel="Mini-Pause",
          front_kontext="Gelb · Orange · vor Tests · bei Überforderung",
          lead="2-5 Minuten Pause außerhalb des Klassenraums, kann Eskalationen verhindern. "
               "Strukturiert, kurz, wiederkehrend.",
@@ -219,7 +219,7 @@ CARDS = [
          tipp="Mini-Pause ist keine Belohnung und keine Strafe – sie ist Regulation.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-15", typ="werkzeug", icon="list-ol", titel="Schritt-Plan",
+    dict(id_text="WZ-15", typ="werkzeug", icon="list-ol", titel="Schritt-Plan",
          front_kontext="Gelb · Verweigerung · Überforderung · komplexe Aufgaben",
          lead="Bricht eine überwältigende Aufgabe in kleine machbare Schritte. Reduziert "
               "Verweigerung, stärkt Selbstwirksamkeit.",
@@ -235,7 +235,7 @@ CARDS = [
               "schiefgehen kann.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-16", typ="werkzeug", icon="dot-circle", titel="Igel-Ball",
+    dict(id_text="WZ-16", typ="werkzeug", icon="dot-circle", titel="Igel-Ball",
          front_kontext="Gelb · Unruhe · Zappeln · Konzentration · sensorisches Bedürfnis",
          lead="Sensorisches Tool, reguliert Überreizung, fördert Fokus. Einfach, unauffällig, "
               "effektiv.",
@@ -250,7 +250,7 @@ CARDS = [
               "nimmt man.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-17", typ="werkzeug", icon="map", titel="Visualisierung",
+    dict(id_text="WZ-17", typ="werkzeug", icon="map", titel="Visualisierung",
          front_kontext="täglich · Übergänge · neue Situationen · Pflegekinder · ADHS",
          lead="Visuelle Pläne und Tages-Übersichten geben Struktur und Vorhersehbarkeit. "
               "Hilfreich bei Pflegekindern und ADHS.",
@@ -264,7 +264,7 @@ CARDS = [
          tipp="Ein Plan muss nicht schön sein. Eine handgezeichnete Liste reicht.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-18", typ="werkzeug", icon="thumbs-up", titel="Lob-Sandwich",
+    dict(id_text="WZ-18", typ="werkzeug", icon="thumbs-up", titel="Lob-Sandwich",
          front_kontext="nach Aufgaben · bei Verhalten · Rückmeldung geben · täglich",
          lead="Feedback-Technik: Positiv – Verbesserung – Positiv. Kritik wird aufgenommen, ohne "
               "das Selbstbild zu beschädigen.",
@@ -278,7 +278,7 @@ CARDS = [
               "fertig“ wirkt.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-19", typ="werkzeug", icon="sitemap", titel="Brainy-Flow",
+    dict(id_text="WZ-19", typ="werkzeug", icon="sitemap", titel="Brainy-Flow",
          front_kontext="systemisch · als Orientierung · wenn unklar welches Tool",
          lead="Die im KLARTEXT-System empfohlene Werkzeug-Abfolge – je nach Barometer-Farbe.",
          schritte=[
@@ -293,7 +293,7 @@ CARDS = [
               "Kindes gehen vor.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-20", typ="werkzeug", icon="leaf", titel="Selbst-Regulation stärken",
+    dict(id_text="WZ-20", typ="werkzeug", icon="leaf", titel="Selbst-Regulation stärken",
          front_kontext="langfristig · nach stabilen Phasen · als Entwicklungsziel",
          lead="Langfristiges Ziel aller Werkzeuge: Das Kind lernt, sich selbst zu regulieren – "
               "braucht INGRA immer weniger.",
@@ -308,7 +308,7 @@ CARDS = [
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
     # ═══════════════ M3-ERWEITERUNG (M3-21–26, ergänzt 01.08.2026) ═══════════════
-    dict(id_text="M3-21", typ="werkzeug", icon="hourglass-half", titel="Sichtbare Zeit",
+    dict(id_text="WZ-21", typ="werkzeug", icon="hourglass-half", titel="Sichtbare Zeit",
          front_kontext="vor Aufgaben · vor Übergängen · bei Prüfungsangst",
          lead="Visueller Timer (z. B. Time-Timer) zeigt verbleibende Zeit als Fläche statt nur als "
               "Zahl – reduziert Angst vor dem Unbekannten.",
@@ -322,7 +322,7 @@ CARDS = [
               "schrumpfen, statt sich auf eine abstrakte Zahl verlassen zu müssen.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-22", typ="werkzeug", icon="hand-paper-o", titel="Stopp-Hand-Signal",
+    dict(id_text="WZ-22", typ="werkzeug", icon="hand-paper-o", titel="Stopp-Hand-Signal",
          front_kontext="Gelb · Orange · verbale Eskalation",
          lead="Klares, nonverbales Stopp-Signal, bevor Worte nicht mehr ankommen.",
          schritte=[
@@ -335,7 +335,7 @@ CARDS = [
               "in der akuten Situation ist es zu spät für Erklärungen.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-23", typ="werkzeug", icon="home", titel="Sicherer Ort",
+    dict(id_text="WZ-23", typ="werkzeug", icon="home", titel="Sicherer Ort",
          front_kontext="vorbeugend · Orange · als fester Rückzugsort",
          lead="Fester, bekannter Rückzugsort, bevor eine Situation weiter eskaliert – nicht erst, "
               "wenn es schon zu spät ist.",
@@ -349,7 +349,7 @@ CARDS = [
               "\"sicherer Ort\" mit Hürden ist keiner.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-24", typ="werkzeug", icon="heartbeat", titel="Körper-Check-In",
+    dict(id_text="WZ-24", typ="werkzeug", icon="heartbeat", titel="Körper-Check-In",
          front_kontext="vor Gesprächen · vor Aufgaben · als Routine",
          lead="Kurzer Check, wie reguliert der Körper gerade ist – Worte allein zeigen das oft "
               "nicht.",
@@ -363,7 +363,7 @@ CARDS = [
               "holt Informationen, die ein „Wie geht's?“ nicht liefert.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-25", typ="werkzeug", icon="pause", titel="Die Kraft der Pause",
+    dict(id_text="WZ-25", typ="werkzeug", icon="pause", titel="Die Kraft der Pause",
          front_kontext="in jeder angespannten Situation",
          lead="Eine kurze Pause vor der eigenen Reaktion ist selbst schon eine Intervention.",
          schritte=[
@@ -376,7 +376,7 @@ CARDS = [
               "dem Kind einen Moment zum Ankommen.",
          brainy="Kein Werkzeug passt immer – wähle was heute zum Kind passt."),
 
-    dict(id_text="M3-26", typ="werkzeug", icon="handshake-o", titel="No-Blame-Approach",
+    dict(id_text="WZ-26", typ="werkzeug", icon="handshake-o", titel="No-Blame-Approach",
          front_kontext="nach Mobbingvorfall · Gruppenaufarbeitung",
          lead="Weg, die Gruppe nach einem Mobbingvorfall einzubeziehen, ohne Schuldzuweisung in den "
               "Mittelpunkt zu stellen.",

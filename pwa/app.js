@@ -1,0 +1,305 @@
+// KLARTEXT-Mentoring Karten – PWA app logic (kein Framework, kein Build-Schritt)
+
+const screenDecks = document.getElementById('screen-decks');
+const screenCards = document.getElementById('screen-cards');
+const deckGrid = document.getElementById('deckGrid');
+const backBtn = document.getElementById('backBtn');
+const progressEl = document.getElementById('progress');
+
+const flashcard = document.getElementById('flashcard');
+const cardImg = document.getElementById('cardImg');
+const frontImgWrap = document.getElementById('frontImgWrap');
+const frontIconWrap = document.getElementById('frontIconWrap');
+const frontIcon = document.getElementById('frontIcon');
+const cardBadge = document.getElementById('cardBadge');
+const cardTitelFront = document.getElementById('cardTitelFront');
+const cardTitelBack = document.getElementById('cardTitelBack');
+const impulsBack = document.getElementById('impulsBack');
+const cardAnleitung = document.getElementById('cardAnleitung');
+const cardFragen = document.getElementById('cardFragen');
+const cardHinweis = document.getElementById('cardHinweis');
+const hinweisWrap = document.getElementById('hinweisWrap');
+const systemfrageWrap = document.getElementById('systemfrageWrap');
+const systemfrageLabel = document.getElementById('systemfrageLabel');
+const cardSystemfrage = document.getElementById('cardSystemfrage');
+
+const handlungBack = document.getElementById('handlungBack');
+const introWrap = document.getElementById('introWrap');
+const introLabel = document.getElementById('introLabel');
+const cardIntro = document.getElementById('cardIntro');
+const schritteLabel = document.getElementById('schritteLabel');
+const cardSchritte = document.getElementById('cardSchritte');
+const abgrenzungWrap = document.getElementById('abgrenzungWrap');
+const cardAbgrenzung = document.getElementById('cardAbgrenzung');
+const notizWrap = document.getElementById('notizWrap');
+const notizLabel = document.getElementById('notizLabel');
+const cardNotiz = document.getElementById('cardNotiz');
+
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+
+const appleTouchIcon = document.getElementById('appleTouchIcon');
+const DEFAULT_TITLE = document.title;
+const DEFAULT_ICON = 'icons/icon-192.png';
+
+let currentDeck = null;
+let currentIndex = 0;
+
+function lastIndexKey(deckId) { return `klartext_last_${deckId}`; }
+
+// Setzt Titel + apple-touch-icon passend zum offenen Deck, damit "Zum Home-Bildschirm
+// hinzufügen" (während das Deck offen ist) ein eigenes, unterscheidbares Icon + einen
+// eigenen Namen für genau dieses Deck übernimmt.
+function setAppIdentity(deckOrNull) {
+  if (!deckOrNull) {
+    document.title = DEFAULT_TITLE;
+    appleTouchIcon.setAttribute('href', DEFAULT_ICON);
+    return;
+  }
+  document.title = `KLARTEXT – ${deckOrNull.titel}`;
+  const deckIconUrl = `icons/deck-${deckOrNull.id}.png`;
+  // Existenz-Check: falls für ein Deck noch kein eigenes Icon erzeugt wurde (z.B. neu
+  // hinzugefügtes Deck), auf das allgemeine App-Icon zurückfallen statt ein kaputtes Bild.
+  const probe = new Image();
+  probe.onload = () => appleTouchIcon.setAttribute('href', deckIconUrl);
+  probe.onerror = () => appleTouchIcon.setAttribute('href', DEFAULT_ICON);
+  probe.src = deckIconUrl;
+}
+
+async function loadDecks() {
+  const res = await fetch('data/decks.json');
+  const decks = await res.json();
+  deckGrid.innerHTML = '';
+  decks.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'decktile';
+    btn.style.background = d.farbe;
+    btn.innerHTML = `
+      <div class="dt-titel">${d.titel}</div>
+      <div class="dt-sub">${d.untertitel}</div>
+      <div class="dt-count">${d.anzahl} Karten</div>
+    `;
+    btn.addEventListener('click', () => openDeck(d.id));
+    deckGrid.appendChild(btn);
+  });
+}
+
+async function openDeck(deckId, opts = {}) {
+  const { pushState = true } = opts;
+  let res;
+  try {
+    res = await fetch(`data/${deckId}.json`);
+    if (!res.ok) throw new Error('not found');
+  } catch (e) {
+    return; // unbekannte/veraltete Deck-ID im Link – still zurück zur Übersicht
+  }
+  currentDeck = await res.json();
+
+  document.documentElement.style.setProperty('--deck-color', currentDeck.farbe);
+  document.documentElement.style.setProperty('--deck-light', currentDeck.farbe_hell);
+  document.documentElement.style.setProperty('--deck-border', currentDeck.farbe_rand);
+
+  const saved = parseInt(localStorage.getItem(lastIndexKey(deckId)), 10);
+  currentIndex = (!isNaN(saved) && saved >= 0 && saved < currentDeck.karten.length) ? saved : 0;
+
+  screenDecks.hidden = true;
+  screenCards.hidden = false;
+  backBtn.hidden = false;
+  renderCard();
+  window.scrollTo(0, 0);
+  setAppIdentity(currentDeck);
+  if (pushState) history.pushState({ deck: deckId }, '', `?deck=${deckId}`);
+}
+
+function closeDeck(opts = {}) {
+  const { pushState = true } = opts;
+  currentDeck = null;
+  screenCards.hidden = true;
+  screenDecks.hidden = false;
+  backBtn.hidden = true;
+  progressEl.textContent = '';
+  window.scrollTo(0, 0);
+  setAppIdentity(null);
+  if (pushState) history.pushState({}, '', './');
+}
+
+function renderCard() {
+  if (!currentDeck) return;
+  const karte = currentDeck.karten[currentIndex];
+  flashcard.classList.remove('flipped');
+
+  // Zusatzblock-Karten (z.B. EL-AT, LK-R-PF) tragen ihr eigenes Badge aus der Quelldatei -
+  // das zeigt gleich an, dass es sich um einen Zusatzblock handelt, nicht nur die Kartennummer.
+  cardBadge.textContent = karte.badge
+    ? `${karte.badge} · ${String(karte.nr).padStart(2, '0')}/${currentDeck.karten.length}`
+    : `${currentDeck.titel.toUpperCase()} · ${String(karte.nr).padStart(2, '0')}/${currentDeck.karten.length}`;
+  cardTitelFront.textContent = karte.titel;
+  cardTitelBack.textContent = karte.titel;
+
+  // Kartenvorderseite: Foto (Standard-Impulskarten, TK-Deck) ODER Icon (Krisendeck/Werkzeug/mb,
+  // die kein eigenes Foto haben, sondern ein Font-Awesome-Symbol als Erkennungszeichen).
+  if (karte.icon) {
+    frontImgWrap.hidden = true;
+    frontIconWrap.hidden = false;
+    frontIcon.className = `fa-solid fa-${karte.icon}`;
+  } else {
+    frontIconWrap.hidden = true;
+    frontImgWrap.hidden = false;
+    cardImg.src = karte.bild;
+    cardImg.alt = karte.titel;
+  }
+
+  // Kartenrückseite: zwei grundverschiedene Inhaltsformen. Standard-Impulskarten haben
+  // "fragen" (Anleitung + offene Fragen zum Reflektieren). Handlungskarten (TK-Deck,
+  // Krisendeck, Werkzeugkarten, Mobbing-Materialien) haben stattdessen "schritte"
+  // (konkrete Handlungsanleitung) und optional eine Tun/Nicht-tun-Tabelle.
+  const istHandlungskarte = Array.isArray(karte.schritte);
+
+  if (istHandlungskarte) {
+    impulsBack.hidden = true;
+    handlungBack.hidden = false;
+
+    if (karte.situation) {
+      introWrap.hidden = false;
+      introLabel.textContent = karte.intro_label || 'SITUATION';
+      cardIntro.textContent = karte.situation;
+    } else {
+      introWrap.hidden = true;
+    }
+
+    schritteLabel.textContent = karte.schritte_label || 'SCHRITTE';
+    cardSchritte.innerHTML = '';
+    karte.schritte.forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      cardSchritte.appendChild(li);
+    });
+
+    if (karte.abgrenzung && (karte.abgrenzung.tun || karte.abgrenzung.nicht_tun)) {
+      abgrenzungWrap.hidden = false;
+      const tun = karte.abgrenzung.tun || [];
+      const nicht = karte.abgrenzung.nicht_tun || [];
+      const rows = Math.max(tun.length, nicht.length);
+      let html = '<tr><th class="th-tun">TUN</th><th class="th-nicht">NICHT TUN</th></tr>';
+      for (let i = 0; i < rows; i++) {
+        html += `<tr><td class="td-tun">${tun[i] || ''}</td><td class="td-nicht">${nicht[i] || ''}</td></tr>`;
+      }
+      cardAbgrenzung.innerHTML = html;
+    } else {
+      abgrenzungWrap.hidden = true;
+    }
+
+    const notiz = karte.tipp || karte.merksatz || karte.verweis || karte.nutzen || karte.quelle;
+    if (notiz) {
+      notizWrap.hidden = false;
+      notizLabel.textContent = karte.tipp ? 'TIPP FÜR DICH' : karte.merksatz ? 'MERKSATZ' : karte.verweis ? 'HINWEIS' : karte.nutzen ? 'NUTZEN' : 'QUELLE';
+      cardNotiz.textContent = notiz;
+    } else {
+      notizWrap.hidden = true;
+    }
+  } else {
+    handlungBack.hidden = true;
+    impulsBack.hidden = false;
+
+    cardAnleitung.textContent = karte.anleitung;
+
+    cardFragen.innerHTML = '';
+    (karte.fragen || []).forEach(f => {
+      const box = document.createElement('div');
+      box.className = 'frage-box';
+      box.textContent = f;
+      cardFragen.appendChild(box);
+    });
+
+    if (karte.systemfrage) {
+      systemfrageWrap.hidden = false;
+      systemfrageLabel.textContent = karte.systemfrage_label || 'SYSTEMISCH GEDACHT';
+      cardSystemfrage.textContent = karte.systemfrage;
+    } else {
+      systemfrageWrap.hidden = true;
+    }
+
+    if (karte.hinweis) {
+      hinweisWrap.hidden = false;
+      cardHinweis.textContent = karte.hinweis;
+    } else {
+      hinweisWrap.hidden = true;
+    }
+  }
+
+  progressEl.textContent = `${karte.nr}/${currentDeck.karten.length}`;
+  localStorage.setItem(lastIndexKey(currentDeck.id), String(currentIndex));
+}
+
+function flip() {
+  flashcard.classList.toggle('flipped');
+}
+
+function goNext() {
+  if (!currentDeck) return;
+  currentIndex = (currentIndex + 1) % currentDeck.karten.length;
+  renderCard();
+}
+
+function goPrev() {
+  if (!currentDeck) return;
+  currentIndex = (currentIndex - 1 + currentDeck.karten.length) % currentDeck.karten.length;
+  renderCard();
+}
+
+function goRandom() {
+  if (!currentDeck || currentDeck.karten.length < 2) return;
+  let next;
+  do { next = Math.floor(Math.random() * currentDeck.karten.length); } while (next === currentIndex);
+  currentIndex = next;
+  renderCard();
+}
+
+flashcard.addEventListener('click', flip);
+flashcard.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); }
+});
+prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goPrev(); });
+nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goNext(); });
+shuffleBtn.addEventListener('click', (e) => { e.stopPropagation(); goRandom(); });
+backBtn.addEventListener('click', closeDeck);
+
+// Einfaches Swipe-Gestensteuerung
+let touchStartX = null;
+flashcard.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+flashcard.addEventListener('touchend', (e) => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    dx < 0 ? goNext() : goPrev();
+  }
+  touchStartX = null;
+}, { passive: true });
+
+// Tastatur (Desktop-Test)
+document.addEventListener('keydown', (e) => {
+  if (screenCards.hidden) return;
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goPrev();
+  if (e.key === ' ') { e.preventDefault(); flip(); }
+});
+
+// Zurück/Vor-Buttons des Browsers respektieren (falls genutzt), ohne neuen History-Eintrag
+window.addEventListener('popstate', () => {
+  const deckId = new URLSearchParams(location.search).get('deck');
+  if (deckId) openDeck(deckId, { pushState: false });
+  else closeDeck({ pushState: false });
+});
+
+// Deep-Link beim Start: ?deck=<id> öffnet direkt dieses Deck (z.B. eigenes Home-Bildschirm-Icon pro Deck)
+loadDecks().then(() => {
+  const deckId = new URLSearchParams(location.search).get('deck');
+  if (deckId) openDeck(deckId, { pushState: false });
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}

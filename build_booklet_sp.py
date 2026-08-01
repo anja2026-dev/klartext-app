@@ -102,6 +102,13 @@ def anleitung_seite1():
     y = draw_numbered(d, y, 3, "Hinweis-Box nutzen",
         "Ein kurzer, sofort anwendbarer Gedanke – für den Moment, in dem keine Zeit für lange "
         "Vorbereitung bleibt.")
+    y += mm(2)
+    y = draw_h2(d, y, "Kurz erklärt: „Barometer-Stand“ (SP-01)")
+    y = draw_para(d, y, "Das Kind-Barometer ist eine 5-Farben-Skala (Grün/Gelb/Orange/Rot/Grau) für den "
+                        "Regulationszustand des Kindes – Grün ruhig und lernbereit, Rot akute Krise. Bei "
+                        "Orange/Rot gelten KLARTEXT-Interventionen (kLAR-Modell, Feuerwehr-Protokoll), "
+                        "ausführlich im Werkzeugkarten-Deck bzw. Krisendeck erklärt – für den Blitz-Check "
+                        "reicht hier die grobe Einordnung.", size=4.3, color=KT_MUTED)
     footer(d, "Anleitung")
     return img
 

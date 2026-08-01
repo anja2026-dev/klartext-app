@@ -87,6 +87,20 @@ def draw_bullet(d, y, text, size=4.6):
         y += lh
     return y + mm(1.5)
 
+def draw_numbered(d, y, num, titel, text, size=4.8):
+    f_num = ImageFont.truetype(F_SERIF_BOLD, mm(7))
+    d.ellipse((MARGIN, y, MARGIN + mm(9), y + mm(9)), fill=M3)
+    d.text((MARGIN + mm(4.5), y + mm(4.5)), str(num), font=f_num, anchor="mm", fill=(255, 255, 255))
+    f_titel = ImageFont.truetype(F_SANS_BOLD, mm(5.2))
+    d.text((MARGIN + mm(13), y + mm(0.5)), titel, font=f_titel, fill=M3)
+    f_text = ImageFont.truetype(F_SANS_REG, mm(size))
+    ty = y + mm(7)
+    lh = mm(size * 1.55)
+    for ln in wrap(d, text, f_text, CONTENT_W - mm(13)):
+        d.text((MARGIN + mm(13), ty), ln, font=f_text, fill=KT_INK)
+        ty += lh
+    return max(ty, y + mm(11)) + mm(4)
+
 # ═══════════════════════════════════ ANLEITUNG ═══════════════════════════════════
 def anleitung_seite1():
     img, d, y = new_page("GEBRAUCHSANWEISUNG", "Anleitung: So funktioniert das Werkzeugkarten-Deck")
@@ -144,6 +158,62 @@ def anleitung_seite2():
                         "Icon-Bibliothek gesetzt, kein Fotoshooting oder Bildgenerierung nötig.")
 
     footer(d, "Anleitung · 2/2")
+    return img
+
+# ═══════════════════════════════════ BAROMETER & kLAR ═══════════════════════════════════
+BAROMETER = [
+    ((76, 175, 80), "GRÜN", "Stabil, lernbereit."),
+    ((249, 168, 37), "GELB", "Angespannt, aufmerksam."),
+    ((239, 108, 0), "ORANGE", "Dysreguliert, braucht Unterstützung – hier greift das kLAR-Modell."),
+    ((198, 40, 40), "ROT", "Akute Krise – kLAR reicht nicht mehr, sofort eine Fachperson einbeziehen. "
+                            "Für diesen Zustand gibt es das eigene Krisendeck."),
+    ((120, 120, 120), "GRAU", "Erschöpft oder orientierungslos – weiß selbst nicht, was es braucht. Erst beobachten, nicht vorschnell einordnen."),
+]
+
+KLAR_STEPS = [
+    ("K", "Kontakt & Sicherheit",
+     "Auf Augenhöhe gehen. Ruhige Stimme, körperliche und räumliche Sicherheit zuerst herstellen."),
+    ("L", "Leise & Langsam",
+     "Stimme senken, Tempo herausnehmen. Kurze Sätze, Pausen aushalten statt füllen."),
+    ("A", "Anerkennung & Atmen",
+     "Das Erleben anerkennen – „Ich sehe, das ist gerade viel.“ Gemeinsam bewusst durchatmen."),
+    ("R", "Reizreduktion & Rückzug",
+     "Reize reduzieren, Rückzug ermöglichen. Raum geben, nicht drängen."),
+]
+
+def barometer_klar_seite():
+    img, d, y = new_page("KURZ ERKLÄRT", "Barometer & kLAR-Modell")
+    y = draw_para(d, y, "Dieses Deck ist auch ohne die KLARTEXT-App nutzbar. Falls du zum ersten Mal mit "
+                        "KLARTEXT arbeitest: Hier die Grundlage für die Barometer-Einordnung auf den "
+                        "Situationskarten und für M3-19 (Brainy-Flow).",
+                  size=4.6, color=KT_MUTED)
+    y += mm(8)
+
+    y = draw_h2(d, y, "Das Barometer – 5 Zustände")
+    f_lab = ImageFont.truetype(F_SANS_BOLD, mm(4.8))
+    f_desc = ImageFont.truetype(F_SANS_REG, mm(4.4))
+    lab_w = mm(30)
+    for color, label, desc in BAROMETER:
+        d.ellipse((MARGIN, y + mm(0.9), MARGIN + mm(3.6), y + mm(4.5)), fill=color)
+        d.text((MARGIN + mm(6), y), label, font=f_lab, fill=KT_INK)
+        lines = wrap(d, desc, f_desc, CONTENT_W - lab_w - mm(6))
+        ly = y
+        for ln in lines:
+            d.text((MARGIN + lab_w, ly), ln, font=f_desc, fill=KT_MUTED)
+            ly += mm(6.2)
+        y = max(ly, y + mm(7.5)) + mm(1.5)
+    y += mm(5)
+
+    y = draw_h2(d, y, "Das kLAR-Modell – 4 Schritte bei Anspannung")
+    y += mm(2)
+    for letter, titel, text in KLAR_STEPS:
+        y = draw_numbered(d, y, letter, titel, text)
+
+    y = draw_para(d, y, "kLAR gilt für Gelb und Orange – genau der Bereich, den dieses Deck abdeckt. "
+                        "Ab Rot reicht kLAR nicht mehr – dann sofort eine Fachperson einbeziehen.",
+                  size=4.2, color=GOLD)
+
+    footer(d, "Barometer & kLAR")
     return img
 
 # ═══════════════════════════════════ QUELLEN ═══════════════════════════════════

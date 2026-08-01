@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Baut die PDF aus allen fertigen FS-Deck-Karten (32 von 32). Kein Fachprüfungs-Vorbehalt
-(Anjas eigene Praxiserfahrung deckt das ab) – normales Cover ohne Warnhinweis."""
+"""Baut die PDF aus allen fertigen AT-Deck-Karten (24 von 24). Fachprüfung durch externe
+Autismus-Fachperson abgeschlossen (27.07.2026) – kein Entwurfs-Status/Warnhinweis mehr auf dem
+Cover. Alte Datei KLARTEXT_AT-Deck_ENTWURF.pdf bleibt aus Datei-Sicherheits-Policy unangetastet
+liegen, dieses Skript baut zusätzlich KLARTEXT_AT-Deck_komplett.pdf."""
 from PIL import Image, ImageDraw, ImageFont
 import os, sys
 Image.init()
 sys.path.insert(0, os.path.dirname(__file__))
-from build_booklet_fs import (anleitung_seite1, anleitung_seite2, methodik_seite, barometer_klar_seite,
+from build_booklet_at import (anleitung_seite1, anleitung_seite2, methodik_seite, barometer_klar_seite,
                                glossar_seite, quellen_seite, GLOSSAR)
 
-KARTEN_DIR = "/sessions/kind-beautiful-ptolemy/mnt/outputs/fs_karten_komplett/"
-OUT_PDF = "/sessions/kind-beautiful-ptolemy/mnt/outputs/KLARTEXT_FS-Deck_komplett.pdf"
+KARTEN_DIR = "/sessions/kind-beautiful-ptolemy/mnt/outputs/at_karten_komplett/"
+OUT_PDF = "/sessions/kind-beautiful-ptolemy/mnt/outputs/KLARTEXT_AT-Deck_komplett.pdf"
 
 DPI = 300
 MM = DPI / 25.4
 def mm(v): return int(round(v * MM))
 
-FS = (222, 178, 52)
-FS_TEXT = (150, 112, 20)
+AT = (124, 140, 126)
 KT_MUTED = (122, 112, 96)
 KT_INK = (45, 45, 45)
 
@@ -44,7 +45,7 @@ def build_cover():
     d = ImageDraw.Draw(img)
 
     kopf_h = mm(60)
-    d.rectangle((0, 0, W, kopf_h), fill=FS)
+    d.rectangle((0, 0, W, kopf_h), fill=AT)
     logo_s = mm(20)
     logo_y = (kopf_h - logo_s) // 2
     d.rounded_rectangle((mm(20), logo_y, mm(20) + logo_s, logo_y + logo_s), radius=mm(4),
@@ -53,41 +54,38 @@ def build_cover():
     d.text((mm(20) + logo_s / 2, logo_y + logo_s / 2), "K", font=f_logo, anchor="mm", fill=(255, 255, 255))
 
     f_titel = ImageFont.truetype(F_SERIF_BOLD, mm(11))
-    d.text((mm(48), mm(21)), "KLARTEXT-Mentoring", font=f_titel, fill=(60, 45, 8))
+    d.text((mm(48), mm(21)), "KLARTEXT-Mentoring", font=f_titel, fill=(255, 255, 255))
     f_sub = ImageFont.truetype(F_SANS_REG, mm(5.5))
-    d.text((mm(48), mm(34)), "Systemische Coaching-Impulskarten", font=f_sub, fill=(90, 68, 12))
+    d.text((mm(48), mm(34)), "Systemische Coaching-Impulskarten", font=f_sub, fill=(240, 244, 239))
 
     f_haupt = ImageFont.truetype(F_SERIF_BOLD, mm(30))
-    d.text((mm(20), mm(84)), "FS-Deck", font=f_haupt, fill=FS_TEXT)
+    d.text((mm(20), mm(84)), "AT-Deck", font=f_haupt, fill=AT)
     f_haupt2 = ImageFont.truetype(F_SANS_BOLD, mm(7))
-    d.text((mm(20), mm(112)), "32 Impulskarten in einfacher Sprache · Förderschule",
-           font=f_haupt2, fill=KT_INK)
+    d.text((mm(20), mm(128)), "24 autismus-sensible Impulskarten", font=f_haupt2, fill=KT_INK)
 
     f_intro = ImageFont.truetype(F_SANS_REG, mm(4.8))
-    intro_text = ("Sprachlich vereinfachte Version des KD-Decks (Grundschule) – gleiche Themen, "
-                  "gleicher Aufbau, eigene Brainy-Bilder, alles in einfacher Sprache. Für Kinder "
-                  "mit Sprach- oder Lernschwierigkeiten, entwickelt auf Grundlage mehrjähriger "
-                  "Praxiserfahrung in der Förderschule.")
+    intro_text = ("Wörtlich gemeinte Sprache, klare oder skalierte Fragen und eine bei jeder Karte "
+                  "identische, vorhersehbare Struktur. Fachlich geprüft durch eine externe "
+                  "Autismus-Fachperson (Kartentexte, Bilder und Anleitung).")
     intro_lines = wrap(d, intro_text, f_intro, W - mm(48))
-    iy = mm(128)
+    iy = mm(144)
     for ln in intro_lines:
         d.text((mm(20), iy), ln, font=f_intro, fill=KT_INK)
         iy += mm(7.2)
 
     f_themen_label = ImageFont.truetype(F_SANS_BOLD, mm(5.5))
     themen_y = iy + mm(10)
-    d.text((mm(20), themen_y), "THEMENBEREICHE", font=f_themen_label, fill=FS_TEXT)
+    d.text((mm(20), themen_y), "THEMENBEREICHE", font=f_themen_label, fill=AT)
 
-    themen = ["Gefühle erkennen und benennen", "Streit und Wiedergutmachung",
-              "Mut und neue Situationen", "Freundschaft und Ausgrenzung",
-              "Körperwahrnehmung und Grenzen", "Zur Ruhe kommen",
-              "Lernen und Kommunikation"]
+    themen = ["Übergänge & Veränderung", "Reize & Überforderung",
+              "Soziale Regeln verstehen", "Meine Interessen",
+              "Gefühle konkret", "Rückzug & Selbstregulation"]
     f_thema = ImageFont.truetype(F_SANS_REG, mm(5.6))
     row_h = mm(9)
     for i, t in enumerate(themen):
         x = mm(20)
         y = themen_y + mm(10) + i * row_h
-        d.ellipse((x, y + mm(2), x + mm(2.4), y + mm(4.4)), fill=FS)
+        d.ellipse((x, y + mm(2), x + mm(2.4), y + mm(4.4)), fill=AT)
         d.text((x + mm(5.5), y), t, font=f_thema, fill=KT_INK)
 
     f_foot = ImageFont.truetype(F_SANS_REG, mm(5))
@@ -104,9 +102,9 @@ def run():
              quellen_seite()]
 
     fehlt = []
-    for nr in range(1, 33):
-        vorn = os.path.join(KARTEN_DIR, f"FS-{nr:02d}_Vorderseite.png")
-        hinten = os.path.join(KARTEN_DIR, f"FS-{nr:02d}_Rueckseite.png")
+    for nr in range(1, 25):
+        vorn = os.path.join(KARTEN_DIR, f"AT-{nr:02d}_Vorderseite.png")
+        hinten = os.path.join(KARTEN_DIR, f"AT-{nr:02d}_Rueckseite.png")
         if os.path.exists(vorn) and os.path.exists(hinten):
             pages.append(Image.open(vorn).convert("RGB"))
             pages.append(Image.open(hinten).convert("RGB"))
@@ -115,8 +113,8 @@ def run():
 
     if fehlt:
         print(f"Abgebrochen: {len(fehlt)} Karten fehlen noch (Bilder nicht vorhanden): {fehlt}")
-        print("PDF wird erst gebaut, wenn alle 32 Karten vorliegen. Erst build_all_cards_fs.py "
-              "erneut laufen lassen, sobald die Bilder da sind.")
+        print("PDF wird erst gebaut, wenn alle 24 Karten vorliegen. Erst build_all_cards_at.py erneut "
+              "laufen lassen, sobald die Bilder da sind.")
         return
 
     first, rest = pages[0], pages[1:]

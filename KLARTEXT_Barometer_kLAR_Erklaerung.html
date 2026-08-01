@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Barometer &amp; kLAR-Modell kurz erklärt | KLARTEXT-Mentoring</title>
+<meta name="description" content="Barometer, kLAR-Modell und Feuerwehr-Protokoll kurz erklärt — die Grundbegriffe hinter allen KLARTEXT-Kartendecks, frei zugänglich, ohne Login.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:#fff;color:#1A1A2E;}
+
+.nav{background:#1B3A4B;padding:.75rem clamp(1rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none;}
+.nav-logo span{color:#6EC6A0;}
+.nav-cta{background:#6EC6A0;color:#1B3A4B;border:none;padding:.45rem 1.1rem;border-radius:20px;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;}
+
+.hero{background:linear-gradient(135deg,#1B3A4B 0%,#2A4A5B 60%,#1B3A4B 100%);padding:4rem clamp(1rem,5vw,4rem) 3.5rem;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(110,198,160,.15);border:1px solid rgba(110,198,160,.4);border-radius:20px;padding:.3rem .85rem;font-size:.72rem;font-weight:700;color:#6EC6A0;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem;}
+.hero h1{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:1rem;max-width:750px;margin-left:auto;margin-right:auto;}
+.hero h1 span{color:#6EC6A0;}
+.hero-sub{font-size:clamp(.9rem,2vw,1.05rem);color:rgba(255,255,255,.72);line-height:1.8;max-width:640px;margin:0 auto;}
+
+.sek{padding:3.5rem clamp(1rem,5vw,4rem);}
+.sek-titel{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#1B3A4B;text-align:center;margin-bottom:.5rem;}
+.sek-sub{font-size:.92rem;color:#6A6878;text-align:center;margin-bottom:2.25rem;line-height:1.75;max-width:640px;margin-left:auto;margin-right:auto;}
+.sek.grau{background:#F5F0E8;}
+.sek.dunkel{background:#1B3A4B;}
+
+.intro-box{max-width:760px;margin:0 auto;background:#F5F0E8;border:1.5px solid #DDD8CE;border-radius:14px;padding:1.75rem 2rem;font-size:.92rem;line-height:1.85;color:#3A3A4A;}
+.intro-box strong{color:#1B3A4B;}
+
+.baro-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;max-width:820px;margin:0 auto;}
+.baro-item{text-align:center;padding:1rem .6rem;border-radius:12px;}
+.baro-dot{width:38px;height:38px;border-radius:50%;margin:0 auto .5rem;}
+.baro-name{font-size:.75rem;font-weight:700;color:#1B3A4B;}
+.baro-desc{font-size:.68rem;color:#6A6878;margin-top:.25rem;line-height:1.5;}
+
+.klar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;max-width:820px;margin:0 auto;}
+.klar-item{background:#fff;border-radius:12px;padding:1.1rem;text-align:center;border-top:4px solid #C47A00;}
+.klar-buch{font-family:"Playfair Display",serif;font-size:2.4rem;font-weight:900;color:#C47A00;display:block;line-height:1;}
+.klar-titel{font-size:.82rem;font-weight:700;color:#1B3A4B;margin:.35rem 0;}
+.klar-desc{font-size:.74rem;color:#6A6878;line-height:1.55;}
+
+.fw-list{max-width:640px;margin:0 auto;counter-reset:fw;}
+.fw-step{display:flex;gap:1rem;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.1);}
+.fw-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:#C62828;color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:900;font-size:.95rem;}
+.fw-text strong{color:#fff;display:block;font-size:.9rem;margin-bottom:.15rem;}
+.fw-text span{color:rgba(255,255,255,.6);font-size:.82rem;line-height:1.6;}
+
+.note{max-width:640px;margin:1.5rem auto 0;font-size:.78rem;color:rgba(255,255,255,.5);text-align:center;line-height:1.7;}
+.note-light{max-width:640px;margin:1.5rem auto 0;font-size:.8rem;color:#8A7A50;text-align:center;line-height:1.7;background:#FFF4E0;border:1px solid #F0D9A8;border-radius:10px;padding:1rem 1.25rem;}
+
+.cta-final{text-align:center;padding:3.5rem clamp(1rem,5vw,4rem);background:linear-gradient(135deg,#1B3A4B,#2A4A5B);}
+.cta-final h2{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,3vw,2rem);color:#fff;margin-bottom:.75rem;}
+.cta-final p{color:rgba(255,255,255,.65);margin-bottom:1.75rem;font-size:.92rem;max-width:520px;margin-left:auto;margin-right:auto;}
+.btn-primary{background:#6EC6A0;color:#1B3A4B;padding:.75rem 2rem;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.95rem;font-weight:700;text-decoration:none;display:inline-block;}
+
+footer{background:#0F2535;padding:2rem clamp(1rem,4vw,3rem);text-align:center;font-size:.75rem;color:rgba(255,255,255,.35);}
+footer a{color:rgba(255,255,255,.4);text-decoration:none;}
+
+@media(max-width:600px){
+  .baro-grid{grid-template-columns:repeat(3,1fr);}
+  .klar-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="KLARTEXT_Shop_Uebersicht.html">KLAR<span>TEXT</span></a>
+  <a class="nav-cta" href="KLARTEXT_Shop_Uebersicht.html">Alle Kartendecks</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">📖 Kurz erklärt · frei zugänglich · kein Login nötig</div>
+  <h1>Barometer &amp; <span>kLAR-Modell</span></h1>
+  <p class="hero-sub">Du hast ein einzelnes KLARTEXT-Kartendeck heruntergeladen oder gekauft, und eine Karte
+  erwähnt „Barometer“ oder „kLAR“? Hier die kurze Erklärung — unabhängig davon, welches Deck du hast.</p>
+</section>
+
+<section class="sek">
+  <div class="intro-box">
+    <strong>Was ist KLARTEXT-Mentoring?</strong> Ein systemisches Coaching-Programm für Kinder und
+    Jugendliche mit einer durchgängigen Sprache: dieselben Grundbegriffe — Barometer, kLAR-Modell,
+    Brainy — ziehen sich durch alle Materialien. Jedes einzelne Kartendeck ist bewusst eigenständig
+    nutzbar, ganz ohne App, Login oder die anderen Decks. Wer mehrere Decks oder das vollständige
+    System (mit App, Dokumentation und allen Rollen) nutzt, erkennt dieselben Begriffe überall wieder —
+    das ist der einzige Zusammenhang, keine Voraussetzung.
+  </div>
+</section>
+
+<section class="sek grau">
+  <h2 class="sek-titel">Das Barometer — 5 Zustände</h2>
+  <p class="sek-sub">Eine Farbskala für den Regulationszustand eines Kindes — erkenne auf einen Blick, wo es gerade steht.</p>
+  <div class="baro-grid">
+    <div class="baro-item" style="background:#E8F5EE;">
+      <div class="baro-dot" style="background:#2E7D47;"></div>
+      <div class="baro-name" style="color:#2E7D47;">GRÜN</div>
+      <div class="baro-desc">Stabil · lernbereit</div>
+    </div>
+    <div class="baro-item" style="background:#FBF4E8;">
+      <div class="baro-dot" style="background:#C47A00;"></div>
+      <div class="baro-name" style="color:#C47A00;">GELB</div>
+      <div class="baro-desc">Angespannt · aufmerksam</div>
+    </div>
+    <div class="baro-item" style="background:#FEF0E8;">
+      <div class="baro-dot" style="background:#D4500A;"></div>
+      <div class="baro-name" style="color:#D4500A;">ORANGE</div>
+      <div class="baro-desc">Dysreguliert → kLAR</div>
+    </div>
+    <div class="baro-item" style="background:#FDEAEA;">
+      <div class="baro-dot" style="background:#C62828;"></div>
+      <div class="baro-name" style="color:#C62828;">ROT</div>
+      <div class="baro-desc">Akute Krise → Feuerwehr</div>
+    </div>
+    <div class="baro-item" style="background:#F0F0F0;">
+      <div class="baro-dot" style="background:#6A6878;"></div>
+      <div class="baro-name" style="color:#6A6878;">GRAU</div>
+      <div class="baro-desc">Erschöpft · unklar · erst beobachten</div>
+    </div>
+  </div>
+</section>
+
+<section class="sek">
+  <h2 class="sek-titel">Das kLAR-Modell — 4 Schritte</h2>
+  <p class="sek-sub">Gilt bei Gelb und Orange, wenn ein Gespräch noch möglich ist — immer in dieser Reihenfolge, keinen Schritt überspringen.</p>
+  <div class="klar-grid">
+    <div class="klar-item">
+      <span class="klar-buch">K</span>
+      <div class="klar-titel">Kontakt &amp; Sicherheit</div>
+      <div class="klar-desc">Auf Augenhöhe gehen, ruhige Stimme, Sicherheit zuerst.</div>
+    </div>
+    <div class="klar-item">
+      <span class="klar-buch">L</span>
+      <div class="klar-titel">Leise &amp; Langsam</div>
+      <div class="klar-desc">Stimme senken, Tempo raus, Pausen aushalten.</div>
+    </div>
+    <div class="klar-item">
+      <span class="klar-buch">A</span>
+      <div class="klar-titel">Anerkennung &amp; Atmen</div>
+      <div class="klar-desc">Erleben anerkennen, gemeinsam durchatmen.</div>
+    </div>
+    <div class="klar-item">
+      <span class="klar-buch">R</span>
+      <div class="klar-titel">Reizreduktion &amp; Rückzug</div>
+      <div class="klar-desc">Reize reduzieren, Rückzug ermöglichen.</div>
+    </div>
+  </div>
+  <p class="note-light" style="margin-top:2rem;">Ab Rot reicht kLAR nicht mehr — dann gilt ausschließlich das Feuerwehr-Protokoll (siehe unten).</p>
+</section>
+
+<section class="sek dunkel">
+  <h2 class="sek-titel" style="color:#fff;">Das Feuerwehr-Protokoll — bei Rot</h2>
+  <p class="sek-sub" style="color:rgba(255,255,255,.6);">Akute Krise, Panik, Dissoziation oder Gefahr — es ersetzt dann vollständig das kLAR-Modell.</p>
+  <div class="fw-list">
+    <div class="fw-step"><div class="fw-num">1</div><div class="fw-text"><strong>Sicherheit herstellen</strong><span>Abstand zur Gruppe, ruhigen Ort aufsuchen, körperliche Sicherheit prüfen.</span></div></div>
+    <div class="fw-step"><div class="fw-num">2</div><div class="fw-text"><strong>Kontakt halten</strong><span>Ruhige Stimme, wenig Worte. „Ich bin hier. Du bist sicher.“</span></div></div>
+    <div class="fw-step"><div class="fw-num">3</div><div class="fw-text"><strong>Regulieren lassen</strong><span>Kein Erklären, kein Diskutieren — den Körper regulieren lassen.</span></div></div>
+    <div class="fw-step"><div class="fw-num">4</div><div class="fw-text"><strong>Fachkraft/Leitung informieren</strong><span>Zuständige Ansprechperson (bei INGRA: die Teamkoordination) unverzüglich in Kenntnis setzen.</span></div></div>
+    <div class="fw-step" style="border-bottom:none;"><div class="fw-num">5</div><div class="fw-text"><strong>Nachgespräch — viel später</strong><span>Erst wenn das Kind vollständig reguliert ist.</span></div></div>
+  </div>
+  <p class="note">Dieses Protokoll ersetzt keine Rechtsberatung, keine Supervision und kein Kinderschutzverfahren.
+  Bei unmittelbarer Gefahr: Notruf 112 (Rettungsdienst/Polizei) bzw. 110 (Polizei) nicht zögern.</p>
+</section>
+
+<section class="cta-final">
+  <h2>Alle KLARTEXT-Kartendecks</h2>
+  <p>Jedes Deck ist eigenständig nutzbar — vom Grundschul-Coaching-Deck über Werkzeugkarten bis zum Krisendeck für den akuten Moment.</p>
+  <a href="KLARTEXT_Shop_Uebersicht.html" class="btn-primary">Zur Übersicht</a>
+</section>
+
+<footer>
+  <p>KLARTEXT-Mentoring · © 2026 Anja Jolk · Schwerte</p>
+  <p style="margin-top:.4rem;">
+    <a href="https://klartext-ingra.h9cyz7d9pj.workers.dev/KLARTEXT_Impressum.html">Impressum</a> ·
+    <a href="https://klartext-ingra.h9cyz7d9pj.workers.dev/KLARTEXT_Datenschutz.html">Datenschutz</a> ·
+    anja.jolk@gmx.de · +49 176 62311567
+  </p>
+</footer>
+
+</body>
+</html>

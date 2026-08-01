@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT-Kartendecks · Alle Sets im Überblick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:#fff;color:#1A1A2E;}
+
+/* NAV */
+.nav{background:#1B3A4B;padding:.75rem clamp(1rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none;}
+.nav-logo span{color:#6EC6A0;}
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.85rem;font-weight:500;}
+.nav-links a:hover{color:#fff;}
+.nav-cta{background:#6EC6A0;color:#1B3A4B;border:none;padding:.45rem 1.1rem;border-radius:20px;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1B3A4B 0%,#2A4A5B 60%,#1B3A4B 100%);padding:5rem clamp(1rem,5vw,4rem) 4rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 50%,rgba(110,198,160,.08) 0%,transparent 60%);pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(110,198,160,.15);border:1px solid rgba(110,198,160,.4);border-radius:20px;padding:.3rem .85rem;font-size:.72rem;font-weight:700;color:#6EC6A0;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem;}
+.hero h1{font-family:"Playfair Display",serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem;max-width:800px;margin-left:auto;margin-right:auto;}
+.hero h1 span{color:#6EC6A0;}
+.hero-sub{font-size:clamp(.95rem,2vw,1.15rem);color:rgba(255,255,255,.7);line-height:1.8;max-width:640px;margin:0 auto 2rem;}
+.hero-cta-wrap{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;}
+.btn-primary{background:#6EC6A0;color:#1B3A4B;padding:.75rem 2rem;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:700;text-decoration:none;display:inline-block;transition:all .2s;}
+.btn-primary:hover{background:#5AB490;transform:translateY(-1px);}
+.btn-secondary{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);padding:.75rem 2rem;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:1rem;font-weight:600;text-decoration:none;display:inline-block;}
+.hero-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;}
+.hero-stat{text-align:center;}
+.hero-stat .n{font-family:"Playfair Display",serif;font-size:1.8rem;font-weight:700;color:#6EC6A0;display:block;}
+.hero-stat .l{font-size:.72rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;}
+
+/* SEKTION */
+.sek{padding:4rem clamp(1rem,5vw,4rem);}
+.sek-titel{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:#1B3A4B;text-align:center;margin-bottom:.5rem;}
+.sek-sub{font-size:.95rem;color:#6A6878;text-align:center;margin-bottom:2.5rem;line-height:1.75;max-width:640px;margin-left:auto;margin-right:auto;}
+.sek.grau{background:#F5F0E8;}
+
+/* DECK-GRID */
+.deck-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;max-width:1100px;margin:0 auto;}
+.deck-karte{background:#fff;border-radius:14px;border:1.5px solid #DDD8CE;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s;}
+.deck-karte:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(27,58,75,.08);}
+.deck-kopf{padding:1.1rem 1.25rem;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+.deck-code{font-family:"Playfair Display",serif;font-weight:900;font-size:1.3rem;}
+.deck-anzahl{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:rgba(255,255,255,.22);padding:.2rem .55rem;border-radius:20px;white-space:nowrap;}
+.deck-body{padding:1.1rem 1.25rem 1.25rem;flex:1;display:flex;flex-direction:column;}
+.deck-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#1B3A4B;margin-bottom:.4rem;}
+.deck-desc{font-size:.82rem;color:#3A3A4A;line-height:1.65;margin-bottom:1rem;flex:1;}
+.deck-status{font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:.75rem;display:inline-block;padding:.2rem .6rem;border-radius:20px;}
+.deck-status.live{background:rgba(110,198,160,.18);color:#2E7D57;}
+.deck-status.bald{background:#FFF4E0;color:#8A5A00;}
+.deck-btn{display:block;text-align:center;padding:.55rem 1rem;border-radius:8px;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .2s;}
+.deck-btn.primary{background:#1B3A4B;color:#fff;}
+.deck-btn.primary:hover{background:#2A4A5B;}
+.deck-btn.ghost{background:transparent;border:1.5px solid #DDD8CE;color:#1B3A4B;}
+.deck-btn.ghost:hover{border-color:#1B3A4B;}
+.fach-hinweis{font-size:.68rem;color:#8A5A00;background:#FFF4E0;border-radius:6px;padding:.35rem .5rem;margin-bottom:.75rem;line-height:1.5;}
+
+/* VORBESTELL-HINWEIS */
+.vorbestell-hinweis{max-width:800px;margin:0 auto 2.5rem;background:#FFF4E0;border:1.5px solid #F0D9A8;border-radius:12px;padding:1rem 1.25rem;text-align:center;font-size:.85rem;color:#6B4600;line-height:1.7;}
+.vorbestell-hinweis strong{color:#8A5A00;}
+
+/* CTA FINAL */
+.cta-final{text-align:center;padding:4rem clamp(1rem,5vw,4rem);background:linear-gradient(135deg,#1B3A4B,#2A4A5B);}
+.cta-final h2{font-family:"Playfair Display",serif;font-size:clamp(1.5rem,3vw,2.2rem);color:#fff;margin-bottom:.75rem;}
+.cta-final p{color:rgba(255,255,255,.6);margin-bottom:2rem;font-size:.95rem;max-width:520px;margin-left:auto;margin-right:auto;}
+
+/* FOOTER */
+footer{background:#0F2535;padding:2rem clamp(1rem,4vw,3rem);text-align:center;font-size:.75rem;color:rgba(255,255,255,.35);}
+footer a{color:rgba(255,255,255,.4);text-decoration:none;}
+
+@media(max-width:600px){
+  .nav-links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">KLAR<span>TEXT</span></a>
+  <div class="nav-links">
+    <a href="#zielgruppen">Kartendecks</a>
+    <a href="#fachkraefte">Für Fachkräfte</a>
+  </div>
+  <a class="nav-cta" href="mailto:anja.jolk@gmx.de?subject=KLARTEXT Kartendecks – Interesse">Kontakt</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🃏 KLARTEXT-Kartendecks</div>
+  <h1>Coaching-Impulse für jede<br><span>Zielgruppe, jede Situation.</span></h1>
+  <p class="hero-sub">Ein Kartendeck-System aus dem KLARTEXT-Mentoring: systemisch-pädagogisch fundierte Impuls- und Handlungskarten für Kinder, Jugendliche, Eltern, Lehrkräfte und pädagogische Fachkräfte — jedes Set einzeln erhältlich.</p>
+  <div class="hero-cta-wrap">
+    <a href="#zielgruppen" class="btn-primary">Decks entdecken</a>
+    <a href="#fachkraefte" class="btn-secondary">Für Fachkräfte</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="n">12</span><span class="l">Zielgruppen-Decks</span></div>
+    <div class="hero-stat"><span class="n">6</span><span class="l">Spezialmaterialien</span></div>
+    <div class="hero-stat"><span class="n">1</span><span class="l">gemeinsames System</span></div>
+  </div>
+</section>
+
+<!-- KARTENDECKS NACH ZIELGRUPPE -->
+<section class="sek" id="zielgruppen">
+  <h2 class="sek-titel">Kartendecks nach Zielgruppe</h2>
+  <p class="sek-sub">Jedes Deck steht für sich — eigene Zielgruppe, eigene Impulse, dieselbe systemische Grundhaltung.</p>
+
+  <div class="deck-grid">
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#2E9E5A;">
+        <span class="deck-code">KD</span>
+        <span class="deck-anzahl">35 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Impulskarten Grundschule</div>
+        <div class="deck-desc">Coaching-Impulse für Kinder im Grundschulalter, mit Brainy als Begleitfigur.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/kd.html">Zur KD-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#2F6B6E;">
+        <span class="deck-code">JD</span>
+        <span class="deck-anzahl">52 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Coaching-Impulskarten Jugendliche</div>
+        <div class="deck-desc">Systemische Impulse für die weiterführende Schule — inkl. Berufsvorbereitung, Beziehungen, Freundschaft.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/jd.html">Zur JD-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#BF5B3E;">
+        <span class="deck-code">EL</span>
+        <span class="deck-anzahl">58 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Reflexionskarten Eltern</div>
+        <div class="deck-desc">Coaching-Impulse für die eigene Elternrolle — inkl. Zusatzblöcke Autismus, ADHS, Pflegekinder, Eltern von Jugendlichen.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/el.html">Zur EL-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#6B4E71;">
+        <span class="deck-code">LK</span>
+        <span class="deck-anzahl">71 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Reflexionskarten Lehrkräfte</div>
+        <div class="deck-desc">Classroom-Management, Abgrenzung, interkulturelle Kompetenz, KI & Digitalität im Schulalltag.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/lk.html">Zur LK-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#3E5C76;">
+        <span class="deck-code">TR</span>
+        <span class="deck-anzahl">33 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Trainer-Reflexionskarten</div>
+        <div class="deck-desc">Für Referent:innen und Workshop-Leitungen — eigene Haltung, Gruppendynamik, Selbstfürsorge.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/tr.html">Zur TR-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#7C8C7E;">
+        <span class="deck-code">AT</span>
+        <span class="deck-anzahl">24 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Impulskarten Autismus-Spektrum</div>
+        <div class="deck-desc">Impulse für den Umgang mit Kindern im Autismus-Spektrum — auf Reizverarbeitung und Struktur abgestimmt.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/at.html">Zur AT-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#6B7FD7;">
+        <span class="deck-code">ADHS</span>
+        <span class="deck-anzahl">24 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">ADHS-Impulskarten</div>
+        <div class="deck-desc">Impulse für Kinder mit ADHS — Selbstregulation, Struktur, Energieabbau ohne Beschämung.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/adhs.html">Zur ADHS-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#DEB234;">
+        <span class="deck-code">FS</span>
+        <span class="deck-anzahl">32 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Impulskarten Förderschule</div>
+        <div class="deck-desc">Impulse für den Förderschulalltag, angepasst an unterschiedliche Lern- und Entwicklungstempi.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/fs.html">Zur FS-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#00ACD6;">
+        <span class="deck-code">DaZ-GS</span>
+        <span class="deck-anzahl">25 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">DaZ Grundschule</div>
+        <div class="deck-desc">Impulskarten für Deutsch als Zweitsprache im Grundschulalter — sprachsensibel formuliert.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/dazgs.html">Zur DaZ-GS-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#6E1438;">
+        <span class="deck-code">DaZ-Sek I</span>
+        <span class="deck-anzahl">25 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">DaZ Sekundarstufe I</div>
+        <div class="deck-desc">Impulskarten für Deutsch als Zweitsprache in der weiterführenden Schule.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/dazsek1.html">Zur DaZ-Sek I-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#8BC34A;">
+        <span class="deck-code">OGS</span>
+        <span class="deck-anzahl">32 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Impulskarten Offene Ganztagsschule</div>
+        <div class="deck-desc">Impulse für den OGS-Alltag zwischen Unterricht, Freispiel und Übergängen.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/ogs.html">Zur OGS-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#961E23;">
+        <span class="deck-code">GK</span>
+        <span class="deck-anzahl">30 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Geschichtenkarten</div>
+        <div class="deck-desc">Erzählkarten mit Brainy — drei Sets: Mobbing erleben, anderen helfen, Strategien lernen.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/gk.html">Zur GK-Seite</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HANDLUNGSKARTEN & SPEZIALMATERIALIEN -->
+<section class="sek grau" id="fachkraefte">
+  <h2 class="sek-titel">Handlungskarten &amp; Spezialmaterialien</h2>
+  <p class="sek-sub">Für Teams, INGRA und Schulbegleitung: konkrete Handlungsanleitungen statt offener Coaching-Impulse.</p>
+
+  <div class="deck-grid">
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#4A148C;">
+        <span class="deck-code">TK</span>
+        <span class="deck-anzahl">19 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">TK-Deck – Teamkoordination</div>
+        <div class="deck-desc">Handlungskarten für die Abstimmung zwischen INGRA, Lehrkraft und Träger.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/tk.html">Zur TK-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#C62828;">
+        <span class="deck-code">FK</span>
+        <span class="deck-anzahl">8 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Krisendeck</div>
+        <div class="deck-desc">Schnellorientierung für akute Krisensituationen (Barometer Rot) — Eskalation, Shutdown, Panik, Fremdgefährdung u.a.</div>
+        <div class="fach-hinweis">Nur für qualifizierte Fachkräfte, kein Ersatz für Kinderschutz-Verfahren.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/fk.html">Zur FK-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#B07D2A;">
+        <span class="deck-code">M3</span>
+        <span class="deck-anzahl">20 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Werkzeugkarten</div>
+        <div class="deck-desc">20 Mini-Interventionen für den pädagogischen Alltag — situations- und werkzeugbasiert.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/m3.html">Zur M3-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#D81B60;">
+        <span class="deck-code">MB</span>
+        <span class="deck-anzahl">3 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Mobbing-Materialien</div>
+        <div class="deck-desc">Soforthilfe-Karten für akute Mobbingfälle — Handlungssicherheit im ersten Moment.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/mb.html">Zur MB-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#26A69A;">
+        <span class="deck-code">IS</span>
+        <span class="deck-anzahl">8+8 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Insel-Set (Schule &amp; Zuhause)</div>
+        <div class="deck-desc">Raumzonen-Konzept zur pädagogischen Strukturierung — je ein Set für Schule und für Zuhause.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/is.html">Zur IS-Seite</a>
+      </div>
+    </div>
+
+    <div class="deck-karte">
+      <div class="deck-kopf" style="background:#37474F;">
+        <span class="deck-code">ZS</span>
+        <span class="deck-anzahl">4+4 Karten</span>
+      </div>
+      <div class="deck-body">
+        <div class="deck-titel">Zonen-Set Jugendliche (Schule &amp; Zuhause)</div>
+        <div class="deck-desc">Raumzonen-Konzept für Jugendliche — Rückzug, Fokus, Klärung, Gespräch.</div>
+        <span class="deck-status live">Verfügbar zum Vormerken</span>
+        <a class="deck-btn primary" href="/zs.html">Zur ZS-Seite</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="vorbestell-hinweis" style="margin-top:-1rem;">
+  <strong>Hinweis:</strong> Die meisten Decks befinden sich noch in Vorbereitung. „Vormerken" schickt eine formlose E-Mail — du wirst benachrichtigt, sobald ein Deck als PDF, Print-on-Demand oder Lizenz verfügbar ist. Keine Zahlung, keine Verpflichtung.
+</div>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Fragen zu einem bestimmten Deck?</h2>
+  <p>Ob Einzelkauf, Träger-Lizenz oder Zusammenstellung für dein Team — meld dich einfach direkt.</p>
+  <a href="mailto:anja.jolk@gmx.de?subject=KLARTEXT Kartendecks – Frage" class="btn-primary">Kontakt aufnehmen</a>
+</section>
+
+<footer>
+  © 2026 KLARTEXT-Mentoring · Anja Jolk ·
+  <a href="https://klartext-ingra.h9cyz7d9pj.workers.dev/KLARTEXT_Impressum.html">Impressum</a> ·
+  <a href="https://klartext-ingra.h9cyz7d9pj.workers.dev/KLARTEXT_Datenschutz.html">Datenschutz</a> ·
+  <a href="KLARTEXT_Barometer_kLAR_Erklaerung.html">Barometer &amp; kLAR erklärt</a>
+</footer>
+
+</body>
+</html>

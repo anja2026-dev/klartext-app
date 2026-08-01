@@ -1,0 +1,361 @@
+:root {
+  --kt-primary: #1B3A4B;
+  --kt-accent: #6EC6A0;
+  --kt-ink: #2D2D2D;
+  --kt-muted: #7A7060;
+  --kt-paper: #F5F0E8;
+  --deck-color: #2E9E5A;
+  --deck-light: #E8F7EE;
+  --deck-border: #C3E1CD;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* Sicherstellen, dass das hidden-Attribut wirklich greift: .screen setzt display:flex,
+   das würde sonst die eingebaute "hidden = unsichtbar"-Regel des Browsers überstimmen. */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--kt-paper);
+  color: var(--kt-ink);
+  font-family: var(--font-sans);
+  height: 100%;
+  overscroll-behavior-y: contain;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: env(safe-area-inset-top, 0) 14px 10px 14px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  background: var(--kt-primary);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.iconbtn {
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.iconbtn:active { background: rgba(255,255,255,0.25); }
+
+.brand { display: flex; align-items: center; gap: 8px; flex: 1; }
+.logo {
+  width: 28px; height: 28px;
+  background: var(--kt-primary);
+  border: 1.5px solid var(--kt-accent);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 14px;
+}
+.brandtext { font-size: 14px; font-weight: 600; letter-spacing: 0.2px; }
+.progress { font-size: 12px; opacity: 0.85; min-width: 40px; text-align: right; }
+
+/* ---------- Layout ---------- */
+main#app { flex: 1; display: flex; flex-direction: column; }
+.screen { flex: 1; display: flex; flex-direction: column; padding: 18px 16px 24px; }
+
+.pagetitle {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  margin: 4px 0 2px;
+  color: var(--kt-primary);
+}
+.pagesub { color: var(--kt-muted); font-size: 14px; margin: 0 0 18px; }
+
+/* ---------- Deck grid ---------- */
+.deckgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+}
+.decktile {
+  border: none;
+  border-radius: 16px;
+  padding: 18px 14px;
+  text-align: left;
+  cursor: pointer;
+  color: #fff;
+  font-family: var(--font-sans);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.decktile:active { transform: scale(0.98); }
+.decktile .dt-titel { font-family: var(--font-serif); font-size: 19px; font-weight: 700; }
+.decktile .dt-sub { font-size: 12.5px; opacity: 0.9; margin-top: 4px; }
+.decktile .dt-count { font-size: 12px; opacity: 0.85; align-self: flex-end; margin-top: 10px; }
+
+/* ---------- Flashcard ----------
+   Bewusst KEIN echtes 3D-rotateY-Flip (backface-visibility/perspective haben in
+   verschiedenen Browsern/WebViews unzuverlässige Klick-Hit-Tests gezeigt). Stattdessen ein
+   einfacher, garantiert funktionierender Opacity-/Scale-Swap zwischen den beiden Flächen. */
+.cardstage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0 18px;
+}
+
+.flashcard {
+  width: min(92vw, 380px);
+  max-height: 64vh;
+  aspect-ratio: 3 / 4.35;
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.face-front {
+  border: 1px solid var(--deck-border);
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+  pointer-events: auto;
+}
+.face-back {
+  border: 1px solid var(--deck-border);
+  opacity: 0;
+  transform: scale(0.96);
+  z-index: 1;
+  pointer-events: none;
+}
+.flashcard.flipped .face-front {
+  opacity: 0;
+  transform: scale(0.96);
+  z-index: 1;
+  pointer-events: none;
+}
+.flashcard.flipped .face-back {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(27,58,75,0.75);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 4px 9px;
+  border-radius: 100px;
+  z-index: 2;
+}
+
+.frontimgwrap {
+  flex: 1;
+  min-height: 0;
+  background: var(--deck-light);
+}
+.frontimgwrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Handlungskarten (TK/Krisendeck/Werkzeug/Mobbing) ohne Foto: großes Icon statt Bild */
+.fronticonwrap {
+  flex: 1;
+  min-height: 0;
+  background: var(--deck-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fronticonwrap i {
+  font-size: clamp(48px, 30vw, 96px);
+  color: var(--deck-color);
+  opacity: 0.85;
+}
+
+.cardtitel-front {
+  font-family: var(--font-serif);
+  color: var(--deck-color);
+  background: var(--deck-light);
+  border-top: 3px solid var(--deck-border);
+  margin: 0;
+  padding: 14px 16px 4px;
+  font-size: 19px;
+  line-height: 1.25;
+}
+.taphint {
+  margin: 0;
+  padding: 0 16px 14px;
+  background: var(--deck-light);
+  color: var(--kt-muted);
+  font-size: 11.5px;
+}
+
+.backscroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 18px 18px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.cardtitel-back {
+  font-family: var(--font-serif);
+  color: var(--deck-color);
+  font-size: 20px;
+  margin: 0 0 14px;
+  line-height: 1.25;
+}
+
+.section { margin-bottom: 16px; }
+.label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--deck-color);
+  margin-bottom: 6px;
+}
+.label-gold { color: #96784B; }
+
+.section p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+
+.fragenlist { display: flex; flex-direction: column; gap: 8px; }
+.frage-box {
+  background: var(--deck-light);
+  border-left: 3px solid var(--deck-color);
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.frage-box-system {
+  background: transparent;
+  border: 1.5px dashed var(--deck-color);
+  border-left: 1.5px dashed var(--deck-color);
+  font-style: italic;
+}
+
+/* Handlungskarten: Schritte-Liste + Tun/Nicht-tun-Tabelle */
+.schritteliste {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.schritteliste li {
+  font-size: 14px;
+  line-height: 1.45;
+  padding-left: 2px;
+}
+.schritteliste li::marker {
+  color: var(--deck-color);
+  font-weight: 700;
+}
+
+.abgrenzungtabelle {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.abgrenzungtabelle th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 0 8px 6px;
+}
+.abgrenzungtabelle th.th-tun { color: #2E7D32; }
+.abgrenzungtabelle th.th-nicht { color: #B3261E; }
+.abgrenzungtabelle td {
+  vertical-align: top;
+  padding: 6px 8px;
+  border-top: 1px solid var(--deck-border);
+  line-height: 1.35;
+}
+.abgrenzungtabelle td.td-tun {
+  background: rgba(46, 125, 50, 0.07);
+}
+.abgrenzungtabelle td.td-nicht {
+  background: rgba(179, 38, 30, 0.06);
+}
+
+.hinweisbox {
+  background: var(--kt-paper);
+  border: 1px solid #C4B078;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 4px;
+}
+
+/* ---------- Nav ---------- */
+.cardnav {
+  display: flex;
+  gap: 10px;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.navbtn {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  background: var(--kt-primary);
+  color: #fff;
+  font-size: 18px;
+  padding: 13px 0;
+  cursor: pointer;
+}
+.navbtn:active { opacity: 0.85; }
+.navbtn-ghost {
+  flex: 1.3;
+  background: transparent;
+  border: 1.5px solid var(--kt-primary);
+  color: var(--kt-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (min-width: 640px) {
+  .screen { padding: 24px 24px 32px; align-items: center; }
+  .deckgrid { max-width: 720px; width: 100%; }
+  .cardnav { max-width: 380px; width: 100%; }
+}

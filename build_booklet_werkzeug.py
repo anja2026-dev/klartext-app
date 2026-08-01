@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Anleitung & Quellen fürs Werkzeugkarten-Deck (M3-01–20 als physisches Deck). Drittes Deck im
+"""Anleitung & Quellen fürs Werkzeugkarten-Deck (WZ-01–20 als physisches Deck). Drittes Deck im
 Handlungskarten-Format, nach TK & Krisendeck. Struktur/Helfer von build_booklet_krisendeck.py übernommen."""
 from PIL import Image, ImageDraw, ImageFont
 Image.init()
@@ -111,14 +111,14 @@ def anleitung_seite1():
                         "Deck der Handlungskarten-Serie, nach TK und Krisendeck. Anders als das "
                         "Krisendeck (nur akute Rot-Situationen) deckt dieses Deck den alltäglichen "
                         "Gelb-bis-Orange-Bereich ab – die Situationen, die jeden Schultag vorkommen. "
-                        "M3-21–26 wurden am 01.08.2026 neu ergänzt.")
+                        "WZ-21–26 wurden am 01.08.2026 neu ergänzt.")
     y += mm(6)
 
     y = draw_h2(d, y, "Zwei Kartentypen")
-    y = draw_bullet(d, y, "8 Situationskarten (M3-01–08) – konkrete Alltagsszenen (Kind kommt "
+    y = draw_bullet(d, y, "8 Situationskarten (WZ-01–08) – konkrete Alltagsszenen (Kind kommt "
                           "aufgewühlt an, verweigert Arbeit, eskaliert …), mit Barometer-Einordnung, "
                           "5 Schritten und Verweis auf passende Werkzeugkarten.")
-    y = draw_bullet(d, y, "18 Werkzeugkarten (M3-09–26) – einzelne Techniken (Atemanker, Igel-Ball, "
+    y = draw_bullet(d, y, "18 Werkzeugkarten (WZ-09–26) – einzelne Techniken (Atemanker, Igel-Ball, "
                           "Joker, Sichtbare Zeit, Stopp-Hand-Signal, Sicherer Ort, Körper-Check-In, "
                           "Die Kraft der Pause, No-Blame-Approach …), mit „Wann einsetzen“-Kurzliste, "
                           "Kurzerklärung und Schritt-für-Schritt-Anleitung.")
@@ -134,7 +134,7 @@ def anleitung_seite1():
 def anleitung_seite2():
     img, d, y = new_page("GEBRAUCHSANWEISUNG", "Der Joker & Brainy-Flow")
 
-    y = draw_h2(d, y, "Der Joker (M3-13)")
+    y = draw_h2(d, y, "Der Joker (WZ-13)")
     y = draw_para(d, y, "Ein stilles Notfallsignal, das das Kind selbst einsetzt – ohne Worte. Der "
                         "Joker ist eines der sechs KLARTEXT-Systemelemente und taucht deshalb auch "
                         "an anderer Stelle auf: als „Joker-Mechanismus“ bereits im Insel-Set und "
@@ -144,11 +144,11 @@ def anleitung_seite2():
                         "Thema für eine spätere Zusatzkarte.")
     y += mm(6)
 
-    y = draw_h2(d, y, "Brainy-Flow (M3-19)")
+    y = draw_h2(d, y, "Brainy-Flow (WZ-19)")
     y = draw_para(d, y, "Diese Karte ist die Landkarte des ganzen Decks: sie ordnet allen anderen "
                         "25 Karten eine Barometer-Farbe zu und hilft, in der Situation schnell die "
                         "richtige Karte zu finden. Bei Unsicherheit, welches Werkzeug passt, ist "
-                        "M3-19 der Startpunkt. Hinweis: M3-21–26 sind nach Erstellung dieser Karte "
+                        "WZ-19 der Startpunkt. Hinweis: WZ-21–26 sind nach Erstellung dieser Karte "
                         "hinzugekommen und dort noch nicht mit aufgeführt.")
     y += mm(6)
 
@@ -185,7 +185,7 @@ def barometer_klar_seite():
     img, d, y = new_page("KURZ ERKLÄRT", "Barometer & kLAR-Modell")
     y = draw_para(d, y, "Dieses Deck ist auch ohne die KLARTEXT-App nutzbar. Falls du zum ersten Mal mit "
                         "KLARTEXT arbeitest: Hier die Grundlage für die Barometer-Einordnung auf den "
-                        "Situationskarten und für M3-19 (Brainy-Flow).",
+                        "Situationskarten und für WZ-19 (Brainy-Flow).",
                   size=4.6, color=KT_MUTED)
     y += mm(8)
 
@@ -224,34 +224,34 @@ QUELLEN_BESTAETIGT = [
 
 QUELLEN_VORGESCHLAGEN_1 = [
     "Dennison, P. E., & Dennison, G. E. – Brain Gym / Edu-Kinestetik, Grundlage der „Liegenden "
-    "Acht“ (M3-10) – exakte Publikation/Auflage vor Druck prüfen.",
-    "5-4-3-2-1-Erdungstechnik (M3-11) – etablierte Technik aus Trauma- und Achtsamkeitspraxis, "
+    "Acht“ (WZ-10) – exakte Publikation/Auflage vor Druck prüfen.",
+    "5-4-3-2-1-Erdungstechnik (WZ-11) – etablierte Technik aus Trauma- und Achtsamkeitspraxis, "
     "keine einzelne Primärquelle zugeordnet (wie bereits im Krisendeck-Quellenregister vermerkt).",
-    "„Lob-Sandwich“ / Feedback-Sandwich (M3-18) – verbreitete Feedback-Technik aus Pädagogik und "
+    "„Lob-Sandwich“ / Feedback-Sandwich (WZ-18) – verbreitete Feedback-Technik aus Pädagogik und "
     "Kommunikationstraining, keine einzelne Primärquelle zugeordnet.",
     "„Time on Their Side: How Visual Timers Affect Anticipatory Anxiety, Performance, and "
     "On-Task Behavior in Elementary Math Assessments.“ (2025). European Journal of Investigation "
     "in Health, Psychology and Education, 15(12). https://doi.org/10.3390/ejihpe15120243 – "
-    "Grundlage von „Sichtbare Zeit“ (M3-21).",
+    "Grundlage von „Sichtbare Zeit“ (WZ-21).",
 ]
 
 QUELLEN_VORGESCHLAGEN_2 = [
     "Kounin, J. S. (1970). Discipline and Group Management in Classrooms. New York: Holt, "
     "Rinehart & Winston – Konzept der „Allgegenwärtigkeit“ ruhiger, klarer Signale, bereits im "
-    "LK-Deck-Quellenregister verifiziert; inhaltlich verwandt mit „Stopp-Hand-Signal“ (M3-22), "
+    "LK-Deck-Quellenregister verifiziert; inhaltlich verwandt mit „Stopp-Hand-Signal“ (WZ-22), "
     "keine einzelne Primärquelle für das Signal selbst.",
     "Siegel, D. (1999). The Developing Mind. New York: Guilford Press – Window of Tolerance, "
-    "bereits im Insel-Set-Konzept verifiziert, Grundlage von „Sicherer Ort“ (M3-23).",
+    "bereits im Insel-Set-Konzept verifiziert, Grundlage von „Sicherer Ort“ (WZ-23).",
     "Porges, S. W. (2011). The Polyvagal Theory: Neurophysiological Foundations of Emotions, "
     "Attachment, Communication, and Self-Regulation. New York: W. W. Norton – Grundlage von "
-    "„Körper-Check-In“ (M3-24) und „Die Kraft der Pause“ (M3-25).",
+    "„Körper-Check-In“ (WZ-24) und „Die Kraft der Pause“ (WZ-25).",
     "Maines, B. & Robinson, G. (1992). The No Blame Approach. Bristol: Lame Duck Publishing – "
-    "Grundlage von „No-Blame-Approach“ (M3-26).",
+    "Grundlage von „No-Blame-Approach“ (WZ-26).",
 ]
 
 QUELLEN_HINWEIS = ("Die inhaltliche Grundlage für alle 26 Karten ist das bereits in der App bestehende, "
     "fachlich hinterlegte Modul M3 · Werkzeugkasten – das Deck kürzt und adaptiert diesen Text für "
-    "die physische Karte, erfindet keine neuen Techniken. M3-21–26 wurden am 01.08.2026 ergänzt.")
+    "die physische Karte, erfindet keine neuen Techniken. WZ-21–26 wurden am 01.08.2026 ergänzt.")
 
 def quellen_seite():
     img, d, y = new_page("METHODISCHE GRUNDLAGE", "Quellen · 1/2")

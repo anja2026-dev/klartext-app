@@ -6,7 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 import os, sys
 Image.init()
 sys.path.insert(0, os.path.dirname(__file__))
-from build_booklet_werkzeug import anleitung_seite1, anleitung_seite2, quellen_seite, quellen_seite2
+from build_booklet_werkzeug import (anleitung_seite1, anleitung_seite2, barometer_klar_seite,
+                                     quellen_seite, quellen_seite2)
 
 KARTEN_DIR = "/sessions/kind-beautiful-ptolemy/mnt/outputs/werkzeug_karten_komplett/"
 OUT_PDF = "/sessions/kind-beautiful-ptolemy/mnt/outputs/KLARTEXT_Werkzeugkarten-Deck_komplett.pdf"
@@ -101,7 +102,8 @@ def build_cover():
     return img
 
 def run():
-    pages = [build_cover(), anleitung_seite1(), anleitung_seite2(), quellen_seite(), quellen_seite2()]
+    pages = [build_cover(), anleitung_seite1(), anleitung_seite2(), barometer_klar_seite(),
+             quellen_seite(), quellen_seite2()]
 
     fehlt = []
     for id_text in [f"M3-{n:02d}" for n in range(1, 27)]:

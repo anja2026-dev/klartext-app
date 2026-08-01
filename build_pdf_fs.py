@@ -6,8 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 import os, sys
 Image.init()
 sys.path.insert(0, os.path.dirname(__file__))
-from build_booklet_fs import (anleitung_seite1, anleitung_seite2, methodik_seite, glossar_seite,
-                               quellen_seite, GLOSSAR)
+from build_booklet_fs import (anleitung_seite1, anleitung_seite2, methodik_seite, barometer_klar_seite,
+                               glossar_seite, quellen_seite, GLOSSAR)
 
 KARTEN_DIR = "/sessions/kind-beautiful-ptolemy/mnt/outputs/fs_karten_komplett/"
 OUT_PDF = "/sessions/kind-beautiful-ptolemy/mnt/outputs/KLARTEXT_FS-Deck_komplett.pdf"
@@ -96,6 +96,7 @@ def build_cover():
 
 def run():
     pages = [build_cover(), anleitung_seite1(), anleitung_seite2(), methodik_seite(),
+             barometer_klar_seite(),
              glossar_seite(GLOSSAR[:3], "Glossar · 1/2",
                  intro="Kurz erklärt: Begriffe, die auf den Karten oder in dieser Anleitung vorkommen "
                        "und nicht selbsterklärend sind."),

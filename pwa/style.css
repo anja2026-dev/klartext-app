@@ -105,9 +105,17 @@ main#app { flex: 1; display: flex; flex-direction: column; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 }
 .decktile:active { transform: scale(0.98); }
-.decktile .dt-titel { font-family: var(--font-serif); font-size: 19px; font-weight: 700; }
+.decktile .dt-titel {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
 .decktile .dt-sub { font-size: 12.5px; opacity: 0.9; margin-top: 4px; }
 .decktile .dt-count { font-size: 12px; opacity: 0.85; align-self: flex-end; margin-top: 10px; }
 

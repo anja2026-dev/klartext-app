@@ -152,9 +152,12 @@ def export_werkzeug():
     print(f"{DECK_ID}: {len(deck['karten'])} Karten exportiert")
 
 
-# --------------------------------------------------------- mb (Mobbing-Materialien, 3 Karten)
+# --------------------------------------------------------- mb (Mobbing-Intervention, 15 Karten)
 MB_ICON_MAP = {
     "warndreieck": "triangle-exclamation", "suche": "magnifying-glass", "mobil": "mobile-screen",
+    "cyber": "laptop", "gruppe": "user-group", "wechsel": "arrows-rotate", "schule": "school",
+    "dialog": "comments", "schutz": "shield-halved", "auge": "eye", "ablauf": "list-check",
+    "handschlag": "handshake", "herz": "heart", "familie": "people-roof", "wachstum": "seedling",
 }
 
 def export_mb():
@@ -162,7 +165,7 @@ def export_mb():
     DECK_ID = "mb"
     FARBE, FARBE_HELL, FARBE_RAND = "#D81B60", "#FDE8F1", "#F0B2CD"
 
-    deck = {"id": DECK_ID, "titel": "Mobbing-Materialien", "untertitel": "Soforthilfe bei Mobbingfällen",
+    deck = {"id": DECK_ID, "titel": "Mobbing-Intervention", "untertitel": "Vom ersten Anzeichen bis zur Nachsorge",
             "farbe": FARBE, "farbe_hell": FARBE_HELL, "farbe_rand": FARBE_RAND, "karten": []}
 
     for nr, card in enumerate(m.CARDS, start=1):
@@ -181,8 +184,41 @@ def export_mb():
     print(f"{DECK_ID}: {len(deck['karten'])} Karten exportiert")
 
 
+# --------------------------------------------------------- hb (Hochbegabung, 12 Karten)
+HB_ICON_MAP = {
+    "idee": "lightbulb", "suche": "magnifying-glass", "asynchron": "shuffle",
+    "abwaerts": "arrow-trend-down", "achtung": "circle-exclamation", "gruppe": "user-group",
+    "doppel": "clone", "uhr": "clock", "rakete": "rocket", "liste": "list-check",
+    "handschlag": "handshake", "dialog": "comments",
+}
+
+def export_hb():
+    import build_all_cards_hb as m
+    DECK_ID = "hb"
+    FARBE, FARBE_HELL, FARBE_RAND = "#2024C4", "#E3E4FA", "#B2B5ED"
+
+    deck = {"id": DECK_ID, "titel": "Hochbegabung", "untertitel": "Erkennen, Herausforderungen, Handeln",
+            "farbe": FARBE, "farbe_hell": FARBE_HELL, "farbe_rand": FARBE_RAND, "karten": []}
+
+    for nr, card in enumerate(m.CARDS, start=1):
+        deck["karten"].append({
+            "nr": nr, "titel": card["titel"],
+            "icon": HB_ICON_MAP.get(card["icon"], "circle"),
+            "situation": card["lead"],
+            "schritte": card["schritte"],
+            "merksatz": card.get("merksatz"),
+            "badge": f"{card['id_text']} · {card.get('fuer', '')}".strip(" ·"),
+        })
+
+    write_deck(deck)
+    export_registry(DECK_ID, deck["titel"], deck["untertitel"], FARBE, len(deck["karten"]))
+    pwa_generate_deck_icon.generate(DECK_ID, FARBE, FARBE_RAND, "HB")
+    print(f"{DECK_ID}: {len(deck['karten'])} Karten exportiert")
+
+
 if __name__ == "__main__":
     export_tk()
     export_krisendeck()
     export_werkzeug()
     export_mb()
+    export_hb()

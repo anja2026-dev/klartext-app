@@ -1590,3 +1590,21 @@ Vorschaubilder + Übersicht/Startseite). **Push durch Anja noch offen.**
 neu entwickelt, nicht aus bestehendem Modul kondensiert, daher besonders empfehlenswert. Preis noch
 nicht in die Gesamt-Preisliste (Task #220) eingeordnet — vorläufig identisch zu MB übernommen
 (Digital 8–10€, Print 18–20€).
+
+## Strang 32 · Übergabe an Claude Free (Wochenlimit erreicht, 02.08.2026)
+
+Anja ist bei >80% des wöchentlichen Cowork-Limits (Reset in 5 Tagen) und arbeitet in der Zwischenzeit
+mit Claude Free (claude.ai, ohne Datei-/Repo-Zugriff) weiter. Vier Baustellen mit fertigen Start-Prompts
+für Claude Free wurden vorbereitet und als `Claude_Free_Uebergabe.md` übergeben:
+1. Gender-Sprache-Konsistenzprüfung (Konvention erst festlegen, dann Textabschnitte korrigieren)
+2. Trainerhandbuch/Schulungen an alle Deck-Erweiterungen anpassen (MB 3→15, neues HB-Deck, LK 30→50,
+   EL 58 Karten u.a.)
+3. Konzeptpapier zur App-Trennung "INGRA-Lern-App ohne Backend" vs. "Supabase-Case-Management/TK"
+   (Strang 3) — nur Konzeptebene, keine Rechtsberatung
+4. Marketing-Kanalliste + erster Ankündigungstext
+
+**Wichtig:** Claude Free kann nur Text entwerfen, keine Dateien ändern/committen. Ergebnisse bringt Anja
+nach Ablauf der 5 Tage zurück, dann folgt die technische Umsetzung hier. Bis dahin bleiben liegen:
+Supabase-Auskopplung selbst (#233), finale Preisliste aller 19 Decks (#220), klartext-shop-Landingpage
+(#213), die tatsächliche Textkorrektur der Gender-Sprache in den ~200 HTML-Dateien, die tatsächliche
+Trainerhandbuch-Überarbeitung.

@@ -1431,7 +1431,10 @@ und ob die Website jetzt "fertig" ist. Komplette Bestandsaufnahme, damit das an 
    `klartext-shop.pages.dev`, später an `klartext-mentoring.de` angebunden (Task „Domain-Setup",
    23.07.–01.08.).
 3. **klartext-app** (Repo `anja2026-dev/klartext-app`) — die interne, Supabase-authentifizierte
-   Case-Management-App, aktuell in der Malteser-Pilotphase. Nicht für Endkund:innen gedacht.
+   Case-Management-App. **Korrektur (02.08.2026):** Die Malteser-Testphase wurde bereits **vor ca.
+   3 Tagen (ca. 30.07.2026) beendet** — die App läuft aktuell in keiner aktiven Pilotphase mehr. Alle
+   Formulierungen weiter oben in dieser Merkliste, die von "aktuell laufender Beta-/Pilotphase bei den
+   Maltesern" sprechen, sind damit veraltet und beziehen sich auf den historischen Stand vom 23.07.2026.
 
 ### Wichtiger, ungeklärter Befund — muss vor allem anderen geklärt werden
 Entgegen der eigenen Entscheidung vom 23.07. (Verkaufsseiten künftig **nicht** in klartext-app bauen)
@@ -1488,3 +1491,43 @@ begonnen.
 2. Falls klartext-shop: Zugriff auf das Repo geben, damit die heutigen Dateien dorthin übertragen werden können.
 3. Supabase-Auskopplung: jetzt priorisieren oder zurückstellen?
 4. Fachbuch/Lernpfad/Trainerbuch: vollständige Konsistenzprüfung gewünscht, oder erstmal nicht?
+
+## Strang 30.1 · Nachtrag: klartext-shop-Abgleich erledigt + Korrektur Malteser-Timeline (02.08.2026, Fortsetzung)
+
+**Zugriffs-Klarstellung:** Der obige "Wichtige, ungeklärte Befund" kam nicht aus einer Gedächtnislücke,
+sondern daher, dass in dieser Sitzung zunächst nur der Ordner `klartext-app` verbunden war. Ich habe
+grundsätzlich nur Zugriff auf Ordner, die Anja explizit für eine Sitzung freigibt — nicht automatisch
+auf alles. `klartext-shop` wurde danach explizit angebunden.
+
+**Ergebnis der Prüfung von klartext-shop:**
+- Die `README_klartextshop.md` dort bestätigt schriftlich: klartext-shop ist absichtlich das getrennte
+  Repo für *alle* Verkaufs-/Marketingseiten (Entscheidung 23.07., siehe oben) — genau wie vermutet.
+- Der Stand dort war veraltet: `MB_Verkaufsseite.html` referenzierte noch die alte 3-Karten-Version,
+  AGB und Widerrufsbelehrung fehlten komplett.
+- Der Kaufen-Platzhalter (Task #217) war dort bereits vorhanden — eigener Commit `ff618f9` vom
+  01.08.2026, unabhängig von der heutigen klartext-app-Arbeit. **Task #217 gilt damit als erledigt.**
+
+**Abgleich durchgeführt:** `MB_Verkaufsseite.html` (15-Karten-Version inkl. Link-Fix), `SHOP_KLARTEXT_AGB.html`,
+`SHOP_KLARTEXT_Widerrufsbelehrung.html`, `SHOP_KLARTEXT_Impressum.html` sowie die 6 neuen Vorschaubilder
+(MB-01/05/12 vorne+hinten) von klartext-app nach klartext-shop übertragen und dort committet
+(Commit `8866898`, „Mobbing-Deck 15 Karten + AGB/Widerruf/Impressum-Link-Fix aus klartext-app übertragen").
+**Push nach GitHub steht noch aus — muss Anja selbst ausführen** (`git push origin main` im
+klartext-shop-Terminal), da ich in dieser Sandbox keine GitHub-Zugangsdaten habe.
+
+**Damit beantwortet:** Repo-Frage aus Entscheidung 1 oben ist geklärt — klartext-shop ist das richtige
+Repo, der heutige Content ist jetzt dort synchronisiert (bis auf den ausstehenden Push).
+
+**Weiterhin offen:**
+- Bestätigung, dass klartext-mentoring.de tatsächlich mit klartext-shop (nicht klartext-app) als
+  Cloudflare-Pages-Quelle verbunden ist — am sichersten direkt im Cloudflare-Dashboard prüfen: Workers &
+  Pages → betreffendes Projekt → Settings → Build & deployments → verbundenes GitHub-Repo.
+- Die `SHOP_*`-/`*_Verkaufsseite.html`-Dateien liegen jetzt **doppelt** vor (klartext-app + klartext-shop).
+  Empfehlung: künftig nur noch in klartext-shop bearbeiten; die Duplikate in klartext-app sollten mittel-
+  fristig entfernt werden, um genau dieses Auseinanderlaufen zu vermeiden (Löschung dort erst nach
+  Anjas ausdrücklicher Freigabe, wie in klartext-app generell üblich).
+- Gefundener, noch nicht behobener Bug: Die Fußzeilen-Links zu Impressum/Datenschutz zeigten in mehreren
+  Verkaufsseiten auf eine alte, tote interne App-URL (`klartext-ingra.h9cyz7d9pj.workers.dev`). Bisher
+  nur in `MB_Verkaufsseite.html` gefunden und behoben — die anderen 17 Verkaufsseiten wurden noch nicht
+  geprüft.
+- In klartext-shop liegt zusätzlich noch eine alte, ungenutzte `KLARTEXT_Impressum.html` (interne
+  App-Version mit Login-Guard) neben der korrekten `SHOP_KLARTEXT_Impressum.html` — Aufräumen offen.

@@ -1531,3 +1531,13 @@ Repo, der heutige Content ist jetzt dort synchronisiert (bis auf den ausstehende
   geprüft.
 - In klartext-shop liegt zusätzlich noch eine alte, ungenutzte `KLARTEXT_Impressum.html` (interne
   App-Version mit Login-Guard) neben der korrekten `SHOP_KLARTEXT_Impressum.html` — Aufräumen offen.
+
+**Nachtrag (02.08.2026, gleiche Sitzung):** Alle 18 `*_Verkaufsseite.html`, die 5 `SHOP_KLARTEXT_*.html`,
+`KLARTEXT_Shop_Uebersicht.html`, `SHOP_Landingpage.html` sowie der komplette `vorschau/`-Ordner wurden
+aus **klartext-app** entfernt (Commit `b82409b`) — sie liegen jetzt inhaltlich identisch nur noch in
+klartext-shop. Vorher geprüft: alle Dateien waren 1:1 identisch zur klartext-shop-Version, keine
+verwaisten internen Links (bis auf `KLARTEXT_Barometer_kLAR_Erklaerung.html`, die 3x auf
+`KLARTEXT_Shop_Uebersicht.html` verlinkte — dort auf die Live-Domain-URL
+`https://klartext-mentoring.de/KLARTEXT_Shop_Uebersicht.html` umgestellt). Damit ist die Trennung aus
+der 23.07.-Entscheidung jetzt tatsächlich durchgesetzt. **Beide Commits (klartext-app `b82409b`, davor
+`b84b21b`; klartext-shop `8866898`) müssen noch von Anja gepusht werden.**

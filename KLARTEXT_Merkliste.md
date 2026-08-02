@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 27.07.2026 (Abend)
+Stand: 02.08.2026
 
 ## Strang 5 · Design-Konsistenz App ↔ Kartendecks (neu, 27.07.2026)
 
@@ -1417,3 +1417,74 @@ Platzhalter).
 extern durch Anja. PDF-Pipeline (`build_card_*.py` etc.) folgt erst nach Bildfreigabe. Verkaufsseiten
 für die drei neuen Decks folgen erst nach Fachprüfung + Bildern, nicht vorher (Reihenfolge wie bei
 allen anderen Decks: erst Inhalt, dann Vermarktung).
+
+## Strang 30 · Gesamtüberblick Domain/Shop/App + offene Architektur-Fragen (02.08.2026)
+
+**Anlass:** Nach dem heutigen GitHub-Push hat Anja den Überblick verloren, was in welchem Repo liegt
+und ob die Website jetzt "fertig" ist. Komplette Bestandsaufnahme, damit das an einer Stelle steht.
+
+### Die drei Teile der Landschaft
+1. **klartext-mentoring.de** — die öffentliche Domain, die Kund:innen sehen.
+2. **klartext-shop** (Repo `anja2026-dev/klartext-shop`) — laut Entscheidung vom 23.07.2026 (siehe
+   oben „DRINGEND · Repo-Trennung Marketing vs. Pilot-App") das dafür vorgesehene, getrennte Repo für
+   *alle* Verkaufs-/Marketingseiten, läuft über Cloudflare Pages, ursprünglich live unter
+   `klartext-shop.pages.dev`, später an `klartext-mentoring.de` angebunden (Task „Domain-Setup",
+   23.07.–01.08.).
+3. **klartext-app** (Repo `anja2026-dev/klartext-app`) — die interne, Supabase-authentifizierte
+   Case-Management-App, aktuell in der Malteser-Pilotphase. Nicht für Endkund:innen gedacht.
+
+### Wichtiger, ungeklärter Befund — muss vor allem anderen geklärt werden
+Entgegen der eigenen Entscheidung vom 23.07. (Verkaufsseiten künftig **nicht** in klartext-app bauen)
+sind die `SHOP_*`-Dateien sowie alle heutigen Änderungen (Mobbing-Verkaufsseite, Kaufen-Platzhalter
+auf allen 18 Verkaufsseiten, Vorschaubilder, AGB, Widerrufsbelehrung, Impressum-Korrekturen) direkt im
+Repo **klartext-app** entstanden und dorthin gepusht — nicht nach klartext-shop. Ich habe in dieser
+Sitzung keinen Zugriff auf das klartext-shop-Repo und kann daher **nicht bestätigen**, ob und wie diese
+Dateien dort ankommen, oder ob klartext-mentoring.de aktuell überhaupt aus klartext-shop oder direkt
+aus klartext-app bedient wird.
+
+**Zu klären, bevor irgendetwas als „live" gilt:**
+- Woher zieht klartext-mentoring.de aktuell tatsächlich seinen Inhalt — klartext-shop oder klartext-app?
+- Falls klartext-shop: die heutigen Dateien müssen noch dorthin übertragen werden (ist NICHT automatisch passiert).
+- Falls klartext-app direkt verbunden ist: dann ist der heutige Push zwar live, widerspricht aber der eigentlich beschlossenen Trennung – sollte dann bewusst neu entschieden werden, nicht stillschweigend so bleiben.
+
+### Was heute konkret gemacht + nach GitHub gepusht wurde (Repo klartext-app, Branch main, Commit `0c11563`)
+- Mobbing-Deck von 3 auf 15 Karten erweitert (Inhalte aus den 15 geprüften App-Modulseiten M6-01–15 kondensiert), neues PDF, neue Vorschaubilder, Verkaufsseite überarbeitet.
+- Kaufen-Platzhalter („🛒 Jetzt kaufen" + ehrlicher „Zahlung in Vorbereitung"-Hinweis) auf allen 18 Verkaufsseiten.
+- Wasserzeichen-Vorschaubilder für alle 18 Decks.
+- AGB und Widerrufsbelehrung neu geschrieben, auf Primärquellen gestützt (u. a. §356 BGB-Neunummerierung entdeckt).
+- Impressum korrigiert (ehrlicher Gewerbe-Status, korrekte Kontaktdaten, Datenschutz-Text, tote Links entfernt).
+
+### Ist die Domain „fertig" (außer Hochbegabung + Platzhaltern)?
+Nein, noch nicht ganz. Offen bleiben:
+- Die Repo-Frage oben — aktuell die wichtigste offene Frage.
+- Kaufen-Platzhalter: Deployment/Live-Stand nicht bestätigt (Task #217).
+- Einheitliche Preisliste für alle 18 Decks — bisher nur Vorschlag, keine Freigabe (Task #220).
+- Gewerbeanmeldung fehlt weiterhin — Voraussetzung für echten, verbindlichen Verkauf.
+- Hochbegabung: bisher nur Konzept (Farbe, Themen, Quellen), keine Karten.
+
+### App-Frage: Supabase auskoppeln (heute von Anja wieder aufgebracht)
+War schon als offener Punkt dokumentiert (oben „Strang 3 · App-Aufspaltung", Stand seinerzeit: noch
+nicht begonnen — weiterhin unverändert). Idee: eine reine INGRA-App ohne Supabase/Trägerverwaltung,
+damit sie auch eigenständig als Handlungswerkzeug angeboten werden kann (ohne den Datenschutz-Rucksack
+einer vollen Case-Management-Lösung), plus eine separate Trainer-App. Technischer Befund von damals
+weiterhin gültig: DSGVO-sensibel sind konkret die Weiterleitungen (Migration 0008) und das
+Kind-Barometer (Migration 0007) — die reinen Trainingsinhalte (M0–M8, Glossar, Karten) könnten
+technisch auch ganz ohne Backend laufen. Empfehlung unverändert: rechtliche Prüfung durch eine
+Datenschutzkanzlei vor der endgültigen Architekturentscheidung (das kann ich nicht als Rechtsberatung
+leisten). **Noch nicht begonnen, wartet auf Anjas Priorisierung.**
+
+### Fachbuch / Lernpfad / Trainerbuch — geprüft, kein akuter Korrekturbedarf durch die Mobbing-Erweiterung
+Gefundene Dateien: `KLARTEXT_Fachbuch_System_Mobbing.html`, `KLARTEXT_Lernpfad_INGRA.html`,
+`KLARTEXT_Trainerhandbuch.html`. Geprüft: keine der drei referenziert konkrete Mobbing-Kartenzahlen
+oder MB-01 bis MB-15 — die heutige Erweiterung von 3 auf 15 Karten löst dort also **keinen** Zwang zur
+Korrektur aus. `KLARTEXT_Fachbuch_System_Mobbing.html` war bereits am 30.07. als „redundant zu
+M6-01–15, bleibt digital, keine Aktion" eingestuft. **Trotzdem offen, falls gewünscht:** Eine
+vollständige inhaltliche Konsistenzprüfung dieser drei Dokumente gegen *alle* neuen Kartendeck-Inhalte
+(nicht nur Mobbing) wurde bisher nie gemacht — wäre ein eigenes, größeres Vorhaben, noch nicht
+begonnen.
+
+### Konkrete Entscheidungen, die von Anja gebraucht werden
+1. **Repo-Frage klären:** Läuft klartext-mentoring.de über klartext-shop oder klartext-app?
+2. Falls klartext-shop: Zugriff auf das Repo geben, damit die heutigen Dateien dorthin übertragen werden können.
+3. Supabase-Auskopplung: jetzt priorisieren oder zurückstellen?
+4. Fachbuch/Lernpfad/Trainerbuch: vollständige Konsistenzprüfung gewünscht, oder erstmal nicht?

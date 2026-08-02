@@ -100,6 +100,25 @@ body{font-family:"DM Sans",sans-serif;background:#fff;color:#1A1A2E;}
 footer{background:#0F2535;padding:2rem clamp(1rem,4vw,3rem);text-align:center;font-size:.75rem;color:rgba(255,255,255,.35);}
 footer a{color:rgba(255,255,255,.4);text-decoration:none;}
 @media(max-width:600px){.baro-grid{grid-template-columns:repeat(3,1fr);}.klar-grid{grid-template-columns:repeat(2,1fr);}.ref-wrap{flex-direction:column;align-items:center;text-align:center;}}
+
+/* VORSCHAU-GALERIE */
+.vorschau-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;max-width:900px;margin:0 auto;}
+.vorschau-karte{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;overflow:hidden;}
+.vorschau-karte img{width:100%;display:block;}
+.vorschau-label{padding:.5rem .75rem;font-size:.72rem;color:#6A6878;text-align:center;letter-spacing:.04em;}
+.vorschau-hinweis{max-width:700px;margin:1.5rem auto 0;text-align:center;font-size:.78rem;color:#6A6878;line-height:1.7;}
+
+/* KAUFEN-MODAL */
+.kauf-overlay{display:none;position:fixed;inset:0;background:rgba(15,37,53,.6);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
+.kauf-overlay.active{display:flex;}
+.kauf-box{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:2rem 1.75rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.kauf-box .kauf-icon{font-size:2.2rem;margin-bottom:.75rem;display:block;}
+.kauf-box h3{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:#1B3A4B;margin-bottom:.75rem;}
+.kauf-box p{font-size:.85rem;color:#3A3A4A;line-height:1.8;margin-bottom:1.5rem;}
+.kauf-box .kauf-actions{display:flex;flex-direction:column;gap:.6rem;}
+.kauf-mailbtn{display:block;background:#6EC6A0;color:#1B3A4B;padding:.7rem 1.5rem;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.88rem;font-weight:700;text-decoration:none;}
+.kauf-mailbtn:hover{background:#5AB490;}
+.kauf-cancelbtn{background:transparent;border:none;color:#6A6878;font-size:.8rem;padding:.5rem;cursor:pointer;font-family:"DM Sans",sans-serif;}
 </style>
 </head>
 <body>
@@ -122,6 +141,31 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
   </div>
 </section>
 
+
+<!-- VORSCHAU -->
+<section class="sek grau">
+  <h2 class="sek-titel">So sehen die Karten aus</h2>
+  <p class="sek-sub">Ein echter Blick ins Deck — Vorder- und Rückseite, bevor du dich entscheidest.</p>
+  <div class="vorschau-grid">
+    <div class="vorschau-karte">
+      <img src="vorschau/gk/A3_hinten_muster.jpg" alt="Beispielkarte GK · Geschichtenkarten mit Brainy" loading="lazy">
+      <div class="vorschau-label">Rückseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/gk/A3_vorne_muster.jpg" alt="Beispielkarte GK · Geschichtenkarten mit Brainy" loading="lazy">
+      <div class="vorschau-label">Vorderseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/gk/B5_hinten_muster.jpg" alt="Beispielkarte GK · Geschichtenkarten mit Brainy" loading="lazy">
+      <div class="vorschau-label">Rückseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/gk/B5_vorne_muster.jpg" alt="Beispielkarte GK · Geschichtenkarten mit Brainy" loading="lazy">
+      <div class="vorschau-label">Vorderseite (Muster)</div>
+    </div>
+  </div>
+  <p class="vorschau-hinweis">Die Originalkarten sind ohne Wasserzeichen und in voller Druckqualität enthalten.</p>
+</section>
 <section class="sek grau">
   <h2 class="sek-titel">Für wen ist das Geschichtenkarten-Deck?</h2>
   <p class="sek-sub">Für alle, die mit jüngeren Kindern über Mobbing sprechen wollen.</p>
@@ -159,21 +203,21 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
       <span class="preis-betrag">15–18 €<span> einmalig</span></span>
       <div class="preis-was">Sofort als Download nach Erscheinen.</div>
       <ul class="preis-liste"><li>30 Geschichtenkarten als PDF</li><li>Bonus: A4-Druckset kostenlos inklusive</li><li>Sofort selbst ausdruckbar</li><li>Dauerhafter Zugriff</li></ul>
-      <a href="mailto:anja.jolk@gmx.de?subject=GK Vorbestellung Digital/PDF" class="preis-btn">Vormerken</a>
+      <button type="button" class="preis-btn kaufen-btn" onclick="openKaufModal('mailto:info@klartext-mentoring.de?subject=GK Vorbestellung Digital/PDF', 'GK · Geschichtenkarten mit Brainy')">🛒 Jetzt kaufen</button>
     </div><div class="preis-karte highlight">
       <div class="preis-badge">Beliebt</div>
       <div class="preis-name">🃏 Print (Print-on-Demand)</div>
       <span class="preis-betrag">26–29 €<span> einmalig</span></span>
       <div class="preis-was">Physisches Kartendeck, gedruckt erst bei Bestellung.</div>
       <ul class="preis-liste"><li>30 Karten, physisch gedruckt</li><li>Druck über Print-on-Demand-Partner</li><li>Robustes Format für den Alltag</li><li>Ideal für Vorlesesituationen</li></ul>
-      <a href="mailto:anja.jolk@gmx.de?subject=GK Vorbestellung Print" class="preis-btn">Vormerken</a>
+      <a href="mailto:info@klartext-mentoring.de?subject=GK Vorbestellung Print" class="preis-btn">Vormerken</a>
     </div><div class="preis-karte">
       
       <div class="preis-name">🏫 Träger-/Schul-Lizenz</div>
       <span class="preis-betrag">Auf Anfrage<span> </span></span>
       <div class="preis-was">Für Träger und Schulen fürs ganze Team.</div>
       <ul class="preis-liste"><li>Lizenzpaket fürs ganze Team</li><li>Auch als Klassensatz</li><li>Für mehrere Gruppen geeignet</li><li>Individuelle Stückzahlen</li></ul>
-      <a href="mailto:anja.jolk@gmx.de?subject=GK Träger-/Schul-Lizenz Anfrage" class="preis-btn">Jetzt anfragen</a>
+      <a href="mailto:info@klartext-mentoring.de?subject=GK Träger-/Schul-Lizenz Anfrage" class="preis-btn">Jetzt anfragen</a>
     </div></div>
 </section>
 
@@ -199,7 +243,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
 <section class="cta-final">
   <h2>Die Geschichtenkarten sind startklar</h2>
   <p>Trag dich unverbindlich für die Vorbestellung ein.</p>
-  <a href="mailto:anja.jolk@gmx.de?subject=GK Vorbestellung" class="btn-primary">Jetzt vormerken</a>
+  <a href="mailto:info@klartext-mentoring.de?subject=GK Vorbestellung" class="btn-primary">Jetzt vormerken</a>
 </section>
 
 <footer>
@@ -212,5 +256,32 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
   </p>
 </footer>
 
+
+<!-- KAUFEN-MODAL -->
+<div class="kauf-overlay" id="kaufOverlay" onclick="if(event.target===this)closeKaufModal()">
+  <div class="kauf-box">
+    <span class="kauf-icon">🛠️</span>
+    <h3 id="kaufModalTitel">Online-Kauf in Vorbereitung</h3>
+    <p>Die direkte Bezahlung per Karte oder PayPal richten wir gerade ein. Bis es so weit ist, kannst du dir dein Exemplar schon jetzt per E-Mail sichern — du bekommst zeitnah eine Rechnung oder einen Zahlungslink.</p>
+    <div class="kauf-actions">
+      <a href="#" id="kaufModalMail" class="kauf-mailbtn">📧 Per E-Mail bestellen</a>
+      <button type="button" class="kauf-cancelbtn" onclick="closeKaufModal()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openKaufModal(mail, titel){
+  document.getElementById('kaufModalTitel').textContent = titel + ' kaufen';
+  document.getElementById('kaufModalMail').href = mail;
+  document.getElementById('kaufOverlay').classList.add('active');
+}
+function closeKaufModal(){
+  document.getElementById('kaufOverlay').classList.remove('active');
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeKaufModal();
+});
+</script>
 </body>
 </html>

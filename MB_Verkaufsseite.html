@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>MB · Mobbing-Soforthilfe-Materialien | KLARTEXT</title>
+<title>MB · Mobbing-Interventionsdeck | KLARTEXT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -100,6 +100,25 @@ body{font-family:"DM Sans",sans-serif;background:#fff;color:#1A1A2E;}
 footer{background:#0F2535;padding:2rem clamp(1rem,4vw,3rem);text-align:center;font-size:.75rem;color:rgba(255,255,255,.35);}
 footer a{color:rgba(255,255,255,.4);text-decoration:none;}
 @media(max-width:600px){.baro-grid{grid-template-columns:repeat(3,1fr);}.klar-grid{grid-template-columns:repeat(2,1fr);}.ref-wrap{flex-direction:column;align-items:center;text-align:center;}}
+
+/* VORSCHAU-GALERIE */
+.vorschau-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;max-width:900px;margin:0 auto;}
+.vorschau-karte{background:#fff;border-radius:12px;border:1.5px solid #DDD8CE;overflow:hidden;}
+.vorschau-karte img{width:100%;display:block;}
+.vorschau-label{padding:.5rem .75rem;font-size:.72rem;color:#6A6878;text-align:center;letter-spacing:.04em;}
+.vorschau-hinweis{max-width:700px;margin:1.5rem auto 0;text-align:center;font-size:.78rem;color:#6A6878;line-height:1.7;}
+
+/* KAUFEN-MODAL */
+.kauf-overlay{display:none;position:fixed;inset:0;background:rgba(15,37,53,.6);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
+.kauf-overlay.active{display:flex;}
+.kauf-box{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:2rem 1.75rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.kauf-box .kauf-icon{font-size:2.2rem;margin-bottom:.75rem;display:block;}
+.kauf-box h3{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:#1B3A4B;margin-bottom:.75rem;}
+.kauf-box p{font-size:.85rem;color:#3A3A4A;line-height:1.8;margin-bottom:1.5rem;}
+.kauf-box .kauf-actions{display:flex;flex-direction:column;gap:.6rem;}
+.kauf-mailbtn{display:block;background:#6EC6A0;color:#1B3A4B;padding:.7rem 1.5rem;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.88rem;font-weight:700;text-decoration:none;}
+.kauf-mailbtn:hover{background:#5AB490;}
+.kauf-cancelbtn{background:transparent;border:none;color:#6A6878;font-size:.8rem;padding:.5rem;cursor:pointer;font-family:"DM Sans",sans-serif;}
 </style>
 </head>
 <body>
@@ -110,28 +129,61 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
 </nav>
 
 <section class="hero">
-  <div class="hero-badge">🆘 MB · Soforthilfe-Mini-Deck</div>
-  <h1>Im ersten Moment zählt<br><span>Handlungssicherheit.</span></h1>
-  <p class="hero-sub">3 Soforthilfe-Karten für akute Mobbingfälle im Quick-Reference-Format — plus 3 bestehende A5-Vorlagen als gebündeltes PDF.</p>
+  <div class="hero-badge">🆘 MB · Mobbing-Interventionsdeck</div>
+  <h1>Vom ersten Anzeichen<br>bis zur <span>Nachsorge.</span></h1>
+  <p class="hero-sub">15 Karten, die den gesamten Bogen von Mobbing abdecken: erkennen, sofort richtig reagieren, Cybermobbing sichern, mit Lehrkraft und Eltern zusammenarbeiten, Gruppen koordiniert intervenieren, vorbeugen und nachhaltig nachsorgen. Plus vier ausführliche A5-Arbeitsmaterialien als Bonus.</p>
   <div class="hero-cta-wrap">
     <a href="#preise" class="btn-primary">Jetzt vormerken</a>
     <a href="#was-ist" class="btn-secondary">Mehr erfahren</a>
   </div>
   <div class="hero-stats">
-    <div class="hero-stat"><span class="n">3</span><span class="l">Soforthilfe-Karten</span></div><div class="hero-stat"><span class="n">+3</span><span class="l">A5-Vorlagen inklusive</span></div><div class="hero-stat"><span class="n">fertig</span><span class="l">Karten & PDF stehen</span></div>
+    <div class="hero-stat"><span class="n">15</span><span class="l">Interventionskarten</span></div><div class="hero-stat"><span class="n">8</span><span class="l">Wissenschaftliche Quellen</span></div><div class="hero-stat"><span class="n">4</span><span class="l">A5-Arbeitsmaterialien</span></div>
   </div>
 </section>
 
+
+<!-- VORSCHAU -->
 <section class="sek grau">
-  <h2 class="sek-titel">Für wen ist das MB-Set?</h2>
-  <p class="sek-sub">Für den ersten Moment, wenn ein akuter Mobbingfall auftritt.</p>
-  <div class="fuer-wen-grid"><div class="fw-karte"><span class="fw-emoji">🧑‍🏫</span><div class="fw-titel">INGRA / Schulbegleitung</div><div class="fw-desc">Ihr habt im akuten Moment sofort die richtigen ersten Schritte zur Hand.</div></div><div class="fw-karte"><span class="fw-emoji">📚</span><div class="fw-titel">Lehrkräfte</div><div class="fw-desc">Schnellorientierung für die ersten Minuten nach Bekanntwerden eines Mobbingfalls.</div></div><div class="fw-karte"><span class="fw-emoji">🏫</span><div class="fw-titel">Träger</div><div class="fw-desc">Ihr stattet euer Team mit einem einheitlichen Soforthilfe-Werkzeug aus.</div></div></div>
+  <h2 class="sek-titel">So sehen die Karten aus</h2>
+  <p class="sek-sub">Ein echter Blick ins Deck — Vorder- und Rückseite, bevor du dich entscheidest.</p>
+  <div class="vorschau-grid">
+    <div class="vorschau-karte">
+      <img src="vorschau/mb/MB-01_vorne_muster.jpg" alt="Beispielkarte MB · Mobbing-Interventionsdeck" loading="lazy">
+      <div class="vorschau-label">MB-01 · Vorderseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/mb/MB-01_hinten_muster.jpg" alt="Beispielkarte MB · Mobbing-Interventionsdeck" loading="lazy">
+      <div class="vorschau-label">MB-01 · Rückseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/mb/MB-05_vorne_muster.jpg" alt="Beispielkarte MB · Mobbing-Interventionsdeck" loading="lazy">
+      <div class="vorschau-label">MB-05 · Vorderseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/mb/MB-05_hinten_muster.jpg" alt="Beispielkarte MB · Mobbing-Interventionsdeck" loading="lazy">
+      <div class="vorschau-label">MB-05 · Rückseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/mb/MB-12_vorne_muster.jpg" alt="Beispielkarte MB · Mobbing-Interventionsdeck" loading="lazy">
+      <div class="vorschau-label">MB-12 · Vorderseite (Muster)</div>
+    </div>
+    <div class="vorschau-karte">
+      <img src="vorschau/mb/MB-12_hinten_muster.jpg" alt="Beispielkarte MB · Mobbing-Interventionsdeck" loading="lazy">
+      <div class="vorschau-label">MB-12 · Rückseite (Muster)</div>
+    </div>
+  </div>
+  <p class="vorschau-hinweis">Die Originalkarten sind ohne Wasserzeichen und in voller Druckqualität enthalten.</p>
+</section>
+<section class="sek grau">
+  <h2 class="sek-titel">Für wen ist das MB-Deck?</h2>
+  <p class="sek-sub">Für den gesamten Bogen von Mobbing — vom ersten Verdacht bis zur Nachsorge.</p>
+  <div class="fuer-wen-grid"><div class="fw-karte"><span class="fw-emoji">🧑‍🏫</span><div class="fw-titel">INGRA / Schulbegleitung</div><div class="fw-desc">Ihr habt für jede Phase — erkennen, eingreifen, vorbeugen, nachsorgen — die richtigen Schritte zur Hand.</div></div><div class="fw-karte"><span class="fw-emoji">📚</span><div class="fw-titel">Lehrkräfte</div><div class="fw-desc">Klare Orientierung für Zusammenarbeit, Gruppenintervention und Elterngespräche.</div></div><div class="fw-karte"><span class="fw-emoji">🏫</span><div class="fw-titel">Träger</div><div class="fw-desc">Ihr stattet euer Team mit einem einheitlichen, fachlich fundierten Interventionswerkzeug aus.</div></div></div>
 </section>
 
 <section class="sek" id="was-ist">
   <h2 class="sek-titel">Was bekommst du?</h2>
-  <p class="sek-sub">Quick-Reference statt langem Handbuch — für den Moment, in dem schnelles Handeln zählt.</p>
-  <div class="leistungen"><div class="l-karte" style="border-color:#1B3A4B;"><span class="l-icon">🆘</span><div class="l-titel">3 Soforthilfe-Karten</div><div class="l-desc">Icon statt Illustration, Quick-Reference-Format wie Werkzeugkarten/Krisendeck — für den ersten Moment.</div></div><div class="l-karte" style="border-color:#D81B60;"><span class="l-icon">📄</span><div class="l-titel">3 A5-Vorlagen inklusive</div><div class="l-desc">Die bestehenden ausführlichen A5-Vorlagen werden unverändert als zusätzliches PDF gebündelt.</div></div><div class="l-karte" style="border-color:#6EC6A0;"><span class="l-icon">✅</span><div class="l-titel">Inhaltlich fachlich geprüft</div><div class="l-desc">Basierend auf den bereits vorhandenen, geprüften Mobbing-Materialien der KLARTEXT-App.</div></div><div class="l-karte" style="border-color:#C47A00;"><span class="l-icon">🖨️</span><div class="l-titel">Digital oder Print</div><div class="l-desc">Sofort als PDF zum Download, oder als physisches Kartenset im Print-on-Demand-Verfahren.</div></div></div>
+  <p class="sek-sub">Quick-Reference statt langem Handbuch — für jede Phase der Mobbing-Intervention.</p>
+  <div class="leistungen"><div class="l-karte" style="border-color:#1B3A4B;"><span class="l-icon">🆘</span><div class="l-titel">15 Interventionskarten</div><div class="l-desc">Icon statt Illustration, Quick-Reference-Format wie Werkzeugkarten/Krisendeck — von Sofortmaßnahmen über Gruppendynamik bis Nachsorge.</div></div><div class="l-karte" style="border-color:#D81B60;"><span class="l-icon">📄</span><div class="l-titel">4 A5-Arbeitsmaterialien inklusive</div><div class="l-desc">Klassenvertrag, Meine Verbündeten, So melde ich Mobbing und Stoppschild — die bewährten, ausführlichen Materialien als zusätzliches PDF gebündelt.</div></div><div class="l-karte" style="border-color:#6EC6A0;"><span class="l-icon">✅</span><div class="l-titel">Wissenschaftlich fundiert</div><div class="l-desc">Kondensiert aus den 15 geprüften App-Modulseiten, mit Quellenverzeichnis (u. a. Olweus, Salmivalli, Schäfer).</div></div><div class="l-karte" style="border-color:#C47A00;"><span class="l-icon">🖨️</span><div class="l-titel">Digital oder Print</div><div class="l-desc">Sofort als PDF zum Download, oder als physisches Kartenset im Print-on-Demand-Verfahren.</div></div></div>
 </section>
 
 
@@ -147,28 +199,28 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
   <h2 class="sek-titel">MB vormerken</h2>
   <p class="sek-sub">Einmalig zahlen — dauerhaft nutzen. Kein Abo, keine versteckten Kosten.</p>
   
-  <div class="vorbestell-hinweis"><strong>Die Kartentexte stehen bereits — alle 3, plus 3 A5-Vorlagen als Bonus.</strong> Wir bereiten gerade Druck und Verkaufsstart vor. Trag dich jetzt schon unverbindlich ein, wir melden uns, sobald es bestellbar ist.</div>
+  <div class="vorbestell-hinweis"><strong>Alle Inhalte stehen bereits: 15 Interventionskarten plus 4 ausführliche A5-Arbeitsmaterialien.</strong> Wir bereiten gerade Druck und Verkaufsstart vor. Trag dich jetzt schon unverbindlich ein, wir melden uns, sobald es bestellbar ist.</div>
   <div class="preis-grid"><div class="preis-karte">
-      
+
       <div class="preis-name">📄 Digital / PDF</div>
       <span class="preis-betrag">8–10 €<span> einmalig</span></span>
       <div class="preis-was">Sofort als Download nach Erscheinen.</div>
-      <ul class="preis-liste"><li>3 Soforthilfe-Karten als PDF</li><li>Bonus: 3 A5-Vorlagen inklusive</li><li>Sofort selbst ausdruckbar</li><li>Dauerhafter Zugriff</li></ul>
-      <a href="mailto:anja.jolk@gmx.de?subject=MB Vorbestellung Digital/PDF" class="preis-btn">Vormerken</a>
+      <ul class="preis-liste"><li>15 Interventionskarten als PDF</li><li>Bonus: 4 A5-Arbeitsmaterialien inklusive</li><li>Sofort selbst ausdruckbar</li><li>Dauerhafter Zugriff</li></ul>
+      <button type="button" class="preis-btn kaufen-btn" onclick="openKaufModal('mailto:info@klartext-mentoring.de?subject=MB Vorbestellung Digital/PDF', 'MB · Mobbing-Interventionsdeck')">🛒 Jetzt kaufen</button>
     </div><div class="preis-karte highlight">
       <div class="preis-badge">Beliebt</div>
       <div class="preis-name">🃏 Print (Print-on-Demand)</div>
-      <span class="preis-betrag">14–16 €<span> einmalig</span></span>
+      <span class="preis-betrag">18–20 €<span> einmalig</span></span>
       <div class="preis-was">Physisches Kartenset, gedruckt erst bei Bestellung.</div>
-      <ul class="preis-liste"><li>3 Karten, physisch gedruckt</li><li>Druck über Print-on-Demand-Partner</li><li>Robustes Format für den Akutfall</li><li>Ideal für die Kitteltasche</li></ul>
-      <a href="mailto:anja.jolk@gmx.de?subject=MB Vorbestellung Print" class="preis-btn">Vormerken</a>
+      <ul class="preis-liste"><li>15 Karten, physisch gedruckt</li><li>Druck über Print-on-Demand-Partner</li><li>Robustes Format für den Alltag</li><li>Ideal für die Kitteltasche</li></ul>
+      <a href="mailto:info@klartext-mentoring.de?subject=MB Vorbestellung Print" class="preis-btn">Vormerken</a>
     </div><div class="preis-karte">
       
       <div class="preis-name">🏫 Träger-Lizenz</div>
       <span class="preis-betrag">Auf Anfrage<span> </span></span>
       <div class="preis-was">Für Träger, die das ganze Team ausstatten wollen.</div>
       <ul class="preis-liste"><li>Lizenzpaket fürs ganze Team</li><li>Für mehrere Standorte geeignet</li><li>Individuelle Stückzahlen möglich</li><li>Auf Wunsch mit Einführung</li></ul>
-      <a href="mailto:anja.jolk@gmx.de?subject=MB Träger-Lizenz Anfrage" class="preis-btn">Jetzt anfragen</a>
+      <a href="mailto:info@klartext-mentoring.de?subject=MB Träger-Lizenz Anfrage" class="preis-btn">Jetzt anfragen</a>
     </div></div>
 </section>
 
@@ -180,7 +232,7 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
     <div class="ref-text">
       <h3>Anja Jolk</h3>
       <span class="titel">Systemische Beraterin und Coachin (SCGD/IHK) · Entwicklerin KLARTEXT</span>
-      <p>Anja Jolk hat das Soforthilfe-Mini-Deck als schnellen ersten Zugriff entwickelt, ergänzend zu den ausführlicheren Mobbing-Materialien und den Geschichtenkarten. Neben ihrer Ausbildung als systemische Beraterin und Coachin bringt sie eine Fortbildung in Transitionspsychiatrie mit (Note 1.7, Prof. Dr. Jörg Fegert, Uniklinikum Ulm) sowie Qualifikationen als Fachkraft für Integrationspädagogik und als Sprachentwicklungsexpertin.</p>
+      <p>Anja Jolk hat das Mobbing-Interventionsdeck entwickelt, das den gesamten Bogen von Erkennen bis Nachsorge abdeckt — ergänzend zu den Geschichtenkarten für Gespräche mit dem Kind. Neben ihrer Ausbildung als systemische Beraterin und Coachin bringt sie eine Fortbildung in Transitionspsychiatrie mit (Note 1.7, Prof. Dr. Jörg Fegert, Uniklinikum Ulm) sowie Qualifikationen als Fachkraft für Integrationspädagogik und als Sprachentwicklungsexpertin.</p>
       <div class="badge-liste"><span class="badge">Systemisches Coaching (SCGD/IHK)</span><span class="badge">Fortbildung Transitionspsychiatrie (1.7, Prof. Dr. Fegert, Uniklinikum Ulm)</span><span class="badge">Fachkraft für Integrationspädagogik</span><span class="badge">Sprachentwicklungsexpertin</span><span class="badge">4 Jahre Vertretungslehrkraft</span></div>
     </div>
   </div>
@@ -188,13 +240,13 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
 
 <section class="sek grau">
   <h2 class="sek-titel">Häufige Fragen</h2>
-  <div class="faq-liste"><div class="faq-item"><div class="faq-frage">Was ist der Unterschied zu den Geschichtenkarten?</div><div class="faq-antwort">Die Geschichtenkarten sind für Gespräche mit dem Kind gedacht. MB ist ein Soforthilfe-Werkzeug für die Fachkraft im akuten Moment.</div></div><div class="faq-item"><div class="faq-frage">Was ist in den 3 A5-Vorlagen enthalten?</div><div class="faq-antwort">Bereits bestehende, ausführlichere Materialien zum Thema Mobbing — als Bonus-PDF ohne Mehrkosten enthalten.</div></div><div class="faq-item"><div class="faq-frage">Ist das Set auch ohne die KLARTEXT-App nutzbar?</div><div class="faq-antwort">Ja, eigenständig nutzbar — ganz ohne Zugang, Login oder Internetverbindung.</div></div><div class="faq-item"><div class="faq-frage">Kann mein Träger über Rechnung bezahlen?</div><div class="faq-antwort">Ja, wie bei allen KLARTEXT-Materialien stellen wir gerne eine Rechnung aus.</div></div></div>
+  <div class="faq-liste"><div class="faq-item"><div class="faq-frage">Was ist der Unterschied zu den Geschichtenkarten?</div><div class="faq-antwort">Die Geschichtenkarten sind für Gespräche mit dem Kind gedacht. MB ist ein Interventionswerkzeug für die Fachkraft — von der ersten Einschätzung bis zur Nachsorge.</div></div><div class="faq-item"><div class="faq-frage">Muss ich alle 15 Karten auf einmal durcharbeiten?</div><div class="faq-antwort">Nein. Jede Karte steht für sich — im Akutfall greifst du zu MB-01 bis MB-04, für Prävention und Nachsorge zu den späteren Karten.</div></div><div class="faq-item"><div class="faq-frage">Was ist in den 4 A5-Arbeitsmaterialien enthalten?</div><div class="faq-antwort">Klassenvertrag, Meine Verbündeten, So melde ich Mobbing und Mein Stoppschild — bereits bestehende, ausführlichere Materialien zum Thema Mobbing, als Bonus-PDF ohne Mehrkosten enthalten.</div></div><div class="faq-item"><div class="faq-frage">Ist das Deck auch ohne die KLARTEXT-App nutzbar?</div><div class="faq-antwort">Ja, eigenständig nutzbar — ganz ohne Zugang, Login oder Internetverbindung.</div></div><div class="faq-item"><div class="faq-frage">Kann mein Träger über Rechnung bezahlen?</div><div class="faq-antwort">Ja, wie bei allen KLARTEXT-Materialien stellen wir gerne eine Rechnung aus.</div></div></div>
 </section>
 
 <section class="cta-final">
   <h2>Die MB-Materialien sind startklar</h2>
   <p>Trag dich unverbindlich für die Vorbestellung ein.</p>
-  <a href="mailto:anja.jolk@gmx.de?subject=MB Vorbestellung" class="btn-primary">Jetzt vormerken</a>
+  <a href="mailto:info@klartext-mentoring.de?subject=MB Vorbestellung" class="btn-primary">Jetzt vormerken</a>
 </section>
 
 <footer>
@@ -207,5 +259,32 @@ footer a{color:rgba(255,255,255,.4);text-decoration:none;}
   </p>
 </footer>
 
+
+<!-- KAUFEN-MODAL -->
+<div class="kauf-overlay" id="kaufOverlay" onclick="if(event.target===this)closeKaufModal()">
+  <div class="kauf-box">
+    <span class="kauf-icon">🛠️</span>
+    <h3 id="kaufModalTitel">Online-Kauf in Vorbereitung</h3>
+    <p>Die direkte Bezahlung per Karte oder PayPal richten wir gerade ein. Bis es so weit ist, kannst du dir dein Exemplar schon jetzt per E-Mail sichern — du bekommst zeitnah eine Rechnung oder einen Zahlungslink.</p>
+    <div class="kauf-actions">
+      <a href="#" id="kaufModalMail" class="kauf-mailbtn">📧 Per E-Mail bestellen</a>
+      <button type="button" class="kauf-cancelbtn" onclick="closeKaufModal()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openKaufModal(mail, titel){
+  document.getElementById('kaufModalTitel').textContent = titel + ' kaufen';
+  document.getElementById('kaufModalMail').href = mail;
+  document.getElementById('kaufOverlay').classList.add('active');
+}
+function closeKaufModal(){
+  document.getElementById('kaufOverlay').classList.remove('active');
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeKaufModal();
+});
+</script>
 </body>
 </html>

@@ -1541,3 +1541,52 @@ verwaisten internen Links (bis auf `KLARTEXT_Barometer_kLAR_Erklaerung.html`, di
 `https://klartext-mentoring.de/KLARTEXT_Shop_Uebersicht.html` umgestellt). Damit ist die Trennung aus
 der 23.07.-Entscheidung jetzt tatsächlich durchgesetzt. **Beide Commits (klartext-app `b82409b`, davor
 `b84b21b`; klartext-shop `8866898`) müssen noch von Anja gepusht werden.**
+
+**Nachtrag (Push bestätigt):** Alle Commits erfolgreich gepusht. Domain-Bindung im Cloudflare-Dashboard
+bestätigt: klartext-mentoring.de läuft als Production-Domain über das Pages-Projekt „klartext-shop",
+verbunden mit Repo `anja2026-dev/klartext-shop`, Auto-Deploy bei jedem Push auf `main` aktiv (Commit
+`8866898` erfolgreich live). Damit ist Entscheidung 1 aus der obigen Liste final geklärt.
+
+## Strang 31 · Hochbegabungsdeck (HB) – volle Produktion (02.08.2026)
+
+**Auslöser:** Konzept aus Strang 30 (Kobaltblau `#2024C4`, 12–15 Karten) von Anja freigegeben
+(„weiter mit hochbegabung").
+
+**Quellen tiefer verifiziert** (per Websuche, vollständige Angaben im PDF-Booklet):
+Renzulli (1978, Phi Delta Kappan – Three-Ring Conception), Mönks (1990, Triadisches
+Interdependenzmodell), Heller/Perleth/Hany (Münchner (Hoch-)Begabungsmodell, u. a. in Heller Hrsg.
+2000), Gagné (DMGT), Rost/Uni Würzburg + Karg-Stiftung (Underachievement-Quote, als Spanne ca.
+10–25% wiedergegeben, da Studien in Definition/Methodik variieren), aktuelle Twice-Exceptional-Forschung.
+
+**Finale Struktur — 12 Karten in drei Blöcken:**
+Erkennen (HB-01 Was ist Hochbegabung?, HB-02 Merkmale erkennen, HB-03 Asynchrone Entwicklung) ·
+Herausforderungen (HB-04 Underachievement, HB-05 Perfektionismus & Versagensangst, HB-06 Soziale
+Herausforderungen, HB-07 Doppelbegabung/Twice-Exceptional, HB-08 Langeweile & Verweigerung) ·
+Handeln (HB-09 Enrichment & Akzeleration, HB-10 Diagnostik: wann testen?, HB-11 Zusammenarbeit mit
+der Lehrkraft, HB-12 Elterngespräch bei Hochbegabung).
+
+**Neu entwickelter Inhalt** (anders als bei den meisten anderen Decks gab es keine bestehende,
+geprüfte App-Modulseite als Ausgangsbasis für Hochbegabung — daher kein Content-Treuepflicht-Fall,
+sondern Neuentwicklung direkt auf Basis der oben genannten Quellen).
+
+**Farbe kollisionsgeprüft:** Kobaltblau `#2024C4`, nächster Nachbar TK-Violett mit ca. 72 Einheiten
+Abstand — unproblematisch.
+
+**Pipeline gebaut** (analog Mobbing, icon-basiert, kein neues Bildmaterial): `build_card_hb.py`,
+`build_all_cards_hb.py`, `build_booklet_hb.py`, `build_pdf_hb.py`. Alle 12 Karten gerendert, keine
+Überlauf-Warnungen. `KLARTEXT_Hochbegabung_komplett.pdf` (27 Seiten: Cover, Anleitung, Quellen,
+12×2 Karten) gebaut und visuell stichprobenartig geprüft — sauber.
+
+**Verkaufsseite direkt in klartext-shop angelegt** (nicht in klartext-app — Lehre aus dem heutigen
+Repo-Mismatch beherzigt): `HB_Verkaufsseite.html` mit 6 Vorschaubildern (HB-01/04/09, je
+Vorder-/Rückseite, wasserzeichenversehen). `KLARTEXT_Shop_Uebersicht.html` und `index.html` um den
+neuen HB-Eintrag ergänzt (Deck-Zähler 18 → 19). Dabei nebenbei eine veraltete MB-Kachel in der
+Übersicht korrigiert (zeigte noch „3 Karten" statt der seit heute aktuellen 15).
+
+**Commits:** klartext-app `d342dfa` (Pipeline + PDF), klartext-shop `8ee6505` (Verkaufsseite +
+Vorschaubilder + Übersicht/Startseite). **Push durch Anja noch offen.**
+
+**Noch offen:** Fachprüfung durch Anja vor Produktivsetzung (wie bei jedem neuen Deck) — inhaltlich
+neu entwickelt, nicht aus bestehendem Modul kondensiert, daher besonders empfehlenswert. Preis noch
+nicht in die Gesamt-Preisliste (Task #220) eingeordnet — vorläufig identisch zu MB übernommen
+(Digital 8–10€, Print 18–20€).

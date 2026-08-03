@@ -148,7 +148,7 @@ CARDS = {
 SYSTEMFRAGEN = {
     1: ("SKALIERUNGSFRAGE", "Auf einer Skala von 1–10 – wie stimmig fühlt sich deine Rolle gerade an?"),
     2: ("HANDLUNGSFRAGE", "Was wäre ein kleiner, konkreter Schritt, um an einer Stelle bewusst loszulassen?"),
-    3: ("ZIRKULÄRE FRAGE", "Was würde eine gute Freundin sagen, wenn sie deinen Anspruch an dich selbst hören würde?"),
+    3: ("ZIRKULÄRE FRAGE", "Was würde eine gute Freund:in sagen, wenn sie deinen Anspruch an dich selbst hören würde?"),
     4: ("SKALIERUNGSFRAGE", "Auf einer Skala von 1–10 – wie sehr lässt du diese Kritik gerade an dich heran?"),
     5: ("HANDLUNGSFRAGE", "Was wäre ein erster, kleiner Schritt, um genau das abzugeben?"),
     6: ("ZIRKULÄRE FRAGE", "Was würde dein Kind sagen, wenn es erklären könnte, was hinter seinem Verhalten steckt?"),
@@ -172,7 +172,7 @@ SYSTEMFRAGEN = {
     24: ("HANDLUNGSFRAGE", "Was wäre ein kleiner Schritt, um etwas davon abzugeben oder zu vereinfachen?"),
     25: ("SKALIERUNGSFRAGE", "Auf einer Skala von 1–10 – wie voll fühlt sich dein Alltag gerade an?"),
     26: ("SKALIERUNGSFRAGE", "Auf einer Skala von 1–10 – wie nah bist du gerade an deiner Grenze?"),
-    27: ("ZIRKULÄRE FRAGE", "Was würde eine gute Freundin zu diesem Vorwurf sagen, den du dir machst?"),
+    27: ("ZIRKULÄRE FRAGE", "Was würde eine gute Freund:in zu diesem Vorwurf sagen, den du dir machst?"),
     28: ("ZIRKULÄRE FRAGE", "Was würde die andere Familie wohl über ihre eigenen schwierigen Momente sagen, die du nicht siehst?"),
     29: ("HANDLUNGSFRAGE", "Was wäre ein realistischer kleiner Moment, den du dir diese Woche konkret einplanst?"),
     30: ("SKALIERUNGSFRAGE", "Auf einer Skala von 1–10 – wie sehr erlaubst du dir gerade, stolz zu sein?"),

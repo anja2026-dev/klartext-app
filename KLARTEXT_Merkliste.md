@@ -2416,3 +2416,21 @@ Fix: 🏠-Button rechts in der Topbar ergänzt (`<a href="../DASHBOARD.html" cla
 id="homeBtn">`), auf der Deck-Übersicht wie in der Karten-Ansicht durchgehend sichtbar.
 `style.css`: `.iconbtn` für `<a>`-Elemente lauffähig gemacht (display:flex, text-decoration:
 none). Service-Worker-Cache-Version v11 → v12 gebumpt.
+
+**Update 06.08.2026 (8) — Zauberfächer: Beschreibung korrigiert + fehlende Streifen-PDF
+gebaut:** Zwei getrennte Punkte. (1) Die Beschreibung "Farbe wählen, Karte ziehen, Gespräch
+öffnen" war sachlich falsch — der Zauberfächer zieht keine Gesprächskarte, sondern eine
+Mini-Übungskarte aus 6 Themen (Brainy-Flow, Spaß & Quatsch, Atem & Ruhe, Miteinander,
+Denken & Entdecken, Selbstfürsorge; Quellcode `KLARTEXT_Zauberfaecher_Digital.html`,
+`KARTEN`-Objekt). Korrigiert auf "Thema wählen, Karte ziehen, Mini-Übung machen" in
+`DASHBOARD.html`, `DASHBOARD_Lite.html`, `DL_Allgemein.html`, `KLARTEXT_Downloads.html`.
+(2) Die Streifen-Druckvorlage existierte nur als HTML (`KLARTEXT_Zauberfaecher_Streifen.
+html`), nie als PDF. Neues Skript `build_pdf_zauberfaecher_streifen.py`: parst Texte, Farben
+und Brainy-Farbfilter direkt aus der HTML-Datei (per Regex, garantiert Textgleichheit mit
+der Web-Version statt manueller Abschrift), rendert alle 45 Streifen (6 Module) im
+Original-Format 20×3 cm als Vorder-/Rückseite, verteilt auf A4-Bögen (6 Vorderseiten- +
+6 Rückseiten-Seiten). CSS-`hue-rotate`/`saturate`-Filter der Brainy-Grafik per HSV-Shift
+nachgebaut. `KLARTEXT_Zauberfaecher_Streifen.pdf` liegt jetzt in `klartext-app/` und ist
+verlinkt: neuer 📄-PDF-Button in `KLARTEXT_Downloads.html` (zusätzlich zur HTML-Druckvorlage),
+`DL_Allgemein.html`-Kachel zeigt jetzt direkt auf die PDF, Druckvorlage-Link in
+`KLARTEXT_Zauberfaecher_Digital.html` ebenfalls auf die PDF umgestellt.

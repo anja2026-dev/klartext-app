@@ -89,7 +89,7 @@ strong{color:var(--m);}
     <div class="gruen-box">
       <p>KLARTEXT ist technisch so gestaltet, dass <strong>keine personenbezogenen Daten erhoben, gespeichert oder weitergegeben werden.</strong> Das System funktioniert vollständig ohne Nutzerkonten, ohne Tracking und ohne Datenbank.</p>
     </div>
-    <p>KLARTEXT besteht aus statischen HTML-Dateien die über den Hosting-Dienst Netlify ausgeliefert werden. Es gibt keinen eigenen Server, keine Nutzerdatenbank und keine Verarbeitung personenbezogener Daten durch den Systembetreiber.</p>
+    <p>KLARTEXT besteht aus statischen HTML-Dateien die über den Hosting-Dienst Cloudflare Pages ausgeliefert werden. Es gibt keinen eigenen Server, keine Nutzerdatenbank und keine Verarbeitung personenbezogener Daten durch den Systembetreiber.</p>
   </div>
 
   <!-- 3. WELCHE DATEN -->
@@ -113,9 +113,9 @@ strong{color:var(--m);}
         <td>localStorage im eigenen Browser — niemals auf einem Server</td>
       </tr>
       <tr>
-        <td><strong>Server-Logs (Netlify)</strong></td>
+        <td><strong>Server-Logs (Cloudflare)</strong></td>
         <td>IP-Adresse, Browsertyp, Zugriffszeitpunkt — technisch bedingt</td>
-        <td>Netlify-Server (EU/Frankfurt) — max. 30 Tage, dann automatisch gelöscht</td>
+        <td>Cloudflare-Rechenzentren (USA/EU) — begrenzte Speicherdauer, siehe Cloudflare-Datenschutzerklärung</td>
       </tr>
       <tr>
         <td><strong>Cookies / Tracking</strong></td>
@@ -128,17 +128,17 @@ strong{color:var(--m);}
     </div>
   </div>
 
-  <!-- 4. NETLIFY -->
+  <!-- 4. CLOUDFLARE -->
   <div class="ds-karte">
-    <div class="ds-titel"><span class="ds-icon">☁️</span> 4. Hosting — Netlify</div>
-    <p>Das KLARTEXT-System wird über <strong>Netlify, Inc.</strong> gehostet. Netlify verarbeitet beim Aufruf der Seite technisch bedingt Server-Logdaten (IP-Adresse, Browsertyp, Betriebssystem, Zugriffszeitpunkt).</p>
+    <div class="ds-titel"><span class="ds-icon">☁️</span> 4. Hosting — Cloudflare Pages</div>
+    <p>Das KLARTEXT-System wird über <strong>Cloudflare, Inc.</strong> (Cloudflare Pages) gehostet. Cloudflare verarbeitet beim Aufruf der Seite technisch bedingt Server-Logdaten (IP-Adresse, Browsertyp, Betriebssystem, Zugriffszeitpunkt).</p>
     <ul>
-      <li>Netlify ist DSGVO-konform und verfügt über einen Auftragsverarbeitungsvertrag (AVV)</li>
-      <li>Server-Standort: EU / Frankfurt (konfiguriert)</li>
-      <li>Datenschutzerklärung Netlify: <a href="https://www.netlify.com/privacy/" target="_blank" style="color:var(--m);">netlify.com/privacy</a></li>
+      <li>Cloudflare stellt einen Data Processing Addendum (DPA/AVV) nach Art. 28 DSGVO standardmäßig bereit</li>
+      <li>Server-Standort: Cloudflare betreibt ein globales Rechenzentrums-Netzwerk mit Standorten in der EU und den USA; die Datenübermittlung in die USA stützt sich auf das EU-US Data Privacy Framework sowie EU-Standardvertragsklauseln (SCC)</li>
+      <li>Datenschutzerklärung Cloudflare: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" style="color:var(--m);">cloudflare.com/privacypolicy</a></li>
       <li>Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb)</li>
     </ul>
-    <p>Ein Auftragsverarbeitungsvertrag (AVV) mit Netlify wurde abgeschlossen bzw. kann jederzeit über das Netlify-Dashboard kostenlos abgeschlossen werden.</p>
+    <p>Ein Auftragsverarbeitungsvertrag (DPA) mit Cloudflare wird über den Cloudflare-Account abgeschlossen bzw. gilt automatisch mit der Nutzung von Cloudflare-Diensten gemäß deren Standard-DPA.</p>
   </div>
 
   <!-- 5. RECHTSGRUNDLAGEN -->

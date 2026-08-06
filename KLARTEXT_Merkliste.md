@@ -1731,5 +1731,35 @@ ausschließlich False Positives wie "Feuerwehr"/"aktuell" — bei Bedarf jederze
 **Commit:** `57dc1fa`.
 
 Damit ist der von Anjas NotebookLM-Recherche gemeldete Umlaut-Fehler über M0/M2/M6/M7/M8/MH
-(alle Bereiche mit auffälligem Befund) abgeschlossen. Weiterhin offen: Passwort "lehrerkraft",
-Netlify-Referenz im Datenschutztext, Gender-Grundsatzentscheidung (s. o.).
+(alle Bereiche mit auffälligem Befund) abgeschlossen.
+
+**Nachtrag (06.08.2026, restliche offene Punkte geklärt):**
+- **Passwort "lehrerkraft"** (KLARTEXT_Weitergabe_Erklaerung.html): korrigiert zu "lehrerkurs" — war ein
+  Tippfehler, erkennbar am direkt danebenstehenden Block-Titel "🏫 Für Lehrkräfte — der Lehrerkurs" und
+  am Parallelbegriff "elternkurs" beim Eltern-Zugang. Kein aktiver Passwort-Check im Repo gefunden, der
+  davon abhängt — Risiko für echten Zugangsverlust war gering.
+- **Netlify-Referenz** in KLARTEXT_Datenschutz.html: korrigiert auf Cloudflare Pages, mit tatsächlich
+  recherchierten Fakten statt 1:1-Ersetzung (Cloudflare Inc., Rechenzentren EU+USA statt reinem
+  EU/Frankfurt, DPA nach Art. 28 DSGVO, EU-US Data Privacy Framework + SCC als Rechtsgrundlage für
+  US-Datenübermittlung). Quelle: Cloudflare Trust Hub (cloudflare.com/trust-hub/gdpr) und Cloudflare-DPA.
+  Drei weitere, unkritische Netlify-Erwähnungen bleiben unangetastet (kein Rechtstext): in
+  `KLARTEXT_Anleitung_Koordination.html` ist der Netlify-Link bereits korrekt als "funktioniert nicht
+  mehr" markiert; `LK_Glossar_Ergaenzung.html` und `DASHBOARD.html` haben nur interne
+  Entwickler-Notizen/Code-Kommentare — kleine Aufräumarbeit, kein Nutzer- oder Rechtstext.
+
+## Strang 37 · Grundsatzentscheidung Gender-Sprache (bestätigt 06.08.2026)
+
+**Entscheidung (Anja):** Neutrale Formulierungen werden bevorzugt, wo sie sich natürlich anbieten (z. B.
+"Lehrkraft" statt "Lehrer/Lehrerin", "Fachkraft", "Schulbegleitung", "Einsatzleitung"). Wo eine neutrale
+Formulierung unnatürlich oder umständlich wäre, gilt der **Gender-Doppelpunkt** als verbindlicher
+Standard (z. B. "Freund:in", "Schulbegleiter:innen", "Mitschüler:innen") — diese Form ist im
+pädagogisch-sozialen Bereich etabliert und üblich, in dem KLARTEXT eingesetzt wird. Nicht verwendet
+werden: Schrägstrich-Form ("Lehrer/-in"), Binnen-I ("LehrerIn") oder generisches Maskulinum als
+Ersatzform. Bestehende Paarformen ("Expertinnen und Experten") sind kein Fehler, sofern sie bewusst
+gewählt sind, aber nicht der neue Standard für Neutexte.
+
+Diese Konvention war bereits an mehreren Stellen faktisch etabliert (Strang zu LK_Glossar_Ergaenzung.html,
+EL-Kartendeck-Fix Freund:in), ist hiermit aber explizit als projektweite Regel festgehalten — für alle
+künftigen Korrekturen (auch die noch offene Vollprüfung, siehe Claude-Free-Übergabe Baustelle 1) und für
+Anjas gemeldete Einzelbeispiele (z. B. "keine Freundin" in KLARTEXT_Fachbuch_Trainingsmodule.html), die
+damit noch zu bewerten und ggf. zu korrigieren sind.

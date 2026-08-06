@@ -1915,3 +1915,34 @@ Inhaltserweiterung nicht vergessen werden dürfen.
 
 **Offene Frage von Anja beantwortet:** Workshops/Schulungen sind noch NICHT inhaltlich überarbeitet —
 das war bisher nur als Merkliste-Punkt vorgemerkt (s. Strang 39 Nachtrag), noch nicht begonnen.
+
+## Strang 42: Inhaltserweiterung Mobbing (3→15 Karten)
+
+Zweite Runde der "Deck für Deck"-Inhaltsangleichung — Mobbing-Deck (MB) war von 3 auf 15 Karten
+gewachsen, ohne dass die Lernmaterialien das abbildeten. Befund bei der Recherche: Mobbing (M6-Modul,
+15 Seiten) kam im gesamten Lernpfad bisher nur an einer einzigen, fehlerhaften Stelle vor.
+
+1. **Fachbuch** (`KLARTEXT_Fachbuch_System_Mobbing.html`, bereits bestehendes Kapitel): Verweis auf das
+   MB-Handlungskartendeck (15 Karten) ergänzt — bisher war nur auf die 30 Brainy-Geschichtenkarten
+   verlinkt (kindgerechte Gesprächskarten), das MB-Deck (Sofortmaßnahme bis Nachsorge, für Fachkräfte)
+   fehlte komplett. Verlinkung über `pwa/index.html?deck=mb` (verifiziert gegen `pwa/data/decks.json`).
+2. **Lernpfad** (`KLARTEXT_Lernpfad_INGRA.html`): Mobbing war in der gesamten 13-Wochen-Struktur nicht
+   verankert. Neue Aufgabe "Mobbing erkennen & begleiten" in Woche 10 (Kinderschutz — Erkennen &
+   Handeln) ergänzt, `TASKS.w10` von 4 auf 5 erhöht. **Nebenbei einen echten Bug gefunden und behoben:**
+   Woche 12 (Krisen & Feuerwehr) hatte eine Aufgabe "M6-01 lesen" mit der Beschreibung
+   "Krisen-Definition — was ist eine echte Krise?" — das ist falsch, M6-01 heißt tatsächlich
+   "Mobbing_erkennen.html". Beschreibung korrigiert, Link/Struktur unverändert gelassen (Mobbing kann
+   in eine Krise eskalieren, passt inhaltlich noch in die Woche).
+3. **Trainerhandbuch** (`KLARTEXT_Trainerhandbuch.html`): neue Methodenkarte im Methodenkoffer
+   (Kapitel 5) — "Mobbing-Fallarbeit mit MB-Deck", beschreibt eine konkrete Trainingsübung mit dem
+   15-Karten-Deck.
+4. **Quellenverzeichnis**: 2 neue, verifizierte Quellen zur Mobbing-Sektion ergänzt, die die neuen
+   MB-Karten (No-Blame-Approach, KiVa-Programm) fachlich absichern: Maines & Robinson (1992, No Blame
+   Approach) und Kärnä, Voeten, Little, Poskiparta, Alanen & Salmivalli (2011, KiVa, Journal of
+   Consulting and Clinical Psychology) — letztere mit korrigierter Erstautorenschaft recherchiert (die
+   App-interne M6-15-Seite zitiert vereinfachend nur "Salmivalli et al.", Kärnä ist aber Erstautor;
+   nicht in der App selbst geändert, nur im Quellenverzeichnis korrekt zitiert). Quellenzahl: 98→100.
+5. **Glossar geprüft, nicht verändert:** "Mobbing" und "Cybermobbing" waren bereits als Begriffe
+   vorhanden — kein Nachtrag nötig.
+
+Damit ist die zweite von zwei ursprünglich benannten Prioritäten (Hochbegabung, Mobbing) abgeschlossen.

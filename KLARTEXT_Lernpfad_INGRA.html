@@ -578,7 +578,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
   <div class="woche-nr-box" style="background:#C62828;">10</div>
   <div class="woche-info">
     <div class="woche-titel">Kinderschutz — Erkennen & Handeln</div>
-    <div class="woche-sub">Warnsignale · Meldekette · § 8a · Eigener Schutz</div>
+    <div class="woche-sub">Warnsignale · Meldekette · § 8a · Mobbing · Eigener Schutz</div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
     <div id="w10-pct" style="font-size:11px;color:#7A7060;">0%</div>
@@ -599,6 +599,10 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div><div class="aufgabe-titel">M2-37 lesen</div><div class="aufgabe-desc">Eigener Schutz als INGRA</div></div>
   </div>
+  <div class="aufgabe" id="w10-a3b" onclick="toggleTask('w10-a3b');updateW('w10')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Mobbing erkennen &amp; begleiten</div><div class="aufgabe-desc">Fachbuch-Systemkapitel + MB-Handlungskartendeck (15 Karten) — Erkennen, Meldekette, No-Blame-Approach</div></div>
+  </div>
   <div class="aufgabe" id="w10-a4" onclick="toggleTask('w10-a4');updateW('w10')">
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div><div class="aufgabe-titel">Reflexion</div><div class="aufgabe-desc">Kenne ich die Meldekette bei meinem Träger auswendig?</div></div>
@@ -606,7 +610,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
 
   <div style="margin:.5rem 0;">
     <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
-    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-35_Sexueller_Missbrauch_Grundlagen.html" class="karten-link" target="_blank">→ M2-35 Sexueller Missbrauch Grundlag</a> <a href="M2-36_Sexueller_Missbrauch_Handeln.html" class="karten-link" target="_blank">→ M2-36 Sexueller Missbrauch Handeln</a> <a href="M2-37_Sexueller_Missbrauch_Schutz_INGRA.html" class="karten-link" target="_blank">→ M2-37 Sexueller Missbrauch Schutz I</a> </div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-35_Sexueller_Missbrauch_Grundlagen.html" class="karten-link" target="_blank">→ M2-35 Sexueller Missbrauch Grundlag</a> <a href="M2-36_Sexueller_Missbrauch_Handeln.html" class="karten-link" target="_blank">→ M2-36 Sexueller Missbrauch Handeln</a> <a href="M2-37_Sexueller_Missbrauch_Schutz_INGRA.html" class="karten-link" target="_blank">→ M2-37 Sexueller Missbrauch Schutz I</a> <a href="KLARTEXT_Fachbuch_System_Mobbing.html" class="karten-link" target="_blank">→ Mobbing</a> </div>
   </div>
   <div class="ref-label">Meine Reflexion</div>
   <textarea id="w10-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w10-ref');updateW('w10')"></textarea>
@@ -687,7 +691,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
   </div>
   <div class="aufgabe" id="w12-a2" onclick="toggleTask('w12-a2');updateW('w12')">
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div><div class="aufgabe-titel">M6-01 lesen</div><div class="aufgabe-desc">Krisen-Definition — was ist eine echte Krise?</div></div>
+    <div><div class="aufgabe-titel">M6-01 lesen</div><div class="aufgabe-desc">Mobbing erkennen — wann eskaliert eine soziale Situation zur Krise?</div></div>
   </div>
   <div class="aufgabe" id="w12-a3" onclick="toggleTask('w12-a3');updateW('w12')">
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -783,7 +787,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
 <script>
 // ── DATEN ───────────────────────────────────────────────
 const WEEKS = ['w1','w2','w3','w4','w5','w6','w7','w8','w9','w10','w11','w12','w13'];
-const TASKS = {w1:4,w2:4,w3:4,w4:5,w5:4,w6:4,w7:4,w8:4,w9:4,w10:4,w11:4,w12:4,w13:4};
+const TASKS = {w1:4,w2:4,w3:4,w4:5,w5:4,w6:4,w7:4,w8:4,w9:4,w10:5,w11:4,w12:4,w13:4};
 
 // ── STORE ────────────────────────────────────────────────
 function getStore(){try{return JSON.parse(localStorage.getItem('klartext_lernpfad')||'{}');}catch(e){return{};}}

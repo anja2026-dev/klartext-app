@@ -1718,3 +1718,18 @@ echten Repo-Stand geprüft (nicht blind übernommen):
 - Barometer-Speicherproblem (Downloads-Bereich) bereits in Strang 34 dokumentiert.
 
 **Commit:** `bbb7e05`. Push durch Anja noch offen.
+
+**Nachtrag (06.08.2026, M0/M2/M8 abgeschlossen):** Gleiche Methodik wie oben angewendet, 28 Dateien mit
+echten Textänderungen. Zusätzlich 2 weitere Tippfehler gefunden: "beilaeufe Kommentare" →
+"beiläufige Kommentare" (M8-11), "Kommunikationsabrueche" → "Kommunikationsabbrüche" (M8-12, fehlendes
+"b"). Bonus-Fund: der "Zurück"-Button (Text + aria-label) hieß in vielen M2-Dateien "Zurueck" — jetzt
+korrekt, verbessert auch die Screenreader-Aussprache. CSS-Klassennamen/IDs (u. a. `box-gruen`,
+`sp-gruen`, `signal-koerper`, `staerken-grid`, `baro-uebersicht`) bewusst ASCII belassen — dabei zwei
+neue versehentliche Klassennamen-Korruptionen durch das erste Skript selbst gefunden und zurückgesetzt,
+bevor committed wurde. M1/M3/M4 nicht separat bearbeitet (nur einstellige Trefferzahlen, laut Stichprobe
+ausschließlich False Positives wie "Feuerwehr"/"aktuell" — bei Bedarf jederzeit nachprüfbar).
+**Commit:** `57dc1fa`.
+
+Damit ist der von Anjas NotebookLM-Recherche gemeldete Umlaut-Fehler über M0/M2/M6/M7/M8/MH
+(alle Bereiche mit auffälligem Befund) abgeschlossen. Weiterhin offen: Passwort "lehrerkraft",
+Netlify-Referenz im Datenschutztext, Gender-Grundsatzentscheidung (s. o.).

@@ -2404,3 +2404,15 @@ Leistungs-Kacheln und allen drei Preis-Paketen (Digital, Bundle, Träger-Lizenz)
 richtiggestellt. Die PWA-Flip-Karten bleiben zusätzlich bestehen (digitale Fassung der
 kleinen Begleitkarten für die Fachkraft) — sie ersetzen die Schilder nicht, sondern
 ergänzen sie, wie von Anja gewünscht.
+
+**Update 06.08.2026 (7) — PWA: fehlender Rückweg zur App behoben:** Anja meldete "die App ist
+weg, ich seh nur die Kartendecks, kein Button zum Dashboard" — echter Bug, nicht nur
+gefühlt: `pwa/index.html` läuft als eigenständige PWA (`manifest.json`: `display: standalone`,
+eigener Service Worker, eigenes Scope `./`), hatte aber nirgends einen Link zurück zu
+`DASHBOARD.html`. Der vorhandene `backBtn` navigiert nur innerhalb der PWA (Karten-Ansicht →
+Deck-Liste), nicht aus der PWA heraus. Im Standalone-Modus (v. a. nach "Zum Home-Bildschirm
+hinzufügen") fehlt zusätzlich die Browser-Zurück-Taste — Nutzer waren dort wirklich gefangen.
+Fix: 🏠-Button rechts in der Topbar ergänzt (`<a href="../DASHBOARD.html" class="iconbtn"
+id="homeBtn">`), auf der Deck-Übersicht wie in der Karten-Ansicht durchgehend sichtbar.
+`style.css`: `.iconbtn` für `<a>`-Elemente lauffähig gemacht (display:flex, text-decoration:
+none). Service-Worker-Cache-Version v11 → v12 gebumpt.

@@ -1961,3 +1961,61 @@ eigenständige Deck-Idee festgehalten, nicht mehr an FS gekoppelt:
   Berufsalltag, Übergang Schule → Werkstatt/Ausbildung.
 - **Status:** reine Idee, noch keine Konzeptarbeit begonnen. Aufgreifen sobald Kapazität da ist oder
   konkreter Bedarf (z. B. von einem Träger) gemeldet wird.
+
+## Strang 44: Supabase-freie Login-Seite + DASHBOARD-Lite (Shop-PWA-Vorbereitung)
+
+Umsetzung von Option 2 aus dem Strang-38-Fahrplan: erste zwei von sechs Schritten, um die App
+perspektivisch als reines lokales PWA-Produkt im Shop anbieten zu können, komplett unabhängig von
+Supabase/Träger-Fallmanagement.
+
+**1. `KLARTEXT_Login_Shop.html` (neue Datei):** eigenständige, rein clientseitige Login-Seite im
+bestehenden Login-Design, aber ohne Supabase-Anbindung — nur ein Passwortfeld, kein E-Mail-Feld, keine
+Rollenauswahl. Setzt bei Erfolg exakt dieselben sessionStorage-Flags (`klartext_login`, `klartext_role`,
+`klartext_display_name`), die alle 344 bestehenden Content-Seiten bereits prüfen — an diesen Seiten
+musste dadurch nichts geändert werden. Passwort aktuell `klartext-start`, im Quelltext als Klartext
+hinterlegt (im Code kommentiert: das ist keine echte Zugriffskontrolle, sondern verhindert nur
+versehentliches Öffnen — vor dem Verkauf anpassen, perspektivisch ggf. pro Kunde individuell). Leitet
+nach Login auf `DASHBOARD_Lite.html` weiter, "Passwort vergessen"-Hinweis per Mailto.
+
+**2. `DASHBOARD_Lite.html` (neue Datei):** Supabase/Firebase/Fallmanagement-freie Variante von
+`DASHBOARD.html`, per verifizierter Text-Chirurgie (Python, exakte Marker-Ersetzung mit
+Eindeutigkeits-Check vor jedem Schritt) aus der Originaldatei erzeugt, um die 100%ige Texttreue aller
+beibehaltenen Inhalte (alle M0–M8/MH/LK/KD/FK/Lernmaterialien-Kacheln) zu garantieren. Entfernt wurden:
+
+- Firebase-SDK-Einbindungen und der komplette Chat-Code.
+- Rollenbasierte lk/eltern-Weiterleitungslogik beim Login-Check (Lite hat nur eine Rolle: admin).
+- Mobile-Dashboard-Block komplett ersetzt durch eine vereinfachte, reine Content-Navigation (FK-Grid
+  und Modul-Dropdown bleiben erhalten).
+- Header: Kind-Barometer-Link und TK-Bereich-Button entfernt, Logout zeigt jetzt auf
+  `KLARTEXT_Login_Shop.html`.
+- Global-Nav/Quick-Nav: nur noch Dashboard/Kartendecks/Fachbuch/Feuerwehrkarten/Downloads/Spiele; TK-
+  Filter-Chip und Tools-Bereichsfilter entfernt.
+- Beta-Banner-Block (Code+Skript) komplett entfernt.
+- Sektionen `sek-feedback`, `sek-tk`, `sek-tk-recruiting`, `sek-tools` vollständig entfernt (alle
+  Fallmanagement-/Träger-spezifisch).
+- Rollenbasiertes `HIDE`-Konfigurationsskript (LABELS/FARBEN/HIDE-Objekte, Rollen-Badge-Logik,
+  data-trainer-only/data-admin-only/data-expert-only-Filterung) komplett entfernt — für ein
+  Ein-Rollen-Lizenzmodell nicht mehr nötig.
+- Rollenabhängiges "Feedback-Banner"-Skript entfernt (Zielklassen existierten nach Entfernung von
+  `sek-feedback` ohnehin nicht mehr).
+- Selbstreferenzen konsistent gemacht: Logo-Link und "Dashboard"-Menüpunkt zeigen jetzt auf
+  `DASHBOARD_Lite.html` statt `DASHBOARD.html`.
+
+**Verifiziert:** finale Datei enthält keine `supabase`/`firebase`/`chat.js`/`BAROMETER_KIND`/
+`feedback.html`/`feedbackAdmin`/`TK_*`/`tk-bereich`-Referenzen mehr (Grep-Check sauber, einzige
+verbliebene Treffer für "Supabase" sind erklärende Kommentare im Login-Skript selbst). Struktur
+gegengeprüft: `<div>`-Öffnungen/Schließungen (1110/1110) und `<section>`-Öffnungen/Schließungen (19/19)
+balanciert.
+
+**Bewusst unverändert gelassen:** die als Logout-Fab verlinkte `KLARTEXT_Landing.html` (Supabase-frei,
+reine Marketing-Seite) — Ziel bleibt dasselbe wie im Original.
+
+**Noch offen aus dem Strang-38-Fahrplan (Schritte 3–6):**
+3. Die 25 Supabase-abhängigen Dateien (TK_*, CHAT_*, BAROMETER_KIND, feedback*, Zeitkonto,
+   Krankmeldung, Urlaubsantrag, Notizblock, Teilnehmer-Protokoll, Listen, Weiterleitungen) aus dem
+   Shop-Paket ausschließen (Packaging/Distributionsfrage).
+4. `manifest.json` `start_url` und `sw.js`-Precache-Liste auf Content-Seiten statt Supabase-Login
+   umstellen.
+5. Eigene Datenschutzerklärung für die Shop-Version.
+6. Zeitkonto/Datenschutz-Widerspruch in der aktuellen (Supabase-)Datenschutzerklärung
+   (Befund 5 aus Strang 38) — wartet weiter auf Anjas Entscheidung zur Neuformulierung.

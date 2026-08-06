@@ -2326,8 +2326,20 @@ Klassen mit Insel-/Zonen-Set gilt. Referenzen in `KLARTEXT_Downloads.html`,
 muss mal kurz…" umbenannt (Icon 🚽→🙋). Dateiname `KD-02_Klokarten.html` unverändert
 gelassen, um Links nicht zu brechen.
 
-**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt drei
-umgesetzt (Insel/Zonen, Ratgeber-Framing, Signalkarten). Noch offen: kostenloses
-Social-Media-Material, Brainy-Welt-Sammelseite, sowie kleinster/schnellster übriger Fix —
-der Zauberfächer-Downloads-Bug (Streifen-Version nirgends verlinkt, siehe Task #261 in der
+**Update 06.08.2026 (2) — Brainy-Welt-Sammelseite umgesetzt:** Neue öffentliche Seite
+`BRAINY_WELT.html` in klartext-shop gebaut (kein Login, bewusst extern verlinkbar — z. B. von
+Lehrer-Online oder ähnlichen Portalen). Struktur: Brainy-Charaktervorstellung, Materialübersicht
+(KD-Deck als einziges aktuell eigenständig kaufbares Produkt, Signalkarten/Zauberfächer/
+Druckvorlagen/Kinder-Barometer als "Teil der KLARTEXT-App" gekennzeichnet, um nichts zu
+versprechen was noch nicht einzeln erhältlich ist), Zielgruppen-Grid, Bildergalerie (echtes
+KD-Kartenmuster + 3 Signalkarten-Motive, dafür `brainy.png` und 4 Signalkarten-Bilder aus
+klartext-app nach `klartext-shop/vorschau/brainy/` kopiert), FAQ inkl. expliziter
+"Darf ich diese Seite verlinken?"-Frage, und zwei CTAs (KD-Deck vormerken /
+Benachrichtigungs-Mailto für künftige Materialien — fungiert als Lead-Magnet-Sammelpunkt).
+In `index.html` (Header-Nav + Footer) und `KLARTEXT_Shop_Uebersicht.html` (Nav) verlinkt.
+
+**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt vier
+umgesetzt (Insel/Zonen, Ratgeber-Framing, Signalkarten, Brainy-Welt-Sammelseite). Noch offen:
+kostenloses Social-Media-Material sowie kleinster/schnellster übriger Fix — der
+Zauberfächer-Downloads-Bug (Streifen-Version nirgends verlinkt, siehe Task #261 in der
 Session).

@@ -1676,3 +1676,45 @@ ausgewählten extrahiert: je Vorder-/Rückseite als einzelne PNG (105×148mm/A6,
 
 **Noch offen:** 1-2 Musterkarten aus jedem der ~19 Decks für Anja selbst (separater, kleinerer Wunsch,
 noch nicht umgesetzt) — QR-Code auf Kartendecks ist ebenfalls noch offen (Strang 34).
+
+## Strang 36 · NotebookLM-Fehlerliste verifiziert + Umlaut-Encoding-Fix M6/M7/MH (06.08.2026)
+
+Anja hat extern (NotebookLM) eine Fehlerliste recherchiert. Jeder Punkt wurde vor Korrektur gegen den
+echten Repo-Stand geprüft (nicht blind übernommen):
+
+**Bestätigt und korrigiert:**
+- **Umlaut-Encoding (ae/oe/ue statt äöü):** systematisch in allen 20 M7-Dateien, 8 MH-Dateien und 5 von
+  10 M6-Dateien (M6-04–09) — echter, bisher unentdeckter Fehler, nicht nur in Titeln, auch in Fließtext
+  (z. B. "Taeter" statt "Täter" in M6-04). Korrigiert per Skript mit manuell geprüfter Ausschlussliste
+  (Wörter wie „Feuerwehr", „Quelle", „individuell", „aktuell", „neuen", „schauen", „steuern" enthalten
+  zufällig „ae/oe/ue", sind aber korrekt geschrieben — blindes Suchen/Ersetzen hätte diese kaputt
+  gemacht). CSS-Klassennamen (`box-gruen`, `col-gruen`, `gruen-bg`) bewusst als ASCII belassen, nur
+  sichtbarer Text bekam Umlaute zurück. Zusätzlich 2 kaputte Encoding-Reste behoben: ein mit
+  arabischen Schriftzeichen durchmischtes Wort in M7-10 ("herانfuehren" → "heranführen") und mehrere
+  Tippfehler-Varianten (z. B. "kuenrzer" → "kürzer", "Frueehere" → "Frühere").
+- **M2-42_ADHS_Ausbildungsreife.html:** Footer zeigte fälschlich "Karte 35" statt "Karte 42" (2 Stellen).
+- **M2-27_Selektiver_Mutismus.html:** "Blosstellen" → "Bloßstellen", "Schaedlich" → "Schädlich".
+- **KLARTEXT_Workbook.html:** Grammatikfehler "Situation wo ... darf" → "Situation, in der ... darfst".
+- **MH-05:** "Selbst-herabsetzung" → "Selbstherabsetzung" (korrekte Zusammenschreibung).
+
+**Noch offen — wichtig, nicht rausgelassen:**
+- Die gleiche Umlaut-Stichprobe zeigt auch in **M0 (36), M2 (156) und M8 (250)** potenzielle Treffer —
+  deutlich mehr als M6/M7/MH zusammen. Noch nicht geprüft/korrigiert, da jedes Wort einzeln gegen
+  Fehlalarme (wie oben) geprüft werden muss. M1/M3/M4 zeigen nur einstellige Trefferzahlen, vermutlich
+  überwiegend Fehlalarme.
+- **Passwort "lehrerkraft"** in `KLARTEXT_Weitergabe_Erklaerung.html`: kommt nirgendwo sonst im Code vor
+  (kein aktiver Passwort-Check gefunden) — vermutlich veraltete Dokumentation aus der Zeit vor Supabase.
+  Nicht angefasst, da unklar ob/wo das noch real genutzt wird — Anja muss sagen, ob das weg kann oder
+  korrigiert werden soll (und auf was).
+- **Netlify-Referenz** in `KLARTEXT_Datenschutz.html` (Rechtstext!): Hosting lief laut Text über Netlify,
+  ist aber auf Cloudflare Pages umgezogen. Nicht blind umgeschrieben, weil ein Datenschutztext korrekte
+  Angaben zum tatsächlichen Hosting/Serverstandort braucht (Cloudflare-Rechenzentrum verifizieren, bevor
+  der Text geändert wird) — eigener nächster Schritt.
+- **Gender-Sprache (Kategorie 2 aus Anjas Liste):** Konvention Doppelpunkt ist bereits als Hausstandard
+  etabliert (Strang zu LK_Glossar_Ergaenzung.html). Einzelne von Anja genannte Beispiele (z. B.
+  "Schulbegleitung ist keine ... Freundin" in KLARTEXT_Fachbuch_Trainingsmodule.html) sind noch nicht
+  entschieden, ob sie tatsächlich Fehler sind oder zulässige feminine Einzelform in einem beispielhaften
+  Aufzählungssatz — braucht eine Grundsatzentscheidung von Anja, keine Automatik.
+- Barometer-Speicherproblem (Downloads-Bereich) bereits in Strang 34 dokumentiert.
+
+**Commit:** `bbb7e05`. Push durch Anja noch offen.

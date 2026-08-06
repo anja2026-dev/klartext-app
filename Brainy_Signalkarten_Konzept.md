@@ -42,7 +42,7 @@ nicht vorliegt, zuerst dort den Charakterbogen-Prompt generieren.
 2. **Trinkpause:** `illustration of Brainy happily holding up a small glass of water with both stubby arms, [Stil-Zusatz]`
 3. **Bewegung am Platz:** `illustration of Brainy sitting at a small school desk, mid-stretch with arms raised playfully above the desk, small motion lines around it, [Stil-Zusatz]`
 4. **Zu meiner Insel:** `illustration of Brainy standing on a small round cushion or floor marker like a tiny island, gesturing invitingly toward it, [Stil-Zusatz]`
-5. **Frische Luft:** `illustration of Brainy standing beside an open window with a gentle breeze, eyes closed, taking a deep calm breath, [Stil-Zusatz]`
+5. **Frische Luft:** `illustration of Brainy standing outside on a school playground, eyes closed, taking a deep calm breath in the fresh air, gentle breeze, [Stil-Zusatz]`
 6. **Kurz für mich:** `illustration of Brainy sitting cross-legged with eyes closed and a small peaceful smile, hands resting calmly, [Stil-Zusatz]`
 
 ## Dateinamen für die Bilder

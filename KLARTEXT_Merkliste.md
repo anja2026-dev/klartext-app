@@ -2105,3 +2105,28 @@ gegengeprüft werden — insbesondere weil es um Daten von Kindern geht.
 **Nicht Teil dieser Überarbeitung:** eine separate Datenschutzerklärung für die Shop-Version (Strang 38,
 Schritt 5) — dort wäre die alte "kein Server"-Aussage tatsächlich wieder korrekt, da das Shop-Paket
 laut `SHOP_PACKAGE_AUSSCHLUSSLISTE.md` komplett ohne Supabase/Firebase ausgeliefert wird. Bleibt offen.
+
+## Strang 47: manifest.json fürs Shop-Paket (Strang 38, Schritt 4)
+
+**Befund:** Root-`manifest.json` zeigt über `start_url` auf `KLARTEXT_Login.html` (Supabase) — diese
+Datei ist Teil der Ausschlussliste (Strang 45) und existiert im Shop-Paket nicht. Eine installierte
+Shop-PWA hätte damit beim Start ins Leere gezeigt (404). `pwa/manifest.json` (Kartendeck-Viewer) sowie
+`sw.js`/`pwa/service-worker.js` waren dagegen bereits unkritisch: `pwa/manifest.json` zeigt auf
+`./index.html` (Supabase-frei), `sw.js` cached nur zur Laufzeit ohne feste Precache-Liste, und
+`pwa/service-worker.js`s feste `SHELL_FILES`-Liste enthält ausschließlich PWA-eigene, Supabase-freie
+Dateien.
+
+**Umsetzung:** Neue Datei `manifest_shop.json` (identisch zu `manifest.json`, außer `start_url` →
+`KLARTEXT_Login_Shop.html`, Beschreibungstext angepasst). `build_shop_package.sh` kopiert diese Datei
+nach dem rsync-Schritt automatisch als `manifest.json` ins Zielverzeichnis (überschreibt die
+mitkopierte Live-Variante). `manifest_shop.json` selbst ist von der rsync-Übertragung ausgeschlossen,
+damit sie nicht zusätzlich als eigene Datei im Paket landet.
+
+**Getestet:** Kompletter Testlauf nach `/tmp/shop_test2` — `manifest.json` im Ergebnis zeigt korrekt auf
+`KLARTEXT_Login_Shop.html`, `KLARTEXT_Login.html` ist wie erwartet nicht vorhanden, Nachher-Check weiterhin
+sauber. Testordner gelöscht, Haupt-Repo unverändert (nur die zwei neuen Dateien + Skript-Anpassung).
+
+**Damit sind Strang-38-Schritte 1–4 vollständig umgesetzt.** Offen bleiben Schritt 5 (eigene
+Datenschutzerklärung für die Shop-Version — die aktuelle, in Strang 46 überarbeitete Erklärung beschreibt
+weiterhin auch den TK-Bereich, den es im Shop-Paket gar nicht gibt) und die generelle Frage nach
+Lizenzierung/Kopierschutz für die verkaufte lokale Kopie (bisher kein Mechanismus vorgesehen).

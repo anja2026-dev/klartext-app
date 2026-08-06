@@ -73,9 +73,16 @@ rsync "${RSYNC_FLAGS[@]}" \
   --exclude "SHOP_PACKAGE_AUSSCHLUSSLISTE.md" \
   --exclude "build_shop_package.sh" \
   --exclude "KLARTEXT_Merkliste.md" \
+  --exclude "manifest_shop.json" \
   "$QUELLE/" "$ZIEL/"
 
 if [ "$DRYRUN" != "--dry-run" ]; then
+  # Root-manifest.json ersetzen: die Live-Version zeigt auf KLARTEXT_Login.html
+  # (Supabase), das im Shop-Paket nicht existiert. manifest_shop.json zeigt
+  # stattdessen auf KLARTEXT_Login_Shop.html und wird 1:1 als manifest.json
+  # ins Zielverzeichnis kopiert.
+  cp "$QUELLE/manifest_shop.json" "$ZIEL/manifest.json"
+  echo ">>> manifest.json im Zielordner durch Shop-Variante ersetzt (start_url -> KLARTEXT_Login_Shop.html)."
   echo ""
   echo ">>> Fertig. Rest-Check auf Supabase/Firebase-Reste im Zielordner:"
   if grep -rlEq "supabase\.(from|auth|storage|channel|createClient)|firebase\.(initializeApp|auth|database)|createClient\(" "$ZIEL" --include="*.html" 2>/dev/null; then

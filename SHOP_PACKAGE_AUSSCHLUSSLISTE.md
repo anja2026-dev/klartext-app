@@ -82,3 +82,16 @@ Paket-Erstellung selbst.
 `klartext_login`-sessionStorage-Check nutzen (Kartendecks, Fachbuch, Workbook,
 Lernpfad, Module M0–M8, Lernmaterialien etc.), sind Supabase-frei und bleiben
 vollständig im Paket.
+
+## 4. manifest.json (PWA-Startseite)
+
+Das Root-`manifest.json` zeigt in der Live-Version über `start_url` auf
+`KLARTEXT_Login.html` (Supabase) — diese Datei existiert im Shop-Paket nicht mehr.
+`build_shop_package.sh` ersetzt `manifest.json` im Zielordner deshalb automatisch
+durch `manifest_shop.json` (`start_url` → `KLARTEXT_Login_Shop.html`), damit eine
+installierte Shop-PWA korrekt startet. `manifest_shop.json` selbst wird nicht als
+eigene Datei mitkopiert, nur inhaltlich als `manifest.json` übernommen.
+
+`pwa/manifest.json` (Kartendeck-Viewer) und `sw.js`/`pwa/service-worker.js`
+brauchten keine Anpassung: Sie sind bereits Supabase-frei bzw. enthalten keine
+feste Precache-Liste mit Login/Dashboard-Referenzen.

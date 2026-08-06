@@ -2218,3 +2218,45 @@ Lernhandbuch insbesondere sehr umfangreich. Bevor hier reingegangen wird, sollte
 Dokumente erst genauer gesichtet werden (wie sind Themen dort organisiert, wo würde HB/MB inhaltlich
 reinpassen), um keine oberflächliche Ergänzung zu riskieren. Priorisierung mit Anja offen — sie hatte für
 diese Runde zunächst Workshops/Schulungen vor Augen.
+
+## Strang 51: Verkaufsseite (klartext-shop) an echte Shop-Lite-Version angepasst + verlinkt
+
+Nach Anjas Hinweis "hier sind ja nur die Kartendecks drin, alle anderen Materialien bzw die App ist
+nicht drin" geprüft: Es gab bereits eine vollständig gestaltete `KLARTEXT_Verkaufsseite.html` im
+klartext-shop-Repo (420 Zeilen, Hero/Für-wen/Leistungen/Barometer/kLAR/Zitat/Preise/Referentin/FAQ),
+war aber nirgends verlinkt — und beschrieb die alte Supabase/Träger-Version, die genau den Funktionen
+widerspricht, die in der neuen Shop-Lite-App (Strang 44–50, ohne Supabase) gar nicht existieren.
+
+**Korrigiert:**
+- Praktische-Tools-Karte: "Zeitkonto, Krankmeldung, Urlaubsplan" → "Workbook, Fachbuch, Glossar,
+  Quellenverzeichnis, Downloads" (echte Lite-Tools).
+- Koordinator:innen-Zielgruppentext: "Urlaubsplanung" raus (keine Team-Verwaltung ohne Backend).
+- INGRA-Basis-Preistier: "Barometer INGRA + Kind" → "INGRA-Barometer" (Kind-Barometer ist
+  Supabase-Sync, existiert in Lite nicht), "Zeitkonto + Krankmeldung" → "Fachbuch +
+  Quellenverzeichnis".
+- Preistier "Träger-Paket" → umbenannt zu "Team-Zugang": TK-Zugang/Urlaubsplan-für-das-Team/
+  individuelle Anpassungen (impliziert Backend-Customizing, das es nicht gibt) raus, ersetzt durch
+  "Mehrere Lizenzen für dein Team", Sammelrechnung, Staffelpreis — ehrliches Bulk-Lizenz-Angebot statt
+  Software-Team-Feature.
+- Fortbildung-Preistier unverändert gelassen (Präsenztraining, hängt nicht an Supabase).
+- FAQ "Wie bekomme ich meinen Zugang?": automatisiertes "Zugangscode per E-Mail innerhalb von 24
+  Stunden"-Versprechen (nicht gebaut) entfernt, ersetzt durch manuellen Anfrage-Flow wie im Rest vom
+  Shop.
+- FAQ Datenschutz: falsche Behauptung "Notizen und Zeitkonto bleiben nur auf deinem eigenen Gerät"
+  (dieselbe Falschaussage war schon in `KLARTEXT_Datenschutz.html`, Strang 46, korrigiert worden)
+  ersetzt durch akkurate Beschreibung (keine Server-Speicherung, Workbook nur im Arbeitsspeicher der
+  Sitzung, Cloudflare Pages statt fälschlich "Cloudflare Workers"), plus Link zur echten
+  `SHOP_KLARTEXT_Datenschutz.html`.
+- Footer: tote/falsche Links auf die Live-App (`klartext-ingra.h9cyz7d9pj.workers.dev/...`) ersetzt
+  durch die echten Shop-Rechtsseiten (Impressum, Datenschutz, AGB, Widerrufsbelehrung); nav-logo
+  verlinkt jetzt auf `index.html` statt `#`.
+
+**Verlinkt:** neuer Header-Nav-Link "App-System", neuer Hero-Button "🎓 Komplettes App-System" auf
+`index.html`, neuer CTA-Button am Ende der Module-Sektion ("Vollzugang zum kompletten System"), neuer
+Footer-Link — alles auf `KLARTEXT_Verkaufsseite.html`. Damit ist das App-Produkt jetzt von der Startseite
+aus auffindbar, nicht mehr nur die Kartendecks.
+
+**Bewusst nicht angefasst:** die Preise selbst (79€ Basis, "Auf Anfrage" Team/Fortbildung) und die
+"200+ Lernkarten"-Zahl (bezieht sich auf die App-internen M0–M8-Lernkarten, nicht auf die 235+
+Kartendeck-Karten im Shop-Katalog — unterschiedliche Zählungen, kein Widerspruch, daher nicht
+"korrigiert").

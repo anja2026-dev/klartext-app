@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · So funktioniert das System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:760px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.hero{background:var(--navy);border-radius:16px;padding:1.75rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.25rem;}
+.hero img{width:72px;height:72px;object-fit:contain;flex-shrink:0;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:1.4rem;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.5;}
+.block{background:var(--surface);border-radius:14px;padding:1.25rem 1.4rem;margin-bottom:1rem;box-shadow:0 1px 8px rgba(0,0,0,.05);}
+.block-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem;}
+.block-text{font-size:.85rem;color:#3A3A4A;line-height:1.65;margin-bottom:.5rem;}
+.modul-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem;margin-top:.75rem;}
+.modul-chip{border-radius:10px;padding:.65rem .8rem;font-size:.74rem;}
+.modul-chip-name{font-weight:700;margin-bottom:.15rem;}
+.modul-chip-desc{font-size:.66rem;opacity:.85;}
+.schritt-liste{counter-reset:schritt;}
+.schritt{display:flex;gap:.75rem;margin-bottom:.85rem;}
+.schritt:last-child{margin-bottom:0;}
+.schritt-nr{counter-increment:schritt;background:var(--navy);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;}
+.schritt-nr::before{content:counter(schritt);}
+.schritt-text{font-size:.84rem;color:#3A3A4A;line-height:1.55;padding-top:.1rem;}
+.schritt-text b{color:var(--navy);}
+.tipp-box{background:#EAF7EF;border:1.5px solid #A8E0BC;border-radius:10px;padding:.85rem 1rem;font-size:.8rem;color:#1B5E2E;line-height:1.55;margin-top:.75rem;}
+.tipp-box b{display:block;margin-bottom:.2rem;}
+.warn-box{background:#FFF8E8;border:1.5px solid #F5CC6A;border-radius:10px;padding:.85rem 1rem;font-size:.8rem;color:#6B4F00;line-height:1.55;margin-top:.75rem;}
+.warn-box b{display:block;margin-bottom:.2rem;}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin-top:.75rem;}
+.quick-box{background:#F5F0E8;border-radius:12px;padding:1rem;}
+.quick-titel{font-weight:700;color:var(--navy);font-size:.82rem;margin-bottom:.55rem;display:flex;align-items:center;gap:.4rem;}
+.quick-schritt{font-size:.76rem;color:#3A3A4A;line-height:1.55;padding:.2rem 0;border-bottom:1px solid var(--border);}
+.quick-schritt:last-child{border-bottom:none;}
+.quick-nr{font-weight:700;color:var(--navy);margin-right:.3rem;}
+.footer-note{text-align:center;font-size:.72rem;color:var(--muted);margin-top:1.5rem;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login_Shop.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>So funktioniert das System</span></div>
+  <a class="back-btn" href="DASHBOARD_Lite.html">← Dashboard</a>
+</header>
+
+<div class="shell">
+
+<!-- HERO -->
+<div class="hero">
+  <img src="brainy.png" alt="Brainy">
+  <div>
+    <div class="hero-titel">Willkommen bei KLARTEXT</div>
+    <div class="hero-sub">Eine kurze Übersicht — alles Wichtige auf einen Blick, ohne langes Suchen.</div>
+  </div>
+</div>
+
+<!-- DASHBOARD-AUFBAU -->
+<div class="block">
+  <div class="block-titel">🧭 Aufbau des Dashboards</div>
+  <div class="block-text">Das Dashboard ist deine Startseite. Oben kannst du nach Stichwort suchen oder per Modul-Button filtern (M0–M8). Darunter findest du alle Bereiche als aufklappbare Sektionen — Module, Kartendecks, Fachbuch, Workbook, Lernpfad, Downloads.</div>
+  <div class="schritt-liste">
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Suchfeld</b> — tippe ein Stichwort (z. B. „Mobbing", „ADHS") und alle passenden Karten erscheinen sofort.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Modul-Filter</b> — klick auf M0–M8, um nur diesen Bereich zu sehen.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Header-Navigation</b> — Dashboard · Kartendecks · Fachbuch · Downloads · Spiele · Logout.</div></div>
+  </div>
+</div>
+
+<!-- QUICK-START -->
+<div class="block">
+  <div class="block-titel">⚡ Quick-Start</div>
+  <div class="block-text">Die häufigsten Abläufe in je drei Schritten:</div>
+  <div class="quick-grid">
+    <div class="quick-box">
+      <div class="quick-titel">🃏 Kartendeck öffnen</div>
+      <div class="quick-schritt"><span class="quick-nr">1</span>Dashboard → Kartendecks</div>
+      <div class="quick-schritt"><span class="quick-nr">2</span>Deck wählen → als PWA öffnen</div>
+      <div class="quick-schritt"><span class="quick-nr">3</span>Karten durchblättern, offline nutzbar</div>
+    </div>
+    <div class="quick-box">
+      <div class="quick-titel">🌡️ Barometer nutzen</div>
+      <div class="quick-schritt"><span class="quick-nr">1</span>Dashboard → Barometer-Icon</div>
+      <div class="quick-schritt"><span class="quick-nr">2</span>Deinen Zustand wählen</div>
+      <div class="quick-schritt"><span class="quick-nr">3</span>Wochenverlauf im Blick behalten</div>
+    </div>
+    <div class="quick-box">
+      <div class="quick-titel">📓 Workbook ausfüllen</div>
+      <div class="quick-schritt"><span class="quick-nr">1</span>Dashboard → Workbook</div>
+      <div class="quick-schritt"><span class="quick-nr">2</span>Modul aufklappen, Reflexionsfragen beantworten</div>
+      <div class="quick-schritt"><span class="quick-nr">3</span>Fortschritt pro Modul sehen (nur für diese Sitzung)</div>
+    </div>
+    <div class="quick-box">
+      <div class="quick-titel">📖 Fachbuch nachschlagen</div>
+      <div class="quick-schritt"><span class="quick-nr">1</span>Dashboard → Fachbuch</div>
+      <div class="quick-schritt"><span class="quick-nr">2</span>Kapitel wählen oder Suchfeld nutzen</div>
+      <div class="quick-schritt"><span class="quick-nr">3</span>Quellenverzeichnis für Originalzitate</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODULE -->
+<div class="block">
+  <div class="block-titel">📚 Die neun Module</div>
+  <div class="block-text">Jedes Modul behandelt einen Themenbereich deiner Arbeit als Schulbegleitung — von den Grundlagen bis zur Selbstfürsorge.</div>
+  <div class="modul-grid">
+    <div class="modul-chip" style="background:#EAF0F4;color:#1B3A4B;"><div class="modul-chip-name">M0 · Grundlagen</div><div class="modul-chip-desc">Das Fundament</div></div>
+    <div class="modul-chip" style="background:#E8EEF5;color:#2E5E8A;"><div class="modul-chip-name">M1 · Recht &amp; Rolle</div><div class="modul-chip-desc">10 Karten</div></div>
+    <div class="modul-chip" style="background:#EAF5EE;color:#3B8A68;"><div class="modul-chip-name">M2 · Kinder verstehen</div><div class="modul-chip-desc">41 Karten</div></div>
+    <div class="modul-chip" style="background:#FBF4E8;color:#B07D2A;"><div class="modul-chip-name">M3 · Sofort-Werkzeuge</div><div class="modul-chip-desc">20 Karten</div></div>
+    <div class="modul-chip" style="background:#F3E5F5;color:#5D3A7A;"><div class="modul-chip-name">M4 · Kommunikation</div><div class="modul-chip-desc">19 Karten</div></div>
+    <div class="modul-chip" style="background:#FBEEE5;color:#B7500A;"><div class="modul-chip-name">M5 · Dokumentation</div><div class="modul-chip-desc">19 Karten</div></div>
+    <div class="modul-chip" style="background:#FCE4EC;color:#D81B60;"><div class="modul-chip-name">M6 · Krise &amp; Mobbing</div><div class="modul-chip-desc">15 Karten</div></div>
+    <div class="modul-chip" style="background:#EFE5E2;color:#8B4A38;"><div class="modul-chip-name">M7 · Praxisfälle</div><div class="modul-chip-desc">20 Fälle</div></div>
+    <div class="modul-chip" style="background:#F0E5F0;color:#6B3F6B;"><div class="modul-chip-name">M8 · Selbstfürsorge</div><div class="modul-chip-desc">19 Karten</div></div>
+  </div>
+</div>
+
+<!-- BAROMETER -->
+<div class="block">
+  <div class="block-titel">🌡️ Das Brainy-Barometer</div>
+  <div class="block-text">Das Herzstück des Systems — fünf Zustände (Grün, Gelb, Orange, Rot, Grau), mit denen du deine eigene Gefühlslage über die Woche im Blick behältst.</div>
+  <div class="schritt-liste">
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>INGRA-Barometer</b> — dein eigener Wochenrückblick als Schieberegler. Täglich (Mo–Fr) ausfüllen, am Ende der Woche siehst du dein Wochenfazit.</div></div>
+  </div>
+</div>
+
+<!-- JOKER -->
+<div class="block">
+  <div class="block-titel">🃏 Der Joker</div>
+  <div class="block-text">Ein vereinbartes, unauffälliges Signal zwischen dir und einer Lehrkraft — für Momente, in denen ein Kind kurz Unterstützung braucht, ohne dass es vor der Klasse thematisiert wird. Details dazu im Modul M3.</div>
+</div>
+
+<!-- DOWNLOADS -->
+<div class="block">
+  <div class="block-titel">📥 Downloads &amp; Druckvorlagen</div>
+  <div class="block-text">Alle Materialien zum Ausdrucken — Protokolle, Checklisten, Karten, Lesezeichen — gebündelt an einem Ort.</div>
+</div>
+
+<!-- WORKBOOK-HINWEIS -->
+<div class="block">
+  <div class="block-titel">📓 Workbook — wichtig zu wissen</div>
+  <div class="block-text">Deine Eintragungen im Workbook werden ausschließlich im Arbeitsspeicher der geöffneten Seite gehalten — nicht in einer Datenbank, nicht einmal im Browser-Speicher. Sie sind beim Neuladen oder Schließen der Seite weg. Nutze das Workbook für die Reflexion in einer Sitzung; wenn du etwas dauerhaft festhalten willst, notiere es dir zusätzlich außerhalb des Systems.</div>
+</div>
+
+<!-- HÄUFIGE FRAGEN -->
+<div class="block">
+  <div class="block-titel">⚠️ Häufige Fragen &amp; Fehler</div>
+  <div class="schritt-liste">
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Workbook-Antworten weg nach Neuladen?</b> — Das ist so gewollt, siehe oben — es gibt keine dauerhafte Speicherung.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Login vergessen?</b> — Wende dich an die Stelle, über die du KLARTEXT erhalten hast.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Kartendeck offline nutzen?</b> — Einmal geöffnete Decks bleiben als installierte PWA offline verfügbar.</div></div>
+  </div>
+  <div class="warn-box">
+    <b>⚠️ Hinweis</b>
+    Diese Version von KLARTEXT läuft vollständig lokal in deinem Browser — es gibt keine Datenbank und keinen Server, der deine Eingaben speichert. Details in der Datenschutzerklärung.
+  </div>
+</div>
+
+<div class="tipp-box">
+  <b>💡 Brainys Tipp</b>
+  Du musst nicht alles auf einmal nutzen. Schau dich erst in Ruhe um — das System wächst mit dir mit.
+</div>
+
+</div>
+<div class="footer-note">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+</body>
+</html>

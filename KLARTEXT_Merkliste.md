@@ -2193,3 +2193,28 @@ die Live-Version, verlinkt sie).
 **Nebenbefund, nicht behoben:** `BAROMETER_INGRA.html` (im Shop-Paket enthalten) verlinkt auf
 `BAROMETER_KIND.html` (ausgeschlossen) — toter Link innerhalb einer sonst unkritischen Seite. Kleiner
 Folge-Task, noch offen.
+
+## Strang 50: Verifikation Hochbegabung/Mobbing-Abdeckung — zwei Dokumente fehlen noch
+
+Auf Anjas Rückfrage hin geprüft, ob Lernpfad, Lernhandbuch, Fachbuch und Curriculum alle
+Hochbegabung/Mobbing berücksichtigen:
+
+- **Lernpfad** (`KLARTEXT_Lernpfad_INGRA.html`): ✅ bestätigt — 3 Hochbegabung- und 4 Mobbing-Treffer
+  (Woche-4-Task, Woche-10-Task + Woche-12-Bugfix aus Strang 40/42).
+- **Fachbuch** (`KLARTEXT_Fachbuch_System_Hochbegabung.html` + `KLARTEXT_Fachbuch_System_Mobbing.html`):
+  ✅ bestätigt — eigenes HB-Systemkapitel existiert, MB-Kapitel verlinkt zweifach auf das 15-Karten-Deck.
+- **Trainerhandbuch**: ✅ bestätigt (Strang 40/42, plus Wortlaut-Fix aus Strang 49).
+- **Lernhandbuch** (`KLARTEXT_Lernhandbuch_KOMPLETT.html`, 5386 Zeilen/449 KB): ❌ **nicht berücksichtigt**.
+  Nur 1 zufälliger Hochbegabung-Treffer (keine echte HB-Sektion), 31 Mobbing-Treffer wirken auf den
+  ersten Blick besser, sind aber nicht verifiziert vollständig für den 15-Karten-Stand. Datei zuletzt am
+  23.07. geändert — vor der Hochbegabung-Kartenproduktion, Datum passt zum Befund.
+- **Curriculum** (`KLARTEXT_Curriculum_Trainer-Leitfaden_12_Wochen.html`, 756 Zeilen): ❌ **nicht
+  berücksichtigt**. 0 Hochbegabung-Treffer, nur 4 Mobbing-Treffer (wahrscheinlich nur die alte
+  3-Karten-Fassung).
+
+**Status:** Anjas Frage war berechtigt — zwei von sechs relevanten Dokumenttypen fehlen noch. Beide sind
+größere, manuell kompilierte Referenzdokumente (kein Auto-Sync aus den Einzelmodulen), das
+Lernhandbuch insbesondere sehr umfangreich. Bevor hier reingegangen wird, sollte die Struktur beider
+Dokumente erst genauer gesichtet werden (wie sind Themen dort organisiert, wo würde HB/MB inhaltlich
+reinpassen), um keine oberflächliche Ergänzung zu riskieren. Priorisierung mit Anja offen — sie hatte für
+diese Runde zunächst Workshops/Schulungen vor Augen.

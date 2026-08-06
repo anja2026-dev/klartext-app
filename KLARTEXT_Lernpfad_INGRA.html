@@ -281,7 +281,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
   <div class="woche-nr-box" style="background:#B07D2A;">4</div>
   <div class="woche-info">
     <div class="woche-titel">Kinder verstehen — Grundlagen</div>
-    <div class="woche-sub">Neurobiologie · Entwicklung · ADHS · Autismus</div>
+    <div class="woche-sub">Neurobiologie · Entwicklung · ADHS · Autismus · Hochbegabung</div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
     <div id="w4-pct" style="font-size:11px;color:#7A7060;">0%</div>
@@ -302,6 +302,10 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div><div class="aufgabe-titel">M2-08 oder M2-09</div><div class="aufgabe-desc">ADHS oder Autismus — je nach deinem Kind</div></div>
   </div>
+  <div class="aufgabe" id="w4-a3b" onclick="toggleTask('w4-a3b');updateW('w4')">
+    <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="aufgabe-titel">Hochbegabung erkennen</div><div class="aufgabe-desc">Fachbuch-Systemkapitel + HB-Kartendeck anschauen — Merkmale, Underachievement, Twice-Exceptional</div></div>
+  </div>
   <div class="aufgabe" id="w4-a4" onclick="toggleTask('w4-a4');updateW('w4')">
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div><div class="aufgabe-titel">Reflexion</div><div class="aufgabe-desc">Was habe ich über ein konkretes Kind heute anders verstanden?</div></div>
@@ -309,7 +313,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
 
   <div style="margin:.5rem 0;">
     <div style="font-size:.62rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem;">Direkt zu den Karten:</div>
-    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-01.html" class="karten-link" target="_blank">→ M2-01</a> <a href="M2-02.html" class="karten-link" target="_blank">→ M2-02</a> </div>
+    <div style="display:flex;flex-wrap:wrap;gap:.3rem;"><a href="M2-01.html" class="karten-link" target="_blank">→ M2-01</a> <a href="M2-02.html" class="karten-link" target="_blank">→ M2-02</a> <a href="KLARTEXT_Fachbuch_System_Hochbegabung.html" class="karten-link" target="_blank">→ Hochbegabung</a> </div>
   </div>
   <div class="ref-label">Meine Reflexion</div>
   <textarea id="w4-ref" class="ref-area" placeholder="Was habe ich diese Woche gelernt? Was war schwierig?" oninput="saveR('w4-ref');updateW('w4')"></textarea>
@@ -679,7 +683,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
   <div class="woche-ziel"><strong>Lernziel:</strong> Du behältst in akuten Krisen den Kopf — und weißt danach wie du dich und das Kind schützt.</div>
   <div class="aufgabe" id="w12-a1" onclick="toggleTask('w12-a1');updateW('w12')">
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div><div class="aufgabe-titel">FK-Karten alle lesen</div><div class="aufgabe-desc">Alle 6 Feuerwehr-Karten durcharbeiten</div></div>
+    <div><div class="aufgabe-titel">FK-Karten alle lesen</div><div class="aufgabe-desc">Alle 8 Feuerwehr-Karten durcharbeiten</div></div>
   </div>
   <div class="aufgabe" id="w12-a2" onclick="toggleTask('w12-a2');updateW('w12')">
     <div class="aufgabe-check"><svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -779,7 +783,7 @@ body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
 <script>
 // ── DATEN ───────────────────────────────────────────────
 const WEEKS = ['w1','w2','w3','w4','w5','w6','w7','w8','w9','w10','w11','w12','w13'];
-const TASKS = {w1:4,w2:4,w3:4,w4:4,w5:4,w6:4,w7:4,w8:4,w9:4,w10:4,w11:4,w12:4,w13:4};
+const TASKS = {w1:4,w2:4,w3:4,w4:5,w5:4,w6:4,w7:4,w8:4,w9:4,w10:4,w11:4,w12:4,w13:4};
 
 // ── STORE ────────────────────────────────────────────────
 function getStore(){try{return JSON.parse(localStorage.getItem('klartext_lernpfad')||'{}');}catch(e){return{};}}

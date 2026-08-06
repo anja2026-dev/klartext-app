@@ -1608,3 +1608,52 @@ nach Ablauf der 5 Tage zurück, dann folgt die technische Umsetzung hier. Bis da
 Supabase-Auskopplung selbst (#233), finale Preisliste aller 19 Decks (#220), klartext-shop-Landingpage
 (#213), die tatsächliche Textkorrektur der Gender-Sprache in den ~200 HTML-Dateien, die tatsächliche
 Trainerhandbuch-Überarbeitung.
+
+**Nachtrag (06.08.2026):** Claude Free wurde nicht genutzt ("viel zu viel Aufwand") — die vier
+Baustellen sind weiterhin offen und werden hier (Cowork) tokenarm nach und nach abgearbeitet, sobald
+Wochenlimit es zulässt. `Claude_Free_Uebergabe.md` bleibt als Referenz nutzbar, falls sich das ändert.
+
+## Strang 33 · Gender-Fix "Freundin"→"Freund:in" auch in App-Kartendaten (06.08.2026)
+
+Tester-Meldung: Karte mit "Freundin" statt "Freund:in" gefunden (Anja wusste welche Karte nicht mehr).
+Gefunden per Grep: EL-03 ("Erwartungen an mich selbst") und EL-27 ("Schuldgefühle als Elternteil"),
+SYSTEMFRAGEN-Dict (Zirkuläre Frage) in `build_all_cards_el.py`. Korrigiert und neu gerendert
+(Karten-PNGs, `KLARTEXT_EL-Deck_Basis_komplett.pdf`). Zusätzlich entdeckt: dieselbe Stelle war separat
+in `pwa/data/el.json` (App-interne Kartendaten für den PWA-Viewer) noch mit dem alten Text vorhanden —
+das ist der Teil, der tatsächlich in der App sichtbar war. Ebenfalls korrigiert.
+**Commits:** `6bf061d` (Pipeline + PDF), `c92b33e` (pwa/data/el.json). Push durch Anja noch offen.
+
+## Strang 34 · Neue Korrekturliste App-Formulare/Protokolle (gemeldet 06.08.2026, noch nicht bearbeitet)
+
+Anja hat folgende Fehler/offene Punkte in klartext-app gesammelt gemeldet — noch keiner davon bearbeitet,
+hier nur dokumentiert zur Priorisierung in den nächsten Sessions:
+
+**Druckformat-Fehler (quer/hoch, Seitenumbruch):**
+- Wochenreflexion-Karte: muss ins Querformat; Buttons grau/nicht klickbar
+- Monatsbericht: muss ins Querformat beim Druck
+- Übergabeprotokoll: ins Querformat beim Druck
+- Schutzprotokoll + Essstörung-Bogen: laufen beim Druck über 2 Seiten
+- Tagesinfo (Lehrkraft): Druckformat prüfen
+- Start-Checkliste: Druckformat prüfen
+- Alle Formulare/Protokolle systematisch auf Druck prüfen: quer/hoch richtig, 1 oder 2 Seiten
+
+**Interaktivität/Funktionsfehler:**
+- Alle Listen auf Interaktivität prüfen — Beispiel Fallprotokolle: nur der obere Bereich ist anklickbar,
+  untere Felder nicht beschreibbar
+- Selbstfürsorge-Bingo: soll interaktiv werden
+- Downloads: Barometer dort nicht mehr funktionsfähig; unter "Kinder" sind noch alte Testkinder
+  eingetragen (im Live-Bereich "Kinder" funktioniert es korrekt — Diskrepanz zwischen Downloads-Kopie
+  und Live-Version)
+- Notfallkontakte: Klick führt zur Startseite (Navigationsfehler)
+- Zauberfächer: fehlt komplett als PDF und als interaktives Element
+
+**Neue Features:**
+- QR-Code auf Kartendecks einbinden (vermutlich Link zur externen Erklärseite/Kaufseite)
+- Für Kartendruckerei: Karten müssen einzeln extrahierbar sein (nicht nur als ein PDF-Buch, das wird von
+  Druckereien nicht angenommen) + 1-2 Musterkarten pro Deck als Einzeldateien für Anja
+- Anja hat eine kuratierte 45-Karten-Auswahl für ein DIN-A5-Testdruck-Set vorgeschlagen (15× KD
+  Grundschule/Brainy, 15× JD Jugendliche/Resilienz, 15× Fachkraft-Tools/Werkzeug+Krisendeck) — Auswahl
+  liegt vor, noch nicht umgesetzt.
+
+**Nächster Schritt:** mit Anja priorisieren, welche 2-3 Punkte zuerst angegangen werden (Umfang zu groß
+für eine tokenarme Session am Stück).

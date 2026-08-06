@@ -2260,3 +2260,58 @@ aus auffindbar, nicht mehr nur die Kartendecks.
 "200+ Lernkarten"-Zahl (bezieht sich auf die App-internen M0–M8-Lernkarten, nicht auf die 235+
 Kartendeck-Karten im Shop-Katalog — unterschiedliche Zählungen, kein Widerspruch, daher nicht
 "korrigiert").
+
+## Strang 52: Produkt-Fahrplan (Ideensammlung, noch nicht umgesetzt)
+
+Brainstorming-Runde mit Anja zu "was ist mit unseren Materialien noch alles möglich" — hier
+dokumentiert zur Priorisierung, noch keine der Ideen umgesetzt.
+
+**1. Gestufte Pakete pro Zielgruppe (Eltern, Lehrkräfte, Schulbegleiter/INGRA, Trainer — Träger
+vorerst nicht):** 3-Stufen-Idee pro Gruppe — Kartendeck allein (Einstieg) → Kartendeck + Ratgeber
+(Mitte) → Vollzugang App (Komplett). Bausteine existieren größtenteils schon: EL-Deck +
+`KLARTEXT_Elternkurs.html` (6 Kapitel), LK-Deck + `KLARTEXT_Lehrerkurs.html` (16 Kapitel, mehr als
+die veraltete "5 Kapitel"-Angabe auf der Shop-Startseite), TR-Deck + Trainerhandbuch. Technischer
+Hinweis: Elternkurs/Lehrerkurs hängen aktuell am selben Login wie die ganze App — für manuellen
+Versand (aktueller Stand) kein Problem, erst bei automatisiertem Sofort-Zugang bräuchte es echte
+Zugriffstrennung pro Produkt.
+
+**2. "Kurs" vs. "Ratgeber" — Umbenennung geplant:** Anja ist unsicher, ob Eltern/Lehrkräfte
+tatsächlich einen Kurs (mit Fortschritt/Modulen wie beim INGRA-System) wollen oder eher schnelles
+Nachschlagen im Bedarfsfall. Einschätzung: eher Ratgeber — anders als INGRAs haben Eltern/Lehrkräfte
+keinen beruflichen Auftrag, ein Programm durchzuarbeiten. Vorschlag: `KLARTEXT_Elternkurs.html` /
+`KLARTEXT_Lehrerkurs.html` konzeptionell zu "Eltern-Ratgeber" / "Lehrkräfte-Ratgeber" umbenennen,
+vorne einen Schnellzugriff/FAQ ergänzen ("Mein Kind hat XY — was tue ich?"), nicht in Richtung
+Kurs-Struktur mit Wissenscheck/Fortschrittsanzeige ausbauen (das bleibt dem INGRA-System vorbehalten).
+Noch nicht umgesetzt.
+
+**3. Insel-Set / Zonen-Set gehören nicht in die Kartendeck-Kategorie:** Anjas Einschätzung bestätigt
+sich — beides sind PDF-Raummarkierungs-/Token-Material-Bundles (je 3 Zielgruppen-Varianten:
+Eltern/Zuhause, Schule-INGRA, Schule-LK), keine Gesprächskarten-Decks wie der Rest. Aktuell stehen
+sie trotzdem in `KLARTEXT_Shop_Uebersicht.html` zwischen den echten Kartendecks. Vorschlag: eigene
+Kategorie "Material-Pakete" bzw. Verschiebung in den Downloads-Bereich, aufgeteilt nach Altersgruppe
+(Insel-Set = Kinder, Zonen-Set = Jugendliche, wie Anja vorgeschlagen hat). Noch nicht umgesetzt.
+
+**4. Kostenloses Material für Social Media (TikTok/Instagram, ggf. Videos):** Einzelne Musterkarten
+aus den Decks als Karussell-Posts (Idee stand schon in Strang 34: "1-2 Musterkarten pro Deck als
+Einzeldatei"), Barometer-Grafik als Erklär-Post, "Was tue ich jetzt"-Tipps als Swipe-Karussell,
+Brainy als wiederkehrende Erkennungsfigur, kurze Erklär-Reels (Barometer, kLAR-Modell, einzelne
+Karte). Zusätzliche Idee: "Schnupper-Paket" — 3-5 kostenlose Karten gegen E-Mail-Adresse als
+Einstieg in eine Mailingliste. Noch nicht umgesetzt, keine konkrete Priorität festgelegt.
+
+**5. Brainy-Kinderserie ("Brainy-Welt"):** Bestehende Bausteine bereits vorhanden, aber verstreut:
+KD-Deck (35 Karten), Zauberfächer (Digital + Streifen, siehe unten), die elf Kinder-Downloads
+(Geheimschüler-Ausweis, Joker-Gutscheine, Sterntaler, Lob-Armband, Lob-Kärtchen, Mini-Fitness,
+Himmel&Hölle, Mutmach-Kärtchen, Lesezeichen, Barometer). Vorschlag: eigene Sammelseite "Brainy-Welt",
+die mit neuem Material mitwächst (Anja plant, hier laufend weiteres Material zu erstellen), statt
+alles in der allgemeinen Downloads-Seite zu verstecken. Noch nicht umgesetzt.
+
+**6. Neue Kartenserie "Brainy muss mal kurz…" (Signalkarten):** Umbenennung/Erweiterung der
+"Klo-Kärtchen" (`KD-02_Klokarten.html`) zu einer kleinen Serie: Brainy hält die passende Bildkarte
+hoch, je nach Bedarf des Kindes (Toilette, Bewegungspause am Platz, zur Insel/Zone gehen falls die
+Klasse eine hat, Trinkpause usw.). Titel bewusst ohne "raus" (Anjas Korrektur), weil nicht alle
+Optionen ein Verlassen des Raums bedeuten — Synergie zu Insel-/Zonen-Sets möglich (eine Bildoption
+könnte auf "geh zu deiner Insel" zeigen). Konzept steht, Kartentexte/Bilder noch nicht erstellt.
+
+**Offen mit Anja:** welches der sechs Themen zuerst konkret umgesetzt wird. Kleinster/schnellster
+Fix wäre weiterhin der Zauberfächer-Downloads-Bug (Streifen-Version nirgends verlinkt, siehe
+Task #261 in der Session).

@@ -2019,3 +2019,30 @@ reine Marketing-Seite) — Ziel bleibt dasselbe wie im Original.
 5. Eigene Datenschutzerklärung für die Shop-Version.
 6. Zeitkonto/Datenschutz-Widerspruch in der aktuellen (Supabase-)Datenschutzerklärung
    (Befund 5 aus Strang 38) — wartet weiter auf Anjas Entscheidung zur Neuformulierung.
+
+## Strang 45: Shop-Paket-Ausschlussliste + Build-Skript (Strang 38, Schritt 3)
+
+**Neue Dateien:**
+- `SHOP_PACKAGE_AUSSCHLUSSLISTE.md` — dokumentiert und begründet, welche Dateien/Ordner aus dem
+  Supabase-freien Shop-Paket ausgeschlossen werden müssen: 31 funktional Supabase-/Firebase-abhängige
+  HTML-Seiten (per Grep auf echte API-Aufrufe verifiziert, nicht nur Text-Erwähnungen — z. B. zählen
+  Trainerhandbuch/Systemanleitung NICHT dazu, die erwähnen Firebase nur in Fließtext), 2 interne
+  Planungs-/Architektur-Dokumente (`Admin_Backend.html`, `KLARTEXT_Vertretungsassistent_Architektur.html`),
+  plus 4 komplette Ordner (`.git/`, `supabase/` [39 SQL-Migrationen], `__pycache__/`, `storybooks/`
+  [geparkte Produktlinie, Strang 6]).
+- `build_shop_package.sh` — rsync-basiertes Build-Skript, kopiert das Repo unverändert in einen
+  Zielordner unter Ausschluss der obigen Liste, mit `--dry-run`-Option zum Testen ohne Kopieren, und
+  einem automatischen Nachher-Check (Grep auf verbliebene funktionale Supabase/Firebase-Aufrufe im
+  Zielordner).
+
+**Getestet:** Dry-Run bestätigt korrekten Ausschluss aller 33 Einzeldateien + 4 Ordner. Echter Testlauf
+nach `/tmp/shop_test` erfolgreich (969 MB, 382 HTML-Dateien, `DASHBOARD_Lite.html` +
+`KLARTEXT_Login_Shop.html` vorhanden, `DASHBOARD.html`/`KLARTEXT_Login.html`/`supabase/` korrekt
+entfernt, Nachher-Check meldet keine funktionalen Supabase/Firebase-Reste). Testordner wieder gelöscht,
+nichts im Haupt-Repo verändert.
+
+**Offen (unverändert, Strang 38 Schritte 4–6):** manifest.json/sw.js-Precache umstellen, eigene
+Datenschutzerklärung für die Shop-Version, Zeitkonto/Datenschutz-Widerspruch klären. Zusätzlich notiert:
+Trainerhandbuch/Systemanleitung enthalten je 1–2 Firebase-Prosaverweise (Kind-Barometer-Sync, Chat), die
+vor dem Verkauf inhaltlich an die Lite-Version angepasst werden sollten — kleiner Folge-Task, kein
+Blocker für die Paket-Erstellung.

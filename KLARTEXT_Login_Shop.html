@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Anmeldung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 0%,#1B3A4B 60%,#2A5570 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;}
+.logo-wrap{text-align:center;margin-bottom:2rem;}
+.logo-mark{width:56px;height:56px;border:2.5px solid #6EC6A0;border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:20px;font-weight:700;color:#fff;}
+.logo-name{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:#fff;}
+.logo-sub{font-size:.62rem;color:rgba(255,255,255,.4);letter-spacing:.2em;text-transform:uppercase;margin-top:3px;}
+.card{background:#fff;border-radius:16px;padding:2rem;width:100%;max-width:440px;box-shadow:0 24px 60px rgba(0,0,0,.35);}
+.card-titel{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:#1B3A4B;margin-bottom:.25rem;text-align:center;}
+.card-sub{font-size:.8rem;color:#7A7060;text-align:center;margin-bottom:1.5rem;}
+.feld{margin-bottom:1rem;}
+.feld-label{font-size:.7rem;font-weight:700;color:#1B3A4B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;display:block;}
+.pw-row{display:flex;gap:.5rem;}
+.feld-input{flex:1;padding:.6rem .85rem;border:1.5px solid #DDD8CE;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.9rem;outline:none;color:#1B3A4B;width:100%;}
+.feld-input:focus{border-color:#1B3A4B;}
+.pw-toggle{background:none;border:none;cursor:pointer;color:#7A7060;font-size:1rem;padding:.4rem;}
+.login-btn{width:100%;padding:.75rem;border-radius:10px;border:none;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;color:#fff;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:.4rem;background:#1B3A4B;margin-top:.5rem;}
+.login-btn:hover{opacity:.9;transform:translateY(-1px);}
+.err{display:none;font-size:.78rem;color:#C62828;text-align:center;margin-top:.75rem;padding:.4rem;background:#FDECEA;border-radius:6px;}
+.err.show{display:block;}
+.hint{text-align:center;margin-top:1.25rem;}
+.hint a{font-size:.72rem;color:#7A7060;text-decoration:none;}
+.hint a:hover{color:#1B3A4B;}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+
+<div class="logo-wrap">
+  <div class="logo-mark"><span>K</span></div>
+  <div class="logo-name">KLARTEXT</div>
+  <div class="logo-sub">Kartendecks &amp; Lernmaterialien</div>
+</div>
+
+<div class="card">
+  <div class="card-titel">Willkommen</div>
+  <div class="card-sub">Bitte gib dein persönliches Zugangspasswort ein.</div>
+
+  <div class="feld">
+    <span class="feld-label">Passwort</span>
+    <div class="pw-row">
+      <input class="feld-input" type="password" id="pw-input" placeholder="Passwort eingeben …" autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')login();">
+      <button class="pw-toggle" onclick="togglePw()" type="button" aria-label="Passwort anzeigen">👁️</button>
+    </div>
+  </div>
+
+  <button class="login-btn" id="login-btn" onclick="login()" type="button">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+    Einloggen
+  </button>
+
+  <div class="err" id="err">Falsches Passwort — bitte noch einmal versuchen.</div>
+
+  <div class="hint">
+    <a href="mailto:klartext.mentoring@gmx.de">Passwort vergessen? Kontakt aufnehmen</a>
+  </div>
+</div>
+
+<script>
+// Rein lokale, Supabase-freie Anmeldung für die Shop-/Download-Version von KLARTEXT.
+// Setzt exakt dasselbe sessionStorage-Flag ('klartext_login'/'klartext_role'), das alle
+// 344 Content-Seiten (Module, Kartendecks, Fachbuch, Workbook, Lernpfad, Trainerhandbuch...)
+// bereits prüfen -- daher musste an diesen Seiten selbst nichts geändert werden.
+// WICHTIG: Client-seitige Passwortprüfung ist keine echte Zugriffskontrolle (Passwort steht
+// im Quelltext) -- ausreichend als "nicht aus Versehen offen", nicht als Schutz gegen
+// absichtliches Umgehen. Für die verkaufte Kopie: Passwort hier vor dem Verpacken anpassen,
+// perspektivisch ggf. pro Kunde individuell (z.B. via Verkaufsplattform generiert).
+var ZUGANGS_PASSWORT = 'klartext-start';
+
+function togglePw() {
+  var inp = document.getElementById('pw-input');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+function zeigeFehler() {
+  document.getElementById('err').classList.add('show');
+}
+
+function login() {
+  var passwort = document.getElementById('pw-input').value.trim();
+  document.getElementById('err').classList.remove('show');
+
+  if (!passwort) { zeigeFehler(); return; }
+  if (passwort !== ZUGANGS_PASSWORT) { zeigeFehler(); return; }
+
+  try {
+    sessionStorage.setItem('klartext_login', 'true');
+    sessionStorage.setItem('klartext_role', 'admin');
+    sessionStorage.setItem('klartext_display_name', 'KLARTEXT');
+    sessionStorage.removeItem('klartext_kind_id');
+  } catch (e) {}
+
+  window.location.href = 'DASHBOARD_Lite.html';
+}
+
+window.login = login;
+window.togglePw = togglePw;
+
+// Bereits eingeloggt? Direkt weiter, kein erneutes Passwort nötig.
+(function(){
+  try {
+    if (sessionStorage.getItem('klartext_login') === 'true') {
+      window.location.href = 'DASHBOARD_Lite.html';
+    }
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>

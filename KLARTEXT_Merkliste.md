@@ -2338,8 +2338,16 @@ klartext-app nach `klartext-shop/vorschau/brainy/` kopiert), FAQ inkl. explizite
 Benachrichtigungs-Mailto für künftige Materialien — fungiert als Lead-Magnet-Sammelpunkt).
 In `index.html` (Header-Nav + Footer) und `KLARTEXT_Shop_Uebersicht.html` (Nav) verlinkt.
 
-**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt vier
-umgesetzt (Insel/Zonen, Ratgeber-Framing, Signalkarten, Brainy-Welt-Sammelseite). Noch offen:
-kostenloses Social-Media-Material sowie kleinster/schnellster übriger Fix — der
-Zauberfächer-Downloads-Bug (Streifen-Version nirgends verlinkt, siehe Task #261 in der
-Session).
+**Update 06.08.2026 (3) — Zauberfächer-Downloads-Bug behoben:** Ursache geklärt: Der
+Zauberfächer war nie "verschwunden" — die Streifen-Druckvorlage (`KLARTEXT_Zauberfaecher_
+Streifen.html`, voll ausgebaut, 1394 Zeilen, alle M0–M8-Module) existierte die ganze Zeit
+und war sogar technisch verlinkt, aber nur ganz unten auf dem Farbwahl-Screen der
+interaktiven Digital-Version — nirgends in Downloads oder Dashboard gelistet wie jedes
+andere Kindermaterial. Fix: Zauberfächer (Digital + Streifen) jetzt regulär eingetragen in
+`KLARTEXT_Downloads.html` (Kinder-Sektion, zwei Buttons: Öffnen + 🖨️ Druckvorlage),
+`DL_Allgemein.html` (Interaktive Tools + Druckvorlagen, Kinder-Zähler 14→16) sowie als
+eigene Kachel in `DASHBOARD.html` und `DASHBOARD_Lite.html` (Modul „kd", 🔮-Icon).
+
+**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt fünf
+umgesetzt (Insel/Zonen, Ratgeber-Framing, Signalkarten, Brainy-Welt-Sammelseite,
+Zauberfächer-Bug). Noch offen: kostenloses Social-Media-Material.

@@ -1816,3 +1816,32 @@ den TK-Bereich gilt).
 **Noch offen / nicht Teil dieser Analyse:** Lizenzierung/Kopierschutz für eine verkaufte lokale
 Kopie (aktuell kein Mechanismus vorgesehen — jeder mit der Datei hätte Vollzugriff), Preisfindung,
 Umfang des Shop-Pakets (alle M0-M8 + alle Kartendecks, oder Auswahl).
+
+## Strang 39 · Konzeptvorschlag Shop-Struktur (Anjas Vorgabe, 06.08.2026)
+
+Anja hat entschieden: Supabase-Variante komplett aus der Shop-Planung raus, nur geparkt (Task #233
+unverändert). Shop soll zwei Produkte bieten: Einzeldecks (bestehend) + Gesamt-App als neues Produkt.
+Zusätzlich gewünscht: Freebie-Downloads zur E-Mail-Sammlung, Kunden-Zugang nach Kauf, eigener
+Voll-Zugang für Anja (auch alle Kartendecks sichtbar). Anja bat um einen Vorgehensvorschlag, da ihr
+unklar ist, wie man das "professionell" umsetzt.
+
+**Vorschlag (voller Text in `Konzept_Shop_ohne_Supabase.md`, an Anja übergeben):**
+1. Erst Inhalte angleichen — Fachbuch/Lernpfad/Trainerhandbuch fehlt Hochbegabung komplett, Mobbing-
+   Erweiterung nicht nachgezogen. Deck für Deck, nicht alles auf einmal.
+2. Website in vier Bereiche: (A) öffentlicher Verkaufsbereich (bestehend), (B) Freebie-Bereich mit
+   E-Mail-Einsammlung über ein externes DSGVO-taugliches Tool (Brevo/CleverReach, gehört in Task #202),
+   (C) Kaufbereich für das App-Produkt, (D) Anjas eigener Zugang — getrennt von der Kunden-Seite.
+3. **Wichtigste Empfehlung:** Für das Kunden-Login/Download-Zugang beim App-Produkt kein eigenes
+   Login-System selbst bauen (Datenbank, Passwort-Reset, DSGVO — genau der Aufwand, den Anja vermeiden
+   will). Stattdessen eine digitale Verkaufsplattform mit automatischer Auslieferung nutzen
+   (Vorschläge: Elopage, Digistore24 — beide deutsch, verbreitet bei Coaches/Trainer:innen; oder
+   Lemonsqueezy international). Kunde kauft, bekommt automatisch Downloadlink/Kundenbereich — Anja
+   muss dafür nichts entwickeln. Gehört mit in die laufende Recherche Task #202.
+4. Anjas eigener "alles sehen"-Zugang läuft **nicht** über die öffentliche Shop-Website, sondern
+   einfach über die App selbst (hier in klartext-app gepflegt) mit der Supabase-freien Login-Variante
+   aus Strang 38 — sauberer getrennt von Kundensicht, keine zusätzliche Sicherheits-/Verwirrungsfrage
+   auf der Verkaufsseite.
+
+**Offene Entscheidungen bei Anja:** Wahl der Verkaufsplattform (Elopage/Digistore24/anders) und des
+E-Mail-Tools — beide Themen an Task #202 angehängt. Bau-Arbeit (Login-Seite, DASHBOARD-Lite) kann
+direkt hier übernommen werden, sobald gewünscht.

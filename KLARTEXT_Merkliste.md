@@ -2126,7 +2126,35 @@ damit sie nicht zusätzlich als eigene Datei im Paket landet.
 `KLARTEXT_Login_Shop.html`, `KLARTEXT_Login.html` ist wie erwartet nicht vorhanden, Nachher-Check weiterhin
 sauber. Testordner gelöscht, Haupt-Repo unverändert (nur die zwei neuen Dateien + Skript-Anpassung).
 
-**Damit sind Strang-38-Schritte 1–4 vollständig umgesetzt.** Offen bleiben Schritt 5 (eigene
-Datenschutzerklärung für die Shop-Version — die aktuelle, in Strang 46 überarbeitete Erklärung beschreibt
-weiterhin auch den TK-Bereich, den es im Shop-Paket gar nicht gibt) und die generelle Frage nach
-Lizenzierung/Kopierschutz für die verkaufte lokale Kopie (bisher kein Mechanismus vorgesehen).
+**Damit sind Strang-38-Schritte 1–4 vollständig umgesetzt.**
+
+## Strang 48: Eigene Datenschutzerklärung für klartext-shop (Strang 38, Schritt 5)
+
+Neue Datei `SHOP_KLARTEXT_Datenschutz.html` im **klartext-shop**-Repo (nicht klartext-app) angelegt,
+konsistent mit dem dortigen Namensmuster `SHOP_KLARTEXT_AGB.html`/`SHOP_KLARTEXT_Widerrufsbelehrung.html`.
+Begründung für den Ort: das Dokument beschreibt sowohl die Verkaufsseiten selbst (klartext-shop) als auch
+das verkaufte Produkt (App-Version) — es ist ein Shop-/Verkaufsdokument, kein App-internes.
+
+**Inhalt, in zwei Teile getrennt:**
+- **§ 2 Diese Website:** Cloudflare-Hosting, kein Tracking/Cookies, E-Mail-Bestellablauf (Name, E-Mail,
+  Bestellwunsch, ggf. Adresse), Zahlung per Überweisung/PayPal (mit Verweis auf PayPal-Datenschutz),
+  Hinweis dass ein automatisierter Zahlungsanbieter noch nicht angebunden ist.
+- **§ 3 Das Produkt:** PDF-Kartendecks (keine Datenverarbeitung, statische Dateien) sowie die geplante
+  App-Version — hier korrekt beschrieben als lokal/serverlos (Passwort-Prüfung rein clientseitig, Workbook
+  nur im Arbeitsspeicher), im Unterschied zur separaten Supabase-Trägerversion, die klartext-shop nicht
+  betrifft. Damit stimmt hier die "kein Server"-Aussage tatsächlich, anders als in der (jetzt in Strang 46
+  korrigierten) App-eigenen `KLARTEXT_Datenschutz.html`.
+
+**Nebenbefunde behoben:** Impressum verlinkte bisher nur einen Platzhaltertext ("wird ergänzt, sobald
+weitere Dienste eingebunden sind") statt einer echten Erklärung — jetzt korrekt verlinkt. AGB § 12 verwies
+ebenfalls nur auf "Informationen im Impressum" — jetzt direkt verlinkt. Zusätzlich festgestellt: AGB und
+Widerrufsbelehrung waren auf der Startseite (`index.html`) bisher gar nicht verlinkt (nur über Impressum
+erreichbar) — Footer um Datenschutz/AGB/Widerrufsbelehrung ergänzt, damit alle drei direkt erreichbar sind.
+
+**Wie schon bei den AGB üblich:** Hinweisbox am Anfang markiert den Entwurfsstatus und empfiehlt
+rechtliche Prüfung vor automatisiertem Zahlungsanbieter-Einsatz — konsistent mit dem bestehenden
+Hinweis-Muster in `SHOP_KLARTEXT_AGB.html`.
+
+**Damit ist auch Strang-38-Schritt 5 umgesetzt.** Offen bleibt weiterhin die generelle Frage nach
+Lizenzierung/Kopierschutz für die verkaufte lokale App-Kopie (bisher kein Mechanismus vorgesehen — siehe
+Anjas Rückfrage dazu, separat beantwortet).

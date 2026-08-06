@@ -2348,6 +2348,22 @@ andere Kindermaterial. Fix: Zauberfächer (Digital + Streifen) jetzt regulär ei
 `DL_Allgemein.html` (Interaktive Tools + Druckvorlagen, Kinder-Zähler 14→16) sowie als
 eigene Kachel in `DASHBOARD.html` und `DASHBOARD_Lite.html` (Modul „kd", 🔮-Icon).
 
-**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt fünf
-umgesetzt (Insel/Zonen, Ratgeber-Framing, Signalkarten, Brainy-Welt-Sammelseite,
-Zauberfächer-Bug). Noch offen: kostenloses Social-Media-Material.
+**Update 06.08.2026 (4) — Barometer-Erklär-Karussell (Social Media) umgesetzt:** Erstes
+kostenloses Lead-Material gebaut, unabhängig von Gewerbeanmeldung (reine Werbung/
+Content, kein Verkauf — Erstellung jederzeit zulässig, Posten sobald gewünscht).
+7-teiliges Instagram/TikTok-Karussell (1080×1350, JPG) im bestehenden KLARTEXT-Look:
+Cover ("Woran erkennst du, wie es einem Kind gerade wirklich geht?"), je eine Folie pro
+Barometer-Farbe (Grün/Gelb/Orange/Rot/Grau, Text 1:1 aus `KLARTEXT_Barometer_kLAR_
+Erklaerung.html` übernommen), Outro mit CTA "Link in Bio". Rendering-Skript
+`build_barometer_karussell.py` adaptiert aus der bestehenden PIL-Kartenpipeline
+(`build_card_kd.py`-Muster: gleiche Fonts/Farben/300-DPI-Logik). Dateien liegen in
+`klartext-shop/social/barometer-karussell/` (7 Bilder + `caption.txt` mit fertigem
+Insta-Text inkl. Hashtags). Bewusste Entscheidung: mit dem neutralsten, am wenigsten
+verkäuflichen Format starten (reine Aufklärung, kein Produkt-Pitch), um Vertrauen/
+Reichweite aufzubauen, bevor Lead-Magnet- oder Produkt-Posts folgen.
+
+**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt alle
+sechs angestoßen (Insel/Zonen, Ratgeber-Framing, Signalkarten, Brainy-Welt-Sammelseite,
+Zauberfächer-Bug, Social-Media-Material — erstes Stück fertig). Nächster Schritt beim
+Social-Media-Strang: "Was tue ich jetzt?"-Karussell (kLAR-Modell + Feuerwehr-Protokoll)
+als Folgepost, danach ggf. Schnupper-Paket-Lead-Magnet.

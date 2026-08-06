@@ -2158,3 +2158,7 @@ Hinweis-Muster in `SHOP_KLARTEXT_AGB.html`.
 **Damit ist auch Strang-38-Schritt 5 umgesetzt.** Offen bleibt weiterhin die generelle Frage nach
 Lizenzierung/Kopierschutz für die verkaufte lokale App-Kopie (bisher kein Mechanismus vorgesehen — siehe
 Anjas Rückfrage dazu, separat beantwortet).
+
+**Lizenzierung/Kopierschutz (06.08.2026):** Anja recherchiert das selbst, zurückgestellt. Optionen
+skizziert (Einzelpasswörter pro Kundin / Lizenzserver-Check / gar nichts, analog zur bestehenden
+Nutzungsrechts-Klausel bei den PDF-Decks) — keine weitere Aktion, bis sie sich meldet.

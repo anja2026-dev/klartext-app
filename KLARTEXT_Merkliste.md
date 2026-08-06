@@ -2162,3 +2162,34 @@ Anjas Rückfrage dazu, separat beantwortet).
 **Lizenzierung/Kopierschutz (06.08.2026):** Anja recherchiert das selbst, zurückgestellt. Optionen
 skizziert (Einzelpasswörter pro Kundin / Lizenzserver-Check / gar nichts, analog zur bestehenden
 Nutzungsrechts-Klausel bei den PDF-Decks) — keine weitere Aktion, bis sie sich meldet.
+
+## Strang 49: Trainerhandbuch-Wortwahl + eigene Systemanleitung fürs Shop-Paket
+
+**Trainerhandbuch** (`KLARTEXT_Trainerhandbuch.html`): 2 Stellen, die explizit "Firebase" nannten
+("Internet für Firebase-Funktionen", "Technische Probleme (Firebase/Login funktioniert nicht)"), auf
+generische Formulierung umgestellt ("Internetverbindung", "Login funktioniert nicht") — jetzt für
+Live- und Shop-Version gleichermaßen zutreffend, keine inhaltliche Änderung sonst.
+
+**Systemanleitung — größerer Befund als angenommen:** Die ursprüngliche Einschätzung ("1–2 Sätze")
+war zu knapp. Beim genauen Lesen von `KLARTEXT_Systemanleitung.html` zeigt sich: ~70 % des Inhalts ist
+TK-Bereich-spezifisch — komplette Abschnitte zu Nachrichten/Chat, Weiterleitungen, TK-Inbox, Zeitkonto,
+Notizblock, Urlaubsantrag/Krankmeldung, plus eine "Wer ist wer"-Rollenübersicht mit vier Rollen
+(INGRA/TK/Lehrkraft/Eltern), die es im Shop-Paket (eine einzige Rolle) gar nicht gibt. Die Datei ist zwar
+funktional Supabase-frei (kein Code-Aufruf), aber inhaltlich für einen Shop-Kunden irreführend — sie war
+sogar mit einem auffälligen "✨ Neu"-Badge zweimal in `DASHBOARD_Lite.html` verlinkt.
+
+**Lösung:** Neue eigenständige Datei `KLARTEXT_Systemanleitung_Shop.html` — enthält nur, was im
+Shop-Paket tatsächlich existiert: Dashboard-Aufbau, Quick-Start (Kartendeck öffnen, Barometer, Workbook,
+Fachbuch), die neun Module, INGRA-Barometer (ohne Kind-Barometer/Brainy-Coach-Chat), Joker-Konzept,
+Downloads, ein expliziter Workbook-Hinweis (In-Memory, nicht dauerhaft gespeichert) und eine
+Shop-passende Häufige-Fragen-Sektion. `DASHBOARD_Lite.html`s zwei Verlinkungen auf die alte Datei
+umgestellt. Die alte `KLARTEXT_Systemanleitung.html` zusätzlich in `SHOP_PACKAGE_AUSSCHLUSSLISTE.md` und
+`build_shop_package.sh` aufgenommen, damit sie gar nicht erst im Paket landet (nur noch `DASHBOARD.html`,
+die Live-Version, verlinkt sie).
+
+**Getestet:** Kompletter Buildlauf — alte Systemanleitung fehlt im Paket, neue Shop-Variante vorhanden,
+`DASHBOARD_Lite.html` im Paket verlinkt korrekt auf die neue Datei, Nachher-Check weiterhin sauber.
+
+**Nebenbefund, nicht behoben:** `BAROMETER_INGRA.html` (im Shop-Paket enthalten) verlinkt auf
+`BAROMETER_KIND.html` (ausgeschlossen) — toter Link innerhalb einer sonst unkritischen Seite. Kleiner
+Folge-Task, noch offen.

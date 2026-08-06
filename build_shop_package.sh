@@ -70,6 +70,7 @@ rsync "${RSYNC_FLAGS[@]}" \
   --exclude "feedbackAdmin.html" \
   --exclude "Admin_Backend.html" \
   --exclude "KLARTEXT_Vertretungsassistent_Architektur.html" \
+  --exclude "KLARTEXT_Systemanleitung.html" \
   --exclude "SHOP_PACKAGE_AUSSCHLUSSLISTE.md" \
   --exclude "build_shop_package.sh" \
   --exclude "KLARTEXT_Merkliste.md" \

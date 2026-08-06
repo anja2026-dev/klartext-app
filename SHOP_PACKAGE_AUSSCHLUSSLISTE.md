@@ -46,7 +46,7 @@ feedback.html
 feedbackAdmin.html
 ```
 
-## 2. Interne Planungs-/Architektur-Dokumente (2)
+## 2. Interne Planungs-/Architektur-Dokumente + inhaltlich überholte Seiten (3)
 
 Nicht kundenrelevant, unabhängig von Supabase — interne Konzeptseiten für die
 App-Weiterentwicklung, kein Trainings-/Lerninhalt:
@@ -54,7 +54,14 @@ App-Weiterentwicklung, kein Trainings-/Lerninhalt:
 ```
 Admin_Backend.html
 KLARTEXT_Vertretungsassistent_Architektur.html
+KLARTEXT_Systemanleitung.html   → ersetzt durch KLARTEXT_Systemanleitung_Shop.html
 ```
+
+`KLARTEXT_Systemanleitung.html` ist zwar funktional Supabase-frei, aber inhaltlich zu ~70 %
+TK-Bereich-spezifisch (Chat, Weiterleitungen, Zeitkonto, Kind-Barometer, Rollenlogik
+INGRA/TK/Lehrkraft/Eltern) — im Shop-Paket gäbe es all das nicht. Ersetzt durch die neue,
+eigenständige `KLARTEXT_Systemanleitung_Shop.html` (nur Module, INGRA-Barometer, Joker,
+Downloads, Workbook-Hinweis). `DASHBOARD_Lite.html` verlinkt bereits auf die neue Datei.
 
 ## 3. Ordner, komplett ausgeschlossen
 

@@ -2367,3 +2367,20 @@ sechs angestoßen (Insel/Zonen, Ratgeber-Framing, Signalkarten, Brainy-Welt-Samm
 Zauberfächer-Bug, Social-Media-Material — erstes Stück fertig). Nächster Schritt beim
 Social-Media-Strang: "Was tue ich jetzt?"-Karussell (kLAR-Modell + Feuerwehr-Protokoll)
 als Folgepost, danach ggf. Schnupper-Paket-Lead-Magnet.
+
+**Update 06.08.2026 (5) — PWA-Kartendecks-Übersicht neu sortiert:** Ursache für "wirkt
+unsortiert" gefunden: `pwa/index.html` (aufrufbar über DASHBOARD.html → "Alle Kartendecks
+öffnen" bzw. direkt unter klartext-app-8kl.pages.dev/pwa/) rendert die Deck-Kacheln
+clientseitig per `app.js` aus `pwa/data/decks.json` — bisher als eine einzige flache Liste
+in Datei-Reihenfolge, ohne Kategorien, ohne den Kachel-Look der Verkaufsseiten (nur
+Vollfarbfläche statt Farbbalken + Code-Badge). Fix: `decks.json` um Felder `kategorie` und
+`code` je Deck ergänzt (alle 24 Decks einsortiert: 13× "Kartendecks nach Zielgruppe", 7×
+"Handlungskarten & Spezialdecks", 4× "Material-Pakete für Zuhause & Klassenzimmer" — exakt
+dieselbe Dreiteilung wie auf `klartext-shop/KLARTEXT_Shop_Uebersicht.html`, plus sinnvoll
+eingeordnet: LRS/Dyskalkulie zu Zielgruppe, SMI + SP zu Handlungskarten, die dort noch
+fehlten). `app.js` (`loadDecks()`) baut jetzt pro Kategorie einen eigenen Abschnitt mit
+Überschrift + Unterzeile, `style.css` neu für Kachel-Kopf (Farbbalken + Code-Badge) und
+Kachel-Body (Titel/Untertitel) im selben Look wie die Shop-`deck-karte`. Service-Worker-
+Cache-Version von v10 auf v11 gebumpt, damit Bestandsnutzer die neue Version bekommen statt
+den alten Cache-Stand zu behalten. `index.html` (Grid-Container) entsprechend angepasst
+(`#deckGrid` → `#deckCategories`).

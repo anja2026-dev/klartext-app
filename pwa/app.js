@@ -2,8 +2,17 @@
 
 const screenDecks = document.getElementById('screen-decks');
 const screenCards = document.getElementById('screen-cards');
-const deckGrid = document.getElementById('deckGrid');
+const deckCategories = document.getElementById('deckCategories');
 const backBtn = document.getElementById('backBtn');
+
+// Kategorie-Reihenfolge + Überschriften, angelehnt an die Struktur der Shop-Übersichtsseite
+// (klartext-shop/KLARTEXT_Shop_Uebersicht.html) — damit App und Website gleich sortiert wirken.
+const KATEGORIEN = {
+  zielgruppe: { titel: 'Kartendecks nach Zielgruppe', sub: 'Eigene Zielgruppe, eigene Impulse, dieselbe systemische Grundhaltung.' },
+  handlung:   { titel: 'Handlungskarten & Spezialdecks', sub: 'Konkrete Handlungsanleitungen statt offener Coaching-Impulse.' },
+  material:   { titel: 'Material-Pakete für Zuhause & Klassenzimmer', sub: 'Raumzonen-Konzepte statt Gesprächskarten.' },
+};
+const KATEGORIE_ORDER = ['zielgruppe', 'handlung', 'material'];
 const progressEl = document.getElementById('progress');
 
 const flashcard = document.getElementById('flashcard');
@@ -70,18 +79,41 @@ function setAppIdentity(deckOrNull) {
 async function loadDecks() {
   const res = await fetch('data/decks.json');
   const decks = await res.json();
-  deckGrid.innerHTML = '';
-  decks.forEach(d => {
-    const btn = document.createElement('button');
-    btn.className = 'decktile';
-    btn.style.background = d.farbe;
-    btn.innerHTML = `
-      <div class="dt-titel">${d.titel}</div>
-      <div class="dt-sub">${d.untertitel}</div>
-      <div class="dt-count">${d.anzahl} Karten</div>
+  deckCategories.innerHTML = '';
+
+  KATEGORIE_ORDER.forEach(katId => {
+    const inKat = decks.filter(d => d.kategorie === katId);
+    if (!inKat.length) return;
+    const kat = KATEGORIEN[katId];
+
+    const block = document.createElement('section');
+    block.className = 'katblock';
+    block.innerHTML = `
+      <h2 class="kattitel">${kat.titel}</h2>
+      <p class="katsub">${kat.sub}</p>
     `;
-    btn.addEventListener('click', () => openDeck(d.id));
-    deckGrid.appendChild(btn);
+    const grid = document.createElement('div');
+    grid.className = 'deckgrid';
+
+    inKat.forEach(d => {
+      const btn = document.createElement('button');
+      btn.className = 'decktile';
+      btn.innerHTML = `
+        <div class="dt-kopf" style="background:${d.farbe};">
+          <span class="dt-code">${d.code}</span>
+          <span class="dt-count">${d.anzahl} Karten</span>
+        </div>
+        <div class="dt-body">
+          <div class="dt-titel">${d.titel}</div>
+          <div class="dt-sub">${d.untertitel}</div>
+        </div>
+      `;
+      btn.addEventListener('click', () => openDeck(d.id));
+      grid.appendChild(btn);
+    });
+
+    block.appendChild(grid);
+    deckCategories.appendChild(block);
   });
 }
 

@@ -1657,3 +1657,22 @@ hier nur dokumentiert zur Priorisierung in den nächsten Sessions:
 
 **Nächster Schritt:** mit Anja priorisieren, welche 2-3 Punkte zuerst angegangen werden (Umfang zu groß
 für eine tokenarme Session am Stück).
+
+## Strang 35 · Druckauftrag: 45-Karten-Testset für Kartendruckerei (06.08.2026)
+
+Anja braucht Einzeldateien (nicht das Gesamt-PDF, das wurde von der Druckerei nicht angenommen) für einen
+Testdruck-Auftrag, Auswahl 45 Karten aus KD/JD/Werkzeug/Krisendeck. Anjas erste Liste enthielt mehrere
+ID/Titel-Verwechslungen mit dem echten Karteninhalt (aus anderer/externer Quelle übernommen) — nach
+Rückfrage hat Anja eine korrigierte, gegen die echten Decks geprüfte Liste geliefert:
+- KD (Grundschule/Brainy): 01,02,03,04,05,06,08,10,11,12,13,14,15,20,30 (15 Karten)
+- JD (Jugendliche/Resilienz): 03,04,07,09,13,16,20,22,24,25,28,33,38,40,50 (15 Karten)
+- WZ/Werkzeugkarten (Fachkraft-Tools): 01,05,09,10,11,12,13,15,18,20 (10 Karten, Anjas Liste nannte
+  "M3-xx" — richtiges Präfix ist WZ-xx, gleiche Nummerierung)
+- FK/Krisendeck (Akutintervention): 01,02,03,04,08 (5 Karten)
+
+Alle vier Quelldecks komplett neu gerendert (KD 35, JD 52, WZ 26, FK 8 Karten), daraus die 45
+ausgewählten extrahiert: je Vorder-/Rückseite als einzelne PNG (105×148mm/A6, 300dpi, print-ready), in
+4 Ordnern nach Zielgruppe sortiert, als `Druckauftrag_45_Karten.zip` (90 Einzeldateien) bereitgestellt.
+
+**Noch offen:** 1-2 Musterkarten aus jedem der ~19 Decks für Anja selbst (separater, kleinerer Wunsch,
+noch nicht umgesetzt) — QR-Code auf Kartendecks ist ebenfalls noch offen (Strang 34).

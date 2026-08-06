@@ -1946,3 +1946,18 @@ gewachsen, ohne dass die Lernmaterialien das abbildeten. Befund bei der Recherch
    vorhanden — kein Nachtrag nötig.
 
 Damit ist die zweite von zwei ursprünglich benannten Prioritäten (Hochbegabung, Mobbing) abgeschlossen.
+
+## Strang 43: Idee — eigenständiges Deck "Berufsvorbereitung / Übergang Arbeitswelt"
+
+Bereits einmal angedacht (siehe FS-Erweiterungs-Analyse weiter oben: "Übergang Werkstatt/Arbeitswelt"),
+damals aber als FS-Zusatzblock verworfen, weil Scope-Mismatch (FS = Grundschulalter). Jetzt als
+eigenständige Deck-Idee festgehalten, nicht mehr an FS gekoppelt:
+
+- **Zielgruppe:** Förderschule-Berufsvorbereitungsstufe / Sek II (ca. 16–18 Jahre) — eigene Altersstufe,
+  bisher von keinem bestehenden Deck abgedeckt (JD-41–44 "Berufsvorbereitung" ist ein Zusatzblock
+  innerhalb des JD-Decks, kein eigenständiges Produkt, und richtet sich an jüngere Jugendliche).
+- **Möglicher Aufbau:** analog zum EL-JD-Muster (eigene Bilder, adaptierte/vertiefte Texte statt reiner
+  Kopie), Themen z. B. Praktikum, Bewerbung, Arbeitsalltag, Konflikte im Team, Selbstständigkeit im
+  Berufsalltag, Übergang Schule → Werkstatt/Ausbildung.
+- **Status:** reine Idee, noch keine Konzeptarbeit begonnen. Aufgreifen sobald Kapazität da ist oder
+  konkreter Bedarf (z. B. von einem Träger) gemeldet wird.

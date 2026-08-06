@@ -2312,6 +2312,22 @@ Klasse eine hat, Trinkpause usw.). Titel bewusst ohne "raus" (Anjas Korrektur), 
 Optionen ein Verlassen des Raums bedeuten — Synergie zu Insel-/Zonen-Sets möglich (eine Bildoption
 könnte auf "geh zu deiner Insel" zeigen). Konzept steht, Kartentexte/Bilder noch nicht erstellt.
 
-**Offen mit Anja:** welches der sechs Themen zuerst konkret umgesetzt wird. Kleinster/schnellster
-Fix wäre weiterhin der Zauberfächer-Downloads-Bug (Streifen-Version nirgends verlinkt, siehe
-Task #261 in der Session).
+**Update 06.08.2026 — umgesetzt:** Konzept + Bildprompts in `Brainy_Signalkarten_Konzept.md`
+festgehalten, zwei Prompts nach Anjas Rückmeldung noch angepasst (Bewegung jetzt am
+Schultisch, frische Luft jetzt auf dem Pausenhof statt am Fenster — beides realistischer).
+Anja hat alle 6 Bilder generiert und unter `bilder/signalkarten/` abgelegt, Sichtprüfung
+bestanden — durchgängig stilkonsistent mit dem bestehenden Brainy-Charakter.
+`KD-02_Klokarten.html` komplett umgebaut: Titel/Header auf "Brainy muss mal kurz…", die 12
+fast identischen Chips mit demselben 🚽-Emoji (unabhängig vom jeweiligen Text — z. B. auch
+bei "Pause gebraucht" oder "Kurze Auszeit") ersetzt durch 6 Karten mit je eigenem Foto
+(120px Kreis, farbige Umrandung wie vorher), Hinweis ergänzt dass die Insel-Karte nur für
+Klassen mit Insel-/Zonen-Set gilt. Referenzen in `KLARTEXT_Downloads.html`,
+`DL_Allgemein.html`, `DASHBOARD.html`, `DASHBOARD_Lite.html` von "Klo-Kärtchen" auf "Brainy
+muss mal kurz…" umbenannt (Icon 🚽→🙋). Dateiname `KD-02_Klokarten.html` unverändert
+gelassen, um Links nicht zu brechen.
+
+**Offen mit Anja:** von den ursprünglich sechs Fahrplan-Themen (Strang 52) sind jetzt drei
+umgesetzt (Insel/Zonen, Ratgeber-Framing, Signalkarten). Noch offen: kostenloses
+Social-Media-Material, Brainy-Welt-Sammelseite, sowie kleinster/schnellster übriger Fix —
+der Zauberfächer-Downloads-Bug (Streifen-Version nirgends verlinkt, siehe Task #261 in der
+Session).

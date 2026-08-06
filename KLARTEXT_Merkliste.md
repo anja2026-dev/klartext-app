@@ -1763,3 +1763,56 @@ EL-Kartendeck-Fix Freund:in), ist hiermit aber explizit als projektweite Regel f
 künftigen Korrekturen (auch die noch offene Vollprüfung, siehe Claude-Free-Übergabe Baustelle 1) und für
 Anjas gemeldete Einzelbeispiele (z. B. "keine Freundin" in KLARTEXT_Fachbuch_Trainingsmodule.html), die
 damit noch zu bewerten und ggf. zu korrigieren sind.
+
+## Strang 38 · App-Trennung: was für reine Local-Storage-PWA (Shop-Version) fehlt (06.08.2026)
+
+Anjas Ziel: die App als eigenständige, reine INGRA-Lern-PWA im Shop verkaufen — ohne Supabase/Träger-
+Anbindung. Supabase erst einsetzen, wenn ein Träger es konkret will (dann folgt die DSGVO-Prüfung
+separat). Codebase-Analyse ergibt eine **deutlich bessere Ausgangslage als befürchtet**:
+
+**Befund 1 — nur 25 von >300 Dateien nutzen Supabase überhaupt:** Alle Kartendecks, Module M0-M8,
+Fachbuch, Workbook, Glossar, Lernpfad, Trainerhandbuch sind bereits rein statisch/lokal (keine
+Supabase-Aufrufe). Supabase steckt ausschließlich in den Case-Management-/TK-Funktionen: DASHBOARD.html,
+CHAT_*, TK_*, KLARTEXT_Weiterleitungen.html, KLARTEXT_Zeitkonto.html, BAROMETER_KIND.html,
+Kinderverwaltung.html, KLARTEXT_Krankmeldung/Listen/Notizblock/Portale/Tagesjournal/
+Teilnehmer_Protokoll/UnserBuch/Urlaubsantrag.html, KLARTEXT_Login/Logout.html.
+
+**Befund 2 — der Login ist der einzige zentrale Flaschenhals:** 344 Dateien (praktisch der gesamte
+Content) prüfen nur `sessionStorage.getItem('klartext_login')==='true'` und leiten sonst zu
+KLARTEXT_Login.html um. Dieses Flag wird aktuell ausschließlich nach erfolgreichem
+`supabase.auth.signInWithPassword()` gesetzt. Für die Shop-Version reicht es, **eine** neue,
+Supabase-freie Login-Seite zu bauen, die dasselbe Flag setzt (z. B. simples lokales Passwort wie beim
+alten Lehrkraft/Eltern-Zugang) — die 344 Content-Dateien selbst müssten dafür nicht angefasst werden.
+
+**Befund 3 — DASHBOARD.html mischt beide Welten:** Die zentrale Kachel-Seite verlinkt sowohl auf
+Content (Module, Kartendecks, Fachbuch, pwa/index.html) als auch auf Case-Management (TK_*, Chat,
+Zeitkonto, Barometer Kind, Notizblock, Krankmeldung...). Für die Shop-Version braucht es eine reduzierte
+"DASHBOARD-Lite"-Variante, die nur die Content-Kacheln zeigt.
+
+**Befund 4 — PWA-Offline-Abdeckung unvollständig:** Es gibt zwei getrennte Service Worker: `sw.js`
+(Root, generisches Runtime-Caching ohne festen Precache) und `pwa/service-worker.js` (nur für den
+Kartendeck-Viewer, mit festem Precache). Der Root-`manifest.json` `start_url` zeigt auf
+`KLARTEXT_Login.html` (Supabase-Seite) — muss für eine reine PWA auf eine content-Startseite geändert
+werden, sonst startet die installierte App immer im Login.
+
+**Befund 5 (wichtig, unabhängig vom eigentlichen Thema entdeckt):** Die heute korrigierte
+Datenschutzerklärung behauptet weiterhin "Zeitkonto-Einträge ... localStorage im eigenen Browser —
+niemals auf einem Server" — das stimmt nicht mehr. `KLARTEXT_Zeitkonto.html` schreibt tatsächlich in
+Supabase-Tabellen (`zeiteintraege`, `weiterleitungen`). Für die aktuelle Live-App (mit Supabase) ist die
+Datenschutzerklärung an dieser Stelle **sachlich falsch** — unabhängig von der Shop-Frage, sollte das
+zeitnah korrigiert werden (entweder Zeitkonto-Beschreibung anpassen oder klarstellen, dass dies nur für
+den TK-Bereich gilt).
+
+**Priorisierte Checkliste für die reine Shop-PWA:**
+1. Supabase-freie Login-Alternative bauen (setzt `klartext_login`-Flag lokal, kein Backend-Call)
+2. DASHBOARD-Lite ohne TK-/Case-Management-Kacheln erstellen
+3. Die 25 Supabase-Dateien aus dem Shop-Paket ausschließen (nicht mit ausliefern)
+4. `manifest.json` `start_url` + Root-`sw.js`-Precache auf Content-Seiten umstellen
+5. Datenschutzerklärung für die Shop-Version separat pflegen (die aktuelle beschreibt ein Mischsystem;
+   die Shop-Version wäre tatsächlich vollständig lokal — dort stimmt die "keine Serververarbeitung"-
+   Aussage dann sogar wieder)
+6. Zeitkonto-Aussage in der *aktuellen* (Supabase-)Datenschutzerklärung separat korrigieren (Befund 5)
+
+**Noch offen / nicht Teil dieser Analyse:** Lizenzierung/Kopierschutz für eine verkaufte lokale
+Kopie (aktuell kein Mechanismus vorgesehen — jeder mit der Datei hätte Vollzugriff), Preisfindung,
+Umfang des Shop-Pakets (alle M0-M8 + alle Kartendecks, oder Auswahl).

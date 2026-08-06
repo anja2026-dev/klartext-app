@@ -1845,3 +1845,23 @@ unklar ist, wie man das "professionell" umsetzt.
 **Offene Entscheidungen bei Anja:** Wahl der Verkaufsplattform (Elopage/Digistore24/anders) und des
 E-Mail-Tools — beide Themen an Task #202 angehängt. Bau-Arbeit (Login-Seite, DASHBOARD-Lite) kann
 direkt hier übernommen werden, sobald gewünscht.
+
+**Nachtrag (06.08.2026):** Anja hat gepusht. Workshops/Schulungen müssen ebenfalls überarbeitet werden
+(gehört zu Baustelle 2 der Claude-Free-Übergabe, s. o.) — Anja ist sich aber noch unsicher, ob sie
+Workshops/Schulungen schon aktiv anbieten möchte. Die inhaltliche Überarbeitung (Trainerhandbuch/
+Schulungsunterlagen an neue Decks anpassen) läuft unabhängig von dieser Entscheidung weiter — die
+"Anbieten ja/nein"-Frage ist rein Anjas Entscheidung und blockiert die technische/inhaltliche Vorarbeit
+nicht.
+
+**Marketing-Idee zur Prüfung: Kurzvideos aus Kartendecks für TikTok/Instagram.** Anjas Frage, meine
+Einschätzung: grundsätzlich sinnvoll — die Decks haben durch Brainy-Illustrationen und klare Vorder-/
+Rückseiten-Struktur bereits ein gutes visuelles Format für Kurzvideos (z. B. "Karte des Tages"
+Flip-Reveal), und es ist günstige Zweitverwertung von bereits vorhandenem Content. Passt auch gut zum
+geplanten Freebie-Bereich (kostenlose Kurzinhalte als Vertrauensaufbau vor dem Kauf). Zwei Vorbehalte:
+(1) Bei sensiblen Themen (Krisenintervention, Kinderschutz, Mobbing) besteht Risiko, dass das
+Kurzvideo-Format zur Trivialisierung verleitet — braucht bewusste redaktionelle Zurückhaltung bei der
+Auswahl, welche Karten sich dafür eignen. (2) Reichweite auf TikTok/Instagram für eine Nischen-
+Zielgruppe (Schulbegleitung/pädagogische Fachkräfte) ist ein Langstreckenspiel, kein schneller Hebel —
+eher sinnvoll, nachdem Verkaufsplattform/Grundinfrastruktur stehen, nicht davor. Technisch umsetzbar
+(einfache Slideshow-/Textoverlay-Videos aus vorhandenen Karten-PNGs lassen sich bauen) — noch nicht
+begonnen, wartet auf Priorisierungsentscheidung.

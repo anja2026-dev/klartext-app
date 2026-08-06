@@ -2384,3 +2384,23 @@ Kachel-Body (Titel/Untertitel) im selben Look wie die Shop-`deck-karte`. Service
 Cache-Version von v10 auf v11 gebumpt, damit Bestandsnutzer die neue Version bekommen statt
 den alten Cache-Stand zu behalten. `index.html` (Grid-Container) entsprechend angepasst
 (`#deckGrid` → `#deckCategories`).
+
+**Update 06.08.2026 (6) — Raummarkierungen für Insel-/Zonen-Set sichtbar gemacht:** Anjas
+Beobachtung war berechtigt: die Insel-/Zonen-Sets liefen in der App bisher nur als
+Flip-Karten (Begleitkarten-Inhalt mit Regeln/Nutzen), obwohl das eigentliche Kernprodukt
+großformatige Wandschilder zum Aufhängen sind. Recherche ergab: die Schilder existierten
+bereits fertig gebaut — `build_marker_insel.py` erzeugt 8 DIN-A4-Raummarkierungen pro Set
+(`KLARTEXT_Insel-Set_Raummarkierungen_Schule.pdf` / `_Eltern.pdf`, je 8 Seiten, verifiziert)
+— waren aber nirgends verlinkt: nicht in `KLARTEXT_Downloads.html`, nicht auf der
+`IS_Verkaufsseite.html`. Beim Zonen-Set war die Situation anders: dort sind die (bewusst
+kleinen, unauffälligen A6-)Markierungen für Jugendliche von Anfang an ins Haupt-PDF
+eingebaut (`build_pdf_zonen.py`) und auf `ZS_Verkaufsseite.html` korrekt beworben — kein
+Fix nötig. Behoben: neue Sektion "Raum-Material · Insel- & Zonen-Set" in
+`KLARTEXT_Downloads.html` mit allen 8 zugehörigen PDFs (2× Raummarkierungen, 3×
+Insel-Handbücher Schule-INGRA/Schule-LK/Eltern, 2× Zonen-Komplettpakete, 1×
+Zonen-Token-Karten). `IS_Verkaufsseite.html` korrigiert: Copy sprach bisher nur von
+"Badge-Druckvorlage" statt der tatsächlichen 8 großformatigen Raummarkierungen — in
+Leistungs-Kacheln und allen drei Preis-Paketen (Digital, Bundle, Träger-Lizenz)
+richtiggestellt. Die PWA-Flip-Karten bleiben zusätzlich bestehen (digitale Fassung der
+kleinen Begleitkarten für die Fachkraft) — sie ersetzen die Schilder nicht, sondern
+ergänzen sie, wie von Anja gewünscht.

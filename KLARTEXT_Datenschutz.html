@@ -41,6 +41,11 @@ strong{color:var(--m);}
 .gruen-box{background:#E8F5EE;border:1.5px solid #6EC6A0;border-radius:10px;padding:1rem 1.25rem;margin:.75rem 0;}
 .gruen-box p{color:#1A4A2E;font-weight:500;}
 
+/* HINWEIS-BOX (Supabase/TK-Bereich — verarbeitet echte personenbezogene Daten) */
+.hinweis-box{background:#FDF3E3;border:1.5px solid #C47A00;border-radius:10px;padding:1rem 1.25rem;margin:.75rem 0;}
+.hinweis-box p{color:#7A4A00;font-weight:500;}
+.sub-titel{font-family:"Playfair Display",serif;font-size:.92rem;font-weight:700;color:var(--m);margin:1rem 0 .5rem;}
+
 /* TABELLE */
 .ds-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:.5rem 0;}
 .ds-table th{background:var(--m);color:#fff;padding:.5rem .75rem;text-align:left;font-weight:600;}
@@ -70,7 +75,7 @@ strong{color:var(--m);}
   <div class="hero">
     <div class="hero-titel">Datenschutzerklärung</div>
     <div class="hero-sub">KLARTEXT Mentoring-System · Anja Jolk, Schwerte<br>Gemäß Art. 13 DSGVO und § 25 TDDDG</div>
-    <div class="hero-badge">🔒 Keine personenbezogenen Daten — kein Tracking — kein Server</div>
+    <div class="hero-badge">🔒 Kein Tracking — zwei Bereiche mit unterschiedlicher Datenverarbeitung, siehe Abschnitt 3</div>
   </div>
 
   <!-- 1. VERANTWORTLICHE -->
@@ -85,32 +90,28 @@ strong{color:var(--m);}
 
   <!-- 2. GRUNDSATZ -->
   <div class="ds-karte">
-    <div class="ds-titel"><span class="ds-icon">🛡️</span> 2. Grundsatz — Datensparsamkeit</div>
+    <div class="ds-titel"><span class="ds-icon">🛡️</span> 2. Grundsatz — zwei Bereiche, zwei Verarbeitungsarten</div>
+    <p>KLARTEXT besteht aus zwei technisch getrennten Bereichen mit sehr unterschiedlicher Datenverarbeitung. Diese Erklärung beschreibt beide, damit sie vollständig und zutreffend ist.</p>
     <div class="gruen-box">
-      <p>KLARTEXT ist technisch so gestaltet, dass <strong>keine personenbezogenen Daten erhoben, gespeichert oder weitergegeben werden.</strong> Das System funktioniert vollständig ohne Nutzerkonten, ohne Tracking und ohne Datenbank.</p>
+      <p>✅ Der <strong>Lern- und Kartendeck-Bereich</strong> (Module M0–M8, Fachbuch, Workbook, Lernpfad, alle Kartendecks) ist so gestaltet, dass <strong>keine personenbezogenen Daten erhoben, gespeichert oder an einen Server übertragen werden.</strong> Dieser Teil funktioniert ohne Nutzerkonten, ohne Tracking und ohne Datenbank.</p>
     </div>
-    <p>KLARTEXT besteht aus statischen HTML-Dateien die über den Hosting-Dienst Cloudflare Pages ausgeliefert werden. Es gibt keinen eigenen Server, keine Nutzerdatenbank und keine Verarbeitung personenbezogener Daten durch den Systembetreiber.</p>
+    <div class="hinweis-box">
+      <p>⚠️ Der <strong>TK-Bereich</strong> (Anmeldung, Fallmanagement, Kind-Barometer, Chat, Zeitkonto, Krankmeldungen, Urlaubsanträge, Notizblock, Teilnehmer-Protokoll, Listen, Weiterleitungen — zugänglich nur für angemeldete Trainer-Koordination/INGRAs) verarbeitet dagegen <strong>echte personenbezogene Daten in einer Datenbank</strong>, teilweise auch Daten über betreute Kinder. Details dazu in Abschnitt 3b.</p>
+    </div>
+    <p>KLARTEXT besteht technisch aus statischen HTML-Dateien, die über Cloudflare Pages ausgeliefert werden. Für den Lern-/Kartendeck-Bereich gibt es dabei keinen Anwendungsserver und keine Datenbank. Der TK-Bereich nutzt zusätzlich <strong>Supabase</strong> (Datenbank und Anmeldung) sowie <strong>Firebase</strong> (Chat-Funktion) als externe Backend-Dienste.</p>
   </div>
 
   <!-- 3. WELCHE DATEN -->
   <div class="ds-karte">
     <div class="ds-titel"><span class="ds-icon">📊</span> 3. Welche Daten werden verarbeitet?</div>
+
+    <div class="sub-titel">3a. Lern- und Kartendeck-Bereich (kein Server, keine Datenbank)</div>
     <table class="ds-table">
       <tr><th>Datenkategorie</th><th>Verarbeitung</th><th>Speicherort</th></tr>
       <tr>
-        <td><strong>Login / Passwort</strong></td>
-        <td>Nur als Zugangskontrolle — kein Nutzername, kein personenbezogener Inhalt</td>
-        <td>sessionStorage im Browser — wird beim Schließen des Tabs automatisch gelöscht</td>
-      </tr>
-      <tr>
-        <td><strong>Zeitkonto-Einträge</strong></td>
-        <td>Nur wenn INGRA selbst Einträge erfasst</td>
-        <td>localStorage im eigenen Browser — niemals auf einem Server</td>
-      </tr>
-      <tr>
         <td><strong>Workbook-Antworten</strong></td>
         <td>Nur wenn INGRA selbst Reflexionen eingibt</td>
-        <td>localStorage im eigenen Browser — niemals auf einem Server</td>
+        <td>Ausschließlich im Arbeitsspeicher der Browser-Seite (JavaScript-Variable) — nicht einmal localStorage. Die Eingaben gehen beim Schließen oder Neuladen der Seite verloren und werden zu keinem Zeitpunkt an einen Server übertragen.</td>
       </tr>
       <tr>
         <td><strong>Server-Logs (Cloudflare)</strong></td>
@@ -124,7 +125,51 @@ strong{color:var(--m);}
       </tr>
     </table>
     <div class="gruen-box">
-      <p>✅ Zeitkonto- und Workbook-Daten verlassen das Gerät der Nutzerin niemals. Sie sind ausschließlich lokal im Browser gespeichert und für niemanden außer der Nutzerin selbst einsehbar.</p>
+      <p>✅ In diesem Bereich verlassen keine Eingaben das Gerät der Nutzerin — auch Workbook-Antworten nicht, die noch nicht einmal dauerhaft im Browser gespeichert werden.</p>
+    </div>
+
+    <div class="sub-titel">3b. TK-Bereich (Datenbank-gestützt, nur für angemeldete Trainer-Koordination/INGRAs)</div>
+    <p>Für diesen Bereich ist eine Anmeldung mit E-Mail-Adresse und Passwort erforderlich. Die folgenden Datenkategorien werden serverseitig in einer Datenbank gespeichert:</p>
+    <table class="ds-table">
+      <tr><th>Datenkategorie</th><th>Verarbeitung</th><th>Speicherort</th></tr>
+      <tr>
+        <td><strong>Anmeldedaten</strong></td>
+        <td>E-Mail-Adresse, Passwort (gehasht), Sitzungstoken — zur Authentifizierung</td>
+        <td>Supabase Auth (Datenbank + Authentifizierungsdienst)</td>
+      </tr>
+      <tr>
+        <td><strong>Kind-Barometer-Einträge</strong></td>
+        <td>Selbstauskunft eines betreuten Kindes: Stimmungs-/Ampel-Farbe, optionale freie Notiz, verknüpft mit einer Kind-ID</td>
+        <td>Supabase-Datenbank (Tabelle <code>barometer_kind</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>Fallmanagement-Daten</strong></td>
+        <td>Fallakte, Fallverlauf/Timeline, Risikostatus, Fallbesprechungen, Fallabschluss zu einem betreuten Kind</td>
+        <td>Supabase-Datenbank (u. a. Tabellen <code>fallakte</code>, <code>fall_timeline</code>, <code>fall_risikostatus</code>, <code>tk_fallbesprechungen</code>, <code>fallabschluss</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>Chat-Nachrichten</strong></td>
+        <td>Nachrichten zwischen Teammitgliedern (TK, INGRA, Trainer:innen)</td>
+        <td>Firebase Realtime Database</td>
+      </tr>
+      <tr>
+        <td><strong>Zeitkonto-Einträge</strong></td>
+        <td>Von INGRA erfasste Arbeitszeiten</td>
+        <td>Supabase-Datenbank (Tabelle <code>zeiteintraege</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>Krankmeldungen / Urlaubsanträge</strong></td>
+        <td>Von INGRA erfasste Abwesenheitsmeldungen</td>
+        <td>Supabase-Datenbank (Tabellen <code>krankmeldungen</code>, <code>urlaubsantraege</code>)</td>
+      </tr>
+      <tr>
+        <td><strong>Notizblock / Teilnehmer-Protokoll / Listen / Weiterleitungen</strong></td>
+        <td>Freitext-Notizen, Protokolleinträge und interne Weiterleitungen des Teams</td>
+        <td>Supabase-Datenbank (Tabellen <code>notizen</code>, <code>teilnehmer_protokoll</code>, <code>listen_eintraege</code>, <code>weiterleitungen</code>)</td>
+      </tr>
+    </table>
+    <div class="hinweis-box">
+      <p>⚠️ Die Kind-Barometer- und Fallmanagement-Daten betreffen <strong>Kinder als besonders schutzbedürftige Personengruppe</strong>. Sie werden ausschließlich innerhalb des passwortgeschützten TK-Bereichs verarbeitet, sind nicht öffentlich einsehbar und dienen ausschließlich der fachlichen Begleitung durch die zuständige Trainer-Koordination.</p>
     </div>
   </div>
 
@@ -141,20 +186,37 @@ strong{color:var(--m);}
     <p>Ein Auftragsverarbeitungsvertrag (DPA) mit Cloudflare wird über den Cloudflare-Account abgeschlossen bzw. gilt automatisch mit der Nutzung von Cloudflare-Diensten gemäß deren Standard-DPA.</p>
   </div>
 
-  <!-- 5. RECHTSGRUNDLAGEN -->
+  <!-- 5. SUPABASE & FIREBASE -->
   <div class="ds-karte">
-    <div class="ds-titel"><span class="ds-icon">⚖️</span> 5. Rechtsgrundlagen</div>
+    <div class="ds-titel"><span class="ds-icon">🗄️</span> 5. Datenbank &amp; Chat (nur TK-Bereich) — Supabase &amp; Firebase</div>
+    <p>Für den TK-Bereich (siehe 3b) werden zusätzlich zwei externe Dienste als Auftragsverarbeiter eingesetzt:</p>
     <ul>
-      <li><strong>Art. 6 Abs. 1 lit. b DSGVO</strong> — Vertragserfüllung (Zugang zum lizenzierten System)</li>
-      <li><strong>Art. 6 Abs. 1 lit. f DSGVO</strong> — Berechtigtes Interesse (sicherer Betrieb, Zugangsschutz)</li>
-      <li><strong>§ 25 TDDDG</strong> — Keine Cookies oder Tracking ohne Einwilligung</li>
+      <li><strong>Supabase</strong> — Datenbank und Anmeldung (Authentifizierung) für Fallmanagement, Kind-Barometer, Zeitkonto, Krankmeldungen, Urlaubsanträge, Notizblock, Teilnehmer-Protokoll, Listen und Weiterleitungen.</li>
+      <li><strong>Firebase</strong> (Google) — Realtime Database für die Chat-Funktion zwischen Teammitgliedern.</li>
     </ul>
-    <p>Da keine personenbezogenen Daten durch den Systembetreiber erhoben oder verarbeitet werden, ist der Anwendungsbereich der DSGVO auf das technische Hosting beschränkt.</p>
+    <div class="hinweis-box">
+      <p>⚠️ <strong>Noch zu klären/dokumentieren:</strong> Serverstandort und Auftragsverarbeitungsvertrag (AVV nach Art. 28 DSGVO) für das konkret genutzte Supabase-Projekt sowie für die Firebase-Instanz sind hier noch nicht bestätigt. Das sollte vor einer produktiven Nutzung mit echten Kind- und Mitarbeitendendaten mit Supabase bzw. Google/Firebase geprüft und — falls noch nicht geschehen — ein AVV abgeschlossen werden.</p>
+    </div>
   </div>
 
-  <!-- 6. RECHTE -->
+  <!-- 6. RECHTSGRUNDLAGEN -->
   <div class="ds-karte">
-    <div class="ds-titel"><span class="ds-icon">✋</span> 6. Ihre Rechte</div>
+    <div class="ds-titel"><span class="ds-icon">⚖️</span> 6. Rechtsgrundlagen</div>
+    <ul>
+      <li><strong>Art. 6 Abs. 1 lit. b DSGVO</strong> — Vertragserfüllung (Zugang zum lizenzierten System)</li>
+      <li><strong>Art. 6 Abs. 1 lit. f DSGVO</strong> — Berechtigtes Interesse (sicherer Betrieb, Zugangsschutz, interne Team-Organisation im TK-Bereich)</li>
+      <li><strong>Art. 6 Abs. 1 lit. c DSGVO</strong> ggf. i. V. m. landesrechtlichen Vorgaben zum Kinderschutz — für die Dokumentation im Fallmanagement, soweit eine rechtliche Verpflichtung besteht</li>
+      <li><strong>§ 25 TDDDG</strong> — Keine Cookies oder Tracking ohne Einwilligung</li>
+    </ul>
+    <p>Für den Lern-/Kartendeck-Bereich ist der Anwendungsbereich der DSGVO auf das technische Hosting beschränkt, da dort keine personenbezogenen Daten verarbeitet werden. Für den TK-Bereich gilt die DSGVO uneingeschränkt.</p>
+    <div class="hinweis-box">
+      <p>⚠️ Kind-Barometer- und Fallmanagement-Daten betreffen Kinder (Art. 8 DSGVO sieht besonderen Schutz für Kinder vor). Die konkrete Rechtsgrundlage und ggf. Notwendigkeit einer Datenschutz-Folgenabschätzung nach Art. 35 DSGVO sollte mit der Trägerorganisation bzw. einer datenschutzrechtlich versierten Fachperson abgestimmt werden — das ist im Rahmen dieser Überarbeitung nicht abschließend geklärt.</p>
+    </div>
+  </div>
+
+  <!-- 7. RECHTE -->
+  <div class="ds-karte">
+    <div class="ds-titel"><span class="ds-icon">✋</span> 7. Ihre Rechte</div>
     <p>Als betroffene Person haben Sie folgende Rechte gemäß DSGVO:</p>
     <ul>
       <li><strong>Auskunft</strong> (Art. 15) — Welche Daten werden über mich verarbeitet?</li>
@@ -165,20 +227,23 @@ strong{color:var(--m);}
       <li><strong>Beschwerde</strong> — Bei der zuständigen Aufsichtsbehörde: <strong>LDI NRW</strong> (Landesbeauftragte für Datenschutz und Informationsfreiheit NRW, Düsseldorf)</li>
     </ul>
     <div class="gruen-box">
-      <p>Da keine personenbezogenen Daten auf Servern des Systembetreibers gespeichert werden, können Auskunfts- und Löschanfragen in der Regel direkt durch Löschen der Browser-Daten (localStorage/sessionStorage) erfüllt werden.</p>
+      <p>✅ Für den Lern-/Kartendeck-Bereich: Da dort keine personenbezogenen Daten auf einem Server gespeichert werden, sind Auskunfts- und Löschanfragen gegenstandslos bzw. bereits durch Schließen des Browser-Tabs erledigt.</p>
+    </div>
+    <div class="hinweis-box">
+      <p>⚠️ Für den TK-Bereich: Diese Daten liegen serverseitig bei Supabase bzw. Firebase und können <strong>nicht</strong> durch Löschen von Browser-Daten entfernt werden. Auskunfts-, Berichtigungs- und Löschanfragen zu TK-Bereich-Daten richten Sie bitte direkt an die unten genannte verantwortliche Person.</p>
     </div>
   </div>
 
-  <!-- 7. KEINE WEITERGABE -->
+  <!-- 8. KEINE WEITERGABE -->
   <div class="ds-karte">
-    <div class="ds-titel"><span class="ds-icon">🚫</span> 7. Keine Weitergabe an Dritte</div>
-    <p>Es erfolgt <strong>keine Weitergabe</strong> von Nutzerdaten an Dritte — weder zu Werbezwecken noch für Analysen, weder an Kooperationspartner noch an Behörden (außer im gesetzlich vorgeschriebenen Fall).</p>
-    <p>KLARTEXT enthält <strong>keine Werbung, kein Tracking, keine Social-Media-Plugins</strong> und keine externen Analysedienste.</p>
+    <div class="ds-titel"><span class="ds-icon">🚫</span> 8. Weitergabe an Dritte</div>
+    <p>Es erfolgt <strong>keine Weitergabe zu Werbezwecken oder für Analysen</strong> — weder an Kooperationspartner noch an Behörden (außer im gesetzlich vorgeschriebenen Fall). KLARTEXT enthält <strong>keine Werbung, kein Tracking, keine Social-Media-Plugins</strong> und keine externen Analysedienste.</p>
+    <p>Supabase und Firebase (siehe Abschnitt 5) sind technische Auftragsverarbeiter für den TK-Bereich, keine eigenständigen Dritten im Sinne einer Datenweitergabe zu eigenen Zwecken — sie verarbeiten die Daten ausschließlich weisungsgebunden für den Betrieb des Systems.</p>
   </div>
 
-  <!-- 8. KONTAKT -->
+  <!-- 9. KONTAKT -->
   <div class="ds-karte">
-    <div class="ds-titel"><span class="ds-icon">📬</span> 8. Kontakt bei Datenschutzfragen</div>
+    <div class="ds-titel"><span class="ds-icon">📬</span> 9. Kontakt bei Datenschutzfragen</div>
     <div class="kontakt-box">
       <p><strong>Anja Jolk</strong><br>
       Rosenweg 61 · 58239 Schwerte<br>
@@ -188,7 +253,7 @@ strong{color:var(--m);}
     <p style="margin-top:.75rem;">Bei Fragen zum Datenschutz wenden Sie sich bitte direkt an die oben genannte verantwortliche Person. Anfragen werden innerhalb von 30 Tagen beantwortet.</p>
   </div>
 
-  <div class="datum">Stand: Mai 2026 · KLARTEXT Mentoring-System · Anja Jolk, Schwerte</div>
+  <div class="datum">Stand: 06.08.2026 · KLARTEXT Mentoring-System · Anja Jolk, Schwerte</div>
 
 </div>
 

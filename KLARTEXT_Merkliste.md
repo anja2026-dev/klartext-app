@@ -2046,3 +2046,62 @@ Datenschutzerklärung für die Shop-Version, Zeitkonto/Datenschutz-Widerspruch k
 Trainerhandbuch/Systemanleitung enthalten je 1–2 Firebase-Prosaverweise (Kind-Barometer-Sync, Chat), die
 vor dem Verkauf inhaltlich an die Lite-Version angepasst werden sollten — kleiner Folge-Task, kein
 Blocker für die Paket-Erstellung.
+
+## Strang 46: Datenschutzerklärung (Live-App) — vollständige Überarbeitung (Befund 5 + Nachfolgebefunde)
+
+Ursprünglich sollte nur eine falsche Formulierung korrigiert werden (Befund 5, Strang 38: Zeitkonto
+angeblich "localStorage ... niemals auf einem Server"). Bei der Prüfung anhand des tatsächlichen Codes
+kam heraus, dass das Problem deutlich größer ist. Anja wurde dazu befragt und hat für die vollständige
+Überarbeitung entschieden.
+
+**Verifizierte Fakten (per Grep gegen den tatsächlichen Code, nicht nur gegen die Doku):**
+- **Zeitkonto-Einträge** landen tatsächlich in Supabase (Tabelle `zeiteintraege`), nicht in localStorage.
+- **Workbook-Antworten** (`KLARTEXT_Workbook.html`) landen entgegen der bisherigen Behauptung nicht
+  einmal in localStorage — `wbStore` ist ein reines In-Memory-JS-Objekt (Kommentar im Code: "funktioniert
+  zuverlässig bei file://"), Eingaben gehen beim Schließen/Neuladen der Seite komplett verloren.
+- **Login** (`KLARTEXT_Login.html`) läuft über `supabase.auth.signInWithPassword()` mit echter
+  E-Mail-Adresse — nicht rein sessionStorage-lokal, wie die alte Tabelle suggerierte.
+- Die gesamte Datenschutzerklärung erwähnte an keiner Stelle Supabase, Firebase, TK-Fallmanagement,
+  Kind-Barometer oder Chat — obwohl diese Funktionen in der Live-App bei der Partnerorganisation aktiv
+  genutzt werden und dabei u. a. **Daten über Kinder** verarbeiten (Tabelle `barometer_kind`: Kind-ID,
+  Stimmungs-/Ampel-Farbe, optionale Notiz — Selbstauskunft des Kindes).
+- Abschnitt 5 (alt) behauptete "Anwendungsbereich der DSGVO auf das technische Hosting beschränkt" — für
+  den TK-Bereich sachlich falsch.
+- Abschnitt 6 (alt) behauptete, Löschanfragen ließen sich generell durch Löschen von Browser-Daten
+  erfüllen — für Supabase-/Firebase-gespeicherte TK-Bereich-Daten falsch.
+
+**Umgesetzte Überarbeitung von `KLARTEXT_Datenschutz.html`:**
+1. Neues Grundkonzept: Dokument unterscheidet durchgängig zwischen **Lern-/Kartendeck-Bereich** (weiterhin
+   zutreffend: kein Server, keine Datenbank) und **TK-Bereich** (Supabase + Firebase, echte
+   personenbezogene Daten, teils über Kinder).
+2. Abschnitt 3 in 3a/3b aufgeteilt: 3a mit korrigierter Workbook-Zeile (In-Memory statt localStorage),
+   3b neu — Tabelle mit allen TK-Bereich-Datenkategorien (Anmeldedaten, Kind-Barometer, Fallmanagement,
+   Chat, Zeitkonto, Krankmeldungen/Urlaubsanträge, Notizblock/Teilnehmer-Protokoll/Listen/Weiterleitungen)
+   mit den tatsächlichen Supabase-Tabellennamen bzw. Firebase für den Chat, plus Hinweisbox zur besonderen
+   Schutzbedürftigkeit von Kinderdaten.
+3. Neuer Abschnitt 5 "Supabase & Firebase" (analog zum bestehenden Cloudflare-Abschnitt), inkl. offen
+   markiertem Hinweis: Serverstandort und AVV (Art. 28 DSGVO) für das konkrete Supabase-Projekt bzw. die
+   Firebase-Instanz sind hier **nicht bestätigt** — sollte vor produktivem Einsatz mit echten Kind-/
+   Mitarbeitendendaten geklärt werden.
+4. Abschnitt 6 (Rechtsgrundlagen, vormals 5): falsche DSGVO-Nichtanwendbarkeits-Aussage entfernt, korrekte
+   Rechtsgrundlagen für TK-Bereich ergänzt, Hinweis auf Art. 8 DSGVO (Kinder) und ggf. nötige
+   Datenschutz-Folgenabschätzung nach Art. 35 — explizit als *nicht abschließend geklärt* markiert.
+5. Abschnitt 7 (Rechte, vormals 6): Löschrecht-Aussage in zwei Teile aufgeteilt — Lern-/Kartendeck-Bereich
+   (zutreffend: keine Serverdaten) vs. TK-Bereich (Daten liegen bei Supabase/Firebase, Anfragen direkt an
+   Anja).
+6. Abschnitt 8 (vormals 7): ergänzt um Supabase/Firebase als weisungsgebundene Auftragsverarbeiter.
+7. Hero-Badge und Grundsatz-Abschnitt (2) entsprechend umformuliert, Stand-Datum auf 06.08.2026 aktualisiert.
+8. Neue CSS-Klasse `.hinweis-box` (Amber/Orange) für Warnhinweise ergänzt, analog zur bestehenden
+   `.gruen-box`.
+
+**Wichtiger Vorbehalt (an Anja kommuniziert, nicht nur hier dokumentiert):** Diese Überarbeitung macht die
+Beschreibung *technisch zutreffend* (sie entspricht jetzt dem tatsächlichen Code-Verhalten) — sie ersetzt
+aber **keine juristische Prüfung**. Insbesondere die konkrete Rechtsgrundlage für die Verarbeitung von
+Kind-Barometer-/Fallmanagement-Daten, die Frage einer Datenschutz-Folgenabschätzung, und die AVV-Situation
+mit Supabase/Firebase sind als offene Punkte im Dokument selbst markiert (Hinweisboxen) und sollten vor
+Weiterverwendung von einer datenschutzrechtlich versierten Fachperson bzw. der Partnerorganisation
+gegengeprüft werden — insbesondere weil es um Daten von Kindern geht.
+
+**Nicht Teil dieser Überarbeitung:** eine separate Datenschutzerklärung für die Shop-Version (Strang 38,
+Schritt 5) — dort wäre die alte "kein Server"-Aussage tatsächlich wieder korrekt, da das Shop-Paket
+laut `SHOP_PACKAGE_AUSSCHLUSSLISTE.md` komplett ohne Supabase/Firebase ausgeliefert wird. Bleibt offen.

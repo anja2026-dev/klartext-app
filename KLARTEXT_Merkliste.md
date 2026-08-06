@@ -1865,3 +1865,32 @@ Zielgruppe (Schulbegleitung/pädagogische Fachkräfte) ist ein Langstreckenspiel
 eher sinnvoll, nachdem Verkaufsplattform/Grundinfrastruktur stehen, nicht davor. Technisch umsetzbar
 (einfache Slideshow-/Textoverlay-Videos aus vorhandenen Karten-PNGs lassen sich bauen) — noch nicht
 begonnen, wartet auf Priorisierungsentscheidung.
+
+## Strang 40: Inhaltserweiterung Hochbegabung (Fachbuch/Lernpfad/Trainerhandbuch)
+
+Erste Runde der "Deck für Deck"-Inhaltsangleichung (s. Strang 39, Schritt 1) — Hochbegabung (12 Karten,
+war bisher komplett unerwähnt in den Lernmaterialien).
+
+1. **Neues Fachbuch-Systemkapitel S6:** `KLARTEXT_Fachbuch_System_Hochbegabung.html` — nach dem Muster
+   von `KLARTEXT_Fachbuch_System_Mobbing.html`, 9 Abschnitte (Definition, Merkmale, Asynchrone
+   Entwicklung, Underachievement, Perfektionismus/Versagensangst, Soziale Herausforderungen,
+   Doppelbegabung/Twice-Exceptional, Niemals/Immer-Box, Zusammenarbeit mit Lehrkraft/Eltern), Quellenbox
+   mit den 7 etablierten HB-Quellen (Renzulli 1978, Mönks 1990, Heller 2000, Gagné 2008,
+   Marburger Hochbegabtenprojekt/Rost, Karg-Stiftung, Twice-Exceptional-Forschung). Verlinkung zu den
+   Karten korrigiert auf `pwa/index.html?deck=hb` (kein eigenes HB-01.html — Deck läuft nur über PWA/PDF).
+   In `KLARTEXT_Fachbuch_Neu.html` als S6-Navigationseintrag + im `PAGES`-Suchindex registriert.
+2. **Lernpfad:** `KLARTEXT_Lernpfad_INGRA.html`, Woche 4 — Untertitel um "Hochbegabung" ergänzt, neue
+   Aufgabe "Hochbegabung erkennen" (verlinkt auf das neue Systemkapitel) eingefügt, Karten-Link ergänzt.
+   Wichtig: `TASKS.w4` im Fortschritts-Skript von 4 auf 5 erhöht (sonst falsche Prozentanzeige).
+   Nebenbei gefunden und korrigiert: "Alle 6 Feuerwehr-Karten" → "Alle 8 Feuerwehr-Karten" (Krisendeck
+   ist längst auf 8 Karten gewachsen, Text war nie aktualisiert worden).
+3. **Trainerhandbuch:** `KLARTEXT_Trainerhandbuch.html`, Kapitel 6 (Schwierige Situationen) — neuer
+   Abschnitt "Hochbegabung: das unterschätzte Thema", warnt vor dem verbreiteten Fehlschluss
+   "die brauchen doch keine Unterstützung", Verweis auf das neue Systemkapitel S6.
+4. **Workbook bewusst nicht angefasst** in dieser Runde — Workbook-Module sind strukturell an feste
+   Kartennummern-Bereiche gekoppelt (eigene Fortschrittslogik pro Modul), eine saubere HB-Sektion wäre
+   ein separater, größerer Schritt. War im ursprünglichen Schritt-1-Plan auch nicht explizit genannt
+   (nur Fachbuch + Lernpfad + Trainerhandbuch). Bei Bedarf nachholbar.
+
+**Nächster Schritt (noch nicht begonnen):** gleiche Angleichung für die Mobbing-Deck-Erweiterung
+(3 → 15 Karten) in denselben drei Dateien.

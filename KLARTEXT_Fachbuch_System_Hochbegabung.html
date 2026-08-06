@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · Fachbuch · Hochbegabung erkennen und begleiten</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--navy:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;--gold:#C47A00;--hb:#2024C4;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-height:100vh;}
+.kt-header{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 1.25rem;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--acc);}
+.kt-logo{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:.5rem;}
+.kt-logo img{width:32px;height:32px;object-fit:contain;}
+.kt-logo span{color:var(--acc);font-size:.62rem;display:block;font-family:"DM Sans",sans-serif;font-weight:400;}
+.back-btn{color:var(--acc);text-decoration:none;font-size:.72rem;font-weight:700;border:1.5px solid var(--acc);border-radius:20px;padding:.25rem .65rem;}
+.shell{max-width:800px;margin:0 auto;padding:1.5rem 1rem 4rem;}
+.fb-kapitel-header{border-bottom:2px solid #fff;padding-bottom:1rem;margin-bottom:1.25rem;}
+.fb-kapitel-badge{display:inline-block;background:var(--hb);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:12px;margin-bottom:.5rem;}
+.fb-kapitel-header h2{font-family:"Playfair Display",serif;font-size:1.3rem;color:var(--navy);}
+.fb-kapitel-meta{font-size:.74rem;color:var(--muted);margin-top:.35rem;}
+.fb-karte-link{color:var(--acc);text-decoration:none;font-weight:700;}
+.fb-h3{font-family:"Playfair Display",serif;font-size:1.02rem;color:var(--navy);margin:1.5rem 0 .75rem;}
+.fb-p{font-size:.88rem;line-height:1.75;color:#2D2D2D;margin-bottom:1rem;}
+.fb-leitsatz{background:var(--navy);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1.25rem;text-align:center;}
+.fb-leitsatz p{color:#fff;font-family:"Playfair Display",serif;font-style:italic;font-size:1.05rem;}
+.fb-abschnitt{background:var(--surface);border-radius:12px;padding:1.1rem 1.3rem;margin-bottom:1rem;border-left:4px solid var(--hb);}
+.fb-abschnitt-titel{font-family:"Playfair Display",serif;font-size:1rem;color:var(--hb);margin-bottom:.65rem;}
+.fb-zitat-klein{background:#E3E4FA;border-radius:8px;padding:.6rem .9rem;font-size:.82rem;font-style:italic;color:#16198C;margin:.6rem 0;}
+.fb-liste{list-style:none;margin-bottom:.5rem;}
+.fb-liste li{font-size:.83rem;color:#2D2D2D;padding:.25rem 0 .25rem 1.2rem;position:relative;}
+.fb-liste li::before{content:"→";position:absolute;left:0;color:var(--hb);font-weight:700;}
+.fb-nie-immer{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.25rem;}
+@media(max-width:600px){.fb-nie-immer{grid-template-columns:1fr;}}
+.fb-nie{background:#FFEBEE;border:1.5px solid #C62828;border-radius:10px;padding:.9rem 1rem;}
+.fb-immer{background:#EAF7EF;border:1.5px solid #3B8A68;border-radius:10px;padding:.9rem 1rem;}
+.fb-nie-titel{font-weight:800;font-size:.85rem;color:#8B1A1A;margin-bottom:.5rem;}
+.fb-immer-titel{font-weight:800;font-size:.85rem;color:#1B5E2E;margin-bottom:.5rem;}
+.fb-nie ul, .fb-immer ul{list-style:none;}
+.fb-nie li, .fb-immer li{font-size:.76rem;padding:.15rem 0;}
+.fb-quellen{background:#EAF1F8;border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1.25rem;}
+.fb-quellen-label{font-size:.62rem;font-weight:700;color:#1565C0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;}
+.fb-quellen ul{list-style:none;}
+.fb-quellen li{font-size:.78rem;color:#2D2D2D;padding:.2rem 0;}
+.fb-brainy{display:flex;gap:.85rem;align-items:center;background:var(--surface);border-radius:10px;padding:.9rem 1.1rem;margin-top:1.25rem;}
+.fb-brainy img{width:44px;height:44px;object-fit:contain;flex-shrink:0;}
+.fb-brainy div{font-size:.8rem;color:#3A3A4A;line-height:1.55;}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kt-header">
+  <div class="kt-logo"><img src="brainy.png" alt="Brainy">KLARTEXT <span>Fachbuch · Systemkapitel</span></div>
+  <a class="back-btn" href="KLARTEXT_Fachbuch_Neu.html">← Zum Fachbuch</a>
+</header>
+
+<div class="shell">
+
+<div class="fb-kapitel-header">
+  <span class="fb-kapitel-badge">Systemkapitel</span>
+  <h2>Hochbegabung erkennen und begleiten</h2>
+  <div class="fb-kapitel-meta">Zugehörige KLARTEXT-Karten: HB-Modul (12 Karten) · <a href="pwa/index.html?deck=hb" class="fb-karte-link">↗ Kartendeck öffnen</a></div>
+</div>
+
+<div class="fb-leitsatz"><p>Hochbegabung ist kein Problem — Unterforderung schon.</p></div>
+
+<p class="fb-p">Hochbegabung betrifft etwa 2–3% aller Kinder (IQ ≥ 130) — statistisch also mindestens ein Kind pro Jahrgangsstufe. Sie zeigt sich selten so, wie man es erwartet: nicht immer als Bestnote, oft als Unruhe, Verweigerung oder sozialer Rückzug. Schulbegleitung begegnet hochbegabten Kindern häufiger, als der Rolle bewusst ist — gerade dort, wo Begabung mit anderen Besonderheiten zusammenfällt.</p>
+<p class="fb-p">Dieses Kapitel beschreibt Hochbegabung aus der Praxisperspektive der Schulbegleitung: woran man sie erkennt, warum sie oft unentdeckt bleibt, und wie professionelle Begleitung aussieht — ohne selbst zu diagnostizieren oder zu fördern.</p>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">1. Was ist Hochbegabung?</div>
+  <p class="fb-p">Hochbegabung ist kein einzelnes Talent, sondern ein Potenzial, das sich erst durch passende Rahmenbedingungen in Leistung übersetzt. Nach dem Münchner Hochbegabungsmodell (Heller) und dem Differenzierten Begabungs- und Talentmodell (Gagné) entscheidet nicht die Begabung allein über den Erfolg, sondern das Zusammenspiel aus Begabung, Persönlichkeit und Umfeld — dazu zählt auch, ob ein Kind in der Schule Struktur und Anerkennung erfährt.</p>
+  <div class="fb-zitat-klein">Hohes Potenzial ist eine Möglichkeit, keine Garantie. Ob daraus sichtbare Leistung wird, hängt stark vom Umfeld ab.</div>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">2. Merkmale erkennen</div>
+  <p class="fb-p">Typische Signale im Schulalltag: schnelles Erfassen neuer Inhalte, ausgeprägte Wissbegier zu Spezialthemen, hohes Reflexionsniveau, aber auch Ungeduld bei Wiederholung, Widerspruch bei als sinnlos empfundenen Aufgaben oder auffällige Fragen, die den Unterrichtsverlauf „stören". Diese Signale werden im Schulalltag oft als Störverhalten statt als Hinweis auf Unterforderung gelesen.</p>
+  <p class="fb-p">Schulbegleitung diagnostiziert nicht — sie beobachtet und gibt Beobachtungen strukturiert an Lehrkraft und Eltern weiter.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">3. Asynchrone Entwicklung</div>
+  <p class="fb-p">Hochbegabte Kinder entwickeln sich selten gleichmäßig: die kognitive Entwicklung kann der emotionalen und sozialen weit voraus sein. Ein Kind kann intellektuell wie ein Zwölfjähriger denken und gleichzeitig wie ein Siebenjähriger einen Streit auf dem Pausenhof nicht regulieren können. Diese Diskrepanz wird häufig missverstanden — als Trotz, als „Klugscheißerei", als Verwöhntheit.</p>
+  <div class="fb-zitat-klein">„Du bist doch so schlau — warum kannst du das nicht?" ist die falsche Frage. Kognitive und emotionale Reife laufen nicht synchron.</div>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">4. Underachievement</div>
+  <p class="fb-p">Viele hochbegabte Kinder fallen nicht durch Leistung auf, sondern durch das Gegenteil: Minderleistung trotz hohem Potenzial. Ursachen sind häufig Unterforderung, fehlende Passung des Unterrichts, aber auch Angst vor Erwartungen oder sozialer Rückzug, um nicht „anders" zu wirken. Underachievement ist einer der häufigsten Gründe, warum Hochbegabung bei Kindern mit Schulbegleitung gar nicht erst vermutet wird.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">5. Perfektionismus & Versagensangst</div>
+  <p class="fb-p">Hoher eigener Anspruch schlägt bei manchen Kindern in lähmenden Perfektionismus um: lieber eine Aufgabe gar nicht anfangen als sie „nicht perfekt" lösen. Versagensangst zeigt sich oft als Verweigerung, nicht als sichtbare Angst — was das Erkennen zusätzlich erschwert.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">6. Soziale Herausforderungen</div>
+  <p class="fb-p">Andere Interessen, ein anderes Tempo und andere Themen erschweren manchen hochbegabten Kindern den Anschluss an Gleichaltrige. Das kann zu Einsamkeit führen, auch mitten in einer vollen Klasse. Manche Kinder passen sich an und verbergen ihre Interessen, um dazuzugehören — mit entsprechendem inneren Preis.</p>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">7. Doppelbegabung / Twice-Exceptional</div>
+  <p class="fb-p">Hochbegabung schließt weitere Besonderheiten nicht aus — im Gegenteil: hochbegabte Kinder mit gleichzeitiger LRS, ADHS oder Autismus-Spektrum-Störung („Twice-Exceptional") werden besonders häufig übersehen, weil sich Stärken und Schwächen gegenseitig überdecken. Die Begabung kompensiert die Beeinträchtigung nach außen, bis beides zusammen sichtbar überfordert.</p>
+</div>
+
+<h3 class="fb-h3">8. Niemals / Immer</h3>
+<div class="fb-nie-immer">
+  <div class="fb-nie">
+    <div class="fb-nie-titel">✗ Niemals</div>
+    <ul><li>selbst diagnostizieren oder testen</li><li>Etikett „hochbegabt" vor der Klasse aussprechen</li><li>Mehrarbeit als Strafe für Schnelligkeit geben</li><li>Underachievement als Faulheit werten</li><li>Vergleiche mit anderen Kindern ziehen</li></ul>
+  </div>
+  <div class="fb-immer">
+    <div class="fb-immer-titel">✓ Immer</div>
+    <ul><li>Beobachtungen dokumentieren</li><li>an Lehrkraft/Fachdiagnostik weitergeben</li><li>emotionale und soziale Reife eigenständig sehen</li><li>Langeweile ernst nehmen</li><li>mit Eltern im Austausch bleiben</li></ul>
+  </div>
+</div>
+
+<div class="fb-abschnitt">
+  <div class="fb-abschnitt-titel">9. Zusammenarbeit mit Lehrkraft und Eltern</div>
+  <p class="fb-p">Schulbegleitung meldet Beobachtungen strukturiert weiter — nicht als Diagnose, sondern als Wahrnehmung: was fällt auf, in welchen Situationen, wie reagiert das Kind. Ob eine Testung sinnvoll ist, entscheidet die Fachdiagnostik, nicht die Schulbegleitung. Elterngespräche zum Thema Hochbegabung sind oft emotional — manche Eltern fühlen sich bestätigt, andere überfordert von der Erwartungshaltung, die das Wort auslöst.</p>
+</div>
+
+<div class="fb-quellen">
+  <div class="fb-quellen-label">Wissenschaftliche Basis</div>
+  <ul>
+    <li>Renzulli, J. S. (1978). What makes giftedness? Three-Ring-Conception.</li>
+    <li>Mönks, F. J. (1990). Triadisches Interdependenzmodell der Hochbegabung.</li>
+    <li>Heller, K. A. (Hrsg., 2000). Münchner Hochbegabungsmodell.</li>
+    <li>Gagné, F. (2008). Differenziertes Begabungs- und Talentmodell (DMGT).</li>
+    <li>Rost, D. H. — Marburger Hochbegabtenprojekt, Universität Würzburg.</li>
+    <li>Karg-Stiftung — Forschung und Praxistransfer zu Begabungsförderung.</li>
+    <li>Forschung zu Twice-Exceptional-Kindern (doppelte Besonderheit).</li>
+  </ul>
+</div>
+
+<div class="fb-leitsatz">
+  <p>„Ich sehe das Potenzial — und die Überforderung, die daneben stehen kann.<br>Ich bewerte nicht, ich beobachte.<br>Ich melde weiter, statt selbst zu urteilen."</p>
+</div>
+
+<div class="fb-brainy">
+  <img src="brainy.png" alt="Brainy">
+  <div><strong>Brainy erinnert:</strong> Schau dir auch unser 12-teiliges Hochbegabungsdeck an — von "Was ist Hochbegabung?" bis zum Elterngespräch, mit Quellenverzeichnis.</div>
+</div>
+
+</div>
+
+
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const q = params.get('fbsuche');
+  if (!q) return;
+  window.addEventListener('load', function(){
+    setTimeout(function(){
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const ql = q.toLowerCase();
+      let knoten;
+      while (knoten = walker.nextNode()) {
+        const eltern = knoten.parentElement;
+        if (!eltern || ['SCRIPT','STYLE','MARK'].includes(eltern.tagName)) continue;
+        const idx = knoten.nodeValue.toLowerCase().indexOf(ql);
+        if (idx !== -1) {
+          const range = document.createRange();
+          range.setStart(knoten, idx);
+          range.setEnd(knoten, idx + q.length);
+          const mark = document.createElement('mark');
+          mark.style.cssText = 'background:#FFE082;padding:0 2px;border-radius:3px;';
+          range.surroundContents(mark);
+          mark.scrollIntoView({behavior:'smooth', block:'center'});
+          break;
+        }
+      }
+    }, 200);
+  });
+})();
+</script>
+
+</body>
+</html>

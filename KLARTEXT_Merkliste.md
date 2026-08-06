@@ -1894,3 +1894,24 @@ war bisher komplett unerwähnt in den Lernmaterialien).
 
 **Nächster Schritt (noch nicht begonnen):** gleiche Angleichung für die Mobbing-Deck-Erweiterung
 (3 → 15 Karten) in denselben drei Dateien.
+
+## Strang 41: Hochbegabung in Quellenverzeichnis + Glossar
+
+Nachtrag zu Strang 40 — Anja hat zurecht nachgehakt, dass Quellenverzeichnis und Glossar bei der
+Inhaltserweiterung nicht vergessen werden dürfen.
+
+1. **Quellenverzeichnis** (`KLARTEXT_Quellenverzeichnis.html`): neue Sektion 11 "Hochbegabung" mit
+   7 recherchierten und verifizierten Quellen im APA-7-Format: Renzulli (1978, Three-Ring-Conception),
+   Mönks & Ypenburg (2005, Triadisches Interdependenzmodell), Heller (Hrsg., 2000, Münchner
+   Hochbegabungsmodell), Gagné (2009, DMGT 2.0), Rost (2000, Marburger Hochbegabtenprojekt), Reis/Baum/
+   Burke (2014, Gifted Child Quarterly, Twice-Exceptional), Karg-Stiftung (Fachportal Hochbegabung).
+   Filter-Button ergänzt, Hero-Zahlen korrigiert (91→98 Quellen, 9→11 Themenbereiche — dabei auch eine
+   bereits vorher falsche Zahl bei "Alle"-Button gefunden und korrigiert: 73→98).
+2. **Glossar** (`KLARTEXT_Glossar.html`): 4 neue Begriffe eingefügt — Hochbegabung, Asynchrone
+   Entwicklung, Twice-Exceptional (Doppelbegabung), Underachievement — alphabetisch korrekt einsortiert,
+   mit Quellenangabe und Verweis auf das neue Fachbuch-Systemkapitel S6. Hero-Zahl korrigiert (war
+   bereits vorher falsch: 64 angezeigt, tatsächlich 53 vor dieser Änderung → jetzt korrekt 57).
+3. Workbook-Hochbegabung bleibt bewusst offen — Anja hat bestätigt: "unbedingt, aber später" (Task #247).
+
+**Offene Frage von Anja beantwortet:** Workshops/Schulungen sind noch NICHT inhaltlich überarbeitet —
+das war bisher nur als Merkliste-Punkt vorgemerkt (s. Strang 39 Nachtrag), noch nicht begonnen.

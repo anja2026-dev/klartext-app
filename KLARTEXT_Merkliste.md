@@ -1547,6 +1547,15 @@ bestätigt: klartext-mentoring.de läuft als Production-Domain über das Pages-P
 verbunden mit Repo `anja2026-dev/klartext-shop`, Auto-Deploy bei jedem Push auf `main` aktiv (Commit
 `8866898` erfolgreich live). Damit ist Entscheidung 1 aus der obigen Liste final geklärt.
 
+**Nachtrag (07.08.2026) — E-Mail-Weiterleitung `info@klartext-mentoring.de` gefunden und
+dokumentiert:** Läuft über Cloudflare Email Routing (passend zur Domain, die ohnehin über
+Cloudflare Pages läuft — kein separater E-Mail-Anbieter).
+- Domain: `klartext-mentoring.de`
+- Aktive Regel: `info@klartext-mentoring.de` → `klartext.mentoring@gmx.de`
+- Catch-all: aktuell deaktiviert
+- Zieladresse: verifiziert
+- DNS-Einträge: gesperrt/verwaltet über Cloudflare-Nameserver (nicht manuell im Domain-Registrar änderbar)
+
 ## Strang 31 · Hochbegabungsdeck (HB) – volle Produktion (02.08.2026)
 
 **Auslöser:** Konzept aus Strang 30 (Kobaltblau `#2024C4`, 12–15 Karten) von Anja freigegeben

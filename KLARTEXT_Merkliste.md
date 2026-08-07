@@ -2443,3 +2443,30 @@ nachgebaut. `KLARTEXT_Zauberfaecher_Streifen.pdf` liegt jetzt in `klartext-app/`
 verlinkt: neuer 📄-PDF-Button in `KLARTEXT_Downloads.html` (zusätzlich zur HTML-Druckvorlage),
 `DL_Allgemein.html`-Kachel zeigt jetzt direkt auf die PDF, Druckvorlage-Link in
 `KLARTEXT_Zauberfaecher_Digital.html` ebenfalls auf die PDF umgestellt.
+
+**Update 07.08.2026 (9) — Gewerbe angemeldet + Plattform-/Preisstrategie erarbeitet:**
+Anja hat ihr Gewerbe angemeldet (Tätigkeitsbeschreibung: Konzeption/Erstellung/Vertrieb von
+pädagogischem Material + Trainings/Coachings/Fortbildungen). Damit fallen die Gründe weg,
+warum Checkout/Preise bisher bewusst offen gelassen wurden (#213, #220). Auf Wunsch geprüft:
+was gibt es zu verkaufen, auf welchen Plattformen (Etsy, Pinterest, eduki/lehrermarktplatz.de),
+was kostet das, welche Preise. Ergebnis in neuer Datei **`KLARTEXT_Plattform_Preisstrategie.md`**:
+
+- **Inventar-Lücke gefunden:** 22 fertige Produkte, aber nur 19 haben eine Verkaufsseite — SMI,
+  LRS-Sek1 und SP existieren bereits als fertiges PDF, sind aber nirgends gelistet.
+- **Plattform-Rechercheergebnis:** Pinterest = kostenlos, aber kein Marktplatz (nur Trafficbringer
+  zum eigenen Shop). Etsy = echter Marktplatz, ~10,5–17 % Gesamtgebühren, braucht Gewerbe (jetzt
+  vorhanden). eduki (ehemals lehrermarktplatz.de, gleiche Firma, 2023 umbenannt — vermutlich das,
+  was Anja mit "lehreronline" meinte, nicht das redaktionelle `lehrer-online.de`) = Lehrkräfte-
+  Zielgruppe, aber 50 % Provision unter 20 Materialien (sinkt auf 30 % ab 100 Materialien), kein
+  Gewerbe nötig. Eigener Shop bleibt mit ~1,5–3 % Zahlungsanbieter-Gebühr die margenstärkste Basis.
+- **Preisvorschlag:** bestehende Preis-Spannen (z. B. "15–18 €") auf oberes Ende fixiert, als
+  Tabelle für alle 22 Produkte inkl. der 3 noch unlistierten. Offene Frage an Anja: EL (58 Karten)
+  und LK (71 Karten) sind die größten Decks im Sortiment, kosten aber wie die kleineren 30–50er
+  Decks — bewusst nicht eigenmächtig angehoben, sondern zur Entscheidung vorgelegt.
+- **Free-vs-Paid:** Barometer-Karussell, externe Barometer-Erklärseite und Vorschaubilder bleiben
+  kostenloses Marketing; alle 22 Decks/Sets bleiben kostenpflichtig. "Brainy muss mal kurz…" als
+  möglicher Freebie fürs Lead-Sammeln identifiziert, aber noch nicht umgesetzt/entschieden.
+
+Vier offene Entscheidungen liegen jetzt bei Anja (siehe Dokument): EL/LK-Preis anheben oder nicht,
+SMI/LRS/SP zuerst listen oder direkt mit auf die neuen Plattformen, Reihenfolge Etsy vs. eduki,
+"Brainy muss mal kurz…" als offizielles Freebie einrichten oder nicht.

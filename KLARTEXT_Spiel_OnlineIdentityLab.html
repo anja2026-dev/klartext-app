@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Online-Identity-Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--jd:#2F6B6E; --jd-light:#EAF3F3; --m:#1B3A4B; --acc:#6EC6A0;}
+body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 0%,#1B3A4B 55%,#2F6B6E 100%);color:#fff;min-height:100vh;padding-bottom:6rem;}
+
+.header{max-width:1000px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.35);border-radius:20px;color:rgba(255,255,255,.85);font-size:.72rem;font-weight:700;text-decoration:none;}
+.back-btn:hover{border-color:#fff;color:#fff;}
+
+.hero{max-width:1000px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 1.75rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;letter-spacing:-.01em;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.65);max-width:640px;margin-top:.4rem;line-height:1.6;}
+
+.abschnitt{max-width:1000px;margin:0 auto 2rem;padding:0 clamp(1rem,4vw,2rem);}
+.abschnitt-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;margin-bottom:.9rem;}
+
+.spalten{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media (max-width:640px){.spalten{grid-template-columns:1fr;}}
+.spalte{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:1.1rem 1.2rem;}
+.spalte-label{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem;}
+.spalte-online .spalte-label{color:var(--acc);}
+.spalte-real .spalte-label{color:#8FD0FF;}
+.chip-grid{display:flex;flex-wrap:wrap;gap:.5rem;}
+.chip{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:20px;padding:.45rem .95rem;font-size:.8rem;font-weight:600;cursor:pointer;color:#fff;font-family:inherit;}
+.chip:hover{background:rgba(255,255,255,.15);}
+.chip.aktiv-online{background:rgba(110,198,160,.25);border-color:var(--acc);color:var(--acc);}
+.chip.aktiv-real{background:rgba(143,208,255,.2);border-color:#8FD0FF;color:#8FD0FF;}
+
+.venn-wrap{display:flex;justify-content:center;margin:1.5rem 0;}
+.venn{position:relative;width:280px;height:170px;}
+.venn-kreis{position:absolute;top:15px;width:170px;height:170px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;}
+.venn-online{left:0;background:rgba(110,198,160,.18);border:2px solid var(--acc);color:var(--acc);}
+.venn-real{right:0;background:rgba(143,208,255,.15);border:2px solid #8FD0FF;color:#8FD0FF;}
+.venn-mitte{position:absolute;top:15px;left:110px;width:60px;height:170px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:#fff;pointer-events:none;}
+
+.vergleich-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;}
+@media (max-width:700px){.vergleich-grid{grid-template-columns:1fr;}}
+.vergleich-spalte{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.9rem 1rem;min-height:70px;}
+.vergleich-spalte-titel{font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.65;margin-bottom:.6rem;}
+.vergleich-tag{display:inline-block;background:rgba(255,255,255,.08);border-radius:12px;padding:.25rem .65rem;font-size:.75rem;margin:.15rem .2rem .15rem 0;}
+.vergleich-leer{font-size:.75rem;opacity:.4;}
+
+.frage-block{margin-bottom:1.1rem;}
+.frage-label{font-size:.85rem;font-weight:700;margin-bottom:.5rem;}
+.frage-block textarea, .frage-block input[type=text]{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:.85rem;padding:.75rem .9rem;line-height:1.5;}
+.frage-block textarea{min-height:70px;resize:vertical;}
+
+.mitnehmen-liste{display:flex;flex-direction:column;gap:.5rem;}
+.mitnehmen-item{display:flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:.6rem .8rem;font-size:.85rem;}
+.mitnehmen-item input{width:16px;height:16px;accent-color:var(--acc);}
+
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;z-index:200;}
+.print-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;}
+.print-btn:hover{transform:translateY(-1px);}
+
+#druckansicht{display:none;}
+@media print{
+  body *{visibility:hidden;}
+  #druckansicht,#druckansicht *{visibility:visible;}
+  #druckansicht{display:block;position:absolute;top:0;left:0;width:100%;padding:14mm;color:#000;}
+  @page{margin:12mm;size:A4;}
+}
+#druckansicht h1{font-family:Georgia,serif;font-size:20px;margin-bottom:2px;color:#1B3A4B;}
+#druckansicht .dsub{font-size:11px;color:#666;margin-bottom:18px;}
+#druckansicht h3{font-size:13px;margin:16px 0 6px;color:#1B3A4B;border-bottom:1px solid #ddd;padding-bottom:4px;}
+#druckansicht .dgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:6px;}
+#druckansicht .dgrid div{border:1px solid #ddd;border-radius:6px;padding:8px;font-size:11.5px;min-height:50px;}
+#druckansicht .dlabel{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:4px;}
+#druckansicht .dtext{font-size:12px;color:#333;line-height:1.6;border:1px solid #eee;border-radius:6px;padding:8px;min-height:30px;margin-bottom:4px;}
+#druckansicht .spick{background:#F5F0E8;border-left:4px solid #C47A00;padding:10px 14px;font-size:12px;line-height:1.6;margin:8px 0;}
+#druckansicht .hausaufgabe-linie{border-bottom:1px solid #aaa;height:22px;margin-top:6px;}
+#druckansicht .dfoot{margin-top:26px;font-size:10px;color:#999;border-top:1px solid #ddd;padding-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hero-titel" style="font-size:1rem;letter-spacing:.02em;">KLARTEXT</div>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Spiele</a>
+</div>
+
+<div class="hero">
+  <h1 class="hero-titel">Online-Identity-Lab</h1>
+  <p class="hero-sub">Wer bist du online — und wer bist du im echten Leben? Wähl aus, was zu dir passt, und schau dir an, wo beides sich überschneidet.</p>
+</div>
+
+<div class="abschnitt">
+  <div class="abschnitt-titel">Schritt 1 — Wähl deine Eigenschaften</div>
+  <div class="spalten">
+    <div class="spalte spalte-online">
+      <div class="spalte-label">Online-Me</div>
+      <div class="chip-grid" id="chipsOnline"></div>
+    </div>
+    <div class="spalte spalte-real">
+      <div class="spalte-label">Real-Me</div>
+      <div class="chip-grid" id="chipsReal"></div>
+    </div>
+  </div>
+</div>
+
+<div class="abschnitt">
+  <div class="abschnitt-titel">Schritt 2 — Deine Schnittmenge</div>
+  <div class="venn-wrap">
+    <div class="venn">
+      <div class="venn-kreis venn-online" id="vennOnlineZahl">0</div>
+      <div class="venn-kreis venn-real" id="vennRealZahl">0</div>
+      <div class="venn-mitte" id="vennMitteZahl">0</div>
+    </div>
+  </div>
+  <div class="vergleich-grid">
+    <div class="vergleich-spalte">
+      <div class="vergleich-spalte-titel">Nur Online-Me</div>
+      <div id="nurOnline"></div>
+    </div>
+    <div class="vergleich-spalte">
+      <div class="vergleich-spalte-titel">Beide</div>
+      <div id="beide"></div>
+    </div>
+    <div class="vergleich-spalte">
+      <div class="vergleich-spalte-titel">Nur Real-Me</div>
+      <div id="nurReal"></div>
+    </div>
+  </div>
+</div>
+
+<div class="abschnitt">
+  <div class="abschnitt-titel">Schritt 3 — Reflexion (JD-30)</div>
+  <div class="frage-block">
+    <div class="frage-label">Was zeigst du online, was du offline nicht zeigst?</div>
+    <textarea id="frage1"></textarea>
+  </div>
+  <div class="frage-block">
+    <div class="frage-label">Was würde passieren, wenn beides gleicher wäre?</div>
+    <textarea id="frage2"></textarea>
+  </div>
+</div>
+
+<div class="abschnitt" id="mitnehmenAbschnitt" style="display:none;">
+  <div class="abschnitt-titel">Schritt 4 — Was nimmst du mit ins echte Leben?</div>
+  <div class="mitnehmen-liste" id="mitnehmenListe"></div>
+</div>
+
+<div class="abschnitt">
+  <div class="abschnitt-titel">Hausaufgabe</div>
+  <div class="frage-block">
+    <div class="frage-label">Eine Sache, die ich morgen offline so mache wie online:</div>
+    <input type="text" id="hausaufgabe" placeholder="z. B. jemandem direkt ein ehrliches Kompliment machen">
+  </div>
+</div>
+
+<div class="aktionsleiste">
+  <button class="print-btn" onclick="handoutDrucken()">Handout drucken</button>
+</div>
+
+<div id="druckansicht"></div>
+
+<script>
+var TRAITS = ['witzig','mutig','kreativ','offen','ruhig','ehrgeizig','spontan','geduldig','hilfsbereit','vorsichtig','selbstbewusst','sensibel','chaotisch','organisiert','extrovertiert','introvertiert'];
+
+var online = {};
+var real = {};
+var mitnehmen = {};
+
+function chipsRendern(){
+  var elOnline = document.getElementById('chipsOnline');
+  var elReal = document.getElementById('chipsReal');
+  elOnline.innerHTML = '';
+  elReal.innerHTML = '';
+  TRAITS.forEach(function(t){
+    var b1 = document.createElement('button');
+    b1.className = 'chip' + (online[t] ? ' aktiv-online' : '');
+    b1.textContent = t;
+    b1.addEventListener('click', function(){ online[t] = !online[t]; if(!online[t]) delete mitnehmen[t]; chipsRendern(); vergleichRendern(); });
+    elOnline.appendChild(b1);
+
+    var b2 = document.createElement('button');
+    b2.className = 'chip' + (real[t] ? ' aktiv-real' : '');
+    b2.textContent = t;
+    b2.addEventListener('click', function(){ real[t] = !real[t]; chipsRendern(); vergleichRendern(); });
+    elReal.appendChild(b2);
+  });
+}
+
+function vergleichRendern(){
+  var nurOnline = TRAITS.filter(function(t){ return online[t] && !real[t]; });
+  var beide = TRAITS.filter(function(t){ return online[t] && real[t]; });
+  var nurReal = TRAITS.filter(function(t){ return real[t] && !online[t]; });
+
+  document.getElementById('vennOnlineZahl').textContent = nurOnline.length;
+  document.getElementById('vennRealZahl').textContent = nurReal.length;
+  document.getElementById('vennMitteZahl').textContent = beide.length;
+
+  document.getElementById('nurOnline').innerHTML = nurOnline.length ? nurOnline.map(tagHtml).join('') : '<span class="vergleich-leer">—</span>';
+  document.getElementById('beide').innerHTML = beide.length ? beide.map(tagHtml).join('') : '<span class="vergleich-leer">—</span>';
+  document.getElementById('nurReal').innerHTML = nurReal.length ? nurReal.map(tagHtml).join('') : '<span class="vergleich-leer">—</span>';
+
+  var mitnehmenAbschnitt = document.getElementById('mitnehmenAbschnitt');
+  var mitnehmenListe = document.getElementById('mitnehmenListe');
+  if (nurOnline.length) {
+    mitnehmenAbschnitt.style.display = 'block';
+    mitnehmenListe.innerHTML = nurOnline.map(function(t){
+      var checked = mitnehmen[t] ? 'checked' : '';
+      return '<label class="mitnehmen-item"><input type="checkbox" '+checked+' onchange="mitnehmenToggeln(\''+t+'\')"> Ich möchte "'+t+'" auch im echten Leben mehr zeigen.</label>';
+    }).join('');
+  } else {
+    mitnehmenAbschnitt.style.display = 'none';
+  }
+}
+
+function mitnehmenToggeln(t){
+  if (mitnehmen[t]) delete mitnehmen[t];
+  else mitnehmen[t] = true;
+}
+
+function tagHtml(t){ return '<span class="vergleich-tag">'+t+'</span>'; }
+
+function handoutDrucken(){
+  var nurOnline = TRAITS.filter(function(t){ return online[t] && !real[t]; });
+  var beide = TRAITS.filter(function(t){ return online[t] && real[t]; });
+  var nurReal = TRAITS.filter(function(t){ return real[t] && !online[t]; });
+  var mitnehmenListe = Object.keys(mitnehmen).filter(function(t){ return mitnehmen[t]; });
+  var f1 = document.getElementById('frage1').value.trim();
+  var f2 = document.getElementById('frage2').value.trim();
+  var hausaufgabe = document.getElementById('hausaufgabe').value.trim();
+  var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  var html = '<h1>Online-Identity-Lab — Mein Ergebnis</h1><div class="dsub">Erstellt am ' + heute + ' · KLARTEXT-Mentoring</div>';
+
+  html += '<h3>Meine Eigenschaften im Vergleich</h3>';
+  html += '<div class="dgrid">';
+  html += '<div><div class="dlabel">Nur Online-Me</div>' + (nurOnline.join(', ') || '—') + '</div>';
+  html += '<div><div class="dlabel">Beide</div>' + (beide.join(', ') || '—') + '</div>';
+  html += '<div><div class="dlabel">Nur Real-Me</div>' + (nurReal.join(', ') || '—') + '</div>';
+  html += '</div>';
+
+  html += '<h3>Reflexion</h3>';
+  html += '<div class="dlabel">Was zeigst du online, was du offline nicht zeigst?</div><div class="dtext">' + (f1 || '&nbsp;') + '</div>';
+  html += '<div class="dlabel">Was würde passieren, wenn beides gleicher wäre?</div><div class="dtext">' + (f2 || '&nbsp;') + '</div>';
+
+  if (mitnehmenListe.length) {
+    html += '<h3>Das nehme ich mit ins echte Leben</h3><div class="dtext">' + mitnehmenListe.join(', ') + '</div>';
+  }
+
+  html += '<h3>Spickzettel für Eltern</h3>';
+  html += '<div class="spick">Digitaler Rückzug ist oft Identitätstraining, keine Ablehnung. Wenn Jugendliche online anders auftreten als offline, probieren sie meist nur aus, wer sie noch sein könnten — das ist ein normaler Teil des Erwachsenwerdens, kein Alarmsignal.</div>';
+
+  html += '<h3>Hausaufgabe</h3>';
+  html += '<div class="dlabel">Eine Sache, die ich morgen offline so mache wie online:</div>';
+  if (hausaufgabe) {
+    html += '<div class="dtext">' + hausaufgabe + '</div>';
+  } else {
+    html += '<div class="hausaufgabe-linie"></div>';
+  }
+
+  html += '<h3>Notizen</h3>';
+  html += '<div class="hausaufgabe-linie"></div><div class="hausaufgabe-linie"></div><div class="hausaufgabe-linie"></div>';
+
+  html += '<div class="dfoot">KLARTEXT-Mentoring · Online-Identity-Lab · JD-30</div>';
+
+  document.getElementById('druckansicht').innerHTML = html;
+  window.print();
+}
+
+chipsRendern();
+vergleichRendern();
+</script>
+
+</body>
+</html>

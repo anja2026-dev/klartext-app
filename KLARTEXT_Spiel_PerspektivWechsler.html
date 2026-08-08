@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Perspektiv-Wechsler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --jd:#2F6B6E; --jd-dark:#193B3D; --jd-light:#EAF3F3;
+  --el:#BF5B3E; --el-dark:#6E3120; --el-light:#FAEBE3;
+  --ink:#2D2D2D;
+}
+body{font-family:"DM Sans",sans-serif;min-height:100vh;background:#111;color:#fff;}
+
+.topbar{position:sticky;top:0;z-index:50;background:#0D0D0D;display:flex;align-items:center;justify-content:space-between;padding:.75rem clamp(1rem,3vw,2rem);border-bottom:1px solid rgba(255,255,255,.1);}
+.topbar-titel{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;letter-spacing:.02em;}
+.reset-btn{background:none;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.75);border-radius:20px;padding:.4rem 1rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.reset-btn:hover{border-color:#fff;color:#fff;}
+.back-link{color:rgba(255,255,255,.6);font-size:.72rem;text-decoration:none;font-weight:700;}
+.back-link:hover{color:#fff;}
+
+.stepper{text-align:center;padding:1.1rem 1rem .3rem;font-size:.78rem;color:rgba(255,255,255,.55);letter-spacing:.03em;}
+.stepper b{color:#fff;}
+
+.board{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 110px);}
+@media (max-width:760px){.board{grid-template-columns:1fr;}}
+
+.spalte{padding:2rem clamp(1.2rem,4vw,2.5rem);display:flex;flex-direction:column;}
+.spalte-jd{background:linear-gradient(160deg,var(--jd-dark),var(--jd));}
+.spalte-el{background:linear-gradient(160deg,var(--el-dark),var(--el));}
+.spalte.gesperrt{opacity:.45;}
+
+.spalte-kopf{margin-bottom:1.4rem;}
+.spalte-label{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.75;}
+.spalte-frage{font-family:"Playfair Display",serif;font-size:1.35rem;font-weight:700;margin-top:.25rem;}
+
+.tile-grid{display:grid;gap:.65rem;}
+.tile{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);border-radius:12px;padding:1rem 1.1rem;text-align:left;color:#fff;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;line-height:1.4;}
+.tile:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.5);}
+.tile:disabled{cursor:default;}
+
+.warte-hinweis{font-size:.82rem;color:rgba(255,255,255,.7);border:1.5px dashed rgba(255,255,255,.3);border-radius:12px;padding:1.4rem;text-align:center;}
+
+.karte-gewaehlt{background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.55);border-radius:14px;padding:1.3rem 1.4rem;}
+.karte-gewaehlt .haken{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.8;margin-bottom:.5rem;}
+.karte-gewaehlt .text{font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;line-height:1.35;}
+
+.bruecke{grid-column:1/-1;background:#F5F0E8;color:var(--ink);padding:2.2rem clamp(1.2rem,5vw,3.5rem);}
+.bruecke-label{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#7A7060;text-align:center;margin-bottom:.6rem;}
+.bruecke-titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:1.4rem;color:#1B3A4B;}
+.bruecke-text{max-width:640px;margin:0 auto;font-size:1.02rem;line-height:1.75;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back-link" href="KLARTEXT_Spiele.html">← Spiele</a>
+  <div class="topbar-titel">KLARTEXT · Perspektiv-Wechsler</div>
+  <button class="reset-btn" onclick="zuruecksetzen()">🔄 Neu starten</button>
+</div>
+
+<div class="stepper" id="stepper"></div>
+
+<div class="board" id="board"></div>
+
+<script>
+var JD_KARTEN = [
+  { id:'j1', text:'Niemand hört mir wirklich zu' },
+  { id:'j2', text:'Druck von zu Hause' },
+  { id:'j3', text:'Ich werde nicht ernst genommen' },
+  { id:'j4', text:'Kein Vertrauen, ständige Kontrolle' }
+];
+
+var EL_KARTEN = [
+  { id:'e1', text:'Mein Kind zieht sich zurück' },
+  { id:'e2', text:'Loslassen fällt schwer' },
+  { id:'e3', text:'Ich mache mir ständig Sorgen' },
+  { id:'e4', text:'Wir reden aneinander vorbei' }
+];
+
+var BRUECKEN = {
+  j1_e1: "Beide Seiten fühlen sich gerade einsam im Kontakt. Ein kleiner Schritt könnte ein Gespräch ohne Ratschläge sein.",
+  j1_e2: "Der Wunsch, gehört zu werden, trifft auf die Angst, die Kontrolle zu verlieren. Wenn Eltern loslassen üben, wird oft auch das Zuhören leichter.",
+  j1_e3: "Sorge äußert sich oft als Nachfragen und Ratschläge – genau das, was sich für Jugendliche wie Nicht-zugehört-Werden anfühlt. Sorge und Zuhören können auch gemeinsam gehen, ganz ohne Lösung anzubieten.",
+  j1_e4: "Beide spüren: Die Gespräche laufen ins Leere. Oft hilft schon, kurz zu beschreiben, was man selbst fühlt, bevor man beschreibt, was der andere falsch macht.",
+
+  j2_e1: "Der Druck, den Jugendliche spüren, führt oft in genau den Rückzug, der Eltern gerade so schmerzt. Weniger Erwartung von außen kann wieder Raum für echte Nähe schaffen.",
+  j2_e2: "Hoher Druck von zu Hause und die Schwierigkeit loszulassen sind oft zwei Seiten derselben Sorge: dass es dem eigenen Kind gutgeht. Weniger Druck bedeutet nicht weniger Fürsorge.",
+  j2_e3: "Elterliche Sorge äußert sich oft als Erwartung und Druck – auch wenn sie eigentlich aus Liebe kommt. Das offen auszusprechen, nimmt beiden Seiten Gewicht von den Schultern.",
+  j2_e4: "Der Druck von zu Hause wird oft in Sätzen ausgesprochen, die beim Gegenüber ganz anders ankommen als gemeint. Ein gemeinsamer Moment ohne Erwartungen kann helfen, die Sprache wiederzufinden.",
+
+  j3_e1: "Sich nicht ernst genommen fühlen und der Rückzug des Kindes hängen oft zusammen: Wer glaubt, sowieso nicht gehört zu werden, zieht sich zurück. Ernst nehmen beginnt mit echten Fragen statt Antworten.",
+  j3_e2: "Hier prallen der Wunsch nach Freiheit und die Sorge umeinander aufeinander. Das ist ein normaler Entwicklungsschritt.",
+  j3_e3: "Sorge wird von Jugendlichen oft als Zweifel an der eigenen Reife gelesen – dabei ist sie meist pure Liebe. Beide Seiten ernst zu nehmen macht daraus ein Gespräch statt einen Vorwurf.",
+  j3_e4: "Wenn beide Seiten das Gefühl haben, nicht durchzudringen, fühlt sich niemand ernst genommen. Kurz wiederholen, was man beim anderen gerade verstanden hat, bevor man selbst weiterspricht, kann den Kreislauf durchbrechen.",
+
+  j4_e1: "Kontrolle entsteht oft genau dann, wenn Eltern das Gefühl haben, ihr Kind zu verlieren – und verstärkt dadurch oft den Rückzug. Vertrauen wächst in kleinen Schritten, nicht durch mehr Kontrolle.",
+  j4_e2: "Der Wunsch nach Vertrauen auf der einen und die Schwierigkeit loszulassen auf der anderen Seite sind zwei Formen derselben Entwicklungsaufgabe. Beide brauchen Übung – und kleine, sichere Freiräume.",
+  j4_e3: "Kontrolle ist oft der Versuch, Sorge in den Griff zu bekommen. Wenn beide Seiten das offen benennen, wird aus Kontrolle leichter Vertrauen.",
+  j4_e4: "Kein Vertrauen und Aneinander-vorbei-Reden verstärken sich gegenseitig: Ohne Vertrauen hört man das Gesagte anders, als es gemeint war. Ein neutraler Moment wie dieses Gespräch kann den Kreislauf unterbrechen."
+};
+
+var selectedJD = null;
+var selectedEL = null;
+
+function waehleJD(id){ selectedJD = id; rendern(); }
+function waehleEL(id){ selectedEL = id; rendern(); }
+
+function zuruecksetzen(){
+  selectedJD = null;
+  selectedEL = null;
+  rendern();
+}
+
+function tileGrid(karten, onClickName){
+  return '<div class="tile-grid">' + karten.map(function(k){
+    return '<button class="tile" onclick="'+onClickName+'(\''+k.id+'\')">'+k.text+'</button>';
+  }).join('') + '</div>';
+}
+
+function gewaehlteKarteHtml(karten, id){
+  var k = karten.filter(function(x){ return x.id === id; })[0];
+  return '<div class="karte-gewaehlt"><div class="haken">✓ Ausgewählt</div><div class="text">'+k.text+'</div></div>';
+}
+
+function rendern(){
+  var board = document.getElementById('board');
+  var stepper = document.getElementById('stepper');
+  var html = '';
+
+  // JD-Spalte
+  html += '<div class="spalte spalte-jd">';
+  html += '<div class="spalte-kopf"><div class="spalte-label">Jugendliche</div><div class="spalte-frage">Was nervt dich gerade?</div></div>';
+  if (selectedJD) {
+    html += gewaehlteKarteHtml(JD_KARTEN, selectedJD);
+  } else {
+    html += tileGrid(JD_KARTEN, 'waehleJD');
+  }
+  html += '</div>';
+
+  // EL-Spalte
+  html += '<div class="spalte spalte-el' + (selectedJD ? '' : ' gesperrt') + '">';
+  html += '<div class="spalte-kopf"><div class="spalte-label">Eltern</div><div class="spalte-frage">Was fällt dir gerade schwer?</div></div>';
+  if (!selectedJD) {
+    html += '<div class="warte-hinweis">🔒 Noch nicht dran — erst wählt die Jugendliche / der Jugendliche.</div>';
+  } else if (selectedEL) {
+    html += gewaehlteKarteHtml(EL_KARTEN, selectedEL);
+  } else {
+    html += tileGrid(EL_KARTEN, 'waehleEL');
+  }
+  html += '</div>';
+
+  // Brücke
+  if (selectedJD && selectedEL) {
+    var text = BRUECKEN[selectedJD + '_' + selectedEL] || 'Beide Perspektiven sind berechtigt – auch wenn sie gerade nicht zusammenpassen. Das offen anzusprechen ist bereits der erste Schritt.';
+    html += '<div class="bruecke"><div class="bruecke-label">Die Brücke</div><div class="bruecke-titel">Beide Seiten haben recht</div><div class="bruecke-text">'+text+'</div></div>';
+  }
+
+  board.innerHTML = html;
+
+  if (!selectedJD) stepper.innerHTML = 'Schritt <b>1 / 3</b> — Sicht der Jugendlichen';
+  else if (!selectedEL) stepper.innerHTML = 'Schritt <b>2 / 3</b> — Sicht der Eltern';
+  else stepper.innerHTML = 'Schritt <b>3 / 3</b> — Die Brücke';
+}
+
+rendern();
+</script>
+
+</body>
+</html>

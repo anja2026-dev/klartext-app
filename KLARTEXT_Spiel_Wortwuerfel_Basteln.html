@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Brainy-Wort-Würfel zum Basteln · KLARTEXT-Mentoring</title>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
+@media print{.no-print{display:none!important;}body{background:white;padding:0;}@page{margin:8mm;size:A4 landscape;}}
+
+.bar{max-width:960px;margin:0 auto 10px;display:flex;gap:8px;}
+.bar a,.bar button{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;text-decoration:none;font-family:Arial;cursor:pointer;}
+.bar a{background:white;border:1.5px solid #1a2e44;color:#1a2e44;}
+.bar button{background:#1d9e75;color:white;border:none;}
+
+.kopf{max-width:960px;margin:0 auto 16px;background:#1a2e44;border-radius:12px;padding:18px 24px;display:flex;align-items:center;gap:16px;}
+.kopf-logo{width:44px;height:44px;border:2px solid #6EC6A0;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 7px;flex-shrink:0;}
+.kopf-logo div{font-family:Georgia,serif;font-size:16px;font-weight:900;color:#fff;line-height:1;}
+.kopf-titel{font-size:20px;font-weight:900;color:white;}
+.kopf-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;}
+
+.hinweis{max-width:960px;margin:0 auto 18px;background:#EAF0F4;border-radius:10px;padding:12px 18px;font-size:12px;color:#1a2e44;line-height:1.6;}
+
+.netz-wrap{max-width:960px;margin:0 auto 16px;display:flex;justify-content:center;}
+.netz{position:relative;width:23.2cm;height:18.9cm;}
+
+.feld{position:absolute;width:5.5cm;height:5.5cm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25cm;text-align:center;padding:.2cm;}
+.feld img{width:2.5cm;height:2.5cm;object-fit:contain;}
+.feld .titel{font-size:9pt;font-weight:800;color:#2D2D2D;line-height:1.25;}
+.feld .sub{font-size:6.5pt;color:#7A7060;font-weight:600;}
+
+.legende{max-width:960px;margin:10px auto 0;display:flex;gap:22px;justify-content:center;font-size:10px;color:#666;}
+.legende span{display:inline-flex;align-items:center;gap:5px;}
+
+.tipp{max-width:960px;margin:16px auto 0;background:#FBF4E8;border-radius:10px;padding:12px 18px;font-size:11px;color:#5D3A1A;line-height:1.6;}
+.footer{max-width:960px;margin:8px auto 0;text-align:center;font-size:10px;color:#999;}
+</style>
+</head>
+<body>
+
+<div class="bar no-print">
+  <a href="KLARTEXT_Spiele.html">← Spiele</a>
+  <button onclick="window.print()">🖨 Drucken / PDF</button>
+</div>
+
+<div class="kopf no-print">
+  <div class="kopf-logo"><div>K</div></div>
+  <div>
+    <div class="kopf-titel">🎲 Brainy-Wort-Würfel — Bastelvorlage</div>
+    <div class="kopf-sub">Würfelnetz zum Ausschneiden und Kleben · Kantenlänge 5,5 × 5,5 cm</div>
+  </div>
+</div>
+
+<div class="hinweis no-print">
+  <b>So geht's:</b> Auf festem Papier oder dünnem Karton drucken, an den durchgezogenen grauen Linien ausschneiden, an den gestrichelten Linien falten und die Laschen nach innen kleben — fertig ist der Wort-Würfel.
+</div>
+
+<div class="netz-wrap">
+  <div class="netz">
+
+    <!-- Würfelseiten -->
+    <div class="feld" style="left:5.5cm;top:1.2cm;background:#F1F1F1;border-top:.3mm dashed #bbb;border-bottom:.3mm dashed #bbb;border-left:.3mm solid #bbb;border-right:.3mm solid #bbb;">
+      <img src="brainy-grau.png" alt="Brainy grau">
+      <div class="titel">SCHULE &amp; RUHE</div>
+    </div>
+
+    <div class="feld" style="left:0cm;top:6.7cm;background:#FBEAEA;border-top:.3mm dashed #bbb;border-bottom:.3mm dashed #bbb;border-right:.3mm dashed #bbb;border-left:.3mm solid #bbb;">
+      <img src="brainy-rot.png" alt="Brainy rot">
+      <div class="titel">SIGNALE</div>
+      <div class="sub">(Stopp &amp; Aktion)</div>
+    </div>
+
+    <div class="feld" style="left:5.5cm;top:6.7cm;background:#EAF7EF;border:.3mm dashed #bbb;">
+      <img src="brainy-gruen.png" alt="Brainy grün">
+      <div class="titel">VERBEN</div>
+      <div class="sub">(Tun-Wörter)</div>
+    </div>
+
+    <div class="feld" style="left:11.0cm;top:6.7cm;background:#FEF9E7;border:.3mm dashed #bbb;">
+      <img src="brainy-gelb.png" alt="Brainy gelb">
+      <div class="titel">NOMEN</div>
+      <div class="sub">(Dinge)</div>
+    </div>
+
+    <div class="feld" style="left:16.5cm;top:6.7cm;background:#FDEEE0;border-left:.3mm dashed #bbb;border-right:.3mm dashed #bbb;border-top:.3mm solid #bbb;border-bottom:.3mm solid #bbb;">
+      <img src="brainy-orange.png" alt="Brainy orange">
+      <div class="titel">ADJEKTIVE</div>
+      <div class="sub">(Wie-Wörter)</div>
+    </div>
+
+    <div class="feld" style="left:5.5cm;top:12.2cm;background:linear-gradient(135deg,#FBEAEA,#FEF9E7,#EAF7EF,#E7F0FB,#F3EAFB);border-top:.3mm dashed #bbb;border-bottom:.3mm dashed #bbb;border-left:.3mm solid #bbb;border-right:.3mm solid #bbb;">
+      <img src="brainy-joker.png" alt="Brainy Joker">
+      <div class="titel">JOKER</div>
+      <div class="sub">(Wahlfrei)</div>
+    </div>
+
+    <!-- Klebelaschen -->
+    <svg style="position:absolute;left:0cm;top:0cm;width:5.5cm;height:1.2cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="10,100 90,100 75,0 25,0" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+    <svg style="position:absolute;left:5.5cm;top:0cm;width:5.5cm;height:1.2cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="10,100 90,100 75,0 25,0" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+    <svg style="position:absolute;left:11.0cm;top:0cm;width:5.5cm;height:1.2cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="10,100 90,100 75,0 25,0" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+
+    <svg style="position:absolute;left:0cm;top:17.7cm;width:5.5cm;height:1.2cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="25,0 75,0 90,100 10,100" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+    <svg style="position:absolute;left:5.5cm;top:17.7cm;width:5.5cm;height:1.2cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="25,0 75,0 90,100 10,100" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+    <svg style="position:absolute;left:11.0cm;top:17.7cm;width:5.5cm;height:1.2cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="25,0 75,0 90,100 10,100" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+
+    <svg style="position:absolute;left:22.0cm;top:6.7cm;width:1.2cm;height:5.5cm;" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,10 0,90 100,75 100,25" fill="#fff" stroke="#bbb" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>
+
+  </div>
+</div>
+
+<div class="legende no-print">
+  <span>┄┄ gestrichelt = Faltlinie</span>
+  <span>── durchgezogen = Schnittlinie</span>
+  <span>▷ Lasche = Kleben</span>
+</div>
+
+<div class="tipp no-print">
+  💡 <b>Bastel-Tipp für INGRA:</b> Am besten auf 160–200 g/m² Papier (leichter Karton) drucken. Nach dem Ausschneiden zuerst alle gestrichelten Linien vorfalzen (z. B. mit Lineal-Kante), dann die Laschen mit Klebestift nach innen kleben.
+</div>
+
+<div class="footer no-print">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+
+</body>
+</html>

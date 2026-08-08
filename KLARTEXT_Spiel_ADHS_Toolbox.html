@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Toolbox für den Berufseinstieg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B; --m2:#2A5570; --acc:#6EC6A0; --paper:#F5F0E8; --ink:#2D2D2D; --muted:#6A6878; --border:#DDD8CE;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:6rem;}
+
+.header{background:var(--m);padding:1.75rem clamp(1rem,4vw,2.5rem);color:#fff;}
+.header-inner{max-width:880px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;}
+.back-link{color:rgba(255,255,255,.65);font-size:.75rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:.35rem .8rem;}
+.back-link:hover{color:#fff;border-color:#fff;}
+.header-titel{font-family:"Playfair Display",serif;font-size:clamp(1.35rem,3vw,1.85rem);font-weight:700;margin-top:.6rem;}
+.header-sub{font-size:.85rem;color:rgba(255,255,255,.65);max-width:600px;margin-top:.35rem;line-height:1.6;}
+
+.inhalt{max-width:880px;margin:0 auto;padding:2rem clamp(1rem,4vw,2.5rem);}
+.hinweis{background:#fff;border:1px solid var(--border);border-left:4px solid var(--m);padding:1rem 1.25rem;font-size:.85rem;line-height:1.6;color:var(--ink);margin-bottom:2rem;}
+
+.rubrik{background:#fff;border:1px solid var(--border);margin-bottom:1.25rem;}
+.rubrik-kopf{background:var(--m2);color:#fff;padding:.85rem 1.25rem;}
+.rubrik-nr{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.8;}
+.rubrik-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;margin-top:.1rem;}
+
+.punkt-liste{padding:.4rem 1.25rem;}
+.punkt{display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.punkt:last-child{border-bottom:none;}
+.punkt input{margin-top:.2rem;width:16px;height:16px;accent-color:var(--m);cursor:pointer;flex-shrink:0;}
+.punkt-text{font-size:.9rem;line-height:1.5;}
+.punkt-text b{display:none;}
+
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:var(--m);padding:.9rem clamp(1rem,4vw,2.5rem);display:flex;justify-content:center;z-index:200;box-shadow:0 -2px 12px rgba(0,0,0,.15);}
+.save-btn{background:var(--acc);color:var(--m);border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:4px;cursor:pointer;}
+.save-btn:hover:not(:disabled){background:#fff;}
+.save-btn:disabled{background:rgba(255,255,255,.2);color:rgba(255,255,255,.5);cursor:not-allowed;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-start;justify-content:center;z-index:400;padding:2.5rem 1rem;overflow:auto;}
+.overlay.zeigen{display:flex;}
+.modal{background:#fff;border-radius:4px;padding:0;max-width:640px;width:100%;}
+.modal-kopf{background:var(--m);color:#fff;padding:1.1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+.modal-kopf h2{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:1.3rem;cursor:pointer;line-height:1;}
+.modal-close:hover{color:#fff;}
+.modal-body{padding:1.5rem;}
+.modal textarea{width:100%;min-height:280px;border:1px solid var(--border);border-radius:4px;color:var(--ink);font-family:"DM Sans",sans-serif;font-size:.85rem;line-height:1.7;padding:.9rem;resize:vertical;}
+.modal-btns{display:flex;gap:.6rem;margin-top:1rem;}
+.modal-btns button{flex:1;padding:.75rem 1rem;border-radius:4px;border:1.5px solid var(--m);font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;}
+.copy-btn{background:var(--m);color:#fff;}
+.print-btn2{background:#fff;color:var(--m);}
+.copy-feedback{font-size:.75rem;color:#2E7D47;margin-top:.6rem;height:1em;}
+
+#druckansicht{display:none;}
+@media print{
+  body *{visibility:hidden;}
+  #druckansicht,#druckansicht *{visibility:visible;}
+  #druckansicht{display:block;position:absolute;top:0;left:0;width:100%;padding:14mm;color:#000;}
+  @page{margin:10mm;size:A4;}
+}
+#druckansicht h1{font-family:Georgia,serif;font-size:19px;margin-bottom:2px;}
+#druckansicht .dsub{font-size:11px;color:#555;margin-bottom:16px;}
+#druckansicht h3{font-size:13px;margin:14px 0 6px;color:#1B3A4B;}
+#druckansicht ul{padding-left:18px;margin-bottom:4px;}
+#druckansicht li{font-size:12.5px;margin-bottom:6px;line-height:1.5;}
+#druckansicht .dfoot{margin-top:22px;font-size:10px;color:#888;border-top:1px solid #ddd;padding-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <a class="back-link" href="KLARTEXT_Spiele.html">← Spiele</a>
+      <div class="header-titel">Toolbox für den Berufseinstieg</div>
+      <div class="header-sub">Für Jugendliche mit ADHS: Was am Arbeitsplatz hilft — als klare, professionelle Wünsche formuliert für Chef:in oder Ausbilder:in.</div>
+    </div>
+  </div>
+</div>
+
+<div class="inhalt">
+  <div class="hinweis">Klicke an, was auf dich zutrifft. Am Ende erstellt das Tool daraus eine fertige Liste mit sachlichen Formulierungen, die du deiner Ausbildungsleitung oder deinem Chef vorlegen kannst.</div>
+  <div id="rubriken"></div>
+</div>
+
+<div class="aktionsleiste">
+  <button class="save-btn" id="saveBtn" onclick="toolboxOeffnen()" disabled>Meine Toolbox als PDF/Text speichern</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-kopf"><h2>Toolbox für meinen Chef / Ausbilder</h2><button class="modal-close" onclick="modalSchliessen()">&times;</button></div>
+    <div class="modal-body">
+      <textarea id="listeText" readonly></textarea>
+      <div class="copy-feedback" id="copyFeedback"></div>
+      <div class="modal-btns">
+        <button class="copy-btn" onclick="textKopieren()">Text kopieren</button>
+        <button class="print-btn2" onclick="druckenStarten()">Als PDF drucken</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="druckansicht"></div>
+
+<script>
+var RUBRIKEN = [
+  {
+    nr: 'Rubrik 1',
+    titel: 'Arbeitsplatz (Reize)',
+    punkte: [
+      { text:'Ich brauche Ruhe zum Konzentrieren.', wunsch:'Ich bitte um Erlaubnis für Noise-Cancelling-Kopfhörer bei konzentrierter Schreibarbeit.' },
+      { text:'Grelles Licht stört mich.', wunsch:'Ich bitte um einen Arbeitsplatz mit blendfreiem oder gedimmtem Licht, wo möglich.' },
+      { text:'Ich brauche einen aufgeräumten, festen Arbeitsplatz.', wunsch:'Ich bitte um eine feste, aufgeräumte Arbeitsplatzstruktur, um mich besser konzentrieren zu können.' },
+      { text:'Viele Menschen und Gespräche um mich herum lenken mich ab.', wunsch:'Ich bitte um einen ruhigeren Arbeitsplatz oder Sichtschutz, wenn die Aufgabe hohe Konzentration erfordert.' }
+    ]
+  },
+  {
+    nr: 'Rubrik 2',
+    titel: 'Aufgaben (Struktur)',
+    punkte: [
+      { text:'Ich brauche schriftliche Anweisungen — mündliche vergesse ich schnell.', wunsch:'Ich bitte darum, wichtige Arbeitsschritte zusätzlich schriftlich oder als Liste zu bekommen.' },
+      { text:'Große Aufgaben überfordern mich, wenn sie nicht aufgeteilt sind.', wunsch:'Ich bitte darum, größere Aufgaben in kleinere Zwischenschritte mit klaren Zwischenzielen zu unterteilen.' },
+      { text:'Ich brauche klare Deadlines, sonst verliere ich den Überblick.', wunsch:'Ich bitte um klar benannte Fristen und, wenn möglich, kurze Zwischen-Check-ins.' },
+      { text:'Ich vergesse Aufgaben, wenn ich sie nicht sofort notiere.', wunsch:'Ich bitte um kurz Zeit direkt nach der Aufgabenübergabe, um sie schriftlich festzuhalten.' }
+    ]
+  },
+  {
+    nr: 'Rubrik 3',
+    titel: 'Pausen (Energie)',
+    punkte: [
+      { text:'Ich brauche kurze Pausen, um mich neu zu fokussieren.', wunsch:'Ich bitte um kurze, planbare Kurzpausen zwischen längeren Konzentrationsphasen.' },
+      { text:'Nach der Mittagspause brauche ich etwas Zeit, um wieder reinzukommen.', wunsch:'Ich bitte um etwas Übergangszeit nach der Mittagspause, bevor komplexe Aufgaben starten.' },
+      { text:'Bewegung hilft mir, mich zu konzentrieren.', wunsch:'Ich bitte um die Möglichkeit, kurze Bewegungspausen einzulegen, wenn die Aufgabe es zulässt.' },
+      { text:'Ich brauche einen Rückzugsort, wenn es gerade zu viel wird.', wunsch:'Ich bitte um einen ruhigen Rückzugsort für kurze Erholungsmomente bei Überlastung.' }
+    ]
+  },
+  {
+    nr: 'Rubrik 4',
+    titel: 'Team (Kommunikation)',
+    punkte: [
+      { text:'Ich brauche direktes, klares Feedback statt Andeutungen.', wunsch:'Ich bitte um direktes und konkretes Feedback, statt indirekter Hinweise.' },
+      { text:'Ich brauche etwas Zeit, um auf Fragen zu antworten.', wunsch:'Ich bitte um etwas Bedenkzeit bei spontanen Fragen, bevor eine Antwort erwartet wird.' },
+      { text:'Ich sage manchmal ungefiltert, was ich denke.', wunsch:'Ich möchte offen ansprechen können, wenn mir etwas auffällt, und bitte um Verständnis für direkte Kommunikation.' },
+      { text:'Kritik vor anderen ist für mich schwer auszuhalten.', wunsch:'Ich bitte darum, Feedback möglichst unter vier Augen zu bekommen.' }
+    ]
+  }
+];
+
+var ausgewaehlt = {};
+
+function rubrikenRendern(){
+  var wrap = document.getElementById('rubriken');
+  wrap.innerHTML = '';
+  RUBRIKEN.forEach(function(r, ri){
+    var block = document.createElement('div');
+    block.className = 'rubrik';
+    var punkteHtml = r.punkte.map(function(p, pi){
+      var id = ri + '_' + pi;
+      var checked = ausgewaehlt[id] ? 'checked' : '';
+      return '<label class="punkt" for="chk_'+id+'"><input type="checkbox" id="chk_'+id+'" '+checked+' onchange="toggeln(\''+id+'\')"><span class="punkt-text">'+p.text+'</span></label>';
+    }).join('');
+    block.innerHTML = '<div class="rubrik-kopf"><div class="rubrik-nr">'+r.nr+'</div><div class="rubrik-titel">'+r.titel+'</div></div><div class="punkt-liste">'+punkteHtml+'</div>';
+    wrap.appendChild(block);
+  });
+}
+
+function toggeln(id){
+  if (ausgewaehlt[id]) delete ausgewaehlt[id];
+  else ausgewaehlt[id] = true;
+  document.getElementById('saveBtn').disabled = Object.keys(ausgewaehlt).length === 0;
+}
+
+function gewaehltePunkte(){
+  var ergebnis = [];
+  RUBRIKEN.forEach(function(r, ri){
+    var treffer = [];
+    r.punkte.forEach(function(p, pi){
+      if (ausgewaehlt[ri + '_' + pi]) treffer.push(p);
+    });
+    if (treffer.length) ergebnis.push({ titel:r.titel, punkte:treffer });
+  });
+  return ergebnis;
+}
+
+function toolboxOeffnen(){
+  var daten = gewaehltePunkte();
+  if (!daten.length) return;
+  var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  var text = 'TOOLBOX FÜR MEINEN CHEF / AUSBILDER\n';
+  text += 'Erstellt am ' + heute + '\n';
+  text += '========================================\n\n';
+  daten.forEach(function(d){
+    text += d.titel.toUpperCase() + '\n';
+    d.punkte.forEach(function(p){ text += '- ' + p.wunsch + '\n'; });
+    text += '\n';
+  });
+  text += 'Erstellt mit KLARTEXT-Mentoring';
+  document.getElementById('listeText').value = text;
+  document.getElementById('copyFeedback').textContent = '';
+
+  var html = '<h1>Toolbox für meinen Chef / Ausbilder</h1><div class="dsub">Erstellt am ' + heute + ' · KLARTEXT-Mentoring</div>';
+  daten.forEach(function(d){
+    html += '<h3>' + d.titel + '</h3><ul>';
+    d.punkte.forEach(function(p){ html += '<li>' + p.wunsch + '</li>'; });
+    html += '</ul>';
+  });
+  html += '<div class="dfoot">KLARTEXT-Mentoring · Toolbox für den Berufseinstieg</div>';
+  document.getElementById('druckansicht').innerHTML = html;
+
+  document.getElementById('overlay').classList.add('zeigen');
+}
+
+function modalSchliessen(){
+  document.getElementById('overlay').classList.remove('zeigen');
+}
+
+function druckenStarten(){
+  window.print();
+}
+
+function textKopieren(){
+  var textarea = document.getElementById('listeText');
+  var feedback = document.getElementById('copyFeedback');
+  textarea.select();
+  textarea.setSelectionRange(0, 999999);
+  var kopiert = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textarea.value);
+      kopiert = true;
+    } else {
+      kopiert = document.execCommand('copy');
+    }
+  } catch(e) { kopiert = false; }
+  feedback.textContent = kopiert ? 'Text wurde in die Zwischenablage kopiert.' : 'Bitte manuell mit Strg/Cmd+C kopieren.';
+}
+
+rubrikenRendern();
+</script>
+
+</body>
+</html>

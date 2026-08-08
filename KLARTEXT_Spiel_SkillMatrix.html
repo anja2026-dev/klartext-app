@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Skill-Matrix: Dein Hobby-Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --jd:#2F6B6E; --jd-light:#EAF3F3;
+  --m:#1B3A4B; --acc:#6EC6A0;
+}
+body{
+  font-family:"DM Sans",sans-serif;
+  background:linear-gradient(160deg,#0F2027 0%,#1B3A4B 55%,#2F6B6E 100%);
+  color:#fff; min-height:100vh; padding-bottom:6rem;
+}
+
+.header{max-width:1000px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.35);border-radius:20px;color:rgba(255,255,255,.85);font-size:.72rem;font-weight:700;text-decoration:none;}
+.back-btn:hover{border-color:#fff;color:#fff;}
+
+.hero{max-width:1000px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 1.75rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;letter-spacing:-.01em;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.65);max-width:620px;margin-top:.4rem;line-height:1.6;}
+
+.hobby-row{max-width:1000px;margin:0 auto 2rem;padding:0 clamp(1rem,4vw,2rem);display:flex;flex-wrap:wrap;gap:.6rem;}
+.hobby-chip{display:flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.18);border-radius:16px;padding:.85rem 1.1rem;cursor:pointer;transition:all .15s;font-family:inherit;color:#fff;text-align:left;}
+.hobby-chip:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.35);}
+.hobby-chip .icon{font-size:1.4rem;}
+.hobby-chip .label{font-size:.85rem;font-weight:700;}
+.hobby-chip.aktiv{background:rgba(110,198,160,.2);border-color:var(--acc);}
+.hobby-chip.aktiv .label{color:var(--acc);}
+
+.ergebnisse{max-width:1000px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem);}
+.leer-hinweis{color:rgba(255,255,255,.45);font-size:.85rem;padding:2rem 0;text-align:center;border:1.5px dashed rgba(255,255,255,.15);border-radius:16px;}
+
+.hobby-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.2rem 1.3rem;margin-bottom:1rem;animation:einblenden .3s ease;}
+@keyframes einblenden{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.hobby-block-titel{display:flex;align-items:center;gap:.5rem;font-family:"Playfair Display",serif;font-weight:700;font-size:1.05rem;margin-bottom:.85rem;}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem;}
+.skill-karte{background:rgba(110,198,160,.1);border:1px solid rgba(110,198,160,.35);border-radius:12px;padding:.7rem .85rem;}
+.skill-karte .skill-name{font-size:.85rem;font-weight:700;color:var(--acc);margin-bottom:.2rem;}
+.skill-karte .skill-desc{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.4;}
+
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;z-index:200;}
+.save-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
+.save-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(110,198,160,.35);}
+.save-btn:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:400;padding:1rem;}
+.overlay.zeigen{display:flex;}
+.modal{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:1.5rem;max-width:480px;width:100%;max-height:80vh;overflow:auto;}
+.modal h2{font-family:"Playfair Display",serif;font-size:1.15rem;margin-bottom:.9rem;}
+.modal textarea{width:100%;min-height:220px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#fff;font-family:"DM Sans",sans-serif;font-size:.82rem;line-height:1.6;padding:.8rem;resize:vertical;}
+.modal-btns{display:flex;gap:.6rem;margin-top:1rem;}
+.modal-btns button{flex:1;padding:.7rem 1rem;border-radius:30px;border:none;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;}
+.copy-btn{background:var(--acc);color:#0F2027;}
+.close-btn{background:rgba(255,255,255,.12);color:#fff;}
+.copy-feedback{font-size:.72rem;color:var(--acc);margin-top:.5rem;height:1em;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hero-titel" style="font-size:1rem;letter-spacing:.02em;">KLARTEXT</div>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Spiele</a>
+</div>
+
+<div class="hero">
+  <h1 class="hero-titel">Skill-Matrix: Dein Hobby-Check</h1>
+  <p class="hero-sub">Wähl aus, was du in deiner Freizeit machst. Du wirst überrascht sein, welche beruflichen Stärken du dadurch schon längst besitzt.</p>
+</div>
+
+<div class="hobby-row" id="hobbyRow"></div>
+
+<div class="ergebnisse" id="ergebnisse">
+  <div class="leer-hinweis" id="leerHinweis">Wähl oben mindestens ein Hobby aus, um deine geheimen Stärken freizuschalten.</div>
+</div>
+
+<div class="aktionsleiste">
+  <button class="save-btn" id="saveBtn" onclick="listeOeffnen()" disabled>💾 Als Stärken-Liste speichern</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2>Deine Stärken-Liste</h2>
+    <textarea id="listeText" readonly></textarea>
+    <div class="copy-feedback" id="copyFeedback"></div>
+    <div class="modal-btns">
+      <button class="copy-btn" onclick="listeKopieren()">📋 Kopieren</button>
+      <button class="close-btn" onclick="modalSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var HOBBIES = [
+  { id:'gaming', icon:'🎮', label:'Gaming', skills:[
+      { name:'Teamfähigkeit', desc:'Im Team koordinieren und gemeinsam gewinnen.' },
+      { name:'Strategie', desc:'Vorausdenken und Pläne an neue Situationen anpassen.' },
+      { name:'Schnelle Auffassungsgabe', desc:'Neue Situationen sofort erfassen und reagieren.' }
+  ]},
+  { id:'sport', icon:'🛹', label:'Skaten / Sport', skills:[
+      { name:'Ausdauer', desc:'Dranbleiben, auch wenn es anstrengend wird.' },
+      { name:'Mut', desc:'Neues wagen, auch mit Risiko zu scheitern.' },
+      { name:'Umgang mit Scheitern', desc:'Hinfallen, aufstehen, weitermachen.' }
+  ]},
+  { id:'social', icon:'📱', label:'Social Media', skills:[
+      { name:'Kreativität', desc:'Ideen in Bilder, Videos und Texte umsetzen.' },
+      { name:'Digitale Kompetenz', desc:'Tools und Plattformen sicher nutzen.' },
+      { name:'Selbstpräsentation', desc:'Sich und Themen überzeugend zeigen.' }
+  ]},
+  { id:'technik', icon:'🔧', label:'Basteln / Technik', skills:[
+      { name:'Problemlösung', desc:'Für jedes Problem einen Weg finden.' },
+      { name:'Logik', desc:'Schritt für Schritt folgerichtig denken.' },
+      { name:'Feinmotorik', desc:'Präzise und sauber arbeiten.' }
+  ]},
+  { id:'familie', icon:'🐾', label:'Haustiere / Familie', skills:[
+      { name:'Verantwortung', desc:'Für andere da sein, auch wenn\'s unbequem ist.' },
+      { name:'Zuverlässigkeit', desc:'Was ich zusage, halte ich auch ein.' },
+      { name:'Fürsorge', desc:'Auf die Bedürfnisse anderer achten.' }
+  ]}
+];
+
+var ausgewaehlt = [];
+
+function hobbyRowRendern(){
+  var row = document.getElementById('hobbyRow');
+  row.innerHTML = '';
+  HOBBIES.forEach(function(h){
+    var btn = document.createElement('button');
+    btn.className = 'hobby-chip' + (ausgewaehlt.indexOf(h.id) !== -1 ? ' aktiv' : '');
+    btn.innerHTML = '<span class="icon">'+h.icon+'</span><span class="label">'+h.label+'</span>';
+    btn.addEventListener('click', function(){ hobbyToggeln(h.id); });
+    row.appendChild(btn);
+  });
+}
+
+function hobbyToggeln(id){
+  var idx = ausgewaehlt.indexOf(id);
+  if (idx !== -1) ausgewaehlt.splice(idx, 1);
+  else ausgewaehlt.push(id);
+  hobbyRowRendern();
+  ergebnisseRendern();
+}
+
+function ergebnisseRendern(){
+  var wrap = document.getElementById('ergebnisse');
+  if (ausgewaehlt.length === 0) {
+    wrap.innerHTML = '<div class="leer-hinweis" id="leerHinweis">Wähl oben mindestens ein Hobby aus, um deine geheimen Stärken freizuschalten.</div>';
+    document.getElementById('saveBtn').disabled = true;
+    return;
+  }
+  wrap.innerHTML = '';
+  HOBBIES.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; }).forEach(function(h){
+    var block = document.createElement('div');
+    block.className = 'hobby-block';
+    var skillsHtml = h.skills.map(function(s){
+      return '<div class="skill-karte"><div class="skill-name">🔓 '+s.name+'</div><div class="skill-desc">'+s.desc+'</div></div>';
+    }).join('');
+    block.innerHTML = '<div class="hobby-block-titel"><span>'+h.icon+'</span><span>'+h.label+' — deine freigeschalteten Stärken</span></div><div class="skill-grid">'+skillsHtml+'</div>';
+    wrap.appendChild(block);
+  });
+  document.getElementById('saveBtn').disabled = false;
+}
+
+function listeOeffnen(){
+  if (ausgewaehlt.length === 0) return;
+  var gewaehlteHobbies = HOBBIES.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; });
+  var text = 'Meine Stärken (aus meinen Hobbys)\n';
+  text += '——————————————————————\n\n';
+  gewaehlteHobbies.forEach(function(h){
+    text += h.label + ':\n';
+    h.skills.forEach(function(s){ text += '  • ' + s.name + '\n'; });
+    text += '\n';
+  });
+  text += '— erstellt mit KLARTEXT · Skill-Matrix';
+  document.getElementById('listeText').value = text;
+  document.getElementById('copyFeedback').textContent = '';
+  document.getElementById('overlay').classList.add('zeigen');
+}
+
+function modalSchliessen(){
+  document.getElementById('overlay').classList.remove('zeigen');
+}
+
+function listeKopieren(){
+  var textarea = document.getElementById('listeText');
+  var feedback = document.getElementById('copyFeedback');
+  textarea.select();
+  textarea.setSelectionRange(0, 999999);
+  var kopiert = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textarea.value);
+      kopiert = true;
+    } else {
+      kopiert = document.execCommand('copy');
+    }
+  } catch(e) { kopiert = false; }
+  feedback.textContent = kopiert ? '✓ In die Zwischenablage kopiert!' : 'Bitte manuell mit Strg/Cmd+C kopieren.';
+}
+
+hobbyRowRendern();
+ergebnisseRendern();
+</script>
+
+</body>
+</html>

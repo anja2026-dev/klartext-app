@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLARTEXT Brainy-Würfel</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #f0f2f5; padding: 20px; }
+        .container { background: white; max-width: 500px; margin: auto; padding: 30px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        #brainy-img { width: 200px; height: 200px; margin-bottom: 20px; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #word-display { font-size: 2.5rem; font-weight: bold; min-height: 4rem; display: flex; align-items: center; justify-content: center; border-radius: 15px; margin-bottom: 20px; padding: 10px; }
+        button { background: #2c3e50; color: white; border: none; padding: 18px 40px; font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #34495e; }
+        .spin { transform: rotate(360deg) scale(0.8); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="brainy-img" src="brainy-gruen.png" alt="Brainy">
+        <div id="word-display">Klick zum Starten!</div>
+        <button onclick="rollCube()">🎲 WÜRFELN</button>
+    </div>
+
+    <script>
+        const pool = {
+            'Gelb (Nomen)': ['Apfel', 'Banane', 'Ball', 'Buch', 'Baum', 'Blume', 'Auto', 'Haus', 'Hund', 'Katze', 'Kind', 'Mann', 'Frau', 'Sonne', 'Mond', 'Stern', 'Wasser', 'Brot', 'Milch', 'Saft', 'Käse', 'Ei', 'Fisch', 'Vogel'],
+            'Grün (Verben)': ['lachen', 'spielen', 'rennen', 'malen', 'lesen', 'schreiben', 'springen', 'singen', 'tanzen', 'essen', 'trinken', 'schlafen', 'hören', 'sehen', 'helfen', 'kommen', 'gehen', 'kochen', 'bauen', 'rufen', 'klettern', 'werfen', 'fangen'],
+            'Orange (Adjektive)': ['groß', 'klein', 'heiß', 'kalt', 'schön', 'schnell', 'langsam', 'laut', 'leise', 'bunt', 'müde', 'wach', 'froh', 'traurig', 'mutig', 'lieb', 'nett', 'neu', 'alt', 'hell', 'dunkel', 'weich', 'hart', 'süß', 'sauer'],
+            'Rot (Signale)': ['Stopp!', 'Hilfe!', 'Achtung!', 'Nein!', 'Ja!', 'Pause!', 'Warte!', 'Los!', 'Schnell!', 'Weg!', 'Hier!', 'Guck!', 'Pass auf!', 'Hilfe holen', 'Gefahr!', 'Raus!', 'Nicht anfassen!', 'Ruhe jetzt!'],
+            'Grau (Schule)': ['Schule', 'Lehrer', 'Tisch', 'Stuhl', 'Tafel', 'Kreide', 'Heft', 'Stift', 'Ranzen', 'Klasse', 'Fenster', 'Tür', 'Licht', 'Boden', 'Wand', 'Uhr', 'Computer', 'Schere', 'Kleber', 'Papier', 'Sportzeug'],
+            'JOKER': ['Such dir eine Farbe aus!', 'Du darfst ein Wort bestimmen!', 'Würfel noch mal!']
+        };
+
+        const config = {
+            'Gelb (Nomen)': { img: 'brainy-gelb.png', bg: '#f1c40f', color: 'black' },
+            'Grün (Verben)': { img: 'brainy-gruen.png', bg: '#2ecc71', color: 'white' },
+            'Orange (Adjektive)': { img: 'brainy-orange.png', bg: '#e67e22', color: 'white' },
+            'Rot (Signale)': { img: 'brainy-rot.png', bg: '#e74c3c', color: 'white' },
+            'Grau (Schule)': { img: 'brainy-grau.png', bg: '#95a5a6', color: 'white' },
+            'JOKER': { img: 'brainy-joker.png', bg: 'linear-gradient(45deg, #e74c3c, #f1c40f, #2ecc71, #3498db, #9b59b6)', color: 'white' }
+        };
+
+        function rollCube() {
+            const img = document.getElementById('brainy-img');
+            const display = document.getElementById('word-display');
+            img.classList.add('spin');
+            
+            setTimeout(() => {
+                img.classList.remove('spin');
+                const categories = Object.keys(pool);
+                const cat = categories[Math.floor(Math.random() * categories.length)];
+                const word = pool[cat][Math.floor(Math.random() * pool[cat].length)];
+                
+                img.src = config[cat].img;
+                display.innerText = word;
+                display.style.background = config[cat].bg;
+                display.style.color = config[cat].color;
+            }, 600);
+        }
+    </script>
+</body>
+</html>

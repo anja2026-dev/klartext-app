@@ -8,10 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1B3A4B">
+<meta name="theme-color" content="#6B7FD7">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--m:#1B3A4B; --m2:#2A5570; --acc:#6EC6A0; --paper:#F5F0E8; --ink:#2D2D2D; --muted:#6A6878; --border:#DDD8CE;}
+:root{--m:#6B7FD7; --m2:#5561B4; --acc:#6EC6A0; --paper:#F3F4FC; --ink:#2D2D2D; --muted:#6A6878; --border:#C4CBF0;}
 body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:6rem;}
 
 .header{background:var(--m);padding:1.75rem clamp(1rem,4vw,2.5rem);color:#fff;}
@@ -65,7 +65,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 }
 #druckansicht h1{font-family:Georgia,serif;font-size:19px;margin-bottom:2px;}
 #druckansicht .dsub{font-size:11px;color:#555;margin-bottom:16px;}
-#druckansicht h3{font-size:13px;margin:14px 0 6px;color:#1B3A4B;}
+#druckansicht h3{font-size:13px;margin:14px 0 6px;color:#5561B4;}
+#druckansicht .dtext{font-size:12.5px;color:#333;line-height:1.6;border:1px solid #eee;border-radius:6px;padding:8px;white-space:pre-wrap;}
 #druckansicht ul{padding-left:18px;margin-bottom:4px;}
 #druckansicht li{font-size:12.5px;margin-bottom:6px;line-height:1.5;}
 #druckansicht .dfoot{margin-top:22px;font-size:10px;color:#888;border-top:1px solid #ddd;padding-top:10px;}
@@ -86,6 +87,13 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <div class="inhalt">
   <div class="hinweis">Klicke an, was auf dich zutrifft. Am Ende erstellt das Tool daraus eine fertige Liste mit sachlichen Formulierungen, die du deiner Ausbildungsleitung oder deinem Chef vorlegen kannst.</div>
   <div id="rubriken"></div>
+
+  <div class="rubrik">
+    <div class="rubrik-kopf"><div class="rubrik-nr">Zusatz</div><div class="rubrik-titel">Das möchte ich meinem Ausbilder noch sagen</div></div>
+    <div class="punkt-liste" style="padding:1rem 1.25rem;">
+      <textarea id="zusatzNachricht" placeholder="Optional: Platz für alles, was dir sonst noch wichtig ist." style="width:100%;min-height:90px;border:1px solid var(--border);border-radius:4px;padding:.75rem .9rem;font-family:inherit;font-size:.88rem;line-height:1.5;color:var(--ink);resize:vertical;"></textarea>
+    </div>
+  </div>
 </div>
 
 <div class="aktionsleiste">
@@ -173,7 +181,12 @@ function rubrikenRendern(){
 function toggeln(id){
   if (ausgewaehlt[id]) delete ausgewaehlt[id];
   else ausgewaehlt[id] = true;
-  document.getElementById('saveBtn').disabled = Object.keys(ausgewaehlt).length === 0;
+  saveBtnAktualisieren();
+}
+
+function saveBtnAktualisieren(){
+  var zusatz = document.getElementById('zusatzNachricht').value.trim();
+  document.getElementById('saveBtn').disabled = Object.keys(ausgewaehlt).length === 0 && !zusatz;
 }
 
 function gewaehltePunkte(){
@@ -190,7 +203,8 @@ function gewaehltePunkte(){
 
 function toolboxOeffnen(){
   var daten = gewaehltePunkte();
-  if (!daten.length) return;
+  var zusatz = document.getElementById('zusatzNachricht').value.trim();
+  if (!daten.length && !zusatz) return;
   var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
 
   var text = 'TOOLBOX FÜR MEINEN CHEF / AUSBILDER\n';
@@ -201,6 +215,10 @@ function toolboxOeffnen(){
     d.punkte.forEach(function(p){ text += '- ' + p.wunsch + '\n'; });
     text += '\n';
   });
+  if (zusatz) {
+    text += 'DAS MÖCHTE ICH MEINEM AUSBILDER NOCH SAGEN\n';
+    text += zusatz + '\n\n';
+  }
   text += 'Erstellt mit KLARTEXT-Mentoring';
   document.getElementById('listeText').value = text;
   document.getElementById('copyFeedback').textContent = '';
@@ -211,6 +229,9 @@ function toolboxOeffnen(){
     d.punkte.forEach(function(p){ html += '<li>' + p.wunsch + '</li>'; });
     html += '</ul>';
   });
+  if (zusatz) {
+    html += '<h3>Das möchte ich meinem Ausbilder noch sagen</h3><div class="dtext">' + zusatz + '</div>';
+  }
   html += '<div class="dfoot">KLARTEXT-Mentoring · Toolbox für den Berufseinstieg</div>';
   document.getElementById('druckansicht').innerHTML = html;
 
@@ -243,6 +264,7 @@ function textKopieren(){
 }
 
 rubrikenRendern();
+document.getElementById('zusatzNachricht').addEventListener('input', saveBtnAktualisieren);
 </script>
 
 </body>

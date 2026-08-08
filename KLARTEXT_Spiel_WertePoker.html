@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Werte-Poker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --jd:#2F6B6E; --jd-light:#EAF3F3; --jd-border:#C3DCDC;
+  --m:#1B3A4B; --acc:#6EC6A0;
+  --ink:#2D2D2D; --muted:#7A7060;
+}
+body{
+  font-family:"DM Sans",sans-serif;
+  background:linear-gradient(160deg,#0F2027 0%,#1B3A4B 55%,#2F6B6E 100%);
+  color:#fff; min-height:100vh; padding-bottom:6rem;
+}
+
+.header{max-width:1100px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.35);border-radius:20px;color:rgba(255,255,255,.85);font-size:.72rem;font-weight:700;text-decoration:none;}
+.back-btn:hover{border-color:#fff;color:#fff;}
+
+.hero{max-width:1100px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 1.5rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;letter-spacing:-.01em;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.65);max-width:600px;margin-top:.4rem;line-height:1.6;}
+
+.budget-row{max-width:1100px;margin:0 auto 1.5rem;padding:0 clamp(1rem,4vw,2rem);display:flex;align-items:center;gap:.85rem;}
+.budget-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:30px;padding:.5rem 1.1rem;font-size:.82rem;font-weight:700;}
+.budget-badge b{color:var(--acc);font-size:.95rem;}
+.reset-btn{background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);border-radius:20px;padding:.5rem 1rem;font-size:.75rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.reset-btn:hover{border-color:#fff;color:#fff;}
+
+.grid{max-width:1100px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem);display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.7rem;}
+
+.karte{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);border-radius:14px;padding:.9rem .85rem;cursor:pointer;transition:all .15s;user-select:none;position:relative;min-height:118px;display:flex;flex-direction:column;gap:.35rem;}
+.karte:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.3);transform:translateY(-2px);}
+.karte-nr{font-size:.62rem;color:rgba(255,255,255,.4);font-weight:700;letter-spacing:.05em;}
+.karte-titel{font-family:"Playfair Display",serif;font-size:1.02rem;font-weight:700;color:#fff;}
+.karte-def{font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.45;flex:1;}
+
+.karte.gewaehlt{background:rgba(110,198,160,.18);border-color:var(--acc);box-shadow:0 4px 18px rgba(110,198,160,.2);}
+.karte.gewaehlt .karte-titel{color:var(--acc);}
+.karte.gewaehlt::after{content:"✓";position:absolute;top:.7rem;right:.75rem;width:20px;height:20px;border-radius:50%;background:var(--acc);color:#0F2027;font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;}
+
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;z-index:200;}
+.print-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
+.print-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(110,198,160,.35);}
+.print-btn:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+
+.toast{position:fixed;left:50%;bottom:5.5rem;transform:translateX(-50%) translateY(20px);background:#fff;color:var(--m);padding:.85rem 1.4rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.25);max-width:340px;text-align:center;line-height:1.5;opacity:0;pointer-events:none;transition:all .25s;z-index:300;}
+.toast.zeigen{opacity:1;transform:translateX(-50%) translateY(0);}
+
+#druckansicht{display:none;}
+
+@media print{
+  body{background:white!important;color:#000;padding:0;}
+  .no-print{display:none!important;}
+  #druckansicht{display:block!important;color:#000;max-width:680px;margin:0 auto;padding:1rem;}
+  @page{margin:14mm;size:A4;}
+}
+#druckansicht h1{font-family:Georgia,serif;font-size:20px;margin-bottom:2px;}
+#druckansicht .dsub{font-size:11px;color:#555;margin-bottom:18px;}
+#druckansicht ol{padding-left:20px;}
+#druckansicht li{margin-bottom:12px;font-size:13px;}
+#druckansicht li b{font-size:14px;}
+#druckansicht .ddef{color:#444;font-size:12px;}
+#druckansicht .dfoot{margin-top:24px;font-size:10px;color:#888;border-top:1px solid #ddd;padding-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <div class="header">
+    <div class="hero-titel" style="font-size:1rem;letter-spacing:.02em;">KLARTEXT</div>
+    <a class="back-btn" href="KLARTEXT_Spiele.html">← Spiele</a>
+  </div>
+
+  <div class="hero">
+    <h1 class="hero-titel">Werte-Poker</h1>
+    <p class="hero-sub">24 Werte, ein Budget: Wähle deine 5 wichtigsten aus. Was bleibt übrig, wenn du dich entscheiden musst?</p>
+  </div>
+
+  <div class="budget-row">
+    <div class="budget-badge">Budget: <b id="counter">0 / 5</b> gewählt</div>
+    <button class="reset-btn" onclick="zuruecksetzen()">Zurücksetzen</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="aktionsleiste no-print">
+  <button class="print-btn" id="printBtn" onclick="druckenVorbereiten()" disabled>🖨 Meine Auswahl drucken</button>
+</div>
+
+<div class="toast" id="toast">Du hast nur ein Budget von 5 Werten. Wähle einen anderen Wert ab.</div>
+
+<div id="druckansicht"></div>
+
+<script>
+var WERTE = [
+  { nr:1, wert:"Freiheit", def:"Tun können, was ich für richtig halte." },
+  { nr:2, wert:"Freundschaft", def:"Leute haben, auf die ich mich verlassen kann." },
+  { nr:3, wert:"Ehrlichkeit", def:"Sagen, was Sache ist – auch wenn es schwerfällt." },
+  { nr:4, wert:"Erfolg", def:"Meine Ziele erreichen und stolz darauf sein." },
+  { nr:5, wert:"Sicherheit", def:"Mich innerlich und äußerlich geschützt fühlen." },
+  { nr:6, wert:"Gerechtigkeit", def:"Dass es fair zugeht – für mich und für andere." },
+  { nr:7, wert:"Mut", def:"Etwas wagen, obwohl ich Angst habe." },
+  { nr:8, wert:"Ruhe", def:"Zeit für mich, ohne Erwartungen von außen." },
+  { nr:9, wert:"Treue", def:"Zu meinen Leuten und meinen Überzeugungen stehen." },
+  { nr:10, wert:"Kreativität", def:"Etwas Eigenes erschaffen und ausdrücken." },
+  { nr:11, wert:"Respekt", def:"So akzeptiert werden, wie ich bin." },
+  { nr:12, wert:"Abenteuer", def:"Neues entdecken und die Komfortzone verlassen." },
+  { nr:13, wert:"Familie", def:"Zusammenhalt erleben, auch wenn es mal kracht." },
+  { nr:14, wert:"Gesundheit", def:"Auf meinen Körper und meine Seele achten." },
+  { nr:15, wert:"Vertrauen", def:"Glauben können, dass es gut wird." },
+  { nr:16, wert:"Unabhängigkeit", def:"Mein eigener Chef sein und selbst entscheiden." },
+  { nr:17, wert:"Anerkennung", def:"Dass andere sehen, was ich leiste." },
+  { nr:18, wert:"Toleranz", def:"Andere so lassen können, wie sie sind." },
+  { nr:19, wert:"Humor", def:"Über mich selbst und die Welt lachen können." },
+  { nr:20, wert:"Wissen", def:"Dinge verstehen und den Durchblick haben." },
+  { nr:21, wert:"Disziplin", def:"Dranbleiben, auch wenn es anstrengend wird." },
+  { nr:22, wert:"Loyalität", def:"Hinter meinem Team stehen." },
+  { nr:23, wert:"Schönheit", def:"Die Welt und mich selbst ästhetisch finden." },
+  { nr:24, wert:"Macht", def:"Einfluss haben und Dinge mitgestalten können." }
+];
+
+var LIMIT = 5;
+var ausgewaehlt = [];
+var toastTimer = null;
+
+function gridRendern(){
+  var grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  WERTE.forEach(function(w){
+    var el = document.createElement('div');
+    el.className = 'karte' + (ausgewaehlt.indexOf(w.nr) !== -1 ? ' gewaehlt' : '');
+    el.setAttribute('data-nr', w.nr);
+    el.innerHTML = '<div class="karte-nr">'+String(w.nr).padStart(2,'0')+'</div>'
+      + '<div class="karte-titel">'+w.wert+'</div>'
+      + '<div class="karte-def">'+w.def+'</div>';
+    el.addEventListener('click', function(){ karteKlick(w.nr); });
+    grid.appendChild(el);
+  });
+}
+
+function karteKlick(nr){
+  var idx = ausgewaehlt.indexOf(nr);
+  if (idx !== -1) {
+    ausgewaehlt.splice(idx, 1);
+  } else {
+    if (ausgewaehlt.length >= LIMIT) {
+      toastZeigen();
+      return;
+    }
+    ausgewaehlt.push(nr);
+  }
+  gridRendern();
+  counterAktualisieren();
+}
+
+function counterAktualisieren(){
+  document.getElementById('counter').textContent = ausgewaehlt.length + ' / ' + LIMIT;
+  document.getElementById('printBtn').disabled = ausgewaehlt.length === 0;
+}
+
+function toastZeigen(){
+  var toast = document.getElementById('toast');
+  toast.classList.add('zeigen');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ toast.classList.remove('zeigen'); }, 3200);
+}
+
+function zuruecksetzen(){
+  ausgewaehlt = [];
+  gridRendern();
+  counterAktualisieren();
+}
+
+function druckenVorbereiten(){
+  if (ausgewaehlt.length === 0) return;
+  var gewaehlteWerte = WERTE.filter(function(w){ return ausgewaehlt.indexOf(w.nr) !== -1; });
+  var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+  var html = '<h1>Werte-Poker — Meine Auswahl</h1>';
+  html += '<div class="dsub">Protokoll vom ' + heute + ' · KLARTEXT-Mentoring</div>';
+  html += '<ol>';
+  gewaehlteWerte.forEach(function(w){
+    html += '<li><b>' + w.wert + '</b><br><span class="ddef">' + w.def + '</span></li>';
+  });
+  html += '</ol>';
+  html += '<div class="dfoot">KLARTEXT-Mentoring · Werte-Poker · für das gemeinsame Gespräch mit der INGRA</div>';
+  document.getElementById('druckansicht').innerHTML = html;
+  window.print();
+}
+
+gridRendern();
+counterAktualisieren();
+</script>
+
+</body>
+</html>

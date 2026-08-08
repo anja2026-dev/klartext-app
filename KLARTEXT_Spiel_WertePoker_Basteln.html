@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Werte-Poker · Druckvorlage · KLARTEXT-Mentoring</title>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,Helvetica,sans-serif;background:#F0EDE8;padding:14px;color:#1a1a1a;}
+@media print{
+  .no-print{display:none!important;}
+  body{background:white;padding:0;}
+  @page{margin:8mm;size:A4 portrait;}
+  .seite{page-break-after:always;}
+  .seite:last-child{page-break-after:auto;}
+}
+
+.bar{max-width:960px;margin:0 auto 10px;display:flex;gap:8px;}
+.bar a,.bar button{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;text-decoration:none;font-family:Arial;cursor:pointer;}
+.bar a{background:white;border:1.5px solid #1a2e44;color:#1a2e44;}
+.bar button{background:#1d9e75;color:white;border:none;}
+
+.hinweis{max-width:960px;margin:0 auto 18px;background:#EAF0F4;border-radius:10px;padding:12px 18px;font-size:12px;color:#1a2e44;line-height:1.6;}
+
+.seite{max-width:960px;margin:0 auto 22px;background:white;padding:6px 0;}
+.seite-kopf{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px;}
+.seite-titel{font-size:15px;font-weight:800;color:#1a2e44;}
+.seite-sub{font-size:10px;color:#999;}
+
+/* Kartenraster */
+.karten-grid{display:grid;grid-template-columns:repeat(3,6cm);grid-auto-rows:6cm;gap:.4cm;justify-content:center;}
+.karte{border:.35mm solid #aaa;border-radius:2mm;padding:.35cm;display:flex;flex-direction:column;gap:.2cm;overflow:hidden;}
+.karte-nr{font-size:7.5pt;color:#aaa;font-weight:700;}
+.karte-wert{font-size:11.5pt;font-weight:800;color:#1a1a1a;line-height:1.15;}
+.karte-def{font-size:7.5pt;color:#666;line-height:1.35;}
+
+/* Setz-Feld */
+.setzfeld-titel{font-family:Georgia,serif;font-size:22px;font-weight:700;color:#1a2e44;text-align:center;margin:6px 0 2px;}
+.setzfeld-sub{text-align:center;font-size:11px;color:#777;margin-bottom:20px;}
+.setz-reihe{display:flex;gap:.4cm;justify-content:center;margin-bottom:.4cm;}
+.setz-feld{width:6cm;height:6cm;border:.4mm dashed #bbb;border-radius:2mm;display:flex;align-items:center;justify-content:center;text-align:center;padding:.4cm;}
+.setz-feld span{font-size:9pt;color:#c9c9c9;font-weight:600;}
+
+.notizen{max-width:calc(3*6cm + 2*0.4cm);margin:1cm auto 0;}
+.notizen-titel{font-size:12.5pt;font-weight:800;color:#1a2e44;margin-bottom:.35cm;}
+.notizen-linie{border-bottom:.3mm solid #ccc;height:.85cm;}
+
+.footer-note{max-width:960px;margin:6px auto 0;text-align:center;font-size:10px;color:#999;}
+</style>
+</head>
+<body>
+
+<div class="bar no-print">
+  <a href="KLARTEXT_Spiel_WertePoker.html">← Werte-Poker (digital)</a>
+  <button onclick="window.print()">🖨 Drucken / PDF</button>
+</div>
+
+<div class="hinweis no-print">
+  <b>So geht's:</b> Alle 24 Wertekarten ausdrucken, entlang der dünnen grauen Linien ausschneiden. Danach die 5 wichtigsten Karten auf das Setz-Feld (letzte Seite) legen und gemeinsam besprechen, warum genau diese fünf.
+</div>
+
+<!-- SEITE 1: Karten 1-12 -->
+<div class="seite">
+  <div class="seite-kopf no-print"><span class="seite-titel">Werte-Poker · Karten-Set</span><span class="seite-sub">Seite 1 / 2 · Karten 1–12</span></div>
+  <div class="karten-grid" id="grid1"></div>
+</div>
+
+<!-- SEITE 2: Karten 13-24 -->
+<div class="seite">
+  <div class="seite-kopf no-print"><span class="seite-titel">Werte-Poker · Karten-Set</span><span class="seite-sub">Seite 2 / 2 · Karten 13–24</span></div>
+  <div class="karten-grid" id="grid2"></div>
+</div>
+
+<!-- SEITE 3: Setz-Feld -->
+<div class="seite">
+  <div class="setzfeld-titel">Meine Top 5 Werte</div>
+  <div class="setzfeld-sub">Lege hier deine 5 Favoriten-Karten ab.</div>
+
+  <div class="setz-reihe">
+    <div class="setz-feld"><span>1</span></div>
+    <div class="setz-feld"><span>2</span></div>
+    <div class="setz-feld"><span>3</span></div>
+  </div>
+  <div class="setz-reihe">
+    <div class="setz-feld"><span>4</span></div>
+    <div class="setz-feld"><span>5</span></div>
+  </div>
+
+  <div class="notizen">
+    <div class="notizen-titel">Warum sind mir diese Werte wichtig?</div>
+    <div class="notizen-linie"></div>
+    <div class="notizen-linie"></div>
+    <div class="notizen-linie"></div>
+    <div class="notizen-linie"></div>
+  </div>
+</div>
+
+<div class="footer-note no-print">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+
+<script>
+var WERTE = [
+  { nr:1, wert:"Freiheit", def:"Tun können, was ich für richtig halte." },
+  { nr:2, wert:"Freundschaft", def:"Leute haben, auf die ich mich verlassen kann." },
+  { nr:3, wert:"Ehrlichkeit", def:"Sagen, was Sache ist – auch wenn es schwerfällt." },
+  { nr:4, wert:"Erfolg", def:"Meine Ziele erreichen und stolz darauf sein." },
+  { nr:5, wert:"Sicherheit", def:"Mich innerlich und äußerlich geschützt fühlen." },
+  { nr:6, wert:"Gerechtigkeit", def:"Dass es fair zugeht – für mich und für andere." },
+  { nr:7, wert:"Mut", def:"Etwas wagen, obwohl ich Angst habe." },
+  { nr:8, wert:"Ruhe", def:"Zeit für mich, ohne Erwartungen von außen." },
+  { nr:9, wert:"Treue", def:"Zu meinen Leuten und meinen Überzeugungen stehen." },
+  { nr:10, wert:"Kreativität", def:"Etwas Eigenes erschaffen und ausdrücken." },
+  { nr:11, wert:"Respekt", def:"So akzeptiert werden, wie ich bin." },
+  { nr:12, wert:"Abenteuer", def:"Neues entdecken und die Komfortzone verlassen." },
+  { nr:13, wert:"Familie", def:"Zusammenhalt erleben, auch wenn es mal kracht." },
+  { nr:14, wert:"Gesundheit", def:"Auf meinen Körper und meine Seele achten." },
+  { nr:15, wert:"Vertrauen", def:"Glauben können, dass es gut wird." },
+  { nr:16, wert:"Unabhängigkeit", def:"Mein eigener Chef sein und selbst entscheiden." },
+  { nr:17, wert:"Anerkennung", def:"Dass andere sehen, was ich leiste." },
+  { nr:18, wert:"Toleranz", def:"Andere so lassen können, wie sie sind." },
+  { nr:19, wert:"Humor", def:"Über mich selbst und die Welt lachen können." },
+  { nr:20, wert:"Wissen", def:"Dinge verstehen und den Durchblick haben." },
+  { nr:21, wert:"Disziplin", def:"Dranbleiben, auch wenn es anstrengend wird." },
+  { nr:22, wert:"Loyalität", def:"Hinter meinem Team stehen." },
+  { nr:23, wert:"Schönheit", def:"Die Welt und mich selbst ästhetisch finden." },
+  { nr:24, wert:"Macht", def:"Einfluss haben und Dinge mitgestalten können." }
+];
+
+function karteHtml(w){
+  return '<div class="karte"><div class="karte-nr">'+String(w.nr).padStart(2,'0')+'</div>'
+    + '<div class="karte-wert">'+w.wert+'</div>'
+    + '<div class="karte-def">'+w.def+'</div></div>';
+}
+
+document.getElementById('grid1').innerHTML = WERTE.slice(0,12).map(karteHtml).join('');
+document.getElementById('grid2').innerHTML = WERTE.slice(12,24).map(karteHtml).join('');
+</script>
+
+</body>
+</html>

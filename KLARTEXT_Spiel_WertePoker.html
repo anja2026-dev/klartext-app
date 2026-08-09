@@ -51,10 +51,13 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .slot .karte:hover{box-shadow:0 2px 8px rgba(32,50,58,.08);transform:none;}
 .slot-entfernen{font-size:.62rem;color:var(--muted);margin-top:.3rem;}
 
-.aktionsleiste{max-width:1100px;margin:2rem auto 0;padding:0 clamp(1rem,4vw,2rem);display:flex;justify-content:center;}
+.aktionsleiste{max-width:1100px;margin:2rem auto 0;padding:0 clamp(1rem,4vw,2rem);display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;}
 .save-btn{background:var(--acc);color:var(--jd-dark);border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;box-shadow:0 4px 16px rgba(110,198,160,.35);}
 .save-btn:hover:not(:disabled){transform:translateY(-1px);}
 .save-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;box-shadow:none;}
+.auswertung-btn{background:var(--jd);color:#fff;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;box-shadow:0 4px 16px rgba(42,96,103,.35);display:none;}
+.auswertung-btn.zeigen{display:inline-flex;align-items:center;gap:.4rem;}
+.auswertung-btn:hover{transform:translateY(-1px);}
 
 .toast{position:fixed;left:50%;bottom:2rem;transform:translateX(-50%) translateY(20px);background:var(--jd-dark);color:#fff;padding:.85rem 1.4rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.25);max-width:340px;text-align:center;line-height:1.5;opacity:0;pointer-events:none;transition:all .25s;z-index:300;}
 .toast.zeigen{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -69,6 +72,29 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .copy-btn{background:var(--jd);color:#fff;}
 .close-btn{background:var(--jd-light);color:var(--jd-dark);}
 .copy-feedback{font-size:.72rem;color:#2E7D57;margin-top:.5rem;height:1em;}
+
+.aw-modal{background:#fff;border-radius:22px;padding:0;max-width:640px;width:100%;max-height:88vh;overflow:auto;}
+.aw-kopf{background:linear-gradient(135deg,var(--jd-dark),var(--jd));color:#fff;padding:1.75rem 1.75rem 1.5rem;text-align:center;position:relative;}
+.aw-kopf-label{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.75;}
+.aw-kopf-titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;margin-top:.3rem;}
+.aw-close{position:absolute;top:.9rem;right:1.1rem;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:1rem;cursor:pointer;line-height:1;}
+.aw-close:hover{background:rgba(255,255,255,.28);}
+.aw-body{padding:1.6rem 1.75rem 2rem;}
+
+.aw-werte-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.7rem;margin-bottom:1.75rem;}
+.aw-wert-badge{background:var(--jd-light);border:1.5px solid var(--jd);border-radius:14px;padding:.9rem .6rem;text-align:center;}
+.aw-wert-badge .aw-icon{width:30px;height:30px;margin:0 auto .4rem;color:var(--jd);}
+.aw-wert-badge .aw-icon svg{width:100%;height:100%;}
+.aw-wert-badge .aw-name{font-size:.78rem;font-weight:700;color:var(--jd-dark);}
+
+.aw-abschnitt-titel{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;}
+.aw-fragen{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;}
+.aw-frage{display:flex;gap:.7rem;align-items:flex-start;background:var(--paper);border-radius:12px;padding:.75rem .9rem;}
+.aw-frage-nr{font-family:"Playfair Display",serif;font-weight:700;color:var(--jd);font-size:1rem;flex-shrink:0;}
+.aw-frage-text{font-size:.85rem;line-height:1.55;color:var(--ink);}
+
+.aw-tipp{background:var(--jd-light);border-left:4px solid var(--acc);border-radius:10px;padding:.9rem 1.1rem;font-size:.85rem;line-height:1.6;color:var(--jd-dark);}
+.aw-tipp b{color:var(--jd-dark);}
 </style>
 </head>
 <body>
@@ -98,6 +124,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <div class="pool" id="pool"></div>
 
 <div class="aktionsleiste">
+  <button class="auswertung-btn" id="auswertungBtn" onclick="auswertungOeffnen()">📊 Auswertung anzeigen</button>
   <button class="save-btn" id="saveBtn" onclick="druckenVorbereiten()" disabled>🖨 Meine Auswahl drucken</button>
 </div>
 
@@ -111,6 +138,29 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <div class="modal-btns">
       <button class="copy-btn" onclick="listeKopieren()">📋 Kopieren</button>
       <button class="close-btn" onclick="modalSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="auswertungOverlay">
+  <div class="aw-modal">
+    <div class="aw-kopf">
+      <button class="aw-close" onclick="auswertungSchliessen()">&times;</button>
+      <div class="aw-kopf-label">Deine Auswertung</div>
+      <div class="aw-kopf-titel">Das sind deine Top 5 Werte</div>
+    </div>
+    <div class="aw-body">
+      <div class="aw-werte-grid" id="awWerteGrid"></div>
+
+      <div class="aw-abschnitt-titel">Drei Fragen zur Selbstreflexion</div>
+      <div class="aw-fragen">
+        <div class="aw-frage"><div class="aw-frage-nr">1</div><div class="aw-frage-text">Welcher dieser fünf Werte war am leichtesten zu wählen — und welcher am schwersten?</div></div>
+        <div class="aw-frage"><div class="aw-frage-nr">2</div><div class="aw-frage-text">Wann hast du zuletzt gespürt, dass einer dieser Werte in deinem Alltag zu kurz kommt?</div></div>
+        <div class="aw-frage"><div class="aw-frage-nr">3</div><div class="aw-frage-text">Wenn du nur einen dieser fünf behalten dürftest — welchen würdest du wählen, und warum?</div></div>
+      </div>
+
+      <div class="aw-abschnitt-titel">Tipp für den Alltag</div>
+      <div class="aw-tipp"><b>Ein kleiner Schritt:</b> Nimm dir diese Woche für jeden deiner Top-5-Werte einen bewussten Moment — auch wenn es nur eine Kleinigkeit ist, in der du wirklich danach handelst.</div>
     </div>
   </div>
 </div>
@@ -247,6 +297,24 @@ function counterAktualisieren(){
   var anzahl = setzBereich.filter(function(x){ return x !== null; }).length;
   document.getElementById('counter').textContent = anzahl + ' / ' + LIMIT;
   document.getElementById('saveBtn').disabled = anzahl === 0;
+  document.getElementById('auswertungBtn').classList.toggle('zeigen', anzahl === LIMIT);
+}
+
+function auswertungOeffnen(){
+  var gewaehlteNr = setzBereich.filter(function(x){ return x !== null; });
+  if (gewaehlteNr.length !== LIMIT) return;
+  var gewaehlteWerte = WERTE.filter(function(w){ return gewaehlteNr.indexOf(w.nr) !== -1; });
+
+  var grid = document.getElementById('awWerteGrid');
+  grid.innerHTML = gewaehlteWerte.map(function(w){
+    return '<div class="aw-wert-badge"><div class="aw-icon">' + iconSvg(w.wert) + '</div><div class="aw-name">' + w.wert + '</div></div>';
+  }).join('');
+
+  document.getElementById('auswertungOverlay').classList.add('zeigen');
+}
+
+function auswertungSchliessen(){
+  document.getElementById('auswertungOverlay').classList.remove('zeigen');
 }
 
 function toastZeigen(){

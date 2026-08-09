@@ -43,10 +43,17 @@ body{
 .hobby-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.2rem 1.3rem;margin-bottom:1rem;animation:einblenden .3s ease;}
 @keyframes einblenden{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 .hobby-block-titel{display:flex;align-items:center;gap:.5rem;font-family:"Playfair Display",serif;font-weight:700;font-size:1.05rem;margin-bottom:.85rem;}
-.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem;}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.6rem;}
 .skill-karte{background:rgba(110,198,160,.1);border:1px solid rgba(110,198,160,.35);border-radius:12px;padding:.7rem .85rem;}
 .skill-karte .skill-name{font-size:.85rem;font-weight:700;color:var(--acc);margin-bottom:.2rem;}
 .skill-karte .skill-desc{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.4;}
+
+.transfer{margin-top:.6rem;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.1);}
+.transfer-frage{font-size:.68rem;color:rgba(255,255,255,.55);line-height:1.4;margin-bottom:.4rem;font-style:italic;}
+.transfer-chips{display:flex;flex-wrap:wrap;gap:.3rem;}
+.transfer-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.25rem .6rem;font-size:.68rem;font-weight:600;color:rgba(255,255,255,.75);cursor:pointer;font-family:inherit;}
+.transfer-chip:hover{background:rgba(255,255,255,.12);}
+.transfer-chip.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
 
 .aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;z-index:200;}
 .save-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
@@ -100,6 +107,8 @@ body{
 </div>
 
 <script>
+var JOBS = ['Büro','Werkstatt','Pflege','Verkauf','Handwerk','Kreativbranche'];
+
 var HOBBIES = [
   { id:'gaming', icon:'🎮', label:'Gaming', skills:[
       { name:'Teamfähigkeit', desc:'Im Team koordinieren und gemeinsam gewinnen.' },
@@ -116,19 +125,115 @@ var HOBBIES = [
       { name:'Digitale Kompetenz', desc:'Tools und Plattformen sicher nutzen.' },
       { name:'Selbstpräsentation', desc:'Sich und Themen überzeugend zeigen.' }
   ]},
-  { id:'technik', icon:'🔧', label:'Basteln / Technik', skills:[
-      { name:'Problemlösung', desc:'Für jedes Problem einen Weg finden.' },
-      { name:'Logik', desc:'Schritt für Schritt folgerichtig denken.' },
-      { name:'Feinmotorik', desc:'Präzise und sauber arbeiten.' }
+  { id:'technik', icon:'🔧', label:'Reparieren / Basteln', skills:[
+      { name:'Logisches Denken', desc:'Schritt für Schritt folgerichtig denken.' },
+      { name:'Feinmotorik', desc:'Präzise und sauber arbeiten.' },
+      { name:'Problemlösefähigkeit', desc:'Für jedes Problem einen Weg finden.' }
   ]},
-  { id:'familie', icon:'🐾', label:'Haustiere / Familie', skills:[
+  { id:'familie', icon:'👨‍👩‍👧', label:'Familie', skills:[
       { name:'Verantwortung', desc:'Für andere da sein, auch wenn\'s unbequem ist.' },
       { name:'Zuverlässigkeit', desc:'Was ich zusage, halte ich auch ein.' },
       { name:'Fürsorge', desc:'Auf die Bedürfnisse anderer achten.' }
+  ]},
+  { id:'kochen', icon:'🍳', label:'Kochen', skills:[
+      { name:'Prozessplanung', desc:'Mehrere Schritte so timen, dass am Ende alles passt.' },
+      { name:'Hygienebewusstsein', desc:'Sauberkeit und Ordnung als Standard, nicht als Ausnahme.' },
+      { name:'Belastbarkeit', desc:'Auch unter Zeitdruck ruhig und konzentriert bleiben.' }
+  ]},
+  { id:'zeichnen', icon:'🎨', label:'Zeichnen / Kreatives', skills:[
+      { name:'Auge für Details', desc:'Kleinigkeiten sehen, die anderen entgehen.' },
+      { name:'Ausdauer', desc:'An einer Sache dranbleiben, bis sie wirklich fertig ist.' },
+      { name:'Fokus', desc:'Sich über längere Zeit auf eine Aufgabe konzentrieren.' }
+  ]},
+  { id:'discord', icon:'💬', label:'Organisation (z. B. Discord-Server)', skills:[
+      { name:'Community-Management', desc:'Eine Gruppe zusammenhalten und aktiv halten.' },
+      { name:'Moderation', desc:'Konflikte schlichten und Regeln fair durchsetzen.' },
+      { name:'Technisches Setup', desc:'Tools einrichten und am Laufen halten.' }
+  ]},
+  { id:'gassi', icon:'🐕', label:'Haustier / Gassi gehen', skills:[
+      { name:'Verbindlichkeit', desc:'Auch bei Wind und Wetter zur vereinbarten Zeit da sein.' },
+      { name:'Verantwortungsübernahme', desc:'Für ein Lebewesen einstehen, das sich nicht selbst helfen kann.' },
+      { name:'Wetterfestigkeit', desc:'Auch bei ungemütlichen Bedingungen zuverlässig bleiben.' }
+  ]},
+  { id:'musik', icon:'🎸', label:'Musik / Instrument', skills:[
+      { name:'Durchhaltevermögen', desc:'Über Wochen üben, bevor sich Fortschritt zeigt.' },
+      { name:'Feingefühl für Details', desc:'Kleine Unterschiede in Ton und Timing wahrnehmen.' },
+      { name:'Auftrittssicherheit', desc:'Vor anderen etwas zeigen, auch mit Lampenfieber.' }
+  ]},
+  { id:'tanzen', icon:'💃', label:'Tanzen', skills:[
+      { name:'Körperbewusstsein', desc:'Bewegungen gezielt steuern und wahrnehmen.' },
+      { name:'Rhythmusgefühl', desc:'Sich in Timing und Struktur einfügen.' },
+      { name:'Teamkoordination', desc:'Sich mit anderen synchronisieren, z. B. bei Gruppenchoreos.' }
+  ]},
+  { id:'foto', icon:'📷', label:'Fotografieren / Filmen', skills:[
+      { name:'Bildkomposition', desc:'Aus vielen Möglichkeiten die stimmige Perspektive wählen.' },
+      { name:'Geduld', desc:'Auf den richtigen Moment warten können.' },
+      { name:'Technisches Verständnis', desc:'Geräte und Einstellungen gezielt nutzen.' }
+  ]},
+  { id:'lesen', icon:'📚', label:'Lesen', skills:[
+      { name:'Konzentrationsfähigkeit', desc:'Sich über längere Zeit in einen Text vertiefen.' },
+      { name:'Wortschatz', desc:'Sich klar und differenziert ausdrücken können.' },
+      { name:'Empathie', desc:'Sich in andere Perspektiven hineindenken.' }
+  ]},
+  { id:'schreiben', icon:'📝', label:'Schreiben (Geschichten, Blog)', skills:[
+      { name:'Ausdrucksfähigkeit', desc:'Gedanken so formulieren, dass andere sie verstehen.' },
+      { name:'Strukturierung von Gedanken', desc:'Aus Ideen eine nachvollziehbare Ordnung machen.' },
+      { name:'Durchhaltevermögen', desc:'Ein Projekt auch über viele Seiten hinweg fertigstellen.' }
+  ]},
+  { id:'mannschaftssport', icon:'⚽', label:'Mannschaftssport', skills:[
+      { name:'Teamfähigkeit', desc:'Eigene Interessen zugunsten der Gruppe zurückstellen können.' },
+      { name:'Fairplay', desc:'Sich auch bei Niederlagen an Regeln halten.' },
+      { name:'Belastbarkeit unter Druck', desc:'In entscheidenden Momenten einen klaren Kopf behalten.' }
+  ]},
+  { id:'babysitten', icon:'👶', label:'Babysitten / Geschwister betreuen', skills:[
+      { name:'Verantwortung', desc:'Für die Sicherheit eines anderen Menschen sorgen.' },
+      { name:'Geduld', desc:'Ruhig bleiben, auch wenn es laut oder chaotisch wird.' },
+      { name:'Konfliktlösung', desc:'Streit schlichten und Kompromisse finden.' }
+  ]},
+  { id:'nebenjob', icon:'💼', label:'Nebenjob (Kiosk, Aushilfe, Zeitung austragen)', skills:[
+      { name:'Pünktlichkeit', desc:'Verlässlich zur vereinbarten Zeit erscheinen.' },
+      { name:'Kundenkontakt', desc:'Freundlich und professionell mit Fremden umgehen.' },
+      { name:'Zuverlässigkeit', desc:'Aufgaben auch ohne ständige Kontrolle erledigen.' }
+  ]},
+  { id:'naehen', icon:'🧵', label:'Nähen / Mode gestalten', skills:[
+      { name:'Feinmotorik', desc:'Mit den Händen präzise und sauber arbeiten.' },
+      { name:'Kreativität', desc:'Eigene Ideen in ein fertiges Ergebnis umsetzen.' },
+      { name:'Präzision', desc:'Genau nach Maß und Plan arbeiten.' }
+  ]},
+  { id:'backen', icon:'🧁', label:'Backen', skills:[
+      { name:'Genauigkeit beim Abmessen', desc:'Mengen und Zeiten exakt einhalten.' },
+      { name:'Geduld', desc:'Warten können, bis ein Prozess von selbst fertig wird.' },
+      { name:'Planung', desc:'Reihenfolge und Timing im Voraus durchdenken.' }
+  ]},
+  { id:'sammeln', icon:'🗂️', label:'Sammeln (Karten, Modelle etc.)', skills:[
+      { name:'Systematisches Denken', desc:'Dinge sinnvoll ordnen und kategorisieren.' },
+      { name:'Sorgfalt', desc:'Mit Gegenständen und Details behutsam umgehen.' },
+      { name:'Ausdauer', desc:'Über lange Zeit an einem Ziel dranbleiben.' }
+  ]},
+  { id:'ehrenamt', icon:'🤝', label:'Ehrenamt / Freiwilligenarbeit', skills:[
+      { name:'Empathie', desc:'Die Bedürfnisse anderer erkennen und ernst nehmen.' },
+      { name:'Zuverlässigkeit', desc:'Sich auf freiwilliger Basis trotzdem verbindlich einbringen.' },
+      { name:'Teamfähigkeit', desc:'Mit ganz unterschiedlichen Menschen zusammenarbeiten.' }
+  ]},
+  { id:'kampfsport', icon:'🥋', label:'Kampfsport', skills:[
+      { name:'Selbstdisziplin', desc:'Sich auch ohne äußeren Druck an Regeln halten.' },
+      { name:'Respekt', desc:'Gegenüber Trainer:innen und Partner:innen fair auftreten.' },
+      { name:'Körperbeherrschung', desc:'Kraft und Bewegung kontrolliert einsetzen.' }
+  ]},
+  { id:'angeln', icon:'🎣', label:'Angeln / Draußen sein', skills:[
+      { name:'Geduld', desc:'Lange auf ein Ergebnis warten, ohne aufzugeben.' },
+      { name:'Naturverbundenheit', desc:'Aufmerksam mit der Umgebung umgehen.' },
+      { name:'Ruhe bewahren', desc:'Auch bei Stillstand gelassen bleiben.' }
+  ]},
+  { id:'ordnung', icon:'🗓️', label:'Ordnung / Selbstorganisation', skills:[
+      { name:'Selbstorganisation', desc:'Sich eigene Struktur geben, ohne dass jemand mahnt.' },
+      { name:'Struktur', desc:'Aufgaben und Dinge sinnvoll einteilen.' },
+      { name:'Eigeninitiative', desc:'Dinge angehen, bevor sie zum Problem werden.' }
   ]}
 ];
 
 var ausgewaehlt = [];
+var transferAuswahl = {};
 
 function hobbyRowRendern(){
   var row = document.getElementById('hobbyRow');
@@ -161,13 +266,26 @@ function ergebnisseRendern(){
   HOBBIES.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; }).forEach(function(h){
     var block = document.createElement('div');
     block.className = 'hobby-block';
-    var skillsHtml = h.skills.map(function(s){
-      return '<div class="skill-karte"><div class="skill-name">🔓 '+s.name+'</div><div class="skill-desc">'+s.desc+'</div></div>';
+    var skillsHtml = h.skills.map(function(s, i){
+      var key = h.id + '_' + i;
+      var gewaehlterJob = transferAuswahl[key];
+      var chips = JOBS.map(function(job){
+        var aktiv = gewaehlterJob === job ? ' aktiv' : '';
+        return '<button type="button" class="transfer-chip'+aktiv+'" onclick="transferWaehlen(\''+h.id+'\','+i+',\''+job+'\')">'+job+'</button>';
+      }).join('');
+      return '<div class="skill-karte"><div class="skill-name">🔓 '+s.name+'</div><div class="skill-desc">'+s.desc+'</div>'+
+        '<div class="transfer"><div class="transfer-frage">Transfer-Check: In welchem Job (z. B. Büro, Werkstatt, Pflege) hilft dir das am meisten?</div><div class="transfer-chips">'+chips+'</div></div></div>';
     }).join('');
     block.innerHTML = '<div class="hobby-block-titel"><span>'+h.icon+'</span><span>'+h.label+' — deine freigeschalteten Stärken</span></div><div class="skill-grid">'+skillsHtml+'</div>';
     wrap.appendChild(block);
   });
   document.getElementById('saveBtn').disabled = false;
+}
+
+function transferWaehlen(hobbyId, skillIdx, job){
+  var key = hobbyId + '_' + skillIdx;
+  transferAuswahl[key] = (transferAuswahl[key] === job) ? undefined : job;
+  ergebnisseRendern();
 }
 
 function listeOeffnen(){
@@ -177,7 +295,10 @@ function listeOeffnen(){
   text += '——————————————————————\n\n';
   gewaehlteHobbies.forEach(function(h){
     text += h.label + ':\n';
-    h.skills.forEach(function(s){ text += '  • ' + s.name + '\n'; });
+    h.skills.forEach(function(s, i){
+      var job = transferAuswahl[h.id + '_' + i];
+      text += '  • ' + s.name + (job ? '  →  hilfreich im Bereich: ' + job : '') + '\n';
+    });
     text += '\n';
   });
   text += '— erstellt mit KLARTEXT · Skill-Matrix';

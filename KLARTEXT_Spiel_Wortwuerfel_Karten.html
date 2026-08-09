@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Brainy-Wort-Würfel · Wortkarten &amp; Aktions-Set · KLARTEXT-Mentoring</title>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,Helvetica,sans-serif;background:#F0EDE8;padding:14px;color:#1a1a1a;}
+@media print{
+  .no-print{display:none!important;}
+  body{background:white;padding:0;}
+  @page{margin:8mm;size:A4 landscape;}
+  .blatt{page-break-after:always;}
+  .blatt:last-child{page-break-after:auto;}
+}
+
+.bar{max-width:960px;margin:0 auto 10px;display:flex;gap:8px;}
+.bar a,.bar button{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;text-decoration:none;font-family:Arial;cursor:pointer;}
+.bar a{background:white;border:1.5px solid #1a2e44;color:#1a2e44;}
+.bar button{background:#1d9e75;color:white;border:none;}
+
+.hinweis{max-width:960px;margin:0 auto 18px;background:#EAF0F4;border-radius:10px;padding:12px 18px;font-size:12px;color:#1a2e44;line-height:1.7;}
+.hinweis b{color:#1a2e44;}
+
+.blatt{max-width:960px;margin:0 auto 22px;}
+.blatt-kopf{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px;}
+.blatt-titel{font-size:14px;font-weight:800;color:#1a2e44;}
+.blatt-sub{font-size:10px;color:#999;}
+
+.karten-grid{display:grid;grid-template-columns:repeat(3,8cm);grid-auto-rows:5.5cm;gap:.35cm;justify-content:center;}
+
+.karte{border:.35mm solid #aaa;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:.4cm;overflow:hidden;position:relative;}
+
+.karte-label{position:absolute;top:.25cm;left:.35cm;font-size:6.5pt;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.55;}
+.karte-aktion{font-size:11pt;font-weight:800;line-height:1.3;padding:0 .2cm;}
+.karte-wort{font-size:15pt;font-weight:800;}
+
+.karte-rueckseite{display:flex;align-items:center;justify-content:center;}
+.karte-rueckseite img{width:3.4cm;height:3.4cm;object-fit:contain;}
+</style>
+</head>
+<body>
+
+<div class="bar no-print">
+  <a href="KLARTEXT_Spiel_Wortwuerfel.html">← Brainy-Wort-Würfel (digital)</a>
+  <button onclick="window.print()">🖨 Drucken / PDF</button>
+</div>
+
+<div class="hinweis no-print">
+  <b>So geht's:</b> Beide Vorderseiten-Blätter und beide Rückseiten-Blätter jeweils <b>einseitig</b> auf festem Papier oder dünnem Karton ausdrucken (kein Duplex/Wendedruck — die Ausrichtung würde sonst je nach Drucker durcheinandergeraten). Alle Karten ausschneiden, dann jede Vorderseite mit der passenden Rückseite an derselben Position <b>zusammenkleben</b>. Ergebnis: 18 Karten, jede mit dem farbigen Brainy der jeweiligen Kategorie auf der Rückseite.
+</div>
+
+<div id="blaetter"></div>
+
+<script>
+var FARBEN = {
+  gelb:   { bg:'linear-gradient(135deg,#D4A800,#A88000)', text:'#2D2200', img:'brainy-gelb.png', label:'Gelb · Nomen' },
+  gruen:  { bg:'linear-gradient(135deg,#2E9E5A,#1A7A3A)', text:'#fff',    img:'brainy-gruen.png', label:'Grün · Verben' },
+  orange: { bg:'linear-gradient(135deg,#D4651A,#A84A10)', text:'#fff',    img:'brainy-orange.png', label:'Orange · Adjektive' },
+  rot:    { bg:'linear-gradient(135deg,#C0392B,#8B1A1A)', text:'#fff',    img:'brainy-rot.png', label:'Rot · Signale' },
+  grau:   { bg:'linear-gradient(135deg,#757575,#555555)', text:'#fff',    img:'brainy-grau.png', label:'Grau · Pause/Gefühl' },
+  joker:  { bg:'linear-gradient(135deg,#2E9E5A,#D4A800,#D4651A,#C0392B,#757575)', text:'#fff', img:'brainy-joker.png', label:'Joker · Brainy mit Herz' }
+};
+
+// 18 Karten: Aktionskarten (1 pro Kategorie) + Wortkarten (Beispiele aus dem digitalen Tool)
+var KARTEN = [
+  { kat:'gelb', typ:'aktion', text:'Detektiv-Suche: Such diesen Gegenstand im Raum und berühr ihn!' },
+  { kat:'gelb', typ:'wort', text:'Der Stift' },
+  { kat:'gelb', typ:'wort', text:'Das Buch' },
+  { kat:'gelb', typ:'wort', text:'Der Tisch' },
+  { kat:'gruen', typ:'aktion', text:'Pantomime: Mach diese Bewegung vor, ohne zu sprechen!' },
+  { kat:'gruen', typ:'wort', text:'Schreiben' },
+  { kat:'gruen', typ:'wort', text:'Laufen' },
+  { kat:'gruen', typ:'wort', text:'Lachen' },
+  { kat:'orange', typ:'aktion', text:'Brainy-Check: Sag einen Satz mit diesem Wort über Brainy!' },
+  { kat:'orange', typ:'wort', text:'Brainy ist leise' },
+  { kat:'orange', typ:'wort', text:'Brainy ist schnell' },
+  { kat:'orange', typ:'wort', text:'Brainy ist froh' },
+  { kat:'rot', typ:'aktion', text:'Stopp-Signal: Mach das passende Handzeichen dazu!' },
+  { kat:'rot', typ:'wort', text:'Stopp!' },
+  { kat:'rot', typ:'wort', text:'Achtung!' },
+  { kat:'rot', typ:'wort', text:'Hilfe!' },
+  { kat:'grau', typ:'aktion', text:'Barometer-Zeit: Zeig deine Farbe auf dem Barometer!' },
+  { kat:'joker', typ:'aktion', text:'Freie Wahl: Such dir eine Farbe und eine Aufgabe aus!' }
+];
+
+var PRO_SEITE = 9;
+var seitenAnzahl = Math.ceil(KARTEN.length / PRO_SEITE);
+
+function vorderseiteHtml(k){
+  var f = FARBEN[k.kat];
+  var inhalt = k.typ === 'aktion'
+    ? '<div class="karte-aktion" style="color:'+f.text+';">'+k.text+'</div>'
+    : '<div class="karte-wort" style="color:'+f.text+';">'+k.text+'</div>';
+  return '<div class="karte" style="background:'+f.bg+';"><div class="karte-label" style="color:'+f.text+';">'+f.label+'</div>'+inhalt+'</div>';
+}
+
+function rueckseiteHtml(k){
+  var f = FARBEN[k.kat];
+  return '<div class="karte karte-rueckseite" style="background:'+f.bg+';"><img src="'+f.img+'" alt="Brainy"></div>';
+}
+
+var blaetterEl = document.getElementById('blaetter');
+var html = '';
+
+for (var s = 0; s < seitenAnzahl; s++) {
+  var teil = KARTEN.slice(s * PRO_SEITE, (s + 1) * PRO_SEITE);
+  html += '<div class="blatt"><div class="blatt-kopf no-print"><span class="blatt-titel">Wortkarten &amp; Aktions-Set — Vorderseite</span><span class="blatt-sub">Blatt '+(s+1)+' / '+seitenAnzahl+'</span></div>';
+  html += '<div class="karten-grid">' + teil.map(vorderseiteHtml).join('') + '</div></div>';
+}
+
+for (var s2 = 0; s2 < seitenAnzahl; s2++) {
+  var teil2 = KARTEN.slice(s2 * PRO_SEITE, (s2 + 1) * PRO_SEITE);
+  html += '<div class="blatt"><div class="blatt-kopf no-print"><span class="blatt-titel">Wortkarten &amp; Aktions-Set — Rückseite</span><span class="blatt-sub">Blatt '+(s2+1)+' / '+seitenAnzahl+' · passend zur Vorderseite Blatt '+(s2+1)+'</span></div>';
+  html += '<div class="karten-grid">' + teil2.map(rueckseiteHtml).join('') + '</div></div>';
+}
+
+blaetterEl.innerHTML = html;
+</script>
+
+</body>
+</html>

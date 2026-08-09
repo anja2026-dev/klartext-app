@@ -6,10 +6,10 @@
 <title>Werte-Poker · Druckvorlage · KLARTEXT-Mentoring</title>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1B3A4B">
+<meta name="theme-color" content="#2A6067">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial,Helvetica,sans-serif;background:#F0EDE8;padding:14px;color:#1a1a1a;}
+body{font-family:Arial,Helvetica,sans-serif;background:#F0EDE8;padding:14px;color:#20323A;}
 @media print{
   .no-print{display:none!important;}
   body{background:white;padding:0;}
@@ -18,37 +18,48 @@ body{font-family:Arial,Helvetica,sans-serif;background:#F0EDE8;padding:14px;colo
   .seite:last-child{page-break-after:auto;}
 }
 
-.bar{max-width:960px;margin:0 auto 10px;display:flex;gap:8px;}
+.bar{max-width:900px;margin:0 auto 10px;display:flex;gap:8px;}
 .bar a,.bar button{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;text-decoration:none;font-family:Arial;cursor:pointer;}
-.bar a{background:white;border:1.5px solid #1a2e44;color:#1a2e44;}
-.bar button{background:#1d9e75;color:white;border:none;}
+.bar a{background:white;border:1.5px solid #2A6067;color:#2A6067;}
+.bar button{background:#2A6067;color:white;border:none;}
 
-.hinweis{max-width:960px;margin:0 auto 18px;background:#EAF0F4;border-radius:10px;padding:12px 18px;font-size:12px;color:#1a2e44;line-height:1.6;}
+.hinweis{max-width:900px;margin:0 auto 18px;background:#EAF0F0;border-radius:10px;padding:12px 18px;font-size:12px;color:#20323A;line-height:1.7;}
+.hinweis b{color:#2A6067;}
 
-.seite{max-width:960px;margin:0 auto 22px;background:white;padding:6px 0;}
+.seite{max-width:900px;margin:0 auto 22px;background:white;}
 .seite-kopf{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px;}
-.seite-titel{font-size:15px;font-weight:800;color:#1a2e44;}
+.seite-titel{font-size:14px;font-weight:800;color:#2A6067;}
 .seite-sub{font-size:10px;color:#999;}
 
-/* Kartenraster */
-.karten-grid{display:grid;grid-template-columns:repeat(3,6cm);grid-auto-rows:6cm;gap:.4cm;justify-content:center;}
-.karte{border:.35mm solid #aaa;border-radius:2mm;padding:.35cm;display:flex;flex-direction:column;gap:.2cm;overflow:hidden;}
-.karte-nr{font-size:7.5pt;color:#aaa;font-weight:700;}
-.karte-wert{font-size:11.5pt;font-weight:800;color:#1a1a1a;line-height:1.15;}
-.karte-def{font-size:7.5pt;color:#666;line-height:1.35;}
+.karten-grid{display:grid;grid-template-columns:repeat(3,6cm);grid-auto-rows:8.5cm;gap:.35cm;justify-content:center;}
 
-/* Setz-Feld */
-.setzfeld-titel{font-family:Georgia,serif;font-size:22px;font-weight:700;color:#1a2e44;text-align:center;margin:6px 0 2px;}
+.karte{border:1mm solid #2A6067;border-radius:4mm;padding:.4cm;display:flex;flex-direction:column;position:relative;background:#fff;}
+.karte-icon{width:1.4cm;height:1.4cm;color:#2A6067;}
+.karte-icon svg{width:100%;height:100%;}
+.karte-mitte{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;}
+.karte-wort{font-size:15pt;font-weight:800;color:#20323A;line-height:1.25;}
+.karte-nr{position:absolute;bottom:.3cm;right:.4cm;font-size:6.5pt;color:#B8C4C4;font-weight:700;}
+
+.karte-blanko{border:1mm dashed #B8C4C4;display:flex;align-items:center;justify-content:center;}
+.karte-blanko span{font-size:8.5pt;color:#B8C4C4;font-weight:700;text-align:center;padding:.3cm;}
+
+.karte-rueckseite{border:1mm solid #2A6067;border-radius:4mm;background:#EAF0F0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.karte-rueckseite::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg, rgba(42,96,103,.08) 0 2px, transparent 2px 12px);}
+.karte-rueckseite-logo{position:relative;width:1.6cm;height:1.6cm;border:.5mm solid rgba(42,96,103,.35);border-radius:3mm;display:flex;align-items:center;justify-content:center;}
+.karte-rueckseite-logo span{font-family:Georgia,serif;font-weight:900;font-size:16pt;color:#2A6067;opacity:.55;}
+
+/* Setz-Feld / Poker-Tisch */
+.setzfeld-titel{font-family:Georgia,serif;font-size:22px;font-weight:700;color:#2A6067;text-align:center;margin:6px 0 2px;}
 .setzfeld-sub{text-align:center;font-size:11px;color:#777;margin-bottom:20px;}
-.setz-reihe{display:flex;gap:.4cm;justify-content:center;margin-bottom:.4cm;}
-.setz-feld{width:6cm;height:6cm;border:.4mm dashed #bbb;border-radius:2mm;display:flex;align-items:center;justify-content:center;text-align:center;padding:.4cm;}
-.setz-feld span{font-size:9pt;color:#c9c9c9;font-weight:600;}
+.setz-reihe{display:flex;gap:.35cm;justify-content:center;margin-bottom:.35cm;}
+.setz-feld{width:6cm;height:8.5cm;border:1mm dashed #2A6067;border-radius:4mm;display:flex;align-items:center;justify-content:center;text-align:center;padding:.4cm;}
+.setz-feld span{font-size:11pt;color:#B8C4C4;font-weight:700;}
 
-.notizen{max-width:calc(3*6cm + 2*0.4cm);margin:1cm auto 0;}
-.notizen-titel{font-size:12.5pt;font-weight:800;color:#1a2e44;margin-bottom:.35cm;}
-.notizen-linie{border-bottom:.3mm solid #ccc;height:.85cm;}
+.notizen{max-width:calc(3*6cm + 2*0.35cm);margin:.8cm auto 0;}
+.notizen-titel{font-size:12.5pt;font-weight:800;color:#2A6067;margin-bottom:.35cm;}
+.notizen-linie{border-bottom:.3mm solid #ccc;height:.75cm;}
 
-.footer-note{max-width:960px;margin:6px auto 0;text-align:center;font-size:10px;color:#999;}
+.footer-note{max-width:900px;margin:6px auto 0;text-align:center;font-size:10px;color:#999;}
 </style>
 </head>
 <body>
@@ -59,83 +70,88 @@ body{font-family:Arial,Helvetica,sans-serif;background:#F0EDE8;padding:14px;colo
 </div>
 
 <div class="hinweis no-print">
-  <b>So geht's:</b> Alle 24 Wertekarten ausdrucken, entlang der dünnen grauen Linien ausschneiden. Danach die 5 wichtigsten Karten auf das Setz-Feld (letzte Seite) legen und gemeinsam besprechen, warum genau diese fünf.
+  <b>So geht's:</b> Duplex-/Wendedruck ist hier unbedenklich, da alle Rückseiten identisch sind (egal wie dein Drucker wendet, es passt immer). Am Drucker "Beidseitig drucken" aktivieren. Danach alle 27 Karten ausschneiden und mit dem Poker-Tisch (letzte Seite) die eigenen Top 5 legen.
 </div>
 
-<!-- SEITE 1: Karten 1-12 -->
-<div class="seite">
-  <div class="seite-kopf no-print"><span class="seite-titel">Werte-Poker · Karten-Set</span><span class="seite-sub">Seite 1 / 2 · Karten 1–12</span></div>
-  <div class="karten-grid" id="grid1"></div>
-</div>
-
-<!-- SEITE 2: Karten 13-24 -->
-<div class="seite">
-  <div class="seite-kopf no-print"><span class="seite-titel">Werte-Poker · Karten-Set</span><span class="seite-sub">Seite 2 / 2 · Karten 13–24</span></div>
-  <div class="karten-grid" id="grid2"></div>
-</div>
-
-<!-- SEITE 3: Setz-Feld -->
-<div class="seite">
-  <div class="setzfeld-titel">Meine Top 5 Werte</div>
-  <div class="setzfeld-sub">Lege hier deine 5 Favoriten-Karten ab.</div>
-
-  <div class="setz-reihe">
-    <div class="setz-feld"><span>1</span></div>
-    <div class="setz-feld"><span>2</span></div>
-    <div class="setz-feld"><span>3</span></div>
-  </div>
-  <div class="setz-reihe">
-    <div class="setz-feld"><span>4</span></div>
-    <div class="setz-feld"><span>5</span></div>
-  </div>
-
-  <div class="notizen">
-    <div class="notizen-titel">Warum sind mir diese Werte wichtig?</div>
-    <div class="notizen-linie"></div>
-    <div class="notizen-linie"></div>
-    <div class="notizen-linie"></div>
-    <div class="notizen-linie"></div>
-  </div>
-</div>
+<div id="seiten"></div>
 
 <div class="footer-note no-print">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
 
 <script>
-var WERTE = [
-  { nr:1, wert:"Freiheit", def:"Tun können, was ich für richtig halte." },
-  { nr:2, wert:"Freundschaft", def:"Leute haben, auf die ich mich verlassen kann." },
-  { nr:3, wert:"Ehrlichkeit", def:"Sagen, was Sache ist – auch wenn es schwerfällt." },
-  { nr:4, wert:"Erfolg", def:"Meine Ziele erreichen und stolz darauf sein." },
-  { nr:5, wert:"Sicherheit", def:"Mich innerlich und äußerlich geschützt fühlen." },
-  { nr:6, wert:"Gerechtigkeit", def:"Dass es fair zugeht – für mich und für andere." },
-  { nr:7, wert:"Mut", def:"Etwas wagen, obwohl ich Angst habe." },
-  { nr:8, wert:"Ruhe", def:"Zeit für mich, ohne Erwartungen von außen." },
-  { nr:9, wert:"Treue", def:"Zu meinen Leuten und meinen Überzeugungen stehen." },
-  { nr:10, wert:"Kreativität", def:"Etwas Eigenes erschaffen und ausdrücken." },
-  { nr:11, wert:"Respekt", def:"So akzeptiert werden, wie ich bin." },
-  { nr:12, wert:"Abenteuer", def:"Neues entdecken und die Komfortzone verlassen." },
-  { nr:13, wert:"Familie", def:"Zusammenhalt erleben, auch wenn es mal kracht." },
-  { nr:14, wert:"Gesundheit", def:"Auf meinen Körper und meine Seele achten." },
-  { nr:15, wert:"Vertrauen", def:"Glauben können, dass es gut wird." },
-  { nr:16, wert:"Unabhängigkeit", def:"Mein eigener Chef sein und selbst entscheiden." },
-  { nr:17, wert:"Anerkennung", def:"Dass andere sehen, was ich leiste." },
-  { nr:18, wert:"Toleranz", def:"Andere so lassen können, wie sie sind." },
-  { nr:19, wert:"Humor", def:"Über mich selbst und die Welt lachen können." },
-  { nr:20, wert:"Wissen", def:"Dinge verstehen und den Durchblick haben." },
-  { nr:21, wert:"Disziplin", def:"Dranbleiben, auch wenn es anstrengend wird." },
-  { nr:22, wert:"Loyalität", def:"Hinter meinem Team stehen." },
-  { nr:23, wert:"Schönheit", def:"Die Welt und mich selbst ästhetisch finden." },
-  { nr:24, wert:"Macht", def:"Einfluss haben und Dinge mitgestalten können." }
-];
+var ICONS = {
+  'Freiheit': '<path d="M2 14c3-6 8-6 10-6s7 0 10 6c-3-2-6-2-10-2s-7 0-10 2z"/><path d="M12 8v10"/>',
+  'Freundschaft': '<circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/>',
+  'Ehrlichkeit': '<path d="M12 2l7 3v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V5l7-3z"/><path d="M9 12l2 2 4-4"/>',
+  'Erfolg': '<path d="M8 4h8v3a4 4 0 0 1-8 0V4z"/><path d="M6 4H4v2a4 4 0 0 0 4 4"/><path d="M18 4h2v2a4 4 0 0 1-4 4"/><path d="M12 11v4"/><path d="M9 20h6"/><path d="M12 15v5"/>',
+  'Sicherheit': '<circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V22"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/>',
+  'Gerechtigkeit': '<path d="M12 3v18"/><path d="M5 8h14"/><path d="M5 8l-3 6a3 3 0 0 0 6 0l-3-6z"/><path d="M19 8l-3 6a3 3 0 0 0 6 0l-3-6z"/><path d="M8 21h8"/>',
+  'Mut': '<path d="M12 2l7 3v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V5l7-3z"/>',
+  'Ruhe': '<path d="M2 9c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/><path d="M2 15c2-3 4-3 6 0s4 3 6 0 4-3 6 0"/>',
+  'Treue': '<circle cx="9" cy="9" r="4"/><circle cx="15" cy="15" r="4"/>',
+  'Kreativität': '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a6 6 0 0 0-4 10c1 1 1.5 2 1.5 3h5c0-1 .5-2 1.5-3a6 6 0 0 0-4-10z"/>',
+  'Respekt': '<path d="M4 14c2-4 6-6 8-6s6 2 8 6"/><path d="M2 18c3-2 6-3 10-3s7 1 10 3"/>',
+  'Abenteuer': '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.5L12 12l-2.5 2.5L12 12l2.5-2.5z"/>',
+  'Familie': '<path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M12 14c-1-1-2.5-1-3 .5s.5 2.5 3 4c2.5-1.5 3.5-2.5 3-4s-2-1.5-3-.5z"/>',
+  'Gesundheit': '<path d="M3 12h4l2-6 4 12 2-6h6"/>',
+  'Vertrauen': '<circle cx="7" cy="12" r="4"/><path d="M11 12h10"/><path d="M17 12v3"/><path d="M20 12v3"/>',
+  'Unabhängigkeit': '<circle cx="12" cy="12" r="9"/><path d="M12 16V8"/><path d="M9 11l3-3 3 3"/>',
+  'Anerkennung': '<path d="M12 2l2.9 6.3 6.9.7-5.1 4.7 1.5 6.8L12 17l-6.2 3.5 1.5-6.8L2.2 9l6.9-.7L12 2z"/>',
+  'Toleranz': '<rect x="3" y="6" width="10" height="10" rx="2"/><rect x="11" y="6" width="10" height="10" rx="2"/>',
+  'Humor': '<circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8 14c1.5 2 6.5 2 8 0"/>',
+  'Wissen': '<path d="M4 5c2-1 5-1 8 1 3-2 6-2 8-1v13c-2-1-5-1-8 1-3-2-6-2-8-1V5z"/><path d="M12 6v13"/>',
+  'Disziplin': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
+  'Loyalität': '<path d="M12 2l7 3v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V5l7-3z"/><path d="M12 8l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5L11 10z" fill="currentColor" stroke="none"/>',
+  'Schönheit': '<circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="6" r="2.6"/><circle cx="12" cy="18" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/>',
+  'Macht': '<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z"/>'
+};
 
-function karteHtml(w){
-  return '<div class="karte"><div class="karte-nr">'+String(w.nr).padStart(2,'0')+'</div>'
-    + '<div class="karte-wert">'+w.wert+'</div>'
-    + '<div class="karte-def">'+w.def+'</div></div>';
+var WERTE = ['Freiheit','Freundschaft','Ehrlichkeit','Erfolg','Sicherheit','Gerechtigkeit','Mut','Ruhe','Treue','Kreativität','Respekt','Abenteuer','Familie','Gesundheit','Vertrauen','Unabhängigkeit','Anerkennung','Toleranz','Humor','Wissen','Disziplin','Loyalität','Schönheit','Macht'];
+
+function iconSvg(name){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || '') + '</svg>';
 }
 
-document.getElementById('grid1').innerHTML = WERTE.slice(0,12).map(karteHtml).join('');
-document.getElementById('grid2').innerHTML = WERTE.slice(12,24).map(karteHtml).join('');
+function vorderseiteHtml(wert, nr){
+  if (wert === null) {
+    return '<div class="karte karte-blanko"><span>Eigener<br>Wert</span></div>';
+  }
+  return '<div class="karte"><div class="karte-icon">' + iconSvg(wert) + '</div><div class="karte-mitte"><div class="karte-wort">' + wert + '</div></div><div class="karte-nr">' + String(nr).padStart(2,'0') + '</div></div>';
+}
+
+function rueckseiteHtml(){
+  return '<div class="karte-rueckseite"><div class="karte-rueckseite-logo"><span>K</span></div></div>';
+}
+
+var KARTEN = WERTE.map(function(w, i){ return { wert: w, nr: i + 1 }; });
+KARTEN.push({ wert: null, nr: null });
+KARTEN.push({ wert: null, nr: null });
+KARTEN.push({ wert: null, nr: null });
+
+var PRO_SEITE = 9;
+var seitenAnzahl = Math.ceil(KARTEN.length / PRO_SEITE);
+var html = '';
+
+for (var s = 0; s < seitenAnzahl; s++) {
+  var teil = KARTEN.slice(s * PRO_SEITE, (s + 1) * PRO_SEITE);
+
+  html += '<div class="seite"><div class="seite-kopf no-print"><span class="seite-titel">Werte-Poker · Vorderseite</span><span class="seite-sub">Blatt ' + (s + 1) + ' / ' + seitenAnzahl + '</span></div>';
+  html += '<div class="karten-grid">' + teil.map(function(k){ return vorderseiteHtml(k.wert, k.nr); }).join('') + '</div></div>';
+
+  html += '<div class="seite"><div class="seite-kopf no-print"><span class="seite-titel">Werte-Poker · Rückseite</span><span class="seite-sub">Blatt ' + (s + 1) + ' / ' + seitenAnzahl + ' · beidseitig drucken</span></div>';
+  html += '<div class="karten-grid">' + teil.map(rueckseiteHtml).join('') + '</div></div>';
+}
+
+// SETZ-FELD / POKER-TISCH
+html += '<div class="seite">';
+html += '<div class="setzfeld-titel">Meine Top 5 Werte</div>';
+html += '<div class="setzfeld-sub">Lege hier deine 5 Favoriten-Karten ab.</div>';
+html += '<div class="setz-reihe"><div class="setz-feld"><span>1</span></div><div class="setz-feld"><span>2</span></div><div class="setz-feld"><span>3</span></div></div>';
+html += '<div class="setz-reihe"><div class="setz-feld"><span>4</span></div><div class="setz-feld"><span>5</span></div></div>';
+html += '<div class="notizen"><div class="notizen-titel">Warum sind mir diese Werte wichtig?</div>';
+html += '<div class="notizen-linie"></div><div class="notizen-linie"></div><div class="notizen-linie"></div><div class="notizen-linie"></div></div>';
+html += '</div>';
+
+document.getElementById('seiten').innerHTML = html;
 </script>
 
 </body>

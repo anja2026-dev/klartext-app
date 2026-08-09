@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--m:#1B3A4B;--acc:#4FC3C7;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
@@ -24,11 +26,19 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .shell{max-width:520px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;text-align:center;}
 
 .wuerfel-karte{background:var(--surface);border:2px solid var(--border);border-radius:22px;padding:2rem 1.5rem;box-shadow:0 4px 18px rgba(27,58,75,.1);}
-#brainy-img{width:170px;height:170px;margin-bottom:1.25rem;transition:transform .6s cubic-bezier(.175,.885,.32,1.275);}
-#word-display{font-family:"Playfair Display",serif;font-size:2rem;font-weight:700;min-height:4rem;display:flex;align-items:center;justify-content:center;border-radius:15px;margin-bottom:1.5rem;padding:.6rem;background:var(--paper);color:var(--ink);}
+#brainy-img{width:150px;height:150px;margin-bottom:1.25rem;transition:transform .6s cubic-bezier(.175,.885,.32,1.275);}
+.spin{transform:rotate(360deg) scale(.8);}
+
+#aktion-box{font-family:"Playfair Display",serif;font-size:1.35rem;font-weight:700;min-height:4rem;display:flex;align-items:center;justify-content:center;border-radius:15px;margin-bottom:1rem;padding:1rem 1.1rem;background:var(--paper);color:var(--ink);line-height:1.35;}
+
+#ideen-box{display:none;background:#fff;border:2px dashed var(--border);border-radius:14px;padding:.9rem 1rem;margin-bottom:1.5rem;}
+#ideen-box.zeigen{display:block;}
+.ideen-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.55rem;}
+.ideen-chips{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;}
+.ideen-chip{background:var(--paper);border:1.5px solid var(--border);border-radius:20px;padding:.35rem .85rem;font-size:.85rem;font-weight:600;color:var(--ink);}
+
 .wuerfel-btn{background:var(--m);color:#fff;border:none;padding:.95rem 2.2rem;font-family:inherit;font-size:1rem;font-weight:700;border-radius:50px;cursor:pointer;transition:background .2s;}
 .wuerfel-btn:hover{background:#2A5570;}
-.spin{transform:rotate(360deg) scale(.8);}
 </style>
 </head>
 <body>
@@ -44,51 +54,97 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <div class="hero">
   <div class="hero-icon">🎲</div>
   <h1 class="hero-titel">Brainy-Wort-Würfel</h1>
-  <p class="hero-sub">Würfeln und das Wort laut sagen — spielerisches Vokabeltraining für DaZ.</p>
+  <p class="hero-sub">Würfeln und die Aufgabe erfüllen — spielerisches Sprach- und Handlungstraining für DaZ.</p>
 </div>
 
 <div class="shell">
   <div class="wuerfel-karte">
     <img id="brainy-img" src="brainy-gruen.png" alt="Brainy">
-    <div id="word-display">Klick zum Starten!</div>
+    <div id="aktion-box">Klick zum Starten!</div>
+    <div id="ideen-box">
+      <div class="ideen-label">💡 Ideen</div>
+      <div class="ideen-chips" id="ideen-chips"></div>
+    </div>
     <button class="wuerfel-btn" onclick="rollCube()">🎲 WÜRFELN</button>
   </div>
 </div>
 
 <script>
-var pool = {
-  'Gelb (Nomen)': ['Apfel', 'Banane', 'Ball', 'Buch', 'Baum', 'Blume', 'Auto', 'Haus', 'Hund', 'Katze', 'Kind', 'Mann', 'Frau', 'Sonne', 'Mond', 'Stern', 'Wasser', 'Brot', 'Milch', 'Saft', 'Käse', 'Ei', 'Fisch', 'Vogel'],
-  'Grün (Verben)': ['lachen', 'spielen', 'rennen', 'malen', 'lesen', 'schreiben', 'springen', 'singen', 'tanzen', 'essen', 'trinken', 'schlafen', 'hören', 'sehen', 'helfen', 'kommen', 'gehen', 'kochen', 'bauen', 'rufen', 'klettern', 'werfen', 'fangen'],
-  'Orange (Adjektive)': ['groß', 'klein', 'heiß', 'kalt', 'schön', 'schnell', 'langsam', 'laut', 'leise', 'bunt', 'müde', 'wach', 'froh', 'traurig', 'mutig', 'lieb', 'nett', 'neu', 'alt', 'hell', 'dunkel', 'weich', 'hart', 'süß', 'sauer'],
-  'Rot (Signale)': ['Stopp!', 'Hilfe!', 'Achtung!', 'Nein!', 'Ja!', 'Pause!', 'Warte!', 'Los!', 'Schnell!', 'Weg!', 'Hier!', 'Guck!', 'Pass auf!', 'Hilfe holen', 'Gefahr!', 'Raus!', 'Nicht anfassen!', 'Ruhe jetzt!'],
-  'Grau (Schule)': ['Schule', 'Lehrer', 'Tisch', 'Stuhl', 'Tafel', 'Kreide', 'Heft', 'Stift', 'Ranzen', 'Klasse', 'Fenster', 'Tür', 'Licht', 'Boden', 'Wand', 'Uhr', 'Computer', 'Schere', 'Kleber', 'Papier', 'Sportzeug'],
-  'JOKER': ['Such dir eine Farbe aus!', 'Du darfst ein Wort bestimmen!', 'Würfel noch mal!']
-};
-
-var config = {
-  'Gelb (Nomen)': { img: 'brainy-gelb.png', bg: '#f1c40f', color: 'black' },
-  'Grün (Verben)': { img: 'brainy-gruen.png', bg: '#2ecc71', color: 'white' },
-  'Orange (Adjektive)': { img: 'brainy-orange.png', bg: '#e67e22', color: 'white' },
-  'Rot (Signale)': { img: 'brainy-rot.png', bg: '#e74c3c', color: 'white' },
-  'Grau (Schule)': { img: 'brainy-grau.png', bg: '#95a5a6', color: 'white' },
-  'JOKER': { img: 'brainy-joker.png', bg: 'linear-gradient(45deg, #e74c3c, #f1c40f, #2ecc71, #3498db, #9b59b6)', color: 'white' }
-};
+// Offizielle KLARTEXT-Barometer-Farben (siehe BAROMETER_KIND.html)
+var KATEGORIEN = [
+  {
+    name: 'Gelb · Nomen',
+    img: 'brainy-gelb.png',
+    bg: 'linear-gradient(135deg,#D4A800,#A88000)',
+    textColor: '#2D2200',
+    aktion: 'Detektiv-Suche: Such diesen Gegenstand im Raum und berühr ihn!',
+    beispiele: ['Der Stift', 'Das Buch', 'Der Tisch']
+  },
+  {
+    name: 'Grün · Verben',
+    img: 'brainy-gruen.png',
+    bg: 'linear-gradient(135deg,#2E9E5A,#1A7A3A)',
+    textColor: '#fff',
+    aktion: 'Pantomime: Mach diese Bewegung vor, ohne zu sprechen!',
+    beispiele: ['Schreiben', 'Laufen', 'Lachen']
+  },
+  {
+    name: 'Orange · Adjektive',
+    img: 'brainy-orange.png',
+    bg: 'linear-gradient(135deg,#D4651A,#A84A10)',
+    textColor: '#fff',
+    aktion: 'Brainy-Check: Sag einen Satz mit diesem Wort über Brainy!',
+    beispiele: ['Brainy ist leise', 'Brainy ist schnell', 'Brainy ist froh']
+  },
+  {
+    name: 'Rot · Signale',
+    img: 'brainy-rot.png',
+    bg: 'linear-gradient(135deg,#C0392B,#8B1A1A)',
+    textColor: '#fff',
+    aktion: 'Stopp-Signal: Mach das passende Handzeichen dazu!',
+    beispiele: ['Stopp!', 'Achtung!', 'Hilfe!']
+  },
+  {
+    name: 'Grau · Pause/Gefühl',
+    img: 'brainy-grau.png',
+    bg: 'linear-gradient(135deg,#757575,#555555)',
+    textColor: '#fff',
+    aktion: 'Barometer-Zeit: Zeig deine Farbe auf dem Barometer!',
+    beispiele: []
+  },
+  {
+    name: 'Joker · Brainy mit Herz',
+    img: 'brainy-joker.png',
+    bg: 'linear-gradient(135deg,#2E9E5A,#D4A800,#D4651A,#C0392B,#757575)',
+    textColor: '#fff',
+    aktion: 'Freie Wahl: Such dir eine Farbe und eine Aufgabe aus!',
+    beispiele: []
+  }
+];
 
 function rollCube(){
   var img = document.getElementById('brainy-img');
-  var display = document.getElementById('word-display');
+  var aktionBox = document.getElementById('aktion-box');
+  var ideenBox = document.getElementById('ideen-box');
+  var ideenChips = document.getElementById('ideen-chips');
   img.classList.add('spin');
 
   setTimeout(function(){
     img.classList.remove('spin');
-    var categories = Object.keys(pool);
-    var cat = categories[Math.floor(Math.random() * categories.length)];
-    var word = pool[cat][Math.floor(Math.random() * pool[cat].length)];
+    var kat = KATEGORIEN[Math.floor(Math.random() * KATEGORIEN.length)];
 
-    img.src = config[cat].img;
-    display.innerText = word;
-    display.style.background = config[cat].bg;
-    display.style.color = config[cat].color;
+    img.src = kat.img;
+    aktionBox.textContent = kat.aktion;
+    aktionBox.style.background = kat.bg;
+    aktionBox.style.color = kat.textColor;
+
+    if (kat.beispiele.length) {
+      ideenChips.innerHTML = kat.beispiele.map(function(w){ return '<span class="ideen-chip">' + w + '</span>'; }).join('');
+      ideenBox.classList.add('zeigen');
+    } else {
+      ideenChips.innerHTML = '';
+      ideenBox.classList.remove('zeigen');
+    }
   }, 600);
 }
 </script>

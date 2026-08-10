@@ -46,6 +46,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .angebot-link .a-typ{font-size:.66rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:.15rem;}
 .angebot-hinweis{font-size:.72rem;color:var(--muted);font-style:italic;margin-top:.9rem;}
 
+/* ── ZUHAUSE-IDEE (Insel-Set-Bezug, bewusst zurueckhaltend gehalten) ─────────────────────────────── */
+.zuhause-block{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
+.zuhause-toggle{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:.7rem .9rem;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s;}
+.zuhause-toggle:hover{border-color:#4A55A2;}
+.zuhause-toggle .z-tag{font-size:.63rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#4A55A2;flex-shrink:0;}
+.zuhause-info{background:var(--paper);border-radius:14px;padding:.85rem 1rem;margin-top:.5rem;font-size:.82rem;line-height:1.55;color:var(--ink);}
+.zuhause-info .z-funktion{color:var(--muted);font-size:.76rem;margin-bottom:.6rem;}
+.zuhause-info .z-impuls{background:var(--surface);border-radius:10px;padding:.6rem .75rem;font-style:italic;margin-bottom:.6rem;}
+.zuhause-info .z-mehr{font-size:.74rem;color:#4A55A2;text-decoration:none;font-weight:600;}
+.zuhause-info .z-mehr:hover{text-decoration:underline;}
+
 /* ── SORGEN-KISTE ─────────────────────────────── */
 .sorgen-emoji-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem;}
 .sorgen-emoji-btn{width:44px;height:44px;border-radius:50%;border:2.5px solid var(--border);background:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
@@ -110,8 +121,22 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 var SORGEN_KEY = 'klartext_sorgen_v1';
 var SORGEN_EMOJIS = ['😟','😢','😰','😕','😠','🤔'];
 
-/* Jeder Moment: 1-2 Angebote (Tool und/oder JD-Karte). Keine Anweisungen, nur Angebote —
-   die Formulierungen sind bewusst offen gehalten ("könnte helfen", "manche merken"). */
+/* Namen und Funktionen 1:1 aus dem Eltern-Insel-Mini-Handbuch (8 Inseln, keine Nummerierung im
+   Original — falls hier trotzdem sortiert aufgelistet, ist das nur die Objekt-Reihenfolge, keine
+   offizielle "Insel Nr. X"). Zwei Momente (freunde, neu) sind bewusst als lose Alternative markiert
+   (loseAlternative:true), weil das Insel-Set laut Konzeptpapier ein Zuhause-System ist und diese beiden
+   Momente eigentlich außerhalb des Zuhauses entstehen. */
+var INSELN = {
+  gespraech:   { name: 'Eltern-Kind-Gesprächs-Insel', funktion: 'kurze, klare Kommunikation' },
+  ruhe:        { name: 'Ruhe-Insel', funktion: 'Regulation, Reizreduktion' },
+  emotion:     { name: 'Emotions-Insel', funktion: 'Gefühle benennen' },
+  arbeit:      { name: 'Arbeits-Insel', funktion: 'Hausaufgaben, Fokus' },
+  uebergang:   { name: 'Übergangs-Insel', funktion: 'Morgen-/Abend-Rituale' }
+};
+
+/* Jeder Moment: 1-2 Angebote (Tool und/oder JD-Karte), optional eine Zuhause-Idee aus dem Insel-Set.
+   Keine Anweisungen, nur Angebote — die Formulierungen sind bewusst offen gehalten
+   ("könnte helfen", "manche merken"). */
 var MOMENTE = [
   {
     id: 'eltern', emoji: '🏠', titel: 'Streit mit meinen Eltern',
@@ -119,7 +144,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🔄', label: 'Perspektiv-Wechsler — beide Seiten anschauen', href: 'KLARTEXT_Spiel_PerspektivWechsler.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-09 „Streit ohne Verlierer"', href: 'pwa/index.html?deck=jd&karte=9' }
-    ]
+    ],
+    insel: { id: 'gespraech', impuls: 'Können wir uns kurz an einen ruhigen Ort setzen und nur über eine Sache reden — ohne dass wir uns gegenseitig Vorwürfe machen?' }
   },
   {
     id: 'handy', emoji: '📱', titel: 'Ich komm nicht vom Handy los',
@@ -127,7 +153,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🎚️', label: 'Reizfilter-Regler — zeigen, wie viel gerade los ist', href: 'KLARTEXT_Spiel_Reizfilter.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-29 „Handy weglegen können"', href: 'pwa/index.html?deck=jd&karte=29' }
-    ]
+    ],
+    insel: { id: 'ruhe', impuls: 'Ich leg mein Handy jetzt kurz an einen festen Platz und mach stattdessen was anderes — hilft mir, wieder runterzukommen.' }
   },
   {
     id: 'zukunft', emoji: '🔮', titel: 'Angst vor der Zukunft / Berufswahl',
@@ -135,7 +162,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '✨', label: 'Skill-Matrix — eigene Stärken sichtbar machen', href: 'KLARTEXT_Spiel_SkillMatrix.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-05 „Alle wissen schon, was sie wollen – nur ich nicht"', href: 'pwa/index.html?deck=jd&karte=5' }
-    ]
+    ],
+    insel: { id: 'emotion', impuls: 'Ich bin gerade ziemlich durcheinander wegen der Zukunft — kann ich kurz sagen, was mich beschäftigt?' }
   },
   {
     id: 'freunde', emoji: '⚡', titel: 'Ärger mit Freunden oder in der Klasse',
@@ -143,7 +171,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🎭', label: 'Was tun bei…? — Streit-Szenario ausprobieren', href: 'KLARTEXT_Spiel_WasTunBei.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-09 „Streit ohne Verlierer"', href: 'pwa/index.html?deck=jd&karte=9' }
-    ]
+    ],
+    insel: { id: 'emotion', loseAlternative: true, impuls: 'Bei mir ist heute was in der Schule passiert, das mich noch beschäftigt — kann ich kurz drüber reden?' }
   },
   {
     id: 'pruefung', emoji: '📝', titel: 'Vor einer Prüfung oder einem Gespräch nervös',
@@ -151,7 +180,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🎤', label: 'Bewerbungsgespräch üben — in Ruhe vorbereiten', href: 'KLARTEXT_Spiel_Bewerbungsgespraech.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-17 „Vor der Prüfung: was hilft wirklich?"', href: 'pwa/index.html?deck=jd&karte=17' }
-    ]
+    ],
+    insel: { id: 'arbeit', impuls: 'Kann ich mich für die Vorbereitung an einen festen Platz setzen, an dem ich in Ruhe arbeiten kann?' }
   },
   {
     id: 'kopfvoll', emoji: '🌪️', titel: 'Alles ist gerade zu viel',
@@ -159,7 +189,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🎚️', label: 'Reizfilter-Regler — erstmal einordnen, wie viel es ist', href: 'KLARTEXT_Spiel_Reizfilter.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-18 „Wenn der Kopf voll ist"', href: 'pwa/index.html?deck=jd&karte=18' }
-    ]
+    ],
+    insel: { id: 'ruhe', impuls: 'Ich brauch grad kurz einen ruhigen Moment für mich, bevor wir weiterreden.' }
   },
   {
     id: 'ernstnehmen', emoji: '🙉', titel: 'Ich fühl mich nicht ernst genommen',
@@ -167,7 +198,8 @@ var MOMENTE = [
     angebote: [
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-21 „Ernst genommen werden wollen"', href: 'pwa/index.html?deck=jd&karte=21' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-22 „Wenn Erwachsene nicht zuhören"', href: 'pwa/index.html?deck=jd&karte=22' }
-    ]
+    ],
+    insel: { id: 'gespraech', impuls: 'Können wir uns kurz bewusst hinsetzen? Ich möchte, dass du mir richtig zuhörst.' }
   },
   {
     id: 'neu', emoji: '🚪', titel: 'Vor einer neuen, unsicheren Situation',
@@ -175,13 +207,15 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🎤', label: 'Bewerbungsgespräch üben (Praktikum)', href: 'KLARTEXT_Spiel_Bewerbungsgespraech.html?typ=praktikum' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-41 „Erstes Praktikum – und dann?"', href: 'pwa/index.html?deck=jd&karte=41' }
-    ]
+    ],
+    insel: { id: 'uebergang', loseAlternative: true, impuls: 'Können wir uns für die ersten Tage eine feste kleine Morgen-Routine überlegen, bevor es losgeht?' }
   }
 ];
 
 var zustand = { sorgen: [] };
 var ausgewaehltesSorgenEmoji = null;
 var offenerMoment = null;
+var offeneZuhauseInfo = null;
 
 function escapeHtml(s){
   var d = document.createElement('div');
@@ -216,6 +250,37 @@ function momentGridRendern(){
       panel.innerHTML = '<div class="angebot-satz">' + m.satz + '</div>' +
         '<div class="angebot-liste">' + linksHtml + '</div>' +
         '<div class="angebot-hinweis">Kein Muss — schau einfach, ob eins davon gerade passt. Wenn nicht, ist das auch okay.</div>';
+
+      if (m.insel) {
+        var insel = INSELN[m.insel.id];
+        var zBlock = document.createElement('div');
+        zBlock.className = 'zuhause-block';
+
+        var zToggle = document.createElement('button');
+        zToggle.className = 'zuhause-toggle';
+        zToggle.innerHTML = '<span class="z-tag">Zuhause</span><span>' + insel.name + '</span>';
+        zToggle.addEventListener('click', function(){
+          offeneZuhauseInfo = (offeneZuhauseInfo === m.id) ? null : m.id;
+          momentGridRendern();
+        });
+        zBlock.appendChild(zToggle);
+
+        if (offeneZuhauseInfo === m.id) {
+          var zInfo = document.createElement('div');
+          zInfo.className = 'zuhause-info';
+          var loseHinweis = m.insel.loseAlternative
+            ? 'Das eigentliche Thema entsteht zwar nicht zuhause — trotzdem kann ein fester, ruhiger Ort dort helfen, damit umzugehen. '
+            : '';
+          zInfo.innerHTML =
+            '<div class="z-funktion">' + loseHinweis + 'Falls es zuhause sowas wie das KLARTEXT-Insel-Set gibt (oder ihr überlegt, eins einzuführen): Kernidee der ' + insel.name + ' ist ' + insel.funktion + '.</div>' +
+            '<div class="z-impuls">„' + m.insel.impuls + '"</div>' +
+            '<a class="z-mehr" href="KLARTEXT_Insel-Set_Eltern.pdf" target="_blank" rel="noopener">Mehr zum Insel-Set (PDF) →</a>';
+          zBlock.appendChild(zInfo);
+        }
+
+        panel.appendChild(zBlock);
+      }
+
       wrap.appendChild(panel);
     }
 

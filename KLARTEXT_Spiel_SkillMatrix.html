@@ -97,6 +97,16 @@ body{
 .jd-karten-link:hover b{color:#fff;}
 .jd-hinweis{margin-top:.6rem;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.1);font-size:.68rem;line-height:1.5;color:rgba(255,255,255,.45);font-style:italic;}
 
+.bewerbung-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.1rem 1.2rem;margin-top:.8rem;}
+.bewerbung-titel{font-size:.72rem;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.6rem;}
+.bewerbung-abschnitt{margin-bottom:.9rem;}
+.bewerbung-abschnitt:last-child{margin-bottom:0;}
+.bewerbung-abschnitt-label{font-size:.68rem;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem;}
+.bewerbung-text{font-size:.82rem;line-height:1.55;color:rgba(255,255,255,.85);font-style:italic;}
+.mut-box{background:rgba(255,255,255,.06);border:1.5px dashed rgba(255,255,255,.3);border-radius:12px;padding:.8rem .9rem;margin-top:.9rem;}
+.mut-box .mut-text{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.75);}
+.mut-box a{color:var(--acc);font-weight:700;}
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:400;padding:1rem;}
 .overlay.zeigen{display:flex;}
 .modal{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:1.5rem;max-width:480px;width:100%;max-height:80vh;overflow:auto;}
@@ -367,7 +377,9 @@ var CLUSTERS = [
     lehrBeob:'Beobachten Sie, wie die Jugendliche/der Jugendliche in Gruppenarbeit oder in der Pause Verantwortung fürs Miteinander übernimmt. Diese Momente lohnt es, sichtbar zu machen.',
     lehrFrage:'Mir ist aufgefallen, wie gut du mit anderen zusammenarbeitest. Wo im Unterricht könnte dir das auch helfen?',
     felder:['Soziale Arbeit & Erziehung','Verkauf & Kundenservice','Team-Handwerk (z. B. Bau, Gastronomie)'],
-    beispiele:['Erzieher:in','Verkäufer:in im Einzelhandel','Bäcker:in / Konditor:in'] },
+    beispiele:['Erzieher:in','Verkäufer:in im Einzelhandel','Bäcker:in / Konditor:in'],
+    anschreiben:'Bei {hobby} habe ich gelernt, im Team Verantwortung zu übernehmen und gemeinsam Ziele zu erreichen.',
+    interview:'Eine Stärke von mir ist Teamfähigkeit — bei {hobby} zeigt sich das, wenn ich mit anderen an einem gemeinsamen Ziel arbeite.' },
   { id:'fokus', icon:'🎯', titel:'Fokus-Champion',
     alltag:'wenn du dranbleiben musst, obwohl eine Aufgabe erstmal zäh oder langweilig ist',
     schritt:'Nimm dir morgen 15 Minuten für eine Aufgabe, die du sonst aufschiebst.',
@@ -376,7 +388,9 @@ var CLUSTERS = [
     lehrBeob:'Beobachten Sie, in welchen Unterrichtsmomenten die/der Jugendliche über längere Zeit konzentriert bei der Sache bleibt. Das lässt sich gezielt auf andere Fächer übertragen.',
     lehrFrage:'Du bist bei {hobby} richtig dran geblieben. Wo im Unterricht gelingt dir das genauso gut?',
     felder:['Handwerk & Feinarbeit','Labor & Technik','Wissenschaft & Forschung'],
-    beispiele:['Feinwerkmechaniker:in','Chemielaborant:in','Fachinformatiker:in'] },
+    beispiele:['Feinwerkmechaniker:in','Chemielaborant:in','Fachinformatiker:in'],
+    anschreiben:'Durch {hobby} bin ich es gewohnt, auch bei anspruchsvollen Aufgaben konzentriert dranzubleiben.',
+    interview:'Ich bin ausdauernd und konzentriert — das übe ich regelmäßig bei {hobby}, wo Dranbleiben den Unterschied macht.' },
   { id:'kreativ', icon:'🎨', titel:'Kreativ-Genie',
     alltag:'wenn du eigene Ideen einbringen oder etwas gestalten sollst',
     schritt:'Zeig heute jemandem eine eigene Idee, auch wenn sie noch nicht fertig ist.',
@@ -385,7 +399,9 @@ var CLUSTERS = [
     lehrBeob:'Beobachten Sie, wann die/der Jugendliche eigene, ungewöhnliche Lösungswege vorschlägt. Das ist ein guter Anknüpfungspunkt für Anerkennung im Unterricht.',
     lehrFrage:'Deine Idee bei {hobby} war kreativ gelöst. Wo im Unterricht könntest du das auch mal ausprobieren?',
     felder:['Mediengestaltung & Design','IT-Entwicklung','Handwerkliches Gestalten'],
-    beispiele:['Mediengestalter:in','Fotograf:in','Schneider:in'] },
+    beispiele:['Mediengestalter:in','Fotograf:in','Schneider:in'],
+    anschreiben:'{hobby} hat mir gezeigt, wie ich eigene Ideen entwickle und in ein fertiges Ergebnis umsetze.',
+    interview:'Ich bin kreativ und hab ein Auge für Details — das zeigt sich bei {hobby}, wo ich eigene Ideen umsetze.' },
   { id:'verantwortung', icon:'🧭', titel:'Verantwortungs-Anker',
     alltag:'wenn andere sich darauf verlassen, dass du etwas zuverlässig erledigst',
     schritt:'Übernimm diese Woche eine kleine Aufgabe komplett selbstständig.',
@@ -394,7 +410,9 @@ var CLUSTERS = [
     lehrBeob:'Beobachten Sie, wann die/der Jugendliche zuverlässig Aufgaben übernimmt, ohne dass nachgefragt werden muss. Das ist ein guter Ankerpunkt für positive Rückmeldung.',
     lehrFrage:'Ich hab bemerkt, wie zuverlässig du bist. Wo im Schulalltag konntest du das heute zeigen?',
     felder:['Pflege & Betreuung','Verwaltung & Organisation','Logistik'],
-    beispiele:['Pflegefachkraft','Verwaltungsfachangestellte:r','Fachkraft Lagerlogistik'] },
+    beispiele:['Pflegefachkraft','Verwaltungsfachangestellte:r','Fachkraft Lagerlogistik'],
+    anschreiben:'Bei {hobby} übernehme ich zuverlässig Verantwortung, auch ohne dass mich jemand daran erinnern muss.',
+    interview:'Ich bin zuverlässig — bei {hobby} verlassen sich andere auf mich, und das nehme ich ernst.' },
   { id:'problem', icon:'🧩', titel:'Problem-Löser',
     alltag:'wenn etwas nicht auf Anhieb klappt und du einen neuen Weg finden musst',
     schritt:'Wenn heute etwas nicht klappt, probier einen zweiten Weg, bevor du aufgibst.',
@@ -403,7 +421,9 @@ var CLUSTERS = [
     lehrBeob:'Beobachten Sie, wie die/der Jugendliche bei Aufgaben mit mehreren Lösungswegen vorgeht. Systematisches Vorgehen lässt sich gut auf andere Fächer übertragen.',
     lehrFrage:'Deine Lösung bei {hobby} war clever gedacht. Wo im Unterricht könntest du genauso vorgehen?',
     felder:['IT & Softwareentwicklung','Mechatronik & Elektrotechnik','Eventmanagement'],
-    beispiele:['Fachinformatiker:in Anwendungsentwicklung','Mechatroniker:in','Veranstaltungskaufmann/-frau'] },
+    beispiele:['Fachinformatiker:in Anwendungsentwicklung','Mechatroniker:in','Veranstaltungskaufmann/-frau'],
+    anschreiben:'Durch {hobby} habe ich gelernt, Probleme systematisch anzugehen und eigenständig Lösungswege zu finden.',
+    interview:'Ich geh Probleme gern systematisch an — bei {hobby} übe ich das, wenn etwas nicht auf Anhieb funktioniert.' },
   { id:'mutig', icon:'💪', titel:'Mutig & Stressfest',
     alltag:'wenn eine neue oder unangenehme Situation ansteht, vor der du dich erstmal überwinden musst',
     schritt:'Trau dich diese Woche an eine Sache, vor der du bisher zurückgeschreckt bist.',
@@ -412,7 +432,9 @@ var CLUSTERS = [
     lehrBeob:'Beobachten Sie, wie die/der Jugendliche mit Fehlern oder neuen, unsicheren Situationen umgeht. Genau das ist ein guter Moment für ehrliche Anerkennung.',
     lehrFrage:'Du hast bei {hobby} richtig Mut bewiesen. Wo im Schulalltag könntest du dir das auch zutrauen?',
     felder:['Rettungsdienst & Sicherheit','Handwerk im Außeneinsatz','Sport & Bewegung'],
-    beispiele:['Notfallsanitäter:in','Landschaftsgärtner:in','Sport- und Fitnesskaufmann/-frau'] }
+    beispiele:['Notfallsanitäter:in','Landschaftsgärtner:in','Sport- und Fitnesskaufmann/-frau'],
+    anschreiben:'{hobby} hat mich gelehrt, auch bei Rückschlägen dranzubleiben und mutig Neues auszuprobieren.',
+    interview:'Ich bin belastbar und probier gern Neues aus — genau das zeigt sich bei {hobby}, auch wenn es mal nicht auf Anhieb klappt.' }
 ];
 
 var JD_BEGLEITUNG = [
@@ -494,6 +516,21 @@ function renderProfilTab(){
         jdZeilen +
         '<div class="jd-hinweis">Tippen öffnet die Karte direkt in der App. Ohne digitalen Zugang: gleiche Karten im physischen JD-Deck.</div></div>';
     }
+    if (aktiveCluster.length > 0) {
+      var topCluster = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; }).slice(0, 2);
+      var anschreibenSaetze = topCluster.map(function(c){
+        return c.anschreiben.replace('{hobby}', listeVerbinden(daten[c.id].hobbys));
+      }).join(' ');
+      var interviewZeilen = topCluster.map(function(c){
+        return '<div class="bewerbung-text">„'+c.interview.replace('{hobby}', listeVerbinden(daten[c.id].hobbys))+'"</div>';
+      }).join('');
+
+      html += '<div class="bewerbung-box"><div class="bewerbung-titel">📝 Bausteine für Anschreiben &amp; Gespräch</div>' +
+        '<div class="bewerbung-abschnitt"><div class="bewerbung-abschnitt-label">Für dein Anschreiben</div><div class="bewerbung-text">'+anschreibenSaetze+'</div></div>' +
+        '<div class="bewerbung-abschnitt"><div class="bewerbung-abschnitt-label">Für die Frage „Was sind Ihre Stärken?"</div>'+interviewZeilen+'</div>' +
+        '<div class="mut-box"><div class="mut-text">Der schwerste Schritt ist oft das Abschicken der ersten Bewerbung. Karte <a href="pwa/index.html?deck=jd&karte=37" target="_blank" rel="noopener">JD-37 „Etwas Neues ausprobieren"</a> fragt genau danach: Was wäre dein kleinster erster Schritt — heute schon die Vorlage speichern, oder gleich abschicken?</div></div>' +
+        '</div>';
+    }
   } else {
     var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
     var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
@@ -532,6 +569,15 @@ function profilTextErzeugen(){
       text += 'Falls dich die Berufswahl gerade beschäftigt (JD-Kartendeck, digital in der App oder physisch):\n';
       JD_BEGLEITUNG.forEach(function(j){ text += '  • '+j.anlass+': '+j.nr+' „'+j.titel+'" → pwa/index.html?deck=jd&karte='+j.karteNr+'\n'; });
       text += '\n';
+    }
+    if (aktiveCluster.length > 0) {
+      var topClusterTxt = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; }).slice(0, 2);
+      text += 'Bausteine für Anschreiben & Gespräch\n';
+      text += 'Für dein Anschreiben:\n';
+      text += '  ' + topClusterTxt.map(function(c){ return c.anschreiben.replace('{hobby}', listeVerbinden(daten[c.id].hobbys)); }).join(' ') + '\n';
+      text += 'Für die Frage „Was sind Ihre Stärken?":\n';
+      topClusterTxt.forEach(function(c){ text += '  • „'+c.interview.replace('{hobby}', listeVerbinden(daten[c.id].hobbys))+'"\n'; });
+      text += 'Mut-Impuls: Der schwerste Schritt ist oft das Abschicken der ersten Bewerbung. Karte JD-37 „Etwas Neues ausprobieren" (pwa/index.html?deck=jd&karte=37) fragt: Was wäre dein kleinster erster Schritt?\n\n';
     }
   } else {
     var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';

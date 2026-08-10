@@ -55,10 +55,32 @@ body{
 .transfer-chip:hover{background:rgba(255,255,255,.12);}
 .transfer-chip.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
 
-.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;z-index:200;}
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;z-index:200;}
 .save-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
 .save-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(110,198,160,.35);}
 .save-btn:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+.profil-btn{background:transparent;color:var(--acc);border:1.5px solid var(--acc);padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
+.profil-btn:hover:not(:disabled){background:rgba(110,198,160,.12);}
+.profil-btn:disabled{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+
+/* Superpower-Profil Overlay */
+.profil-modal{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:1.5rem;max-width:600px;width:100%;max-height:85vh;overflow:auto;}
+.profil-modal h2{font-family:"Playfair Display",serif;font-size:1.15rem;margin-bottom:.9rem;}
+.tab-leiste{display:flex;gap:.4rem;margin-bottom:1.1rem;flex-wrap:wrap;}
+.tab-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:.5rem 1rem;font-family:inherit;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;}
+.tab-btn.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+
+.staerkste-zone{background:rgba(110,198,160,.14);border:1px solid rgba(110,198,160,.4);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:1.1rem;}
+.staerkste-zone .sz-titel{font-size:.72rem;font-weight:700;letter-spacing:.03em;color:var(--acc);text-transform:uppercase;margin-bottom:.3rem;}
+.staerkste-zone .sz-text{font-size:.85rem;line-height:1.5;color:rgba(255,255,255,.85);}
+.staerkste-zone .sz-schritt{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.6);margin-top:.5rem;font-style:italic;}
+
+.cluster-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem 1.1rem;margin-bottom:.8rem;}
+.cluster-block:last-child{margin-bottom:0;}
+.cluster-titel{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.92rem;margin-bottom:.5rem;}
+.cluster-text{font-size:.82rem;line-height:1.55;color:rgba(255,255,255,.8);}
+.cluster-skills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem;}
+.cluster-skill-chip{background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);border-radius:10px;padding:.2rem .55rem;font-size:.68rem;color:var(--acc);}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:400;padding:1rem;}
 .overlay.zeigen{display:flex;}
@@ -91,6 +113,7 @@ body{
 </div>
 
 <div class="aktionsleiste">
+  <button class="profil-btn" id="profilBtn" onclick="profilOeffnen()" disabled>✨ Superpower-Profil ansehen</button>
   <button class="save-btn" id="saveBtn" onclick="listeOeffnen()" disabled>💾 Als Stärken-Liste speichern</button>
 </div>
 
@@ -102,6 +125,23 @@ body{
     <div class="modal-btns">
       <button class="copy-btn" onclick="listeKopieren()">📋 Kopieren</button>
       <button class="close-btn" onclick="modalSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="profilOverlay">
+  <div class="profil-modal">
+    <h2 id="profilTitel">Dein Superpower-Profil</h2>
+    <div class="tab-leiste">
+      <button class="tab-btn" id="tabJugend" onclick="tabWechseln('jugend')">Für dich</button>
+      <button class="tab-btn" id="tabEltern" onclick="tabWechseln('eltern')">Für Eltern</button>
+      <button class="tab-btn" id="tabLehrkraft" onclick="tabWechseln('lehrkraft')">Für Lehrkräfte</button>
+    </div>
+    <div id="profilInhalt"></div>
+    <div class="copy-feedback" id="profilCopyFeedback"></div>
+    <div class="modal-btns">
+      <button class="copy-btn" onclick="profilKopieren()">📋 Kopieren</button>
+      <button class="close-btn" onclick="profilSchliessen()">Schließen</button>
     </div>
   </div>
 </div>
@@ -260,6 +300,7 @@ function ergebnisseRendern(){
   if (ausgewaehlt.length === 0) {
     wrap.innerHTML = '<div class="leer-hinweis" id="leerHinweis">Wähl oben mindestens ein Hobby aus, um deine geheimen Stärken freizuschalten.</div>';
     document.getElementById('saveBtn').disabled = true;
+    document.getElementById('profilBtn').disabled = true;
     return;
   }
   wrap.innerHTML = '';
@@ -280,6 +321,198 @@ function ergebnisseRendern(){
     wrap.appendChild(block);
   });
   document.getElementById('saveBtn').disabled = false;
+  document.getElementById('profilBtn').disabled = false;
+}
+
+/* ---------- Superpower-Profil ---------- */
+
+var SKILL_CLUSTER = {
+  'Teamfähigkeit':'team', 'Teamkoordination':'team', 'Fairplay':'team', 'Konfliktlösung':'team',
+  'Community-Management':'team', 'Moderation':'team', 'Empathie':'team', 'Kundenkontakt':'team', 'Respekt':'team',
+  'Ausdauer':'fokus', 'Fokus':'fokus', 'Konzentrationsfähigkeit':'fokus', 'Durchhaltevermögen':'fokus',
+  'Geduld':'fokus', 'Ruhe bewahren':'fokus', 'Systematisches Denken':'fokus', 'Sorgfalt':'fokus',
+  'Kreativität':'kreativ', 'Digitale Kompetenz':'kreativ', 'Selbstpräsentation':'kreativ', 'Auge für Details':'kreativ',
+  'Feingefühl für Details':'kreativ', 'Bildkomposition':'kreativ', 'Wortschatz':'kreativ', 'Ausdrucksfähigkeit':'kreativ',
+  'Strukturierung von Gedanken':'kreativ', 'Feinmotorik':'kreativ', 'Präzision':'kreativ', 'Körperbewusstsein':'kreativ', 'Rhythmusgefühl':'kreativ',
+  'Verantwortung':'verantwortung', 'Zuverlässigkeit':'verantwortung', 'Fürsorge':'verantwortung', 'Verbindlichkeit':'verantwortung',
+  'Verantwortungsübernahme':'verantwortung', 'Pünktlichkeit':'verantwortung', 'Selbstorganisation':'verantwortung',
+  'Struktur':'verantwortung', 'Eigeninitiative':'verantwortung', 'Hygienebewusstsein':'verantwortung',
+  'Logisches Denken':'problem', 'Problemlösefähigkeit':'problem', 'Strategie':'problem', 'Schnelle Auffassungsgabe':'problem',
+  'Prozessplanung':'problem', 'Planung':'problem', 'Technisches Setup':'problem', 'Technisches Verständnis':'problem', 'Genauigkeit beim Abmessen':'problem',
+  'Mut':'mutig', 'Umgang mit Scheitern':'mutig', 'Belastbarkeit':'mutig', 'Belastbarkeit unter Druck':'mutig',
+  'Selbstdisziplin':'mutig', 'Wetterfestigkeit':'mutig', 'Auftrittssicherheit':'mutig', 'Körperbeherrschung':'mutig', 'Naturverbundenheit':'mutig'
+};
+
+var CLUSTERS = [
+  { id:'team', icon:'🤝', titel:'Team-Power',
+    alltag:'wenn ihr euch in der Schule oder im Job als Team auf ein gemeinsames Ziel einigen müsst',
+    schritt:'Frag beim nächsten Gruppenprojekt aktiv nach, wie du helfen kannst.',
+    elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} mit anderen zusammenarbeitet. Bestärken Sie genau diesen Moment – wertfrei, ohne zu bewerten.',
+    elternFrage:'Ich hab gesehen, wie gut du bei {hobby} mit anderen klarkommst. Wo hilft dir das auch außerhalb?',
+    lehrBeob:'Beobachten Sie, wie die Jugendliche/der Jugendliche in Gruppenarbeit oder in der Pause Verantwortung fürs Miteinander übernimmt. Diese Momente lohnt es, sichtbar zu machen.',
+    lehrFrage:'Mir ist aufgefallen, wie gut du mit anderen zusammenarbeitest. Wo im Unterricht könnte dir das auch helfen?' },
+  { id:'fokus', icon:'🎯', titel:'Fokus-Champion',
+    alltag:'wenn du dranbleiben musst, obwohl eine Aufgabe erstmal zäh oder langweilig ist',
+    schritt:'Nimm dir morgen 15 Minuten für eine Aufgabe, die du sonst aufschiebst.',
+    elternBeob:'Achten Sie darauf, wie lange und konzentriert Ihr Kind bei {hobby} dabeibleibt. Genau dieses Durchhalten verdient Anerkennung – auch wenn das Ergebnis nicht perfekt ist.',
+    elternFrage:'Ich hab gemerkt, wie konzentriert du bei {hobby} bist. Wann fällt dir das bei den Hausaufgaben auch leicht – und wann schwer?',
+    lehrBeob:'Beobachten Sie, in welchen Unterrichtsmomenten die/der Jugendliche über längere Zeit konzentriert bei der Sache bleibt. Das lässt sich gezielt auf andere Fächer übertragen.',
+    lehrFrage:'Du bist bei {hobby} richtig dran geblieben. Wo im Unterricht gelingt dir das genauso gut?' },
+  { id:'kreativ', icon:'🎨', titel:'Kreativ-Genie',
+    alltag:'wenn du eigene Ideen einbringen oder etwas gestalten sollst',
+    schritt:'Zeig heute jemandem eine eigene Idee, auch wenn sie noch nicht fertig ist.',
+    elternBeob:'Achten Sie darauf, welche eigenen Ideen Ihr Kind bei {hobby} entwickelt. Kreativität zeigt sich oft leise – ein ehrliches „Das ist eine gute Idee" wirkt viel.',
+    elternFrage:'Deine Ideen bei {hobby} finde ich stark. Wo könntest du das noch einbringen?',
+    lehrBeob:'Beobachten Sie, wann die/der Jugendliche eigene, ungewöhnliche Lösungswege vorschlägt. Das ist ein guter Anknüpfungspunkt für Anerkennung im Unterricht.',
+    lehrFrage:'Deine Idee bei {hobby} war kreativ gelöst. Wo im Unterricht könntest du das auch mal ausprobieren?' },
+  { id:'verantwortung', icon:'🧭', titel:'Verantwortungs-Anker',
+    alltag:'wenn andere sich darauf verlassen, dass du etwas zuverlässig erledigst',
+    schritt:'Übernimm diese Woche eine kleine Aufgabe komplett selbstständig.',
+    elternBeob:'Achten Sie darauf, wie zuverlässig Ihr Kind seine Aufgaben rund um {hobby} erledigt, ohne dass Sie erinnern müssen. Sprechen Sie genau das aus.',
+    elternFrage:'Ich hab gesehen, wie verlässlich du dich um {hobby} kümmerst. Wo im Alltag zeigst du das noch?',
+    lehrBeob:'Beobachten Sie, wann die/der Jugendliche zuverlässig Aufgaben übernimmt, ohne dass nachgefragt werden muss. Das ist ein guter Ankerpunkt für positive Rückmeldung.',
+    lehrFrage:'Ich hab bemerkt, wie zuverlässig du bist. Wo im Schulalltag konntest du das heute zeigen?' },
+  { id:'problem', icon:'🧩', titel:'Problem-Löser',
+    alltag:'wenn etwas nicht auf Anhieb klappt und du einen neuen Weg finden musst',
+    schritt:'Wenn heute etwas nicht klappt, probier einen zweiten Weg, bevor du aufgibst.',
+    elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} Probleme angeht, wenn etwas nicht sofort funktioniert. Das ruhige Dranbleiben statt Aufgeben ist die eigentliche Stärke.',
+    elternFrage:'Du hast bei {hobby} eine richtig gute Lösung gefunden. Wo hilft dir dieses Denken sonst noch?',
+    lehrBeob:'Beobachten Sie, wie die/der Jugendliche bei Aufgaben mit mehreren Lösungswegen vorgeht. Systematisches Vorgehen lässt sich gut auf andere Fächer übertragen.',
+    lehrFrage:'Deine Lösung bei {hobby} war clever gedacht. Wo im Unterricht könntest du genauso vorgehen?' },
+  { id:'mutig', icon:'💪', titel:'Mutig & Stressfest',
+    alltag:'wenn eine neue oder unangenehme Situation ansteht, vor der du dich erstmal überwinden musst',
+    schritt:'Trau dich diese Woche an eine Sache, vor der du bisher zurückgeschreckt bist.',
+    elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} mit Rückschlägen oder ungemütlichen Momenten umgeht. Genau dieses Dranbleiben trotz Gegenwind ist bemerkenswert.',
+    elternFrage:'Ich hab gesehen, wie du bei {hobby} auch bei Gegenwind dranbleibst. Wo brauchst du diesen Mut sonst noch?',
+    lehrBeob:'Beobachten Sie, wie die/der Jugendliche mit Fehlern oder neuen, unsicheren Situationen umgeht. Genau das ist ein guter Moment für ehrliche Anerkennung.',
+    lehrFrage:'Du hast bei {hobby} richtig Mut bewiesen. Wo im Schulalltag könntest du dir das auch zutrauen?' }
+];
+
+var aktiverTab = 'jugend';
+
+function listeVerbinden(arr){
+  if (arr.length === 0) return '';
+  if (arr.length === 1) return arr[0];
+  return arr.slice(0, -1).join(', ') + ' und ' + arr[arr.length - 1];
+}
+
+function clusterDatenBerechnen(){
+  var daten = {};
+  CLUSTERS.forEach(function(c){ daten[c.id] = { hobbys: [], skills: [] }; });
+  HOBBIES.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; }).forEach(function(h){
+    h.skills.forEach(function(s, i){
+      var clusterId = SKILL_CLUSTER[s.name];
+      if (!clusterId || !daten[clusterId]) return;
+      if (daten[clusterId].hobbys.indexOf(h.label) === -1) daten[clusterId].hobbys.push(h.label);
+      var job = transferAuswahl[h.id + '_' + i];
+      daten[clusterId].skills.push({ name: s.name, hobby: h.label, job: job });
+    });
+  });
+  return daten;
+}
+
+function profilOeffnen(){
+  if (ausgewaehlt.length === 0) return;
+  aktiverTab = 'jugend';
+  document.getElementById('profilOverlay').classList.add('zeigen');
+  document.getElementById('profilCopyFeedback').textContent = '';
+  tabWechseln('jugend');
+}
+
+function tabWechseln(tab){
+  aktiverTab = tab;
+  document.getElementById('tabJugend').classList.toggle('aktiv', tab === 'jugend');
+  document.getElementById('tabEltern').classList.toggle('aktiv', tab === 'eltern');
+  document.getElementById('tabLehrkraft').classList.toggle('aktiv', tab === 'lehrkraft');
+  document.getElementById('profilTitel').textContent = tab === 'jugend' ? 'Dein Superpower-Profil' : (tab === 'eltern' ? 'Ressourcen-Blick für Eltern' : 'Ressourcen-Blick für Lehrkräfte');
+  renderProfilTab();
+}
+
+function renderProfilTab(){
+  var daten = clusterDatenBerechnen();
+  var aktiveCluster = CLUSTERS.filter(function(c){ return daten[c.id].skills.length > 0; });
+  var html = '';
+
+  if (aktiverTab === 'jugend') {
+    var staerkste = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; })[0];
+    if (staerkste) {
+      html += '<div class="staerkste-zone"><div class="sz-titel">Deine stärkste Zone gerade</div>' +
+        '<div class="sz-text">'+staerkste.icon+' <b>'+staerkste.titel+'</b> — hier zeigst du besonders viele Stärken.</div>' +
+        '<div class="sz-schritt">Kleiner nächster Schritt: '+staerkste.schritt+'</div></div>';
+    }
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      var chips = daten[c.id].skills.map(function(s){
+        return '<span class="cluster-skill-chip">'+s.name+(s.job ? ' · '+s.job : '')+'</span>';
+      }).join('');
+      html += '<div class="cluster-block"><div class="cluster-titel"><span>'+c.icon+'</span><span>'+c.titel+'</span></div>' +
+        '<div class="cluster-text">Weil du bei '+hobbyListe+' zeigst, wie stark du hier bist, hilft dir das genau dann, '+c.alltag+'.</div>' +
+        '<div class="cluster-skills">'+chips+'</div></div>';
+    });
+  } else {
+    var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
+    var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      html += '<div class="cluster-block"><div class="cluster-titel"><span>'+c.icon+'</span><span>'+c.titel+'</span></div>' +
+        '<div class="cluster-text"><b>Beobachtungs-Tipp:</b> '+c[beobKey].replace('{hobby}', hobbyListe)+'</div>' +
+        '<div class="cluster-text" style="margin-top:.5rem;"><b>Gesprächsimpuls:</b> „'+c[frageKey].replace('{hobby}', hobbyListe)+'"</div></div>';
+    });
+  }
+
+  document.getElementById('profilInhalt').innerHTML = html || '<div class="leer-hinweis">Keine Stärken gefunden.</div>';
+}
+
+function profilSchliessen(){
+  document.getElementById('profilOverlay').classList.remove('zeigen');
+}
+
+function profilTextErzeugen(){
+  var daten = clusterDatenBerechnen();
+  var aktiveCluster = CLUSTERS.filter(function(c){ return daten[c.id].skills.length > 0; });
+  var text = '';
+  if (aktiverTab === 'jugend') {
+    text += 'Mein Superpower-Profil\n——————————————————————\n\n';
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      text += c.icon+' '+c.titel+'\n';
+      text += 'Weil du bei '+hobbyListe+' zeigst, wie stark du hier bist, hilft dir das genau dann, '+c.alltag+'.\n';
+      daten[c.id].skills.forEach(function(s){ text += '  • '+s.name+(s.job ? ' → '+s.job : '')+'\n'; });
+      text += '\n';
+    });
+  } else {
+    var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
+    var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
+    text += (aktiverTab === 'eltern' ? 'Ressourcen-Blick für Eltern' : 'Ressourcen-Blick für Lehrkräfte') + '\n——————————————————————\n\n';
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      text += c.icon+' '+c.titel+'\n';
+      text += 'Beobachtungs-Tipp: '+c[beobKey].replace('{hobby}', hobbyListe)+'\n';
+      text += 'Gesprächsimpuls: „'+c[frageKey].replace('{hobby}', hobbyListe)+'"\n\n';
+    });
+  }
+  text += '— erstellt mit KLARTEXT · Skill-Matrix';
+  return text;
+}
+
+function profilKopieren(){
+  var text = profilTextErzeugen();
+  var feedback = document.getElementById('profilCopyFeedback');
+  var kopiert = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+      kopiert = true;
+    } else {
+      var temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      kopiert = document.execCommand('copy');
+      document.body.removeChild(temp);
+    }
+  } catch(e) { kopiert = false; }
+  feedback.textContent = kopiert ? '✓ In die Zwischenablage kopiert!' : 'Bitte manuell kopieren.';
 }
 
 function transferWaehlen(hobbyId, skillIdx, job){

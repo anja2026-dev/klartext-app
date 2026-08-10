@@ -145,6 +145,16 @@ h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--kt-primary
 .system-ring{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0;justify-content:center;}
 .sys-node{border-radius:var(--radius-md);padding:.6rem 1rem;font-size:.82rem;font-weight:500;text-align:center;min-width:100px;}
 
+/* ZONEN-SET (Element 10) */
+.zone-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin:1rem 0;}
+@media(max-width:500px){.zone-grid{grid-template-columns:1fr;}}
+.zone-card{background:var(--kt-paper);border:1px solid var(--kt-border);border-radius:var(--radius-md);padding:1rem;}
+.zone-card-icon{font-size:1.4rem;margin-bottom:.35rem;}
+.zone-card-title{font-weight:600;font-size:.92rem;color:var(--kt-primary);margin-bottom:.3rem;}
+.zone-card-desc{font-size:.82rem;color:var(--kt-muted);line-height:1.5;}
+.quelle-box{background:rgba(120,144,156,.06);border:1px solid rgba(120,144,156,.2);border-radius:var(--radius-md);padding:.85rem 1rem;font-size:.78rem;color:var(--kt-muted);line-height:1.6;margin-top:1rem;}
+.quelle-box strong{color:var(--kt-ink);}
+
 /* CTA */
 .cta-zone{background:linear-gradient(135deg,var(--kt-primary),var(--color-m0));border-radius:var(--radius-xl);padding:2.5rem 2rem;text-align:center;color:#fff;margin-top:2rem;}
 .cta-zone h2{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:.5rem;}
@@ -214,7 +224,7 @@ footer strong{color:var(--kt-accent);}
 <section class="hero">
   <div class="hero-badge">Modul 0 · Das Fundament</div>
   <h1>Systemelemente</h1>
-  <p>Neun Bausteine, die das KLARTEXT-System tragen. Verstehe sie – und der Alltag als INGRA wird klarer.</p>
+  <p>Zehn Bausteine, die das KLARTEXT-System tragen. Verstehe sie – und der Alltag als INGRA wird klarer.</p>
   <div class="hero-pills">
     <a href="#barometer" class="hero-pill">🌡️ Barometer</a>
     <a href="#klar" class="hero-pill">💬 kLAR-Modell</a>
@@ -225,6 +235,7 @@ footer strong{color:var(--kt-accent);}
     <a href="#humor" class="hero-pill">😄 Humor</a>
     <a href="#abgrenzung" class="hero-pill">⚖️ Abgrenzung</a>
     <a href="#system" class="hero-pill">🔗 System</a>
+    <a href="#zonen" class="hero-pill">🧭 Zonen-Set</a>
   </div>
 </section>
 
@@ -245,6 +256,7 @@ footer strong{color:var(--kt-accent);}
         <li><a href="#humor"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span class="nav-nr">07</span>Humor</a></li>
         <li><a href="#abgrenzung"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="nav-nr">08</span>Abgrenzung</a></li>
         <li><a href="#system"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg><span class="nav-nr">09</span>Systemübersicht</a></li>
+        <li><a href="#zonen"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="nav-nr">10</span>Zonen-Set</a></li>
       </ul>
     </nav>
   </aside>
@@ -674,6 +686,79 @@ footer strong{color:var(--kt-accent);}
         </div>
       </div>
     </section>
+
+    <!-- 10 ZONEN-SET -->
+    <section class="section" id="zonen">
+      <div class="section-stripe"></div>
+      <div class="section-head">
+        <div class="section-nr">10 · Selbstregulation Jugendliche · Schulkontext</div>
+        <h2>🧭 Das Zonen-Set</h2>
+      </div>
+      <div class="section-body">
+        <p>Das Zonen-Set ist ein eigenständiges Selbstregulations-System für Jugendliche im schulischen Kontext – bewusst keine Umbenennung des Insel-Sets für Kinder/Zuhause. Es ist schlanker (4 statt 8 Kategorien), verzichtet auf Maskottchen und kindliche Symbolik und hat kein Eltern-Pendant: Zielgruppe ist ausschließlich der Schulkontext.</p>
+
+        <div class="zone-grid">
+          <div class="zone-card">
+            <div class="zone-card-icon">🧘</div>
+            <div class="zone-card-title">Rückzugs-Zone</div>
+            <div class="zone-card-desc">Reizreduktion – kurz allein sein dürfen, ohne sich erklären zu müssen.</div>
+          </div>
+          <div class="zone-card">
+            <div class="zone-card-icon">🎯</div>
+            <div class="zone-card-title">Fokus-Zone</div>
+            <div class="zone-card-desc">Ungestört konzentriert arbeiten, Lernzeit.</div>
+          </div>
+          <div class="zone-card">
+            <div class="zone-card-icon">🗣️</div>
+            <div class="zone-card-title">Klärungs-Zone</div>
+            <div class="zone-card-desc">Einen Konflikt kurz und sachlich klären – Konflikt-, nicht Regel-Framing.</div>
+          </div>
+          <div class="zone-card">
+            <div class="zone-card-icon">🤝</div>
+            <div class="zone-card-title">Gesprächs-Zone</div>
+            <div class="zone-card-desc">1:1-Gespräch mit einer Vertrauensperson (Lehrkraft oder INGRA), auf eigenen Wunsch der/des Jugendlichen.</div>
+          </div>
+        </div>
+
+        <h3>Selbstwahl statt sichtbarem Hingehen</h3>
+        <p>Jugendliche wählen ihre Zone nicht durch ein sichtbares Aufsuchen einer Raumecke wie beim Insel-Set für jüngere Kinder, sondern über <strong>Token-Karten</strong> im Scheckkartenformat (4 pro Person) – unauffällig, ohne Stigmatisierung vor der Klasse. Die Karte wird der Lehrkraft übergeben, die dann den Zugang zur jeweiligen Zone ermöglicht.</p>
+
+        <div class="brainy-box">
+          <img src="brainy.png" alt="Brainy">
+          <p><strong>Brainy sagt:</strong> Für Jugendliche zählt oft: nicht auffallen. Die Token-Karte macht Selbstregulation möglich, ohne dass alle zusehen.</p>
+        </div>
+
+        <div class="quelle-box">
+          <strong>Wissenschaftlicher Hintergrund:</strong> Zonen-Modell nach Kuypers, L. (2011). <em>The Zones of Regulation: A Curriculum Designed to Foster Self-Regulation and Emotional Control.</em> Think Social Publishing. Konzept des Toleranzfensters nach Siegel, D. J. (1999). <em>The Developing Mind: How Relationships and the Brain Interact to Shape Who We Are.</em> Guilford Press. Autonomie-Orientierung nach der Selbstbestimmungstheorie von Deci, E. L., &amp; Ryan, R. M. (2000). The "What" and "Why" of Goal Pursuits: Human Needs and the Self-Determination of Behavior. <em>Psychological Inquiry, 11</em>(4), 227–268. (Ein im internen Konzeptpapier zusätzlich vorgeschlagener Bezug auf Reeve 2006 ist dort selbst als noch nicht gegengeprüft vermerkt – hier deshalb bewusst nicht als gesicherte Quelle aufgeführt.)
+        </div>
+
+        <p style="margin-top:1rem;">Mehr zu den digitalen Werkzeugen, die auf das Zonen-Set Bezug nehmen (u. a. „Was hilft mir gerade?"), unter <a href="KLARTEXT_Anleitungen_Tools.html">Trainer-Handreichung: Die interaktiven Tools</a>.</p>
+      </div>
+    </section>
+
+    <!-- ACTION-HUB 2.0 REFERENZ -->
+    <div class="section" style="margin-bottom:1.5rem;">
+      <div class="section-stripe" style="background:var(--kt-accent);"></div>
+      <div class="section-head">
+        <div class="section-nr">Ergänzend · Digitale Werkzeuge</div>
+        <h2>📱 Action-Hub 2.0</h2>
+      </div>
+      <div class="section-body">
+        <p>Sechs digitale Module ergänzen die zehn Systemelemente für den Alltag mit Jugendlichen. Ausführlich dokumentiert in der <a href="KLARTEXT_Anleitungen_Tools.html">Trainer-Handreichung: Die interaktiven Tools</a>.</p>
+        <div class="rollen-grid" style="grid-template-columns:1fr;">
+          <div class="rollen-card ja">
+            <ul>
+              <li><strong>Skill-Matrix 2.0</strong> – Stärken-Cluster, automatisches Anschreiben &amp; Interview-Vorbereitung</li>
+              <li><strong>Sorgen-Kiste-Sync</strong> – geräteübergreifend synchronisierte Entlastungs-Ablage</li>
+              <li><strong>Was hilft mir gerade? (Krisen-Mapping)</strong> – 8 Momente, verknüpft mit dem Zonen-Set</li>
+              <li><strong>Ressourcen-Bericht</strong> – systemischer Export als Gesprächsgrundlage</li>
+              <li><strong>Moderations-Leitfaden (INGRA)</strong> – 5-Schritt-Struktur für das Ressourcen-Gespräch</li>
+              <li><strong>Feedbackbogen Lehrkraft</strong> – ressourcenorientierte Beobachtungs-Checkliste</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- CTA -->
     <div class="cta-zone">

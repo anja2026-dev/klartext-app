@@ -9,7 +9,7 @@
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--jd:#1B3A4B;--insel:#4A55A2;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+:root{--jd:#1B3A4B;--zone:#4A55A2;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
 body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
 
 .header{background:var(--jd);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
@@ -58,10 +58,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .trend-tag-label{font-size:.6rem;color:var(--muted);text-align:center;margin-top:.2rem;}
 .trend-tag-wrap{display:flex;flex-direction:column;align-items:center;}
 
-.insel-eintrag{display:flex;align-items:flex-start;gap:.6rem;background:#EEF0FA;border-radius:12px;padding:.7rem .9rem;margin-bottom:.5rem;}
-.insel-eintrag:last-child{margin-bottom:0;}
-.insel-eintrag .i-name{font-weight:700;font-size:.85rem;color:var(--insel);}
-.insel-eintrag .i-moment{font-size:.76rem;color:var(--muted);}
+.zone-eintrag{display:flex;align-items:flex-start;gap:.6rem;background:#EEF0FA;border-radius:12px;padding:.7rem .9rem;margin-bottom:.5rem;}
+.zone-eintrag:last-child{margin-bottom:0;}
+.zone-eintrag .z-name{font-weight:700;font-size:.85rem;color:var(--zone);}
+.zone-eintrag .z-moment{font-size:.76rem;color:var(--muted);}
 
 .sorgen-hinweis-zeile{font-size:.78rem;color:var(--muted);font-style:italic;}
 
@@ -122,7 +122,7 @@ footer strong{color:var(--acc);}
 
   <div class="bericht-card" id="trend-card"></div>
 
-  <div class="bericht-card" id="insel-card"></div>
+  <div class="bericht-card" id="zone-card"></div>
 
   <div class="bericht-card">
     <div class="bericht-titel">✍️ Für das Gespräch</div>
@@ -164,7 +164,7 @@ footer strong{color:var(--acc);}
 <script>
 var SKILLMATRIX_PROFIL_KEY = 'klartext_skillmatrix_profil_v1';
 var REIZFILTER_VERLAUF_KEY = 'klartext_reizfilter_verlauf';
-var INSEL_HILFREICH_KEY = 'klartext_insel_hilfreich_v1';
+var ZONE_HILFREICH_KEY = 'klartext_zone_hilfreich_v1';
 var SORGEN_KEY = 'klartext_sorgen_v1';
 
 var REIZFILTER_STUFEN = [
@@ -175,12 +175,11 @@ var REIZFILTER_STUFEN = [
   { emoji: '😖', label: 'Viel zu viel', chip: '#D9483D' }
 ];
 
-var INSELN = {
-  gespraech: { name: 'Eltern-Kind-Gesprächs-Insel' },
-  ruhe:      { name: 'Ruhe-Insel' },
-  emotion:   { name: 'Emotions-Insel' },
-  arbeit:    { name: 'Arbeits-Insel' },
-  uebergang: { name: 'Übergangs-Insel' }
+var ZONEN = {
+  rueckzug:  { name: 'Rückzugs-Zone' },
+  fokus:     { name: 'Fokus-Zone' },
+  klaerung:  { name: 'Klärungs-Zone' },
+  gespraech: { name: 'Gesprächs-Zone' }
 };
 
 var MOMENTE_TITEL = {
@@ -263,29 +262,29 @@ function trendCardRendern(){
     (tageHtml ? '<div class="trend-tage">' + tageHtml + '</div>' : '');
 }
 
-/* ── KRISEN-KOMPETENZ (als hilfreich markierte Zuhause-Inseln) ─────────────────────────────── */
-function inselCardRendern(){
-  var card = document.getElementById('insel-card');
-  var hilfreich = ladeJSON(INSEL_HILFREICH_KEY) || {};
+/* ── KRISEN-KOMPETENZ (als hilfreich markierte Zonen aus dem schulischen Zonen-Set) ─────────────────────────────── */
+function zoneCardRendern(){
+  var card = document.getElementById('zone-card');
+  var hilfreich = ladeJSON(ZONE_HILFREICH_KEY) || {};
   var keys = Object.keys(hilfreich);
 
   if (!keys.length) {
     card.innerHTML = '<div class="bericht-titel">🧭 Krisen-Kompetenz</div>' +
-      '<div class="leer-hinweis">Noch nichts als hilfreich markiert. Unter <a href="KLARTEXT_Spiel_WasHilftMir.html">Was hilft mir gerade?</a> lässt sich bei jeder Zuhause-Idee „Das hat geholfen“ markieren — die Auswahl erscheint dann hier als konkreter Vorschlag fürs Gespräch.</div>';
+      '<div class="leer-hinweis">Noch nichts als hilfreich markiert. Unter <a href="KLARTEXT_Spiel_WasHilftMir.html">Was hilft mir gerade?</a> lässt sich bei jeder Zonen-Idee „Das hat geholfen“ markieren — die Auswahl erscheint dann hier als konkreter Vorschlag fürs Gespräch.</div>';
     return;
   }
 
   var eintraege = keys.map(function(key){
     var teile = key.split('_');
-    var momentId = teile[0], inselId = teile[1];
-    var insel = INSELN[inselId];
+    var momentId = teile[0], zoneId = teile[1];
+    var zone = ZONEN[zoneId];
     var momentTitel = MOMENTE_TITEL[momentId];
-    if (!insel || !momentTitel) return '';
-    return '<div class="insel-eintrag"><span>✓</span><span><div class="i-name">' + insel.name + '</div><div class="i-moment">hilfreich bei: ' + momentTitel + '</div></span></div>';
+    if (!zone || !momentTitel) return '';
+    return '<div class="zone-eintrag"><span>✓</span><span><div class="z-name">' + zone.name + '</div><div class="z-moment">hilfreich bei: ' + momentTitel + '</div></span></div>';
   }).join('');
 
   card.innerHTML = '<div class="bericht-titel">🧭 Krisen-Kompetenz</div>' +
-    '<div class="leer-hinweis" style="margin-bottom:.8rem;">Diese Zuhause-Ideen hat der Jugendliche selbst als hilfreich markiert — ein konkreter Ansatzpunkt für eine Vereinbarung:</div>' +
+    '<div class="leer-hinweis" style="margin-bottom:.8rem;">Diese Zonen hat der Jugendliche selbst als hilfreich markiert (Schul-Zonen-Set) — ein konkreter Ansatzpunkt für eine Vereinbarung:</div>' +
     eintraege;
 }
 
@@ -302,7 +301,7 @@ document.getElementById('footer-datum').textContent = new Date().toLocaleDateStr
 
 profilCardRendern();
 trendCardRendern();
-inselCardRendern();
+zoneCardRendern();
 sorgenHinweisRendern();
 </script>
 

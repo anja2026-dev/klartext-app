@@ -46,16 +46,16 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .angebot-link .a-typ{font-size:.66rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:.15rem;}
 .angebot-hinweis{font-size:.72rem;color:var(--muted);font-style:italic;margin-top:.9rem;}
 
-/* ── ZUHAUSE-IDEE (Insel-Set-Bezug, bewusst zurueckhaltend gehalten) ─────────────────────────────── */
-.zuhause-block{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
-.zuhause-toggle{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:.7rem .9rem;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s;}
-.zuhause-toggle:hover{border-color:#4A55A2;}
-.zuhause-toggle .z-tag{font-size:.63rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#4A55A2;flex-shrink:0;}
-.zuhause-info{background:var(--paper);border-radius:14px;padding:.85rem 1rem;margin-top:.5rem;font-size:.82rem;line-height:1.55;color:var(--ink);}
-.zuhause-info .z-funktion{color:var(--muted);font-size:.76rem;margin-bottom:.6rem;}
-.zuhause-info .z-impuls{background:var(--surface);border-radius:10px;padding:.6rem .75rem;font-style:italic;margin-bottom:.6rem;}
-.zuhause-info .z-mehr{font-size:.74rem;color:#4A55A2;text-decoration:none;font-weight:600;}
-.zuhause-info .z-mehr:hover{text-decoration:underline;}
+/* ── SCHULE-IDEE (Zonen-Set-Bezug, nuechtern, autonomie-orientiert) ─────────────────────────────── */
+.schule-block{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
+.schule-toggle{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:.7rem .9rem;font-family:inherit;font-size:.83rem;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s;}
+.schule-toggle:hover{border-color:#4A55A2;}
+.schule-toggle .z-tag{font-size:.63rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#4A55A2;flex-shrink:0;}
+.schule-info{background:var(--paper);border-radius:14px;padding:.85rem 1rem;margin-top:.5rem;font-size:.82rem;line-height:1.55;color:var(--ink);}
+.schule-info .z-funktion{color:var(--muted);font-size:.76rem;margin-bottom:.6rem;}
+.schule-info .z-impuls{background:var(--surface);border-radius:10px;padding:.6rem .75rem;font-style:italic;margin-bottom:.6rem;}
+.schule-info .z-mehr{font-size:.74rem;color:#4A55A2;text-decoration:none;font-weight:600;}
+.schule-info .z-mehr:hover{text-decoration:underline;}
 .z-hilfreich-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:.4rem .8rem;font-family:inherit;font-size:.76rem;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:.6rem;transition:all .15s;}
 .z-hilfreich-btn:hover{border-color:#4A55A2;}
 .z-hilfreich-btn.aktiv{background:#EEF0FA;border-color:#4A55A2;color:#4A55A2;}
@@ -120,7 +120,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
   <div class="ub-card" style="text-align:center;">
     <div class="ub-card-titel">📄 Für ein Gespräch vorbereiten</div>
-    <div class="ub-card-sub">Fasst dein Superpower-Profil, deinen Reizfilter-Verlauf und die als hilfreich markierten Zuhause-Ideen in einem druckbaren Bericht zusammen.</div>
+    <div class="ub-card-sub">Fasst dein Superpower-Profil, deinen Reizfilter-Verlauf und die als hilfreich markierten Zonen-Ideen in einem druckbaren Bericht zusammen.</div>
     <a class="sorgen-btn" style="display:inline-flex;text-decoration:none;" href="KLARTEXT_Ressourcenbericht.html">Ressourcen-Bericht öffnen →</a>
   </div>
 
@@ -129,40 +129,39 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <script>
 var SORGEN_KEY = 'klartext_sorgen_v1';
 var SORGEN_EMOJIS = ['😟','😢','😰','😕','😠','🤔'];
-var INSEL_HILFREICH_KEY = 'klartext_insel_hilfreich_v1';
+var ZONE_HILFREICH_KEY = 'klartext_zone_hilfreich_v1';
 
 function hilfreichLaden(){
   try {
-    var roh = localStorage.getItem(INSEL_HILFREICH_KEY);
+    var roh = localStorage.getItem(ZONE_HILFREICH_KEY);
     return roh ? JSON.parse(roh) : {};
   } catch(e) { return {}; }
 }
 
-function hilfreichUmschalten(momentId, inselId){
+function hilfreichUmschalten(momentId, zoneId){
   var alle = hilfreichLaden();
-  var key = momentId + '_' + inselId;
+  var key = momentId + '_' + zoneId;
   if (alle[key]) {
     delete alle[key];
   } else {
     alle[key] = { datum: new Date().toISOString() };
   }
-  try { localStorage.setItem(INSEL_HILFREICH_KEY, JSON.stringify(alle)); } catch(e) {}
+  try { localStorage.setItem(ZONE_HILFREICH_KEY, JSON.stringify(alle)); } catch(e) {}
 }
 
-/* Namen und Funktionen 1:1 aus dem Eltern-Insel-Mini-Handbuch (8 Inseln, keine Nummerierung im
-   Original — falls hier trotzdem sortiert aufgelistet, ist das nur die Objekt-Reihenfolge, keine
-   offizielle "Insel Nr. X"). Zwei Momente (freunde, neu) sind bewusst als lose Alternative markiert
-   (loseAlternative:true), weil das Insel-Set laut Konzeptpapier ein Zuhause-System ist und diese beiden
-   Momente eigentlich außerhalb des Zuhauses entstehen. */
-var INSELN = {
-  gespraech:   { name: 'Eltern-Kind-Gesprächs-Insel', funktion: 'kurze, klare Kommunikation' },
-  ruhe:        { name: 'Ruhe-Insel', funktion: 'Regulation, Reizreduktion' },
-  emotion:     { name: 'Emotions-Insel', funktion: 'Gefühle benennen' },
-  arbeit:      { name: 'Arbeits-Insel', funktion: 'Hausaufgaben, Fokus' },
-  uebergang:   { name: 'Übergangs-Insel', funktion: 'Morgen-/Abend-Rituale' }
+/* Die 4 Zonen 1:1 aus dem Jugend-Zonen-Set-Konzept (schulisches Selbstregulations-System für
+   Jugendliche, Selbstwahl über Token-Karten statt sichtbarem Hingehen, bewusst kein
+   Eltern-Pendant). Nur Momente mit echter inhaltlicher Passung bekommen eine Zone zugeordnet —
+   drei Momente (eltern, zukunft, neu) zeigen bewusst keine Zone, statt eine künstlich passend
+   zu machen. */
+var ZONEN = {
+  rueckzug:  { name: 'Rückzugs-Zone', funktion: 'kurz allein sein dürfen, Reize reduzieren — ohne das erklären zu müssen' },
+  fokus:     { name: 'Fokus-Zone', funktion: 'ungestört konzentriert arbeiten' },
+  klaerung:  { name: 'Klärungs-Zone', funktion: 'einen Konflikt kurz und sachlich klären' },
+  gespraech: { name: 'Gesprächs-Zone', funktion: 'ein Gespräch mit einer Vertrauensperson (Lehrkraft oder INGRA), auf eigenen Wunsch' }
 };
 
-/* Jeder Moment: 1-2 Angebote (Tool und/oder JD-Karte), optional eine Zuhause-Idee aus dem Insel-Set.
+/* Jeder Moment: 1-2 Angebote (Tool und/oder JD-Karte), optional ein Zonen-Bezug aus dem Zonen-Set.
    Keine Anweisungen, nur Angebote — die Formulierungen sind bewusst offen gehalten
    ("könnte helfen", "manche merken"). */
 var MOMENTE = [
@@ -172,8 +171,7 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🔄', label: 'Perspektiv-Wechsler — beide Seiten anschauen', href: 'KLARTEXT_Spiel_PerspektivWechsler.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-09 „Streit ohne Verlierer"', href: 'pwa/index.html?deck=jd&karte=9' }
-    ],
-    insel: { id: 'gespraech', impuls: 'Können wir uns kurz an einen ruhigen Ort setzen und nur über eine Sache reden — ohne dass wir uns gegenseitig Vorwürfe machen?' }
+    ]
   },
   {
     id: 'handy', emoji: '📱', titel: 'Ich komm nicht vom Handy los',
@@ -182,7 +180,7 @@ var MOMENTE = [
       { typ: 'Tool', emoji: '🎚️', label: 'Reizfilter-Regler — zeigen, wie viel gerade los ist', href: 'KLARTEXT_Spiel_Reizfilter.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-29 „Handy weglegen können"', href: 'pwa/index.html?deck=jd&karte=29' }
     ],
-    insel: { id: 'ruhe', impuls: 'Ich leg mein Handy jetzt kurz an einen festen Platz und mach stattdessen was anderes — hilft mir, wieder runterzukommen.' }
+    zone: { id: 'rueckzug', impuls: 'Ich leg mein Handy jetzt kurz an einen festen Platz und mach stattdessen was anderes — hilft mir, wieder runterzukommen.' }
   },
   {
     id: 'zukunft', emoji: '🔮', titel: 'Angst vor der Zukunft / Berufswahl',
@@ -190,8 +188,7 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '✨', label: 'Skill-Matrix — eigene Stärken sichtbar machen', href: 'KLARTEXT_Spiel_SkillMatrix.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-05 „Alle wissen schon, was sie wollen – nur ich nicht"', href: 'pwa/index.html?deck=jd&karte=5' }
-    ],
-    insel: { id: 'emotion', impuls: 'Ich bin gerade ziemlich durcheinander wegen der Zukunft — kann ich kurz sagen, was mich beschäftigt?' }
+    ]
   },
   {
     id: 'freunde', emoji: '⚡', titel: 'Ärger mit Freunden oder in der Klasse',
@@ -200,7 +197,7 @@ var MOMENTE = [
       { typ: 'Tool', emoji: '🎭', label: 'Was tun bei…? — Streit-Szenario ausprobieren', href: 'KLARTEXT_Spiel_WasTunBei.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-09 „Streit ohne Verlierer"', href: 'pwa/index.html?deck=jd&karte=9' }
     ],
-    insel: { id: 'emotion', loseAlternative: true, impuls: 'Bei mir ist heute was in der Schule passiert, das mich noch beschäftigt — kann ich kurz drüber reden?' }
+    zone: { id: 'klaerung', impuls: 'Ich hol mir kurz die Klärungs-Zone — will das klären, bevor sich das noch aufschaukelt.' }
   },
   {
     id: 'pruefung', emoji: '📝', titel: 'Vor einer Prüfung oder einem Gespräch nervös',
@@ -209,7 +206,7 @@ var MOMENTE = [
       { typ: 'Tool', emoji: '🎤', label: 'Bewerbungsgespräch üben — in Ruhe vorbereiten', href: 'KLARTEXT_Spiel_Bewerbungsgespraech.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-17 „Vor der Prüfung: was hilft wirklich?"', href: 'pwa/index.html?deck=jd&karte=17' }
     ],
-    insel: { id: 'arbeit', impuls: 'Kann ich mich für die Vorbereitung an einen festen Platz setzen, an dem ich in Ruhe arbeiten kann?' }
+    zone: { id: 'fokus', impuls: 'Ich zieh mir für die Vorbereitung die Fokus-Zone — brauch grad Ruhe zum Arbeiten, ohne dass mich wer anspricht.' }
   },
   {
     id: 'kopfvoll', emoji: '🌪️', titel: 'Alles ist gerade zu viel',
@@ -218,7 +215,7 @@ var MOMENTE = [
       { typ: 'Tool', emoji: '🎚️', label: 'Reizfilter-Regler — erstmal einordnen, wie viel es ist', href: 'KLARTEXT_Spiel_Reizfilter.html' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-18 „Wenn der Kopf voll ist"', href: 'pwa/index.html?deck=jd&karte=18' }
     ],
-    insel: { id: 'ruhe', impuls: 'Ich brauch grad kurz einen ruhigen Moment für mich, bevor wir weiterreden.' }
+    zone: { id: 'rueckzug', impuls: 'Ich brauch grad die Rückzugs-Zone — zu viele Reize auf einmal, ich muss kurz raus, ohne mich zu rechtfertigen.' }
   },
   {
     id: 'ernstnehmen', emoji: '🙉', titel: 'Ich fühl mich nicht ernst genommen',
@@ -227,7 +224,7 @@ var MOMENTE = [
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-21 „Ernst genommen werden wollen"', href: 'pwa/index.html?deck=jd&karte=21' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-22 „Wenn Erwachsene nicht zuhören"', href: 'pwa/index.html?deck=jd&karte=22' }
     ],
-    insel: { id: 'gespraech', impuls: 'Können wir uns kurz bewusst hinsetzen? Ich möchte, dass du mir richtig zuhörst.' }
+    zone: { id: 'gespraech', impuls: 'Ich möchte die Gesprächs-Zone nutzen — kurz in Ruhe mit dir oder meiner INGRA reden, weil ich mich gerade nicht gehört fühle.' }
   },
   {
     id: 'neu', emoji: '🚪', titel: 'Vor einer neuen, unsicheren Situation',
@@ -235,15 +232,14 @@ var MOMENTE = [
     angebote: [
       { typ: 'Tool', emoji: '🎤', label: 'Bewerbungsgespräch üben (Praktikum)', href: 'KLARTEXT_Spiel_Bewerbungsgespraech.html?typ=praktikum' },
       { typ: 'JD-Karte', emoji: '🃏', label: 'JD-41 „Erstes Praktikum – und dann?"', href: 'pwa/index.html?deck=jd&karte=41' }
-    ],
-    insel: { id: 'uebergang', loseAlternative: true, impuls: 'Können wir uns für die ersten Tage eine feste kleine Morgen-Routine überlegen, bevor es losgeht?' }
+    ]
   }
 ];
 
 var zustand = { sorgen: [] };
 var ausgewaehltesSorgenEmoji = null;
 var offenerMoment = null;
-var offeneZuhauseInfo = null;
+var offeneSchuleInfo = null;
 
 function escapeHtml(s){
   var d = document.createElement('div');
@@ -279,46 +275,43 @@ function momentGridRendern(){
         '<div class="angebot-liste">' + linksHtml + '</div>' +
         '<div class="angebot-hinweis">Kein Muss — schau einfach, ob eins davon gerade passt. Wenn nicht, ist das auch okay.</div>';
 
-      if (m.insel) {
-        var insel = INSELN[m.insel.id];
+      if (m.zone) {
+        var zone = ZONEN[m.zone.id];
         var zBlock = document.createElement('div');
-        zBlock.className = 'zuhause-block';
+        zBlock.className = 'schule-block';
 
         var zToggle = document.createElement('button');
-        zToggle.className = 'zuhause-toggle';
-        zToggle.innerHTML = '<span class="z-tag">Zuhause</span><span>' + insel.name + '</span>';
+        zToggle.className = 'schule-toggle';
+        zToggle.innerHTML = '<span class="z-tag">Schule</span><span>' + zone.name + '</span>';
         zToggle.addEventListener('click', function(){
-          offeneZuhauseInfo = (offeneZuhauseInfo === m.id) ? null : m.id;
+          offeneSchuleInfo = (offeneSchuleInfo === m.id) ? null : m.id;
           momentGridRendern();
         });
         zBlock.appendChild(zToggle);
 
-        if (offeneZuhauseInfo === m.id) {
+        if (offeneSchuleInfo === m.id) {
           var zInfo = document.createElement('div');
-          zInfo.className = 'zuhause-info';
-          var loseHinweis = m.insel.loseAlternative
-            ? 'Das eigentliche Thema entsteht zwar nicht zuhause — trotzdem kann ein fester, ruhiger Ort dort helfen, damit umzugehen. '
-            : '';
-          var istHilfreich = !!hilfreichLaden()[m.id + '_' + m.insel.id];
+          zInfo.className = 'schule-info';
+          var istHilfreich = !!hilfreichLaden()[m.id + '_' + m.zone.id];
           zInfo.innerHTML =
-            '<div class="z-funktion">' + loseHinweis + 'Falls es zuhause sowas wie das KLARTEXT-Insel-Set gibt (oder ihr überlegt, eins einzuführen): Kernidee der ' + insel.name + ' ist ' + insel.funktion + '.</div>' +
-            '<div class="z-impuls">„' + m.insel.impuls + '"</div>';
+            '<div class="z-funktion">Falls es an eurer Schule das Zonen-Set mit Token-Karten gibt: Kernidee der ' + zone.name + ' ist ' + zone.funktion + '.</div>' +
+            '<div class="z-impuls">„' + m.zone.impuls + '"</div>';
 
           var hilfreichBtn = document.createElement('button');
           hilfreichBtn.className = 'z-hilfreich-btn' + (istHilfreich ? ' aktiv' : '');
           hilfreichBtn.innerHTML = (istHilfreich ? '✓ Das hat geholfen' : '☆ Das hat geholfen markieren');
           hilfreichBtn.addEventListener('click', function(){
-            hilfreichUmschalten(m.id, m.insel.id);
+            hilfreichUmschalten(m.id, m.zone.id);
             momentGridRendern();
           });
           zInfo.appendChild(hilfreichBtn);
 
           var mehrLink = document.createElement('a');
           mehrLink.className = 'z-mehr';
-          mehrLink.href = 'KLARTEXT_Insel-Set_Eltern.pdf';
+          mehrLink.href = 'KLARTEXT_Zonen-Set_Token-Karten.pdf';
           mehrLink.target = '_blank';
           mehrLink.rel = 'noopener';
-          mehrLink.textContent = 'Mehr zum Insel-Set (PDF) →';
+          mehrLink.textContent = 'Mehr zum Zonen-Set (PDF) →';
           mehrLink.style.display = 'block';
           zInfo.appendChild(mehrLink);
 

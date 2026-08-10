@@ -113,7 +113,7 @@ body{
 .modal h2{font-family:"Playfair Display",serif;font-size:1.15rem;margin-bottom:.9rem;}
 .modal textarea{width:100%;min-height:220px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#fff;font-family:"DM Sans",sans-serif;font-size:.82rem;line-height:1.6;padding:.8rem;resize:vertical;}
 .modal-btns{display:flex;gap:.6rem;margin-top:1rem;}
-.modal-btns button{flex:1;padding:.7rem 1rem;border-radius:30px;border:none;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;}
+.modal-btns button, .modal-btns a{flex:1;padding:.7rem 1rem;border-radius:30px;border:none;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;text-align:center;justify-content:center;}
 .copy-btn{background:var(--acc);color:#0F2027;}
 .close-btn{background:rgba(255,255,255,.12);color:#fff;}
 .copy-feedback{font-size:.72rem;color:var(--acc);margin-top:.5rem;height:1em;}
@@ -166,6 +166,7 @@ body{
     <div class="copy-feedback" id="profilCopyFeedback"></div>
     <div class="modal-btns">
       <button class="copy-btn" onclick="profilKopieren()">📋 Kopieren</button>
+      <a class="copy-btn" style="text-decoration:none;display:inline-flex;align-items:center;" href="KLARTEXT_Ressourcenbericht.html" target="_blank" rel="noopener">📄 Bericht</a>
       <button class="close-btn" onclick="profilSchliessen()">Schließen</button>
     </div>
   </div>
@@ -544,6 +545,33 @@ function renderProfilTab(){
   }
 
   document.getElementById('profilInhalt').innerHTML = html || '<div class="leer-hinweis">Keine Stärken gefunden.</div>';
+
+  if (aktiverTab === 'jugend' && aktiveCluster.length > 0) {
+    profilSpeichern(daten, aktiveCluster);
+  }
+}
+
+/* Sichert die 3 staerksten Cluster des zuletzt erzeugten Superpower-Profils lokal, damit der
+   Ressourcen-Bericht (KLARTEXT_Ressourcenbericht.html) darauf zugreifen kann. Ueberschreibt bei
+   jedem neuen Profil den vorherigen Stand — es wird nur der jeweils aktuellste Stand gespeichert,
+   kein Verlauf. */
+var SKILLMATRIX_PROFIL_KEY = 'klartext_skillmatrix_profil_v1';
+
+function profilSpeichern(daten, aktiveCluster){
+  var top3 = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; }).slice(0, 3);
+  var eintrag = {
+    datum: new Date().toISOString(),
+    cluster: top3.map(function(c){
+      return {
+        titel: c.titel,
+        icon: c.icon,
+        hobbys: daten[c.id].hobbys,
+        felder: c.felder,
+        beispiele: c.beispiele
+      };
+    })
+  };
+  try { localStorage.setItem(SKILLMATRIX_PROFIL_KEY, JSON.stringify(eintrag)); } catch(e) {}
 }
 
 function profilSchliessen(){

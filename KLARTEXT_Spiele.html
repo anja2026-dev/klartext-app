@@ -7,8 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;scroll-padding-top:130px;}
 :root{--m:#1B3A4B;--acc:#4FC3C7;--green:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--gold:#C47A00;}
 body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
 .header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
@@ -17,11 +20,27 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
 .logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
 .back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+
+.tab-nav{background:var(--surface);border-bottom:1.5px solid var(--border);padding:.6rem clamp(1rem,4vw,2rem);display:flex;gap:.4rem;flex-wrap:wrap;position:sticky;top:64px;z-index:90;overflow-x:auto;}
+.tab{padding:.3rem .75rem;border-radius:20px;font-size:.73rem;font-weight:600;border:1.5px solid var(--border);color:var(--muted);cursor:pointer;background:var(--surface);transition:all .15s;text-decoration:none;white-space:nowrap;}
+.tab:hover{border-color:var(--m);color:var(--m);}
+.tab.kd.aktiv{background:#3B8A68;border-color:#3B8A68;color:#fff;}
+.tab.jd.aktiv{background:#2F6B6E;border-color:#2F6B6E;color:#fff;}
+
 .hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2rem clamp(1rem,4vw,2rem);text-align:center;}
 .hero-icon{font-size:2.2rem;margin-bottom:.5rem;}
 .hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
 .hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:520px;margin:0 auto;}
 .shell{max-width:900px;margin:0 auto;padding:2rem clamp(.75rem,3vw,2rem) 5rem;}
+
+.sek{margin-bottom:2.75rem;scroll-margin-top:135px;}
+.sek:last-child{margin-bottom:0;}
+.sek-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-radius:10px;margin-bottom:1rem;}
+.sek-emoji{font-size:1.4rem;}
+.sek-info{flex:1;}
+.sek-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;}
+.sek-sub{font-size:.75rem;margin-top:1px;opacity:.75;}
+
 .spiel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;}
 .spiel-karte{background:var(--surface);border:2px solid var(--border);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(27,58,75,.08);transition:transform .18s,box-shadow .18s,border-color .18s;}
 .spiel-karte:hover{transform:translateY(-4px);box-shadow:0 6px 22px rgba(27,58,75,.16);}
@@ -57,332 +76,344 @@ footer strong{color:var(--acc);}
   <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
 </header>
 
+<nav class="tab-nav">
+  <a class="tab kd aktiv" href="#kd">🧒 Kinder (Grundschule)</a>
+  <a class="tab jd" href="#jd">🧑‍🎓 Jugendliche</a>
+</nav>
+
 <div class="hero">
   <div class="hero-icon">🎮</div>
   <h1 class="hero-titel">Spiele</h1>
-  <p class="hero-sub">Kleine, spielerische Werkzeuge für Kinder und Jugendliche — zum Ausmalen, Planen und Ausprobieren.</p>
+  <p class="hero-sub">Kleine, spielerische Werkzeuge für Kinder und Jugendliche — zum Ausmalen, Planen und Ausprobieren. Nach Altersgruppe sortiert.</p>
 </div>
 
 <div class="shell">
-  <div class="spiel-grid">
 
-    <a class="spiel-karte teal" href="KD-11_Mutmach-Tier.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🦁</span>
-        <div class="spiel-karte-titel">Mutmach-Tier</div>
-        <div class="spiel-karte-sub">Ein Tier aussuchen und durch Antippen digital ausmalen — dein persönliches Kraftsymbol für schwierige Momente.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+  <!-- KINDER (GRUNDSCHULE) -->
+  <div class="sek" id="kd">
+    <div class="sek-header" style="background:#E8F5EE;">
+      <div class="sek-emoji">🧒</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#3B8A68;">Kinder · Grundschule</div><div class="sek-sub" style="color:#3B8A68;">Einfache, spielerische Werkzeuge zum Ausprobieren</div></div>
+    </div>
+    <div class="spiel-grid">
 
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Wochenplan.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🗓️</span>
-        <div class="spiel-karte-titel">Wochenplan-Baukasten</div>
-        <div class="spiel-karte-sub">Aufgaben-Kärtchen auf die Wochentage verteilen, abhaken und den ganzen Wochenplan ausdrucken.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KD-11_Mutmach-Tier.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🦁</span>
+          <div class="spiel-karte-titel">Mutmach-Tier</div>
+          <div class="spiel-karte-sub">Ein Tier aussuchen und durch Antippen digital ausmalen — dein persönliches Kraftsymbol für schwierige Momente.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_Gefuehls-Ampel-Memory.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🚦</span>
-        <div class="spiel-karte-titel">Gefühls-Ampel-Memory</div>
-        <div class="spiel-karte-sub">Ampelfarbe und Gefühl zusammenfinden — ein Memory-Spiel mit Grün, Gelb, Orange und Rot.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Wochenplan.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🗓️</span>
+          <div class="spiel-karte-titel">Wochenplan-Baukasten</div>
+          <div class="spiel-karte-sub">Aufgaben-Kärtchen auf die Wochentage verteilen, abhaken und den ganzen Wochenplan ausdrucken.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_MeinTag.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🗓️</span>
-        <div class="spiel-karte-titel">Mein Tag</div>
-        <div class="spiel-karte-sub">Aktivitäten-Kärtchen antippen und auf die Tagesabschnitte verteilen — dein eigener Tagesplan.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_Gefuehls-Ampel-Memory.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🚦</span>
+          <div class="spiel-karte-titel">Gefühls-Ampel-Memory</div>
+          <div class="spiel-karte-sub">Ampelfarbe und Gefühl zusammenfinden — ein Memory-Spiel mit Grün, Gelb, Orange und Rot.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_Fokus.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎯</span>
-        <div class="spiel-karte-titel">Fokus-Trainer</div>
-        <div class="spiel-karte-sub">25-Minuten-Timer mit Belohnungen</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_MeinTag.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🗓️</span>
+          <div class="spiel-karte-titel">Mein Tag</div>
+          <div class="spiel-karte-sub">Aktivitäten-Kärtchen antippen und auf die Tagesabschnitte verteilen — dein eigener Tagesplan.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Ruheballon.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎈</span>
-        <div class="spiel-karte-titel">Ruhe-Ballon</div>
-        <div class="spiel-karte-sub">Atemübung zum Entspannen</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_Fokus.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎯</span>
+          <div class="spiel-karte-titel">Fokus-Trainer</div>
+          <div class="spiel-karte-sub">25-Minuten-Timer mit Belohnungen</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gold" href="KLARTEXT_Spiel_Staerken.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">💪</span>
-        <div class="spiel-karte-titel">Stärken-Check</div>
-        <div class="spiel-karte-sub">Welche Berufe passen zu mir?</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Ruheballon.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎈</span>
+          <div class="spiel-karte-titel">Ruhe-Ballon</div>
+          <div class="spiel-karte-sub">Atemübung zum Entspannen</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_RichtigKomisch.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">✅</span>
-        <div class="spiel-karte-titel">Richtig oder Komisch?</div>
-        <div class="spiel-karte-sub">Soziale Situationen einschätzen</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte gruen" href="KLARTEXT_Spiel_UebergangKitaSchule.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎒</span>
+          <div class="spiel-karte-titel">Kita → Schule</div>
+          <div class="spiel-karte-sub">Countdown mit Wochenaufgaben, ein Blick auf den neuen Schultag, was ich schon kann — und eine Sorgen-Kiste.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_WasTunBei.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎭</span>
-        <div class="spiel-karte-titel">Was tun bei...?</div>
-        <div class="spiel-karte-sub">Entscheidungen im Praktikumsalltag</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_UebergangNeueSchule.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🏫</span>
+          <div class="spiel-karte-titel">Neue Schule</div>
+          <div class="spiel-karte-sub">Grundschule → weiterführende Schule: Countdown mit Wochenaufgaben, Stundenplan zum Üben — und eine Sorgen-Kiste.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gold" href="KLARTEXT_Spiel_Bewerbungsgespraech.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎤</span>
-        <div class="spiel-karte-titel">Bewerbungsgespräch</div>
-        <div class="spiel-karte-sub">Antworten üben, Nervosität im Blick behalten — mit Pause-Karte, wenn nötig.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_SchulalltagWoerterbuch.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🗣️</span>
+          <div class="spiel-karte-titel">Schulalltag-Wörterbuch</div>
+          <div class="spiel-karte-sub">Wichtige Wörter für den Schulalltag in fünf Sprachen — zum Antippen und Durchblättern.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_UebergangKitaSchule.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎒</span>
-        <div class="spiel-karte-titel">Kita → Schule</div>
-        <div class="spiel-karte-sub">Countdown mit Wochenaufgaben, ein Blick auf den neuen Schultag, was ich schon kann — und eine Sorgen-Kiste.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_Wortwuerfel.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎲</span>
+          <div class="spiel-karte-titel">Brainy-Wort-Würfel</div>
+          <div class="spiel-karte-sub">Spielerisches Vokabeltraining (DaZ) — würfeln und das Wort laut sagen.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_UebergangNeueSchule.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🏫</span>
-        <div class="spiel-karte-titel">Neue Schule</div>
-        <div class="spiel-karte-sub">Countdown mit Wochenaufgaben, ein Blick auf den neuen Schultag, Stundenplan zum Üben — und eine Sorgen-Kiste.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_Wortwuerfel_Basteln.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🖨️</span>
+          <div class="spiel-karte-titel">Brainy-Wort-Würfel — Bastelvorlage</div>
+          <div class="spiel-karte-sub">Würfelnetz zum Ausschneiden und Kleben — passend zum digitalen Wort-Würfel.</div>
+          <div class="spiel-karte-cta">Druckvorlage öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gold" href="KLARTEXT_Spiel_UebergangSchuleArbeit.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🧰</span>
-        <div class="spiel-karte-titel">Schule → Arbeit</div>
-        <div class="spiel-karte-sub">Countdown mit Wochenaufgaben, ein Blick auf den neuen Arbeitstag, Werkstatt-Kompass — und eine Sorgen-Kiste.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_Wortwuerfel_Karten.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🃏</span>
+          <div class="spiel-karte-titel">Wortkarten &amp; Aktions-Set</div>
+          <div class="spiel-karte-sub">18 haptische Karten zum Ausschneiden — farbiger Brainy auf der Rückseite je Kategorie.</div>
+          <div class="spiel-karte-cta">Druckvorlage öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_AutismusVerstehen.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🔵</span>
-        <div class="spiel-karte-titel">Autismus verstehen</div>
-        <div class="spiel-karte-sub">Für INGRAs und Lehrkräfte: typische Situationen erkennen und passend reagieren.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte gold" href="KLARTEXT_Zauberfaecher_Digital.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🔮</span>
+          <div class="spiel-karte-titel">Zauberfächer</div>
+          <div class="spiel-karte-sub">Eine Farbe wählen, eine Karte ziehen — ein magisches Kartenspiel zum gemeinsamen Entdecken.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_SehbehinderungAlltag.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">👁️</span>
-        <div class="spiel-karte-titel">Sehbehinderung im Alltag</div>
-        <div class="spiel-karte-sub">Für INGRAs und Lehrkräfte: typische Situationen erkennen und passend reagieren.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Reizfilter.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎚️</span>
+          <div class="spiel-karte-titel">Reizfilter</div>
+          <div class="spiel-karte-sub">Zeig mit einem Regler, wie viel gerade los ist — ganz ohne Bewertung, nur für diesen Moment.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_GehoerlosigkeitAlltag.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">👂</span>
-        <div class="spiel-karte-titel">Gehörlosigkeit im Alltag</div>
-        <div class="spiel-karte-sub">Für INGRAs und Lehrkräfte: typische Situationen erkennen und passend reagieren.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_Koerperkompass.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🧭</span>
+          <div class="spiel-karte-titel">Körper-Kompass</div>
+          <div class="spiel-karte-sub">Tipp an, wo im Körper sich gerade etwas bemerkbar macht — ganz ohne Bewertung, nur für diesen Moment.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_SchulalltagWoerterbuch.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🗣️</span>
-        <div class="spiel-karte-titel">Schulalltag-Wörterbuch</div>
-        <div class="spiel-karte-sub">Wichtige Wörter für den Schulalltag in fünf Sprachen — zum Antippen und Durchblättern.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte gold" href="KLARTEXT_Spiel_MiniFitness.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🤸</span>
+          <div class="spiel-karte-titel">Mini-Fitness</div>
+          <div class="spiel-karte-sub">Eine zufällige Bewegungspause mit Countdown — kurz durchstarten, dann weiter zur nächsten Übung.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_Wortwuerfel.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎲</span>
-        <div class="spiel-karte-titel">Brainy-Wort-Würfel</div>
-        <div class="spiel-karte-sub">Spielerisches Vokabeltraining (DaZ) — würfeln und das Wort laut sagen.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
+      <a class="spiel-karte teal" href="KLARTEXT_UnserBuch.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">📔</span>
+          <div class="spiel-karte-titel">Unser Buch</div>
+          <div class="spiel-karte-sub">Was ich mag, was mir hilft, was mich stresst und meine Stärken — gemeinsam mit der INGRA festgehalten.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
 
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_Wortwuerfel_Basteln.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🖨️</span>
-        <div class="spiel-karte-titel">Brainy-Wort-Würfel — Bastelvorlage</div>
-        <div class="spiel-karte-sub">Würfelnetz zum Ausschneiden und Kleben — passend zum digitalen Wort-Würfel.</div>
-        <div class="spiel-karte-cta">Druckvorlage öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte teal" href="KLARTEXT_Spiel_Wortwuerfel_Karten.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🃏</span>
-        <div class="spiel-karte-titel">Wortkarten &amp; Aktions-Set</div>
-        <div class="spiel-karte-sub">18 haptische Karten zum Ausschneiden — farbiger Brainy auf der Rückseite je Kategorie.</div>
-        <div class="spiel-karte-cta">Druckvorlage öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte gold" href="KLARTEXT_Zauberfaecher_Digital.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🔮</span>
-        <div class="spiel-karte-titel">Zauberfächer</div>
-        <div class="spiel-karte-sub">Eine Farbe wählen, eine Karte ziehen — ein magisches Kartenspiel zum gemeinsamen Entdecken.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_WertePoker.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🃏</span>
-        <div class="spiel-karte-titel">Werte-Poker</div>
-        <div class="spiel-karte-sub">24 Werte, nur 5 Plätze — Budget-Übung zur Werteklärung für Jugendliche.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_WertePoker_Basteln.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🖨️</span>
-        <div class="spiel-karte-titel">Werte-Poker — Druckvorlage</div>
-        <div class="spiel-karte-sub">24 Wertekarten zum Ausschneiden + Setz-Feld für die Top 5.</div>
-        <div class="spiel-karte-cta">Druckvorlage öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_SkillMatrix.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎮</span>
-        <div class="spiel-karte-titel">Skill-Matrix: Dein Hobby-Check</div>
-        <div class="spiel-karte-sub">Hobbys wählen und die eigenen versteckten Stärken für den Lebenslauf entdecken.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_PerspektivWechsler.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🌉</span>
-        <div class="spiel-karte-titel">Perspektiv-Wechsler</div>
-        <div class="spiel-karte-sub">Jugendliche und Eltern wählen je eine Karte — ein Brückentext zeigt, dass beide Seiten recht haben.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_ADHS_Toolbox.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🧰</span>
-        <div class="spiel-karte-titel">Toolbox für den Berufseinstieg</div>
-        <div class="spiel-karte-sub">Für Jugendliche mit ADHS — Checkliste wird zu fertigen Wünschen an Chef:in oder Ausbilder:in.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_OnlineIdentityLab.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🧬</span>
-        <div class="spiel-karte-titel">Online-Identity-Lab</div>
-        <div class="spiel-karte-sub">Online-Me vs. Real-Me vergleichen, reflektieren (JD-30) und als Handout mitnehmen.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte gruen" href="KLARTEXT_Spiel_Reizfilter.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🎚️</span>
-        <div class="spiel-karte-titel">Reizfilter</div>
-        <div class="spiel-karte-sub">Zeig mit einem Regler, wie viel gerade los ist — ganz ohne Bewertung, nur für diesen Moment.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte navy" href="KLARTEXT_Spiel_Koerperkompass.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🧭</span>
-        <div class="spiel-karte-titel">Körper-Kompass</div>
-        <div class="spiel-karte-sub">Tipp an, wo im Körper sich gerade etwas bemerkbar macht — ganz ohne Bewertung, nur für diesen Moment.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte gold" href="KLARTEXT_Spiel_MiniFitness.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">🤸</span>
-        <div class="spiel-karte-titel">Mini-Fitness</div>
-        <div class="spiel-karte-sub">Eine zufällige Bewegungspause mit Countdown — kurz durchstarten, dann weiter zur nächsten Übung.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
-    <a class="spiel-karte teal" href="KLARTEXT_UnserBuch.html">
-      <div class="spiel-karte-stripe"></div>
-      <div class="spiel-karte-inner">
-        <span class="spiel-karte-emoji">📔</span>
-        <div class="spiel-karte-titel">Unser Buch</div>
-        <div class="spiel-karte-sub">Was ich mag, was mir hilft, was mich stresst und meine Stärken — gemeinsam mit der INGRA festgehalten.</div>
-        <div class="spiel-karte-cta">Spiel öffnen →</div>
-      </div>
-    </a>
-
+    </div>
   </div>
+
+  <!-- JUGENDLICHE -->
+  <div class="sek" id="jd">
+    <div class="sek-header" style="background:#EAF3F3;">
+      <div class="sek-emoji">🧑‍🎓</div>
+      <div class="sek-info"><div class="sek-titel" style="color:#2F6B6E;">Jugendliche</div><div class="sek-sub" style="color:#2F6B6E;">Systemische Coaching-Tools für Berufsorientierung, Werte und Beziehung</div></div>
+    </div>
+    <div class="spiel-grid">
+
+      <a class="spiel-karte gold" href="KLARTEXT_Spiel_Staerken.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">💪</span>
+          <div class="spiel-karte-titel">Stärken-Check</div>
+          <div class="spiel-karte-sub">Welche Berufe passen zu mir?</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte teal" href="KLARTEXT_Spiel_RichtigKomisch.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">✅</span>
+          <div class="spiel-karte-titel">Richtig oder Komisch?</div>
+          <div class="spiel-karte-sub">Soziale Situationen einschätzen</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_WasTunBei.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎭</span>
+          <div class="spiel-karte-titel">Was tun bei...?</div>
+          <div class="spiel-karte-sub">Entscheidungen im Praktikumsalltag</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte gold" href="KLARTEXT_Spiel_Bewerbungsgespraech.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎤</span>
+          <div class="spiel-karte-titel">Bewerbungsgespräch</div>
+          <div class="spiel-karte-sub">Antworten üben, Nervosität im Blick behalten — mit Pause-Karte, wenn nötig.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte gold" href="KLARTEXT_Spiel_UebergangSchuleArbeit.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🧰</span>
+          <div class="spiel-karte-titel">Schule → Arbeit</div>
+          <div class="spiel-karte-sub">Countdown mit Wochenaufgaben, ein Blick auf den neuen Arbeitstag, Werkstatt-Kompass — und eine Sorgen-Kiste.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_WertePoker.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🃏</span>
+          <div class="spiel-karte-titel">Werte-Poker</div>
+          <div class="spiel-karte-sub">24 Werte, nur 5 Plätze — Budget-Übung zur Werteklärung für Jugendliche.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_WertePoker_Basteln.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🖨️</span>
+          <div class="spiel-karte-titel">Werte-Poker — Druckvorlage</div>
+          <div class="spiel-karte-sub">24 Wertekarten zum Ausschneiden + Setz-Feld für die Top 5.</div>
+          <div class="spiel-karte-cta">Druckvorlage öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_SkillMatrix.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🎮</span>
+          <div class="spiel-karte-titel">Skill-Matrix: Dein Hobby-Check</div>
+          <div class="spiel-karte-sub">Hobbys wählen und die eigenen versteckten Stärken für den Lebenslauf entdecken.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_PerspektivWechsler.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🌉</span>
+          <div class="spiel-karte-titel">Perspektiv-Wechsler</div>
+          <div class="spiel-karte-sub">Jugendliche und Bezugsperson wählen je eine Kachel — ein Brückentext zeigt, dass beide Seiten recht haben.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_ADHS_Toolbox.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🧰</span>
+          <div class="spiel-karte-titel">Toolbox für den Berufseinstieg</div>
+          <div class="spiel-karte-sub">Für Jugendliche mit ADHS — Checkliste wird zu fertigen Wünschen an Chef:in oder Ausbilder:in.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+      <a class="spiel-karte navy" href="KLARTEXT_Spiel_OnlineIdentityLab.html">
+        <div class="spiel-karte-stripe"></div>
+        <div class="spiel-karte-inner">
+          <span class="spiel-karte-emoji">🧬</span>
+          <div class="spiel-karte-titel">Online-Identity-Lab</div>
+          <div class="spiel-karte-sub">Online-Me vs. Real-Me vergleichen, reflektieren (JD-30) und als Handout mitnehmen.</div>
+          <div class="spiel-karte-cta">Spiel öffnen →</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
 </div>
 
 <footer>
   <strong>KLARTEXT</strong> · Spiele<br>
   Klar. Warm. Menschlich.
 </footer>
+
+<script>
+// Tab aktiv setzen beim Scrollen (gleiches Muster wie KLARTEXT_Downloads.html)
+var seks = document.querySelectorAll('.sek');
+var tabs = document.querySelectorAll('.tab');
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting) {
+      var id = e.target.id;
+      tabs.forEach(function(t){ t.classList.remove('aktiv'); });
+      var aktiv = document.querySelector('.tab[href="#'+id+'"]');
+      if (aktiv) aktiv.classList.add('aktiv');
+    }
+  });
+}, { rootMargin: '-135px 0px -60% 0px' });
+seks.forEach(function(s){ obs.observe(s); });
+</script>
 
 </body>
 </html>

@@ -47,6 +47,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .zuruecksetzen-row{display:flex;justify-content:center;margin-top:1.8rem;}
 .zuruecksetzen-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;background:var(--m);color:#fff;font-weight:700;font-size:.86rem;cursor:pointer;font-family:inherit;}
 .zuruecksetzen-btn:hover{opacity:.9;}
+.verlauf-hinweis{font-size:.7rem;color:var(--muted);font-style:italic;text-align:center;margin-top:1rem;}
 </style>
 </head>
 <body>
@@ -91,6 +92,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <div class="zuruecksetzen-row">
       <button class="zuruecksetzen-btn" onclick="reglerZuruecksetzen()">↺ Zurücksetzen</button>
     </div>
+    <div class="verlauf-hinweis" id="verlauf-hinweis"></div>
   </div>
 </div>
 
@@ -123,8 +125,45 @@ function reglerZuruecksetzen(){
   reglerAktualisieren();
 }
 
+/* Speichert einmal pro Kalendertag den zuletzt eingestellten Wert (nicht bei jedem Ziehen des
+   Reglers, sonst wuerde jede Erkundung als Eintrag zaehlen). Ueberschreibt einen bereits
+   vorhandenen Eintrag fuer den gleichen Tag. Max. 60 Eintraege, aeltere fallen raus. */
+var VERLAUF_KEY = 'klartext_reizfilter_verlauf';
+
+function heuteISO(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function verlaufLaden(){
+  try {
+    var roh = localStorage.getItem(VERLAUF_KEY);
+    return roh ? JSON.parse(roh) : [];
+  } catch(e) { return []; }
+}
+
+function verlaufEintragen(){
+  var heute = heuteISO();
+  var verlauf = verlaufLaden().filter(function(e){ return e.datum !== heute; });
+  verlauf.push({ datum: heute, stufe: parseInt(regler.value, 10) });
+  verlauf.sort(function(a, b){ return a.datum < b.datum ? -1 : 1; });
+  if (verlauf.length > 60) verlauf = verlauf.slice(verlauf.length - 60);
+  try { localStorage.setItem(VERLAUF_KEY, JSON.stringify(verlauf)); } catch(e) {}
+  verlaufHinweisRendern();
+}
+
+function verlaufHinweisRendern(){
+  var heute = heuteISO();
+  var vorhanden = verlaufLaden().some(function(e){ return e.datum === heute; });
+  document.getElementById('verlauf-hinweis').textContent = vorhanden
+    ? 'Für heute schon gespeichert — für den Wochenrückblick im Ressourcen-Bericht.'
+    : 'Der Wert wird gespeichert, sobald du den Regler loslässt (einmal pro Tag, nur auf diesem Gerät).';
+}
+
 regler.addEventListener('input', reglerAktualisieren);
+regler.addEventListener('change', verlaufEintragen);
 reglerAktualisieren();
+verlaufHinweisRendern();
 </script>
 
 </body>

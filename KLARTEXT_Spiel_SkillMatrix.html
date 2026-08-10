@@ -82,6 +82,18 @@ body{
 .cluster-skills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem;}
 .cluster-skill-chip{background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);border-radius:10px;padding:.2rem .55rem;font-size:.68rem;color:var(--acc);}
 
+.felder-wrap{margin-top:.7rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.1);}
+.felder-label{font-size:.68rem;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.4rem;}
+.feld-zeile{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.8);margin-bottom:.25rem;}
+.feld-zeile b{color:#fff;}
+
+.jd-box{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:1rem 1.1rem;margin-top:.4rem;}
+.jd-box .jd-titel{font-size:.72rem;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.55rem;}
+.jd-zeile{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.75);margin-bottom:.5rem;}
+.jd-zeile:last-of-type{margin-bottom:0;}
+.jd-zeile b{color:var(--acc);}
+.jd-link{display:inline-block;margin-top:.6rem;font-size:.72rem;color:var(--acc);text-decoration:underline;}
+
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:400;padding:1rem;}
 .overlay.zeigen{display:flex;}
 .modal{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:1.5rem;max-width:480px;width:100%;max-height:80vh;overflow:auto;}
@@ -350,42 +362,60 @@ var CLUSTERS = [
     elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} mit anderen zusammenarbeitet. Bestärken Sie genau diesen Moment – wertfrei, ohne zu bewerten.',
     elternFrage:'Ich hab gesehen, wie gut du bei {hobby} mit anderen klarkommst. Wo hilft dir das auch außerhalb?',
     lehrBeob:'Beobachten Sie, wie die Jugendliche/der Jugendliche in Gruppenarbeit oder in der Pause Verantwortung fürs Miteinander übernimmt. Diese Momente lohnt es, sichtbar zu machen.',
-    lehrFrage:'Mir ist aufgefallen, wie gut du mit anderen zusammenarbeitest. Wo im Unterricht könnte dir das auch helfen?' },
+    lehrFrage:'Mir ist aufgefallen, wie gut du mit anderen zusammenarbeitest. Wo im Unterricht könnte dir das auch helfen?',
+    felder:['Soziale Arbeit & Erziehung','Verkauf & Kundenservice','Team-Handwerk (z. B. Bau, Gastronomie)'],
+    beispiele:['Erzieher:in','Verkäufer:in im Einzelhandel','Bäcker:in / Konditor:in'] },
   { id:'fokus', icon:'🎯', titel:'Fokus-Champion',
     alltag:'wenn du dranbleiben musst, obwohl eine Aufgabe erstmal zäh oder langweilig ist',
     schritt:'Nimm dir morgen 15 Minuten für eine Aufgabe, die du sonst aufschiebst.',
     elternBeob:'Achten Sie darauf, wie lange und konzentriert Ihr Kind bei {hobby} dabeibleibt. Genau dieses Durchhalten verdient Anerkennung – auch wenn das Ergebnis nicht perfekt ist.',
     elternFrage:'Ich hab gemerkt, wie konzentriert du bei {hobby} bist. Wann fällt dir das bei den Hausaufgaben auch leicht – und wann schwer?',
     lehrBeob:'Beobachten Sie, in welchen Unterrichtsmomenten die/der Jugendliche über längere Zeit konzentriert bei der Sache bleibt. Das lässt sich gezielt auf andere Fächer übertragen.',
-    lehrFrage:'Du bist bei {hobby} richtig dran geblieben. Wo im Unterricht gelingt dir das genauso gut?' },
+    lehrFrage:'Du bist bei {hobby} richtig dran geblieben. Wo im Unterricht gelingt dir das genauso gut?',
+    felder:['Handwerk & Feinarbeit','Labor & Technik','Wissenschaft & Forschung'],
+    beispiele:['Feinwerkmechaniker:in','Chemielaborant:in','Fachinformatiker:in'] },
   { id:'kreativ', icon:'🎨', titel:'Kreativ-Genie',
     alltag:'wenn du eigene Ideen einbringen oder etwas gestalten sollst',
     schritt:'Zeig heute jemandem eine eigene Idee, auch wenn sie noch nicht fertig ist.',
     elternBeob:'Achten Sie darauf, welche eigenen Ideen Ihr Kind bei {hobby} entwickelt. Kreativität zeigt sich oft leise – ein ehrliches „Das ist eine gute Idee" wirkt viel.',
     elternFrage:'Deine Ideen bei {hobby} finde ich stark. Wo könntest du das noch einbringen?',
     lehrBeob:'Beobachten Sie, wann die/der Jugendliche eigene, ungewöhnliche Lösungswege vorschlägt. Das ist ein guter Anknüpfungspunkt für Anerkennung im Unterricht.',
-    lehrFrage:'Deine Idee bei {hobby} war kreativ gelöst. Wo im Unterricht könntest du das auch mal ausprobieren?' },
+    lehrFrage:'Deine Idee bei {hobby} war kreativ gelöst. Wo im Unterricht könntest du das auch mal ausprobieren?',
+    felder:['Mediengestaltung & Design','IT-Entwicklung','Handwerkliches Gestalten'],
+    beispiele:['Mediengestalter:in','Fotograf:in','Schneider:in'] },
   { id:'verantwortung', icon:'🧭', titel:'Verantwortungs-Anker',
     alltag:'wenn andere sich darauf verlassen, dass du etwas zuverlässig erledigst',
     schritt:'Übernimm diese Woche eine kleine Aufgabe komplett selbstständig.',
     elternBeob:'Achten Sie darauf, wie zuverlässig Ihr Kind seine Aufgaben rund um {hobby} erledigt, ohne dass Sie erinnern müssen. Sprechen Sie genau das aus.',
     elternFrage:'Ich hab gesehen, wie verlässlich du dich um {hobby} kümmerst. Wo im Alltag zeigst du das noch?',
     lehrBeob:'Beobachten Sie, wann die/der Jugendliche zuverlässig Aufgaben übernimmt, ohne dass nachgefragt werden muss. Das ist ein guter Ankerpunkt für positive Rückmeldung.',
-    lehrFrage:'Ich hab bemerkt, wie zuverlässig du bist. Wo im Schulalltag konntest du das heute zeigen?' },
+    lehrFrage:'Ich hab bemerkt, wie zuverlässig du bist. Wo im Schulalltag konntest du das heute zeigen?',
+    felder:['Pflege & Betreuung','Verwaltung & Organisation','Logistik'],
+    beispiele:['Pflegefachkraft','Verwaltungsfachangestellte:r','Fachkraft Lagerlogistik'] },
   { id:'problem', icon:'🧩', titel:'Problem-Löser',
     alltag:'wenn etwas nicht auf Anhieb klappt und du einen neuen Weg finden musst',
     schritt:'Wenn heute etwas nicht klappt, probier einen zweiten Weg, bevor du aufgibst.',
     elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} Probleme angeht, wenn etwas nicht sofort funktioniert. Das ruhige Dranbleiben statt Aufgeben ist die eigentliche Stärke.',
     elternFrage:'Du hast bei {hobby} eine richtig gute Lösung gefunden. Wo hilft dir dieses Denken sonst noch?',
     lehrBeob:'Beobachten Sie, wie die/der Jugendliche bei Aufgaben mit mehreren Lösungswegen vorgeht. Systematisches Vorgehen lässt sich gut auf andere Fächer übertragen.',
-    lehrFrage:'Deine Lösung bei {hobby} war clever gedacht. Wo im Unterricht könntest du genauso vorgehen?' },
+    lehrFrage:'Deine Lösung bei {hobby} war clever gedacht. Wo im Unterricht könntest du genauso vorgehen?',
+    felder:['IT & Softwareentwicklung','Mechatronik & Elektrotechnik','Eventmanagement'],
+    beispiele:['Fachinformatiker:in Anwendungsentwicklung','Mechatroniker:in','Veranstaltungskaufmann/-frau'] },
   { id:'mutig', icon:'💪', titel:'Mutig & Stressfest',
     alltag:'wenn eine neue oder unangenehme Situation ansteht, vor der du dich erstmal überwinden musst',
     schritt:'Trau dich diese Woche an eine Sache, vor der du bisher zurückgeschreckt bist.',
     elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} mit Rückschlägen oder ungemütlichen Momenten umgeht. Genau dieses Dranbleiben trotz Gegenwind ist bemerkenswert.',
     elternFrage:'Ich hab gesehen, wie du bei {hobby} auch bei Gegenwind dranbleibst. Wo brauchst du diesen Mut sonst noch?',
     lehrBeob:'Beobachten Sie, wie die/der Jugendliche mit Fehlern oder neuen, unsicheren Situationen umgeht. Genau das ist ein guter Moment für ehrliche Anerkennung.',
-    lehrFrage:'Du hast bei {hobby} richtig Mut bewiesen. Wo im Schulalltag könntest du dir das auch zutrauen?' }
+    lehrFrage:'Du hast bei {hobby} richtig Mut bewiesen. Wo im Schulalltag könntest du dir das auch zutrauen?',
+    felder:['Rettungsdienst & Sicherheit','Handwerk im Außeneinsatz','Sport & Bewegung'],
+    beispiele:['Notfallsanitäter:in','Landschaftsgärtner:in','Sport- und Fitnesskaufmann/-frau'] }
+];
+
+var JD_BEGLEITUNG = [
+  { anlass:'Wenn du unsicher bist, was du eigentlich willst', nr:'JD-05', titel:'Alle wissen schon, was sie wollen – nur ich nicht' },
+  { anlass:'Wenn du Angst hast, dich falsch zu entscheiden', nr:'JD-08', titel:'Was, wenn ich meine Meinung später ändere?' },
+  { anlass:'Wenn du erstmal klären willst, was dir wirklich wichtig ist', nr:'JD-27', titel:'Was mir wichtig ist' }
 ];
 
 var aktiverTab = 'jugend';
@@ -445,10 +475,22 @@ function renderProfilTab(){
       var chips = daten[c.id].skills.map(function(s){
         return '<span class="cluster-skill-chip">'+s.name+(s.job ? ' · '+s.job : '')+'</span>';
       }).join('');
+      var felderHtml = c.felder.map(function(feld, i){
+        return '<div class="feld-zeile">• <b>'+feld+'</b> — z. B. '+c.beispiele[i]+'</div>';
+      }).join('');
       html += '<div class="cluster-block"><div class="cluster-titel"><span>'+c.icon+'</span><span>'+c.titel+'</span></div>' +
         '<div class="cluster-text">Weil du bei '+hobbyListe+' zeigst, wie stark du hier bist, hilft dir das genau dann, '+c.alltag+'.</div>' +
-        '<div class="cluster-skills">'+chips+'</div></div>';
+        '<div class="cluster-skills">'+chips+'</div>' +
+        '<div class="felder-wrap"><div class="felder-label">Könnte beruflich zu dir passen</div>'+felderHtml+'</div></div>';
     });
+    if (aktiveCluster.length > 0) {
+      var jdZeilen = JD_BEGLEITUNG.map(function(j){
+        return '<div class="jd-zeile">'+j.anlass+': <b>'+j.nr+'</b> „'+j.titel+'"</div>';
+      }).join('');
+      html += '<div class="jd-box"><div class="jd-titel">Falls dich die Berufswahl gerade beschäftigt</div>' +
+        jdZeilen +
+        '<a class="jd-link" href="pwa/index.html" target="_blank" rel="noopener">→ JD-Kartendeck digital öffnen</a></div>';
+    }
   } else {
     var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
     var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
@@ -456,7 +498,8 @@ function renderProfilTab(){
       var hobbyListe = listeVerbinden(daten[c.id].hobbys);
       html += '<div class="cluster-block"><div class="cluster-titel"><span>'+c.icon+'</span><span>'+c.titel+'</span></div>' +
         '<div class="cluster-text"><b>Beobachtungs-Tipp:</b> '+c[beobKey].replace('{hobby}', hobbyListe)+'</div>' +
-        '<div class="cluster-text" style="margin-top:.5rem;"><b>Gesprächsimpuls:</b> „'+c[frageKey].replace('{hobby}', hobbyListe)+'"</div></div>';
+        '<div class="cluster-text" style="margin-top:.5rem;"><b>Gesprächsimpuls:</b> „'+c[frageKey].replace('{hobby}', hobbyListe)+'"</div>' +
+        '<div class="cluster-text" style="margin-top:.5rem;"><b>Berufsfeld-Impuls:</b> Vorgeschlagen wurden '+c.felder.join(', ')+' — als Gesprächsanlass, nicht als Festlegung.</div></div>';
     });
   }
 
@@ -478,8 +521,15 @@ function profilTextErzeugen(){
       text += c.icon+' '+c.titel+'\n';
       text += 'Weil du bei '+hobbyListe+' zeigst, wie stark du hier bist, hilft dir das genau dann, '+c.alltag+'.\n';
       daten[c.id].skills.forEach(function(s){ text += '  • '+s.name+(s.job ? ' → '+s.job : '')+'\n'; });
+      text += 'Könnte beruflich zu dir passen:\n';
+      c.felder.forEach(function(feld, i){ text += '  • '+feld+' — z. B. '+c.beispiele[i]+'\n'; });
       text += '\n';
     });
+    if (aktiveCluster.length > 0) {
+      text += 'Falls dich die Berufswahl gerade beschäftigt (JD-Kartendeck, digital in der App oder physisch):\n';
+      JD_BEGLEITUNG.forEach(function(j){ text += '  • '+j.anlass+': '+j.nr+' „'+j.titel+'"\n'; });
+      text += '\n';
+    }
   } else {
     var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
     var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
@@ -488,7 +538,8 @@ function profilTextErzeugen(){
       var hobbyListe = listeVerbinden(daten[c.id].hobbys);
       text += c.icon+' '+c.titel+'\n';
       text += 'Beobachtungs-Tipp: '+c[beobKey].replace('{hobby}', hobbyListe)+'\n';
-      text += 'Gesprächsimpuls: „'+c[frageKey].replace('{hobby}', hobbyListe)+'"\n\n';
+      text += 'Gesprächsimpuls: „'+c[frageKey].replace('{hobby}', hobbyListe)+'"\n';
+      text += 'Berufsfeld-Impuls: '+c.felder.join(', ')+' — als Gesprächsanlass, nicht als Festlegung.\n\n';
     });
   }
   text += '— erstellt mit KLARTEXT · Skill-Matrix';

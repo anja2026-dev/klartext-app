@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 07.08.2026
+Stand: 10.08.2026 (Strang 57 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -890,3 +890,251 @@ was kostet das, welche Preise. Ergebnis in neuer Datei **`KLARTEXT_Plattform_Pre
 Vier offene Entscheidungen liegen jetzt bei Anja (siehe Dokument): EL/LK-Preis anheben oder nicht,
 SMI/LRS/SP zuerst listen oder direkt mit auf die neuen Plattformen, Reihenfolge Etsy vs. eduki,
 "Brainy muss mal kurz…" als offizielles Freebie einrichten oder nicht.
+
+## Strang 53: Zwei der vier Preisstrategie-Entscheidungen umgesetzt (07.08.2026)
+
+**EL/LK-Preis:** auf Anjas Rückfrage "was ist am professionellsten?" empfohlen und umgesetzt:
+wertbasierte Preisgestaltung statt reiner Konsistenz — Umfang (58/71 Karten, größte Decks im
+Sortiment) und höhere Zahlungsbereitschaft der Fachkräfte-Zielgruppe rechtfertigen einen Aufschlag.
+Auf 22 €/34 € angehoben (Anzeige als Spanne 19–22 €/31–34 € in `EL_Verkaufsseite.html`/
+`LK_Verkaufsseite.html`, konsistent mit dem Range-Stil der übrigen Seiten). Die unverlinkten,
+veralteten Duplikate `el.html`/`lk.html` im klartext-shop-Repo wurden dabei bewusst nicht
+angefasst (toter Code, nirgends verlinkt) — bei Bedarf aufräumbar.
+
+**SMI/LRS-Sek1/SP-Verkaufsseiten gebaut:** Wichtiger Befund vorab — `KLARTEXT_Plattform_
+Preisstrategie.md` hatte SMI und SP mit falschen Themen beschrieben ("Sinnesbeeinträchtigungen"
+bzw. "Selektiver Mutismus/Sprache"). Gegen den echten Code (`pwa/data/smi.json`, `sp.json`)
+geprüft: SMI = Systemische Mobbing-Intervention (10 Karten, Ergänzung zum bestehenden
+MB-Handlungskartendeck auf Klassen-/Systemebene), SP = Springer-INGRAs (7 Karten, für
+Schulbegleitung im flexiblen Klassenwechsel-Einsatz). LRS-Sek1-Beschreibung war korrekt.
+Preisstrategie-Dokument entsprechend korrigiert.
+
+Alle drei Karten-Sets komplett neu gerendert (`build_all_cards_smi/sp/lrs_sek1.py`), je 3 Karten
+pro Deck (Vorder-/Rückseite) als Muster-JPGs nach `klartext-shop/vorschau/{smi,sp,lrs-sek1}/`
+exportiert. Drei neue Verkaufsseiten nach dem HB/MB-Templatemuster gebaut: `SMI_Verkaufsseite.html`,
+`SP_Verkaufsseite.html`, `LRS_Verkaufsseite.html` — Quellen direkt aus den Karten-JSONs übernommen
+und gegenrecherchiert (Salmivalli 1996, de Shazer 1988 per Websuche verifiziert). Beim SP-Deck
+bewusst *keine* Quellen erzwungen, wo keine echte Forschung zum Springer-Einsatz vorliegt — Sektion
+heißt dort "Praxis & Fachbezug" statt "Wissenschaftliche Basis", mit explizitem Hinweis, dass 6 von
+7 Karten auf strukturierter Praxiserfahrung statt Studien beruhen.
+
+In `KLARTEXT_Shop_Uebersicht.html` verlinkt: SMI/SP unter "Handlungskarten & Spezialdecks", LRS
+unter "Kartendecks nach Zielgruppe" (konsistent mit `pwa/data/decks.json`-Kategorisierung aus
+Strang 52). Hero-Zahlen dort (12→13 Zielgruppen-Decks, 5→7 Spezialdecks) und in `index.html`
+(19→22 Kartendecks) korrigiert. Struktur-Check (div/section-Balance) für alle drei neuen Seiten
+sauber.
+
+**Weiterhin offen (auf Anjas Wunsch zurückgestellt):** Reihenfolge Etsy vs. eduki, "Brainy muss mal
+kurz…" als offizielles Freebie.
+
+## Strang 54: Ursprungsgeschichte geklärt — warum es Admin-App, Shop und Shop-Lite nebeneinander gibt
+
+Anja hat auf Rückfrage die Entstehungsgeschichte eingeordnet (wichtig fürs Verständnis, warum die
+Architektur so verzweigt ist):
+
+1. **Ursprünglich** war nur EINE App geplant — Supabase-frei, im Wesentlichen das, was heute als
+   "Shop-Lite" bezeichnet wird.
+2. **Durch die Testphase bei der Partnerorganisation** (jetzt beendet) wurde daraus "auf einmal"
+   eine waschechte Supabase-App mit Case-Management/Fallmanagement (Barometer Kind, Chat,
+   Zeitkonto etc.) — nicht der ursprüngliche Plan, sondern durch die Pilot-Anforderungen
+   entstanden.
+3. **Die Supabase-Linie ist wegen DSGVO bewusst zurückgestellt** (deckt sich mit Task #233 "App-
+   Aufspaltung" — unverändert geparkt, keine neue Entscheidung, nur jetzt mit Begründung
+   dokumentiert).
+4. **Separat davon** entstand die Idee, Unterrichtsmaterialien auf Lehrkräfte-Plattformen (eduki
+   u. a., siehe Strang 52) anzubieten — daraus wiederum die Idee der eigenständig verkaufbaren
+   Kartendecks, und daraus wiederum die Idee, diese zusätzlich als digitale Flip-Cards anzubieten.
+
+**Ergänzender technischer Befund (heute):** Die Flip-Card-Ansicht (`pwa/`) liegt aktuell im
+klartext-app-Repo und wird unter `klartext-app-8kl.pages.dev/pwa/` mit ausgeliefert — technisch
+zwar schon Supabase-frei (eigenes Manifest, eigener Service Worker), aber architektonisch nicht
+getrennt von der Admin-App, wie es Anjas ursprünglicher Idee entspräche.
+
+**Empfehlung (als Experte auf Anjas Bitte, siehe Chat vom 07.08.2026):** Nicht das komplette,
+bereits gebaute Shop-Lite/DASHBOARD_Lite (kompletter INGRA-Kurs ohne Supabase) live schalten,
+sondern zuerst eine schlankere, eigenständige Kartendecks-App (nur Flip-Cards + Suche über alle
+22 Decks) als drittes, eigenes Deployment aufsetzen — passend zum aktuellen kommerziellen Fokus
+(Kartendecks-Verkauf über eigenen Shop/Etsy/eduki). Details siehe
+`KLARTEXT_Konzept_Kartendecks-App.md`. Shop-Lite/Gesamt-App-Idee bleibt als späteres,
+nachgelagertes Produkt bestehen — kein Widerspruch, nur zeitlich hinten angestellt.
+
+## Strang 55: Kartendecks-App gebaut — neues Repo `klartext-karten`
+
+Anja hat der Empfehlung aus Strang 54 zugestimmt. Neues Repo `klartext-karten` angelegt (Anja,
+lokal geklont neben klartext-app/klartext-shop), `pwa/`-Code aus klartext-app komplett übernommen
+(Kartendaten aller 22 Decks, Bilder, Flip-Logik, Manifest, Service Worker — bereits Supabase-frei,
+keine Migration nötig). Ergänzt:
+
+- **Suchleiste**: `data/search-index.json` neu gebaut (572 Karten, alle Decks, Volltext aus Titel/
+  Anleitung/Fragen/Schritte/Hinweis/Tipp/Merksatz/Verweis/Nutzen/Systemfrage), client-seitige
+  Suche in `app.js` (umlauttolerant, debounced, öffnet das Deck direkt bei der passenden Karte
+  statt bei Karte 1). Stichproben-Test der Suchlogik gegen echte Daten: "Wut" → 10 Treffer,
+  "Mobbing" → 22 Treffer, "Elterngespräch" → 6 Treffer — sinnvolle Ergebnisse.
+- `homeBtn` von `../DASHBOARD.html` (Admin-App) auf `https://klartext-mentoring.de` (Shop)
+  umgestellt, Barometer-Link ebenfalls auf die Shop-Domain umgestellt (vorher relative Pfade, die
+  außerhalb der Admin-App ins Leere gezeigt hätten).
+- `README.md` komplett neu geschrieben (alte Version beschrieb einen 1-Deck-Prototyp innerhalb
+  von klartext-app, nicht mehr zutreffend).
+- Service-Worker-Cache-Version v12→v13 gebumpt (search-index.json neu im Precache).
+
+**Getestet:** JSON-Validität, JS-Syntax-Check, HTML-Struktur-Balance, lokaler Serverlauf (alle
+Kern-Dateien liefern HTTP 200), Suchlogik gegen echte Kartendaten — alles unauffällig. Kein
+Headless-Browser im Sandbox verfügbar, daher kein echter Klick-/Flip-Test im Browser; bei Bedarf
+über Claude in Chrome nachholbar.
+
+**Deployment (07.08.2026):** Anja hat Cloudflare Pages Projekt + Subdomain
+`karten.klartext-mentoring.de` bereits selbst eingerichtet (aktiv, SSL läuft) — schneller als
+erwartet, kein Anleitungsbedarf.
+
+**Verlinkung im Shop ergänzt (07.08.2026):** Alle 22 Verkaufsseiten bekommen einen Deep-Link-
+Button "📱 Als Flip-Card ausprobieren" im Hero-Bereich, der direkt zum passenden Deck in der neuen
+App springt (`karten.klartext-mentoring.de/?deck=<id>`), z. B. SMI-Verkaufsseite → öffnet direkt
+das SMI-Deck statt der allgemeinen Deck-Übersicht. Ausnahme: Insel-Set/Zonen-Set (IS/ZS) verlinken
+ohne Deck-Parameter, da beide zwei App-interne Varianten (Schule/Eltern) haben und keine
+eindeutige Zuordnung möglich ist. Zusätzlich allgemeine Links ergänzt: Hauptnavigation
+(`index.html`, neuer Menüpunkt "Flip-Card-App"), Kartendecks-Teaser auf der Startseite, Hero-
+Bereich der `KLARTEXT_Shop_Uebersicht.html`. Alle Links öffnen in neuem Tab, damit die
+Verkaufsseite nicht verloren geht. Struktur-Check (div/section-Balance) für alle geänderten
+Dateien sauber.
+
+**Damit ist Task #7 (Deployment + Verlinkung) abgeschlossen.**
+
+**Nachtrag (07.08.2026) — Passwort-Sperre ergänzt:** Anja war bei der Live-App durch die offene
+Zugänglichkeit alarmiert (alle 22 Decks ohne Kauf voll sichtbar) und wollte das sofort schließen,
+während die parallel laufende Digistore24-Anmeldung durch ein 2FA-Problem blockiert war. Einfache
+Client-seitige Passwort-Sperre ergänzt (`index.html`: neuer `lockScreen`, restlicher Inhalt in
+`appShell` gewrappt und initial versteckt; `app.js`: Startlogik in `initApp()` verschoben, nur nach
+korrektem Passwort oder bestehendem `localStorage`-Flag aufgerufen). Passwort aktuell
+`brainy-lernt-2026`, im Quelltext hinterlegt — wie bei `KLARTEXT_Login_Shop.html` (Strang 44)
+bewusst keine echte Zugriffskontrolle, nur ein Riegel gegen zufälligen Vollzugriff. Deep-Links von
+den Verkaufsseiten (`?deck=<id>`) funktionieren nach Entsperrung weiterhin korrekt. Service-Worker
+v13→v14 gebumpt. Getestet: JS-Syntax, HTML-Balance, lokaler Serverlauf mit sichtbarem
+`lockScreen`/`appShell`.
+
+**Noch offen:** Sobald Digistore24 läuft, Passwort-Weitergabe an Kund:innen einrichten (z. B. über
+die Dankeseite/Bestellbestätigung) — aktuell nur ein Platzhalter-Passwort ohne Verteilmechanismus.
+
+## Strang 56: Digistore24-Einrichtung begonnen, KD-Deck als Pilotprodukt
+
+Anja hat sich bei Digistore24 als Verkäuferin registriert und mit Anja zusammen das erste Produkt
+(KD-Deck) durchs Formular begleitet (Produktname/-typ, Verkaufsseite-URL, Rechnung/Logo,
+Verkaufseinschränkungen — Details siehe Chat). Unterbrochen durch ein 2FA-Problem, Support-Anfrage
+läuft.
+
+**Vorbereitet für die Wartezeit:** `KLARTEXT_Digistore24_Produktliste.md` — alle 22 Decks mit
+fertigen Digistore24-Produktdaten (Produktname intern/für Käufer, Kurzbeschreibung, Preis,
+Verkaufsseite-URL, PDF-Dateiname), damit das Anlegen der restlichen 21 Produkte nur noch
+Copy-Paste ist. Drei offene Bündelungsfragen markiert statt geraten: EL/LK-Zusatzblöcke (7 PDFs),
+MB-Bonusmaterial, Insel-/Zonen-Set-Dateikombination.
+
+**Nachtrag (07.08.2026) — Bündelungsfragen entschieden:** Anja hat (in Rücksprache mit
+NotebookLM, mit dem sie parallel arbeitet) entschieden:
+- **EL/LK:** Zusatzblöcke (7 PDFs) werden immer mitgeliefert statt einzeln verkauft — als ZIP mit
+  dem Basis-PDF.
+- **MB:** wird als "Mobbing-Intervention-Kit" mit allen Arbeitsmaterialien
+  (`KLARTEXT_AntiMobbing_Arbeitsmaterialien.pdf`) gebündelt.
+- **JD:** der Einheitlichkeit halber ebenfalls auf 22 €/34 € angehoben (gleiche Preisstufe wie
+  EL/LK — die drei größten Decks im Sortiment). `JD_Verkaufsseite.html` und
+  `KLARTEXT_Plattform_Preisstrategie.md` entsprechend aktualisiert.
+- **Insel-/Zonen-Set:** Zielgruppen-Trennung (Schule/Zuhause/Jugendliche) grundsätzlich
+  freigegeben, aber technisch zurückgestellt — die aktuellen Verkaufsseiten bieten eine "ein Set
+  nach Wahl bei Bestellung"-Logik, die sich nicht 1:1 in ein Digistore24-Produkt mit festem Inhalt
+  übersetzen lässt. Bräuchte erst einen Umbau der beiden Verkaufsseiten (echte Einzelprodukt-
+  Kacheln statt Wahlmöglichkeit) — kein Blocker für die anderen 20 Produkte.
+- Kurzer Zwischenfall: Anja hatte versehentlich einen Textabschnitt mit einem unpassenden Verweis
+  auf ein anderes Projekt ("alfatraining"-Lebenslauf) reinkopiert — nach Rückfrage aufgeklärt,
+  nichts übernommen.
+
+`KLARTEXT_Digistore24_Produktliste.md` entsprechend aktualisiert: 20 von 22 Produkten jetzt
+vollständig entscheidungsfertig, 2 (Insel-/Zonen-Set) als "Phase 2" markiert.
+
+## Strang 57: Abgleich neue JD-Jugendlichen-Module gegen Bücher/Workbook/Lernpfad/Trainerbuch/Systemdateien (10.08.2026)
+
+Anjas Auftrag: erstmal nur prüfen und auf die Merkliste setzen, nicht umsetzen — Umfang zu groß für eine
+Session. Geprüft wurden sechs in der laufenden Session neu gebaute bzw. erweiterte Jugendlichen-Tools
+gegen alle großen Referenz-/Systemdokumente. Per Subagenten-Recherche, jeder Treffer gegen Fehlalarme
+geprüft (nicht blind auf Grep-Zahlen verlassen — gleiche Methodik wie Strang 50).
+
+**Die sechs geprüften Module:**
+A. Skill-Matrix — "Superpower-Profil" + neue Sektion "Bewerbungs-Profi 2.0" (Anschreiben/Interview-
+   Textbausteine, Mut-Sektion mit JD-37-Bezug)
+B. Perspektiv-Wechsler — komplett neu gebautes 8-Themen-Brückensystem (vorher: einfacher
+   Karten-Mechanismus)
+C. **Was hilft mir gerade?** (`KLARTEXT_Spiel_WasHilftMir.html`) — komplett neues Krisenmoment-zu-Tool
+   Action-Center, verlinkt JD-Karten + Insel-Set
+D. **Ressourcen-Bericht** (`KLARTEXT_Ressourcenbericht.html`) — komplett neue Export-Seite fürs Eltern-/
+   Lehrergespräch
+E. **Moderations-Leitfaden INGRA** (`KLARTEXT_Moderationsleitfaden_INGRA.html`) — komplett neu
+F. **Feedbackbogen LK** (`KLARTEXT_Feedbackbogen_LK.html`) — komplett neu
+Zusätzlich: Reizfilter-Regler (`KLARTEXT_Spiel_Reizfilter.html`) hat jetzt echte Tages-Verlaufsspeicherung
+(vorher rein momentan, ohne Speicherung).
+
+### Befund 1 — `M0-00_Systemelemente.html` (die zentrale Systemdatei)
+
+Listet exakt **9 nummerierte Bausteine**: 01 Barometer, 02 kLAR-Modell, 03 Joker, 04 Brainy,
+05 Feuerwehr, 06 Rollen & Haltung, 07 Humor & Leichtigkeit, 08 Abgrenzung, 09 Systemübersicht.
+
+- ❌ **Insel-Set fehlt komplett** — obwohl `INSEL-Set_Konzept_und_Barometer-Integration.md` selbst
+  vorschlägt, es "als Element 10" aufzunehmen (Zeile 76-78 dort). Bisher nicht umgesetzt.
+- ❌ Keines der 6 neuen/erweiterten Module (A–F) wird dort erwähnt.
+- kLAR-Modell dort korrekt dokumentiert (K-Kontakt & Körperliche Sicherheit / L-Leise & Langsam /
+  A-Anerkennung & Atmen / R-Reizreduktion & Rückzug) — deckt sich mit dem, was im neuen
+  Moderationsleitfaden korrekt referenziert wurde (Strang zu dieser Session, kein Widerspruch).
+
+### Befund 2 — `KLARTEXT_Anleitungen_Tools.html` ("Trainer-Handreichung: Die interaktiven Tools")
+
+Enthält nur 6 Modul-Einträge insgesamt (Brainy-Wort-Würfel, Werte-Poker, Skill-Matrix,
+Perspektiv-Wechsler, ADHS-Toolbox, Online-Identity-Lab):
+
+- **Skill-Matrix:** ⚠️ nur veralteter Stand dokumentiert (alter "Hobby-Check → Stärken-Liste"-Ablauf,
+  Bewerbungs-Profi 2.0/Mut-Sektion/JD-37 fehlen).
+- **Perspektiv-Wechsler:** ⚠️ nur veralteter Stand dokumentiert (alter Einzelkarten-Mechanismus,
+  8-Themen-Brückensystem + Barometer-Check-in fehlen).
+- **Was hilft mir gerade?, Ressourcen-Bericht, Moderations-Leitfaden, Feedbackbogen:** ❌ alle vier
+  komplett nicht dokumentiert (kein Eintrag, auch kein alter Stand, da komplett neu).
+- Reizfilter-Regler: hatte ohnehin nie einen eigenen Eintrag (weder alt noch neu).
+
+### Befund 3 — WICHTIG: Zonen-Set für Jugendliche existiert bereits fertig gebaut
+
+Beim Insel-Set/Zonen-Set-Vergleich kam ein Fund hoch, der über die eigentliche Prüfung hinausgeht und
+eine Entscheidung aus dieser Session betrifft: Das Konzeptpapier `INSEL-Set_Konzept_und_Barometer-
+Integration.md` behauptet (Zeile 80-86), das Zonen-Set für Jugendliche (Sek I/II) sei "noch nicht im
+Detail ausgearbeitet". **Das stimmt nicht mehr** — es existiert bereits fertig:
+
+- `Jugend-Zonen-Set_Konzept_und_Prompts.md` (vollständiges Konzeptpapier)
+- Drei fertige PDFs, live verlinkt in `KLARTEXT_Downloads.html` (Zeile 477, 507–518):
+  `KLARTEXT_Zonen-Set_Schule.pdf`, `_Eltern.pdf`, `_Token-Karten.pdf`
+- Laut `KLARTEXT_Merkliste_Archiv.md` (Strang 9) bereits am 30.07.2026 fertiggestellt — das
+  Konzeptpapier wurde seitdem nicht aktualisiert.
+
+**Konsequenz für diese Session:** Bei „Was hilft mir gerade?" (Modul C) wurde in Rücksprache mit Anja
+bewusst das **Kinder**-Insel-Set referenziert, mit zurückhaltender Sprache, *weil* das Konzeptpapier ein
+eigenes Jugendlichen-Set als "noch nicht gebaut" auswies. Jetzt zeigt sich: ein echtes, speziell für
+Jugendliche entworfenes Zonen-Set (neutrale statt niedliche Symbole, "Zone" statt "Insel" — genau die
+Sprache, die dort extra für die Jugendlichen-Zielgruppe entwickelt wurde) lag die ganze Zeit bereits
+fertig vor. Das ist wahrscheinlich die bessere Grundlage für Was-hilft-mir-gerade als das Kinder-Insel-Set
+— **eigener Folge-Task, noch nicht umgesetzt**, da das erst mit Anja abzustimmen ist (Zonen-Namen/
+-Regeln aus dem Zonen-Set-PDF müssten gegen den echten Inhalt geprüft werden, bevor etwas ausgetauscht
+wird — gleiche Sorgfaltspflicht wie beim ursprünglichen Insel-Set-Check).
+
+### Befund 4 — Große Referenzdokumente (Fachbuch, Workbook, Lernpfad, Trainerhandbuch, Lernhandbuch,
+Curriculum, Systemanleitung, Glossar)
+
+Alle acht per Grep + Fehlalarm-Kontrolle geprüft (u. a. gegen "Perspektivwechsel" ohne "-er", das an
+mehreren Stellen als generischer Empathie-Begriff für andere, ältere Karten/Konzepte vorkommt — kein
+echter Treffer). Ergebnis: **keines der 6 neuen/erweiterten Module ist in irgendeinem der acht Dokumente
+erwähnt.** kLAR ist überall dort ausschließlich als Deeskalations-Werkzeug dokumentiert (nie als
+Gesprächsmoderations-Baustein) — deckt sich mit der bewussten Entscheidung dieser Session, kLAR im neuen
+Moderationsleitfaden nur als Eskalations-Fallback zu nutzen, nicht als Hauptstruktur. Kein Widerspruch,
+aber auch keine Vorarbeit, auf die aufgebaut werden könnte.
+
+### Zusammenfassung / Noch offen
+
+- Kein Dokument wurde in dieser Runde verändert — reine Bestandsaufnahme, wie von Anja gewünscht.
+- **Kandidaten für die nächste inhaltliche Angleichungsrunde** (nach demselben "Deck für Deck"-Muster
+  wie Hochbegabung/Mobbing, Strang 39–42): `M0-00_Systemelemente.html` (Insel-Set als Element 10 + evtl.
+  Verweis auf die neuen Jugendlichen-Tools), `KLARTEXT_Anleitungen_Tools.html` (Skill-Matrix/
+  Perspektiv-Wechsler-Einträge aktualisieren, 4 neue Einträge ergänzen), danach ggf. Fachbuch/Lernpfad/
+  Trainerhandbuch — aber erst nachdem mit Anja priorisiert ist, ob/wie tief das gehen soll.
+- **Offene Entscheidung mit Anja:** Zonen-Set statt Insel-Set in Was-hilft-mir-gerade verwenden (Befund 3).
+- Kein Zeitdruck-Hinweis von Anja — Priorisierung mit ihr noch offen, analog zu Strang 50.

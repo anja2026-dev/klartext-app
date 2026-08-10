@@ -55,6 +55,26 @@ body{font-family:"DM Sans",sans-serif;min-height:100vh;background:#111;color:#ff
 .bruecke-label{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#7A7060;text-align:center;margin-bottom:.6rem;}
 .bruecke-titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:1.4rem;color:#1B3A4B;}
 .bruecke-text{max-width:640px;margin:0 auto;font-size:1.02rem;line-height:1.75;text-align:center;}
+
+.match-badge{max-width:640px;margin:0 auto 1rem;background:linear-gradient(90deg,var(--jd),var(--el));color:#fff;border-radius:30px;padding:.6rem 1.2rem;text-align:center;font-size:.82rem;font-weight:800;letter-spacing:.02em;}
+
+.pakt-box{max-width:640px;margin:1.6rem auto 0;background:#fff;border:1.5px solid #E0D9C8;border-radius:14px;padding:1.2rem 1.4rem;}
+.pakt-label{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#7A7060;margin-bottom:.4rem;}
+.pakt-text{font-size:.92rem;line-height:1.6;color:var(--ink);}
+.pakt-hinweis{margin-top:.7rem;padding-top:.6rem;border-top:1px solid #EEE7D8;font-size:.75rem;color:#8a8574;}
+.pakt-hinweis a{color:#1B3A4B;text-decoration:underline;}
+
+/* Barometer-Check-in */
+.baro-leiste{max-width:900px;margin:0 auto;padding:0 clamp(1rem,3vw,2rem) 1.1rem;}
+.baro-label{font-size:.72rem;color:rgba(255,255,255,.5);text-align:center;margin-bottom:.5rem;letter-spacing:.03em;}
+.baro-chips{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;}
+.baro-chip{border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);border-radius:20px;padding:.45rem 1rem;font-family:inherit;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.75);cursor:pointer;display:flex;align-items:center;gap:.4rem;}
+.baro-chip .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.baro-chip.aktiv{border-color:#fff;background:rgba(255,255,255,.16);color:#fff;}
+.baro-hinweis{text-align:center;font-size:.72rem;color:rgba(255,255,255,.4);margin-top:.5rem;font-style:italic;}
+
+.tile.empfohlen{border-color:#fff;box-shadow:0 0 0 1.5px rgba(255,255,255,.5) inset;}
+.tile.empfohlen::after{content:"empfohlen";display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.75;margin-top:.3rem;}
 </style>
 </head>
 <body>
@@ -65,67 +85,179 @@ body{font-family:"DM Sans",sans-serif;min-height:100vh;background:#111;color:#ff
   <button class="reset-btn" onclick="zuruecksetzen()">🔄 Neu starten</button>
 </div>
 
+<div class="baro-leiste">
+  <div class="baro-label">Bevor's losgeht (optional): Wie steht ihr gerade zueinander?</div>
+  <div class="baro-chips" id="baroChips"></div>
+  <div class="baro-hinweis" id="baroHinweis"></div>
+</div>
+
 <div class="stepper" id="stepper"></div>
 
 <div class="board" id="board"></div>
 
 <script>
-var JD_KARTEN = [
-  { id:'j1', text:'Niemand hört mir wirklich zu' },
-  { id:'j2', text:'Druck von zu Hause' },
-  { id:'j3', text:'Ich werde nicht ernst genommen' },
-  { id:'j4', text:'Kein Vertrauen, ständige Kontrolle' }
+/* ---------- Themen (Grundlage für Kacheln + Brücken-Logik) ---------- */
+var THEMEN = [
+  { id:'beziehung', jdLabel:'Beziehung zu Erwachsenen', elLabel:'Beziehung zum Kind',
+    paktSchritt:'Ein 10-Minuten-Gespräch ohne Handy und ohne Vorwürfe – nur zuhören, was der/die andere zu sagen hat.' },
+  { id:'druck', jdLabel:'Erwartungen & Druck', elLabel:'Erwartungen & Sorge',
+    paktSchritt:'Eine Erwartung diese Woche laut aussprechen und gemeinsam prüfen: Ist das wirklich nötig?' },
+  { id:'vertrauen', jdLabel:'Vertrauen & Kontrolle', elLabel:'Loslassen & Vertrauen',
+    paktSchritt:'Eine kleine Entscheidung diese Woche komplett dem Jugendlichen überlassen, ohne nachzufragen.' },
+  { id:'grenzen', jdLabel:'Grenzen setzen', elLabel:'Grenzen erkennen',
+    paktSchritt:'Ein gemeinsames Stopp-Wort vereinbaren, das beide Seiten respektieren, sobald es fällt.' },
+  { id:'stress', jdLabel:'Stress & Kopf voll', elLabel:'Stress erkennen & begleiten',
+    paktSchritt:'5 Minuten echte Pause ohne Tipps oder Fragen – nur da sein.' },
+  { id:'digital', jdLabel:'Digitale Balance', elLabel:'Digitale Sorge',
+    paktSchritt:'Eine gemeinsame handyfreie Zeit diese Woche festlegen – für beide Seiten gleich.' },
+  { id:'zukunft', jdLabel:'Zukunft & Motivation', elLabel:'Zukunft & Sorge ums Kind',
+    paktSchritt:'Diese Woche einmal laut aussprechen, worauf man beim anderen stolz ist – ganz ohne Anlass.' },
+  { id:'naehe', jdLabel:'Nähe & Rückzug', elLabel:'Nähe & Rückzug',
+    paktSchritt:'Eine gemeinsame kleine Aktivität diese Woche einplanen – ganz ohne Thema oder Ziel.' }
 ];
 
-var EL_KARTEN = [
-  { id:'e1', text:'Mein Kind zieht sich zurück' },
-  { id:'e2', text:'Loslassen fällt schwer' },
-  { id:'e3', text:'Ich mache mir ständig Sorgen' },
-  { id:'e4', text:'Wir reden aneinander vorbei' }
+function themaById(id){ return THEMEN.filter(function(t){ return t.id === id; })[0]; }
+
+/* ---------- Kacheln ---------- */
+var JD_TILES = [
+  { id:'j_beziehung1', thema:'beziehung', text:'Niemand hört mir wirklich zu' },
+  { id:'j_beziehung2', thema:'beziehung', text:'Ich werde nicht ernst genommen' },
+  { id:'j_druck1', thema:'druck', text:'Druck von zu Hause' },
+  { id:'j_druck2', thema:'druck', text:'Erwartungen, die gar nicht meine sind' },
+  { id:'j_vertrauen1', thema:'vertrauen', text:'Kein Vertrauen, ständige Kontrolle' },
+  { id:'j_vertrauen2', thema:'vertrauen', text:'Ich darf nichts allein entscheiden' },
+  { id:'j_grenzen1', thema:'grenzen', text:'Stopp-Moment — meine Grenze wird nicht gesehen' },
+  { id:'j_grenzen2', thema:'grenzen', text:'Ich kann schwer Nein sagen' },
+  { id:'j_stress1', thema:'stress', text:'Kopf voll — alles auf einmal' },
+  { id:'j_stress2', thema:'stress', text:'Ich brauche mehr echte Pausen' },
+  { id:'j_digital1', thema:'digital', text:'Handy-Sog — ich komm nicht los' },
+  { id:'j_digital2', thema:'digital', text:'Online anders sein als echt' },
+  { id:'j_zukunft1', thema:'zukunft', text:'Berufs-Dschungel — ich soll schon alles wissen' },
+  { id:'j_zukunft2', thema:'zukunft', text:'Meine Superpower wird nicht gesehen' },
+  { id:'j_naehe1', thema:'naehe', text:'Ich zieh mich zurück, wenn\'s zu viel wird' },
+  { id:'j_naehe2', thema:'naehe', text:'Ich vermisse, wie es früher war' }
 ];
 
-var BRUECKEN = {
-  j1_e1: "Beide Seiten fühlen sich gerade einsam im Kontakt. Ein kleiner Schritt könnte ein Gespräch ohne Ratschläge sein.",
-  j1_e2: "Der Wunsch, gehört zu werden, trifft auf die Angst, die Kontrolle zu verlieren. Wenn Eltern loslassen üben, wird oft auch das Zuhören leichter.",
-  j1_e3: "Sorge äußert sich oft als Nachfragen und Ratschläge – genau das, was sich für Jugendliche wie Nicht-zugehört-Werden anfühlt. Sorge und Zuhören können auch gemeinsam gehen, ganz ohne Lösung anzubieten.",
-  j1_e4: "Beide spüren: Die Gespräche laufen ins Leere. Oft hilft schon, kurz zu beschreiben, was man selbst fühlt, bevor man beschreibt, was der andere falsch macht.",
+var EL_TILES = [
+  { id:'e_beziehung1', thema:'beziehung', text:'Ich höre genau hin, aber es kommt nicht an' },
+  { id:'e_beziehung2', thema:'beziehung', text:'Ich nehme dich ernst, auch wenn\'s nicht so wirkt' },
+  { id:'e_druck1', thema:'druck', text:'Ich will nur das Beste für dich' },
+  { id:'e_druck2', thema:'druck', text:'Ich mach mir Sorgen um deine Zukunft' },
+  { id:'e_vertrauen1', thema:'vertrauen', text:'Loslassen fällt mir schwer' },
+  { id:'e_vertrauen2', thema:'vertrauen', text:'Ich will dich schützen, auch wenn\'s nervt' },
+  { id:'e_grenzen1', thema:'grenzen', text:'Ich merke nicht immer, wo deine Grenze ist' },
+  { id:'e_grenzen2', thema:'grenzen', text:'Manchmal dränge ich zu sehr' },
+  { id:'e_stress1', thema:'stress', text:'Ich seh, dass du gestresst bist, weiß aber nicht wie helfen' },
+  { id:'e_stress2', thema:'stress', text:'Ich will dir Druck nehmen, schaff\'s aber nicht immer' },
+  { id:'e_digital1', thema:'digital', text:'Dein Handy macht mir Sorgen' },
+  { id:'e_digital2', thema:'digital', text:'Ich versteh deine Online-Welt nicht' },
+  { id:'e_zukunft1', thema:'zukunft', text:'Ich weiß nicht, was aus dir werden soll' },
+  { id:'e_zukunft2', thema:'zukunft', text:'Ich sehe deine Stärken, sag\'s aber selten' },
+  { id:'e_naehe1', thema:'naehe', text:'Mein Kind zieht sich zurück' },
+  { id:'e_naehe2', thema:'naehe', text:'Ich vermisse die Nähe von früher' }
+];
 
-  j2_e1: "Der Druck, den Jugendliche spüren, führt oft in genau den Rückzug, der Eltern gerade so schmerzt. Weniger Erwartung von außen kann wieder Raum für echte Nähe schaffen.",
-  j2_e2: "Hoher Druck von zu Hause und die Schwierigkeit loszulassen sind oft zwei Seiten derselben Sorge: dass es dem eigenen Kind gutgeht. Weniger Druck bedeutet nicht weniger Fürsorge.",
-  j2_e3: "Elterliche Sorge äußert sich oft als Erwartung und Druck – auch wenn sie eigentlich aus Liebe kommt. Das offen auszusprechen, nimmt beiden Seiten Gewicht von den Schultern.",
-  j2_e4: "Der Druck von zu Hause wird oft in Sätzen ausgesprochen, die beim Gegenüber ganz anders ankommen als gemeint. Ein gemeinsamer Moment ohne Erwartungen kann helfen, die Sprache wiederzufinden.",
-
-  j3_e1: "Sich nicht ernst genommen fühlen und der Rückzug des Kindes hängen oft zusammen: Wer glaubt, sowieso nicht gehört zu werden, zieht sich zurück. Ernst nehmen beginnt mit echten Fragen statt Antworten.",
-  j3_e2: "Hier prallen der Wunsch nach Freiheit und die Sorge umeinander aufeinander. Das ist ein normaler Entwicklungsschritt.",
-  j3_e3: "Sorge wird von Jugendlichen oft als Zweifel an der eigenen Reife gelesen – dabei ist sie meist pure Liebe. Beide Seiten ernst zu nehmen macht daraus ein Gespräch statt einen Vorwurf.",
-  j3_e4: "Wenn beide Seiten das Gefühl haben, nicht durchzudringen, fühlt sich niemand ernst genommen. Kurz wiederholen, was man beim anderen gerade verstanden hat, bevor man selbst weiterspricht, kann den Kreislauf durchbrechen.",
-
-  j4_e1: "Kontrolle entsteht oft genau dann, wenn Eltern das Gefühl haben, ihr Kind zu verlieren – und verstärkt dadurch oft den Rückzug. Vertrauen wächst in kleinen Schritten, nicht durch mehr Kontrolle.",
-  j4_e2: "Der Wunsch nach Vertrauen auf der einen und die Schwierigkeit loszulassen auf der anderen Seite sind zwei Formen derselben Entwicklungsaufgabe. Beide brauchen Übung – und kleine, sichere Freiräume.",
-  j4_e3: "Kontrolle ist oft der Versuch, Sorge in den Griff zu bekommen. Wenn beide Seiten das offen benennen, wird aus Kontrolle leichter Vertrauen.",
-  j4_e4: "Kein Vertrauen und Aneinander-vorbei-Reden verstärken sich gegenseitig: Ohne Vertrauen hört man das Gesagte anders, als es gemeint war. Ein neutraler Moment wie dieses Gespräch kann den Kreislauf unterbrechen."
+/* ---------- Brücken-Texte: gleiches Thema (Match), dann kuratierte Kombinationen, sonst Fallback ---------- */
+var BRUECKEN_MATCH = {
+  beziehung: 'Ihr seht die Situation hier erstaunlich ähnlich: Beide spüren, dass Zuhören und Ernst-genommen-Werden gerade nicht richtig ankommen. Das ist ein gutes Zeichen — ihr müsst euch nicht erst überzeugen, sondern könnt direkt üben, wie echtes Zuhören für euch beide aussehen kann.',
+  druck: 'Hier trefft ihr euch genau: Druck und Erwartung belasten euch beide, nur von verschiedenen Seiten. Wenn ihr das offen benennt, verliert der Druck oft schon einen Teil seiner Wucht.',
+  vertrauen: 'Vertrauen und Kontrolle beschäftigen euch beide gerade gleich stark. Das ist kein Widerspruch, sondern zwei Seiten derselben Entwicklungsaufgabe — Vertrauen wächst in kleinen, sicheren Schritten, nicht auf einmal.',
+  grenzen: 'Ihr spürt beide: Bei Grenzen hakt es gerade. Das ist eine gute Ausgangslage — ihr könnt gemeinsam festlegen, wie ein Stopp für euch beide klar erkennbar wird, statt es zu erraten.',
+  stress: 'Stress ist bei euch beiden gerade Thema — bei dir im Kopf, bei der Bezugsperson in der Sorge um dich. Eine gemeinsame Pause ohne Ratschläge kann für beide Seiten entlasten.',
+  digital: 'Die digitale Welt beschäftigt euch beide, nur aus unterschiedlicher Richtung. Statt übereinander zu reden, könnt ihr jetzt direkt miteinander klären, was für euch beide in Ordnung ist.',
+  zukunft: 'Zukunft und Motivation liegen euch beiden gerade am Herzen — dir, weil der Druck groß ist; der Bezugsperson, weil die Sorge um dich groß ist. Das ist dieselbe Energie, nur unterschiedlich verpackt.',
+  naehe: 'Ihr merkt beide: Die Nähe hat sich verändert. Das offen auszusprechen ist schon der erste Schritt zurück zueinander.'
 };
 
+var BRUECKEN_PAAR = {
+  druck_vertrauen: 'Der Druck, den du spürst, und die Schwierigkeit der Bezugsperson loszulassen, hängen oft zusammen: Weniger Kontrolle bedeutet nicht weniger Fürsorge — und weniger Druck von außen schafft oft mehr echte Nähe.',
+  grenzen_naehe: 'Wenn Grenzen nicht gesehen werden, zieht man sich oft zurück — und genau diesen Rückzug spürt die Bezugsperson gerade als fehlende Nähe. Eine klare, respektierte Grenze kann beides gleichzeitig verbessern.',
+  stress_druck: 'Dein Kopf ist voll, während die Bezugsperson sich Sorgen um deine Zukunft macht — beides verstärkt sich oft gegenseitig. Weniger Erwartungsdruck von außen schafft oft automatisch mehr Kopf-Freiraum.',
+  digital_vertrauen: 'Dass du online anders bist, macht der Bezugsperson Sorgen ums Vertrauen. Meistens hilft es mehr, offen über die Online-Welt zu sprechen, als sie zu kontrollieren.',
+  naehe_beziehung: 'Du ziehst dich zurück, wenn\'s zu viel wird — die Bezugsperson erlebt genau das als „kommt nicht an". Das ist derselbe Moment aus zwei Blickwinkeln.',
+  vertrauen_grenzen: 'Dass du nichts allein entscheiden darfst, und dass die Bezugsperson nicht immer merkt, wo deine Grenze ist, sind zwei Seiten derselben Lücke: mehr klar benannte kleine Freiräume helfen beiden.',
+  beziehung_druck: 'Nicht ernst genommen zu werden fühlt sich oft genauso an wie hohe Erwartungen, die im Raum stehen, ohne ausgesprochen zu werden. Klarheit über die eigentliche Sorge dahinter hilft oft mehr als noch mehr Nachfragen.',
+  grenzen_stress: 'Wenn deine Grenzen nicht gesehen werden, wird das schnell zu Stress — und die Bezugsperson merkt oft nur den Stress, nicht die eigentliche Ursache. Der Blick auf die Grenze dahinter lohnt sich.',
+  digital_druck: 'Deine Online-Welt und die Sorge der Bezugsperson um deine Zukunft wirken erstmal wie zwei getrennte Themen — hängen aber oft zusammen: Sorge äußert sich schnell als Kontrolle übers Handy.',
+  zukunft_stress: 'Der Druck, jetzt schon alles wissen zu müssen, erzeugt bei dir Stress im Kopf — und die Bezugsperson spürt diesen Stress, ohne die Ursache genau zu kennen. Ein offenes Gespräch über die Zukunftsangst kann beides entlasten.'
+};
+
+function brueckenText(jdTile, elTile){
+  if (jdTile.thema === elTile.thema) {
+    return { text: BRUECKEN_MATCH[jdTile.thema], match: true };
+  }
+  var key1 = jdTile.thema + '_' + elTile.thema;
+  var key2 = elTile.thema + '_' + jdTile.thema;
+  if (BRUECKEN_PAAR[key1]) return { text: BRUECKEN_PAAR[key1], match: false };
+  if (BRUECKEN_PAAR[key2]) return { text: BRUECKEN_PAAR[key2], match: false };
+  return {
+    text: 'Du erlebst gerade: „'+jdTile.text+'" — die Bezugsperson erlebt: „'+elTile.text+'". Zwei unterschiedliche Blickwinkel auf denselben Moment. Schon das offen nebeneinander stehen zu lassen, ohne zu werten, ist ein erster Schritt.',
+    match: false
+  };
+}
+
+/* ---------- Barometer-Check-in (optional, 5 echte Barometer-Zustände) ---------- */
+var BAROMETER_ZUSTAND = [
+  { id:'gruen', farbe:'#2E7D47', label:'Stabil', desc:'heute läuft es gut' },
+  { id:'gelb', farbe:'#C49A00', label:'Aufmerksam', desc:'Anspannung spürbar, aber im Griff' },
+  { id:'orange', farbe:'#C45F1A', label:'Überfordert', desc:'anstrengend, Pause nötig' },
+  { id:'rot', farbe:'#9B2626', label:'Alarmiert', desc:'eine echte Belastung' },
+  { id:'grau', farbe:'#757575', label:'Erschöpft', desc:'Reserven leer' }
+];
+
+var barometerWert = null;
 var selectedJD = null;
 var selectedEL = null;
 
+function baroWaehlen(id){
+  barometerWert = (barometerWert === id) ? null : id;
+  baroRendern();
+  rendern();
+}
+
+function baroRendern(){
+  var wrap = document.getElementById('baroChips');
+  wrap.innerHTML = BAROMETER_ZUSTAND.map(function(b){
+    var aktiv = barometerWert === b.id ? ' aktiv' : '';
+    return '<button type="button" class="baro-chip'+aktiv+'" onclick="baroWaehlen(\''+b.id+'\')"><span class="dot" style="background:'+b.farbe+';"></span>'+b.label+'</button>';
+  }).join('');
+  var hinweis = document.getElementById('baroHinweis');
+  if (barometerWert === 'orange' || barometerWert === 'rot') {
+    hinweis.textContent = 'Alles klar — dann sind unten die Stress-Kacheln erstmal hervorgehoben. Du kannst aber jederzeit ein anderes Thema wählen.';
+  } else {
+    hinweis.textContent = '';
+  }
+}
+
+function istPriorisiert(tile){
+  return (barometerWert === 'orange' || barometerWert === 'rot') && tile.thema === 'stress';
+}
+
+/* ---------- Kacheln, Auswahl, Rendern ---------- */
 function waehleJD(id){ selectedJD = id; rendern(); }
 function waehleEL(id){ selectedEL = id; rendern(); }
 
 function zuruecksetzen(){
+  barometerWert = null;
   selectedJD = null;
   selectedEL = null;
+  baroRendern();
   rendern();
 }
 
-function tileGrid(karten, onClickName){
-  return '<div class="tile-grid">' + karten.map(function(k){
-    return '<button class="tile" onclick="'+onClickName+'(\''+k.id+'\')">'+k.text+'</button>';
+function tileGrid(tiles, onClickName){
+  var sortiert = tiles.slice().sort(function(a,b){
+    var pa = istPriorisiert(a) ? 0 : 1;
+    var pb = istPriorisiert(b) ? 0 : 1;
+    return pa - pb;
+  });
+  return '<div class="tile-grid">' + sortiert.map(function(k){
+    return '<button class="tile'+(istPriorisiert(k) ? ' empfohlen' : '')+'" onclick="'+onClickName+'(\''+k.id+'\')">'+k.text+'</button>';
   }).join('') + '</div>';
 }
 
-function gewaehlteKarteHtml(karten, id){
-  var k = karten.filter(function(x){ return x.id === id; })[0];
+function gewaehlteKarteHtml(tiles, id){
+  var k = tiles.filter(function(x){ return x.id === id; })[0];
   return '<div class="karte-gewaehlt"><div class="haken">✓ Ausgewählt</div><div class="text">'+k.text+'</div></div>';
 }
 
@@ -136,39 +268,51 @@ function rendern(){
 
   // JD-Spalte
   html += '<div class="spalte spalte-jd">';
-  html += '<div class="spalte-kopf"><div class="spalte-label">Jugendliche</div><div class="spalte-frage">Was nervt dich gerade?</div></div>';
+  html += '<div class="spalte-kopf"><div class="spalte-label">Jugendliche</div><div class="spalte-frage">Was beschäftigt dich gerade?</div></div>';
   if (selectedJD) {
-    html += gewaehlteKarteHtml(JD_KARTEN, selectedJD);
+    html += gewaehlteKarteHtml(JD_TILES, selectedJD);
   } else {
-    html += tileGrid(JD_KARTEN, 'waehleJD');
+    html += tileGrid(JD_TILES, 'waehleJD');
   }
   html += '</div>';
 
   // EL-Spalte
   html += '<div class="spalte spalte-el' + (selectedJD ? '' : ' gesperrt') + '">';
-  html += '<div class="spalte-kopf"><div class="spalte-label">Eltern</div><div class="spalte-frage">Was fällt dir gerade schwer?</div></div>';
+  html += '<div class="spalte-kopf"><div class="spalte-label">Eltern / Lehrkraft / Mentor:in</div><div class="spalte-frage">Was fällt dir gerade schwer?</div></div>';
   if (!selectedJD) {
     html += '<div class="warte-hinweis">🔒 Noch nicht dran — erst wählt die Jugendliche / der Jugendliche.</div>';
   } else if (selectedEL) {
-    html += gewaehlteKarteHtml(EL_KARTEN, selectedEL);
+    html += gewaehlteKarteHtml(EL_TILES, selectedEL);
   } else {
-    html += tileGrid(EL_KARTEN, 'waehleEL');
+    html += tileGrid(EL_TILES, 'waehleEL');
   }
   html += '</div>';
 
   // Brücke
   if (selectedJD && selectedEL) {
-    var text = BRUECKEN[selectedJD + '_' + selectedEL] || 'Beide Perspektiven sind berechtigt – auch wenn sie gerade nicht zusammenpassen. Das offen anzusprechen ist bereits der erste Schritt.';
-    html += '<div class="bruecke"><div class="bruecke-label">Die Brücke</div><div class="bruecke-titel">Beide Seiten haben recht</div><div class="bruecke-text">'+text+'</div></div>';
+    var jdTile = JD_TILES.filter(function(t){ return t.id === selectedJD; })[0];
+    var elTile = EL_TILES.filter(function(t){ return t.id === selectedEL; })[0];
+    var ergebnis = brueckenText(jdTile, elTile);
+    var thema = themaById(jdTile.thema);
+
+    html += '<div class="bruecke">';
+    if (ergebnis.match) {
+      html += '<div class="match-badge">🖐️ High Five — hier seht ihr die Situation genau gleich!</div>';
+    }
+    html += '<div class="bruecke-label">Die Brücke</div><div class="bruecke-titel">Beide Seiten haben recht</div><div class="bruecke-text">'+ergebnis.text+'</div>';
+    html += '<div class="pakt-box"><div class="pakt-label">Der Pakt für diese Woche</div><div class="pakt-text">'+thema.paktSchritt+'</div>' +
+      '<div class="pakt-hinweis">Für mehr Tiefe: <a href="pwa/index.html?deck=jd&karte=37" target="_blank" rel="noopener">JD-37 „Etwas Neues ausprobieren"</a> — die Karte fragt genau danach, was der kleinste erste Schritt sein könnte.</div></div>';
+    html += '</div>';
   }
 
   board.innerHTML = html;
 
   if (!selectedJD) stepper.innerHTML = 'Schritt <b>1 / 3</b> — Sicht der Jugendlichen';
-  else if (!selectedEL) stepper.innerHTML = 'Schritt <b>2 / 3</b> — Sicht der Eltern';
+  else if (!selectedEL) stepper.innerHTML = 'Schritt <b>2 / 3</b> — Sicht der Bezugsperson';
   else stepper.innerHTML = 'Schritt <b>3 / 3</b> — Die Brücke';
 }
 
+baroRendern();
 rendern();
 </script>
 

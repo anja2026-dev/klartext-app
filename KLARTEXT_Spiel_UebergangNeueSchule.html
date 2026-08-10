@@ -179,6 +179,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 <script>
 var SPEICHER_KEY = 'klartext_uebergang_neueschule_v1';
+var SORGEN_KEY = 'klartext_sorgen_v1';
 
 var WOCHENAUFGABEN = [
   { id: 'wa1', icon: '🗺️', text: 'Den Schulweg zur neuen Schule einmal abfahren oder abgehen' },
@@ -232,6 +233,24 @@ function laden(){
       }
     }
   } catch(e) {}
+}
+
+function sorgenLaden(){
+  var geteilt = null;
+  try {
+    var roh = localStorage.getItem(SORGEN_KEY);
+    if (roh) geteilt = JSON.parse(roh);
+  } catch(e) {}
+  if (geteilt && geteilt.length) {
+    zustand.sorgen = geteilt;
+  } else if (zustand.sorgen && zustand.sorgen.length) {
+    /* Migration: seiteneigene Alteintraege einmalig in die gemeinsame Sorgen-Kiste uebernehmen */
+    sorgenSpeichern();
+  }
+}
+
+function sorgenSpeichern(){
+  try { localStorage.setItem(SORGEN_KEY, JSON.stringify(zustand.sorgen)); } catch(e) {}
 }
 
 function escapeHtml(s){
@@ -458,14 +477,14 @@ function sorgeHinzufuegen(){
   });
   input.value = '';
   ausgewaehltesSorgenEmoji = null;
-  speichern();
+  sorgenSpeichern();
   sorgenEmojiRowRendern();
   sorgenListeRendern();
 }
 
 function sorgeEntfernen(id){
   zustand.sorgen = zustand.sorgen.filter(function(s){ return s.id !== id; });
-  speichern();
+  sorgenSpeichern();
   sorgenListeRendern();
 }
 
@@ -502,6 +521,7 @@ document.getElementById('sorgen-input').addEventListener('keydown', function(ev)
 });
 
 laden();
+sorgenLaden();
 countdownRendern();
 faecherBankRendern();
 stundenplanRendern();

@@ -117,13 +117,39 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .print-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.4rem;border:none;border-radius:20px;background:var(--m);color:#fff;font-weight:700;font-size:.85rem;cursor:pointer;font-family:inherit;}
 .print-btn:hover{opacity:.9;}
 
+/* ── JD-KARTEN-IMPULS (Joker-Pause) ─────────────────────────────── */
+.jd-impuls{display:none;background:#FFF9EE;border:1.5px dashed var(--gold);border-radius:14px;padding:.9rem 1rem;margin-top:.9rem;text-align:left;}
+.jd-impuls.zeigen{display:block;animation:einblenden .3s ease;}
+.jd-impuls-text{font-size:.8rem;color:#8A5A00;line-height:1.5;}
+.jd-impuls-text a{color:#8A5A00;font-weight:700;}
+
+/* ── JOB-SPICKZETTEL ─────────────────────────────── */
+.spickzettel-btn{background:var(--surface);color:var(--m);border:1.5px solid var(--border);}
+#job-spickzettel{display:none;}
+.spick-card{background:var(--surface);border:2px solid var(--gold);border-radius:20px;padding:1.6rem 1.5rem;margin-top:1.3rem;}
+.spick-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--m);text-align:center;margin-bottom:1rem;}
+.spick-abschnitt{margin-bottom:1rem;}
+.spick-abschnitt:last-child{margin-bottom:0;}
+.spick-abschnitt-titel{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.spick-liste{list-style:none;display:flex;flex-direction:column;gap:.3rem;}
+.spick-liste li{font-size:.85rem;color:var(--ink);line-height:1.5;padding-left:1.1rem;position:relative;}
+.spick-liste li::before{content:'✓';position:absolute;left:0;color:var(--acc);font-weight:700;}
+.spick-hinweis{font-size:.78rem;color:var(--muted);line-height:1.5;}
+.spick-hinweis a{color:var(--m);}
+
 @media print{
-  .header,.back-btn,.typ-grid,.baro-card,.aktionen-row,.joker-btn,.zsf-knopf-row{display:none!important;}
+  .header,.back-btn,.typ-grid,.baro-card,.aktionen-row,.joker-btn,.zsf-knopf-row,.jd-impuls{display:none!important;}
   .hero{background:none!important;padding:.5rem 0;}
   .hero-titel{color:var(--m)!important;}
   .hero-sub{color:var(--muted)!important;}
   body{background:#fff;}
 }
+body.spickzettel-druck .header,
+body.spickzettel-druck .hero,
+body.spickzettel-druck .zusammenfassung-card,
+body.spickzettel-druck .aktionen-row,
+body.spickzettel-druck .info-zeile{display:none!important;}
+body.spickzettel-druck #job-spickzettel{display:block!important;}
 </style>
 </head>
 <body>
@@ -185,6 +211,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
         <div class="atem-text">Kurz durchatmen …</div>
       </div>
 
+      <div class="jd-impuls" id="jd-impuls">
+        <div class="jd-impuls-text">Falls dich das öfter beschäftigt: Karte <a href="pwa/index.html?deck=jd&karte=41" target="_blank" rel="noopener">JD-41 „Erstes Praktikum – und dann?"</a> geht genau der Frage nach, was vor einer neuen Situation am meisten Sorgen macht.</div>
+      </div>
+
       <div class="feedback-box" id="feedback-box">
         <div class="feedback-text" id="feedback-text"></div>
       </div>
@@ -219,9 +249,28 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       <div class="zsf-knopf-row">
         <button class="zsf-btn nochmal" onclick="rundeStarten(letzteRundeWarKurz)">↺ Nochmal (neue Fragen)</button>
         <button class="zsf-btn neu" onclick="zurueckZurAuswahl()">🎤 Anderes Gespräch wählen</button>
+        <button class="zsf-btn spickzettel-btn" onclick="spickzettelDrucken()">📋 Job-Spickzettel drucken</button>
       </div>
     </div>
     <div class="info-zeile" id="info-zeile"></div>
+
+    <div id="job-spickzettel">
+      <div class="spick-card">
+        <div class="spick-titel">🧭 Mein Job-Spickzettel</div>
+        <div class="spick-abschnitt">
+          <div class="spick-abschnitt-titel">Das zeigst du schon</div>
+          <ul class="spick-liste" id="spick-staerken-liste"></ul>
+        </div>
+        <div class="spick-abschnitt">
+          <div class="spick-abschnitt-titel">Meine Werte klären</div>
+          <div class="spick-hinweis">Vor einem Gespräch hilft oft, sich kurz klarzumachen, worauf es einem selbst wirklich ankommt — dafür gibt es Karte JD-27 „Was mir wichtig ist" im JD-Kartendeck.</div>
+        </div>
+        <div class="spick-abschnitt">
+          <div class="spick-abschnitt-titel">Wenn's stressig wird</div>
+          <div class="spick-hinweis">Eine kurze Pause ist keine Schwäche, sondern eine Strategie — dazu passt Karte JD-20 „Pause ist keine Schwäche".</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="aktionen-row">
@@ -488,6 +537,7 @@ var aktuellerIndex = 0;
 var gewaehlteOptionen = [];
 var letzteRundeWarKurz = false;
 var durchgaengeAbsolviert = 0;
+var letzteStaerkenListe = [];
 
 function speichern(){
   try { localStorage.setItem(SPEICHER_KEY, JSON.stringify({ durchgaengeAbsolviert: durchgaengeAbsolviert })); } catch(e) {}
@@ -571,6 +621,7 @@ function rundeStarten(kurzModus){
   aktuelleFragen = mischen(aktuellerTyp.pool).slice(0, anzahl);
   aktuellerIndex = 0;
   gewaehlteOptionen = [];
+  jokerZaehlerRunde = 0;
 
   document.getElementById('typ-bereich').style.display = 'none';
   document.getElementById('baro-bereich').style.display = 'none';
@@ -589,6 +640,7 @@ function fragenRundeRendern(){
 
   document.getElementById('atem-overlay').classList.remove('zeigen');
   document.getElementById('feedback-box').classList.remove('zeigen');
+  document.getElementById('jd-impuls').classList.remove('zeigen');
   document.getElementById('weiter-btn').classList.remove('zeigen');
   document.getElementById('joker-btn').style.display = 'inline-flex';
 
@@ -627,7 +679,10 @@ function naechsteFrage(){
   }
 }
 
+var jokerZaehlerRunde = 0;
+
 function jokerPauseStarten(){
+  jokerZaehlerRunde++;
   document.getElementById('option-grid').style.display = 'none';
   document.getElementById('joker-btn').style.display = 'none';
   document.getElementById('atem-overlay').classList.add('zeigen');
@@ -636,6 +691,11 @@ function jokerPauseStarten(){
     document.getElementById('atem-overlay').classList.remove('zeigen');
     document.getElementById('option-grid').style.display = 'flex';
     document.getElementById('joker-btn').style.display = 'inline-flex';
+    // Erst ab der 2. Pause in dieser Runde den JD-Impuls anbieten — ein einzelner
+    // Moment zum Durchatmen braucht noch keinen Verweis, das wäre zu viel auf einmal.
+    if (jokerZaehlerRunde >= 2) {
+      document.getElementById('jd-impuls').classList.add('zeigen');
+    }
   }, 2600);
 }
 
@@ -679,9 +739,21 @@ function zusammenfassungAnzeigen(){
       li.textContent = QUALITAET_TEXTE.entwicklung[k];
       uebungListe.appendChild(li);
     });
+    // "zurueckhaltung" taucht oft bei Antworten wie "ich hab keine Schwächen" auf —
+    // ein guter, konkreter Anknüpfungspunkt für JD-19 (Perfekt ist nicht das Ziel).
+    if (entwicklungGesehen.zurueckhaltung) {
+      var liJd = document.createElement('li');
+      liJd.innerHTML = 'Wenn dir das Benennen eigener Schwächen schwerfällt: Karte JD-19 „Perfekt ist nicht das Ziel" setzt genau da an.';
+      uebungListe.appendChild(liJd);
+    }
   } else {
     uebungAbschnitt.style.display = 'none';
   }
+
+  // Für den Job-Spickzettel merken, welche Stärken in dieser Runde sichtbar wurden.
+  letzteStaerkenListe = gutKeys.length
+    ? gutKeys.map(function(k){ return QUALITAET_TEXTE.stark[k]; })
+    : ['Du hast dich ehrlich auf schwierige Fragen eingelassen — das allein ist schon eine Stärke!'];
 
   var brainySaetze = uebungKeys.length
     ? ['Super, dass du das geübt hast — jede Runde macht dich sicherer! 🌟', 'Toll gemacht! Übung ist der beste Weg, um im echten Gespräch entspannt zu bleiben. 💚']
@@ -694,6 +766,23 @@ function zusammenfassungAnzeigen(){
   document.getElementById('zusammenfassung-bereich').style.display = 'block';
   konfettiAusloesen();
 }
+
+function spickzettelDrucken(){
+  var liste = document.getElementById('spick-staerken-liste');
+  liste.innerHTML = '';
+  letzteStaerkenListe.forEach(function(text){
+    var li = document.createElement('li');
+    li.textContent = text;
+    liste.appendChild(li);
+  });
+
+  document.body.classList.add('spickzettel-druck');
+  window.print();
+}
+
+window.addEventListener('afterprint', function(){
+  document.body.classList.remove('spickzettel-druck');
+});
 
 function zurueckZurAuswahl(){
   aktuellerTyp = null;

@@ -92,7 +92,10 @@ body{
 .jd-zeile{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.75);margin-bottom:.5rem;}
 .jd-zeile:last-of-type{margin-bottom:0;}
 .jd-zeile b{color:var(--acc);}
-.jd-link{display:inline-block;margin-top:.6rem;font-size:.72rem;color:var(--acc);text-decoration:underline;}
+.jd-karten-link{color:inherit;text-decoration:none;}
+.jd-karten-link b{text-decoration:underline;}
+.jd-karten-link:hover b{color:#fff;}
+.jd-hinweis{margin-top:.6rem;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.1);font-size:.68rem;line-height:1.5;color:rgba(255,255,255,.45);font-style:italic;}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:400;padding:1rem;}
 .overlay.zeigen{display:flex;}
@@ -413,9 +416,9 @@ var CLUSTERS = [
 ];
 
 var JD_BEGLEITUNG = [
-  { anlass:'Wenn du unsicher bist, was du eigentlich willst', nr:'JD-05', titel:'Alle wissen schon, was sie wollen – nur ich nicht' },
-  { anlass:'Wenn du Angst hast, dich falsch zu entscheiden', nr:'JD-08', titel:'Was, wenn ich meine Meinung später ändere?' },
-  { anlass:'Wenn du erstmal klären willst, was dir wirklich wichtig ist', nr:'JD-27', titel:'Was mir wichtig ist' }
+  { anlass:'Wenn du unsicher bist, was du eigentlich willst', nr:'JD-05', karteNr:5, titel:'Alle wissen schon, was sie wollen – nur ich nicht' },
+  { anlass:'Wenn du Angst hast, dich falsch zu entscheiden', nr:'JD-08', karteNr:8, titel:'Was, wenn ich meine Meinung später ändere?' },
+  { anlass:'Wenn du erstmal klären willst, was dir wirklich wichtig ist', nr:'JD-27', karteNr:27, titel:'Was mir wichtig ist' }
 ];
 
 var aktiverTab = 'jugend';
@@ -485,11 +488,11 @@ function renderProfilTab(){
     });
     if (aktiveCluster.length > 0) {
       var jdZeilen = JD_BEGLEITUNG.map(function(j){
-        return '<div class="jd-zeile">'+j.anlass+': <b>'+j.nr+'</b> „'+j.titel+'"</div>';
+        return '<div class="jd-zeile">'+j.anlass+': <a class="jd-karten-link" href="pwa/index.html?deck=jd&karte='+j.karteNr+'" target="_blank" rel="noopener"><b>'+j.nr+'</b> „'+j.titel+'"</a></div>';
       }).join('');
       html += '<div class="jd-box"><div class="jd-titel">Falls dich die Berufswahl gerade beschäftigt</div>' +
         jdZeilen +
-        '<a class="jd-link" href="pwa/index.html" target="_blank" rel="noopener">→ JD-Kartendeck digital öffnen</a></div>';
+        '<div class="jd-hinweis">Tippen öffnet die Karte direkt in der App. Ohne digitalen Zugang: gleiche Karten im physischen JD-Deck.</div></div>';
     }
   } else {
     var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
@@ -527,7 +530,7 @@ function profilTextErzeugen(){
     });
     if (aktiveCluster.length > 0) {
       text += 'Falls dich die Berufswahl gerade beschäftigt (JD-Kartendeck, digital in der App oder physisch):\n';
-      JD_BEGLEITUNG.forEach(function(j){ text += '  • '+j.anlass+': '+j.nr+' „'+j.titel+'"\n'; });
+      JD_BEGLEITUNG.forEach(function(j){ text += '  • '+j.anlass+': '+j.nr+' „'+j.titel+'" → pwa/index.html?deck=jd&karte='+j.karteNr+'\n'; });
       text += '\n';
     }
   } else {

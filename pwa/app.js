@@ -118,7 +118,7 @@ async function loadDecks() {
 }
 
 async function openDeck(deckId, opts = {}) {
-  const { pushState = true } = opts;
+  const { pushState = true, karteNr = null } = opts;
   let res;
   try {
     res = await fetch(`data/${deckId}.json`);
@@ -132,8 +132,19 @@ async function openDeck(deckId, opts = {}) {
   document.documentElement.style.setProperty('--deck-light', currentDeck.farbe_hell);
   document.documentElement.style.setProperty('--deck-border', currentDeck.farbe_rand);
 
-  const saved = parseInt(localStorage.getItem(lastIndexKey(deckId)), 10);
-  currentIndex = (!isNaN(saved) && saved >= 0 && saved < currentDeck.karten.length) ? saved : 0;
+  // Deep-Link auf eine bestimmte Karte (z.B. aus der Skill-Matrix: ?deck=jd&karte=5) hat
+  // Vorrang vor der zuletzt gesehenen Karte – wer gezielt verlinkt wird, soll auch genau
+  // diese Karte sehen, nicht die vom letzten Besuch.
+  let startIndex = null;
+  if (karteNr !== null) {
+    const treffer = currentDeck.karten.findIndex(k => k.nr === karteNr);
+    if (treffer !== -1) startIndex = treffer;
+  }
+  if (startIndex === null) {
+    const saved = parseInt(localStorage.getItem(lastIndexKey(deckId)), 10);
+    startIndex = (!isNaN(saved) && saved >= 0 && saved < currentDeck.karten.length) ? saved : 0;
+  }
+  currentIndex = startIndex;
 
   screenDecks.hidden = true;
   screenCards.hidden = false;
@@ -141,7 +152,10 @@ async function openDeck(deckId, opts = {}) {
   renderCard();
   window.scrollTo(0, 0);
   setAppIdentity(currentDeck);
-  if (pushState) history.pushState({ deck: deckId }, '', `?deck=${deckId}`);
+  if (pushState) {
+    const url = karteNr !== null ? `?deck=${deckId}&karte=${karteNr}` : `?deck=${deckId}`;
+    history.pushState({ deck: deckId, karte: karteNr }, '', url);
+  }
 }
 
 function closeDeck(opts = {}) {
@@ -319,15 +333,23 @@ document.addEventListener('keydown', (e) => {
 
 // Zurück/Vor-Buttons des Browsers respektieren (falls genutzt), ohne neuen History-Eintrag
 window.addEventListener('popstate', () => {
-  const deckId = new URLSearchParams(location.search).get('deck');
-  if (deckId) openDeck(deckId, { pushState: false });
+  const params = new URLSearchParams(location.search);
+  const deckId = params.get('deck');
+  const karteParam = params.get('karte');
+  const karteNr = karteParam !== null ? parseInt(karteParam, 10) : null;
+  if (deckId) openDeck(deckId, { pushState: false, karteNr: (karteNr !== null && !isNaN(karteNr)) ? karteNr : null });
   else closeDeck({ pushState: false });
 });
 
-// Deep-Link beim Start: ?deck=<id> öffnet direkt dieses Deck (z.B. eigenes Home-Bildschirm-Icon pro Deck)
+// Deep-Link beim Start: ?deck=<id> öffnet direkt dieses Deck (z.B. eigenes Home-Bildschirm-Icon pro Deck).
+// Zusätzlich &karte=<nr> springt direkt zu einer bestimmten Karte (z.B. Verweis aus der Skill-Matrix
+// auf JD-05: pwa/index.html?deck=jd&karte=5), statt dass man sich durchs ganze Deck klicken muss.
 loadDecks().then(() => {
-  const deckId = new URLSearchParams(location.search).get('deck');
-  if (deckId) openDeck(deckId, { pushState: false });
+  const params = new URLSearchParams(location.search);
+  const deckId = params.get('deck');
+  const karteParam = params.get('karte');
+  const karteNr = karteParam !== null ? parseInt(karteParam, 10) : null;
+  if (deckId) openDeck(deckId, { pushState: false, karteNr: (karteNr !== null && !isNaN(karteNr)) ? karteNr : null });
 });
 
 if ('serviceWorker' in navigator) {

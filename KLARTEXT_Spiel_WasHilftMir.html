@@ -56,6 +56,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .zuhause-info .z-impuls{background:var(--surface);border-radius:10px;padding:.6rem .75rem;font-style:italic;margin-bottom:.6rem;}
 .zuhause-info .z-mehr{font-size:.74rem;color:#4A55A2;text-decoration:none;font-weight:600;}
 .zuhause-info .z-mehr:hover{text-decoration:underline;}
+.z-hilfreich-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:.4rem .8rem;font-family:inherit;font-size:.76rem;font-weight:600;color:var(--ink);cursor:pointer;margin-bottom:.6rem;transition:all .15s;}
+.z-hilfreich-btn:hover{border-color:#4A55A2;}
+.z-hilfreich-btn.aktiv{background:#EEF0FA;border-color:#4A55A2;color:#4A55A2;}
 
 /* ── SORGEN-KISTE ─────────────────────────────── */
 .sorgen-emoji-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem;}
@@ -115,11 +118,36 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <div class="sorgen-liste" id="sorgen-liste"></div>
   </div>
 
+  <div class="ub-card" style="text-align:center;">
+    <div class="ub-card-titel">📄 Für ein Gespräch vorbereiten</div>
+    <div class="ub-card-sub">Fasst dein Superpower-Profil, deinen Reizfilter-Verlauf und die als hilfreich markierten Zuhause-Ideen in einem druckbaren Bericht zusammen.</div>
+    <a class="sorgen-btn" style="display:inline-flex;text-decoration:none;" href="KLARTEXT_Ressourcenbericht.html">Ressourcen-Bericht öffnen →</a>
+  </div>
+
 </div>
 
 <script>
 var SORGEN_KEY = 'klartext_sorgen_v1';
 var SORGEN_EMOJIS = ['😟','😢','😰','😕','😠','🤔'];
+var INSEL_HILFREICH_KEY = 'klartext_insel_hilfreich_v1';
+
+function hilfreichLaden(){
+  try {
+    var roh = localStorage.getItem(INSEL_HILFREICH_KEY);
+    return roh ? JSON.parse(roh) : {};
+  } catch(e) { return {}; }
+}
+
+function hilfreichUmschalten(momentId, inselId){
+  var alle = hilfreichLaden();
+  var key = momentId + '_' + inselId;
+  if (alle[key]) {
+    delete alle[key];
+  } else {
+    alle[key] = { datum: new Date().toISOString() };
+  }
+  try { localStorage.setItem(INSEL_HILFREICH_KEY, JSON.stringify(alle)); } catch(e) {}
+}
 
 /* Namen und Funktionen 1:1 aus dem Eltern-Insel-Mini-Handbuch (8 Inseln, keine Nummerierung im
    Original — falls hier trotzdem sortiert aufgelistet, ist das nur die Objekt-Reihenfolge, keine
@@ -271,10 +299,29 @@ function momentGridRendern(){
           var loseHinweis = m.insel.loseAlternative
             ? 'Das eigentliche Thema entsteht zwar nicht zuhause — trotzdem kann ein fester, ruhiger Ort dort helfen, damit umzugehen. '
             : '';
+          var istHilfreich = !!hilfreichLaden()[m.id + '_' + m.insel.id];
           zInfo.innerHTML =
             '<div class="z-funktion">' + loseHinweis + 'Falls es zuhause sowas wie das KLARTEXT-Insel-Set gibt (oder ihr überlegt, eins einzuführen): Kernidee der ' + insel.name + ' ist ' + insel.funktion + '.</div>' +
-            '<div class="z-impuls">„' + m.insel.impuls + '"</div>' +
-            '<a class="z-mehr" href="KLARTEXT_Insel-Set_Eltern.pdf" target="_blank" rel="noopener">Mehr zum Insel-Set (PDF) →</a>';
+            '<div class="z-impuls">„' + m.insel.impuls + '"</div>';
+
+          var hilfreichBtn = document.createElement('button');
+          hilfreichBtn.className = 'z-hilfreich-btn' + (istHilfreich ? ' aktiv' : '');
+          hilfreichBtn.innerHTML = (istHilfreich ? '✓ Das hat geholfen' : '☆ Das hat geholfen markieren');
+          hilfreichBtn.addEventListener('click', function(){
+            hilfreichUmschalten(m.id, m.insel.id);
+            momentGridRendern();
+          });
+          zInfo.appendChild(hilfreichBtn);
+
+          var mehrLink = document.createElement('a');
+          mehrLink.className = 'z-mehr';
+          mehrLink.href = 'KLARTEXT_Insel-Set_Eltern.pdf';
+          mehrLink.target = '_blank';
+          mehrLink.rel = 'noopener';
+          mehrLink.textContent = 'Mehr zum Insel-Set (PDF) →';
+          mehrLink.style.display = 'block';
+          zInfo.appendChild(mehrLink);
+
           zBlock.appendChild(zInfo);
         }
 

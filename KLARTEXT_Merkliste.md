@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 63 ergänzt)
+Stand: 11.08.2026 (Strang 64 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1461,3 +1461,34 @@ Muster A behält den traditionellen Gruß, Gruß-Feld ist editierbar und wird pe
 ### Noch offen
 
 - Alle Punkte aus Strang 57–62 bleiben unverändert offen.
+
+## Strang 64: Trainerhandbuch — Kapitel 9 "Bewerbungscoaching & Berufsvorbereitung" (11.08.2026)
+
+Fünfter Prompt zum Bewerbungs-Themenkomplex, diesmal ein Trainerhandbuch-Kapitel statt Code. Vorab
+kurz nach Aufwand gefragt (Wochenlimit 65 %) und ehrlich eingeschätzt: klein, weil (a) das
+`KLARTEXT_Trainerhandbuch.html` bereits 8 Kapitel in einer wiederverwendbaren Struktur hat (Kapitel
+einfach als Nr. 9 einsetzen) und (b) der im Prompt erwähnte „Bewerbungs-Simulator" kein fehlendes
+Tool ist, sondern nur ein anderer Name für das längst existierende
+`KLARTEXT_Spiel_Bewerbungsgespraech.html`.
+
+**Fact-Check (kurz, da Aufwand gering sein sollte):** JD-3 „Meine Stärken sehen", JD-27 „Was mir
+wichtig ist", JD-17 „Vor der Prüfung: was hilft wirklich?" und `M2-13_Selbstwirksamkeit.html`
+existieren alle exakt wie im Prompt benannt — keine Korrektur nötig.
+
+**Umgesetzt (`KLARTEXT_Trainerhandbuch.html`):** Kapitel 9 „Bewerbungscoaching &
+Berufsvorbereitung" nach dem bestehenden Muster ergänzt (Inhaltsverzeichnis-Eintrag, Kapitel-Artikel
+mit `.ab`-Blöcken, `.phasen-kette` für die 3-Phasen-Tool-Kette, `.box-tipp` am Ende) — fünf
+Abschnitte: rechtlicher Rahmen (SGB IX/Eingliederungshilfe, DSGVO, DIN 5008 — ausdrücklich als
+fachliche Orientierung, nicht als Rechtsberatung formuliert, mit Verweis auf Rücksprache bei der
+Eingliederungshilfe-Fachstelle im Einzelfall), systemische Haltung, Tool-Kette (Selbsterkenntnis →
+Dokumentenerstellung → Training & Simulation, mit den echten Datei-/Kartenverweisen), Umgang mit
+Vermittlungshemmnissen (Neurodivergenz/M2-42, Prüfungsangst/JD-17), Dokumentation für Kostenträger
+(Ressourcen-Bericht). Quellenverzeichnis um SGB IX, DSGVO und DIN 5008 (mit Verweis auf die in
+Strang 62 recherchierten Positionsangaben) ergänzt.
+
+**Getestet:** Struktur-Check (9 `<article class="kapitel">`-Elemente, TOC-Link vorhanden), alle im
+Kapitel referenzierten Dateien existieren tatsächlich im Repo.
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–63 bleiben unverändert offen.

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 67 ergänzt)
+Stand: 11.08.2026 (Strang 68 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1613,3 +1613,97 @@ sinnvoll, um diesen einen Pfad wirklich zu bestätigen.
 - Manuelle Sichtprüfung der Firebase-geladenen Dashboard-Kacheln im echten Browser (s. o.) — nicht
   automatisiert testbar in dieser Umgebung.
 - Alle Punkte aus Strang 57–65 bleiben unverändert offen.
+
+## Strang 68: QR-Code-Integration — Joker-Karte & Superpower-Card (11.08.2026)
+
+Neunter Prompt in der QR-Code-Themenreihe. Anders als der vorherige Gesamtvorschlag (dort noch 4
+Punkte inkl. Insel-Set und TK-Recruiting) beschränkte sich dieser konkrete Bauauftrag auf 2 der 4
+Punkte — Joker-Karte und Superpower-Card — plus den ausdrücklichen Hinweis, das Insel-Set
+wegzulassen. Genau in diesem Umfang umgesetzt; TK-Recruiting und Insel-Set bleiben unangetastet,
+bis dafür ein eigener Auftrag kommt.
+
+**Vorab fachlich geprüft/korrigiert:**
+- `joker-karte.html` aus dem Prompt existiert nicht — echte Datei: `M3_DL_Joker-Karte.html` (8
+  identische Karten, 2-spaltiges A4-Raster, Login-Gate vorhanden).
+- Kritischer, nicht im Prompt erwähnter Punkt: Ein QR-Code, der nur auf einen **relativen** Pfad
+  wie `KLARTEXT_Spiel_Reizfilter.html` zeigt, funktioniert nicht, wenn ein fremdes Gerät (z. B. das
+  Handy der Lehrkraft) ihn scannt — es gibt keinen Browser-Kontext, der den relativen Pfad auflösen
+  könnte. Die echte, im Repo mehrfach verwendete Produktions-Domain `https://klartext-mentoring.de/`
+  wurde recherchiert (Fund: `KLARTEXT_Shop_Uebersicht.html`- und `*_Verkaufsseite.html`-Links) und für
+  alle neuen QR-Ziele als absolute URL verwendet.
+- Die im Prompt vorausgesetzte Zielseite `profil.html?data=XYZ` existierte nicht — neu angelegt als
+  `KLARTEXT_Profil_Ansicht.html`, mit klarerem, KLARTEXT-konformem Dateinamen.
+- Architektur-Punkt aus der letzten Rückfrage (Antwort erhalten: kompakte Profil-Zusammenfassung
+  lokal in die URL kodieren, keine Dritt-API): umgesetzt — siehe unten.
+
+**Umgesetzt:**
+- **`KLARTEXT_QRCode.js`** (neu, vendored): enthält die Bibliothek `qrcode-generator` von Kazuhiko
+  Arase (MIT-Lizenz, Version 2.0.4, https://github.com/kazuhikoarase/qrcode-generator) fast
+  unverändert als lokale Datei — bewusst nicht per CDN geladen, damit keine Texte/Profildaten an
+  einen fremden Server gehen und die Seite ohne Internetzugriff funktioniert. Am Dateiende ein
+  kleiner KLARTEXT-Wrapper `window.KLARTEXT_QRCode.erzeugeSvg(text, opts)`, der ein fertiges,
+  skalierbares `<svg>` liefert (Fehlerkorrektur-Level „M", automatische QR-Version je nach
+  Textlänge, QR-Norm-Ruhezone von 4 Modulen unverändert gelassen statt hart auf einen festen Wert
+  gesetzt).
+- **`M3_DL_Joker-Karte.html`:** Auf allen 8 Karten ein 13×13 mm großes QR-Feld neben dem
+  Merksatz ergänzt (Flex-Zeile `.jk-footer`, Merksatz bekommt `flex:1`, QR-Feld `flex:0 0 13mm`) —
+  das 2-spaltige A4-Raster bleibt erhalten, Karten werden nur geringfügig höher, nichts überlappt
+  oder verschiebt sich. Alle 8 QR-Codes zeigen auf denselben absoluten Link
+  (`https://klartext-mentoring.de/KLARTEXT_Spiel_Reizfilter.html`), daher wird das SVG einmal
+  erzeugt und in alle 8 Felder eingesetzt (kein 8-facher Rechenaufwand).
+- **`KLARTEXT_Profil_Codec.js`** (neu, gemeinsam genutzt von Superpower-Card und Profil-Ansicht):
+  Tabelle `CLUSTER_INFO` mit den 6 echten Cluster-IDs/Icons/Titeln aus
+  `KLARTEXT_Spiel_SkillMatrix.html` (`team`, `fokus`, `kreativ`, `verantwortung`, `problem`,
+  `mutig`) sowie denselben Berufssprache-Labels wie `CLUSTER_STAERKE_LABEL` im
+  Bewerbungs-Generator (z. B. `fokus` → „Konzentrationsfähigkeit & Ausdauer"), damit alle drei Tools
+  dieselbe Sprache sprechen. Funktionen `kodieren(name, clusterIds)` / `dekodieren(searchParams)`
+  sowie `clusterAusLocalStorage()` (liest `klartext_skillmatrix_profil_v1` und mappt die
+  gespeicherten Cluster-Titel zurück auf die kurzen IDs).
+  **Bewusste Datensparsamkeit:** Im QR/Link stehen nur Name + bis zu 3 Cluster-IDs (kurz, z. B.
+  `?n=Alex&c=team,fokus,mutig`) — keine Hobbys, Berufsfelder oder Beispielberufe aus dem
+  Superpower-Profil. Das hält den QR-Code klein/gut scanbar UND gibt einer scannenden Arbeitgeberin
+  /einem Arbeitgeber nicht mehr persönliche Details preis, als für eine Vorstellungs-Karte nötig
+  sind — konsistent mit der bestehenden Privacy-Haltung der App (Sorgen-Kiste, sessionStorage-Login).
+- **`KLARTEXT_Superpower_Card.html`** (neu): Login-gated Druckvorlage. Liest die Top-3-Cluster über
+  `clusterAusLocalStorage()`; ist noch kein Superpower-Profil vorhanden, wird statt einer leeren
+  Karte ein Hinweis mit direktem Link zum Skill-Matrix-Spiel gezeigt (keine kaputte/leere Karte).
+  Name wird per Eingabefeld erfasst (eigener Speicherort `klartext_superpowercard_name_v1`, mit dem
+  Hinweis, dass auch der Vorname allein reicht). Zwei identische Karten pro A4-Seite zum
+  Ausschneiden (gleiches Muster wie die bestehende Joker-Karten-Vorlage), je Karte: Name, Top-3-
+  Cluster mit Berufssprache-Label, sowie ein 18×18 mm QR-Code zur Profil-Ansicht. Zusätzlicher
+  „Online-Ansicht testen"-Link (öffnet die Zielseite direkt im Browser), damit Teilnehmende/
+  Trainer:innen vor dem Drucken selbst prüfen können, was Arbeitgeber:innen später sehen.
+- **`KLARTEXT_Profil_Ansicht.html`** (neu): **Bewusst ohne Login-Gate** — das ist die Seite, die
+  eine fremde Person (Arbeitgeber:in) über den QR-Code öffnet, die hat keinen KLARTEXT-Zugang und
+  soll auch keinen brauchen. Liest zuerst `?n=`/`?c=` aus der URL (der Regelfall beim Scan durch
+  Dritte); ist kein `c`-Parameter vorhanden, greift ein Fallback auf `klartext_skillmatrix_profil_v1`
+  im lokalen Speicher (Vorschau auf dem eigenen Gerät ohne Parameter). Ist gar kein Profil auffindbar,
+  erscheint ein freundlicher Leer-Zustand statt einer leeren/kaputten Seite. `<meta name="robots"
+  content="noindex">` gesetzt, damit diese Profil-Seiten nicht in Suchmaschinen landen.
+- Verlinkung: neuer Eintrag „Superpower-Card" in `KLARTEXT_Downloads.html` (direkt nach dem
+  Bewerbungs-Generator) sowie ein zusätzlicher Link im „Bausteine für Anschreiben & Gespräch"-Kasten
+  in `KLARTEXT_Spiel_SkillMatrix.html`, analog zum bestehenden Bewerbungs-Generator-Link — beide ohne
+  `rel="noopener"` bzw. serverseitige Navigation, gemäß der in Strang 61 festgelegten Regel.
+
+**Getestet (jsdom, gegen die echten Dateien):**
+- `M3_DL_Joker-Karte.html`: alle 8 `.jk-qr`-Felder korrekt mit SVG befüllt, Kartenanzahl unverändert
+  bei 8.
+- `KLARTEXT_Superpower_Card.html`: mit gespeichertem Profil → 2 Karten, je 3 Cluster in korrekter
+  Stärke-Reihenfolge, QR vorhanden, Vorschau-Link enthält die absolute Domain und korrekt kodierte
+  Umlaute/ß (`Alex Müßig` → `Alex+M%C3%BCßig`-artige, korrekt decodierbare Kodierung); ohne Profil →
+  Hinweis-Box sichtbar, keine leeren Karten gerendert.
+- `KLARTEXT_Profil_Ansicht.html`: mit `?n=&c=`-Parametern → Name inkl. Umlaut/ß und alle 3 Cluster in
+  korrekter Reihenfolge gerendert; ganz ohne Parameter und ohne lokalen Speicher → Leer-Zustand; ohne
+  Parameter, aber mit lokal gespeichertem Profil → Fallback-Karte korrekt aus `localStorage` gefüllt.
+- Struktur-Check (`<div>`-Balance) für alle 5 geänderten/neuen Dateien: durchweg ausgeglichen.
+- `KLARTEXT_QRCode.js` und `KLARTEXT_Profil_Codec.js`: Syntax-Check (`node --check`) fehlerfrei.
+
+### Noch offen
+
+- **TK-Recruiting.html** (Punkt 4 des ursprünglichen Gesamtvorschlags) und **Insel-Set/Python-
+  Pipeline** (Punkt 2) waren nicht Teil dieses konkreten Auftrags und wurden entsprechend nicht
+  angefasst.
+- Kein echter QR-Scan-Test mit einem physischen Smartphone durchgeführt (in dieser Umgebung nicht
+  möglich) — die generierten SVGs sind nach QR-Norm aufgebaut (Standard-Ruhezone, Fehlerkorrektur
+  „M"), ein kurzer Praxis-Scan-Test nach dem Ausdrucken wird trotzdem empfohlen.
+- Alle Punkte aus Strang 57–67 bleiben unverändert offen.

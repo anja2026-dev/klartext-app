@@ -16,7 +16,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 .jk-brainy{width:40px;height:40px;object-fit:contain;}
 .jk-titel{font-size:13px;font-weight:900;color:#B07D2A;margin-bottom:3mm;font-family:Georgia,serif;}
 .jk-feld{font-size:9px;color:#555;border-bottom:1px solid #E0C88A;padding-bottom:2mm;margin-bottom:2.5mm;}
-.jk-merk{font-size:8.5px;font-style:italic;color:#5A3A00;background:#FBF4E8;border-radius:6px;padding:2mm 3mm;margin-top:auto;text-align:center;}
+.jk-footer{display:flex;align-items:center;gap:2mm;margin-top:auto;}
+.jk-merk{font-size:8.5px;font-style:italic;color:#5A3A00;background:#FBF4E8;border-radius:6px;padding:2mm 3mm;text-align:center;flex:1;}
+.jk-qr{width:13mm;height:13mm;flex:0 0 13mm;}
+.jk-qr svg{display:block;width:100%;height:100%;}
 @media print{.nav,.info{display:none!important;}body{background:white;padding:0;}@page{size:A4;margin:8mm;}}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
@@ -26,7 +29,7 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
   <a href="KLARTEXT_Downloads.html" class="nbtn">← Downloads</a>
   <button class="nbtn dbtn" onclick="window.print()">🖨 Drucken / PDF</button>
 </div>
-<div class="info"><img src="brainy.png" alt="Brainy"><span>🃏 8 Joker-Karten auf einer DIN A4-Seite — ausschneiden, mit individuellem Signal ausfüllen, griffbereit aufbewahren.</span></div>
+<div class="info"><img src="brainy.png" alt="Brainy"><span>🃏 8 Joker-Karten auf einer DIN A4-Seite — ausschneiden, mit individuellem Signal ausfüllen, griffbereit aufbewahren. Der QR-Code auf jeder Karte führt direkt zum Reizfilter-Tool.</span></div>
 
 <div class="print-page">
       <div class="joker-karte">
@@ -38,7 +41,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -49,7 +55,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -60,7 +69,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -71,7 +83,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -82,7 +97,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -93,7 +111,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -104,7 +125,10 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
       <div class="joker-karte">
         <div class="jk-head">
@@ -115,9 +139,31 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
         <div class="jk-feld">Signal: ________________________</div>
         <div class="jk-feld">Lehrkraft reagiert: ___________</div>
         <div class="jk-feld">Ich tue dann: __________________</div>
-        <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+        <div class="jk-footer">
+          <div class="jk-merk">„Ich brauche jetzt kurz Unterstützung."</div>
+          <div class="jk-qr" aria-hidden="true"></div>
+        </div>
       </div>
 </div>
 
+<script src="KLARTEXT_QRCode.js"></script>
+<script>
+/* Erzeugt den QR-Code fuer alle 8 Joker-Karten einmalig und traegt das
+   fertige SVG in jedes .jk-qr-Element ein. Alle 8 Karten verlinken auf
+   dieselbe Ziel-Seite (Reizfilter), daher genuegt eine Berechnung.
+   Absoluter Link (nicht relativ), weil ein Scan von einem fremden Geraet
+   (z. B. dem Handy einer Lehrkraft) sonst ins Leere liefe. */
+(function(){
+  var ZIEL = 'https://klartext-mentoring.de/KLARTEXT_Spiel_Reizfilter.html';
+  if (!window.KLARTEXT_QRCode) return;
+  var svg = window.KLARTEXT_QRCode.erzeugeSvg(ZIEL);
+  if (!svg) return;
+  var felder = document.querySelectorAll('.jk-qr');
+  for (var i = 0; i < felder.length; i++) {
+    felder[i].innerHTML = svg;
+    felder[i].setAttribute('title', 'QR-Code: Reizfilter-Tool öffnen');
+  }
+})();
+</script>
 </body>
 </html>

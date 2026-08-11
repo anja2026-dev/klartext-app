@@ -197,7 +197,7 @@ textarea.f{resize:vertical;border:1px dotted #C7BFAE;border-radius:3px;padding:.
       </div>
 
       <div class="gruss-block">
-        <div class="gruss-fix">Mit freundlichen Grüßen</div>
+        <input class="f gruss-fix" type="text" oninput="feldAendern('anschreiben','gruss',this.value)" id="a-gruss">
         <div class="gruss-name" id="a-gruss-name"></div>
       </div>
     </div>
@@ -263,7 +263,7 @@ var leererZustand = function(){
       absName:'', absStrasse:'', absOrt:'', absTel:'', absEmail:'',
       empfFirma:'', empfPerson:'', empfStrasse:'', empfOrt:'',
       ort:'', datum: heuteLesbar(),
-      betreff:'', anrede:'', einstieg:'', hauptteil:'', schluss:''
+      betreff:'', anrede:'', einstieg:'', hauptteil:'', schluss:'', gruss:'Mit freundlichen Grüßen'
     },
     lebenslauf: {
       name:'', adresse:'', tel:'', email:'', geburtsdatum:'',
@@ -358,18 +358,21 @@ function anredeAutoVorschlag(empfPerson){
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   ZAUBERSTAB — nutzt die echten Anschreiben-Formulierungen aus der
-   Skill-Matrix (KLARTEXT_Spiel_SkillMatrix.html, CLUSTERS-Array), keine
-   neu erfundenen Sätze. Das gespeicherte Profil enthält selbst keine
-   Vorlagen-Sätze (nur titel/icon/hobbys/felder/beispiele) — die Vorlagen
-   werden hier daher über den titel nachgeschlagen. ─────────────────── */
+   ZAUBERSTAB — Vorlagensätze, an die Skill-Matrix-Cluster gekoppelt
+   (KLARTEXT_Spiel_SkillMatrix.html, CLUSTERS-Array). Wortlaut Strang 63
+   überarbeitet: einfache, direkte, ressourcenorientierte Sprache statt
+   Standardfloskeln. Wichtig: als Schlüssel müssen die ECHTEN Cluster-
+   Titel aus der Skill-Matrix stehen ("Fokus-Champion", "Mutig &
+   Stressfest") — nicht die im Prompt verwendeten Namen ("Fokus-Held",
+   "Macher-Mut"), sonst würde der Zauberstab beim Nachschlagen leer
+   ausgehen, weil das gespeicherte Profil die echten Titel liefert. */
 var CLUSTER_ANSCHREIBEN_VORLAGEN = {
-  'Team-Power': 'Bei {hobby} habe ich gelernt, im Team Verantwortung zu übernehmen und gemeinsam Ziele zu erreichen.',
-  'Fokus-Champion': 'Durch {hobby} bin ich es gewohnt, auch bei anspruchsvollen Aufgaben konzentriert dranzubleiben.',
-  'Kreativ-Genie': '{hobby} hat mir gezeigt, wie ich eigene Ideen entwickle und in ein fertiges Ergebnis umsetze.',
-  'Verantwortungs-Anker': 'Bei {hobby} übernehme ich zuverlässig Verantwortung, auch ohne dass mich jemand daran erinnern muss.',
-  'Problem-Löser': 'Durch {hobby} habe ich gelernt, Probleme systematisch anzugehen und eigenständig Lösungswege zu finden.',
-  'Mutig & Stressfest': '{hobby} hat mich gelehrt, auch bei Rückschlägen dranzubleiben und mutig Neues auszuprobieren.'
+  'Team-Power': 'Durch {hobby} habe ich gelernt, dass man Ziele nur gemeinsam erreicht. Diese Teamfähigkeit bringe ich mit.',
+  'Fokus-Champion': 'Bei {hobby} kann ich mich lange in eine Aufgabe vertiefen. Diese Konzentrationskraft hilft mir, Aufgaben sorgfältig zu erledigen.',
+  'Kreativ-Genie': 'Bei {hobby} entwickle ich eigene Ideen und setze sie in ein fertiges Ergebnis um. Diese Kreativität bringe ich gerne auch in neue Aufgaben ein.',
+  'Verantwortungs-Anker': 'Bei {hobby} übernehme ich Verantwortung, ohne dass mich jemand daran erinnern muss. Auf diese Zuverlässigkeit können sich andere verlassen.',
+  'Problem-Löser': 'Wenn bei {hobby} etwas nicht auf Anhieb klappt, suche ich systematisch nach einer Lösung. Diese Lösungsorientierung bringe ich mit.',
+  'Mutig & Stressfest': 'Bei {hobby} probiere ich gerne Neues aus. Dieser Mut hilft mir, auch bei Problemen nach einer Lösung zu suchen.'
 };
 
 function zauberstabSaetzeSammeln(){
@@ -566,9 +569,10 @@ function musterLaden(variante){
         ort:'Dortmund', datum: heuteLesbar(),
         betreff:'Bewerbung um einen Ausbildungsplatz als Gärtner (Garten- und Landschaftsbau)',
         anrede:'Sehr geehrter Herr Reiter,',
-        einstieg:'mein Weg zur Ausbildung verlief nicht ganz geradlinig — nach der Hauptschule habe ich ein Jahr am Berufskolleg verbracht, um herauszufinden, welche Richtung wirklich zu mir passt. Diese Zeit war kein Umweg, sondern die Grundlage für meine Entscheidung.',
-        hauptteil:'Durch die Arbeit in unserem Schulgarten habe ich gelernt, auch bei anspruchsvollen Aufgaben konzentriert dranzubleiben — ob bei Wind und Wetter oder wenn eine Pflanzung nicht auf Anhieb gelingt.',
-        schluss:'Ich würde mich freuen, meine praktische Erfahrung und meine Motivation in einem persönlichen Gespräch zu zeigen.'
+        einstieg:'ich habe Ihre Anzeige gelesen und dachte sofort: Das passt! Ich möchte nicht einfach nur einen Job machen, sondern draußen etwas wachsen sehen — genau das habe ich in meinem Orientierungsjahr am Berufskolleg für mich entdeckt. Dieses Jahr war kein Umweg, sondern die Grundlage für meine Entscheidung.',
+        hauptteil:'Ich kenne meine Stärken und weiß, wie ich mich selbst organisiere. Wenn es bei der Arbeit in unserem Schulgarten stressig wurde — bei Wind und Wetter oder wenn eine Pflanzung nicht auf Anhieb gelang — habe ich gelernt, ruhig zu bleiben und einen zweiten Weg zu suchen.',
+        schluss:'Ich möchte Ihnen gerne persönlich zeigen, warum ich der Richtige für die Stelle bin. Ich bin bereit für einen Probetag.',
+        gruss:'Klar. Warm. Menschlich.'
       },
       lebenslauf: {
         name:'Jonas Berger', adresse:'Am Brunnen 8, 44135 Dortmund', tel:'0157 98765432', email:'jonas.berger@mustermail.de', geburtsdatum:'',
@@ -618,6 +622,7 @@ function formularAusDatenFuellen(){
   document.getElementById('a-einstieg').value = a.einstieg || '';
   document.getElementById('a-hauptteil').value = a.hauptteil || '';
   document.getElementById('a-schluss').value = a.schluss || '';
+  document.getElementById('a-gruss').value = a.gruss || 'Mit freundlichen Grüßen';
   document.getElementById('a-gruss-name').textContent = a.absName || '';
   ruecksendeangabeRendern();
 

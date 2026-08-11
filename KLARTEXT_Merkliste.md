@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 62 ergänzt)
+Stand: 11.08.2026 (Strang 63 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1422,3 +1422,42 @@ Formular leeren, Entwurf-Persistenz über einen simulierten Reload.
 ### Noch offen
 
 - Alle Punkte aus Strang 57–61 bleiben unverändert offen.
+
+## Strang 63: Bewerbungs-Generator — Textbausteine ressourcenorientiert überarbeitet (11.08.2026)
+
+Vierter NotebookLM-Prompt zu diesem Tool: Standardfloskeln in den Zauberstab-Vorlagen und in Muster B
+durch einfache, systemische, ressourcenorientierte Sprache ersetzen. Vor dem Umsetzen eine
+inhaltliche Rückfrage an Anja gestellt (nicht nur Fakten-Check): Der vorgeschlagene Hauptteil-Satz
+nannte wörtlich "das KLARTEXT-System" — Text, der als Beispiel direkt in ein echtes Anschreiben an
+eine echte Firma kopiert werden kann. Ein Ausbildungsbetrieb kennt "KLARTEXT" nicht und könnte den
+Namen eines Mentoring-Programms eher als "braucht Unterstützung"-Signal lesen als als Stärke.
+Entscheidung (Anja): Namen weglassen, Inhalt (Selbstkenntnis, Selbstregulation bei Stress) behalten.
+
+**Weitere Korrektur:** Der Prompt nannte zwei Cluster mit erfundenen Namen ("Fokus-Held",
+"Macher-Mut"), die es in der Skill-Matrix nicht gibt — die echten Titel sind "Fokus-Champion" und
+"Mutig & Stressfest". Da der Zauberstab die Vorlagen über den echten Cluster-Titel aus dem
+gespeicherten Profil nachschlägt, hätte die Übernahme der Fantasienamen als Schlüssel den Zauberstab
+für diese zwei Cluster stumm geschaltet (kein Treffer, kein Satz). Mit den echten Titeln als
+Schlüssel umgesetzt.
+
+**Umgesetzt (`KLARTEXT_Bewerbungs_Generator.html`):**
+- `CLUSTER_ANSCHREIBEN_VORLAGEN`: alle 6 Cluster auf die neue Sprache umgestellt — die 3 im Prompt
+  explizit vorgegebenen (Team-Power, Fokus-Champion, Mutig & Stressfest, mit „Mut zur Lücke" bewusst
+  zu „Dieser Mut" vereinfacht — das Idiom kann in einer echten Bewerbung leicht als „lässt Dinge
+  unfertig" missverstanden werden) sowie 3 im gleichen Duktus ergänzte (Kreativ-Genie,
+  Verantwortungs-Anker, Problem-Löser — im Prompt nicht vorgegeben, aus der Gesamtanweisung
+  „Standardfloskeln ersetzen" plausibel abgeleitet, damit der Zauberstab nicht drei alte und drei
+  neue Sätze mischt).
+- Muster B: Einstieg/Hauptteil/Schluss auf die neue Sprache umgestellt (Hauptteil ohne
+  Produktnamen, s. o.), an die bestehende Jonas-Berger-Geschichte angepasst statt roh eingefügt.
+- Neues Feld `gruss` (vorher fest „Mit freundlichen Grüßen" im HTML) — jetzt Teil des Datenmodells
+  und editierbar. Muster A bleibt bei „Mit freundlichen Grüßen", Muster B setzt „Klar. Warm.
+  Menschlich." als bewusste Alternative, nicht als erzwungener Systemstandard.
+
+**Getestet (jsdom, 5 Szenarien):** Standard-Gruß im Leerzustand, alle 6 Zauberstab-Cluster liefern
+mit den echten Titeln korrekt einen Satz, Muster B enthält den neuen Text und nicht mehr "KLARTEXT",
+Muster A behält den traditionellen Gruß, Gruß-Feld ist editierbar und wird persistiert.
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–62 bleiben unverändert offen.

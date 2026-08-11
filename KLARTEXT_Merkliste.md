@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 60 ergänzt)
+Stand: 11.08.2026 (Strang 61 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1301,5 +1301,57 @@ Edge-Case) — Sichtbarkeit und Inhalt in allen Fällen korrekt.
 ### Noch offen
 
 - **Punkt 4 des Prompts fehlte** (Nachricht endete mit „4." ohne Inhalt) — bei Anja nachgefragt,
-  noch nicht umgesetzt.
+  war ein Versehen, kein weiterer Punkt.
 - Alle Punkte aus Strang 57–59 bleiben unverändert offen.
+
+## Strang 61: Bug-Fix — Login-Redirect-Schleife durch rel="noopener" auf internen Links (11.08.2026)
+
+Anja meldete: "ich werde immer wieder zum login geleitet, z.B. bei feedbackbogen, oder von
+weiterleitungen von den neuen tools". Ursache gefunden: Das Login-Gate auf jeder Seite prüft
+`sessionStorage.getItem('klartext_login')`. `sessionStorage` wird beim Öffnen eines Links mit
+`target="_blank"` nur dann in den neuen Tab übernommen, wenn der neue Tab eine "Opener"-Beziehung
+zur ursprünglichen Seite hat. `rel="noopener"` kappt genau diese Beziehung — der neue Tab startet
+mit leerem `sessionStorage`, das Gate-Skript hält das für "nicht eingeloggt" und leitet sofort auf
+`KLARTEXT_Login.html` um. Betraf ausschließlich interne `target="_blank" rel="noopener"`-Links auf
+andere KLARTEXT-Seiten (nicht PDF-Links — dort läuft kein Gate-Skript, daher kein Problem).
+
+**Root-Cause-Suche:** Repo-weite Grep-Recherche über alle .html-Dateien nach der Kombination
+`target="_blank" rel="noopener"` bei internen `.html`-Zielen.
+
+**Fix:** `rel="noopener"` entfernt (nicht `target="_blank"` selbst — neue Tabs bleiben erwünscht),
+da alle betroffenen Ziele interne, vertrauenswürdige KLARTEXT-Seiten sind — der
+Sicherheitsgewinn von `noopener` (Schutz vor "Reverse Tabnabbing" durch fremde Seiten) ist hier
+irrelevant, der Schaden (Session-Bruch) überwiegt deutlich. `sessionStorage` (nicht `localStorage`)
+bleibt bewusst erhalten — Login endet weiterhin beim Schließen des Tabs/Browsers, wichtig für ein
+Tool, das ggf. auf gemeinsam genutzten Schulgeräten läuft.
+
+**Betroffene und korrigierte Dateien (11 Fundstellen):**
+- `KLARTEXT_Ressourcenbericht.html` (2× — Moderationsleitfaden, **Feedbackbogen**, exakt Anjas
+  gemeldetes Symptom)
+- `KLARTEXT_Spiel_Reizfilter.html` (3× — Zonen-Set-, Körper-Kompass-, Feuerwehrkarten-Shortcuts aus
+  der neuen INGRA-Overlay-Funktion, Strang 59)
+- `M2-43_Tourette_Tics.html` (1× — Link zur Reizfilter-INGRA-Ansicht, Strang 59)
+- `KLARTEXT_Spiel_SkillMatrix.html` (3× — Bericht-Link, 2× JD-Karten-Links ins pwa-Kartendeck)
+- `KLARTEXT_Spiel_PerspektivWechsler.html`, `KLARTEXT_Spiel_Bewerbungsgespraech.html` (je 1× —
+  JD-Karten-Links)
+- `KLARTEXT_Spiel_WasHilftMir.html` (1×, im JS-Template `angebot-link` — betrifft *jeden* Link im
+  zentralen "Angebote"-Panel dieser Seite, also alle 5 verlinkten Tools + pwa-Karten)
+
+**Bewusst nicht angefasst:** `rel="noopener"` auf PDF-Downloads (`KLARTEXT_Downloads.html` u. a.) —
+dort läuft kein Gate-Skript, kein Bug, `noopener` bleibt aus Best-Practice-Gründen.
+
+**Nebenbefund (nicht behoben, da anderes Problem):** ca. 65 Seiten haben gar kein Login-Gate,
+darunter `pwa/index.html`, die gesamte `LK-*`-Modulreihe und weitere. Für Landing/Login/Rechtstexte
+plausibel gewollt, für `pwa/index.html` und die LK-Reihe eher ein Versehen — umgekehrtes Problem
+(fehlender Schutz statt fälschlicher Umleitung), separat zu bewerten, noch nicht mit Anja
+abgestimmt.
+
+**Getestet:** Statischer Grep-Check, dass keine internen `.html`-Links mehr `target="_blank"` mit
+`rel="noopener"` kombinieren (nur noch PDF-Links, wie beabsichtigt); `node --check` auf allen
+betroffenen Dateien nach dem Edit.
+
+### Noch offen
+
+- Fehlendes Login-Gate auf ~65 Seiten (u. a. `pwa/index.html`, `LK-*`-Reihe) — noch nicht mit Anja
+  abgestimmt, ob/wo das gewollt ist.
+- Alle Punkte aus Strang 57–60 bleiben unverändert offen.

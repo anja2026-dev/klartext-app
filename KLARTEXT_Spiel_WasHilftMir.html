@@ -267,7 +267,7 @@ function momentGridRendern(){
       var panel = document.createElement('div');
       panel.className = 'angebot-panel';
       var linksHtml = m.angebote.map(function(a){
-        return '<a class="angebot-link" href="' + a.href + '" target="_blank" rel="noopener">' +
+        return '<a class="angebot-link" href="' + a.href + '" target="_blank">' +
           '<span class="a-emoji">' + a.emoji + '</span>' +
           '<span class="a-label"><span class="a-typ">' + a.typ + '</span>' + a.label + '</span></a>';
       }).join('');

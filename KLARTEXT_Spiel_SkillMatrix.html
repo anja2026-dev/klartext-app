@@ -166,7 +166,7 @@ body{
     <div class="copy-feedback" id="profilCopyFeedback"></div>
     <div class="modal-btns">
       <button class="copy-btn" onclick="profilKopieren()">📋 Kopieren</button>
-      <a class="copy-btn" style="text-decoration:none;display:inline-flex;align-items:center;" href="KLARTEXT_Ressourcenbericht.html" target="_blank" rel="noopener">📄 Bericht</a>
+      <a class="copy-btn" style="text-decoration:none;display:inline-flex;align-items:center;" href="KLARTEXT_Ressourcenbericht.html" target="_blank">📄 Bericht</a>
       <button class="close-btn" onclick="profilSchliessen()">Schließen</button>
     </div>
   </div>
@@ -511,7 +511,7 @@ function renderProfilTab(){
     });
     if (aktiveCluster.length > 0) {
       var jdZeilen = JD_BEGLEITUNG.map(function(j){
-        return '<div class="jd-zeile">'+j.anlass+': <a class="jd-karten-link" href="pwa/index.html?deck=jd&karte='+j.karteNr+'" target="_blank" rel="noopener"><b>'+j.nr+'</b> „'+j.titel+'"</a></div>';
+        return '<div class="jd-zeile">'+j.anlass+': <a class="jd-karten-link" href="pwa/index.html?deck=jd&karte='+j.karteNr+'" target="_blank"><b>'+j.nr+'</b> „'+j.titel+'"</a></div>';
       }).join('');
       html += '<div class="jd-box"><div class="jd-titel">Falls dich die Berufswahl gerade beschäftigt</div>' +
         jdZeilen +
@@ -529,7 +529,7 @@ function renderProfilTab(){
       html += '<div class="bewerbung-box"><div class="bewerbung-titel">📝 Bausteine für Anschreiben &amp; Gespräch</div>' +
         '<div class="bewerbung-abschnitt"><div class="bewerbung-abschnitt-label">Für dein Anschreiben</div><div class="bewerbung-text">'+anschreibenSaetze+'</div></div>' +
         '<div class="bewerbung-abschnitt"><div class="bewerbung-abschnitt-label">Für die Frage „Was sind Ihre Stärken?"</div>'+interviewZeilen+'</div>' +
-        '<div class="mut-box"><div class="mut-text">Der schwerste Schritt ist oft das Abschicken der ersten Bewerbung. Karte <a href="pwa/index.html?deck=jd&karte=37" target="_blank" rel="noopener">JD-37 „Etwas Neues ausprobieren"</a> fragt genau danach: Was wäre dein kleinster erster Schritt — heute schon die Vorlage speichern, oder gleich abschicken?</div></div>' +
+        '<div class="mut-box"><div class="mut-text">Der schwerste Schritt ist oft das Abschicken der ersten Bewerbung. Karte <a href="pwa/index.html?deck=jd&karte=37" target="_blank">JD-37 „Etwas Neues ausprobieren"</a> fragt genau danach: Was wäre dein kleinster erster Schritt — heute schon die Vorlage speichern, oder gleich abschicken?</div></div>' +
         '</div>';
     }
   } else {

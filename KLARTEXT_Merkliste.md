@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 66 ergänzt)
+Stand: 11.08.2026 (Strang 67 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1567,7 +1567,49 @@ Flexionsformen der 5 Begriffsfamilien, Placeholder ersetzt/`value` unangetastet,
 geschützt, MutationObserver erfasst dynamisch hinzugefügten Text, `?modus=schule` schaltet aktiv
 zurück, öffentliche API (`aktivieren()`/`deaktivieren()`/`istAktiv()`).
 
+### Noch offen (Status: **finalisiert und ausgerollt in Strang 67**, s. u.)
+
+- Alle Punkte aus Strang 57–65 bleiben unverändert offen.
+
+## Strang 67: ContextMapper — Rollout finalisiert (Dashboard, Reizfilter, Körper-Kompass) (11.08.2026)
+
+Achter Prompt, angekündigt als "Strang 62b" mit der Bitte, "Strang 62 als finalisiert und ausgerollt"
+zu markieren. Beides korrigiert: Strang 62 ist der Bewerbungs-Generator (DIN 5008), hat mit dem
+ContextMapper nichts zu tun — die tatsächlich relevante Doku ist **Strang 66**. Nicht fälschlich
+Strang 62 umbenannt, sondern hier als eigener Strang 67 die Fertigstellung von Strang 66 dokumentiert.
+
+**Dateinamen im Prompt erneut falsch** (gleiches Muster wie schon mehrfach in diesem Themenkomplex):
+`KLARTEXT_Skill_Matrix.html` → echt: `KLARTEXT_Spiel_SkillMatrix.html` (hatte den Mapper schon seit
+Strang 66); `reizfilter.html` → echt: `KLARTEXT_Spiel_Reizfilter.html`; `koerperkompass.html` → echt:
+`KLARTEXT_Spiel_Koerperkompass.html`. Mit den echten Dateinamen umgesetzt.
+
+**Umgesetzt:**
+- `<script src="KLARTEXT_ContextMapper.js">` ergänzt in `DASHBOARD.html` (die in Strang 66 als
+  Nebenbefund identifizierte, tatsächlich relevante 12-Treffer-Seite), `KLARTEXT_Spiel_Reizfilter.html`
+  und `KLARTEXT_Spiel_Koerperkompass.html`. Damit haben jetzt alle 5 vom Auftrag genannten Stellen
+  (Dashboard + 4 Tools) den Mapper eingebunden.
+- **Zustands-Sicherung (Punkt 3) war bereits durch die Architektur aus Strang 66 gelöst**, ohne
+  weiteren Code: `?modus=jobcoach` wird beim ersten Aufruf in `localStorage` gespiegelt, und jede
+  Seite mit eingebundenem Mapper prüft beim Laden zuerst den URL-Parameter, dann `localStorage`. Ein
+  interner Link ganz ohne `?modus=jobcoach` in der URL aktiviert den Jobcoach-Modus auf der Zielseite
+  trotzdem korrekt, solange dort ebenfalls der Mapper eingebunden ist — genau das war mit Punkt 2
+  jetzt für alle 5 Seiten sichergestellt. Kein automatisches Anhängen des Parameters an interne Links
+  gebaut (unnötig zusätzliche, invasivere Lösung für dasselbe Ergebnis, das der Prompt selbst als
+  Alternative nennt: "oder dauerhafte Speicherung im localStorage").
+
+**Getestet:** Gezielter Smoke-Test mit dem echten `DASHBOARD.html` (nicht nur synthetisches Test-HTML)
+per jsdom — `?modus=jobcoach` aktiviert korrekt, `Schultag` → `Arbeitstag` bestätigt, „Geheimschüler-
+Ausweis" (zusammengesetztes Wort, enthält „schüler" als Teilstring) bleibt korrekt unangetastet
+(Wortgrenzen-Erkennung funktioniert auch an echtem, nicht konstruiertem Inhalt). Eine Einschränkung
+ehrlich benannt: `DASHBOARD.html` lädt einen Teil seiner Kachel-Inhalte ("Mit Lehrkraft sprechen" u. ä.)
+laut Code offenbar dynamisch über Firebase — das lässt sich in der netzwerklosen Test-Umgebung nicht
+auslösen und daher nicht automatisiert verifizieren. Der gleiche MutationObserver-Mechanismus, der in
+Strang 66 für dynamisch nachgeladenen Inhalt bereits erfolgreich getestet wurde, sollte auch hier
+greifen — eine kurze manuelle Sichtprüfung im echten Browser mit `?modus=jobcoach` wäre trotzdem
+sinnvoll, um diesen einen Pfad wirklich zu bestätigen.
+
 ### Noch offen
 
-- `DASHBOARD.html` fehlt der Jobcoach-Modus noch (s. Nebenbefund oben).
+- Manuelle Sichtprüfung der Firebase-geladenen Dashboard-Kacheln im echten Browser (s. o.) — nicht
+  automatisiert testbar in dieser Umgebung.
 - Alle Punkte aus Strang 57–65 bleiben unverändert offen.

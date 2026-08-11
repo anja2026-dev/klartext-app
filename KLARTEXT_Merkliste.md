@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 58 ergänzt)
+Stand: 11.08.2026 (Strang 59 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1217,3 +1217,52 @@ nicht angepasst, eigene Preisstrategie-Entscheidung mit Anja nötig, bevor das n
   angepasst.
 - Kleiner Nebenfund: Glossar-Link "Joker" zeigt auf `M3-03.html` statt `M3-Joker.html` — noch nicht
   korrigiert.
+
+## Strang 59: Reizfilter INGRA-Overlay + Tic-Dokumentation (TO), Körper-Kompass-Persistenz,
+M2-43-Verlinkung (11.08.2026)
+
+Umsetzung des dritten NotebookLM-Prompts ("Präzisierung der Logik für den Reizfilter"), der die
+Schwellenwert-Logik (kLAR-Modell/Shortcuts/Feuerwehrkarten je nach Barometer-Stufe), die
+Tic-Dokumentation für TO sowie eine Daten-Brücke zwischen Reizfilter, Körper-Kompass und
+Ressourcen-Bericht forderte. Vorab per AskUserQuestion geklärt: **getrennte Ansicht per
+URL-Parameter**, damit die private, wertungsfreie Jugendlichen-Ansicht des Reizfilters unverändert
+bleibt und die INGRA-Zusatzinfos nur bei explizitem Kontext-Aufruf erscheinen.
+
+**Umgesetzt:**
+- `KLARTEXT_Spiel_Reizfilter.html`: neue URL-Parameter `?kontext=ingra` (blendet INGRA-Box mit
+  kLAR-Modell/Shortcuts/Feuerwehrkarten-Button ein) und `&herkunft=to` (blendet zusätzlich die
+  optionale Tic-Zähler-Box ein). Schwellenwert-Mapping der 5 Reglerstufen auf Barometer-Farben:
+  Gelb/Orange → kLAR-Kurzanleitung, Orange/Rot → Shortcuts zu Zonen-Set (Rückzugs-Zone) und
+  Körper-Kompass, Rot (Maximum) → direkter Button zu den Feuerwehrkarten (`DASHBOARD.html#sek-fk`).
+  Ohne `kontext=ingra` bleibt die Jugendlichen-Ansicht exakt wie vorher — kein Verhaltensunterschied,
+  keine Kontrollelemente sichtbar.
+- Tic-Zähler (`ticAendern()`) speichert additiv in `klartext_reizfilter_verlauf`: bestehendes Schema
+  `{datum, stufe}` um optionales Feld `tics` erweitert, rückwärtskompatibel zu allen alten Einträgen.
+  Regler-Änderungen überschreiben einen bereits erfassten Tic-Wert für den Tag nicht.
+- `KLARTEXT_Spiel_Koerperkompass.html`: hatte bisher **keinerlei** Persistenz (reiner In-Memory-Zustand,
+  bei jedem Neuladen verloren) — für die geforderte Daten-Brücke nachgerüstet. Neuer Key
+  `klartext_koerperkompass_verlauf`, ein Tages-Snapshot der markierten Körperregionen
+  (Intensität + Wörter), analog zum Reizfilter-Muster einmal pro Tag überschrieben. Leere Tage
+  (nichts markiert bzw. alles zurückgesetzt) erzeugen keinen Eintrag. Beim Neuladen am selben Tag
+  werden bereits gesetzte Markierungen wiederhergestellt.
+- `M2-43_Tourette_Tics.html`: neuer Link im Abschnitt "Was hilft?" zu
+  `KLARTEXT_Spiel_Reizfilter.html?kontext=ingra&herkunft=to`.
+
+**Bewusst nicht umgesetzt:** Eine Verlauf-Zusammenführung der drei Datenquellen (Reizfilter-Stufe,
+Tics, Körper-Kompass) *innerhalb* von `KLARTEXT_Ressourcenbericht.html` selbst — die drei
+localStorage-Keys liegen jetzt kompatibel nebeneinander vor (Daten-Brücke ist gebaut), aber der
+Ressourcen-Bericht liest sie noch nicht gemeinsam aus. Nicht Teil dieses Prompts; eigener Folge-Task,
+falls gewünscht.
+
+**Getestet:** jsdom-Simulation aller Parameter-Kombinationen (kein Kontext / `kontext=ingra` /
+`kontext=ingra&herkunft=to` / nur `herkunft=to`), Schwellenwert-Übergänge Gelb→Orange→Rot→Grün mit
+Prüfung von Show/Hide-Zuständen aller vier Overlay-Elemente, Tic-Zähler-Increment/Decrement mit
+localStorage-Persistenz und Erhalt bei Regler-Änderung, Körper-Kompass-Markierung/-Löschung/-Reset
+mit Persistenz- und Wiederherstellungs-Check über einen simulierten Reload.
+
+### Noch offen
+
+- Ressourcen-Bericht liest die drei neuen/erweiterten localStorage-Quellen (Reizfilter-Verlauf inkl.
+  Tics, Körper-Kompass-Verlauf) noch nicht zusammengeführt aus — s.&nbsp;o.
+- Alle Punkte aus Strang 57/58 (Fachbuch/Trainerhandbuch-Überarbeitung, DS↔bestehende-Tools-Verknüpfung,
+  Produktkonsequenz 22→26 Decks, Glossar-Link-Fix "Joker") bleiben unverändert offen.

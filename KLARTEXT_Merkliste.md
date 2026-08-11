@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 10.08.2026 (Strang 57 ergänzt)
+Stand: 11.08.2026 (Strang 58 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1138,3 +1138,82 @@ aber auch keine Vorarbeit, auf die aufgebaut werden könnte.
   Trainerhandbuch — aber erst nachdem mit Anja priorisiert ist, ob/wie tief das gehen soll.
 - **Offene Entscheidung mit Anja:** Zonen-Set statt Insel-Set in Was-hilft-mir-gerade verwenden (Befund 3).
 - Kein Zeitdruck-Hinweis von Anja — Priorisierung mit ihr noch offen, analog zu Strang 50.
+
+## Strang 58: System-Erweiterung TO (Tourette) & DS (Trisomie 21) — Fact-Check + Decks/Module gebaut (11.08.2026)
+
+**Kontext:** NotebookLM-Prompt "System-Erweiterung (TO & DS)" wollte zwei neue Zielgruppen-Kartendecks
+(Tourette-Syndrom "Lila", Trisomie 21/Down-Syndrom "Hellblau/Gelb"), zwei neue M2-Module (M2-43, M2-44)
+und eine Action-Hub-2.0-Verknüpfung (Reizfilter↔Tics, Sterntaler/Joker-Karten/Wochenplan↔DS). Vor
+Umsetzung wie üblich gegen den echten Systemstand geprüft.
+
+**Fact-Check-Befunde (echte `pwa/data/decks.json` als Quelle, nicht `KLARTEXT_Konzept_Kartendecks-App.md`
+— letztere Datei ist nur ein Deployment-Memo für eine geplante Kartendecks-App, kein Farbschema-Dokument
+und erwähnt TO/DS/Farben gar nicht):
+
+- ❌ **Farbkollision:** "Lila" für TO ist bereits vergeben — TK-Deck nutzt `#4A148C` (dunkles Violett),
+  SMI-Deck `#592D59` (dunkles Pflaume) liegt ebenfalls im Lila-Bereich. Neue Farbe gewählt: `#B08FD1`
+  (helles Flieder/Lavendel, RGB-Distanz ≥135 zu allen 26 bestehenden Deck-Farben).
+- ❌ **FK-Deck hat 8 Karten, nicht 7** (FK-01 bis FK-08 existieren) — das 7-Karten-Deck ist tatsächlich SP.
+- ⚠️ **Sterntaler und Wochenplan existieren wirklich**, sind aber generische Tools (Lob-Druckvorlage
+  bzw. Aufgaben-Wochenplan-Baukasten für alle Kinder), keine DS-spezifischen — Verknüpfung wäre
+  Zweitnutzung, kein neu entdecktes Matching.
+- ❌ **"Joker-Karten" (Plural, ein Kartendeck) existiert nicht.** Der echte Joker ist ein einzelnes,
+  individuell vereinbartes Notfallsignal (Geste/Wort/Karte) — bestätigt in Glossar und `M3-Joker.html`.
+  Nebenfund dabei: Glossar-Link zeigt auf `M3-03.html` ("Kind eskaliert — Wutausbruch"), nicht auf die
+  echte Joker-Seite `M3-Joker.html` — noch nicht korrigiert, kleiner offener Punkt.
+- ❌ **"Stress-Tic-Korrelation" wäre komplett neue Funktion:** Der digitale Reizfilter trackt aktuell nur
+  einen täglichen Stresswert (0–4, ein Eintrag/Tag, `klartext_reizfilter_verlauf`) — kein Tic-Tracking
+  existiert. Eine Korrelation bräuchte ein neues Datenmodell (Tic-Häufigkeit/-Typ) plus Korrelationslogik
+  plus neue UI.
+- ✅ Kern-Prämisse stimmt: Tourette und Trisomie 21/Down-Syndrom haben aktuell **kein eigenes Modul** —
+  nur Randerwähnungen (Tourette ein Wort im Neurodivergenz-Glossareintrag → M2-07; Down-Syndrom ein
+  Absatz in `KLARTEXT_Fachbuch_System_Paedagogik.html`). M2-43/44 waren wirklich frei (höchste Nummer
+  M2-42).
+- ✅ Recherchiert (nicht im Prompt behauptet, aber zur Farbwahl relevant): Die reale
+  Tourette-Awareness-Farbe ist Teal/Türkis-Grün — im System aber schon zweimal vergeben (JD, IS-Schule),
+  deshalb bewusst Lavendel statt Teal für TO gewählt. Die reale World-Down-Syndrome-Day-Farbkombination
+  ist tatsächlich Blau + Gelb (worlddownsyndromeday.org) — passt zur ursprünglichen Idee, DS-Farbe
+  entsprechend als `#5AC4D0` (Türkis-Hellblau) + `#F0C64A` (Gelb-Akzent) gewählt, RGB-Distanz ≥71/≥93
+  zu den nächstgelegenen Bestandsfarben.
+
+**Mit Anja abgestimmt (3 Scope-Fragen, alle Empfehlungen bestätigt):**
+1. Farben: neue, kollisionsfreie Farben statt Lila (s.&nbsp;o.)
+2. Umfang dieser Runde: nur Decks + M2-Module, Action-Hub-2.0-Verknüpfung (inkl. der komplett neuen
+   Reizfilter-Funktion) als eigener, späterer Schritt
+3. DS-Verknüpfung zu bestehenden Tools: falls später umgesetzt, echte Tools (Sterntaler, Wochenplan,
+   singularer Joker) klar als Zweitnutzung kennzeichnen, keine "Joker-Karten"-Fiktion
+
+**Umgesetzt:**
+- `pwa/data/decks.json`: 2 neue Einträge TO (`#B08FD1`, 3 Karten) und DS (`#5AC4D0`, 3 Karten) —
+  22 → 26 Decks insgesamt
+- `pwa/data/to.json`, `pwa/data/ds.json`: je 3 echte Karten im etablierten Schema
+  (nr/titel/anleitung/fragen/hinweis/bild), inhaltlich an AT-Deck-Tonalität angelehnt (Tic-Neutralität
+  bzw. "Langsamer – nicht weniger"/Autonomie)
+- `M2-43_Tourette_Tics.html`, `M2-44_Trisomie21_Inklusion.html`: neu, nach Vorlage `M2-42` (komplett
+  inline-CSS, kein externes Stylesheet nötig), mit verifizierten Quellen (Leckman/Walker/Cohen 1993 zum
+  Vorboten-Gefühl, DSM-5-Kriterien, Non-Disjunction/Meiose-Mechanismus für Trisomie 21 >95&nbsp;%,
+  Personen-first-Sprache mit Verweis auf den bestehenden Fachbuch-Absatz), Cross-Referenzen zu M2-07
+  (Neurodivergenz) und M2-29 (Entwicklungsverzögerungen)
+- Nav-Kette aktualisiert: `M2-42` zeigt jetzt vorwärts auf `M2-43` statt auf Dashboard (war vorher Ende
+  der Kette), `M2-43` ↔ `M2-44` verlinkt, Fußzeilen-Zähler von "42/42" auf "42/44", "43/44", "44/44"
+
+**Bewusst NICHT umgesetzt (Scope-Entscheidung, s.&nbsp;o.):** Action-Hub-2.0-Verknüpfung
+(Stress-Tic-Korrelation im Reizfilter, DS-Tool-Verlinkung) — eigener Folge-Task.
+
+**Nebenbefund mit Tragweite:** 22 → 26 Decks ist keine reine Content-Frage — `KLARTEXT_Digistore24_
+Produktliste.md` und die Preisstrategie-Datei referenzieren aktuell "22 Decks" als Produktumfang. Noch
+nicht angepasst, eigene Preisstrategie-Entscheidung mit Anja nötig, bevor das nach außen kommuniziert wird.
+
+### Noch offen (erweitert Strang 57 um TO/DS)
+
+- **Punkt aus dem NotebookLM-Prompt (Punkt 4), wie von Anja gewünscht auf die Merkliste gesetzt:**
+  Vollständige Überarbeitung von Fachbuch, Trainerhandbuch, Lernpfaden und Curriculum zur Integration
+  der 6 Action-Hub-Module (Strang 57) **sowie** der neuen TO- und DS-Inhalte (Strang 58) — deckt sich
+  mit dem bereits in Strang 57 offenen "Kandidaten für die nächste inhaltliche Angleichungsrunde"-Punkt,
+  jetzt um TO/DS erweitert. Umfang/Priorisierung noch nicht mit Anja abgestimmt.
+- Action-Hub-2.0-Verknüpfung TO↔Reizfilter (neue Stress-Tic-Korrelation-Funktion) und DS↔bestehende
+  Tools (Sterntaler/Wochenplan/Joker) — noch nicht gebaut.
+- Produktkonsequenz 22→26 Decks in `KLARTEXT_Digistore24_Produktliste.md`/Preisstrategie — noch nicht
+  angepasst.
+- Kleiner Nebenfund: Glossar-Link "Joker" zeigt auf `M3-03.html` statt `M3-Joker.html` — noch nicht
+  korrigiert.

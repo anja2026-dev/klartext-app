@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT M2 Karte 43 Tourette und Tics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --m2:#8B5FB0; --m2-dark:#563B6D; --m2-light:#F6F2F9; --m2-border:#D6C7E3;
+    --kt-muted:#4a5568; --r-md:8px;
+  }
+
+  /* ── base reset ── */
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:#f0f4f8; min-height:100vh; }
+
+  /* ── kt-header ── */
+  .kt-header { background:var(--m2-dark); padding:.6rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:.5rem; }
+  .kt-back-btn { display:flex; align-items:center; gap:.3rem; color:rgba(255,255,255,.75); font-size:.72rem; font-weight:600; text-decoration:none; }
+  .kt-back-btn svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; }
+  .kt-logo { display:flex; align-items:center; gap:.5rem; text-decoration:none; }
+  .kt-logo-text .wort { font-family:'Playfair Display',serif; font-weight:700; color:#fff; font-size:.9rem; display:block; }
+  .kt-logo-text .claim { font-size:.6rem; color:rgba(255,255,255,.55); display:block; }
+  .kt-home-btn { display:flex; align-items:center; gap:.25rem; color:rgba(255,255,255,.65); font-size:.68rem; text-decoration:none; }
+  .kt-home-btn svg { width:14px; height:14px; fill:currentColor; }
+  .header-right { display:flex; align-items:center; gap:.35rem; }
+  .btn-small { padding:.22rem .55rem; border:1px solid rgba(255,255,255,.2); border-radius:20px; color:rgba(255,255,255,.65); font-size:.65rem; font-weight:600; text-decoration:none; }
+
+  /* ── context bar ── */
+  .kt-context { background:#e8f1fb; border-bottom:1px solid #c3d9f0; padding:.3rem 1rem; font-size:.67rem; color:var(--m2); font-weight:600; letter-spacing:.04em; }
+
+  /* ── card ── */
+  .karte { background:#fff; border-radius:10px; margin:.75rem auto; max-width:640px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.08); }
+  .karte-stripe { height:4px; background:var(--m2); }
+
+  .karte-header { background:var(--m2); padding:.85rem 1rem .8rem; display:flex; align-items:flex-start; justify-content:space-between; gap:.75rem; }
+  .karte-meta-wrap { flex:1; }
+  .modul-tag { display:inline-block; background:rgba(255,255,255,.18); color:#fff; font-size:.65rem; font-weight:700; letter-spacing:.08em; padding:.15rem .5rem; border-radius:12px; margin-bottom:.35rem; }
+  .karte-nr { font-size:.68rem; color:rgba(255,255,255,.7); margin-bottom:.2rem; }
+  .karte-titel { font-family:'Playfair Display',serif; font-weight:700; font-size:1.15rem; color:#fff; line-height:1.2; }
+  .karte-icon-wrap { font-size:2rem; width:48px; height:48px; background:rgba(255,255,255,.15); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+  .karte-lead { background:var(--m2-light); border-left:3px solid var(--m2); padding:.75rem 1rem; font-size:.9rem; font-style:italic; color:#1e3a5f; line-height:1.5; }
+
+  .karte-body { padding:.85rem 1rem; display:flex; flex-direction:column; gap:.85rem; }
+
+  .ab { }
+  .ab-titel { font-size:.68rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--m2); margin-bottom:.45rem; }
+
+  .plain-list { list-style:none; display:flex; flex-direction:column; gap:.3rem; }
+  .plain-list li { font-size:.87rem; color:var(--kt-muted); display:flex; align-items:flex-start; gap:.5rem; line-height:1.45; }
+  .plain-list li::before { content:"·"; font-weight:700; color:var(--m2); flex-shrink:0; }
+
+  .info-box { background:var(--m2-light); border:1px solid var(--m2-border); border-radius:var(--r-md); padding:.75rem .9rem; }
+  .info-box p { font-size:.86rem; color:#1e3a5f; line-height:1.5; }
+  .info-box strong { color:var(--m2-dark); }
+
+  .reflex-box { background:var(--m2-dark); border-radius:var(--r-md); padding:.75rem 1rem; }
+  .reflex-box .reflex-label { font-size:.63rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:.3rem; }
+  .reflex-box p { font-size:.88rem; color:#fff; font-style:italic; line-height:1.45; }
+
+  .quellen-block { border-top:1px solid #e8f1fb; padding-top:.6rem; }
+  .quellen-block .q-label { font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#94a3b8; margin-bottom:.35rem; }
+  .quellen-block ul { list-style:none; display:flex; flex-direction:column; gap:.2rem; }
+  .quellen-block li { font-size:.74rem; color:#94a3b8; line-height:1.4; display:flex; gap:.4rem; }
+  .quellen-block li::before { content:"–"; flex-shrink:0; }
+
+  .merksatz-banner { background:var(--m2); padding:.85rem 1.25rem; }
+  .merksatz-banner p { font-size:.9rem; font-weight:700; color:#fff; line-height:1.3; font-style:italic; }
+
+  .brainy-block { display:flex; align-items:center; gap:.7rem; background:var(--m2-light); border-radius:var(--r-md); padding:.7rem .9rem; }
+  .brainy-block img { width:40px; height:40px; flex-shrink:0; }
+  .brainy-block-text { font-size:.85rem; color:#1e3a5f; line-height:1.45; }
+  .brainy-block-text strong { color:var(--m2-dark); display:block; margin-bottom:.15rem; }
+
+  .karte-nav { display:flex; align-items:center; justify-content:space-between; padding:.4rem 1rem; background:#f7fafd; border-top:1px solid #e8f1fb; }
+  .karte-nav a { font-size:.75rem; font-weight:700; color:var(--m2); text-decoration:none; display:flex; align-items:center; gap:.2rem; }
+  .karte-nav .spacer { flex:1; }
+
+  .karte-footer { display:flex; justify-content:space-between; align-items:center; padding:.35rem 1rem; background:#f0f4f8; font-size:.65rem; color:#94a3b8; }
+
+  .fab-group { position:fixed; bottom:1.25rem; right:1rem; display:flex; flex-direction:column; gap:.55rem; z-index:9999; }
+  .fab { width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; text-decoration:none; box-shadow:0 4px 16px rgba(0,0,0,.2); }
+  .fab-m2 { background:var(--m2); border:2px solid var(--m2-border); }
+
+  footer[role=contentinfo] { text-align:center; padding:.75rem 1rem 4rem; font-size:.67rem; color:#94a3b8; line-height:1.6; }
+  .footer-copy { display:block; margin-top:.2rem; }
+
+  @media(max-width:500px){
+    .karte { border-radius:0; margin:0; }
+    .karte-header { padding:.75rem .9rem; }
+    .karte-titel { font-size:1.05rem; }
+    .karte-body { padding:.75rem .9rem; }
+  }
+</style>
+<script>
+(function(){
+  try{
+    if(sessionStorage.getItem('klartext_login')!=='true'){
+      window.location.href='KLARTEXT_Login.html';
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#8B5FB0">
+</head>
+<body>
+
+<header class="kt-header">
+  <a class="kt-back-btn" href="javascript:history.back()">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>Zurück
+  </a>
+  <a class="kt-logo" href="DASHBOARD.html">
+    <div class="kt-logo-text"><span class="wort">KLARTEXT</span><span class="claim">Klar. Warm. Menschlich.</span></div>
+  </a>
+  <div class="header-right">
+    <a href="KLARTEXT_Glossar.html" class="btn-small">🔤</a>
+    <a class="kt-home-btn" href="DASHBOARD.html">
+      <svg viewBox="0 0 16 16"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+    </a>
+    <a href="KLARTEXT_Landing.html" onclick="try{sessionStorage.clear();}catch(e){}" class="btn-small">⬅ Logout</a>
+  </div>
+</header>
+
+<div class="kt-context">KLARTEXT · Modul 2 · Kind verstehen · Karte 43</div>
+
+<main>
+  <article class="karte" aria-labelledby="karte-titel">
+    <div class="karte-stripe"></div>
+
+    <div class="karte-header">
+      <div class="karte-meta-wrap">
+        <div class="modul-tag">M-02</div>
+        <div class="karte-nr">Karte 43 · Neurologische Besonderheit</div>
+        <h1 class="karte-titel" id="karte-titel">Tourette &amp; Tics</h1>
+      </div>
+      <div class="karte-icon-wrap" aria-hidden="true">🌀</div>
+    </div>
+
+    <div class="karte-lead">
+      Ein Tic ist keine Unruhe, die abgestellt werden kann — er ist eine neurologische Reaktion, die durchgelassen werden darf.
+    </div>
+
+    <div class="karte-body">
+
+      <div class="ab">
+        <div class="ab-titel">Was ist das Tourette-Syndrom?</div>
+        <div class="info-box">
+          <p>Das Tourette-Syndrom ist eine neurologische Entwicklungsstörung. Nach DSM-5 gilt die Diagnose bei mehreren motorischen und mindestens einem vokalen Tic, die über mehr als ein Jahr bestehen und vor dem 18. Lebensjahr beginnen. Tics sind plötzliche, sich wiederholende Bewegungen oder Laute — von Blinzeln und Räuspern bis zu komplexeren Bewegungsmustern.</p>
+        </div>
+        <ul class="plain-list" style="margin-top:.5rem;">
+          <li>Tourette ist keine Verhaltensauffälligkeit — die Tics entstehen unwillkürlich</li>
+          <li>Häufige Begleiterkrankungen: ADHS (ca. 50–60&nbsp;%) und Zwangsstörungen (ca. 35&nbsp;%) — diese beeinträchtigen den Alltag oft mehr als die Tics selbst</li>
+          <li>Tourette wird im Glossar bereits als Beispiel unter „Neurodivergenz" genannt (→ M2-07) — dieses Modul vertieft das Thema eigenständig</li>
+        </ul>
+      </div>
+
+      <div class="ab">
+        <div class="ab-titel">Das Vorboten-Gefühl</div>
+        <div class="info-box">
+          <p>Viele Betroffene beschreiben ein <strong>Vorboten-Gefühl</strong> (premonitory urge) kurz vor einem Tic — ähnlich einem Juckreiz oder Spannungsgefühl, das sich durch den Tic kurz löst (Leckman, Walker &amp; Cohen, 1993).</p>
+        </div>
+        <ul class="plain-list" style="margin-top:.5rem;">
+          <li>Tics lassen sich kurzfristig unterdrücken — das kostet aber Konzentration und Kraft</li>
+          <li>Nach dem Unterdrücken kommt oft ein „Rebound" — die Tics werden für eine Weile stärker</li>
+          <li>Tics nehmen bei Stress, Aufregung, Freude oder Müdigkeit oft zu — bei konzentrierten, absorbierenden Tätigkeiten oft ab</li>
+        </ul>
+      </div>
+
+      <div class="ab">
+        <div class="ab-titel">Was ich im Alltag beobachte</div>
+        <ul class="plain-list">
+          <li>Plötzliche Bewegungen oder Laute, die sich wiederholen</li>
+          <li>Tics verändern sich über die Zeit — mal mehr, mal weniger, manchmal andere Tics</li>
+          <li>Nach einer angespannten Unterrichtsstunde oft mehr Tics als vorher</li>
+          <li>Manchmal Scham oder Erschöpfung nach bewusstem Zurückhalten</li>
+        </ul>
+      </div>
+
+      <div class="ab">
+        <div class="ab-titel">Was hilft?</div>
+        <ul class="plain-list">
+          <li><strong>Tic-Neutralität:</strong> nicht kommentieren, nicht auffordern, den Tic zu unterlassen</li>
+          <li>Rückzugsmöglichkeit anbieten, wenn Unterdrücken zu anstrengend wird</li>
+          <li>Klasse mit Einverständnis der/des Jugendlichen sachlich informieren, damit Mitschüler:innen nicht irritiert reagieren</li>
+          <li>Zusammenhang mit Stress ansprechen, ohne die Tics als „Fehler" zu behandeln</li>
+        </ul>
+      </div>
+
+      <div class="brainy-block">
+        <img src="brainy.png" alt="Brainy">
+        <div class="brainy-block-text"><strong>Brainy erinnert:</strong> Tics sind kein Verhalten, das sich abstellen lässt wie ein Schalter — sie sind eine neurologische Reaktion, die durchgelassen werden darf.</div>
+      </div>
+
+      <div class="reflex-box">
+        <div class="reflex-label">Reflexionsfrage für INGRA</div>
+        <p>„Reagiere ich auf einen Tic anders als auf jede andere Bewegung? Was würde Tic-Neutralität in meinem eigenen Verhalten heute konkret bedeuten?"</p>
+      </div>
+
+      <div class="quellen-block">
+        <div class="q-label">Quellen</div>
+        <ul>
+          <li>Leckman, J. F., Walker, D. E., &amp; Cohen, D. J. (1993). Premonitory urges in Tourette's syndrome. American Journal of Psychiatry, 150(1), 98–102</li>
+          <li>American Psychiatric Association (2013). Diagnostic and Statistical Manual of Mental Disorders (DSM-5)</li>
+          <li>Übersichtsdaten zur ADHS-/Zwangsstörungs-Komorbidität bei Tourette-Syndrom, vgl. u. a. StatPearls: Tourette Syndrome and Other Tic Disorders (NCBI)</li>
+        </ul>
+      </div>
+
+    </div><!-- /karte-body -->
+
+    <div class="merksatz-banner">
+      <p>Tics sind keine Entscheidung — Tic-Neutralität ist es.</p>
+    </div>
+
+    <nav class="karte-nav">
+      <a href="M2-42_ADHS_Ausbildungsreife.html">
+        <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 3l-5 5 5 5"/></svg> 42
+      </a>
+      <span class="spacer"></span>
+      <a href="M2-44_Trisomie21_Inklusion.html">
+        44 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg>
+      </a>
+    </nav>
+    <div class="karte-footer">
+      <span>Modul 2 · Karte 43</span>
+      <span>43 / 44</span>
+    </div>
+  </article>
+</main>
+
+<div class="fab-group">
+  <a href="DASHBOARD.html" class="fab fab-m2" title="Dashboard">
+    <svg viewBox="0 0 16 16" width="20" height="20" fill="#F6F2F9"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
+  </a>
+</div>
+
+<footer role="contentinfo">
+  <strong>KLARTEXT</strong> Mentoring-System · Modul 2 · Kind verstehen<br>
+  Karte 43 · Tourette &amp; Tics
+  <span class="footer-copy">Alle Rechte vorbehalten · KLARTEXT-Mentoring-System · © Anja Jolk 2026</span>
+</footer>
+
+</body>
+</html>

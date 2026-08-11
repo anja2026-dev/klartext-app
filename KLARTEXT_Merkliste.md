@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 65 ergänzt)
+Stand: 11.08.2026 (Strang 66 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1520,3 +1520,54 @@ Tipp-Box mit der korrigierten 5-Schritte-Logik.
 ### Noch offen
 
 - Alle Punkte aus Strang 57–64 bleiben unverändert offen.
+
+## Strang 66: KLARTEXT_ContextMapper.js — Jobcoach-Modus für erwachsene Klient:innen (11.08.2026)
+
+Siebter Prompt: ein leichtgewichtiges Skript, das pädagogische Begriffe (Schüler, Kind, Lehrkraft,
+Schultag, Hausaufgaben) im DOM durch Jobcoaching-taugliche Formulierungen ersetzt, aktiviert per
+`?modus=jobcoach` oder localStorage-Flag. Der Auftrag war an einer Stelle technisch nicht wörtlich
+umsetzbar und wurde entsprechend angepasst, nicht stillschweigend anders gebaut.
+
+**Technische Korrektur (kein Fakten-, sondern ein Machbarkeits-Fehler):** "Kontextabhängig" zwischen
+„Teilnehmer" und „Klient" wählen ist mit reiner Text-Ersetzung nicht sauber möglich — das würde
+Satzverständnis brauchen, nicht nur Wortabgleich, und wäre kein „leichtgewichtiges JavaScript" mehr.
+Umgesetzt: eine feste Zielformulierung pro Begriffsfamilie (Schüler/Kind → „Teilnehmer:in"), an
+einer Stelle im Code leicht auf „Klient:in" umstellbar, falls gewünscht.
+
+**Sicherheitsprinzipien der Umsetzung** (wichtig, weil das Skript live vor echten Arbeitgeber:innen
+läuft — ein kaputtes DOM in dem Moment wäre schlimmer als gar keine Funktion):
+- Nur echte Textknoten werden verändert (TreeWalker), nie `innerHTML` — kein Risiko, Event-Handler
+  oder Attribute kaputtzumachen.
+- Nur die Attribute `placeholder`/`aria-label`/`title` werden ersetzt, **nie** `value` — echte
+  Nutzereingaben werden nie überschrieben.
+- `<script>`/`<style>`/`<code>`/`<textarea>`-Inhalte werden ausgeschlossen.
+- Wortgrenzen-sichere, längste-Muster-zuerst sortierte Ersetzung, damit z. B. „Lehrkraft reagiert"
+  (Sonderfall Joker-Karte) vor der generischen „Lehrkraft"→„Coach"-Regel greift und „Schülerinnen"
+  nicht falsch zerlegt wird.
+- MutationObserver mit Disconnect/Reconnect um die eigenen Schreibvorgänge, damit keine Endlosschleife
+  entsteht — deckt automatisch dynamisch nachgerenderten Inhalt ab (Skill-Matrix-Cluster,
+  Bewerbungs-Generator-Werdegang), ohne dass die aufrufenden Seiten selbst etwas dafür tun müssen.
+- Deckt die im Auftrag genannten Begriffsfamilien in ihren gängigen Flexionsformen ab
+  (Singular/Plural/Genitiv/Dativ) — bewusst keine vollständige Grammatikabdeckung, neue Formen lassen
+  sich leicht ergänzen.
+
+**Eingebunden wie angefragt in:** `index.html`, `KLARTEXT_Spiel_SkillMatrix.html`,
+`KLARTEXT_Bewerbungs_Generator.html`.
+
+**Nebenbefund:** `index.html` ist die öffentliche Marketing-Landingpage ohne Login-Gate — sie enthält
+aktuell keinen der Zielbegriffe (0 Treffer bei Schüler/Lehrkraft/Schultag/Hausaufgabe), das Skript
+greift dort also derzeit ins Leere (harmlos, aber wirkungslos). `DASHBOARD.html`, der tatsächliche
+Einstiegspunkt nach dem Login, enthält 12 Treffer — vermutlich die eigentlich relevante Seite für
+den Praxisfall "Jobcoach zeigt einem/einer Klient:in das System". Nicht eigenmächtig ergänzt, da
+außerhalb des angefragten Umfangs; auf Wunsch schnell nachrüstbar.
+
+**Getestet (jsdom, 10 Szenarien):** inaktiv (Text unverändert), Aktivierung via URL-Parameter inkl.
+localStorage-Persistenz, Aktivierung via localStorage, Sonderfall „Lehrkraft reagiert", alle
+Flexionsformen der 5 Begriffsfamilien, Placeholder ersetzt/`value` unangetastet, Script-/Style-Inhalte
+geschützt, MutationObserver erfasst dynamisch hinzugefügten Text, `?modus=schule` schaltet aktiv
+zurück, öffentliche API (`aktivieren()`/`deaktivieren()`/`istAktiv()`).
+
+### Noch offen
+
+- `DASHBOARD.html` fehlt der Jobcoach-Modus noch (s. Nebenbefund oben).
+- Alle Punkte aus Strang 57–65 bleiben unverändert offen.

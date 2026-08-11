@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 61 ergänzt)
+Stand: 11.08.2026 (Strang 62 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1353,5 +1353,72 @@ betroffenen Dateien nach dem Edit.
 ### Noch offen
 
 - Fehlendes Login-Gate auf ~65 Seiten (u. a. `pwa/index.html`, `LK-*`-Reihe) — noch nicht mit Anja
-  abgestimmt, ob/wo das gewollt ist.
+  abgestimmt, ob/wo das gewollt ist. Angesichts des Wochenlimits vertagt: ~26 eindeutige Fälle
+  (gleiche Familie wie bereits gegatete Geschwister-Seiten) könnten in einer eigenen, günstigen
+  Batch-Runde nachgezogen werden, die übrigen ~36 (Eltern-/Lehrkraft-/Admin-Bereich) brauchen erst
+  eine Entscheidung von Anja, ob die einen eigenen Zugang haben sollen.
 - Alle Punkte aus Strang 57–60 bleiben unverändert offen.
+
+## Strang 62: Neues Tool — Bewerbungs-Generator (Anschreiben DIN 5008 + Lebenslauf) (11.08.2026)
+
+Neuer Prompt (Format wie die vorherigen NotebookLM-Prompts) forderte ein neues Tool
+`KLARTEXT_Bewerbungs_Generator.html`: Anschreiben nach DIN 5008 mit "Zauberstab" (Stärken-Sätze aus
+der Skill-Matrix), tabellarischer Lebenslauf mit "KLARTEXT-Skills"-Bereich, DIN-5008-Druckansicht mit
+Fensterposition, zwei ladbare Muster (klassisch/ressourcenorientiert). Vor dem Bauen Fact-Check
+gemacht (eigener Recherche-Subagent) und mit Anja per Rückfrage kurz abgestimmt (Ergebnis: "Alles auf
+einmal", trotz 65 %-Wochenlimit).
+
+**Korrigierte Ungenauigkeiten im Prompt:**
+- Font-Angabe "Playfair Display / Nunito" war falsch — das echte KLARTEXT-CSS nutzt durchgängig
+  Playfair Display + DM Sans (Nunito kommt nur in einer einzigen Kinderseite vor, nicht im Standard).
+  Mit der echten Kombination gebaut.
+- "KLARTEXT-Skills" als Kategorie-Name existiert nirgends im System (0 Treffer) — nicht übernommen.
+  Stattdessen die im System bereits etablierten Begriffe verwendet (Teamfähigkeit, Belastbarkeit
+  usw., abgeleitet aus den echten Skill-Matrix-Clustern).
+- "Analog zu Modul M2-42" für Muster B war eine gedehnte Analogie: M2-42 behandelt ADHS/
+  Ausbildungsreife und würdigt Zwischenschritte (Berufskolleg/BVJ) explizit als "legitime Wege, keine
+  Niederlage" — aber es behandelt keine Bewerbungsunterlagen. Diese Grundhaltung wurde für Muster B
+  übernommen, ohne M2-42-Wortlaut zu kopieren oder eine engere inhaltliche Übereinstimmung zu
+  behaupten, als tatsächlich besteht.
+
+**DIN-5008-Positionsangaben recherchiert und mit echten Quellen belegt** (nicht geschätzt):
+Anschriftenfeld Form B (heute die gängige Form für Geschäftsbriefe) beginnt 45 mm von oben, die
+Anschriftzone bei 62,7 mm, Feldgröße 85×45 mm, 20 mm vom linken Rand, Beschriftung ab 25 mm (dieselbe
+Linie wie der Fließtext); Falzmarken bei 105 mm und 210 mm, Lochmarke bei 148,5 mm — Quellen:
+sekretaria.de ("Adressfeld im Geschäftsbrief nach DIN 5008") und federwerk.de ("Faltmarken und
+Lochmarken auf Briefblättern nach DIN 5008"), beide unter Bezug auf die DIN-5008-Reform 03/2020.
+
+**Umgesetzt (`KLARTEXT_Bewerbungs_Generator.html`, neu):**
+- Zwei Tabs: Anschreiben (DIN-5008-Form-B-Layout, direkt beschreibbare Felder statt separater
+  Vorschau) und Lebenslauf.
+- Zauberstab: nutzt die echten `anschreiben`-Vorlagensätze aus den 6 Skill-Matrix-Clustern
+  (`KLARTEXT_Spiel_SkillMatrix.html`, `CLUSTERS`-Array) statt neu erfundener Formulierungen —
+  lokal in `CLUSTER_ANSCHREIBEN_VORLAGEN` gespiegelt, da das gespeicherte Profil selbst keine
+  Vorlagen-Sätze enthält, nur titel/hobbys/felder.
+- Lebenslauf: dynamische Werdegang-Tabelle (Typ/Von/Bis/Bezeichnung/Ort), sortiert sich automatisch
+  antichronologisch (offenes „Bis" = „bis heute", steht oben); Stärken-Bereich mit Übernahme aus dem
+  Skill-Matrix-Profil (Cluster-Titel in Bewerbungssprache übersetzt, z. B. "Team-Power" →
+  "Teamfähigkeit") plus manuellem Hinzufügen.
+- Muster A (klassisch/geradlinig) und Muster B (Berufskolleg-Zwischenschritt, ressourcenorientiert
+  formuliert) füllen beide Tabs auf Knopfdruck.
+- Entwurf wird laufend in `klartext_bewerbung_entwurf_v1` gespeichert (Muster für sitzungsübergreifende
+  Persistenz wie an anderer Stelle im System etabliert).
+- Login-Gate wie überall; interne Links ohne `rel="noopener"` (Lehre aus Strang 61).
+- Verlinkt in `KLARTEXT_Downloads.html`, `KLARTEXT_Spiele.html` sowie zusätzlich direkt aus der
+  Skill-Matrix heraus (im "Bausteine für Anschreiben & Gespräch"-Kasten, wo die Sätze ohnehin
+  angezeigt werden).
+
+**Im Test gefundener und behobener Bug:** Die Anrede-Automatik (Anschriftzone → Empfänger-Person →
+Anrede-Vorschlag "Sehr geehrte/r …") erkannte fälschlich jede neue Empfänger-Eingabe als "manuell
+überschrieben" und aktualisierte die Anrede danach nicht mehr korrekt (z. B. blieb bei einem
+Wechsel von "Frau X" auf "Herr Y" die alte weibliche Anrede stehen). Ursache: eine verdrehte
+Vergleichslogik. Behoben, per jsdom mit expliziten Frau/Herr-Wechseln nachgetestet.
+
+**Getestet (jsdom, 11 Szenarien):** Tab-Wechsel, Absender→Rücksendeangabe/Gruß-Zeile, Anrede-Automatik
+inkl. Bugfix-Nachweis, Zauberstab ohne/mit Profil (inkl. Satz-Rotation über mehrere Klicks),
+Werdegang hinzufügen/sortieren/entfernen, Stärken übernehmen/hinzufügen/entfernen, Muster A/B laden,
+Formular leeren, Entwurf-Persistenz über einen simulierten Reload.
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–61 bleiben unverändert offen.

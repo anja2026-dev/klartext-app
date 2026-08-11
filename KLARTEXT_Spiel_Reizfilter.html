@@ -48,6 +48,33 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .zuruecksetzen-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;background:var(--m);color:#fff;font-weight:700;font-size:.86rem;cursor:pointer;font-family:inherit;}
 .zuruecksetzen-btn:hover{opacity:.9;}
 .verlauf-hinweis{font-size:.7rem;color:var(--muted);font-style:italic;text-align:center;margin-top:1rem;}
+
+/* ── INGRA-Kontext (nur bei ?kontext=ingra sichtbar) ─────────────────────────────── */
+.ingra-box{display:none;text-align:left;background:#EAF0F4;border:1.5px solid #9BB5C4;border-radius:14px;padding:1rem 1.1rem;margin-top:1.2rem;}
+.ingra-box.zeigen{display:block;}
+.ingra-tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:10px;background:var(--m);color:#fff;margin-bottom:.7rem;}
+.klar-mini{display:none;grid-template-columns:1fr 1fr;gap:.4rem .7rem;margin-bottom:.8rem;}
+.klar-mini.zeigen{display:grid;}
+.klar-mini-zeile{font-size:.78rem;color:var(--ink);line-height:1.4;}
+.klar-mini-zeile b{color:var(--m);}
+.shortcut-row{display:none;flex-direction:column;gap:.5rem;margin-bottom:.8rem;}
+.shortcut-row.zeigen{display:flex;}
+.shortcut-link{display:flex;align-items:center;gap:.5rem;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:.6rem .8rem;text-decoration:none;color:var(--ink);font-size:.82rem;font-weight:600;}
+.shortcut-link:hover{border-color:var(--m);}
+.fk-row{display:none;}
+.fk-row.zeigen{display:block;}
+.fk-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:#C62828;color:#fff;border-radius:12px;padding:.75rem .8rem;text-decoration:none;font-size:.86rem;font-weight:700;}
+.fk-btn:hover{opacity:.9;}
+
+/* ── Tic-Dokumentation (nur bei &herkunft=to sichtbar) ─────────────────────────────── */
+.tic-box{display:none;text-align:center;background:var(--paper);border:1.5px solid var(--border);border-radius:16px;padding:1rem 1.1rem;margin-top:1.2rem;}
+.tic-box.zeigen{display:block;}
+.tic-titel{font-size:.85rem;font-weight:700;color:var(--m);margin-bottom:.7rem;}
+.tic-row{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:.5rem;}
+.tic-btn{width:38px;height:38px;border-radius:50%;border:2px solid var(--m);background:#fff;color:var(--m);font-size:1.2rem;font-weight:700;cursor:pointer;line-height:1;}
+.tic-btn:hover{background:var(--m);color:#fff;}
+.tic-count{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:700;color:var(--m);min-width:2.2rem;}
+.tic-hinweis{font-size:.72rem;color:var(--muted);font-style:italic;}
 </style>
 </head>
 <body>
@@ -89,6 +116,33 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       </ul>
     </div>
 
+    <div class="ingra-box" id="ingra-box">
+      <div class="ingra-tag">Für INGRA</div>
+      <div class="klar-mini" id="klar-mini">
+        <div class="klar-mini-zeile"><b>K</b> Kontakt &amp; körperliche Sicherheit</div>
+        <div class="klar-mini-zeile"><b>L</b> Leise &amp; langsam</div>
+        <div class="klar-mini-zeile"><b>A</b> Anerkennung &amp; Atmen</div>
+        <div class="klar-mini-zeile"><b>R</b> Reizreduktion &amp; Rückzug</div>
+      </div>
+      <div class="shortcut-row" id="shortcut-row">
+        <a class="shortcut-link" href="M0-00_Systemelemente.html#zonen" target="_blank" rel="noopener">🧭 Zonen-Set — Rückzugs-Zone anbieten</a>
+        <a class="shortcut-link" href="KLARTEXT_Spiel_Koerperkompass.html" target="_blank" rel="noopener">🧍 Körper-Kompass öffnen</a>
+      </div>
+      <div class="fk-row" id="fk-row">
+        <a class="fk-btn" href="DASHBOARD.html#sek-fk" target="_blank" rel="noopener">🚒 Feuerwehrkarten öffnen</a>
+      </div>
+    </div>
+
+    <div class="tic-box" id="tic-box">
+      <div class="tic-titel">🌀 Tic-Häufigkeit heute (optional)</div>
+      <div class="tic-row">
+        <button type="button" class="tic-btn" onclick="ticAendern(-1)" aria-label="Tic-Zähler verringern">−</button>
+        <span class="tic-count" id="tic-count">0</span>
+        <button type="button" class="tic-btn" onclick="ticAendern(1)" aria-label="Tic-Zähler erhöhen">+</button>
+      </div>
+      <div class="tic-hinweis" id="tic-hinweis">Zusammen mit dem Stresslevel gespeichert — für den Ressourcen-Bericht.</div>
+    </div>
+
     <div class="zuruecksetzen-row">
       <button class="zuruecksetzen-btn" onclick="reglerZuruecksetzen()">↺ Zurücksetzen</button>
     </div>
@@ -108,8 +162,20 @@ var STUFEN = [
 var regler = document.getElementById('regler');
 var shell = document.getElementById('shell');
 
+/* ── INGRA-Kontext: nur aktiv bei ?kontext=ingra, damit die Jugendlichen-Ansicht
+   unveraendert wertungsfrei bleibt. &herkunft=to schaltet zusaetzlich die
+   Tic-Dokumentation frei (z. B. wenn von M2-43 aus aufgerufen). ─────────────────────────────── */
+var URL_PARAMS = new URLSearchParams(window.location.search);
+var INGRA_KONTEXT = URL_PARAMS.get('kontext') === 'ingra';
+var HERKUNFT = URL_PARAMS.get('herkunft') || '';
+
+/* Zuordnung der 5 Reglerstufen zu den Barometer-Farben (Reizfilter kennt kein
+   Grau-Aequivalent, das ist bewusst so gelassen). */
+var BAROMETER_STUFE = ['gruen', 'gruen', 'gelb', 'orange', 'rot'];
+
 function reglerAktualisieren(){
-  var stufe = STUFEN[parseInt(regler.value, 10)];
+  var stufeIdx = parseInt(regler.value, 10);
+  var stufe = STUFEN[stufeIdx];
 
   document.getElementById('gesicht').textContent = stufe.emoji;
   document.getElementById('stufe-label').textContent = stufe.label;
@@ -118,6 +184,18 @@ function reglerAktualisieren(){
   shell.style.background = stufe.wash;
 
   document.getElementById('hinweis-box').classList.toggle('zeigen', stufe.hinweis);
+
+  if (INGRA_KONTEXT) ingraOverlayAktualisieren(stufeIdx);
+}
+
+/* ── INGRA-Overlay: kLAR ab Gelb/Orange, Zonen+Koerper-Kompass ab Orange/Rot,
+   Feuerwehrkarten nur bei Rot (Maximum). ─────────────────────────────── */
+function ingraOverlayAktualisieren(stufeIdx){
+  var farbe = BAROMETER_STUFE[stufeIdx];
+  document.getElementById('ingra-box').classList.toggle('zeigen', farbe !== 'gruen');
+  document.getElementById('klar-mini').classList.toggle('zeigen', farbe === 'gelb' || farbe === 'orange');
+  document.getElementById('shortcut-row').classList.toggle('zeigen', farbe === 'orange' || farbe === 'rot');
+  document.getElementById('fk-row').classList.toggle('zeigen', farbe === 'rot');
 }
 
 function reglerZuruecksetzen(){
@@ -144,8 +222,13 @@ function verlaufLaden(){
 
 function verlaufEintragen(){
   var heute = heuteISO();
+  var bestehend = verlaufLaden().filter(function(e){ return e.datum === heute; })[0];
   var verlauf = verlaufLaden().filter(function(e){ return e.datum !== heute; });
-  verlauf.push({ datum: heute, stufe: parseInt(regler.value, 10) });
+  var eintrag = { datum: heute, stufe: parseInt(regler.value, 10) };
+  /* Ein evtl. bereits fuer heute erfasster Tic-Zaehler bleibt erhalten, damit das
+     Nachjustieren des Reglers ihn nicht versehentlich loescht. */
+  if (bestehend && typeof bestehend.tics === 'number') eintrag.tics = bestehend.tics;
+  verlauf.push(eintrag);
   verlauf.sort(function(a, b){ return a.datum < b.datum ? -1 : 1; });
   if (verlauf.length > 60) verlauf = verlauf.slice(verlauf.length - 60);
   try { localStorage.setItem(VERLAUF_KEY, JSON.stringify(verlauf)); } catch(e) {}
@@ -160,10 +243,54 @@ function verlaufHinweisRendern(){
     : 'Der Wert wird gespeichert, sobald du den Regler loslässt (einmal pro Tag, nur auf diesem Gerät).';
 }
 
+/* ── Tic-Dokumentation: nur sichtbar bei &herkunft=to (z. B. Aufruf aus M2-43).
+   Optionaler taeglicher Zaehler, der zusammen mit der Reglerstufe fuer den
+   gleichen Tag in klartext_reizfilter_verlauf abgelegt wird (Feld "tics"). Rein
+   additiv zum bestehenden Schema — alte Eintraege ohne "tics" bleiben gueltig. ─────── */
+var ticZaehler = 0;
+
+function heutigenEintragFinden(){
+  var heute = heuteISO();
+  return verlaufLaden().filter(function(e){ return e.datum === heute; })[0];
+}
+
+function ticZaehlerLaden(){
+  var heutiger = heutigenEintragFinden();
+  ticZaehler = (heutiger && typeof heutiger.tics === 'number') ? heutiger.tics : 0;
+  ticZaehlerRendern();
+}
+
+function ticZaehlerRendern(){
+  document.getElementById('tic-count').textContent = ticZaehler;
+}
+
+function ticAendern(delta){
+  ticZaehler = Math.max(0, ticZaehler + delta);
+  ticZaehlerRendern();
+
+  var heute = heuteISO();
+  var verlauf = verlaufLaden().filter(function(e){ return e.datum !== heute; });
+  var bestehend = heutigenEintragFinden();
+  var eintrag = bestehend
+    ? { datum: heute, stufe: bestehend.stufe, tics: ticZaehler }
+    : { datum: heute, stufe: parseInt(regler.value, 10), tics: ticZaehler };
+  verlauf.push(eintrag);
+  verlauf.sort(function(a, b){ return a.datum < b.datum ? -1 : 1; });
+  if (verlauf.length > 60) verlauf = verlauf.slice(verlauf.length - 60);
+  try { localStorage.setItem(VERLAUF_KEY, JSON.stringify(verlauf)); } catch(e) {}
+  verlaufHinweisRendern();
+}
+
 regler.addEventListener('input', reglerAktualisieren);
 regler.addEventListener('change', verlaufEintragen);
 reglerAktualisieren();
 verlaufHinweisRendern();
+
+if (INGRA_KONTEXT) ingraOverlayAktualisieren(parseInt(regler.value, 10));
+if (HERKUNFT === 'to') {
+  document.getElementById('tic-box').classList.add('zeigen');
+  ticZaehlerLaden();
+}
 </script>
 
 </body>

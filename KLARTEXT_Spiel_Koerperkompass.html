@@ -188,6 +188,7 @@ function intensitaetSetzen(stufe){
   svgAktualisieren();
   panelRendern();
   zusammenfassungRendern();
+  kompassSpeichern();
 }
 
 function wortUmschalten(wort){
@@ -197,6 +198,7 @@ function wortUmschalten(wort){
   if (idx === -1) z.woerter.push(wort); else z.woerter.splice(idx, 1);
   panelRendern();
   zusammenfassungRendern();
+  kompassSpeichern();
 }
 
 function regionLeeren(){
@@ -205,6 +207,7 @@ function regionLeeren(){
   svgAktualisieren();
   panelRendern();
   zusammenfassungRendern();
+  kompassSpeichern();
 }
 
 function svgAktualisieren(){
@@ -240,12 +243,66 @@ function allesZuruecksetzen(){
   svgAktualisieren();
   panelRendern();
   zusammenfassungRendern();
+  kompassSpeichern();
 }
 
 document.querySelectorAll('.region').forEach(function(el){
   el.addEventListener('click', function(){ regionAntippen(el.dataset.region); });
 });
 
+/* ── Persistenz: taeglicher Snapshot der markierten Koerperstellen, damit der
+   Koerper-Fokus (Daten-Bruecke) im Ressourcen-Bericht zusammengefuehrt werden
+   kann. Es wird nur der aktuelle Tag ueberschrieben (kein Verlauf jeder
+   einzelnen Antippung) — analog zum Muster im Reizfilter. ─────────────────── */
+var KOMPASS_KEY = 'klartext_koerperkompass_verlauf';
+
+function heuteISO(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function kompassLaden(){
+  try {
+    var roh = localStorage.getItem(KOMPASS_KEY);
+    return roh ? JSON.parse(roh) : [];
+  } catch(e) { return []; }
+}
+
+function kompassSpeichern(){
+  var heute = heuteISO();
+  var verlauf = kompassLaden().filter(function(e){ return e.datum !== heute; });
+
+  var regionen = {};
+  var markiert = false;
+  Object.keys(REGIONEN).forEach(function(r){
+    if (zustand[r].intensitaet) {
+      regionen[r] = { intensitaet: zustand[r].intensitaet, woerter: zustand[r].woerter.slice() };
+      markiert = true;
+    }
+  });
+
+  /* Ist fuer heute nichts (mehr) markiert, wird kein leerer Eintrag gespeichert
+     bzw. ein bereits vorhandener Tageseintrag entfernt. */
+  if (markiert) {
+    verlauf.push({ datum: heute, regionen: regionen });
+    verlauf.sort(function(a, b){ return a.datum < b.datum ? -1 : 1; });
+    if (verlauf.length > 60) verlauf = verlauf.slice(verlauf.length - 60);
+  }
+
+  try { localStorage.setItem(KOMPASS_KEY, JSON.stringify(verlauf)); } catch(e) {}
+}
+
+function kompassWiederherstellen(){
+  var heute = heuteISO();
+  var heutiger = kompassLaden().filter(function(e){ return e.datum === heute; })[0];
+  if (!heutiger || !heutiger.regionen) return;
+  Object.keys(heutiger.regionen).forEach(function(r){
+    if (zustand[r]) zustand[r] = { intensitaet: heutiger.regionen[r].intensitaet, woerter: (heutiger.regionen[r].woerter || []).slice() };
+  });
+  svgAktualisieren();
+}
+
+kompassWiederherstellen();
 zusammenfassungRendern();
 </script>
 

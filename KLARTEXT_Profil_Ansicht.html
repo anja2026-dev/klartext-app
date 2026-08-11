@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Superpower-Profil · KLARTEXT-Mentoring</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Diese Seite ist die Ziel-Seite eines QR-Codes von der Superpower-Card.
+   Sie hat BEWUSST KEIN Login-Gate: Arbeitgeber:innen, die die gedruckte
+   Karte einer/eines Teilnehmenden scannen, haben keinen KLARTEXT-Zugang
+   und sollen keinen brauchen. Angezeigt werden nur Name + Top-3-Stärken —
+   also genau das, was ohnehin schon auf der gedruckten Karte steht. */
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--jd:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem;}
+.marke{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;}
+.marke-mark{width:30px;height:30px;background:var(--jd);border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.marke-mark span{font-family:"Playfair Display",serif;font-size:11px;font-weight:700;color:#fff;}
+.marke-text{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--jd);}
+
+.karte{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.8rem 1.6rem;max-width:420px;width:100%;box-shadow:0 4px 18px rgba(27,58,75,.08);}
+.name{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--jd);margin-bottom:.2rem;}
+.untertitel{font-size:.85rem;color:var(--muted);margin-bottom:1.3rem;}
+.cluster{display:flex;align-items:flex-start;gap:.7rem;padding:.8rem 0;border-bottom:1px solid var(--border);}
+.cluster:last-child{border-bottom:none;}
+.cluster-icon{font-size:1.5rem;flex:0 0 auto;}
+.cluster-titel{font-weight:700;color:var(--jd);font-size:.95rem;}
+.cluster-staerke{font-size:.8rem;color:var(--muted);}
+.fussnote{font-size:.72rem;color:var(--muted);margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--border);line-height:1.5;}
+.fussnote a{color:var(--jd);font-weight:700;}
+
+.leer{max-width:420px;width:100%;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem 1.5rem;}
+.leer-icon{font-size:2rem;margin-bottom:.6rem;}
+.leer h1{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--jd);margin-bottom:.5rem;}
+.leer p{font-size:.85rem;color:var(--muted);line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="marke"><div class="marke-mark"><span>KT</span></div><div class="marke-text">KLARTEXT-Mentoring</div></div>
+
+<div id="inhalt"></div>
+
+<script src="KLARTEXT_Profil_Codec.js"></script>
+<script>
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+function rendern(profil){
+  var el = document.getElementById('inhalt');
+
+  if (!profil || !profil.cluster.length) {
+    el.innerHTML =
+      '<div class="leer">' +
+        '<div class="leer-icon">🪪</div>' +
+        '<h1>Kein Profil gefunden</h1>' +
+        '<p>Dieser Link enthält aktuell kein gültiges Superpower-Profil. Falls Sie diesen Code von einer gedruckten Karte gescannt haben, fragen Sie die Karteninhaberin / den Karteninhaber gern nach einer aktuellen Karte.</p>' +
+      '</div>';
+    return;
+  }
+
+  var name = profil.name || 'Teilnehmer:in';
+  var clusterHtml = profil.cluster.map(function(c){
+    return '<div class="cluster">' +
+      '<div class="cluster-icon">' + escapeHtml(c.icon) + '</div>' +
+      '<div><div class="cluster-titel">' + escapeHtml(c.titel) + '</div>' +
+      '<div class="cluster-staerke">' + escapeHtml(c.staerke) + '</div></div>' +
+    '</div>';
+  }).join('');
+
+  el.innerHTML =
+    '<div class="karte">' +
+      '<div class="name">' + escapeHtml(name) + '</div>' +
+      '<div class="untertitel">Superpower-Profil — die 3 größten Stärken</div>' +
+      clusterHtml +
+      '<div class="fussnote">Dieses Profil wurde mit dem KLARTEXT-Mentoring-System selbst erarbeitet. Mehr zu KLARTEXT: <a href="https://klartext-mentoring.de" target="_blank">klartext-mentoring.de</a></div>' +
+    '</div>';
+}
+
+(function(){
+  if (!window.KLARTEXT_ProfilCodec) { rendern(null); return; }
+  // 1. Vorrang: per URL kodiertes Profil (der Regelfall beim QR-Scan durch
+  //    Dritte, funktioniert unabhaengig vom localStorage des scannenden Geraets).
+  var profil = window.KLARTEXT_ProfilCodec.dekodieren();
+  if (profil && profil.cluster.length) { rendern(profil); return; }
+  // 2. Fallback: lokal gespeichertes Profil (Vorschau auf dem eigenen Geraet
+  //    ohne Parameter, z. B. ueber den "Online-Ansicht testen"-Link ohne Daten).
+  var lokal = window.KLARTEXT_ProfilCodec.clusterAusLocalStorage();
+  if (lokal.length) { rendern({ name:'', cluster: lokal.map(function(c){
+    var info = window.KLARTEXT_ProfilCodec.CLUSTER_INFO[c.id] || {};
+    return { id:c.id, titel:c.titel, icon:c.icon, staerke: info.staerke || '' };
+  }) }); return; }
+  rendern(null);
+})();
+</script>
+
+</body></html>

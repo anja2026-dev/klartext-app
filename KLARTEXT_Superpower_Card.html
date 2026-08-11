@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Superpower-Card · KLARTEXT-Mentoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--jd:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--jd);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--jd) 0%,#2A5570 100%);padding:1.5rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2rem;margin-bottom:.3rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.2rem,3vw,1.7rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.8rem;color:rgba(255,255,255,.7);max-width:560px;margin:0 auto;}
+.wrap{max-width:900px;margin:0 auto;padding:1.5rem clamp(1rem,4vw,2rem) 3rem;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.3rem;margin-bottom:1.2rem;}
+.panel h2{font-family:"Playfair Display",serif;font-size:1rem;color:var(--jd);margin-bottom:.6rem;}
+.feld{margin-bottom:.7rem;}
+.feld label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:.3rem;}
+.feld input{width:100%;padding:.5rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:.85rem;color:var(--ink);}
+.feld input:focus{outline:none;border-color:var(--acc);}
+.hinweis{font-size:.72rem;color:var(--muted);margin-top:.3rem;}
+.btnzeile{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.8rem;}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.1rem;border-radius:20px;border:none;font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;}
+.btn-primary{background:var(--jd);color:#fff;}
+.btn-secondary{background:#fff;color:var(--jd);border:1.5px solid var(--jd);}
+.kein-profil{background:#FFF7EA;border:1.5px solid #E0C88A;border-radius:10px;padding:.9rem 1rem;font-size:.82rem;color:#6B4E00;}
+.kein-profil a{color:#6B4E00;font-weight:700;}
+
+.print-page{max-width:210mm;margin:0 auto;background:white;padding:10mm;display:grid;grid-template-columns:repeat(2,1fr);gap:6mm;}
+.sc-karte{border:2.5px solid var(--jd);border-radius:10px;padding:6mm 6.5mm;display:flex;flex-direction:column;page-break-inside:avoid;background:#FFFEFC;min-height:80mm;}
+.sc-kopf{display:flex;align-items:center;justify-content:space-between;margin-bottom:3mm;padding-bottom:2.5mm;border-bottom:1px solid var(--border);}
+.sc-marke{font-family:"Playfair Display",serif;font-size:9px;font-weight:700;color:var(--jd);}
+.sc-label{font-size:8px;color:var(--muted);}
+.sc-name{font-family:"Playfair Display",serif;font-size:14px;font-weight:700;color:var(--jd);margin-bottom:1mm;}
+.sc-untertitel{font-size:8.5px;color:var(--muted);margin-bottom:3mm;}
+.sc-cluster-liste{flex:1;}
+.sc-cluster{display:flex;align-items:center;gap:2mm;font-size:9px;color:var(--ink);padding:1.5mm 0;border-bottom:1px dashed var(--border);}
+.sc-cluster:last-child{border-bottom:none;}
+.sc-icon{font-size:12px;flex:0 0 auto;}
+.sc-titel{font-weight:700;color:var(--jd);}
+.sc-staerke{color:var(--muted);font-size:8px;}
+.sc-footer{display:flex;align-items:center;gap:3mm;margin-top:3mm;padding-top:2.5mm;border-top:1px solid var(--border);}
+.sc-qr{width:18mm;height:18mm;flex:0 0 18mm;}
+.sc-qr svg{display:block;width:100%;height:100%;}
+.sc-linktext{font-size:7.5px;color:var(--muted);line-height:1.3;}
+.sc-linktext b{color:var(--jd);}
+
+@media print{
+  .header,.hero,.panel,.btnzeile{display:none!important;}
+  body{background:#fff;padding:0;}
+  .wrap{padding:0;max-width:none;}
+  @page{size:A4;margin:8mm;}
+}
+</style>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+</head>
+<body>
+
+<div class="header">
+  <a href="KLARTEXT_Downloads.html" class="logo"><div class="logo-mark"><span>KT</span></div><span class="logo-text">KLARTEXT</span></a>
+  <a href="KLARTEXT_Downloads.html" class="back-btn">← Downloads</a>
+</div>
+
+<div class="hero">
+  <div class="hero-icon">🪪</div>
+  <div class="hero-titel">Superpower-Card</div>
+  <div class="hero-sub">Eine kleine Karte mit den Top-3-Stärken aus dem Superpower-Profil — zum Ausdrucken und z. B. bei einem Vorstellungsgespräch mitzugeben. Der QR-Code zeigt Arbeitgeber:innen das Profil auch online, ganz ohne Login.</div>
+</div>
+
+<div class="wrap">
+
+  <div class="panel">
+    <h2>1. Name eintragen</h2>
+    <div class="feld">
+      <label for="nameInput">Name auf der Karte</label>
+      <input type="text" id="nameInput" placeholder="z. B. Alex Muster" oninput="nameAendern(this.value)">
+    </div>
+    <div class="hinweis">Tipp: Es reicht auch, nur den Vornamen einzutragen — die Karte muss keinen vollständigen Namen zeigen.</div>
+  </div>
+
+  <div class="panel">
+    <h2>2. Vorschau &amp; Druck</h2>
+    <div id="keinProfilHinweis" class="kein-profil" style="display:none;">
+      Es wurde noch kein Superpower-Profil gefunden. Zuerst im <a href="KLARTEXT_Spiel_SkillMatrix.html">Skill-Matrix-Spiel</a> die Top-3-Stärken ermitteln — die Karte füllt sich danach automatisch.
+    </div>
+    <div class="btnzeile">
+      <button class="btn btn-primary" onclick="window.print()">🖨 Drucken / PDF</button>
+      <a id="vorschauLink" class="btn btn-secondary" href="#" target="_blank">🔍 Online-Ansicht testen (wie Arbeitgeber sie sieht)</a>
+    </div>
+  </div>
+
+  <div id="kartenWrap" class="print-page"></div>
+
+</div>
+
+<script src="KLARTEXT_QRCode.js"></script>
+<script src="KLARTEXT_Profil_Codec.js"></script>
+<script>
+var NAME_KEY = 'klartext_superpowercard_name_v1';
+var PROFIL_ZIEL_BASIS = 'https://klartext-mentoring.de/KLARTEXT_Profil_Ansicht.html';
+var daten = { name: '' };
+var cluster = [];
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
+}
+
+function nameLaden(){
+  try { daten.name = localStorage.getItem(NAME_KEY) || ''; } catch(e) { daten.name = ''; }
+}
+
+function nameAendern(wert){
+  daten.name = wert;
+  try { localStorage.setItem(NAME_KEY, wert); } catch(e) {}
+  kartenRendern();
+}
+
+function profilLinkErzeugen(){
+  var ids = cluster.map(function(c){ return c.id; });
+  var qs = window.KLARTEXT_ProfilCodec.kodieren(daten.name, ids);
+  return PROFIL_ZIEL_BASIS + '?' + qs;
+}
+
+function kartenRendern(){
+  var wrap = document.getElementById('kartenWrap');
+  var hinweis = document.getElementById('keinProfilHinweis');
+  var vorschau = document.getElementById('vorschauLink');
+
+  if (!cluster.length) {
+    hinweis.style.display = 'block';
+    wrap.innerHTML = '';
+    vorschau.style.pointerEvents = 'none';
+    vorschau.style.opacity = '.5';
+    return;
+  }
+  hinweis.style.display = 'none';
+  vorschau.style.pointerEvents = '';
+  vorschau.style.opacity = '';
+
+  var link = profilLinkErzeugen();
+  vorschau.setAttribute('href', link);
+
+  var svg = (window.KLARTEXT_QRCode && window.KLARTEXT_QRCode.erzeugeSvg(link)) || '';
+
+  var clusterHtml = cluster.map(function(c){
+    var info = window.KLARTEXT_ProfilCodec.CLUSTER_INFO[c.id] || {};
+    return '<div class="sc-cluster"><span class="sc-icon">' + escapeHtml(c.icon) + '</span>' +
+      '<span><span class="sc-titel">' + escapeHtml(c.titel) + '</span><br>' +
+      '<span class="sc-staerke">' + escapeHtml(info.staerke || '') + '</span></span></div>';
+  }).join('');
+
+  var name = daten.name.trim() || 'Name folgt';
+
+  var einzelkarte =
+    '<div class="sc-karte">' +
+      '<div class="sc-kopf"><span class="sc-marke">KLARTEXT</span><span class="sc-label">Superpower-Card</span></div>' +
+      '<div class="sc-name">' + escapeHtml(name) + '</div>' +
+      '<div class="sc-untertitel">Meine 3 größten Stärken</div>' +
+      '<div class="sc-cluster-liste">' + clusterHtml + '</div>' +
+      '<div class="sc-footer">' +
+        '<div class="sc-qr">' + svg + '</div>' +
+        '<div class="sc-linktext">Profil online ansehen:<br><b>klartext-mentoring.de/profil</b></div>' +
+      '</div>' +
+    '</div>';
+
+  // Zwei identische Karten auf einer A4-Seite (zum Ausschneiden), analog
+  // zur bestehenden Joker-Karten-Vorlage.
+  wrap.innerHTML = einzelkarte + einzelkarte;
+}
+
+function init(){
+  nameLaden();
+  document.getElementById('nameInput').value = daten.name;
+  cluster = (window.KLARTEXT_ProfilCodec && window.KLARTEXT_ProfilCodec.clusterAusLocalStorage()) || [];
+  kartenRendern();
+}
+
+init();
+</script>
+
+</body></html>

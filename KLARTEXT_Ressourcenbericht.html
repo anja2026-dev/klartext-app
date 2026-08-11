@@ -65,6 +65,19 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 .sorgen-hinweis-zeile{font-size:.78rem;color:var(--muted);font-style:italic;}
 
+.tic-korrelation-liste{display:flex;flex-direction:column;gap:.5rem;}
+.tic-farbe-eintrag{display:flex;align-items:center;gap:.7rem;background:var(--paper);border-radius:12px;padding:.6rem .8rem;}
+.tic-farbe-chip{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.05rem;}
+.tic-farbe-text{font-size:.82rem;line-height:1.4;}
+.tic-farbe-text b{color:var(--jd);}
+.tic-hinweis-zeile{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border);}
+
+.koerper-signale-text{font-size:.88rem;line-height:1.6;margin-bottom:.7rem;}
+.koerper-chip-row{display:flex;flex-wrap:wrap;gap:.5rem;}
+.koerper-chip{padding:.35rem .75rem;border-radius:16px;font-size:.78rem;font-weight:600;background:var(--paper);border:1.5px solid var(--border);color:var(--ink);}
+.koerper-stand{font-size:.76rem;color:var(--muted);margin-top:.8rem;}
+.koerper-stand a{color:var(--jd);font-weight:700;}
+
 .begleit-links{display:flex;flex-direction:column;gap:.6rem;}
 .begleit-link{display:block;background:var(--paper);border:2px solid var(--border);border-radius:14px;padding:.75rem .95rem;text-decoration:none;color:var(--ink);font-size:.85rem;font-weight:600;transition:border-color .15s;}
 .begleit-link:hover{border-color:var(--jd);}
@@ -124,6 +137,10 @@ footer strong{color:var(--acc);}
 
   <div class="bericht-card" id="zone-card"></div>
 
+  <div class="bericht-card" id="tic-card"></div>
+
+  <div class="bericht-card" id="koerper-card"></div>
+
   <div class="bericht-card">
     <div class="bericht-titel">✍️ Für das Gespräch</div>
     <div class="feld-box" style="margin-bottom:1rem;">
@@ -166,6 +183,26 @@ var SKILLMATRIX_PROFIL_KEY = 'klartext_skillmatrix_profil_v1';
 var REIZFILTER_VERLAUF_KEY = 'klartext_reizfilter_verlauf';
 var ZONE_HILFREICH_KEY = 'klartext_zone_hilfreich_v1';
 var SORGEN_KEY = 'klartext_sorgen_v1';
+var KOERPERKOMPASS_KEY = 'klartext_koerperkompass_verlauf';
+
+/* Ordnet die 5 Reizfilter-Reglerstufen den 4 Barometer-Farben zu — gleiche
+   Zuordnung wie im Reizfilter selbst (dort: BAROMETER_STUFE). */
+var BAROMETER_STUFE_MAP = ['gruen', 'gruen', 'gelb', 'orange', 'rot'];
+var BAROMETER_FARBEN = {
+  gruen:  { label: 'Grün (ruhig)',   farbe: '#6EC6A0', emoji: '😌' },
+  gelb:   { label: 'Gelb',           farbe: '#E8C34D', emoji: '😐' },
+  orange: { label: 'Orange',         farbe: '#E8934D', emoji: '😕' },
+  rot:    { label: 'Rot (Maximum)',  farbe: '#D9483D', emoji: '😖' }
+};
+
+/* Regionen-Namen und Intensitäts-Labels wie im Körper-Kompass selbst. */
+var KOERPER_REGIONEN_NAMEN = {
+  'kopf': 'Kopf', 'schultern': 'Schultern', 'brust': 'Brust/Herz', 'bauch': 'Bauch',
+  'hand-links': 'Hand (links)', 'hand-rechts': 'Hand (rechts)',
+  'bein-links': 'Bein (links)', 'bein-rechts': 'Bein (rechts)'
+};
+var KOERPER_INTENSITAET_LABEL = { leicht: 'leicht', mittel: 'mittel', stark: 'stark' };
+var KOERPER_INTENSITAET_FARBE = { leicht: '#E8C34D', mittel: '#E8934D', stark: '#D9483D' };
 
 var REIZFILTER_STUFEN = [
   { emoji: '😌', label: 'Ruhig',        chip: '#6EC6A0' },
@@ -203,6 +240,11 @@ function ladeJSON(key){
 function datumKurz(iso){
   try { return new Date(iso).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' }); }
   catch(e) { return ''; }
+}
+
+function heuteISO(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 
 /* ── SUPERPOWER-PROFIL (aus Skill-Matrix) ─────────────────────────────── */
@@ -288,6 +330,83 @@ function zoneCardRendern(){
     eintraege;
 }
 
+/* ── TIC-KORRELATION (aus Reizfilter-Verlauf, Feld "tics" — nur vorhanden, wenn über
+   die TO-Ansicht des Reizfilters mind. einmal ein Tic-Zähler benutzt wurde). Erscheint
+   bewusst nur, wenn tatsächlich Daten vorliegen — anders als Profil/Trend/Zonen-Karte,
+   die immer eine Anleitung anzeigen, wäre das hier für alle anderen Jugendlichen
+   irrelevanter Ballast. ─────────────────────────────── */
+function ticCardRendern(){
+  var card = document.getElementById('tic-card');
+  var verlauf = ladeJSON(REIZFILTER_VERLAUF_KEY) || [];
+  var eintraege = verlauf.filter(function(e){ return typeof e.tics === 'number'; });
+
+  if (!eintraege.length) { card.style.display = 'none'; card.innerHTML = ''; return; }
+  card.style.display = '';
+
+  var gruppen = {};
+  eintraege.forEach(function(e){
+    var farbe = BAROMETER_STUFE_MAP[e.stufe] || 'gruen';
+    if (!gruppen[farbe]) gruppen[farbe] = { anzahlTage: 0, summeTics: 0 };
+    gruppen[farbe].anzahlTage += 1;
+    gruppen[farbe].summeTics += e.tics;
+  });
+
+  var reihenfolge = ['gruen', 'gelb', 'orange', 'rot'];
+  var zeilen = reihenfolge.filter(function(f){ return gruppen[f]; }).map(function(f){
+    var g = gruppen[f];
+    var info = BAROMETER_FARBEN[f];
+    var schnitt = Math.round((g.summeTics / g.anzahlTage) * 10) / 10;
+    var schnittText = schnitt.toString().replace('.', ',');
+    return '<div class="tic-farbe-eintrag"><div class="tic-farbe-chip" style="background:' + info.farbe + ';">' + info.emoji + '</div>' +
+      '<div class="tic-farbe-text"><b>' + info.label + ':</b> ' + g.summeTics + ' Tic(s) an ' + g.anzahlTage + ' Tag(en) (Ø ' + schnittText + ' pro Tag)</div></div>';
+  }).join('');
+
+  var gesamtTage = eintraege.length;
+  var gesamtTics = eintraege.reduce(function(sum, e){ return sum + e.tics; }, 0);
+
+  card.innerHTML = '<div class="bericht-titel">🌀 Tic-Korrelation<span class="bericht-stand">' + gesamtTage + ' erfasste Tag(e)</span></div>' +
+    '<div class="tic-korrelation-liste">' + zeilen + '</div>' +
+    '<div class="tic-hinweis-zeile">Zeigt, bei welcher Barometer-Stufe (Reizfilter) Tics miterfasst wurden — insgesamt ' + gesamtTics + ' Tic(s) an ' + gesamtTage + ' Tag(en). Kein Beleg für eine Ursache, aber ein möglicher Gesprächsansatz für die INGRA.</div>';
+}
+
+/* ── KÖRPER-FOKUS (letzter Snapshot aus dem Körper-Kompass) ─────────────────────────────── */
+function koerperCardRendern(){
+  var card = document.getElementById('koerper-card');
+  var verlauf = ladeJSON(KOERPERKOMPASS_KEY) || [];
+
+  if (!verlauf.length) { card.style.display = 'none'; card.innerHTML = ''; return; }
+
+  var sortiert = verlauf.slice().sort(function(a, b){ return a.datum < b.datum ? -1 : 1; });
+  var letzter = sortiert[sortiert.length - 1];
+  var regionen = letzter.regionen || {};
+  var keys = Object.keys(regionen);
+
+  if (!keys.length) { card.style.display = 'none'; card.innerHTML = ''; return; }
+  card.style.display = '';
+
+  var textListe = keys.map(function(r){
+    var name = KOERPER_REGIONEN_NAMEN[r] || r;
+    var label = KOERPER_INTENSITAET_LABEL[regionen[r].intensitaet] || regionen[r].intensitaet;
+    return name + ' (' + label + ')';
+  }).join(', ');
+
+  var chips = keys.map(function(r){
+    var info = regionen[r];
+    var name = KOERPER_REGIONEN_NAMEN[r] || r;
+    var label = KOERPER_INTENSITAET_LABEL[info.intensitaet] || info.intensitaet;
+    var farbe = KOERPER_INTENSITAET_FARBE[info.intensitaet] || '#DDD8CE';
+    var woerterText = (info.woerter && info.woerter.length) ? ' · ' + info.woerter.join(', ') : '';
+    return '<span class="koerper-chip" style="border-color:' + farbe + ';">' + name + ' (' + label + ')' + woerterText + '</span>';
+  }).join('');
+
+  var standHinweis = (letzter.datum === heuteISO()) ? 'heute' : 'vom ' + datumKurz(letzter.datum);
+
+  card.innerHTML = '<div class="bericht-titel">🧍 Körper-Fokus<span class="bericht-stand">Stand: ' + standHinweis + '</span></div>' +
+    '<div class="koerper-signale-text">Körperliche Signale: ' + textListe + '</div>' +
+    '<div class="koerper-chip-row">' + chips + '</div>' +
+    '<div class="koerper-stand">Aus dem <a href="KLARTEXT_Spiel_Koerperkompass.html">Körper-Kompass</a> — eine Momentaufnahme, keine Diagnose.</div>';
+}
+
 /* ── SORGEN-KISTE: nur Existenz-Hinweis, KEIN Rohtext-Export (Datenschutz) ─────────────────────────────── */
 function sorgenHinweisRendern(){
   var sorgen = ladeJSON(SORGEN_KEY) || [];
@@ -302,6 +421,8 @@ document.getElementById('footer-datum').textContent = new Date().toLocaleDateStr
 profilCardRendern();
 trendCardRendern();
 zoneCardRendern();
+ticCardRendern();
+koerperCardRendern();
 sorgenHinweisRendern();
 </script>
 

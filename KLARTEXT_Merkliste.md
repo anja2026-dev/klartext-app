@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 64 ergänzt)
+Stand: 11.08.2026 (Strang 65 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1492,3 +1492,31 @@ Kapitel referenzierten Dateien existieren tatsächlich im Repo.
 ### Noch offen
 
 - Alle Punkte aus Strang 57–63 bleiben unverändert offen.
+
+## Strang 65: Trainerhandbuch — Checkliste "Erstgespräch mit dem Arbeitgeber" in Kapitel 9 (11.08.2026)
+
+Sechster Prompt zum Themenkomplex: eine Netzwerkarbeit-Checkliste für Jobcoaches, in Kapitel 9
+eingefügt (gleiche `.checkliste`-Vorlage wie Kapitel 4, kein neues Dokument — geringerer Aufwand,
+gleicher Nutzen).
+
+**Zwei Korrekturen:**
+- Der Prompt schlug erneut "die Joker-Karten" (Plural) als Sicherheitsnetz vor — wie schon in
+  Strang 58/59 festgestellt, existiert keine Joker-Kartendeck; der Joker ist ein einzelnes,
+  individuell vereinbartes Signal (`M3-Joker.html`). Checkliste verweist auf den echten, singulären
+  Joker plus den Reizfilter, nicht auf eine erfundene Kartensammlung.
+- "M4-16" wurde als Quelle der "5-Schritte-Logik" (Zuhören → Validieren → Ressourcen benennen →
+  Tool vorschlagen → Vereinbarung) genannt — geprüft: `M4-16_Migrantische_Eltern.html` behandelt
+  Elterngespräche mit migrantischen Familien, hat nichts mit einer Argumentationslogik für
+  Arbeitgebergespräche zu tun. Keine passende Quelle im System für dieses Vorgehen gefunden. Im
+  Kapitel als eigenständige, an das Gespräch angepasste Anwendung der lösungsorientierten Haltung
+  (im Geiste des kLAR-Modells) ausgewiesen, nicht fälschlich einem Modul zugeschrieben.
+
+**Umgesetzt:** Neuer `.ab`-Block in Kapitel 9 mit den 5 Phasen (Vorbereitung, Einstieg,
+Bedarfsanalyse, Transparenz &amp; Sicherheit, Abschluss) als `.checkliste`-Listen, plus
+Tipp-Box mit der korrigierten 5-Schritte-Logik.
+
+**Getestet:** div-Bilanz (121 auf/121 zu), keine „Joker-Karten"-Pluralfiktion im neuen Abschnitt.
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–64 bleiben unverändert offen.

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 59 ergänzt)
+Stand: 11.08.2026 (Strang 60 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1266,3 +1266,40 @@ mit Persistenz- und Wiederherstellungs-Check über einen simulierten Reload.
   Tics, Körper-Kompass-Verlauf) noch nicht zusammengeführt aus — s.&nbsp;o.
 - Alle Punkte aus Strang 57/58 (Fachbuch/Trainerhandbuch-Überarbeitung, DS↔bestehende-Tools-Verknüpfung,
   Produktkonsequenz 22→26 Decks, Glossar-Link-Fix "Joker") bleiben unverändert offen.
+
+## Strang 60: Ressourcen-Bericht liest Tic-Korrelation + Körper-Fokus ein (11.08.2026)
+
+Vierter NotebookLM-Prompt schloss die in Strang 59 bewusst offen gelassene Lücke: der
+Ressourcen-Bericht sollte die in Strang 59 gebaute Daten-Brücke (Reizfilter-`tics`-Feld,
+Körper-Kompass-Verlauf) tatsächlich auslesen und anzeigen. Zwei Ungenauigkeiten im Prompt vorab
+korrigiert: (1) Datei heißt `KLARTEXT_Ressourcenbericht.html` im Repo-Root, nicht
+`pwa/ressourcenbericht.html` — gleicher Fehlertyp wie schon beim Reizfilter-Prompt in Strang 59;
+(2) Punkt 4 des Prompts war mittenabgeschnitten und nicht lesbar — Punkte 1–3 waren eigenständig
+umsetzbar, daher umgesetzt und Punkt 4 in der Antwort an Anja zurückgemeldet statt geraten.
+
+**Umgesetzt (`KLARTEXT_Ressourcenbericht.html`):**
+- Neue Karte „🌀 Tic-Korrelation": liest alle Einträge mit Feld `tics` aus
+  `klartext_reizfilter_verlauf`, gruppiert nach Barometer-Farbe (Grün/Gelb/Orange/Rot, gleiches
+  Mapping wie im Reizfilter selbst), zeigt je Farbe Summe/Tage/Tagesschnitt tabellarisch. Bewusst als
+  reine Deskription formuliert ("kein Beleg für eine Ursache, aber ein möglicher Gesprächsansatz"),
+  keine kausale Überinterpretation der kleinen Stichprobe.
+- Neue Karte „🧍 Körper-Fokus": liest den jeweils letzten Tages-Snapshot aus
+  `klartext_koerperkompass_verlauf`, zeigt markierte Regionen mit Intensität und optionalen Wörtern
+  als Text + Chip-Reihe. Hinweis: der Prompt nannte als Beispieltext „Druck im Bauch, Spannung im
+  Kopf" — diese Wörter existieren nicht im echten Körper-Kompass-Vokabular (kribbelig/eng/schwer/
+  zittrig/warm), der Bericht zeigt daher die tatsächlich erfassten Begriffe, nicht die Beispielformulierung.
+- Beide Karten bleiben vollständig ausgeblendet (`display:none`, kein Leer-Hinweis-Text), wenn keine
+  passenden Daten vorliegen — anders als Profil-/Trend-/Zonen-Karte, die immer eine Anleitung zeigen.
+  Begründung: Tic-Tracking/Körper-Kompass sind spezialisierte Werkzeuge, ein "du hast das noch nicht
+  benutzt"-Hinweis wäre für die meisten Jugendlichen irrelevanter Ballast im Bericht. Da `display:none`
+  inline gesetzt wird, gilt das automatisch auch für die Druckansicht (Punkt 3 des Prompts).
+
+**Getestet:** jsdom mit 5 Szenarien (keine Daten, nur Tics, nur Körper-Kompass mit mehreren
+Tagen/nur letzter Tag wird gezeigt, beide gleichzeitig, Körper-Kompass-Eintrag ohne Regionen als
+Edge-Case) — Sichtbarkeit und Inhalt in allen Fällen korrekt.
+
+### Noch offen
+
+- **Punkt 4 des Prompts fehlte** (Nachricht endete mit „4." ohne Inhalt) — bei Anja nachgefragt,
+  noch nicht umgesetzt.
+- Alle Punkte aus Strang 57–59 bleiben unverändert offen.

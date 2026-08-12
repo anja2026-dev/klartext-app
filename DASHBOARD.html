@@ -233,6 +233,7 @@ footer strong{color:var(--kt-accent);}
     <a href="KLARTEXT_Downloads.html">📥 Downloads</a>
     <a href="KLARTEXT_Spiele.html">🧩 Interaktive Tools</a>
     <a href="#" onclick="mobileSucheFokus();return false;">🔍 Suche</a>
+    <a href="#" id="modus-toggle-btn-mobil" onclick="modusUmschalten();return false;">🎓 Modus: Schule</a>
     <a href="#" onclick="sessionStorage.clear();window.location.href='KLARTEXT_Login.html';return false;">🚪 Logout</a>
   </nav>
 
@@ -495,6 +496,7 @@ weiterleitungenBadgeAktualisieren();
     <a href="M3-Joker.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(196,122,0,.15);border:1px solid rgba(196,122,0,.5);color:#C47A00;font-size:.72rem;font-weight:700;text-decoration:none;white-space:nowrap;">🃏 Joker</a>
     <a href="KLARTEXT_Ueber_Anja_Jolk.html" style="display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .65rem;border-radius:20px;color:rgba(255,255,255,.75);font-size:.72rem;font-weight:600;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">👩 Über mich</a>
     <a id="tk-bereich-btn" href="TK_Landing.html" style="display:none;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;background:rgba(74,20,140,.18);border:1.5px solid rgba(206,147,216,.45);color:#CE93D8;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .15s;" onmouseover="this.style.background='rgba(74,20,140,.3)'" onmouseout="this.style.background='rgba(74,20,140,.18)'">🗂️ TK-Bereich</a>
+    <button id="modus-toggle-btn" onclick="modusUmschalten()" type="button" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:.72rem;font-weight:700;white-space:nowrap;background:rgba(255,255,255,.08);cursor:pointer;font-family:inherit;" title="Zwischen Schul- und Jobcoach-Ansicht wechseln (lädt die Seite neu)">🎓 Schule</button>
     <span id="konto-anzeige" style="font-size:.72rem;color:rgba(255,255,255,.55);white-space:nowrap;padding:0 .2rem;"></span>
     <a href="KLARTEXT_Login.html" onclick="try{sessionStorage.clear();}catch(e){}" style="display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .75rem;border:1.5px solid rgba(255,100,100,.4);border-radius:20px;color:rgba(255,180,180,.8);font-size:.72rem;font-weight:700;text-decoration:none;background:rgba(255,100,100,.1);">⬅ Logout</a>
   </nav>
@@ -1733,5 +1735,40 @@ function resetFilter() {
 </script>
 </div>
 <script src="KLARTEXT_ContextMapper.js"></script>
+<script>
+/* Sichtbarer Umschalter zwischen Schul- und Jobcoach-Ansicht (Strang 69).
+   Grund: Bisher gab es dafür nur den URL-Parameter ?modus=jobcoach — der
+   geht bei jedem erneuten Login verloren (KLARTEXT_Login.html leitet immer
+   auf eine "nackte" DASHBOARD.html ohne Parameter weiter), und ganz ohne
+   Parameter tippen kann man den Modus vorher nirgends erkennen oder
+   wechseln. Der Modus selbst wird weiterhin ausschließlich im bestehenden
+   localStorage-Flag klartext_modus gespeichert (kein neuer Speicherort) —
+   dieser Button ist nur eine sichtbare Bedienoberfläche dafür.
+   Ein Moduswechsel lädt die Seite bewusst neu: Der ContextMapper ersetzt
+   Text nur in eine Richtung (siehe deaktivieren() in
+   KLARTEXT_ContextMapper.js) und kann bereits ersetzten Text nicht ohne
+   Neuladen zurückverwandeln. */
+function modusLabelAktualisieren(){
+  var aktiv = window.KLARTEXT_CONTEXT_MAPPER && window.KLARTEXT_CONTEXT_MAPPER.istAktiv();
+  var desktopBtn = document.getElementById('modus-toggle-btn');
+  var mobilBtn = document.getElementById('modus-toggle-btn-mobil');
+  var textDesktop = aktiv ? '💼 Jobcoach' : '🎓 Schule';
+  var textMobil = aktiv ? '💼 Modus: Jobcoach' : '🎓 Modus: Schule';
+  if (desktopBtn) desktopBtn.textContent = textDesktop;
+  if (mobilBtn) mobilBtn.textContent = textMobil;
+}
+
+function modusUmschalten(){
+  if (!window.KLARTEXT_CONTEXT_MAPPER) return;
+  if (window.KLARTEXT_CONTEXT_MAPPER.istAktiv()) {
+    window.KLARTEXT_CONTEXT_MAPPER.deaktivieren();
+  } else {
+    window.KLARTEXT_CONTEXT_MAPPER.aktivieren();
+  }
+  window.location.reload();
+}
+
+modusLabelAktualisieren();
+</script>
 </body>
 </html>

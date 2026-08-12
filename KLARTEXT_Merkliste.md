@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 12.08.2026 (Strang 69 ergänzt)
+Stand: 12.08.2026 (Strang 70 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1755,3 +1755,94 @@ div-Balance-Check und isolierter Syntax-Check des neuen Inline-Scripts fehlerfre
 - Kein echter Login-Rundlauf-Test im echten Browser (Login → Session-Ablauf → erneuter Login)
   durchgeführt, nur die zugrundeliegende Logik isoliert per jsdom geprüft.
 - Alle Punkte aus Strang 57–68 bleiben unverändert offen.
+
+## Strang 70: BAROMETER_KIND.html — professionelle Selbsteinschätzung im Jobcoach-Modus (12.08.2026)
+
+Auftrag: im Jobcoach-Modus die bunten Barometer-Buttons durch einen 0–10-Status-Slider ersetzen,
+inkl. anonymer Teilnehmer-ID-Verwaltung. Ursprünglich als Frage zur Speicherung des 0–10-Werts gestellt
+(Bucket-Mapping vs. echte neue Datenbank-Spalte) — die Antwort kam als vollständig ausformulierte,
+deutlich größere Spezifikation zurück (inkl. neuer Teilnehmer-ID-Verwaltung, DSGVO-Anonymisierung,
+eigenem Mapping-Schema, Rückwärts-Mapping). In diesem erweiterten Umfang umgesetzt.
+
+**Fundort korrigiert (wie schon bei Strang 69):** Die eigentliche Barometer-Oberfläche liegt nicht im
+Dashboard, sondern in `BAROMETER_KIND.html` — dort auch bereits richtig vermutet.
+
+**Wichtiger, vorab geprüfter Architektur-Fakt:** Die Supabase-Spalte `barometer_kind.farbe` hat eine
+feste Datenbank-Regel (`check farbe in ('gruen','gelb','orange','rot','grau')`, siehe
+`supabase/migrations/0007_barometer.sql`) — ein roher 0–10-Wert kann dort technisch nicht ankommen.
+Exakt mit dem im Prompt selbst vorgegebenen Mapping umgesetzt: 0–2→gruen, 3–4→gelb, 5–6→orange,
+7–8→rot, 9–10→grau. Der exakte Zahlenwert geht dabei nicht verloren — er wird zusätzlich lesbar vor
+die Notiz gestellt (z. B. „[Status 7/10] …") sowie als eigenes, schemaloses Feld zusätzlich nach
+Firebase geschrieben.
+
+**Zweiter, vorab geprüfter Architektur-Fakt (nicht im Prompt erwähnt, aber entscheidend für die
+Teilnehmer-ID-Verwaltung):** Die RLS-Regeln auf der Tabelle `kinder` (`supabase/migrations/
+0002_kinder_stammdaten.sql`) verlangen für **jeden** Zugriff — auch nur Lesen — eine eingeloggte
+tk/admin-Session (`auth.uid()` muss zu einem `profiles`-Eintrag mit passender `traeger_id` und
+`rolle in ('tk','admin')` gehören). Es gibt keine anonyme Lese- oder Schreib-Policy auf `kinder`.
+Das bedeutet: Anlegen/Löschen von Teilnehmer-IDs **muss** eingeloggt passieren — das war technisch nicht
+verhandelbar, keine gewählte Option, sondern eine Konsequenz der bestehenden Datenbank-Sicherheit.
+Nebenbefund dabei: Der bestehende Code-Kommentar in `BAROMETER_KIND.html` („bewusst ohne Login/
+INGRA-Filter, Kind-Self-Service-Gerät") dürfte nach den echten RLS-Regeln nie ganz zugetroffen haben —
+nicht repariert (außerhalb dieses Auftrags), aber im neuen Jobcoach-Teil korrekt berücksichtigt.
+
+**Umgesetzt (alles in `BAROMETER_KIND.html`, keine neue Datei):**
+- **Moduserkennung:** eigene, schlanke Kopie der `klartext_modus`-Logik aus `KLARTEXT_ContextMapper.js`
+  (nicht per `<script src>` eingebunden, weil hier mehr als Text-Ersetzung nötig ist — ganze
+  UI-Abschnitte werden ein-/ausgeblendet, nicht nur einzelne Wörter ersetzt).
+- **Teilnehmer-ID-Verwaltung** (`.jc-only`, nur Jobcoach-Modus): Anlegen/Entfernen anonymer Kürzel
+  (z. B. „TN-DO-01"). Bewusst **keine neue Tabelle/Migration** — anonyme IDs werden als ganz normale
+  Zeilen in der bestehenden Tabelle `kinder` angelegt (`name` = die anonyme ID, keine weiteren Felder
+  befüllt), markiert über `bedarfsart='jobcoach-anonym'` (Freitextfeld als Marker zweckentfremdet,
+  statt eine eigene Spalte per Migration anzulegen — bewusste „möglichst einfach"-Entscheidung, bei
+  Bedarf später sauber nachrüstbar). Dadurch bleiben `barometer_kind` (Fremdschlüssel `kind_id`),
+  bestehende RLS-Policies und die TK-Weiterleitung unverändert nutzbar. „Löschen" ist technisch ein
+  Soft-Delete (`aktiv=false`, `ausgetreten_am=heute` — dieselben Felder, die für echte Kinder bereits
+  existieren), kein echtes `DELETE`: `barometer_kind.kind_id` verweist ohne `on delete cascade` auf
+  `kinder.id`, ein echtes Löschen würde an bereits gespeicherten Verlaufsdaten mit einem
+  Fremdschlüssel-Fehler scheitern.
+- **Teilnehmer-Auswahl im Jobcoach-Modus gefiltert** (`bedarfsart='jobcoach-anonym'`): Es werden
+  ausschließlich die anonymen IDs angezeigt, nie echte Kindernamen aus dem Schul-Kontext — das war der
+  DSGVO-Kern des Auftrags („Es dürfen keine Klarnamen gespeichert werden").
+- **Status-Slider (0–10):** ersetzt die bunten Barometer-Buttons (inkl. dem grauen Vollbreite-Button)
+  vollständig im Jobcoach-Modus. Endpunkt-Beschriftung exakt wie gefordert: „0 – Alles entspannt" /
+  „10 – Maximale Belastung". Beim Bewegen wird sofort dieselbe `speichereKind()`-Logik vorbereitet, die
+  auch die Farb-Buttons nutzen (ein Datenpfad für beide Modi, kein Duplikat).
+- **Rückwärts-Mapping:** Beim Wechsel/Wiederherstellen einer Teilnehmer-ID springt der Slider auf die
+  zuletzt gespeicherte Farbe (obere Grenze je Bereich verwendet, z. B. „gelb" → Slider auf 4 — exakt das
+  Beispiel aus dem Auftrag).
+- **Textanpassungen:** „Zeig wie du dich gerade fühlst." → „Aktueller Status-Check"; „Wer bist du?" →
+  „Teilnehmer-ID wählen"; „Einschätzung der INGRA" → „💼 Coach-Einschätzung", inkl. angepasster
+  Unter-/Hinweistexte und des Vergleichstexts bei abweichender Einschätzung (Kind/INGRA →
+  Teilnehmer:in/Coach).
+- **Sachlichere Rückmeldung:** im Jobcoach-Modus kein Konfetti und kein Brainy-Emoji im
+  „Gespeichert"-Button (nur bei den Kind-Farbbuttons weiterhin wie bisher) — passend zum Ziel „sachliche,
+  erwachsenengerechte Oberfläche".
+
+**Getestet:**
+- Syntax-Check (`node --check`) des extrahierten Moduls fehlerfrei.
+- Reine Mapping-Logik isoliert geprüft: alle 11 Slider-Werte (0–10) ergeben die im Auftrag vorgegebene
+  Farbe; Rückwärts-Mapping-Werte (2/4/6/8/10) transformieren konsistent wieder auf dieselbe Farbe
+  zurück; Beispiel aus dem Auftrag „gelb → 4" exakt bestätigt.
+- jsdom-Test gegen die echte Datei (Supabase-Client testweise durch einen Mock ersetzt, da das reale
+  Modul von einer externen CDN/einem Live-Projekt importiert und in dieser Sandbox nicht ausgeführt
+  werden kann/soll): Schule-Modus zeigt weiterhin unverändert Buttons/Original-Texte; Jobcoach-Modus
+  ohne Login zeigt Slider + Login-Hinweis, Verwaltung ausgeblendet; Jobcoach-Modus eingeloggt zeigt
+  Verwaltungsliste + gefilterte, ausschließlich anonyme Teilnehmer-Auswahl (kein Klarname im Dropdown
+  bestätigt); Slider-Bewegung auf 7 färbt den Speichern-Button korrekt rot; Wiederherstellung mit
+  Verlaufseintrag „gelb" setzt den Slider korrekt auf 4.
+- Struktur-Check: `<div>`-Balance ausgeglichen (88/88), keine doppelten `id`-Attribute.
+
+### Noch offen
+
+- Kein echter Test gegen die echte Supabase-Datenbank (Login, `profiles.traeger_id`-Auflösung, echtes
+  Anlegen/Soft-Löschen einer Teilnehmer-ID) — nur gegen einen Mock geprüft. Ein kurzer manueller
+  Rundlauf im echten Browser (einloggen → Teilnehmer-ID anlegen → Status speichern → Verlauf prüfen)
+  wird empfohlen, bevor das im echten Coaching-Alltag genutzt wird.
+- Vorbestehender, bei diesem Fact-Check entdeckter (aber nicht behobener) Befund: Der Kommentar „Kind-
+  Auswahl bewusst ohne Login" in `BAROMETER_KIND.html` dürfte nach den tatsächlichen RLS-Regeln auf
+  `kinder` nie vollständig zugetroffen haben — außerhalb dieses Auftrags, nicht repariert.
+- `bedarfsart='jobcoach-anonym'` als Marker ist eine Zweckentfremdung eines bestehenden Freitextfelds,
+  keine "saubere" Lösung — falls die Jobcoach-Funktion wächst, wäre eine eigene boolesche Spalte
+  (eigene Migration) der sauberere nächste Schritt.
+- Alle Punkte aus Strang 57–69 bleiben unverändert offen.

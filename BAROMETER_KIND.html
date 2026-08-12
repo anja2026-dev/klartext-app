@@ -100,33 +100,42 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 
 .ingra-hinweis{max-width:500px;margin:0 auto 1rem;padding:.7rem 1rem;background:#EAF1F8;border:1.5px solid #B8D4EC;border-radius:12px;font-size:.74rem;color:#1B3A4B;line-height:1.55;}
 
-/* JOBCOACH-MODUS (Strang 70): professionelle Selbsteinschätzung statt
+/* JOBCOACH-MODUS (Strang 70/72): professionelle Selbsteinschätzung statt
    Kind-Barometer. .schule-only wird per JS ausgeblendet, .jc-only per JS
    eingeblendet, wenn klartext_modus === 'jobcoach' aktiv ist. */
 .jc-only{display:none;}
-.tn-verwaltung-wrap{max-width:500px;margin:0 auto 1.1rem;padding:0 1rem;}
-.tn-verwaltung-box{background:#fff;border:1.5px dashed #999;border-radius:14px;padding:1rem 1.1rem;}
-.tn-verwaltung-titel{font-size:.9rem;font-weight:800;color:#1B3A4B;margin-bottom:.25rem;}
-.tn-verwaltung-sub{font-size:.7rem;color:#7A7060;margin-bottom:.7rem;line-height:1.5;}
-.tn-anlegen-zeile{display:flex;gap:.5rem;margin-bottom:.7rem;}
-.tn-anlegen-input{flex:1;border:1.5px solid #DDD8CE;border-radius:8px;padding:.5rem .7rem;font-family:inherit;font-size:.82rem;color:#1B3A4B;}
-.tn-anlegen-btn{background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.5rem .9rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
-.tn-wuerfeln-btn{background:#fff;color:#1B3A4B;border:1.5px solid #1B3A4B;border-radius:8px;padding:.5rem .7rem;font-size:.9rem;cursor:pointer;font-family:inherit;white-space:nowrap;}
-.tn-physisch-hinweis{font-size:.68rem;color:#7A5500;background:#FFF7EA;border:1.5px solid #E0C88A;border-radius:8px;padding:.5rem .7rem;line-height:1.5;margin-bottom:.7rem;}
-.tn-liste{display:flex;flex-direction:column;gap:.4rem;}
-.tn-liste-item{display:flex;align-items:center;justify-content:space-between;gap:.5rem;background:#F5F0E8;border-radius:8px;padding:.4rem .6rem;font-size:.8rem;color:#1B3A4B;}
-.tn-loeschen-btn{background:none;border:none;color:#C0392B;font-size:.9rem;cursor:pointer;padding:.2rem .4rem;}
-.tn-login-hinweis{font-size:.76rem;color:#7A5500;background:#FFF3E0;border:1.5px solid #E0C88A;border-radius:10px;padding:.6rem .8rem;line-height:1.5;}
+
+/* ID-Verwaltung als <details> — bewusst sehr zurückhaltend (Strang 72:
+   "oben, sehr dezent gehalten"), nimmt im geschlossenen Zustand nur eine
+   schmale Zeile ein statt einer auffälligen Box. */
+.tn-verwaltung-wrap{max-width:500px;margin:0 auto .6rem;padding:0 1rem;}
+.tn-verwaltung-details summary{cursor:pointer;font-size:.72rem;font-weight:700;color:#8A8278;padding:.35rem .1rem;list-style:none;user-select:none;}
+.tn-verwaltung-details summary::-webkit-details-marker{display:none;}
+.tn-verwaltung-details summary::before{content:'▸ ';}
+.tn-verwaltung-details[open] summary::before{content:'▾ ';}
+.tn-verwaltung-details summary:hover{color:#1B3A4B;}
+.tn-verwaltung-box{background:#FAFAF8;border:1px solid #E5E0D5;border-radius:12px;padding:.85rem .95rem;margin-top:.4rem;}
+.tn-verwaltung-sub{font-size:.68rem;color:#7A7060;margin-bottom:.6rem;line-height:1.5;}
+.tn-anlegen-zeile{display:flex;gap:.5rem;margin-bottom:.6rem;}
+.tn-anlegen-input{flex:1;border:1.5px solid #DDD8CE;border-radius:8px;padding:.45rem .65rem;font-family:inherit;font-size:.8rem;color:#1B3A4B;}
+.tn-anlegen-btn{background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.45rem .85rem;font-size:.76rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tn-wuerfeln-btn{background:#fff;color:#1B3A4B;border:1.5px solid #1B3A4B;border-radius:8px;padding:.45rem .65rem;font-size:.85rem;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tn-physisch-hinweis{font-size:.66rem;color:#7A5500;background:#FFF7EA;border:1px solid #E0C88A;border-radius:8px;padding:.45rem .65rem;line-height:1.5;margin-bottom:.6rem;}
+.tn-liste{display:flex;flex-direction:column;gap:.35rem;}
+.tn-liste-item{display:flex;align-items:center;justify-content:space-between;gap:.5rem;background:#F5F0E8;border-radius:8px;padding:.35rem .55rem;font-size:.78rem;color:#1B3A4B;}
+.tn-loeschen-btn{background:none;border:none;color:#C0392B;font-size:.88rem;cursor:pointer;padding:.2rem .4rem;}
+.tn-login-hinweis{font-size:.72rem;color:#7A5500;background:#FFF3E0;border:1px solid #E0C88A;border-radius:10px;padding:.55rem .75rem;line-height:1.5;}
 .tn-login-hinweis a{color:#7A5500;font-weight:700;}
 
-.status-slider-wrap{max-width:500px;margin:0 auto;padding:.5rem 1rem 1rem;}
-.status-slider-box{background:#fff;border:2px solid #DDD8CE;border-radius:18px;padding:1.3rem 1.1rem 1.1rem;}
-.status-slider-wert{text-align:center;font-size:2.2rem;font-weight:800;color:#1B3A4B;margin-bottom:.2rem;font-family:"Playfair Display",serif;}
-.status-slider-wert-label{text-align:center;font-size:.78rem;color:#7A7060;margin-bottom:.9rem;}
-.status-slider-input{width:100%;height:8px;border-radius:5px;-webkit-appearance:none;appearance:none;margin-bottom:.5rem;background:linear-gradient(90deg,#2E9E5A 0%,#D4A800 30%,#D4651A 55%,#C0392B 75%,#757575 100%);}
-.status-slider-input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #1B3A4B;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);}
-.status-slider-input::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #1B3A4B;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);}
-.status-slider-enden{display:flex;justify-content:space-between;font-size:.66rem;color:#7A7060;font-weight:700;}
+/* Hauptbereich Selbsteinschätzung: 11 Status-Kacheln (0–10) statt Slider. */
+.status-kacheln-wrap{max-width:520px;margin:0 auto;padding:.3rem 1rem 1rem;}
+.status-kacheln-box{background:#fff;border:2px solid #DDD8CE;border-radius:18px;padding:1.2rem 1.1rem 1.1rem;}
+.status-kacheln-titel{text-align:center;font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:#1B3A4B;margin-bottom:.9rem;}
+.status-kacheln-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(38px,1fr));gap:.4rem;margin-bottom:.7rem;}
+.status-kachel{aspect-ratio:1;border:2px solid #DDD8CE;border-radius:10px;background:#FAFAF8;color:#5A5448;font-family:"Nunito",sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.status-kachel:hover{border-color:#1B3A4B;}
+.status-kachel.aktiv{border-width:3px;transform:scale(1.06);box-shadow:0 3px 10px rgba(0,0,0,.12);}
+.status-kacheln-caption{text-align:center;font-size:.72rem;color:#7A7060;font-weight:700;}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -147,7 +156,7 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
     <div class="logo-mark" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:#1B3A4B;border:2px solid #6EC6A0;border-radius:6px;font-size:1.1rem;">🌡️</div>
     <div>
       <div style="font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:#fff;line-height:1;">Barometer</div>
-      <span style="font-size:.6rem;color:#6EC6A0;letter-spacing:.12em;text-transform:uppercase;">Kind</span>
+      <span id="header-subtitel" style="font-size:.6rem;color:#6EC6A0;letter-spacing:.12em;text-transform:uppercase;">Kind</span>
     </div>
   </a>
   <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
@@ -159,24 +168,27 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   <div class="begruess-frage" id="begruess-frage">Zeig wie du dich gerade fühlst.</div>
 </div>
 
-<!-- TEILNEHMER-ID-VERWALTUNG (nur Jobcoach-Modus, Strang 70) -->
+<!-- TEILNEHMER-ID-VERWALTUNG (nur Jobcoach-Modus, Strang 70/72) — als
+     <details> bewusst sehr dezent: geschlossen nur eine schmale Zeile. -->
 <div class="tn-verwaltung-wrap jc-only" id="tn-verwaltung-wrap">
-  <div class="tn-verwaltung-box">
-    <div class="tn-verwaltung-titel">🗂️ Teilnehmer-ID-Verwaltung</div>
-    <div class="tn-verwaltung-sub">Anonyme Kürzel statt Klarnamen (z. B. „TN-DO-01"). Es werden keine echten Namen gespeichert.</div>
-    <div id="tn-login-hinweis" class="tn-login-hinweis" style="display:none;">
-      Zum Anlegen/Löschen von Teilnehmer-IDs bitte zuerst <a href="KLARTEXT_Login.html">einloggen</a> — die Auswahl bereits angelegter IDs funktioniert auch ohne Login.
-    </div>
-    <div id="tn-verwaltung-aktiv">
-      <div class="tn-anlegen-zeile">
-        <input type="text" id="tn-neu-input" class="tn-anlegen-input" placeholder="z. B. KT-X8R2">
-        <button class="tn-wuerfeln-btn" onclick="teilnehmerIdWuerfeln()" title="Zufällige ID erzeugen" type="button">🎲</button>
-        <button class="tn-anlegen-btn" onclick="teilnehmerIdAnlegen()">+ Anlegen</button>
+  <details class="tn-verwaltung-details">
+    <summary>🗂️ Teilnehmer-IDs verwalten</summary>
+    <div class="tn-verwaltung-box">
+      <div class="tn-verwaltung-sub">Anonyme Kürzel statt Klarnamen (z. B. „TN-DO-01"). Es werden keine echten Namen gespeichert.</div>
+      <div id="tn-login-hinweis" class="tn-login-hinweis" style="display:none;">
+        Zum Anlegen/Löschen von Teilnehmer-IDs bitte zuerst <a href="KLARTEXT_Login.html">einloggen</a> — die Auswahl bereits angelegter IDs funktioniert auch ohne Login.
       </div>
-      <div class="tn-physisch-hinweis">Notiere dir diese ID und den Namen deines Klienten in deiner physischen Liste. In der App werden keine Klarnamen gespeichert.</div>
-      <div class="tn-liste" id="tn-liste"></div>
+      <div id="tn-verwaltung-aktiv">
+        <div class="tn-anlegen-zeile">
+          <input type="text" id="tn-neu-input" class="tn-anlegen-input" placeholder="z. B. KT-X8R2">
+          <button class="tn-wuerfeln-btn" onclick="teilnehmerIdWuerfeln()" title="Zufällige ID erzeugen" type="button">🎲</button>
+          <button class="tn-anlegen-btn" onclick="teilnehmerIdAnlegen()">+ Anlegen</button>
+        </div>
+        <div class="tn-physisch-hinweis">Notiere dir diese ID und den Namen deines Klienten in deiner physischen Liste. In der App werden keine Klarnamen gespeichert.</div>
+        <div class="tn-liste" id="tn-liste"></div>
+      </div>
     </div>
-  </div>
+  </details>
 </div>
 
 <!-- KIND-AUSWAHL (Etappe 5.3) -->
@@ -187,13 +199,13 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   </select>
 </div>
 
-<!-- STATUS-SLIDER (nur Jobcoach-Modus, Strang 70) -->
-<div class="status-slider-wrap jc-only" id="status-slider-wrap">
-  <div class="status-slider-box">
-    <div class="status-slider-wert" id="status-slider-wert">5</div>
-    <div class="status-slider-wert-label">aktueller Status</div>
-    <input type="range" min="0" max="10" step="1" value="5" class="status-slider-input" id="status-slider-input" oninput="statusSliderGeaendert(this.value)">
-    <div class="status-slider-enden"><span>0 – Alles entspannt</span><span>10 – Maximale Belastung</span></div>
+<!-- STATUS-KACHELN (nur Jobcoach-Modus, Strang 72 — ersetzt den Slider aus
+     Strang 70): 11 neutrale Kacheln 0–10, erst bei Auswahl dezent eingefärbt. -->
+<div class="status-kacheln-wrap jc-only" id="status-kacheln-wrap">
+  <div class="status-kacheln-box">
+    <div class="status-kacheln-titel" id="status-kacheln-titel">Selbsteinschätzung Teilnehmer:in</div>
+    <div class="status-kacheln-grid" id="status-kacheln-grid"></div>
+    <div class="status-kacheln-caption">0 – Alles entspannt bis 10 – Maximale Belastung</div>
   </div>
 </div>
 
@@ -248,6 +260,16 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 <div class="speichern-wrap">
   <button class="sp-btn" id="sp-btn" onclick="speichereKind()" style="background:#2E9E5A;color:#fff;">
     ✓ Speichern
+  </button>
+</div>
+
+<!-- GEFÜHRTER WORKFLOW (nur Jobcoach-Modus, Strang 72): Coach-Bereich
+     bleibt bis zu diesem Klick unsichtbar — unterstreicht methodisch den
+     Wahrnehmungs-Check auf Augenhöhe (erst die Selbsteinschätzung der/des
+     Teilnehmenden, dann bewusst separat die Coach-Perspektive). -->
+<div class="speichern-wrap" id="coach-oeffnen-wrap" style="display:none;">
+  <button class="sp-btn aktiv" id="coach-oeffnen-btn" style="background:#1B3A4B;color:#fff;" onclick="coachEinschaetzungOeffnen()">
+    🧭 Perspektive des Coaches ergänzen
   </button>
 </div>
 
@@ -354,19 +376,63 @@ function sliderWertZuFarbe(wert){
 // aus dem Auftrag: gespeicherter Wert "gelb" -> Slider auf 4.
 var FARBE_ZU_SLIDER = {gruen:2, gelb:4, orange:6, rot:8, grau:10};
 
-function statusSliderGeaendert(wert){
-  wert = Number(wert);
-  var anzeige = document.getElementById('status-slider-wert');
-  var input = document.getElementById('status-slider-input');
-  if (anzeige) anzeige.textContent = wert;
-  if (input) input.value = wert;
-  var farbe = sliderWertZuFarbe(wert);
-  var color = FARBEN_K[farbe];
-  aktuelleWahl = {id:farbe, color:color, name:'Status '+wert+'/10', emoji:SLIDER_FARBE_EMOJI[farbe], desc:'', wert:wert};
-  var btn=document.getElementById('sp-btn');
-  if (btn) { btn.classList.add('aktiv'); btn.style.background=color; }
+// Dezente Bereichsfarben für die Status-Kacheln (Strang 72 — ersetzt den
+// Slider aus Strang 70): Kacheln sind standardmäßig neutral und nehmen
+// erst BEI Auswahl die sanfte Farbe ihres Bereichs an, wie gefordert.
+var STATUS_KACHEL_FARBEN = {
+  gruen:  {bg:'#DCF3E4', rand:'#2E9E5A', text:'#1B5E2E'},
+  gelb:   {bg:'#FCF0C8', rand:'#D4A800', text:'#7A5500'},
+  orange: {bg:'#FBE1CB', rand:'#D4651A', text:'#7A3B0A'},
+  rot:    {bg:'#FADAD7', rand:'#C0392B', text:'#7A241C'},
+  grau:   {bg:'#E7E7E7', rand:'#757575', text:'#3D3D3D'}
+};
+
+// Baut die 11 Kacheln (0–10) einmalig auf. Keine Kachel ist beim Laden
+// vorausgewählt — die/der Teilnehmende muss aktiv klicken (methodisch
+// bewusst, siehe geführter Workflow: eine echte Selbsteinschätzung soll
+// nicht durch einen stillen Default-Wert vorweggenommen werden).
+function statusKachelnRendern(){
+  var grid = document.getElementById('status-kacheln-grid');
+  if (!grid) return;
+  var html = '';
+  for (var wert = 0; wert <= 10; wert++) {
+    html += '<button type="button" class="status-kachel" id="status-kachel-'+wert+'" onclick="statusWertWaehlen('+wert+')">'+wert+'</button>';
+  }
+  grid.innerHTML = html;
 }
-window.statusSliderGeaendert = statusSliderGeaendert;
+
+function statusWertWaehlen(wert){
+  wert = Number(wert);
+  var farbe = sliderWertZuFarbe(wert);
+  var farben = STATUS_KACHEL_FARBEN[farbe];
+  aktuelleWahl = {id:farbe, color:FARBEN_K[farbe], name:'Status '+wert+'/10', emoji:SLIDER_FARBE_EMOJI[farbe], desc:'', wert:wert};
+  document.querySelectorAll('.status-kachel').forEach(function(el){
+    el.classList.remove('aktiv');
+    el.style.background = ''; el.style.borderColor = ''; el.style.color = '';
+  });
+  var gewaehlt = document.getElementById('status-kachel-'+wert);
+  if (gewaehlt) {
+    gewaehlt.classList.add('aktiv');
+    gewaehlt.style.background = farben.bg;
+    gewaehlt.style.borderColor = farben.rand;
+    gewaehlt.style.color = farben.text;
+  }
+  var btn=document.getElementById('sp-btn');
+  if (btn) { btn.classList.add('aktiv'); btn.style.background=FARBEN_K[farbe]; }
+}
+window.statusWertWaehlen = statusWertWaehlen;
+
+// Öffnet die Coach-/Mentor:in-Einschätzung erst NACH bewusstem Klick auf
+// den Zusatz-Button, der wiederum erst nach dem Speichern erscheint
+// (siehe speichereKind() und jobcoachUiEinrichten()) — der eigentliche
+// "geführte Workflow" aus Strang 72.
+function coachEinschaetzungOeffnen(){
+  var wrap = document.getElementById('ingra-wrap');
+  var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
+  if (wrap) wrap.style.display = 'block';
+  if (oeffnenWrap) oeffnenWrap.style.display = 'none';
+}
+window.coachEinschaetzungOeffnen = coachEinschaetzungOeffnen;
 
 // ── Teilnehmer-ID-Verwaltung (nur Jobcoach-Modus) ───────────────────
 // Anonyme IDs werden als normale Zeilen in der bestehenden Tabelle
@@ -488,20 +554,22 @@ function jobcoachUiEinrichten(){
   document.querySelectorAll('.jc-only').forEach(function(el){ el.style.display = JOBCOACH ? 'block' : 'none'; });
   document.querySelectorAll('.schule-only').forEach(function(el){ el.style.display = JOBCOACH ? 'none' : ''; });
   if (!JOBCOACH) return;
+  var headerSubtitel = document.getElementById('header-subtitel');
   var frage = document.getElementById('begruess-frage');
   var label = document.getElementById('kind-auswahl-label');
   var ingraTitel = document.getElementById('ingra-titel');
   var ingraSub = document.getElementById('ingra-sub');
   var ingraHinweis = document.getElementById('ingra-hinweis');
+  if (headerSubtitel) headerSubtitel.textContent = 'Teilnehmer:in';
   if (frage) frage.textContent = 'Aktueller Status-Check';
   if (label) label.textContent = 'Teilnehmer-ID wählen';
-  if (ingraTitel) ingraTitel.textContent = '💼 Coach-Einschätzung (optional)';
-  if (ingraSub) ingraSub.textContent = 'Wie schätzt du als Coach den aktuellen Status der/des Teilnehmenden ein? Erst nachdem die Selbsteinschätzung erfolgt ist.';
-  if (ingraHinweis) ingraHinweis.innerHTML = '💡 Tipp: Lass die/den Teilnehmende:n zuerst frei einschätzen. Nach dem Speichern kannst du direkt darunter deine eigene Einschätzung abgeben — der Vergleich zeigt euch beiden, ob ihr ähnlich oder unterschiedlich wahrnehmt.';
-  // Slider auf Startwert initialisieren, damit "Speichern" auch ohne
-  // Slider-Berührung sofort funktioniert.
-  var input = document.getElementById('status-slider-input');
-  if (input) statusSliderGeaendert(input.value);
+  if (ingraTitel) ingraTitel.textContent = '💼 Coach/Mentor:in-Einschätzung (optional)';
+  if (ingraSub) ingraSub.textContent = 'Wie schätzt du als Coach/Mentor:in den aktuellen Status der/des Teilnehmenden ein? Erst nachdem die Selbsteinschätzung erfolgt ist.';
+  if (ingraHinweis) ingraHinweis.innerHTML = '💡 Tipp: Lass die/den Teilnehmende:n zuerst frei einschätzen. Nach dem Speichern kannst du über den Button „Perspektive des Coaches ergänzen" gezielt deine eigene Einschätzung abgeben — der Vergleich zeigt euch beiden, ob ihr ähnlich oder unterschiedlich wahrnehmt.';
+  // 11 Status-Kacheln aufbauen. Bewusst KEINE Kachel vorausgewählt (siehe
+  // Kommentar bei statusKachelnRendern) — anders als der frühere Slider,
+  // der immer einen Startwert zeigte.
+  statusKachelnRendern();
 }
 
 // ── Teilnehmer-Auswahl laden/befüllen ────────────────────────────────
@@ -553,6 +621,15 @@ async function teilnehmerAuswahlLaden(){
     var kindName = kinderNamen[aktuellesKindId] || '';
     try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
     aktualisiereBegruessung(kindName);
+    if (JOBCOACH) {
+      // Geführter Workflow pro Teilnehmer:in neu starten: die Coach-
+      // Einschätzung einer vorher gewählten Person soll beim Wechsel zu
+      // einer anderen Person nicht einfach offen stehen bleiben.
+      var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
+      var ingraWrap = document.getElementById('ingra-wrap');
+      if (oeffnenWrap) oeffnenWrap.style.display = 'none';
+      if (ingraWrap) ingraWrap.style.display = 'none';
+    }
     starteHistorie();
     pruefeAutomatischeWochenauswertung();
   });
@@ -632,13 +709,18 @@ async function speichereKind(){
 
   document.getElementById('notiz-kind').value='';
   renderWoche();
-  document.getElementById('ingra-wrap').style.display='block';
   var btn=document.getElementById('sp-btn');
   if (JOBCOACH) {
+    // Geführter Workflow (Strang 72): die Coach-/Mentor:in-Einschätzung
+    // öffnet sich NICHT automatisch — erst der eigene "Perspektive des
+    // Coaches ergänzen"-Button (erscheint jetzt) blendet sie ein.
+    var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
+    if (oeffnenWrap) oeffnenWrap.style.display = 'block';
     // Sachliche Rückmeldung ohne Konfetti/Brainy-Emoji im Jobcoach-Modus.
     btn.textContent='✓ Gespeichert';
     setTimeout(()=>{btn.textContent='✓ Speichern';},1500);
   } else {
+    document.getElementById('ingra-wrap').style.display='block';
     konfetti(aktuelleWahl.color);
     btn.innerHTML='✓ Gespeichert! <img src="'+brainyBild(aktuelleWahl.emoji)+'" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;">';
     setTimeout(()=>{btn.textContent='✓ Speichern';aktuelleWahl=null;
@@ -680,7 +762,7 @@ function zeigeVergleich(){
   const box=document.getElementById('vergleich-box');
   box.style.display='block';
   var wirBegriff = JOBCOACH ? 'Teilnehmer:in' : 'Kind';
-  var sieBegriff = JOBCOACH ? 'Coach' : 'INGRA';
+  var sieBegriff = JOBCOACH ? 'Coach/Mentor:in' : 'INGRA';
   if(ingraWahl.id===aktuelleWahl.id){
     box.className='vergleich-box match';
     box.innerHTML='✓ <b>Übereinstimmung:</b> '+wirBegriff+' und '+sieBegriff+' schätzen den Zustand gleich ein ('+aktuelleWahl.name+').';
@@ -739,7 +821,7 @@ function historieRendern(eintraege){
 async function starteHistorie(){
   var liste=document.getElementById('historie-liste');
   if(!aktuellesKindId){
-    if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Noch kein Kind ausgewählt.</div>';
+    if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">'+(JOBCOACH ? 'Noch keine Teilnehmer-ID ausgewählt.' : 'Noch kein Kind ausgewählt.')+'</div>';
     return;
   }
   if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Lade Verlauf …</div>';
@@ -754,12 +836,12 @@ async function starteHistorie(){
     return;
   }
   historieRendern(ergebnis.data || []);
-  // Jobcoach-Modus: Slider auf die zuletzt gespeicherte Farbe springen
-  // lassen (Auftrag: "Datenbankwert gelb -> Slider auf 4"). Nicht exakt
-  // rekonstruierbar (mehrere Werte -> eine Farbe), daher obere Grenze je
-  // Bereich, siehe FARBE_ZU_SLIDER weiter oben.
+  // Jobcoach-Modus: die Kachel auf die zuletzt gespeicherte Farbe springen
+  // lassen (Auftrag: "Datenbankwert gelb -> Slider auf 4", jetzt Kachel
+  // statt Slider). Nicht exakt rekonstruierbar (mehrere Werte -> eine
+  // Farbe), daher obere Grenze je Bereich, siehe FARBE_ZU_SLIDER oben.
   if (JOBCOACH && ergebnis.data && ergebnis.data.length && FARBE_ZU_SLIDER[ergebnis.data[0].farbe] != null) {
-    statusSliderGeaendert(FARBE_ZU_SLIDER[ergebnis.data[0].farbe]);
+    statusWertWaehlen(FARBE_ZU_SLIDER[ergebnis.data[0].farbe]);
   }
 }
 starteHistorie();
@@ -824,7 +906,7 @@ async function wochenverlaufAnTkSenden(){
 async function wochenverlaufManuellSenden(){
   var status=document.getElementById('wl-status');
   if(!aktuellesKindId){
-    if(status){status.textContent='Bitte zuerst oben ein Kind wählen.';status.style.display='block';}
+    if(status){status.textContent=(JOBCOACH ? 'Bitte zuerst oben eine Teilnehmer-ID wählen.' : 'Bitte zuerst oben ein Kind wählen.');status.style.display='block';}
     return;
   }
   if(status){status.textContent='⏳ Wird gesendet …';status.style.display='block';}

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 12.08.2026 (Strang 71 ergänzt)
+Stand: 12.08.2026 (Strang 72 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1881,3 +1881,58 @@ ausgeglichen (89/89 nach der Ergänzung).
 ### Noch offen
 
 - Alle Punkte aus Strang 57–70 bleiben unverändert offen.
+
+## Strang 72: BAROMETER_KIND.html — geführter Workflow & Status-Kacheln (12.08.2026)
+
+Finalisierung des Jobcoach-Modus: Slider → 11 Status-Kacheln, ID-Verwaltung dezenter, Coach-Bereich
+öffnet sich erst nach explizitem Klick statt automatisch, Wording konsequent zu Ende gezogen.
+
+**Korrektur ggü. Prompt (Punkt 3):** Der Auftrag behauptete, „INGRA" solle „sobald der Jobcoach-Modus
+aktiv ist" durch „Coach/Mentor:in" ersetzt werden — das war inhaltlich schon Ziel von Strang 70/71 und
+größtenteils bereits umgesetzt (Titel, Hinweistexte). Hier vervollständigt um die noch verbliebenen
+Stellen (Header-Untertitel „Kind" → „Teilnehmer:in", Status-Meldungen „Kind ausgewählt"/"Kind wählen",
+Vergleichstext-Begriff „Coach" → „Coach/Mentor:in"). Bewusst NICHT angefasst: interne Bezeichner/
+Kommentare/Variablennamen (`kind-select`, `aktuellesKindId`, `waehleKind()` usw.) sowie der externe Link
+„INGRA-Barometer" unten rechts (echter, korrekter Name einer anderen, eigenständigen Seite
+`BAROMETER_INGRA.html` — kein Fall von „INGRA" als Rollen-Label in dieser Seite selbst).
+
+**Umgesetzt:**
+- **Layout:** Teilnehmer-ID-Verwaltung jetzt als `<details>`/`<summary>` — im geschlossenen
+  Ausgangszustand nur eine schmale, blasse Zeile („🗂️ Teilnehmer-IDs verwalten ▸"), statt der
+  auffälligen gestrichelten Box aus Strang 70. Direkt darunter weiterhin die Teilnehmer-Auswahl, dann
+  als klar erkennbarer Hauptbereich die neue Überschrift „Selbsteinschätzung Teilnehmer:in" über den
+  Status-Kacheln.
+- **11 Status-Kacheln statt Slider** (`statusKachelnRendern()`, `statusWertWaehlen()`): neutral
+  (hellgrau) im Ausgangszustand, erst bei Auswahl dezent in die Bereichsfarbe eingefärbt (sanftes Grün/
+  Gelb/Orange/Rot/Grau je nach Bereich) — exakt wie gefordert. Anders als der bisherige Slider ist beim
+  Laden **keine** Kachel vorausgewählt (bewusste Verbesserung: eine echte Selbsteinschätzung sollte
+  nicht durch einen stillen Default-Wert vorweggenommen werden — entspricht jetzt genau dem Verhalten
+  der Farb-Buttons im Schul-Modus, die ebenfalls erst durch Klick aktiv werden).
+- **Caption exakt wie vorgegeben:** „0 – Alles entspannt bis 10 – Maximale Belastung" als ein
+  zusammenhängender Satz unter dem Kachel-Raster (vorher zwei getrennte Enden links/rechts am Slider).
+- **Geführter Workflow:** Der Coach/Mentor:in-Bereich ist beim Laden unsichtbar. Erst nach Speichern
+  erscheint der Button „🧭 Perspektive des Coaches ergänzen"; erst ein Klick darauf öffnet den Bereich
+  (`coachEinschaetzungOeffnen()`). Zusätzliche, nicht explizit angefragte, aber naheliegende Ergänzung:
+  Beim Wechsel zu einer anderen Teilnehmer-ID wird dieser Workflow zurückgesetzt (Coach-Bereich und
+  Button wieder verborgen) — sonst bliebe die Einschätzung einer vorherigen Person fälschlich offen
+  stehen, wenn zu einer neuen Person gewechselt wird.
+- Schul-Modus unverändert: dort öffnet sich die INGRA-Einschätzung weiterhin automatisch nach dem
+  Speichern (wie vor Strang 72), der neue „Perspektive ergänzen"-Button erscheint dort nie.
+
+**Datenmapping (Punkt 4) unverändert beibehalten:** dieselbe 0–10→Farbe-Logik aus Strang 70/71
+(`sliderWertZuFarbe`, `FARBE_ZU_SLIDER`) wird jetzt von den Kacheln statt vom Slider aufgerufen — keine
+Änderung an der Übersetzung selbst, nur an der Bedienoberfläche, die sie auslöst.
+
+**Getestet:** Syntax-Check fehlerfrei; div- und `<details>`-Balance ausgeglichen; jsdom-Test gegen die
+echte Datei mit gemocktem Supabase-Client — Header-Untertitel, Kachel-Anzahl (11), Kachel-Überschrift,
+Caption-Wortlaut, `<details>` geschlossen im Ausgangszustand, Coach-Bereich + Button beim Laden
+unsichtbar, keine vorausgewählte Kachel, Kachel-Klick färbt korrekt (`rgb(250, 218, 215)` für Rot-Bereich
+bestätigt), nach Speichern erscheint der Button statt dem Bereich selbst, Klick auf den Button öffnet
+den Bereich und blendet den Button wieder aus, Teilnehmer-Wechsel setzt beides zurück. Zusätzlicher
+Schule-Modus-Regressionstest bestätigt: Farb-Buttons, Original-Texte, Klarname+Klasse im Dropdown und
+das automatische Öffnen der INGRA-Einschätzung nach dem Speichern funktionieren unverändert wie vor
+diesem Strang.
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–71 bleiben unverändert offen.

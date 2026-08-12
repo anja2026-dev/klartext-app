@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 12.08.2026 (Strang 70 ergänzt)
+Stand: 12.08.2026 (Strang 71 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1846,3 +1846,38 @@ nicht repariert (außerhalb dieses Auftrags), aber im neuen Jobcoach-Teil korrek
   keine "saubere" Lösung — falls die Jobcoach-Funktion wächst, wäre eine eigene boolesche Spalte
   (eigene Migration) der sauberere nächste Schritt.
 - Alle Punkte aus Strang 57–69 bleiben unverändert offen.
+
+## Strang 71: Teilnehmer-ID-Verwaltung — automatische ID-Generierung (12.08.2026)
+
+**Korrektur ggü. Prompt (Punkt 3):** Der Auftrag ging davon aus, die Anonymisierung liefe über ein
+Text-Präfix `jobcoach-anonym:` im Namensfeld, „wie bereits implementiert". Das trifft nicht zu — bereits
+seit Strang 70 läuft die Anonymisierung über ein eigenes Datenbankfeld (`bedarfsart='jobcoach-anonym'`),
+nicht über einen Text-Zusatz im Namen. Bewusst NICHT auf das Präfix-Muster umgestellt: `name` wird an
+mehreren Stellen direkt anzeigt (Dropdown, Begrüßung „Hallo …", Verwaltungsliste) — ein Präfix dort
+hätte die ID überall mit technischem Beiwerk verunstaltet, ohne einen Vorteil gegenüber der bereits
+funktionierenden Feld-Trennung zu bringen. Die bestehende, sauberere Lösung beibehalten; im Code an der
+Stelle `teilnehmerIdAnlegen()` mit einem Kommentar erklärt, damit diese Diskrepanz zum Prompt bei einer
+künftigen Anfrage nicht erneut Verwirrung stiftet.
+
+**Umgesetzt:**
+- Neuer Button „🎲" neben dem Eingabefeld für neue Teilnehmer-IDs (`teilnehmerIdWuerfeln()`).
+- ID-Muster exakt wie gefordert: `KT-` + 4 zufällige alphanumerische Zeichen (z. B. `KT-X8R2`). Eine
+  Ergänzung ggü. der wörtlichen Vorgabe: Zeichensatz bewusst ohne leicht verwechselbare Zeichen (0/O,
+  1/I/L) — passend zum vom Auftrag selbst verlangten Hinweistext, dass die ID von Hand auf eine
+  physische Liste übertragen wird, soll dabei nichts kippen/verwechselt werden können.
+- Kollisionsvermeidung: eine gewürfelte ID wird gegen die aktuell geladene Verwaltungsliste geprüft und
+  bei einem Treffer neu gewürfelt (max. 20 Versuche).
+- Hinweistext exakt wie vorgegeben ergänzt: „Notiere dir diese ID und den Namen deines Klienten in
+  deiner physischen Liste. In der App werden keine Klarnamen gespeichert."
+- Würfeln befüllt nur das Eingabefeld — Speichern bleibt ein bewusster zweiter Schritt (kein
+  Auto-Anlegen beim Würfeln), damit die/der Coach die ID vor dem Anlegen noch sehen/prüfen kann.
+
+**Getestet:** Syntax-Check fehlerfrei; isolierte Musterprüfung von 2000 generierten IDs (alle passend
+auf `KT-` + 4 Zeichen ohne 0/O/1/I/L); jsdom-Test gegen die echte Datei mit gemocktem Supabase-Client —
+Würfel-Button und Hinweistext vorhanden, generierte ID passt aufs Muster, Kollision mit einer bereits
+in der (gemockten) Liste vorhandenen ID über 300 Versuche zuverlässig vermieden. div-Balance weiterhin
+ausgeglichen (89/89 nach der Ergänzung).
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–70 bleiben unverändert offen.

@@ -111,6 +111,8 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 .tn-anlegen-zeile{display:flex;gap:.5rem;margin-bottom:.7rem;}
 .tn-anlegen-input{flex:1;border:1.5px solid #DDD8CE;border-radius:8px;padding:.5rem .7rem;font-family:inherit;font-size:.82rem;color:#1B3A4B;}
 .tn-anlegen-btn{background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.5rem .9rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tn-wuerfeln-btn{background:#fff;color:#1B3A4B;border:1.5px solid #1B3A4B;border-radius:8px;padding:.5rem .7rem;font-size:.9rem;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tn-physisch-hinweis{font-size:.68rem;color:#7A5500;background:#FFF7EA;border:1.5px solid #E0C88A;border-radius:8px;padding:.5rem .7rem;line-height:1.5;margin-bottom:.7rem;}
 .tn-liste{display:flex;flex-direction:column;gap:.4rem;}
 .tn-liste-item{display:flex;align-items:center;justify-content:space-between;gap:.5rem;background:#F5F0E8;border-radius:8px;padding:.4rem .6rem;font-size:.8rem;color:#1B3A4B;}
 .tn-loeschen-btn{background:none;border:none;color:#C0392B;font-size:.9rem;cursor:pointer;padding:.2rem .4rem;}
@@ -167,9 +169,11 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
     </div>
     <div id="tn-verwaltung-aktiv">
       <div class="tn-anlegen-zeile">
-        <input type="text" id="tn-neu-input" class="tn-anlegen-input" placeholder="z. B. TN-DO-01">
+        <input type="text" id="tn-neu-input" class="tn-anlegen-input" placeholder="z. B. KT-X8R2">
+        <button class="tn-wuerfeln-btn" onclick="teilnehmerIdWuerfeln()" title="Zufällige ID erzeugen" type="button">🎲</button>
         <button class="tn-anlegen-btn" onclick="teilnehmerIdAnlegen()">+ Anlegen</button>
       </div>
+      <div class="tn-physisch-hinweis">Notiere dir diese ID und den Namen deines Klienten in deiner physischen Liste. In der App werden keine Klarnamen gespeichert.</div>
       <div class="tn-liste" id="tn-liste"></div>
     </div>
   </div>
@@ -416,11 +420,47 @@ async function teilnehmerIdsLaden(){
   }
 }
 
+// ID-Generierung (Strang 71): KT- + 4 zufällige alphanumerische Zeichen,
+// z. B. "KT-X8R2". Zeichensatz bewusst ohne leicht verwechselbare
+// Zeichen (0/O, 1/I/L) ausgewählt — laut Hinweistext soll die ID von
+// Hand auf eine physische Liste übertragen werden, da darf beim Lesen/
+// Abschreiben nichts kippen.
+var TN_ID_ZEICHEN = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function teilnehmerIdGenerieren(){
+  var teil = '';
+  for (var i = 0; i < 4; i++) {
+    teil += TN_ID_ZEICHEN.charAt(Math.floor(Math.random() * TN_ID_ZEICHEN.length));
+  }
+  return 'KT-' + teil;
+}
+
+function teilnehmerIdWuerfeln(){
+  var input = document.getElementById('tn-neu-input');
+  if (!input) return;
+  // Kollision mit bereits angelegten IDs vermeiden (gegen die aktuell
+  // geladene Verwaltungsliste geprüft; höchstens 20 Versuche, damit bei
+  // einem sehr unwahrscheinlichen Dauer-Konflikt kein Endlos-Loop droht).
+  var bestehende = Array.prototype.map.call(
+    document.querySelectorAll('#tn-liste .tn-liste-item span'),
+    function(el){ return el.textContent; }
+  );
+  var neu, versuche = 0;
+  do { neu = teilnehmerIdGenerieren(); versuche++; } while (bestehende.indexOf(neu) !== -1 && versuche < 20);
+  input.value = neu;
+}
+window.teilnehmerIdWuerfeln = teilnehmerIdWuerfeln;
+
 async function teilnehmerIdAnlegen(){
   var input = document.getElementById('tn-neu-input');
   var wert = (input.value || '').trim();
   if (!wert) return;
   if (!eingeloggt || !traegerIdAktuell) { alert('Bitte zuerst einloggen, um Teilnehmer-IDs anzulegen.'); return; }
+  // Anonymisierung läuft NICHT über ein Präfix im Namensfeld (das würde
+  // die ID überall dort, wo t.name angezeigt wird — Dropdown, Begrüßung,
+  // Verwaltungsliste — mit einer technischen Vorsilbe verunstalten).
+  // Stattdessen bereits seit Strang 70 über bedarfsart='jobcoach-anonym'
+  // gelöst (eigenes Feld statt Text-Präfix): name bleibt die reine,
+  // saubere ID, bedarfsart trennt sie zuverlässig von echten Kindern.
   var ergebnis = await supabase.from('Kinder').insert({
     name: wert,
     traeger_id: traegerIdAktuell,

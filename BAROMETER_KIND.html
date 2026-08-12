@@ -99,6 +99,32 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 .vergleich-box.diff{background:#FFF3E0;border:1.5px solid #D4A017;color:#7A5500;}
 
 .ingra-hinweis{max-width:500px;margin:0 auto 1rem;padding:.7rem 1rem;background:#EAF1F8;border:1.5px solid #B8D4EC;border-radius:12px;font-size:.74rem;color:#1B3A4B;line-height:1.55;}
+
+/* JOBCOACH-MODUS (Strang 70): professionelle Selbsteinschätzung statt
+   Kind-Barometer. .schule-only wird per JS ausgeblendet, .jc-only per JS
+   eingeblendet, wenn klartext_modus === 'jobcoach' aktiv ist. */
+.jc-only{display:none;}
+.tn-verwaltung-wrap{max-width:500px;margin:0 auto 1.1rem;padding:0 1rem;}
+.tn-verwaltung-box{background:#fff;border:1.5px dashed #999;border-radius:14px;padding:1rem 1.1rem;}
+.tn-verwaltung-titel{font-size:.9rem;font-weight:800;color:#1B3A4B;margin-bottom:.25rem;}
+.tn-verwaltung-sub{font-size:.7rem;color:#7A7060;margin-bottom:.7rem;line-height:1.5;}
+.tn-anlegen-zeile{display:flex;gap:.5rem;margin-bottom:.7rem;}
+.tn-anlegen-input{flex:1;border:1.5px solid #DDD8CE;border-radius:8px;padding:.5rem .7rem;font-family:inherit;font-size:.82rem;color:#1B3A4B;}
+.tn-anlegen-btn{background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.5rem .9rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tn-liste{display:flex;flex-direction:column;gap:.4rem;}
+.tn-liste-item{display:flex;align-items:center;justify-content:space-between;gap:.5rem;background:#F5F0E8;border-radius:8px;padding:.4rem .6rem;font-size:.8rem;color:#1B3A4B;}
+.tn-loeschen-btn{background:none;border:none;color:#C0392B;font-size:.9rem;cursor:pointer;padding:.2rem .4rem;}
+.tn-login-hinweis{font-size:.76rem;color:#7A5500;background:#FFF3E0;border:1.5px solid #E0C88A;border-radius:10px;padding:.6rem .8rem;line-height:1.5;}
+.tn-login-hinweis a{color:#7A5500;font-weight:700;}
+
+.status-slider-wrap{max-width:500px;margin:0 auto;padding:.5rem 1rem 1rem;}
+.status-slider-box{background:#fff;border:2px solid #DDD8CE;border-radius:18px;padding:1.3rem 1.1rem 1.1rem;}
+.status-slider-wert{text-align:center;font-size:2.2rem;font-weight:800;color:#1B3A4B;margin-bottom:.2rem;font-family:"Playfair Display",serif;}
+.status-slider-wert-label{text-align:center;font-size:.78rem;color:#7A7060;margin-bottom:.9rem;}
+.status-slider-input{width:100%;height:8px;border-radius:5px;-webkit-appearance:none;appearance:none;margin-bottom:.5rem;background:linear-gradient(90deg,#2E9E5A 0%,#D4A800 30%,#D4651A 55%,#C0392B 75%,#757575 100%);}
+.status-slider-input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #1B3A4B;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.status-slider-input::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;border:3px solid #1B3A4B;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.status-slider-enden{display:flex;justify-content:space-between;font-size:.66rem;color:#7A7060;font-weight:700;}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -128,19 +154,47 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 <!-- BEGRÜSSUNG -->
 <div class="begruess">
   <div class="begruess-name" id="begruess-name">Hallo! 👋</div>
-  <div class="begruess-frage">Zeig wie du dich gerade fühlst.</div>
+  <div class="begruess-frage" id="begruess-frage">Zeig wie du dich gerade fühlst.</div>
+</div>
+
+<!-- TEILNEHMER-ID-VERWALTUNG (nur Jobcoach-Modus, Strang 70) -->
+<div class="tn-verwaltung-wrap jc-only" id="tn-verwaltung-wrap">
+  <div class="tn-verwaltung-box">
+    <div class="tn-verwaltung-titel">🗂️ Teilnehmer-ID-Verwaltung</div>
+    <div class="tn-verwaltung-sub">Anonyme Kürzel statt Klarnamen (z. B. „TN-DO-01"). Es werden keine echten Namen gespeichert.</div>
+    <div id="tn-login-hinweis" class="tn-login-hinweis" style="display:none;">
+      Zum Anlegen/Löschen von Teilnehmer-IDs bitte zuerst <a href="KLARTEXT_Login.html">einloggen</a> — die Auswahl bereits angelegter IDs funktioniert auch ohne Login.
+    </div>
+    <div id="tn-verwaltung-aktiv">
+      <div class="tn-anlegen-zeile">
+        <input type="text" id="tn-neu-input" class="tn-anlegen-input" placeholder="z. B. TN-DO-01">
+        <button class="tn-anlegen-btn" onclick="teilnehmerIdAnlegen()">+ Anlegen</button>
+      </div>
+      <div class="tn-liste" id="tn-liste"></div>
+    </div>
+  </div>
 </div>
 
 <!-- KIND-AUSWAHL (Etappe 5.3) -->
 <div class="kind-auswahl-wrap">
-  <label class="kind-auswahl-label" for="kind-select">Wer bist du?</label>
+  <label class="kind-auswahl-label" for="kind-select" id="kind-auswahl-label">Wer bist du?</label>
   <select id="kind-select" class="kind-auswahl-select">
     <option value="">Bitte wählen …</option>
   </select>
 </div>
 
+<!-- STATUS-SLIDER (nur Jobcoach-Modus, Strang 70) -->
+<div class="status-slider-wrap jc-only" id="status-slider-wrap">
+  <div class="status-slider-box">
+    <div class="status-slider-wert" id="status-slider-wert">5</div>
+    <div class="status-slider-wert-label">aktueller Status</div>
+    <input type="range" min="0" max="10" step="1" value="5" class="status-slider-input" id="status-slider-input" oninput="statusSliderGeaendert(this.value)">
+    <div class="status-slider-enden"><span>0 – Alles entspannt</span><span>10 – Maximale Belastung</span></div>
+  </div>
+</div>
+
 <!-- BAROMETER BUTTONS -->
-<div class="baro-grid">
+<div class="baro-grid schule-only" id="baro-grid">
   <div class="baro-big" id="bb-gruen" onclick="waehleKind('gruen','#2E9E5A','Grün','😊','Ich bin gut drauf!')" style="background:linear-gradient(135deg,#2E9E5A,#1A7A3A);">
     <div class="bb-check">✓</div>
     <div class="bb-emoji"><img src="brainy-gruen.png" alt="Brainy entspannt"></div>
@@ -167,7 +221,7 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   </div>
 </div>
 <!-- Grau volle Breite -->
-<div style="max-width:500px;margin:0 auto;padding:0 1rem .75rem;">
+<div class="schule-only" id="baro-grau-wrap" style="max-width:500px;margin:0 auto;padding:0 1rem .75rem;">
   <div class="baro-big" id="bb-grau" onclick="waehleKind('grau','#757575','Grau','😶','Ich bin sehr müde — manchmal mag ich gar nicht reden')" style="background:linear-gradient(135deg,#757575,#555555);border-radius:20px;flex-direction:row;padding:.9rem 1.25rem;gap:1rem;">
     <div class="bb-check">✓</div>
     <div class="bb-emoji"><img src="brainy-grau.png" alt="Brainy erschöpft" style="width:48px;height:48px;"></div>
@@ -181,8 +235,8 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   <textarea class="notiz-kind" id="notiz-kind" placeholder="z.B. Bauchschmerzen · Streit gehabt · bin müde …" oninput="checkSpeichern()"></textarea>
 </div>
 
-<!-- HINWEIS FÜR INGRA -->
-<div class="ingra-hinweis">
+<!-- HINWEIS FÜR INGRA / COACH -->
+<div class="ingra-hinweis" id="ingra-hinweis">
   💡 Tipp für dich als INGRA: Lass das Kind zuerst frei wählen. Nach dem Speichern kannst du direkt darunter deine eigene Einschätzung abgeben — der Vergleich zeigt euch beiden, ob ihr ähnlich oder unterschiedlich wahrnehmt.
 </div>
 
@@ -193,10 +247,10 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   </button>
 </div>
 
-<!-- INGRA-EINSCHÄTZUNG -->
+<!-- INGRA-/COACH-EINSCHÄTZUNG -->
 <div class="ingra-wrap" id="ingra-wrap" style="display:none;">
-  <div class="ingra-titel">👩‍🏫 Einschätzung der INGRA (optional)</div>
-  <div class="ingra-sub">Wie schätzt du als Begleitung den Zustand des Kindes ein? Erst nachdem das Kind selbst gewählt hat.</div>
+  <div class="ingra-titel" id="ingra-titel">👩‍🏫 Einschätzung der INGRA (optional)</div>
+  <div class="ingra-sub" id="ingra-sub">Wie schätzt du als Begleitung den Zustand des Kindes ein? Erst nachdem das Kind selbst gewählt hat.</div>
   <div class="ingra-chips" id="ingra-chips"></div>
   <div class="vergleich-box" id="vergleich-box" style="display:none;"></div>
 </div>
@@ -240,6 +294,14 @@ var aktuelleWahl = null;
 // ein Kind-Self-Service-Gerät ("Wer bist du?"), kein INGRA-Werkzeug - ein
 // Filter über kinder_zuordnung würde eine eingeloggte INGRA-Session
 // voraussetzen, die es hier absichtlich nicht gibt.
+// Hinweis (Strang 70): Die RLS-Regeln auf "kinder" (0002/0003_...sql)
+// verlangen für JEDEN Zugriff, auch select, tatsächlich bereits eine
+// eingeloggte tk/admin-Session — ohne Login liefert die Abfrage unten
+// nach aktuellem Stand der Datenbank-Regeln vermutlich ohnehin leer
+// zurück. Der obige Kommentar ("bewusst ohne Login") war offenbar nie
+// vollständig zutreffend; hier nicht repariert (außerhalb dieses
+// Auftrags), aber für den neuen Jobcoach-Teil unten bewusst korrekt
+// berücksichtigt: dort wird Login aktiv vorausgesetzt.
 var aktuellesKindId = '';
 var kinderNamen = {}; // id -> name, ersetzt die vorherige localStorage-Namenszwischenspeicherung (baro_kind_name)
 
@@ -247,40 +309,213 @@ function aktualisiereBegruessung(name){
   document.getElementById('begruess-name').textContent = name ? ('Hallo '+name+' 👋') : 'Hallo! 👋';
 }
 
-(async function(){
+// ═══════════════════════════════════════════════════════════════════
+// JOBCOACH-MODUS (Strang 70): professionelle Selbsteinschätzung statt
+// Kind-Barometer. Eigene, schlanke Kopie der klartext_modus-Erkennung
+// aus KLARTEXT_ContextMapper.js (nicht per <script src> eingebunden,
+// weil hier mehr als reine Text-Ersetzung nötig ist: ganze
+// UI-Abschnitte werden ein-/ausgeblendet und Daten unterschiedlich
+// geladen/gespeichert).
+// ═══════════════════════════════════════════════════════════════════
+var MODUS_STORAGE_KEY = 'klartext_modus';
+function istJobcoachModus(){
+  try {
+    var urlModus = new URLSearchParams(window.location.search).get('modus');
+    if (urlModus === 'jobcoach') { try{ localStorage.setItem(MODUS_STORAGE_KEY,'jobcoach'); }catch(e){} return true; }
+    if (urlModus === 'schule') { try{ localStorage.removeItem(MODUS_STORAGE_KEY); }catch(e){} return false; }
+    return localStorage.getItem(MODUS_STORAGE_KEY) === 'jobcoach';
+  } catch(e) { return false; }
+}
+var JOBCOACH = istJobcoachModus();
+
+// ── Slider (0–10) <-> bestehende 5-Farben-Skala ─────────────────────
+// Die Supabase-Spalte barometer_kind.farbe hat eine feste Datenbank-Regel
+// (check farbe in ('gruen','gelb','orange','rot','grau')) und kann daher
+// keinen rohen Zahlenwert aufnehmen. Der exakte Wert geht dabei nicht
+// verloren — er wird zusätzlich lesbar vor die Notiz gestellt (siehe
+// speichereKind()) und zusätzlich als eigenes Feld nach Firebase
+// geschrieben (dort schemalos, kein Problem).
+var SLIDER_FARBE_EMOJI = {gruen:'😊',gelb:'😐',orange:'😟',rot:'😰',grau:'😶'};
+function sliderWertZuFarbe(wert){
+  wert = Number(wert);
+  if (wert <= 2) return 'gruen';
+  if (wert <= 4) return 'gelb';
+  if (wert <= 6) return 'orange';
+  if (wert <= 8) return 'rot';
+  return 'grau';
+}
+// Rückwärts-Mapping beim Wechsel der Teilnehmer-ID: obere Grenze je
+// Farbbereich verwendet (nicht exakt rekonstruierbar, da mehrere
+// Slider-Werte auf dieselbe Farbe abbilden) — entspricht dem Beispiel
+// aus dem Auftrag: gespeicherter Wert "gelb" -> Slider auf 4.
+var FARBE_ZU_SLIDER = {gruen:2, gelb:4, orange:6, rot:8, grau:10};
+
+function statusSliderGeaendert(wert){
+  wert = Number(wert);
+  var anzeige = document.getElementById('status-slider-wert');
+  var input = document.getElementById('status-slider-input');
+  if (anzeige) anzeige.textContent = wert;
+  if (input) input.value = wert;
+  var farbe = sliderWertZuFarbe(wert);
+  var color = FARBEN_K[farbe];
+  aktuelleWahl = {id:farbe, color:color, name:'Status '+wert+'/10', emoji:SLIDER_FARBE_EMOJI[farbe], desc:'', wert:wert};
+  var btn=document.getElementById('sp-btn');
+  if (btn) { btn.classList.add('aktiv'); btn.style.background=color; }
+}
+window.statusSliderGeaendert = statusSliderGeaendert;
+
+// ── Teilnehmer-ID-Verwaltung (nur Jobcoach-Modus) ───────────────────
+// Anonyme IDs werden als normale Zeilen in der bestehenden Tabelle
+// "kinder" angelegt (name = die anonyme ID, z. B. "TN-DO-01" — keine
+// echten Namen, keine weiteren Felder befüllt). Bewusst KEINE neue
+// Tabelle/Migration: so bleiben barometer_kind (kind_id-Fremdschlüssel),
+// bestehende RLS-Policies und die TK-Weiterleitung unverändert
+// funktionsfähig. bedarfsart='jobcoach-anonym' markiert diese Zeilen,
+// damit sie sich von echten Kindern unterscheiden lassen (eine eigene
+// Spalte wäre sauberer, wurde hier aber bewusst vermieden, um keine
+// Migration zu brauchen — bei Bedarf später leicht nachrüstbar).
+// "Löschen" ist ein Soft-Delete (aktiv=false, ausgetreten_am=heute,
+// genau wie die bestehenden Felder es für echte Kinder vorsehen) statt
+// eines echten DELETE: barometer_kind.kind_id verweist ohne "on delete
+// cascade" auf kinder.id — ein echtes Löschen würde an bereits
+// gespeicherten Verlaufsdaten mit einem Fremdschlüssel-Fehler scheitern.
+var JOBCOACH_MARKER = 'jobcoach-anonym';
+var traegerIdAktuell = null;
+var eingeloggt = false;
+
+async function ermittleLoginUndTraeger(){
+  try {
+    var sitzung = await supabase.auth.getSession();
+    if (!sitzung.data || !sitzung.data.session) { eingeloggt = false; return; }
+    eingeloggt = true;
+    var userId = sitzung.data.session.user.id;
+    var profil = await supabase.from('profiles').select('traeger_id').eq('id', userId).maybeSingle();
+    if (!profil.error && profil.data) { traegerIdAktuell = profil.data.traeger_id; }
+  } catch(e) { eingeloggt = false; }
+}
+
+function jobcoachLoginHinweisAktualisieren(){
+  var hinweis = document.getElementById('tn-login-hinweis');
+  var aktiv = document.getElementById('tn-verwaltung-aktiv');
+  if (!hinweis || !aktiv) return;
+  hinweis.style.display = eingeloggt ? 'none' : 'block';
+  aktiv.style.display = eingeloggt ? 'block' : 'none';
+}
+
+async function teilnehmerIdsLaden(){
+  var liste = document.getElementById('tn-liste');
+  if (!eingeloggt) { if(liste) liste.innerHTML=''; return; }
+  var ergebnis = await supabase.from('Kinder').select('id, name').eq('bedarfsart', JOBCOACH_MARKER).eq('aktiv', true);
+  if (ergebnis.error) { console.error('Teilnehmer-IDs laden fehlgeschlagen:', ergebnis.error); return; }
+  if (liste) {
+    var zeilen = (ergebnis.data || []).map(function(t){
+      return '<div class="tn-liste-item"><span>'+escHtml(t.name)+'</span>'+
+        '<button class="tn-loeschen-btn" onclick="teilnehmerIdLoeschen(\''+t.id+'\')" title="Löschen">✕</button></div>';
+    }).join('');
+    liste.innerHTML = zeilen || '<div class="bilanz-leer" style="width:100%;">Noch keine Teilnehmer-IDs angelegt.</div>';
+  }
+}
+
+async function teilnehmerIdAnlegen(){
+  var input = document.getElementById('tn-neu-input');
+  var wert = (input.value || '').trim();
+  if (!wert) return;
+  if (!eingeloggt || !traegerIdAktuell) { alert('Bitte zuerst einloggen, um Teilnehmer-IDs anzulegen.'); return; }
+  var ergebnis = await supabase.from('Kinder').insert({
+    name: wert,
+    traeger_id: traegerIdAktuell,
+    bedarfsart: JOBCOACH_MARKER,
+    aktiv: true
+  });
+  if (ergebnis.error) { console.error('Teilnehmer-ID anlegen fehlgeschlagen:', ergebnis.error); alert('Anlegen fehlgeschlagen: ' + ergebnis.error.message); return; }
+  input.value = '';
+  await teilnehmerIdsLaden();
+  await teilnehmerAuswahlLaden();
+}
+window.teilnehmerIdAnlegen = teilnehmerIdAnlegen;
+
+async function teilnehmerIdLoeschen(id){
+  if (!confirm('Diese Teilnehmer-ID wirklich entfernen? Bereits gespeicherte Verlaufsdaten bleiben in der Datenbank erhalten, die ID verschwindet aber aus der Auswahl.')) return;
+  var heute = new Date().toISOString().slice(0,10);
+  var ergebnis = await supabase.from('Kinder').update({ aktiv:false, ausgetreten_am: heute }).eq('id', id);
+  if (ergebnis.error) { console.error('Teilnehmer-ID entfernen fehlgeschlagen:', ergebnis.error); alert('Entfernen fehlgeschlagen: ' + ergebnis.error.message); return; }
+  await teilnehmerIdsLaden();
+  await teilnehmerAuswahlLaden();
+}
+window.teilnehmerIdLoeschen = teilnehmerIdLoeschen;
+
+function jobcoachUiEinrichten(){
+  document.querySelectorAll('.jc-only').forEach(function(el){ el.style.display = JOBCOACH ? 'block' : 'none'; });
+  document.querySelectorAll('.schule-only').forEach(function(el){ el.style.display = JOBCOACH ? 'none' : ''; });
+  if (!JOBCOACH) return;
+  var frage = document.getElementById('begruess-frage');
+  var label = document.getElementById('kind-auswahl-label');
+  var ingraTitel = document.getElementById('ingra-titel');
+  var ingraSub = document.getElementById('ingra-sub');
+  var ingraHinweis = document.getElementById('ingra-hinweis');
+  if (frage) frage.textContent = 'Aktueller Status-Check';
+  if (label) label.textContent = 'Teilnehmer-ID wählen';
+  if (ingraTitel) ingraTitel.textContent = '💼 Coach-Einschätzung (optional)';
+  if (ingraSub) ingraSub.textContent = 'Wie schätzt du als Coach den aktuellen Status der/des Teilnehmenden ein? Erst nachdem die Selbsteinschätzung erfolgt ist.';
+  if (ingraHinweis) ingraHinweis.innerHTML = '💡 Tipp: Lass die/den Teilnehmende:n zuerst frei einschätzen. Nach dem Speichern kannst du direkt darunter deine eigene Einschätzung abgeben — der Vergleich zeigt euch beiden, ob ihr ähnlich oder unterschiedlich wahrnehmt.';
+  // Slider auf Startwert initialisieren, damit "Speichern" auch ohne
+  // Slider-Berührung sofort funktioniert.
+  var input = document.getElementById('status-slider-input');
+  if (input) statusSliderGeaendert(input.value);
+}
+
+// ── Teilnehmer-Auswahl laden/befüllen ────────────────────────────────
+async function teilnehmerAuswahlLaden(){
   try{
-    var { data: kinder, error } = await supabase.from('Kinder').select('id, name, klasse').eq('aktiv', true);
+    var select = document.getElementById('kind-select');
+    var vorherigeAuswahl = select.value; // beim Neu-Laden nach Anlegen/Entfernen erhalten
+    var query = supabase.from('Kinder').select('id, name, klasse').eq('aktiv', true);
+    // Jobcoach-Modus: NUR anonyme Teilnehmer-IDs anzeigen, nie echte
+    // Kindernamen (DSGVO-Kern dieses Auftrags) — daher immer nach der
+    // Markierung gefiltert, nicht nur "zusätzlich" zur Schul-Auswahl.
+    if (JOBCOACH) query = query.eq('bedarfsart', JOBCOACH_MARKER);
+    var { data: kinder, error } = await query;
     if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
 
-    var select = document.getElementById('kind-select');
-    var gespeicherteId = localStorage.getItem('baro_kind_id') || '';
+    kinderNamen = {};
+    select.innerHTML = '<option value="">Bitte wählen …</option>';
 
     (kinder || []).forEach(function(kind){
       kinderNamen[kind.id] = kind.name;
       var option = document.createElement('option');
       option.value = kind.id;
-      option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '');
+      option.textContent = kind.name + (!JOBCOACH && kind.klasse ? ' (' + kind.klasse + ')' : '');
       select.appendChild(option);
     });
 
-    // Vorherige Auswahl wiederherstellen, falls vorhanden
+    var gespeicherteId = (vorherigeAuswahl && kinderNamen[vorherigeAuswahl]) ? vorherigeAuswahl : (localStorage.getItem('baro_kind_id') || '');
     if (gespeicherteId && kinderNamen[gespeicherteId]) {
       select.value = gespeicherteId;
       aktuellesKindId = gespeicherteId;
       aktualisiereBegruessung(kinderNamen[gespeicherteId]);
       starteHistorie(); // erneut starten, da select.value keinen change-Event auslöst
       pruefeAutomatischeWochenauswertung();
+    } else {
+      aktuellesKindId = '';
     }
+  }catch(e){ console.error(e); }
+}
 
-    select.addEventListener('change', function(){
-      aktuellesKindId = select.value;
-      var kindName = kinderNamen[aktuellesKindId] || '';
-      try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
-      aktualisiereBegruessung(kindName);
-      starteHistorie();
-      pruefeAutomatischeWochenauswertung();
-    });
-  }catch(e){}
+(async function(){
+  await ermittleLoginUndTraeger();
+  jobcoachUiEinrichten();
+  if (JOBCOACH) jobcoachLoginHinweisAktualisieren();
+  await teilnehmerAuswahlLaden();
+  if (JOBCOACH) await teilnehmerIdsLaden();
+
+  document.getElementById('kind-select').addEventListener('change', function(){
+    aktuellesKindId = this.value;
+    var kindName = kinderNamen[aktuellesKindId] || '';
+    try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
+    aktualisiereBegruessung(kindName);
+    starteHistorie();
+    pruefeAutomatischeWochenauswertung();
+  });
 })();
 
 function brainyBild(emoji) {
@@ -304,7 +539,13 @@ function checkSpeichern(){
 
 async function speichereKind(){
   if(!aktuelleWahl)return;
-  var notiz=document.getElementById('notiz-kind').value.trim();
+  var notizRoh=document.getElementById('notiz-kind').value.trim();
+  // Jobcoach-Modus: exakter 0–10-Wert geht in der Farb-Rundung (s.
+  // sliderWertZuFarbe) sonst verloren — deshalb lesbar vor die Notiz
+  // gestellt, statt eine eigene Spalte zu brauchen (barometer_kind.farbe
+  // erlaubt laut Datenbank-Regel nur die 5 Farbnamen, keine Zahl).
+  var statusPräfix = (aktuelleWahl.wert != null) ? ('[Status ' + aktuelleWahl.wert + '/10] ') : '';
+  var notiz = statusPräfix + notizRoh;
   var eintrag={
     id:Date.now(),
     farbe:aktuelleWahl.id,
@@ -322,6 +563,7 @@ async function speichereKind(){
     db.ref('barometer_kind').push({
       childId: aktuellesKindId,
       value: aktuelleWahl.id,
+      wert: (aktuelleWahl.wert != null) ? aktuelleWahl.wert : null,
       text: notiz,
       timestamp: Date.now(),
       source: 'kind-self'
@@ -348,15 +590,21 @@ async function speichereKind(){
     }
   }
 
-  konfetti(aktuelleWahl.color);
   document.getElementById('notiz-kind').value='';
   renderWoche();
   document.getElementById('ingra-wrap').style.display='block';
   var btn=document.getElementById('sp-btn');
-  btn.innerHTML='✓ Gespeichert! <img src="'+brainyBild(aktuelleWahl.emoji)+'" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;">';
-  setTimeout(()=>{btn.textContent='✓ Speichern';aktuelleWahl=null;
-    document.querySelectorAll('.baro-big').forEach(b=>b.classList.remove('aktiv'));
-    btn.classList.remove('aktiv');},2000);
+  if (JOBCOACH) {
+    // Sachliche Rückmeldung ohne Konfetti/Brainy-Emoji im Jobcoach-Modus.
+    btn.textContent='✓ Gespeichert';
+    setTimeout(()=>{btn.textContent='✓ Speichern';},1500);
+  } else {
+    konfetti(aktuelleWahl.color);
+    btn.innerHTML='✓ Gespeichert! <img src="'+brainyBild(aktuelleWahl.emoji)+'" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;">';
+    setTimeout(()=>{btn.textContent='✓ Speichern';aktuelleWahl=null;
+      document.querySelectorAll('.baro-big').forEach(b=>b.classList.remove('aktiv'));
+      btn.classList.remove('aktiv');},2000);
+  }
 }
 
 const INGRA_OPTIONEN = [
@@ -391,12 +639,14 @@ function zeigeVergleich(){
   if(!ingraWahl || !aktuelleWahl) return;
   const box=document.getElementById('vergleich-box');
   box.style.display='block';
+  var wirBegriff = JOBCOACH ? 'Teilnehmer:in' : 'Kind';
+  var sieBegriff = JOBCOACH ? 'Coach' : 'INGRA';
   if(ingraWahl.id===aktuelleWahl.id){
     box.className='vergleich-box match';
-    box.innerHTML='✓ <b>Übereinstimmung:</b> Kind und INGRA schätzen den Zustand gleich ein ('+aktuelleWahl.name+').';
+    box.innerHTML='✓ <b>Übereinstimmung:</b> '+wirBegriff+' und '+sieBegriff+' schätzen den Zustand gleich ein ('+aktuelleWahl.name+').';
   }else{
     box.className='vergleich-box diff';
-    box.innerHTML='⚠ <b>Unterschiedliche Einschätzung:</b> Kind sagt <b>'+aktuelleWahl.name+'</b>, INGRA sieht <b>'+ingraWahl.name+'</b>. Das kann ein wichtiger Gesprächsanlass sein.';
+    box.innerHTML='⚠ <b>Unterschiedliche Einschätzung:</b> '+wirBegriff+' sagt <b>'+aktuelleWahl.name+'</b>, '+sieBegriff+' sieht <b>'+ingraWahl.name+'</b>. Das kann ein wichtiger Gesprächsanlass sein.';
   }
 }
 
@@ -464,6 +714,13 @@ async function starteHistorie(){
     return;
   }
   historieRendern(ergebnis.data || []);
+  // Jobcoach-Modus: Slider auf die zuletzt gespeicherte Farbe springen
+  // lassen (Auftrag: "Datenbankwert gelb -> Slider auf 4"). Nicht exakt
+  // rekonstruierbar (mehrere Werte -> eine Farbe), daher obere Grenze je
+  // Bereich, siehe FARBE_ZU_SLIDER weiter oben.
+  if (JOBCOACH && ergebnis.data && ergebnis.data.length && FARBE_ZU_SLIDER[ergebnis.data[0].farbe] != null) {
+    statusSliderGeaendert(FARBE_ZU_SLIDER[ergebnis.data[0].farbe]);
+  }
 }
 starteHistorie();
 

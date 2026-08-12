@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 11.08.2026 (Strang 68 ergänzt)
+Stand: 12.08.2026 (Strang 69 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1707,3 +1707,51 @@ bis dafür ein eigener Auftrag kommt.
   möglich) — die generierten SVGs sind nach QR-Norm aufgebaut (Standard-Ruhezone, Fehlerkorrektur
   „M"), ein kurzer Praxis-Scan-Test nach dem Ausdrucken wird trotzdem empfohlen.
 - Alle Punkte aus Strang 57–67 bleiben unverändert offen.
+
+## Strang 69: DASHBOARD.html — sichtbarer Schule/Jobcoach-Umschalter (12.08.2026)
+
+Bug-Meldung: "ich kann nicht switchen zwischen Kind und Jobcoach App....es überschreibt automatisch,
+ich muss über den Login und dann kommt immer die Kind-Variante....wie können wir es ändern?
+möglichst einfach...."
+
+**Ursache gefunden (Code-Lesen, kein spekulativer Fix):** Der Jobcoach-Modus ließ sich seit Strang 66
+ausschließlich über den URL-Parameter `?modus=jobcoach` aktivieren. Zwei Stellen im bestehenden
+Login-Ablauf leiten aber immer auf eine URL **ohne** diesen Parameter weiter: `DASHBOARD.html` leitet
+bei abgelaufener Session (sessionStorage — läuft laut Design beim Schließen des Tabs ab) auf
+`KLARTEXT_Login.html` ohne jeden Query-String um; `weiterleiten()` in `KLARTEXT_Login.html` leitet nach
+erfolgreichem Login ebenso immer auf eine "nackte" `ZIELE[rolle]`-URL um. Der Jobcoach-Modus wird zwar
+zusätzlich in `localStorage` gespiegelt (sollte einen Login-Umweg technisch überstehen), aber es gab
+bislang **keinerlei sichtbaren Hinweis oder Schalter**, um den aktuellen Modus zu erkennen oder gezielt
+zu wechseln — die einzige Möglichkeit war, den Parameter von Hand in die Adresszeile zu tippen. Das
+erklärt "möglichst einfach" am treffendsten: nicht als komplexer technischer Defekt, sondern als
+fehlende Bedienoberfläche für einen im Hintergrund eigentlich funktionierenden Mechanismus.
+
+**Umgesetzt:**
+- Neuer Button „🎓 Schule" / „💼 Jobcoach" im Desktop-Header von `DASHBOARD.html` (neben Login/Logout)
+  und ein entsprechender Eintrag „🎓 Modus: Schule" / „💼 Modus: Jobcoach" im mobilen Menü.
+- Funktion `modusUmschalten()`: nutzt die bereits vorhandene, öffentliche
+  `KLARTEXT_CONTEXT_MAPPER`-API (`aktivieren()`/`deaktivieren()`) — kein neuer Speicherort, weiterhin
+  derselbe `localStorage`-Schlüssel `klartext_modus` wie seit Strang 66. Nach dem Umschalten wird die
+  Seite neu geladen, weil der ContextMapper Text nur einseitig ersetzt und bereits ersetzten Text ohne
+  Neuladen nicht zurückverwandeln kann (das war schon in `deaktivieren()` selbst per `console.info` so
+  dokumentiert).
+- Button-Beschriftung zeigt beim Laden automatisch den tatsächlich aktiven Modus (`istAktiv()`), nicht
+  nur eine feste Beschriftung.
+- Bewusst nur auf `DASHBOARD.html` beschränkt (die Seite, auf der laut Bug-Meldung jedes Mal nach dem
+  Login gelandet wird) — nicht auf Reizfilter/Körper-Kompass/Skill-Matrix/Bewerbungs-Generator
+  ausgeweitet, um die Änderung klein und schnell nachvollziehbar zu halten. Bei Bedarf leicht auf
+  weitere Seiten übertragbar (gleiches Muster, 3 Codeblöcke).
+
+**Getestet:** jsdom gegen die echte Datei — Button zeigt „Schule" ohne gesetzten Modus, „Jobcoach" mit
+`klartext_modus=jobcoach` in `localStorage` (inkl. bereits ersetztem Text auf der Seite); ein Klick auf
+den Button setzt bzw. löscht den `localStorage`-Schlüssel korrekt, unabhängig vom Ausgangszustand.
+div-Balance-Check und isolierter Syntax-Check des neuen Inline-Scripts fehlerfrei.
+
+### Noch offen
+
+- Umschalter bisher nur auf `DASHBOARD.html` — falls gewünscht, gleiches Muster auf
+  `KLARTEXT_Spiel_Reizfilter.html`, `KLARTEXT_Spiel_Koerperkompass.html`,
+  `KLARTEXT_Spiel_SkillMatrix.html` und `KLARTEXT_Bewerbungs_Generator.html` übertragen.
+- Kein echter Login-Rundlauf-Test im echten Browser (Login → Session-Ablauf → erneuter Login)
+  durchgeführt, nur die zugrundeliegende Logik isoliert per jsdom geprüft.
+- Alle Punkte aus Strang 57–68 bleiben unverändert offen.

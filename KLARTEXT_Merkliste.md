@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 12.08.2026 (Strang 72 ergänzt)
+Stand: 17.08.2026 (Strang 73 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1936,3 +1936,65 @@ diesem Strang.
 ### Noch offen
 
 - Alle Punkte aus Strang 57–71 bleiben unverändert offen.
+
+## Strang 73: Honorar-Flyer (Familienzentren/Migrationszentren) + neue Seite KLARTEXT_Antraege_Links.html (17.08.2026)
+
+Anja plant Honorartätigkeit für Familienzentren und Migrationszentren (Kleingewerbe angemeldet) unter
+dem Namen „Alltagsbegleitung für Familien" — niedrigschwellig, aufsuchend, mit drei Säulen: 1)
+Struktur-Coaching vor Ort (Insel-Set · Zuhause), 2) Emotionale Stabilisierung (Barometer, Joker-Signale),
+3) Ausfüllhilfe & Strukturgeberin bei Behördenpost (ausdrücklich **keine Rechtsberatung**).
+
+**Fact-Checks/Korrekturen ggü. Prompt:**
+- Kein `Anja_Jolk_Projektprofil_KLARTEXT.pdf` in den Ordnern gefunden — reales Vorlage-Dokument war
+  `projektprofil.html`/`projektprofil.pdf` (EuBiA-Fokus, aus früherem Session-Abschnitt).
+- Skill-Matrix-Cluster heißt „Team-Power", nicht „Team-Power-Experte" wie im Prompt behauptet.
+- Das System nutzt seit Strang 72 Status-**Kacheln**, keinen Slider mehr — Formulierung entsprechend
+  auf „0–10-Status-Skala" korrigiert statt „Slider".
+- „11 Jahre Leitungserfahrung" und Pflegekasse-Erfahrung waren zunächst unbelegt (nicht in
+  `KLARTEXT_Ueber_Anja_Jolk.html`, keine Lebenslauf-Datei in den Ordnern gefunden) — auf Rückfrage von
+  Anja bestätigt/präzisiert: **11 Jahre Studienkreis-Leitung** (Abrechnung Bildung und Teilhabe,
+  Elternberatung). Pflegekassen-Erfahrung laut Anja „nicht direkt, nur indirekt" (Promedica-Franchise-
+  Zeit, private Pflegeerfahrung) — deshalb **nicht** als eigene Leistung auf den Flyern, sondern nur
+  SGB IX/BuT als Beispiele für die Ausfüllhilfe-Säule.
+- Pflegekassen-Anträge sind **nicht kommunal**, sondern kassenabhängig (AOK, TK, Barmer, …) — auf der
+  neuen App-Seite entsprechend als eigener, städteunabhängiger Hinweisblock statt als Direktlink-Liste
+  dargestellt (recherchiert: formloser Antrag direkt bei der eigenen Pflegekasse, 25-Werktage-Frist für
+  den Bescheid).
+- SGB IX/Eingliederungshilfe: Recherche bestätigt, dass trotz Träger-Wechsel zum LWL im Zuge des BTHG
+  die Erstanträge für Kinder (Schulbegleitung u. Ä.) in der Praxis weiterhin bei den Sozialämtern der
+  Städte bzw. beim Kreis gestellt werden (Dortmund-Seite bestätigt dies explizit) — Städte-Direktlinks
+  daher wie ursprünglich geplant sinnvoll.
+
+**Umgesetzt:**
+- Zwei einseitige PDF-Flyer (`Anja_Jolk_Flyer_Familienzentren.pdf`, `Anja_Jolk_Flyer_Migrationszentren.pdf`,
+  aus je einer HTML-Quelle mit weasyprint gerendert): drei Säulen, Nutzen-Box, Kontakt/Honorar-auf-
+  Anfrage-Footer. Migrationszentren-Variante zusätzlich mit DAZ-Goethe-Unterricht, Trauma-Fortbildung
+  und Hinweis auf sprachunabhängige, bildbasierte Tools.
+- Säule 3 auf beiden Flyern umbenannt zu „Ausfüllhilfe & Strukturgeberin (keine Rechtsberatung)" mit
+  drei konkreten Teilaufgaben (Sichten & Sortieren, Fristenmanagement, Vorbereitung der Unterlagen) plus
+  SGB-IX-Beispiel (formloser Erstantrag zur Fristwahrung).
+- Neue App-Seite `KLARTEXT_Antraege_Links.html`: Direktlinks zu echten, recherchierten offiziellen
+  Antragsseiten für Bildung und Teilhabe (Dortmund, Schwerte/Kreis Unna, Unna, Hagen) und SGB IX/
+  Eingliederungshilfe (Dortmund, Kreis Unna, Hagen), jeweils mit `target="_blank" rel="noopener"`.
+  Eigener Pflegekasse-Infoblock (kein Direktlink-Raster, da nicht städtespezifisch) mit Link zum
+  Bundesgesundheitsministerium. Deutlicher Disclaimer-Banner oben („keine Rechtsberatung", Links können
+  sich ändern, Zuständigkeit im Zweifel telefonisch bestätigen). In `KLARTEXT_Downloads.html` unter
+  „Teamkoordination" verlinkt.
+
+**Getestet:** jsdom-Strukturtest für `KLARTEXT_Antraege_Links.html` (7 Direktlinks korrekt, Disclaimer
+und Pflege-Sektion vorhanden, kein Parse-Fehler) und für `KLARTEXT_Downloads.html` nach Verlinkung (neuer
+Link vorhanden, 82 Download-Items insgesamt, kein Parse-Fehler). Beide PDFs per Textextraktion geprüft:
+je 1 Seite, kein „Pflegekasse" als fälschlich impliziter Städte-Service, „Rechtsberatung"/
+„Fristenmanagement" korrekt enthalten.
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–71 bleiben unverändert offen.
+- Honorarsatz für die Flyer noch nicht festgelegt (Anja: „weiß ich selbst noch nicht genau") — Flyer
+  zeigen „Honorar auf Anfrage".
+- SGB-IX-Zuständigkeit beim Kreis Unna für Kinder/Schulbegleitung online nicht eindeutig als eigene
+  Seite auffindbar (anders als Dortmund/Hagen) — App-Seite verlinkt bewusst nur die allgemeine
+  Behinderung/Soziales-Kontaktseite des Kreises mit Hinweis, die genaue Zuständigkeit telefonisch zu
+  klären.
+- Direktlinks können sich ändern (kommunale Websites werden regelmäßig umstrukturiert) — kein
+  automatischer Link-Check eingerichtet, sollte gelegentlich manuell geprüft werden.

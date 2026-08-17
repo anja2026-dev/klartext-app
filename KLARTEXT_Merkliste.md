@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 75 ergänzt)
+Stand: 17.08.2026 (Strang 76 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2123,3 +2123,52 @@ vorgesehen, keine leeren Überschriften im Bericht).
   eigenständiges, größeres Vorhaben.
 - `mailto:`-Link kann bei sehr langen Berichten (viele ausgefüllte Bereiche) in manchen E-Mail-Programmen
   abgeschnitten werden — der Hinweistext macht darauf aufmerksam, „Text kopieren" ist der robustere Weg.
+
+## Strang 76: Honorar-Dokument „Leistungsübersicht für Pflegedienste" (17.08.2026)
+
+Anja hat einen von Copilot vorformulierten Text „A4 – Leistungsübersicht für Pflegedienste" eingereicht
+(Zielgruppe: ambulante Pflegedienste als Kooperationspartner, nicht Familien direkt) und um Einschätzung
+gebeten.
+
+**Fact-Check vor der Übernahme:**
+- Preise (40 €/45 €/55 € pro Stunde, 5-Std.-Paket 185 €, 10-Std.-Paket 360 €, Fahrtkosten 0,40 €/km ab
+  10 km) stimmen mit den von Anja selbst recherchierten und bereits bestätigten Sätzen überein —
+  unverändert übernommen.
+- „MDK-Termine" ist veraltet: Der Medizinische Dienst der Krankenversicherung (MDK) wurde zum 1. Januar
+  2020 durch das MDK-Reformgesetz in „Medizinischer Dienst (MD)" umbenannt (Quellen:
+  medizinischer-dienst.de, pflege.de). Korrigiert zu „Begutachtungstermine des Medizinischen Dienstes
+  (MD)".
+- „Belastungs-Barometer" → echtes Tool heißt „Barometer" (Status-Check 0–10, ohne den Zusatz
+  „Belastungs-"). „Insel-Modell" → echtes Tool heißt „Insel-Set" (Insel-Set · Zuhause). Beide korrigiert.
+- Es fehlte ein Hinweis „keine Rechtsberatung" (im Unterschied zu den Familienzentren-/
+  Migrationszentren-Flyern aus Strang 73 und `KLARTEXT_Antraege_Links.html` aus Strang 73, die diese
+  Abgrenzung bereits konsequent führen). Ergänzt als eigener Hinweis-Kasten direkt unter dem Profiltext.
+- Motto „Klar. Warm. Menschlich." fehlte, obwohl es auf allen anderen Anja-Dokumenten dieser Session
+  steht — ergänzt.
+
+**Rückfrage zur Pflegekassen-Prominenz:** Anjas Erfahrung mit Pflegekassen-Anträgen ist laut ihrer
+eigenen Aussage in Strang 73 „nicht direkt, nur indirekt, aus privater Pflegeerfahrung". Im
+Copilot-Text stand die Pflegekassen-Antragshilfe ganz oben als erster Aufzählungspunkt unter
+„Administrativer Support". Rückfrage gestellt und mit „etwas zurückhaltender formulieren" beantwortet.
+Umgesetzt durch zwei Maßnahmen: (1) der Punkt wurde ans Ende der Aufzählung verschoben (jetzt nach
+BuT- und SGB-IX-Ausfüllhilfe), (2) ergänzt um den Zusatz „— in Abstimmung mit Ihrem Pflegedienst", der
+klarstellt, dass Anja hier unterstützend und nicht als eigenständige Fachstelle auftritt.
+
+**Gebaut:** `Anja_Jolk_Leistungsuebersicht_Pflegedienste.docx` (docx-js, KLARTEXT-Marken-Farben Navy
+`#1A2E44`/Grün `#6EC6A0`, gleiche Gestaltungssprache wie die Honorar-Flyer aus Strang 73) und daraus
+`Anja_Jolk_Leistungsuebersicht_Pflegedienste.pdf` (LibreOffice-Konvertierung). Aufbau: Kopfzeile mit
+Motto, Profiltext, Hinweis-Kasten „keine Rechtsberatung", drei nummerierte Leistungsblöcke
+(Administrativer Support/Alltagsbegleitung/Familienentlastung) mit Preisen, Fahrtkosten, dunkler
+Nutzen-Kasten, Kontaktzeile.
+
+**Getestet:** `pypdf`-Textextraktion bestätigt 1 Seite; enthält „keine Rechtsberatung",
+„Medizinischen Dienstes (MD)", „Insel-Set", „Barometer", „Klar. Warm. Menschlich.", alle drei
+Stundensätze und „0,40 € / km"; enthält kein „MDK" mehr. Layout visuell per Screenshot geprüft
+(kein Umbruch, keine abgeschnittenen Boxen).
+
+### Noch offen
+
+- Telefonnummer im Kontaktblock ist als Platzhalter `[einfügen]` stehen geblieben — Anja muss sie noch
+  ergänzen, bevor das Dokument verschickt wird.
+- Wie bei den Strang-73-Flyern kein automatischer Soll-Ist-Abgleich, falls sich Preise oder Tool-Namen
+  künftig ändern — Dokument müsste dann manuell erneut geprüft werden.

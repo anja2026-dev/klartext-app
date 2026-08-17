@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 80 ergänzt)
+Stand: 17.08.2026 (Strang 85 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2377,6 +2377,152 @@ vollständige Titel korrekt zweimal je Datei steht (Titel-Zeile + Badge).
   VeBu/AWL (Lebenshilfe) aus Anjas eigener Bewerbungsübersicht bisher nicht in die Seiten eingearbeitet
   — das ist echte Berufserfahrung (kein Kurszertifikat), könnte aber die Pflegedienste-Seite inhaltlich
   stärken, falls gewünscht.
+
+## Strang 81: VHS/Erwachsenenbildung als mögliche vierte Zielgruppe — zurückgestellt (17.08.2026)
+
+Anja fragte, ob die IU-Zertifikate zur Erwachsenenbildung berücksichtigt wurden und ob sich daraus ein
+Angebot für Volkshochschulen (VHS) ergeben könnte.
+
+**Fakten geprüft (echte Zeugnisse, `Zeugnisse/IU/`):** Anja hat einen kompletten Einzelmodullehrgang aus
+dem IU-Bachelor "Erwachsenenbildung, Beratung und Personalentwicklung" abgeschlossen (ZFU-Zulassungsnummer
+1100419c, also offiziell anerkannter Fernunterricht), 06.06.–02.10.2025, IU Akademie/Erfurt,
+Prüfungsausschuss-Vorsitz Prof. Dr. Tobias Brückmann. Vier Einzelmodule mit je eigenem Zeugnis:
+"Lernen von Erwachsenen", "Veranstaltungsplanung und -durchführung von Lehr-Lern-Prozessen", "Planung
+von Bildungsprozessen bei Erwachsenen", "Grundlagen von Beratung". Damit hat Anja ein fachlich
+passendes Profil für eine VHS-Kursleiterinnen-Tätigkeit (Andragogik/Erwachsenenbildungsmethodik direkt
+belegt).
+
+**Entscheidung (mit Anja abgestimmt):** Zurückgestellt, nicht bauen. Passt zu Anjas bereits in Strang
+77 getroffener Entscheidung, sich bei den B2B-Angeboten erst einzuarbeiten und niedrigschwellig zu
+bleiben (keine Workshops/institutionellen Formate vorerst). VHS wäre zudem ein anderes Geschäftsmodell
+als die drei bestehenden Seiten (Vergütung pro Unterrichtseinheit durch die VHS für öffentliche
+Gruppenkurse statt 1:1-Honorartätigkeit mit Familien) — bewusst als eigenständige, spätere Option
+behandelt statt in die bestehenden drei Seiten gepresst.
+
+### Noch offen
+
+- Vierte Landingpage für VHS/Erwachsenenbildungseinrichtungen ist geprüft und vorbereitet (Fakten oben
+  vollständig), aber nicht gebaut — bei Bedarf jederzeit nachholbar.
+- Keine Badge-Ergänzung auf den drei bestehenden Seiten für die IU-Erwachsenenbildungs-Quali — bewusst
+  draußen gelassen, da sie zu dem 1:1-Honorartätigkeit-Modell der drei Seiten nicht passt.
+
+## Strang 82: Site-Überblick + Impressum-Korrektur (17.08.2026)
+
+Anja war überfragt, wie klartext-shop insgesamt aufgebaut ist, und hatte Sorge, dass die Digistore24-
+Kontosperrung (2FA-Problem, siehe Strang 56) den laufenden Verkauf blockiert. Klargestellt: Die
+"Kaufen"-Buttons auf allen Verkaufsseiten öffnen aktuell eine `mailto:`-Anfrage, nicht Digistore24 —
+der Verkauf läuft unabhängig von der Kontosperrung normal weiter. Digistore24 ist nur für die geplante
+Automatisierung vorbereitet (`KLARTEXT_Digistore24_Produktliste.md` liegt fertig).
+
+**Fact-Check Impressum (echter Widerspruch gefunden, Rückfrage statt Annahme):**
+`SHOP_KLARTEXT_Impressum.html` behauptete "Anja Jolk betreibt aktuell noch kein angemeldetes Gewerbe
+(Anmeldung gemäß § 14 GewO steht noch aus)" — im Widerspruch zu den B2B-Flyern (Strang 73) und allen
+drei neuen Landingpages (Strang 77), die durchgängig "Kleingewerbe angemeldet" sagen. Rückfrage
+gestellt statt geraten. Anja bestätigt: Kleingewerbe **ist** angemeldet, das Impressum war veraltet.
+
+**Korrigiert:** Veralteter Hinweis-Kasten ("kein angemeldetes Gewerbe") komplett entfernt. Im Block
+"Verantwortlich für den Inhalt" ergänzt: "Kleingewerbe angemeldet. Kleinunternehmerin gemäß § 19 UStG
+— es wird keine Umsatzsteuer ausgewiesen." Getestet: `tidy` (keine HTML-Fehler), Grep bestätigt keine
+weiteren Fundstellen des alten Wortlauts im Repo.
+
+### Noch offen
+
+- Genaues Anmeldedatum des Kleingewerbes nicht erfragt/im Impressum genannt — falls Anja das für
+  Formvollständigkeit ergänzt haben möchte, wäre das ein kleiner Nachtrag.
+- Digistore24-Kontosperrung selbst liegt außerhalb dieser Session (Support-Ticket bei Digistore24) —
+  keine Aktion von Claude-Seite möglich oder nötig.
+
+## Strang 83: "Begleitung zu Terminen" überall entfernt — Personenbeförderungsschein vermeiden (17.08.2026)
+
+Anja wollte "Begleitung zu Terminen" (Arzt, Apotheke, Einkauf) aus dem Pflegedienste-Angebot streichen,
+da eine Fahrgastbeförderung von Klient:innen sonst einen Fahrgastbeförderungsschein ("Personenschein",
+§ 48 FeV) erfordern würde. Geprüft: Betraf ausschließlich die Pflegedienste-Materialien — Grep über
+beide Repos nach "Begleitung zu"/"zu Arzt"/"Fahrdienst" ergab sonst nur zwei unrelated Treffer in
+INGRA-Krisenkarten (De-Eskalations-Vokabular "Begleitung zurück", kein Bezug zu Anjas eigenem Angebot).
+
+**Geändert (Web, `klartext-shop/Pflegedienste_Verkaufsseite.html`):**
+- Hero-Text: "administrative Entlastung und Begleitung zu Terminen" → "administrative Entlastung"
+- Bullet "Begleitung zu Arzt, Apotheke, Einkauf" ersatzlos gestrichen
+- Bullet "Entlastung bei Terminen, Papierkramhilfe" → "Terminorganisation, Papierkramhilfe"
+- Preiskarten-Kurzbeschreibung "Begleitung, digitale Assistenz..." → "Gespräche & Struktur, digitale
+  Assistenz..."
+- "Terminorganisation (Arzt, Therapie, Schule, Amt)" und "Begleitung bei Telefonaten mit Kassen/Ämtern"
+  bewusst unverändert gelassen — beides sind organisatorische/telefonische Leistungen ohne
+  Personenbeförderung, kein Personenschein-Bezug.
+
+**Geändert (Dokument):** `Anja_Jolk_Leistungsuebersicht_Pflegedienste.docx` direkt in der XML bearbeitet
+(unzip → `document.xml` patchen → Python `zipfile` statt `zip`-CLI, da `zip` in dieser Session am
+gleichen Mount-Rename-Problem wie die Git-Locks scheiterte — Workaround dokumentiert für künftige
+Sessions). Dieselben drei Korrekturen wie auf der Webseite übernommen, mit `scripts/office/validate.py`
+gegen das Original geprüft (nur 1 Absatz weniger, sonst strukturell identisch) und per LibreOffice neu
+als PDF gerendert, Rendering per Screenshot visuell geprüft (sauberes Layout, keine verwaisten
+Aufzählungspunkte). Aktualisiertes docx **und** PDF in `klartext-app` ersetzt, aktualisiertes PDF auch
+in die Kopie in `klartext-shop` (Download-Link auf der Verkaufsseite) übernommen.
+
+**Getestet:** `tidy` (keine HTML-Fehler auf der Verkaufsseite), pypdf-Textprüfung bestätigt "Begleitung
+zu Arzt" nicht mehr enthalten und "Terminorganisation" korrekt vorhanden in der neuen PDF.
+
+### Noch offen
+
+- Die ursprünglichen Honorar-Flyer aus Strang 73 (Familienzentren/Migrationszentren) enthielten laut
+  Grep keine "Begleitung zu"-Formulierung — keine Änderung nötig, aber nicht noch einmal einzeln
+  gegengelesen über den Grep hinaus.
+- Workaround "Python zipfile statt zip-CLI beim Neupacken von docx" sollte für künftige
+  Dokument-Bearbeitungen in dieser Umgebung übernommen werden, falls das Mount-Problem weiterhin
+  besteht.
+
+## Strang 84: Transparenzhinweis KI-Unterstützung im Impressum (17.08.2026)
+
+Anja fragte, ob irgendwo vermerkt ist, dass Inhalte teilweise KI-generiert sind — Stichwort
+Kennzeichnungspflicht.
+
+**Recherche (WebSearch, aktuelle Quellen):** Die Transparenzpflichten aus Art. 50 EU AI Act gelten erst
+seit 02.08.2026 (Leitlinien der EU-Kommission vom 20.07.2026). Es gibt **keine pauschale
+Kennzeichnungspflicht** für jeden KI-unterstützten Text. Relevant wäre die Pflicht nur für KI-generierte
+Texte, die der Information der Öffentlichkeit zu Angelegenheiten von öffentlichem Interesse dienen — und
+sie entfällt ausdrücklich, wenn der Inhalt menschlich überprüft wurde und eine Person die redaktionelle
+Verantwortung trägt. Beides spricht bei Anjas kommerziellen Verkaufsseiten eher gegen eine Pflicht (keine
+"Angelegenheit von öffentlichem Interesse", durchgängige Fakten-Prüfung durch Anja mit Namensnennung im
+Impressum). Ausdrücklich keine Rechtsberatung, nur Einschätzung anhand öffentlicher Leitlinien.
+
+**Entscheidung (mit Anja abgestimmt):** Trotz wahrscheinlich nicht bestehender Pflicht auf Nummer sicher
+gehen — Transparenzhinweis ergänzt statt auf die Ausnahme zu vertrauen.
+
+**Umgesetzt:** Neuer Block "Transparenzhinweis" in `SHOP_KLARTEXT_Impressum.html` (zwischen Rechtliches
+und Datenschutz-Block): "Bei der Erstellung von Texten auf dieser Website wurde teilweise KI-gestützt
+gearbeitet. Alle Inhalte wurden von Anja Jolk fachlich geprüft, redaktionell verantwortet und
+freigegeben." Gilt website-weit, da das Impressum von jeder Seite verlinkt ist. Getestet: `tidy` (keine
+HTML-Fehler).
+
+### Noch offen
+
+- Kein gesonderter Hinweis auf den einzelnen Verkaufsseiten selbst (nur zentral im Impressum) — falls
+  Anja das prominenter/pro Seite haben möchte, wäre das ein kleiner Nachtrag.
+- Einschätzung zur Art.-50-Ausnahme ist keine Rechtsberatung — bei Unsicherheit weiterhin eine
+  Rechtsberatung/Datenschutzbeauftragte empfehlenswert.
+
+## Strang 85: Launch-Readiness-Check + Telefonnummer ergänzt (17.08.2026)
+
+Anja fragte, ob sie jetzt tatsächlich Träger anschreiben kann. Live-Check aller drei Seiten auf
+klartext-mentoring.de per `web_fetch` (nicht nur Repo-Stand): Familienzentren- und
+Migrationszentren-Seite liefen bereits vollständig aktuell. Die Pflegedienste-Seite, ihre PDF und das
+Impressum zeigten dagegen noch den **alten** Stand — die letzten drei Commit-Blöcke aus Strang 82-84
+(Impressum-Korrektur, Begleitung-Entfernung, KI-Transparenzhinweis) waren lokal zwar geändert, aber nie
+committet/gepusht (`git status` zeigte sie noch als `M`, `origin/main` stand auf dem Stand vor Strang
+81). Klar benannt statt anzunehmen, alles sei schon live.
+
+**Telefonnummer ergänzt:** Anja hat `+49 176 62311567` durchgegeben (deckt sich mit der Nummer aus ihrer
+eigenen Bewerbungsübersicht, Strang 79/BBA-Dokument — konsistent). "Telefon: [einfügen]" in
+`Anja_Jolk_Leistungsuebersicht_Pflegedienste.docx` ersetzt (gleicher XML-Patch-Workflow wie Strang 83),
+PDF neu gerendert und Nummer per pypdf-Textprüfung in beiden Kopien (klartext-app, klartext-shop)
+bestätigt.
+
+### Noch offen
+
+- Anja muss den finalen, zusammengefassten Commit-Block (Pflegedienste-Seite+PDF+Telefonnummer,
+  Impressum-Korrektur+Transparenzhinweis, Merkliste) noch pushen — erst danach sind wirklich alle drei
+  Seiten und das Impressum live korrekt. Bis dahin: Familienzentren/Migrationszentren-Seite sind bereits
+  verschickbar, Pflegedienste-Seite noch nicht.
 
 ## Strang 78: LRS-Nachhilfe auf Familienzentren- und Migrationszentren-Seite ergänzt (17.08.2026)
 

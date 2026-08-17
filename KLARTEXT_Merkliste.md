@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 74 ergänzt)
+Stand: 17.08.2026 (Strang 75 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2065,3 +2065,61 @@ Download-Items insgesamt, kein Parse-Fehler).
 - Kein automatischer PDF-Export ohne Browser-Druckdialog (wie beim bestehenden `KLARTEXT_Ressourcenbericht.html`
   auch) — Export läuft über „Drucken → Als PDF speichern".
 - Noch keine echte End-to-End-Prüfung mit realer Supabase-Instanz durchgeführt (nur Mock-Test).
+
+## Strang 75: Ressourcen-Bericht — Supabase komplett entfernt, reine Offline-Nutzung (17.08.2026)
+
+Anjas Korrektur: Sie nutzt die App vorerst nur selbst, direkt beim Klienten vor Ort — kein Login, keine
+Cloud, keine Geräteübergreifung nötig. Berichte sollen alles Ausgefüllte zusammenfassen, damit sie per
+E-Mail an den Klienten/die Einrichtung geschickt werden können.
+
+**Abgrenzung geklärt (Rückfrage vor dem Umbau):** Nur `KLARTEXT_Ressourcenbericht_Jobcoach.html` wird
+umgebaut. `BAROMETER_KIND.html` (Strang 70–72) bleibt unverändert auf Supabase, da dort weiterhin ein
+geräteübergreifender Verlauf gewünscht ist.
+
+**Umgesetzt (kompletter Umbau der Datenschicht, Oberfläche/Varianten inhaltlich unverändert):**
+- `<script type="module"> import { supabase } ...` entfernt — keine Supabase-Referenz mehr in der Datei
+  (verifiziert: `grep -c supabase` → 0 Treffer).
+- Login-Gate entfernt: Der bisherige `sessionStorage.klartext_login`-Check hätte über
+  `KLARTEXT_Login.html` indirekt wieder Supabase vorausgesetzt (dort läuft der eigentliche Login via
+  `supabase.auth.signInWithPassword`) — daher komplett gestrichen, die Seite ist jetzt ohne Anmeldung
+  direkt nutzbar.
+- Teilnehmer-ID-Verwaltung neu als rein lokale Liste: eigene `<details>`-Box zum Anlegen/Würfeln/
+  Entfernen von KT-IDs, gespeichert unter `klartext_rb_teilnehmer_liste` (localStorage, JSON-Array).
+  ID-Generierung identisch zum bewährten Muster aus `BAROMETER_KIND.html` (`KT-` + 4 Zeichen aus dem
+  verwechslungsarmen Zeichensatz, Kollisionsprüfung gegen die aktuelle Liste).
+- Barometer-Verlauf kommt nicht mehr aus Supabase, sondern aus einem neuen lokalen Log: 11
+  Status-Kacheln (0–10, gleiche Bereichsfarben-Logik wie `BAROMETER_KIND.html`) direkt auf der Seite —
+  Klick + „Eintrag hinzufügen" schreibt `{wert, datum}` in `klartext_rb_barometer_<KT-ID>`
+  (localStorage). Die Verlaufs-Zusammenfassung (Ø-Wert, Tages-Chips) wird aus diesem lokalen Log
+  berechnet statt aus einer Datenbank-Abfrage — fachlich identische Logik, andere Datenquelle.
+- Neuer Abschnitt „Bericht zusammenfassen & versenden": eine Funktion sammelt für die aktuell gewählte
+  KT-ID alle vier Fachbereich-Varianten ein (nicht nur die gerade offene) und baut daraus einen
+  Klartext-Bericht — Kopfzeile, Barometer-Zusammenfassung, dann nur die Bereiche, in denen tatsächlich
+  etwas ausgefüllt wurde. Drei Aktionen: Text im Vorschaufeld anzeigen, „📋 Text kopieren"
+  (Zwischenablage), „✉️ E-Mail vorbereiten" (öffnet `mailto:` mit Betreff und Text vorausgefüllt, mit
+  Warnhinweis bei sehr langen Berichten wegen mailto-Längenbegrenzung in manchen E-Mail-Programmen).
+  Drucken/PDF-Button bleibt zusätzlich bestehen (für ein optisch schöneres Anhängsel).
+- Hinweis-Badge im Hero „🔒 Läuft komplett lokal auf diesem Gerät — kein Login, keine Cloud" ergänzt.
+
+**Bewusste Einschränkung, offen kommuniziert:** Weil alles jetzt lokal in `localStorage` liegt, sind
+Teilnehmer-IDs, Barometer-Log und Berichts-Inhalte **an das jeweils genutzte Gerät gebunden** — bei
+Gerätewechsel oder Browser-Daten-Löschung gehen sie verloren, und es gibt keine Synchronisation mit
+`BAROMETER_KIND.html` (dort angelegte KT-IDs erscheinen hier nicht automatisch, und umgekehrt). Das
+passt zu Anjas aktuellem Nutzungsmuster (ein Gerät, direkt beim Klienten), sollte aber vor produktivem
+Dauereinsatz mit ihr abgeglichen werden, falls sich das ändert.
+
+**Getestet:** jsdom ohne jeden Mock (kein Supabase mehr nötig) — 8/6/6/3/11-Elemente-Zähler weiterhin
+korrekt, Teilnehmer-ID anlegen funktioniert, drei Status-Kacheln-Einträge ergeben korrekt Ø 4.0,
+Struktur-Variante speichern/laden funktioniert, `berichtErzeugen()` liefert einen korrekten Text mit
+KT-ID, Barometer-Ø und nur den tatsächlich ausgefüllten Bereichen (leere Bereiche fehlen wie
+vorgesehen, keine leeren Überschriften im Bericht).
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–74 bleiben unverändert offen (der Supabase-Rückbau betrifft nur diese eine
+  Datei, `BAROMETER_KIND.html` bleibt wie in Strang 70–72 beschrieben).
+- Keine Synchronisation zwischen den lokalen Teilnehmer-IDs dieser Seite und den Supabase-Teilnehmer-IDs
+  aus `BAROMETER_KIND.html` — falls beide Systeme später zusammengeführt werden sollen, wäre das ein
+  eigenständiges, größeres Vorhaben.
+- `mailto:`-Link kann bei sehr langen Berichten (viele ausgefüllte Bereiche) in manchen E-Mail-Programmen
+  abgeschnitten werden — der Hinweistext macht darauf aufmerksam, „Text kopieren" ist der robustere Weg.

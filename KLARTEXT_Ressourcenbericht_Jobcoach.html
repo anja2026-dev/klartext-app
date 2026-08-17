@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Ressourcen-Bericht (Jobcoach)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--warn:#B8560A;--warnbg:#FBEFE2;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:600px;margin:0 auto;}
+.hero-motto{font-family:"Playfair Display",serif;font-style:italic;font-size:.85rem;color:var(--acc);margin-top:.6rem;}
+
+.shell{max-width:760px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;display:flex;flex-direction:column;gap:1.2rem;}
+
+.card{background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:1.3rem 1.3rem;box-shadow:0 2px 10px rgba(27,58,75,.08);}
+.card-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem;}
+
+.reihe{display:flex;gap:.8rem;flex-wrap:wrap;align-items:flex-end;}
+.feld{flex:1;min-width:160px;}
+.feld label{display:block;font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:.3rem;}
+.feld select, .feld input[type=text]{width:100%;border:2px solid var(--border);border-radius:10px;padding:.5rem .7rem;font-family:inherit;font-size:.86rem;background:var(--paper);}
+
+.hinweis{font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:.5rem;}
+.login-hinweis{background:var(--warnbg);border:1.5px solid #E8C9A0;border-radius:12px;padding:.7rem .9rem;font-size:.8rem;color:#5c3d15;margin-top:.6rem;}
+
+/* Barometer-Verlauf */
+.baro-verlauf-text{font-size:.9rem;line-height:1.6;margin-bottom:.7rem;}
+.baro-verlauf-text b{color:var(--m);}
+.baro-tage{display:flex;gap:.35rem;flex-wrap:wrap;}
+.baro-tag{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;}
+.baro-leer{font-size:.83rem;color:var(--muted);}
+
+/* Fachbereich-Tabs */
+.tab-row{display:flex;gap:.5rem;flex-wrap:wrap;}
+.tab-btn{flex:1;min-width:150px;padding:.6rem .8rem;border-radius:12px;border:2px solid var(--border);background:var(--surface);color:var(--muted);font-size:.78rem;font-weight:700;cursor:pointer;text-align:center;transition:all .15s;}
+.tab-btn:hover{border-color:var(--m);color:var(--m);}
+.tab-btn.aktiv{background:var(--m);border-color:var(--m);color:#fff;}
+
+/* Varianten */
+.variante{display:none;flex-direction:column;gap:1rem;}
+.variante.aktiv{display:flex;}
+
+.zonen-grid{display:flex;flex-direction:column;gap:.5rem;}
+.zone-item{display:flex;align-items:center;gap:.6rem;background:var(--paper);border-radius:10px;padding:.55rem .8rem;}
+.zone-item input[type=checkbox]{width:18px;height:18px;flex-shrink:0;accent-color:var(--m);}
+.zone-item label{font-size:.84rem;font-weight:600;flex-shrink:0;min-width:190px;}
+.zone-item input[type=text]{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:.35rem .6rem;font-family:inherit;font-size:.8rem;background:#fff;}
+
+textarea{width:100%;border:2px solid var(--border);border-radius:12px;padding:.7rem .9rem;font-family:inherit;font-size:.85rem;line-height:1.55;background:var(--paper);resize:vertical;min-height:70px;}
+textarea:focus, .feld select:focus, .zone-item input[type=text]:focus{outline:none;border-color:var(--m);}
+
+.chip-grid{display:flex;flex-wrap:wrap;gap:.5rem;}
+.chip-check{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .8rem;border-radius:16px;border:2px solid var(--border);background:var(--paper);font-size:.78rem;font-weight:600;cursor:pointer;user-select:none;}
+.chip-check input{accent-color:var(--m);}
+.chip-check.aktiv{background:var(--m);border-color:var(--m);color:#fff;}
+
+.status-tabelle{display:flex;flex-direction:column;gap:.5rem;}
+.status-zeile{display:flex;align-items:center;gap:.7rem;background:var(--paper);border-radius:10px;padding:.55rem .8rem;flex-wrap:wrap;}
+.status-zeile .st-name{font-size:.84rem;font-weight:700;color:var(--m);min-width:120px;}
+.status-zeile select{flex:1;min-width:150px;border:1.5px solid var(--border);border-radius:8px;padding:.4rem .6rem;font-family:inherit;font-size:.8rem;background:#fff;}
+
+.feld-label{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.35rem;display:block;}
+
+.aktion-row{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;}
+.aktion-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border:none;border-radius:22px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;}
+.aktion-btn.speichern{background:var(--acc);color:var(--m);}
+.aktion-btn.drucken{background:var(--m);color:#fff;}
+.aktion-btn:hover{opacity:.9;}
+.speicher-status{text-align:center;font-size:.78rem;color:var(--muted);min-height:1.2em;}
+
+.privacy-hinweis{font-size:.75rem;color:var(--muted);text-align:center;line-height:1.6;}
+.privacy-hinweis b{color:var(--m);}
+
+footer{background:var(--m);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
+footer strong{color:var(--acc);}
+.footer-motto{font-family:"Playfair Display",serif;font-style:italic;color:var(--acc);}
+
+@media print{
+  .header,.no-print{display:none!important;}
+  body{background:#fff;}
+  .hero{background:var(--m)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .shell{max-width:100%;padding:0 .5cm;}
+  .card{box-shadow:none;border:1.5px solid #ccc;page-break-inside:avoid;}
+  textarea{border:1px solid #ddd;background:#fff;overflow:visible;height:auto;resize:none;}
+  .variante{display:none!important;}
+  .variante.aktiv{display:flex!important;}
+  @page{size:A4;margin:1.5cm;}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="DASHBOARD.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT</div>
+  </a>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">📄</div>
+  <h1 class="hero-titel">Ressourcen-Bericht · Jobcoach</h1>
+  <p class="hero-sub">Ein einseitiger, anonymisierter Bericht je Fachbereich — als Nachweis professioneller Arbeit für Familienzentren, Migrationszentren und Alltagsbegleitung.</p>
+  <p class="hero-motto">Klar. Warm. Menschlich.</p>
+</div>
+
+<div class="shell" id="shell">
+
+  <!-- KT-ID & Zeitraum -->
+  <div class="card">
+    <div class="card-titel">🗂️ Teilnehmer-ID &amp; Berichtszeitraum</div>
+    <div class="reihe">
+      <div class="feld">
+        <label for="kt-select">Teilnehmer-ID</label>
+        <select id="kt-select"><option value="">Bitte wählen …</option></select>
+      </div>
+      <div class="feld">
+        <label for="zeitraum-select">Berichtszeitraum</label>
+        <select id="zeitraum-select">
+          <option value="7">Letzte 7 Tage</option>
+          <option value="14" selected>Letzte 14 Tage</option>
+          <option value="30">Letzte 30 Tage</option>
+        </select>
+      </div>
+      <div class="feld">
+        <label>Erstellt am</label>
+        <input type="text" id="datum-heute" readonly style="background:#fff;">
+      </div>
+    </div>
+    <div class="login-hinweis no-print" id="login-hinweis" style="display:none;"></div>
+  </div>
+
+  <!-- Barometer-Verlauf -->
+  <div class="card">
+    <div class="card-titel">🌡️ Barometer-Verlauf im Überblick</div>
+    <div id="baro-verlauf-inhalt"><div class="baro-leer">Bitte zuerst oben eine Teilnehmer-ID wählen.</div></div>
+  </div>
+
+  <!-- Fachbereich-Auswahl -->
+  <div class="card no-print">
+    <div class="card-titel">🧭 Fachbereich wählen</div>
+    <div class="tab-row" id="tab-row">
+      <button class="tab-btn aktiv" data-variante="struktur">🏝️ Struktur &amp; Familie</button>
+      <button class="tab-btn" data-variante="neuro">🧠 Neurodivergenz</button>
+      <button class="tab-btn" data-variante="sprache">🗣️ Sprache &amp; Integration</button>
+      <button class="tab-btn" data-variante="admin">📋 Admin-Support</button>
+    </div>
+  </div>
+
+  <!-- VARIANTE 1: Struktur & Familie -->
+  <div class="variante aktiv" id="variante-struktur" data-variante="struktur">
+    <div class="card">
+      <div class="card-titel">🏝️ Genutzte Raumzonen (Insel-Set · Zuhause)</div>
+      <div class="zonen-grid" id="zonen-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-titel">💛 Etablierte Regulations-Tools</div>
+      <span class="feld-label">z. B. individuelles Joker-Signal, Atem-Pause</span>
+      <textarea id="struktur-tools" placeholder="z. B. Gelbe Karte auf den Tisch legen = &quot;ich brauche einen Moment für mich&quot; …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">💬 Wertfreie Rückmeldung</div>
+      <textarea id="struktur-rueckmeldung" placeholder="Wertfreie Beobachtung zur Beruhigung des Familienalltags …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">🔭 Ausblick — nächste kleine Schritte</div>
+      <textarea id="struktur-ausblick" placeholder="Was ist der nächste kleine Schritt?"></textarea>
+    </div>
+  </div>
+
+  <!-- VARIANTE 2: Neurodivergenz -->
+  <div class="variante" id="variante-neuro" data-variante="neuro">
+    <div class="card">
+      <div class="card-titel">🌬️ Reizfilter-Check — Zusammenfassung</div>
+      <textarea id="neuro-reizfilter" placeholder="Zusammenfassung der Reizfilter-Nutzung im Berichtszeitraum …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">⭐ Identifizierte Superkräfte (Skill-Matrix)</div>
+      <div class="chip-grid" id="superkraefte-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-titel">🃏 Individuelle Notfall-Strategien (Brainy-Karten)</div>
+      <div class="chip-grid" id="brainy-grid"></div>
+      <textarea id="neuro-notfall-notiz" style="margin-top:.7rem;" placeholder="Ergänzende Notiz zu individuellen Strategien …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">🔭 Ausblick — nächste kleine Schritte</div>
+      <textarea id="neuro-ausblick" placeholder="Was ist der nächste kleine Schritt?"></textarea>
+    </div>
+  </div>
+
+  <!-- VARIANTE 3: Sprache & Integration -->
+  <div class="variante" id="variante-sprache" data-variante="sprache">
+    <div class="card">
+      <div class="card-titel">🗣️ Sprachstand (DaZ) &amp; kulturelle Kompetenzen</div>
+      <div class="reihe">
+        <div class="feld">
+          <label for="sprache-niveau">Sprachniveau (GER)</label>
+          <select id="sprache-niveau">
+            <option value="">Nicht angegeben</option>
+            <option value="A1">A1</option><option value="A2">A2</option>
+            <option value="B1">B1</option><option value="B2">B2</option>
+            <option value="C1">C1</option><option value="C2">C2</option>
+          </select>
+        </div>
+      </div>
+      <textarea id="sprache-kompetenzen" style="margin-top:.7rem;" placeholder="Kulturelle Kompetenzen, z. B. Mehrsprachigkeit, interkulturelle Vermittlung im Alltag …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">🔤 Übersetzung informeller Kompetenzen</div>
+      <textarea id="sprache-uebersetzung" placeholder="Alltagskompetenzen in deutsche Handlungssprache übersetzt …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">📈 Teilhabe-Fortschritte</div>
+      <textarea id="sprache-teilhabe" placeholder="Sichtbare Fortschritte bei gesellschaftlicher Teilhabe …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">🔭 Ausblick — nächste kleine Schritte</div>
+      <textarea id="sprache-ausblick" placeholder="Was ist der nächste kleine Schritt?"></textarea>
+    </div>
+  </div>
+
+  <!-- VARIANTE 4: Admin-Support -->
+  <div class="variante" id="variante-admin" data-variante="admin">
+    <div class="card">
+      <div class="card-titel">📋 Status Antragswesen</div>
+      <div class="status-tabelle" id="admin-status-tabelle"></div>
+      <div class="hinweis">Ausfüllhilfe &amp; Strukturgeberin — keine Rechtsberatung. Direktlinks zu offiziellen Antragsseiten: <a href="KLARTEXT_Antraege_Links.html">KLARTEXT_Antraege_Links.html</a></div>
+    </div>
+    <div class="card">
+      <div class="card-titel">🗂️ Sortier-Status Unterlagen</div>
+      <textarea id="admin-sortierung" placeholder="z. B. Post chronologisch geordnet, Einkommensnachweise vollständig …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">📅 Nächste Termine &amp; notwendige Mitwirkung</div>
+      <textarea id="admin-termine" placeholder="Nächste Termine und was die Familie dafür vorbereiten sollte …"></textarea>
+    </div>
+    <div class="card">
+      <div class="card-titel">🔭 Ausblick — nächste kleine Schritte</div>
+      <textarea id="admin-ausblick" placeholder="Was ist der nächste kleine Schritt?"></textarea>
+    </div>
+  </div>
+
+  <div class="aktion-row no-print">
+    <button class="aktion-btn speichern" onclick="speichern()">💾 Speichern</button>
+    <button class="aktion-btn drucken" onclick="window.print()">🖨️ Bericht drucken / als PDF</button>
+  </div>
+  <div class="speicher-status" id="speicher-status"></div>
+
+  <div class="privacy-hinweis">🔒 <b>Privacy by Design:</b> Dieser Bericht verwendet ausschließlich die anonyme Teilnehmer-ID — nirgends wird ein Klarname gespeichert oder angezeigt.</div>
+
+</div>
+
+<footer>
+  <strong>KLARTEXT-Mentoring</strong> · Ressourcen-Bericht Jobcoach<br>
+  <span class="footer-motto">Klar. Warm. Menschlich.</span>
+</footer>
+
+<script type="module">
+import { supabase } from './supabase/auth_client.js';
+
+var ZONEN = [
+  {id:'ruhe', name:'Ruhe-Insel'},
+  {id:'emotion', name:'Emotions-Insel'},
+  {id:'arbeit', name:'Arbeits-Insel (Hausaufgaben)'},
+  {id:'bewegung', name:'Bewegungs-Insel'},
+  {id:'regel', name:'Familien-Regel-Insel'},
+  {id:'gespraech', name:'Eltern-Kind-Gesprächs-Insel'},
+  {id:'uebergang', name:'Übergangs-Insel (Morgen/Abend)'},
+  {id:'geschwister', name:'Geschwister-Konflikt-Insel'}
+];
+
+var SUPERKRAEFTE = [
+  {id:'team', icon:'🤝', name:'Team-Power'},
+  {id:'fokus', icon:'🎯', name:'Fokus-Champion'},
+  {id:'kreativ', icon:'🎨', name:'Kreativ-Genie'},
+  {id:'verantwortung', icon:'🧭', name:'Verantwortungs-Anker'},
+  {id:'problem', icon:'🧩', name:'Problem-Löser'},
+  {id:'mutig', icon:'💪', name:'Mutig & Stressfest'}
+];
+
+var BRAINY_KARTEN = [
+  {id:'toilette', name:'Toilette'},
+  {id:'trinken', name:'Trinkpause'},
+  {id:'bewegung', name:'Bewegung am Platz'},
+  {id:'insel', name:'Zu meiner Insel'},
+  {id:'luft', name:'Frische Luft'},
+  {id:'fuermich', name:'Kurz für mich'}
+];
+
+var ADMIN_THEMEN = [
+  {id:'but', name:'BuT (Bildung und Teilhabe)'},
+  {id:'sgbix', name:'SGB IX (Eingliederungshilfe)'},
+  {id:'pflege', name:'Pflegekasse'}
+];
+var ADMIN_STATUS_OPTIONEN = ['Nicht begonnen','Sichtung läuft','Antrag vorbereitet','Eingereicht','Bewilligt','Abgelehnt / Widerspruch läuft'];
+
+var FARBEN_K = {gruen:'#2E9E5A',gelb:'#D4A800',orange:'#D4651A',rot:'#C0392B',grau:'#757575'};
+var FARBE_LABEL_KURZ = {gruen:'Grün',gelb:'Gelb',orange:'Orange',rot:'Rot',grau:'Grau'};
+
+var kinderNamen = {};
+var aktuelleKindId = '';
+var aktiveVariante = 'struktur';
+var JOBCOACH_MARKER = 'jobcoach-anonym';
+
+function heuteDeutsch(){
+  return new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+document.getElementById('datum-heute').value = heuteDeutsch();
+
+// ── Zonen-Grid aufbauen ─────────────────────────────
+(function baueZonenGrid(){
+  var grid = document.getElementById('zonen-grid');
+  ZONEN.forEach(function(z){
+    var row = document.createElement('div');
+    row.className = 'zone-item';
+    row.innerHTML = '<input type="checkbox" id="zone-'+z.id+'"><label for="zone-'+z.id+'">'+z.name+'</label><input type="text" id="zone-notiz-'+z.id+'" placeholder="kurze Notiz (optional)">';
+    grid.appendChild(row);
+  });
+})();
+
+// ── Superkräfte-Chips ────────────────────────────────
+(function baueSuperkraefte(){
+  var grid = document.getElementById('superkraefte-grid');
+  SUPERKRAEFTE.forEach(function(s){
+    var lbl = document.createElement('label');
+    lbl.className = 'chip-check';
+    lbl.id = 'chip-super-'+s.id;
+    lbl.innerHTML = '<input type="checkbox" value="'+s.id+'">'+s.icon+' '+s.name;
+    lbl.querySelector('input').addEventListener('change', function(){
+      lbl.classList.toggle('aktiv', this.checked);
+    });
+    grid.appendChild(lbl);
+  });
+})();
+
+// ── Brainy-Karten-Chips ──────────────────────────────
+(function baueBrainy(){
+  var grid = document.getElementById('brainy-grid');
+  BRAINY_KARTEN.forEach(function(b){
+    var lbl = document.createElement('label');
+    lbl.className = 'chip-check';
+    lbl.id = 'chip-brainy-'+b.id;
+    lbl.innerHTML = '<input type="checkbox" value="'+b.id+'">🃏 '+b.name;
+    lbl.querySelector('input').addEventListener('change', function(){
+      lbl.classList.toggle('aktiv', this.checked);
+    });
+    grid.appendChild(lbl);
+  });
+})();
+
+// ── Admin-Status-Tabelle ─────────────────────────────
+(function baueAdminTabelle(){
+  var wrap = document.getElementById('admin-status-tabelle');
+  ADMIN_THEMEN.forEach(function(a){
+    var row = document.createElement('div');
+    row.className = 'status-zeile';
+    var opts = ADMIN_STATUS_OPTIONEN.map(function(o){return '<option value="'+o+'">'+o+'</option>';}).join('');
+    row.innerHTML = '<div class="st-name">'+a.name+'</div><select id="admin-status-'+a.id+'">'+opts+'</select>';
+    wrap.appendChild(row);
+  });
+})();
+
+// ── Fachbereich-Tabs ─────────────────────────────────
+document.getElementById('tab-row').addEventListener('click', function(e){
+  var btn = e.target.closest('.tab-btn');
+  if(!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('aktiv');});
+  btn.classList.add('aktiv');
+  var v = btn.dataset.variante;
+  aktiveVariante = v;
+  document.querySelectorAll('.variante').forEach(function(el){el.classList.remove('aktiv');});
+  document.getElementById('variante-'+v).classList.add('aktiv');
+  ladeVarianteAusLocalStorage();
+});
+
+// ── localStorage: Felder je KT-ID + Variante ─────────
+function feldIdsFuerVariante(v){
+  if(v==='struktur') return ['struktur-tools','struktur-rueckmeldung','struktur-ausblick'];
+  if(v==='neuro') return ['neuro-reizfilter','neuro-notfall-notiz','neuro-ausblick'];
+  if(v==='sprache') return ['sprache-niveau','sprache-kompetenzen','sprache-uebersetzung','sprache-teilhabe','sprache-ausblick'];
+  if(v==='admin') return ['admin-sortierung','admin-termine'];
+  return [];
+}
+function speicherKey(kindId, feldId){
+  return 'klartext_ressourcenbericht_'+kindId+'_'+feldId;
+}
+function speichern(){
+  if(!aktuelleKindId){
+    document.getElementById('speicher-status').textContent = 'Bitte zuerst eine Teilnehmer-ID wählen.';
+    return;
+  }
+  try{
+    feldIdsFuerVariante(aktiveVariante).forEach(function(fid){
+      var el = document.getElementById(fid);
+      if(el) localStorage.setItem(speicherKey(aktuelleKindId, fid), el.value);
+    });
+    if(aktiveVariante==='struktur'){
+      ZONEN.forEach(function(z){
+        var cb = document.getElementById('zone-'+z.id);
+        var notiz = document.getElementById('zone-notiz-'+z.id);
+        localStorage.setItem(speicherKey(aktuelleKindId,'zone-'+z.id), cb.checked ? '1' : '0');
+        localStorage.setItem(speicherKey(aktuelleKindId,'zone-notiz-'+z.id), notiz.value);
+      });
+    }
+    if(aktiveVariante==='neuro'){
+      SUPERKRAEFTE.forEach(function(s){
+        var cb = document.querySelector('#chip-super-'+s.id+' input');
+        localStorage.setItem(speicherKey(aktuelleKindId,'super-'+s.id), cb.checked ? '1' : '0');
+      });
+      BRAINY_KARTEN.forEach(function(b){
+        var cb = document.querySelector('#chip-brainy-'+b.id+' input');
+        localStorage.setItem(speicherKey(aktuelleKindId,'brainy-'+b.id), cb.checked ? '1' : '0');
+      });
+    }
+    if(aktiveVariante==='admin'){
+      ADMIN_THEMEN.forEach(function(a){
+        var sel = document.getElementById('admin-status-'+a.id);
+        localStorage.setItem(speicherKey(aktuelleKindId,'admin-status-'+a.id), sel.value);
+      });
+    }
+    document.getElementById('speicher-status').textContent = 'Gespeichert · ' + new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    document.getElementById('speicher-status').textContent = 'Speichern fehlgeschlagen (lokaler Speicher nicht verfügbar).';
+  }
+}
+
+function ladeVarianteAusLocalStorage(){
+  if(!aktuelleKindId) return;
+  try{
+    feldIdsFuerVariante(aktiveVariante).forEach(function(fid){
+      var el = document.getElementById(fid);
+      if(el){ var v = localStorage.getItem(speicherKey(aktuelleKindId, fid)); el.value = (v!=null) ? v : ''; }
+    });
+    if(aktiveVariante==='struktur'){
+      ZONEN.forEach(function(z){
+        var cb = document.getElementById('zone-'+z.id);
+        var notiz = document.getElementById('zone-notiz-'+z.id);
+        cb.checked = localStorage.getItem(speicherKey(aktuelleKindId,'zone-'+z.id)) === '1';
+        notiz.value = localStorage.getItem(speicherKey(aktuelleKindId,'zone-notiz-'+z.id)) || '';
+      });
+    }
+    if(aktiveVariante==='neuro'){
+      SUPERKRAEFTE.forEach(function(s){
+        var lbl = document.getElementById('chip-super-'+s.id);
+        var cb = lbl.querySelector('input');
+        cb.checked = localStorage.getItem(speicherKey(aktuelleKindId,'super-'+s.id)) === '1';
+        lbl.classList.toggle('aktiv', cb.checked);
+      });
+      BRAINY_KARTEN.forEach(function(b){
+        var lbl = document.getElementById('chip-brainy-'+b.id);
+        var cb = lbl.querySelector('input');
+        cb.checked = localStorage.getItem(speicherKey(aktuelleKindId,'brainy-'+b.id)) === '1';
+        lbl.classList.toggle('aktiv', cb.checked);
+      });
+    }
+    if(aktiveVariante==='admin'){
+      ADMIN_THEMEN.forEach(function(a){
+        var sel = document.getElementById('admin-status-'+a.id);
+        var v = localStorage.getItem(speicherKey(aktuelleKindId,'admin-status-'+a.id));
+        sel.value = v || 'Nicht begonnen';
+      });
+    }
+  }catch(e){}
+}
+
+// ── Teilnehmer-ID-Liste laden (identisches Muster wie BAROMETER_KIND.html) ──
+async function teilnehmerAuswahlLaden(){
+  try{
+    var select = document.getElementById('kt-select');
+    var query = supabase.from('Kinder').select('id, name').eq('aktiv', true).eq('bedarfsart', JOBCOACH_MARKER);
+    var { data: kinder, error } = await query;
+    if(error){ console.error('Teilnehmer-IDs laden fehlgeschlagen:', error); kinder = []; }
+    kinderNamen = {};
+    select.innerHTML = '<option value="">Bitte wählen …</option>';
+    (kinder||[]).forEach(function(k){
+      kinderNamen[k.id] = k.name;
+      var opt = document.createElement('option');
+      opt.value = k.id; opt.textContent = k.name;
+      select.appendChild(opt);
+    });
+  }catch(e){ console.error(e); }
+}
+
+// ── Barometer-Verlauf laden & zusammenfassen ─────────
+async function ladeBarometerVerlauf(){
+  var inhalt = document.getElementById('baro-verlauf-inhalt');
+  if(!aktuelleKindId){
+    inhalt.innerHTML = '<div class="baro-leer">Bitte zuerst oben eine Teilnehmer-ID wählen.</div>';
+    return;
+  }
+  var tage = parseInt(document.getElementById('zeitraum-select').value, 10);
+  var seit = new Date();
+  seit.setDate(seit.getDate() - tage);
+
+  var { data, error } = await supabase
+    .from('barometer_kind')
+    .select('farbe, notiz, created_at')
+    .eq('kind_id', aktuelleKindId)
+    .gte('created_at', seit.toISOString())
+    .order('created_at', { ascending: true });
+
+  if(error){ inhalt.innerHTML = '<div class="baro-leer">Verlauf konnte nicht geladen werden.</div>'; return; }
+  if(!data || !data.length){ inhalt.innerHTML = '<div class="baro-leer">Noch keine Einträge im gewählten Zeitraum.</div>'; return; }
+
+  var werte = [];
+  data.forEach(function(e){
+    var m = /\[Status (\d+)\/10\]/.exec(e.notiz||'');
+    if(m) werte.push(parseInt(m[1],10));
+  });
+  var schnitt = werte.length ? (werte.reduce(function(a,b){return a+b;},0)/werte.length) : null;
+
+  var chips = data.map(function(e){
+    var farbe = FARBEN_K[e.farbe] || '#ccc';
+    var datum = new Date(e.created_at).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+    return '<div class="baro-tag" style="background:'+farbe+';color:#fff;" title="'+datum+' · '+(FARBE_LABEL_KURZ[e.farbe]||e.farbe)+'">'+datum.split('.')[0]+'</div>';
+  }).join('');
+
+  var text = '';
+  if(schnitt != null){
+    text = '<div class="baro-verlauf-text">Über den gewählten Zeitraum ('+tage+' Tage) liegt die durchschnittliche Selbsteinschätzung bei <b>Ø '+schnitt.toFixed(1)+' von 10</b>, bei insgesamt <b>'+data.length+'</b> Einträgen.</div>';
+  } else {
+    text = '<div class="baro-verlauf-text">Insgesamt <b>'+data.length+'</b> Einträge im gewählten Zeitraum (keine genauen Werte hinterlegt, nur Farbbereiche).</div>';
+  }
+  inhalt.innerHTML = text + '<div class="baro-tage">'+chips+'</div>';
+}
+
+document.getElementById('kt-select').addEventListener('change', async function(){
+  aktuelleKindId = this.value;
+  await ladeBarometerVerlauf();
+  ladeVarianteAusLocalStorage();
+});
+document.getElementById('zeitraum-select').addEventListener('change', ladeBarometerVerlauf);
+
+// ── Login/Träger-Hinweis (vereinfachte Variante wie BAROMETER_KIND.html) ──
+async function ermittleLoginUndZeigen(){
+  var hinweis = document.getElementById('login-hinweis');
+  try{
+    var { data: { session } } = await supabase.auth.getSession();
+    if(!session){
+      hinweis.style.display = 'block';
+      hinweis.textContent = 'Für die Teilnehmer-ID-Liste ist eine aktive Anmeldung nötig. Bitte über KLARTEXT_Login.html anmelden.';
+    } else {
+      hinweis.style.display = 'none';
+    }
+  }catch(e){}
+}
+
+(async function(){
+  await ermittleLoginUndZeigen();
+  await teilnehmerAuswahlLaden();
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 73 ergänzt)
+Stand: 17.08.2026 (Strang 74 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -1998,3 +1998,70 @@ je 1 Seite, kein „Pflegekasse" als fälschlich impliziter Städte-Service, „
   klären.
 - Direktlinks können sich ändern (kommunale Websites werden regelmäßig umstrukturiert) — kein
   automatischer Link-Check eingerichtet, sollte gelegentlich manuell geprüft werden.
+
+## Strang 74: Ressourcen-Bericht 2.0 — vier Fachbereich-Varianten für Jobcoach-Kontext (17.08.2026)
+
+Neue Seite `KLARTEXT_Ressourcenbericht_Jobcoach.html`: einseitiger, anonymisierter Bericht mit
+umschaltbaren Fachbereich-Varianten (Struktur & Familie / Neurodivergenz / Sprache & Integration /
+Admin-Support), gebaut nach Anjas Vorgabe, ergänzt um ein konkretes Textbeispiel (Struktur-&-Familie-
+Variante), das Anja vorab bestätigt hat.
+
+**Fact-Checks/Korrekturen ggü. Prompt:**
+- Der Prompt nannte als Beispiel für Skill-Matrix-Superkräfte „Energie-Bündel" — das ist **kein**
+  echter Cluster. Die sechs echten Cluster (`KLARTEXT_Spiel_SkillMatrix.html`) sind Team-Power,
+  Fokus-Champion, Kreativ-Genie, Verantwortungs-Anker, Problem-Löser, Mutig & Stressfest — diese sechs
+  wurden als Auswahl-Chips verwendet.
+- Die „Brainy-Karten" für individuelle Notfall-Strategien sind ein reales, sechsteiliges Konzept
+  (`Brainy_Signalkarten_Konzept.md`: Toilette, Trinkpause, Bewegung am Platz, Zu meiner Insel, Frische
+  Luft, Kurz für mich) — als Auswahl-Chips übernommen statt frei erfunden.
+- **Wichtige Architektur-Einschränkung, die im Prompt nicht bedacht war:** Nur der Barometer-Verlauf
+  ist zentral in Supabase gespeichert und über die KT-ID geräteübergreifend abrufbar (Tabelle
+  `barometer_kind`, Spalten `farbe`/`notiz`/`created_at`, exakter 0–10-Wert aus dem `[Status X/10]`-
+  Präfix im `notiz`-Feld geparst — Muster aus Strang 70/72 übernommen). Reizfilter-Verlauf und
+  Skill-Matrix-Profil liegen dagegen nur lokal auf dem Gerät des jeweiligen Teilnehmenden
+  (`localStorage`, nicht Supabase-synchronisiert) und sind vom Coach-Gerät aus **nicht** abrufbar. Die
+  Seite täuscht das nicht vor: Barometer-Verlauf wird automatisch geladen, alle anderen Kerninhalte
+  (Reizfilter-Zusammenfassung, Superkräfte-Auswahl, Sprachstand, Admin-Status usw.) sind bewusst
+  manuelle Eingabefelder des Coaches, gespeichert je Teilnehmer-ID + Variante in `localStorage`
+  (Schlüssel-Präfix `klartext_ressourcenbericht_`).
+
+**Umgesetzt:**
+- Kopfbereich: Teilnehmer-ID-Auswahl (identische Supabase-Abfrage wie in `BAROMETER_KIND.html`:
+  `Kinder`-Tabelle, `aktiv=true`, `bedarfsart='jobcoach-anonym'`), Berichtszeitraum (7/14/30 Tage),
+  Datum automatisch, Motto „Klar. Warm. Menschlich." im Hero.
+- Barometer-Verlauf-Karte: automatische Zusammenfassung (Ø-Wert, Anzahl Einträge, farbige Tages-Chips)
+  aus der echten `barometer_kind`-Historie der gewählten Teilnehmer-ID im gewählten Zeitraum.
+- Vier Fachbereich-Tabs, je mit eigenen, an Anjas Vorgabe angelehnten Kerninhalte-Feldern:
+  - **Struktur & Familie:** Checkliste der acht echten Insel-Set-Zuhause-Zonen (Ruhe-/Emotions-/
+    Arbeits-/Bewegungs-/Familien-Regel-/Eltern-Kind-Gesprächs-/Übergangs-/Geschwister-Konflikt-Insel)
+    mit optionaler Notiz je Zone, Freitext für Regulations-Tools, Freitext für wertfreie Rückmeldung.
+  - **Neurodivergenz:** Freitext Reizfilter-Zusammenfassung, Superkräfte-Auswahl (6 echte Cluster),
+    Brainy-Karten-Auswahl (6 echte Karten) + Notiz.
+  - **Sprache & Integration:** Sprachniveau-Auswahl (GER A1–C2), Freitext kulturelle Kompetenzen,
+    Freitext Übersetzung informeller Kompetenzen, Freitext Teilhabe-Fortschritte.
+  - **Admin-Support:** Status-Tabelle (BuT/SGB IX/Pflegekasse, je 6-stufiger Status), Freitext
+    Sortier-Status Unterlagen, Freitext nächste Termine — mit Verweis auf `KLARTEXT_Antraege_Links.html`
+    und explizitem „keine Rechtsberatung"-Hinweis (konsistent mit Strang 73).
+  - Jede Variante endet mit einem eigenen Ausblick-Feld („nächste kleine Schritte").
+- Speichern-Button (localStorage je Teilnehmer-ID+Variante+Feld) und Drucken/PDF-Button
+  (`window.print()`, gleiches Druck-Layout-Muster wie `KLARTEXT_Ressourcenbericht.html`).
+- Privacy-by-Design-Hinweis fest im Footer-Bereich: ausschließlich KT-ID, nirgends ein Klarname.
+- In `KLARTEXT_Downloads.html` unter „Teamkoordination" verlinkt.
+
+**Getestet:** jsdom mit gemocktem Supabase-Client (Muster aus Strang 70–72 übernommen) — Teilnehmer-ID-
+Dropdown korrekt befüllt (2 Testeinträge), alle vier Auswahl-Grids in korrekter Anzahl (8 Zonen/6
+Superkräfte/6 Brainy-Karten/3 Admin-Themen), Barometer-Ø-Berechnung aus drei Test-Einträgen exakt
+korrekt (4/6/2 → Ø 4.0), Tages-Chip-Anzahl korrekt. Separater Test für Speichern/Laden: Freitext-Felder,
+Zonen-Checkbox und Zonen-Notiz überleben Varianten-Wechsel und erneutes Laden aus `localStorage`
+korrekt. `KLARTEXT_Downloads.html` nach Verlinkung erneut geprüft (neuer Link vorhanden, 83
+Download-Items insgesamt, kein Parse-Fehler).
+
+### Noch offen
+
+- Alle Punkte aus Strang 57–73 bleiben unverändert offen.
+- Reizfilter-Verlauf und Skill-Matrix-Profil sind aktuell nicht Supabase-synchronisiert — falls Anja
+  will, dass auch diese Werte künftig automatisch im Bericht erscheinen, müsste zuerst eine
+  geräteübergreifende Speicherung dieser beiden Datenquellen gebaut werden (bisher nicht beauftragt).
+- Kein automatischer PDF-Export ohne Browser-Druckdialog (wie beim bestehenden `KLARTEXT_Ressourcenbericht.html`
+  auch) — Export läuft über „Drucken → Als PDF speichern".
+- Noch keine echte End-to-End-Prüfung mit realer Supabase-Instanz durchgeführt (nur Mock-Test).

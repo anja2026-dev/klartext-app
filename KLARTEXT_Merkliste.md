@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 79 ergänzt)
+Stand: 17.08.2026 (Strang 80 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2321,6 +2321,62 @@ Betrifft keine der Live-Seiten (dort steht nur "Integrative Lerntherapie (IFLW)"
 - IndiPaed-, Nifbe- und weitere kurze Kinderschutz-Module wurden bewusst nicht aufgenommen (siehe oben)
   — falls Anja die Badge-Listen doch umfangreicher haben möchte, sind die Fakten bereits recherchiert
   und einsatzbereit.
+
+## Strang 80: Wichtige Korrektur "Systemische Beraterin (IHK)" + zwei weitere Zeugnis-Funde (17.08.2026)
+
+Anja hat zusätzlich die Ordner `/Users/anjajolk/Beruf/Bewerbungen/05_Abschlüsse/Zeugnisse` und
+`/Users/anjajolk/Beruf/Bewerbungen` freigegeben, um die auf allen drei B2B-Seiten (und im
+Original-Flyer aus Strang 73) verwendete Kernqualifikation "Systemische Beraterin (IHK)" gegen echte
+Zeugnisse zu prüfen.
+
+**Kritischer Fund:** Im Zeugnisse-Ordner existiert **kein** Beleg für "Systemische Beraterin (IHK)".
+Die einzige dort vorhandene IHK-Urkunde ist das Prüfungszeugnis Bürokauffrau von 1992 (unter Anjas
+Mädchennamen "Anja Kersten", IHK Dortmund) — vier Kopien geprüft (OCR, da Scans ohne Text-Layer),
+alle identisch. Auch Anjas eigene Bewerbungsübersicht (`Bewerbungen/.../BBA/BBA_Trainer Kopie.pdf`)
+listet unter "Ausbildung & Zertifikate" nur "IHK - Abschluss Bürokauffrau (1992)", keine systemische
+Beratungs-Qualifikation von der IHK. Rückfrage gestellt statt stillschweigend zu korrigieren oder zu
+übernehmen.
+
+**Auflösung:** Anja hat das Zertifikat nachgereicht, es lag im Ordner `Bewerbungen` (nicht
+`Bewerbungen/05_Abschlüsse/Zeugnisse`): `IHK_Systemische Beratung-Coaching Kopie.pdf`. Per OCR
+geprüft — das Zertifikat existiert wirklich, war aber unvollständig zitiert. Korrekter, vollständiger
+Titel lt. Original: **"Systemische Beraterin und Coachin (IHK)"** (nicht nur "Systemische
+Beraterin (IHK)"). Ausgestellt von der IHK-Projektgesellschaft mbH, Frankfurt (Oder),
+Zertifikats-Nr. 01652/0108A, Onlinelehrgang 14.04.–22.05.2026, 163 Unterrichtsstunden (Systemische
+Grundhaltung, Genogramm, Systembrett, Skulpturarbeit, kollegiale Fallberatung u. a.). Damit ist das
+Zertifikat noch sehr jung (Mai 2026) und thematisch sauber belegt.
+
+**Korrektur umgesetzt:** "Systemische Beraterin (IHK)" auf allen drei Seiten (Titel-Zeile unter dem
+Namen + Badge, je 2 Stellen) zu "Systemische Beraterin und Coachin (IHK)" ergänzt (`replace_all`,
+verifiziert: 0 Treffer alter Text, je 2 Treffer neuer Text pro Datei).
+
+**Zwei weitere echte, starke Funde aus dem Zeugnisse-Ordner ergänzt:**
+- `FAPS.pdf/Integrationspädagogik.pdf` + `FAPS.pdf/Sprachentwicklung.pdf` (beide OCR-geprüft, echte
+  benotete Zeugnisse der Fernakademie für Pädagogik und Sozialberufe, Juni–August 2019): "Fachkraft für
+  Integrationspädagogik" (Note sehr gut) und "Sprachentwicklungsexpertin" (Note gut) — auf
+  Familienzentren- **und** Migrationszentren-Seite als Badges ergänzt.
+- Goethe-Zertifikat präzisiert: OCR bestätigt exakten Titel "DaZ in der Grundschule" (Gesamtnote sehr
+  gut/1,00, 14.10.2019) statt der bisherigen generischen Badge-Bezeichnung "DAZ Goethe-Institut" — Badge
+  auf Migrationszentren-Seite zu "DaZ in der Grundschule (Goethe-Institut)" präzisiert.
+- Body'n'Brain-Trainerin®-Zertifikat (2021–2022, aus Anjas eigener Bewerbungsübersicht bestätigt) als
+  Badge auf der Pflegedienste-Seite ergänzt — der Begriff "Body'n'Brain-Methoden" wurde dort bereits in
+  Strang 76 verwendet, jetzt mit echtem Zertifikatsnachweis unterlegt statt nur als Technik-Name.
+
+**Getestet:** `tidy` (keine HTML-Fehler auf allen drei Seiten nach der Korrektur), gezielte
+`grep -c`-Prüfung, dass der alte unvollständige Titel überall ersetzt wurde (0 Treffer) und der neue
+vollständige Titel korrekt zweimal je Datei steht (Titel-Zeile + Badge).
+
+### Noch offen
+
+- Git-Commit für Strang 77–80 steht weiterhin aus (Anja committet selbst über die bereitgestellten
+  Terminal-Befehle; der Korrektur-Commit für Strang 80 muss noch ergänzt werden, siehe unten).
+- Weitere Funde aus dem Bewerbungen-Ordner nicht erschöpfend geprüft (nur gezielt nach "Systemische
+  Beratung" gesucht) — falls Anja möchte, könnte dort noch weiter nach zusätzlichen Qualifikationen
+  gesucht werden.
+- PromedicaPlus-Tätigkeitsprofil ("Selbstständige Beratung & Koordination") und Arbeitszeugnisse
+  VeBu/AWL (Lebenshilfe) aus Anjas eigener Bewerbungsübersicht bisher nicht in die Seiten eingearbeitet
+  — das ist echte Berufserfahrung (kein Kurszertifikat), könnte aber die Pflegedienste-Seite inhaltlich
+  stärken, falls gewünscht.
 
 ## Strang 78: LRS-Nachhilfe auf Familienzentren- und Migrationszentren-Seite ergänzt (17.08.2026)
 

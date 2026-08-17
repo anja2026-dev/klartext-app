@@ -6,7 +6,6 @@
 <title>KLARTEXT · Ressourcen-Bericht (Jobcoach)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -30,6 +29,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
 .hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:600px;margin:0 auto;}
 .hero-motto{font-family:"Playfair Display",serif;font-style:italic;font-size:.85rem;color:var(--acc);margin-top:.6rem;}
+.hero-offline{display:inline-flex;align-items:center;gap:.35rem;margin-top:.7rem;padding:.25rem .7rem;border-radius:14px;background:rgba(110,198,160,.18);border:1px solid rgba(110,198,160,.4);color:var(--acc);font-size:.7rem;font-weight:700;}
 
 .shell{max-width:760px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;display:flex;flex-direction:column;gap:1.2rem;}
 
@@ -42,7 +42,27 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .feld select, .feld input[type=text]{width:100%;border:2px solid var(--border);border-radius:10px;padding:.5rem .7rem;font-family:inherit;font-size:.86rem;background:var(--paper);}
 
 .hinweis{font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:.5rem;}
-.login-hinweis{background:var(--warnbg);border:1.5px solid #E8C9A0;border-radius:12px;padding:.7rem .9rem;font-size:.8rem;color:#5c3d15;margin-top:.6rem;}
+
+/* Teilnehmer-ID-Verwaltung (dezent) */
+.tn-details summary{cursor:pointer;font-size:.82rem;font-weight:700;color:var(--m);list-style:none;}
+.tn-details summary::-webkit-details-marker{display:none;}
+.tn-details summary::after{content:' ▸';}
+.tn-details[open] summary::after{content:' ▾';}
+.tn-verwaltung{margin-top:.8rem;display:flex;flex-direction:column;gap:.7rem;}
+.tn-btn{flex-shrink:0;padding:.55rem 1rem;border:none;border-radius:10px;font-weight:700;font-size:.8rem;cursor:pointer;font-family:inherit;}
+.tn-btn.wuerfeln{background:var(--paper);border:2px solid var(--border);color:var(--ink);}
+.tn-btn.anlegen{background:var(--acc);color:var(--m);}
+.tn-liste{display:flex;flex-direction:column;gap:.4rem;}
+.tn-liste-item{display:flex;align-items:center;justify-content:space-between;background:var(--paper);border-radius:8px;padding:.45rem .7rem;font-size:.82rem;font-weight:600;}
+.tn-loeschen-btn{background:none;border:none;color:var(--warn);font-size:.85rem;cursor:pointer;font-weight:700;}
+.tn-leer{font-size:.8rem;color:var(--muted);}
+
+/* Status heute erfassen */
+.status-kacheln-row{display:grid;grid-template-columns:repeat(11,1fr);gap:.3rem;margin-bottom:.8rem;}
+.status-kachel{aspect-ratio:1;border-radius:8px;border:2px solid var(--border);background:var(--paper);color:var(--muted);font-weight:700;font-size:.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.status-kachel.aktiv{border-color:var(--m);background:var(--m);color:#fff;}
+.status-caption{font-size:.72rem;color:var(--muted);text-align:center;margin-bottom:.7rem;}
+.status-erfassen-row{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;}
 
 /* Barometer-Verlauf */
 .baro-verlauf-text{font-size:.9rem;line-height:1.6;margin-bottom:.7rem;}
@@ -86,8 +106,12 @@ textarea:focus, .feld select:focus, .zone-item input[type=text]:focus{outline:no
 .aktion-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border:none;border-radius:22px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;}
 .aktion-btn.speichern{background:var(--acc);color:var(--m);}
 .aktion-btn.drucken{background:var(--m);color:#fff;}
+.aktion-btn.kopieren{background:#fff;border:2px solid var(--m);color:var(--m);}
+.aktion-btn.email{background:#4A148C;color:#fff;}
 .aktion-btn:hover{opacity:.9;}
 .speicher-status{text-align:center;font-size:.78rem;color:var(--muted);min-height:1.2em;}
+
+.zusammenfassung-text{width:100%;min-height:220px;font-family:"DM Sans",monospace;font-size:.8rem;line-height:1.6;}
 
 .privacy-hinweis{font-size:.75rem;color:var(--muted);text-align:center;line-height:1.6;}
 .privacy-hinweis b{color:var(--m);}
@@ -124,16 +148,31 @@ footer strong{color:var(--acc);}
   <h1 class="hero-titel">Ressourcen-Bericht · Jobcoach</h1>
   <p class="hero-sub">Ein einseitiger, anonymisierter Bericht je Fachbereich — als Nachweis professioneller Arbeit für Familienzentren, Migrationszentren und Alltagsbegleitung.</p>
   <p class="hero-motto">Klar. Warm. Menschlich.</p>
+  <div class="hero-offline">🔒 Läuft komplett lokal auf diesem Gerät — kein Login, keine Cloud</div>
 </div>
 
 <div class="shell" id="shell">
 
-  <!-- KT-ID & Zeitraum -->
+  <!-- Teilnehmer-ID verwalten -->
   <div class="card">
-    <div class="card-titel">🗂️ Teilnehmer-ID &amp; Berichtszeitraum</div>
-    <div class="reihe">
+    <div class="card-titel">🗂️ Teilnehmer-ID</div>
+    <details class="tn-details">
+      <summary>Teilnehmer-IDs verwalten</summary>
+      <div class="tn-verwaltung">
+        <div class="reihe">
+          <div class="feld">
+            <label for="tn-neu-input">Neue Teilnehmer-ID</label>
+            <input type="text" id="tn-neu-input" placeholder="z. B. KT-X8R2">
+          </div>
+          <button class="tn-btn wuerfeln" onclick="teilnehmerIdWuerfeln()">🎲 würfeln</button>
+          <button class="tn-btn anlegen" onclick="teilnehmerIdAnlegen()">➕ anlegen</button>
+        </div>
+        <div class="tn-liste" id="tn-liste"></div>
+      </div>
+    </details>
+    <div class="reihe" style="margin-top:1rem;">
       <div class="feld">
-        <label for="kt-select">Teilnehmer-ID</label>
+        <label for="kt-select">Aktive Teilnehmer-ID für diesen Bericht</label>
         <select id="kt-select"><option value="">Bitte wählen …</option></select>
       </div>
       <div class="feld">
@@ -149,12 +188,17 @@ footer strong{color:var(--acc);}
         <input type="text" id="datum-heute" readonly style="background:#fff;">
       </div>
     </div>
-    <div class="login-hinweis no-print" id="login-hinweis" style="display:none;"></div>
   </div>
 
-  <!-- Barometer-Verlauf -->
+  <!-- Barometer: Status erfassen + Verlauf -->
   <div class="card">
-    <div class="card-titel">🌡️ Barometer-Verlauf im Überblick</div>
+    <div class="card-titel">🌡️ Status heute erfassen &amp; Verlauf</div>
+    <div class="status-kacheln-row no-print" id="status-kacheln-row"></div>
+    <div class="status-caption no-print">0 – Alles entspannt bis 10 – Maximale Belastung</div>
+    <div class="status-erfassen-row no-print">
+      <button class="tn-btn anlegen" onclick="statusEintragSpeichern()">➕ Eintrag zum Verlauf hinzufügen</button>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0;">
     <div id="baro-verlauf-inhalt"><div class="baro-leer">Bitte zuerst oben eine Teilnehmer-ID wählen.</div></div>
   </div>
 
@@ -265,11 +309,26 @@ footer strong{color:var(--acc);}
 
   <div class="aktion-row no-print">
     <button class="aktion-btn speichern" onclick="speichern()">💾 Speichern</button>
-    <button class="aktion-btn drucken" onclick="window.print()">🖨️ Bericht drucken / als PDF</button>
+    <button class="aktion-btn drucken" onclick="window.print()">🖨️ Drucken / als PDF</button>
   </div>
   <div class="speicher-status" id="speicher-status"></div>
 
-  <div class="privacy-hinweis">🔒 <b>Privacy by Design:</b> Dieser Bericht verwendet ausschließlich die anonyme Teilnehmer-ID — nirgends wird ein Klarname gespeichert oder angezeigt.</div>
+  <!-- Bericht zusammenfassen & versenden -->
+  <div class="card no-print">
+    <div class="card-titel">✉️ Bericht zusammenfassen &amp; versenden</div>
+    <div class="hinweis">Fasst alle bisher ausgefüllten Bereiche für die aktuelle Teilnehmer-ID in einem Text zusammen — zum Kopieren in eine E-Mail oder direkt zum Öffnen im E-Mail-Programm.</div>
+    <div class="aktion-row" style="margin:.8rem 0;">
+      <button class="aktion-btn speichern" onclick="berichtErzeugen()">📝 Bericht-Text erzeugen</button>
+    </div>
+    <textarea class="zusammenfassung-text" id="zusammenfassung-text" placeholder="Hier erscheint der zusammengefasste Bericht, nachdem du oben auf 'Bericht-Text erzeugen' geklickt hast …" readonly></textarea>
+    <div class="aktion-row" style="margin-top:.8rem;">
+      <button class="aktion-btn kopieren" onclick="berichtKopieren()">📋 Text kopieren</button>
+      <button class="aktion-btn email" onclick="berichtPerEmail()">✉️ E-Mail vorbereiten</button>
+    </div>
+    <div class="speicher-status" id="email-status"></div>
+  </div>
+
+  <div class="privacy-hinweis">🔒 <b>Privacy by Design:</b> Dieser Bericht verwendet ausschließlich die anonyme Teilnehmer-ID — nirgends wird ein Klarname gespeichert oder angezeigt. Alle Daten bleiben lokal auf diesem Gerät.</div>
 
 </div>
 
@@ -278,9 +337,7 @@ footer strong{color:var(--acc);}
   <span class="footer-motto">Klar. Warm. Menschlich.</span>
 </footer>
 
-<script type="module">
-import { supabase } from './supabase/auth_client.js';
-
+<script>
 var ZONEN = [
   {id:'ruhe', name:'Ruhe-Insel'},
   {id:'emotion', name:'Emotions-Insel'},
@@ -317,20 +374,149 @@ var ADMIN_THEMEN = [
 ];
 var ADMIN_STATUS_OPTIONEN = ['Nicht begonnen','Sichtung läuft','Antrag vorbereitet','Eingereicht','Bewilligt','Abgelehnt / Widerspruch läuft'];
 
+// Bereichsfarben für die 0-10-Status-Kacheln (0-2 gruen, 3-4 gelb, 5-6 orange, 7-8 rot, 9-10 grau)
+// — dieselbe Zuordnung wie in BAROMETER_KIND.html (Strang 70/72), hier lokal repliziert.
 var FARBEN_K = {gruen:'#2E9E5A',gelb:'#D4A800',orange:'#D4651A',rot:'#C0392B',grau:'#757575'};
 var FARBE_LABEL_KURZ = {gruen:'Grün',gelb:'Gelb',orange:'Orange',rot:'Rot',grau:'Grau'};
+function wertZuFarbe(wert){
+  if(wert<=2) return 'gruen';
+  if(wert<=4) return 'gelb';
+  if(wert<=6) return 'orange';
+  if(wert<=8) return 'rot';
+  return 'grau';
+}
 
-var kinderNamen = {};
-var aktuelleKindId = '';
+var TN_ID_ZEICHEN = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function teilnehmerIdGenerieren(){
+  var teil = '';
+  for (var i = 0; i < 4; i++) teil += TN_ID_ZEICHEN.charAt(Math.floor(Math.random() * TN_ID_ZEICHEN.length));
+  return 'KT-' + teil;
+}
+
+var TN_LISTE_KEY = 'klartext_rb_teilnehmer_liste';
+var aktuelleKtId = '';
 var aktiveVariante = 'struktur';
-var JOBCOACH_MARKER = 'jobcoach-anonym';
+var ausgewaehlterStatusWert = null;
 
 function heuteDeutsch(){
   return new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
 }
 document.getElementById('datum-heute').value = heuteDeutsch();
 
-// ── Zonen-Grid aufbauen ─────────────────────────────
+function escHtml(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Teilnehmer-Liste (rein lokal, kein Supabase) ─────
+function teilnehmerListeLaden(){
+  try{ return JSON.parse(localStorage.getItem(TN_LISTE_KEY) || '[]'); }catch(e){ return []; }
+}
+function teilnehmerListeSpeichern(liste){
+  try{ localStorage.setItem(TN_LISTE_KEY, JSON.stringify(liste)); }catch(e){}
+}
+function teilnehmerIdWuerfeln(){
+  var input = document.getElementById('tn-neu-input');
+  var bestehende = teilnehmerListeLaden();
+  var neu, versuche = 0;
+  do { neu = teilnehmerIdGenerieren(); versuche++; } while (bestehende.indexOf(neu) !== -1 && versuche < 20);
+  input.value = neu;
+}
+function teilnehmerIdAnlegen(){
+  var input = document.getElementById('tn-neu-input');
+  var id = (input.value || '').trim();
+  if(!id){ alert('Bitte eine Teilnehmer-ID eingeben oder würfeln.'); return; }
+  var liste = teilnehmerListeLaden();
+  if(liste.indexOf(id) === -1){ liste.push(id); teilnehmerListeSpeichern(liste); }
+  input.value = '';
+  teilnehmerListeRendern();
+  aktualisiereKtSelect();
+}
+function teilnehmerIdLoeschen(id){
+  var liste = teilnehmerListeLaden().filter(function(t){ return t !== id; });
+  teilnehmerListeSpeichern(liste);
+  teilnehmerListeRendern();
+  aktualisiereKtSelect();
+}
+function teilnehmerListeRendern(){
+  var wrap = document.getElementById('tn-liste');
+  var liste = teilnehmerListeLaden();
+  if(!liste.length){ wrap.innerHTML = '<div class="tn-leer">Noch keine Teilnehmer-IDs angelegt.</div>'; return; }
+  wrap.innerHTML = liste.map(function(id){
+    return '<div class="tn-liste-item"><span>'+escHtml(id)+'</span><button class="tn-loeschen-btn" onclick="teilnehmerIdLoeschen(\''+id.replace(/'/g,"\\'")+'\')" title="Entfernen">✕</button></div>';
+  }).join('');
+}
+function aktualisiereKtSelect(){
+  var select = document.getElementById('kt-select');
+  var vorherige = select.value;
+  var liste = teilnehmerListeLaden();
+  select.innerHTML = '<option value="">Bitte wählen …</option>' +
+    liste.map(function(id){ return '<option value="'+escHtml(id)+'">'+escHtml(id)+'</option>'; }).join('');
+  if(liste.indexOf(vorherige) !== -1) select.value = vorherige;
+}
+
+// ── Status-Kacheln (0-10) zum Erfassen ────────────────
+(function baueStatusKacheln(){
+  var row = document.getElementById('status-kacheln-row');
+  for(var w=0; w<=10; w++){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'status-kachel';
+    btn.textContent = w;
+    btn.dataset.wert = w;
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.status-kachel').forEach(function(b){ b.classList.remove('aktiv'); });
+      this.classList.add('aktiv');
+      ausgewaehlterStatusWert = parseInt(this.dataset.wert, 10);
+    });
+    row.appendChild(btn);
+  }
+})();
+
+function baroLogKey(ktId){ return 'klartext_rb_barometer_'+ktId; }
+function baroLogLaden(ktId){
+  try{ return JSON.parse(localStorage.getItem(baroLogKey(ktId)) || '[]'); }catch(e){ return []; }
+}
+function baroLogSpeichern(ktId, log){
+  try{ localStorage.setItem(baroLogKey(ktId), JSON.stringify(log)); }catch(e){}
+}
+function statusEintragSpeichern(){
+  if(!aktuelleKtId){ document.getElementById('speicher-status').textContent = 'Bitte zuerst eine Teilnehmer-ID wählen.'; return; }
+  if(ausgewaehlterStatusWert === null){ document.getElementById('speicher-status').textContent = 'Bitte zuerst eine Status-Kachel (0–10) auswählen.'; return; }
+  var log = baroLogLaden(aktuelleKtId);
+  log.push({ wert: ausgewaehlterStatusWert, datum: new Date().toISOString() });
+  baroLogSpeichern(aktuelleKtId, log);
+  ausgewaehlterStatusWert = null;
+  document.querySelectorAll('.status-kachel').forEach(function(b){ b.classList.remove('aktiv'); });
+  zeigeBarometerVerlauf();
+  document.getElementById('speicher-status').textContent = 'Status-Eintrag hinzugefügt · ' + new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+
+function zeigeBarometerVerlauf(){
+  var inhalt = document.getElementById('baro-verlauf-inhalt');
+  if(!aktuelleKtId){
+    inhalt.innerHTML = '<div class="baro-leer">Bitte zuerst oben eine Teilnehmer-ID wählen.</div>';
+    return;
+  }
+  var tage = parseInt(document.getElementById('zeitraum-select').value, 10);
+  var seit = new Date();
+  seit.setDate(seit.getDate() - tage);
+
+  var log = baroLogLaden(aktuelleKtId).filter(function(e){ return new Date(e.datum) >= seit; });
+  log.sort(function(a,b){ return new Date(a.datum) - new Date(b.datum); });
+
+  if(!log.length){ inhalt.innerHTML = '<div class="baro-leer">Noch keine Einträge im gewählten Zeitraum. Oben eine Status-Kachel wählen und &quot;Eintrag hinzufügen&quot; klicken.</div>'; return; }
+
+  var schnitt = log.reduce(function(a,e){ return a+e.wert; }, 0) / log.length;
+  var chips = log.map(function(e){
+    var farbe = FARBEN_K[wertZuFarbe(e.wert)];
+    var datum = new Date(e.datum).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+    return '<div class="baro-tag" style="background:'+farbe+';color:#fff;" title="'+datum+' · Status '+e.wert+'/10">'+datum.split('.')[0]+'</div>';
+  }).join('');
+
+  inhalt.innerHTML = '<div class="baro-verlauf-text">Über den gewählten Zeitraum ('+tage+' Tage) liegt die durchschnittliche Selbsteinschätzung bei <b>Ø '+schnitt.toFixed(1)+' von 10</b>, bei insgesamt <b>'+log.length+'</b> Einträgen.</div><div class="baro-tage">'+chips+'</div>';
+}
+
+// ── Zonen-Grid, Superkräfte, Brainy-Karten, Admin-Tabelle (unverändert) ──
 (function baueZonenGrid(){
   var grid = document.getElementById('zonen-grid');
   ZONEN.forEach(function(z){
@@ -341,7 +527,6 @@ document.getElementById('datum-heute').value = heuteDeutsch();
   });
 })();
 
-// ── Superkräfte-Chips ────────────────────────────────
 (function baueSuperkraefte(){
   var grid = document.getElementById('superkraefte-grid');
   SUPERKRAEFTE.forEach(function(s){
@@ -349,14 +534,11 @@ document.getElementById('datum-heute').value = heuteDeutsch();
     lbl.className = 'chip-check';
     lbl.id = 'chip-super-'+s.id;
     lbl.innerHTML = '<input type="checkbox" value="'+s.id+'">'+s.icon+' '+s.name;
-    lbl.querySelector('input').addEventListener('change', function(){
-      lbl.classList.toggle('aktiv', this.checked);
-    });
+    lbl.querySelector('input').addEventListener('change', function(){ lbl.classList.toggle('aktiv', this.checked); });
     grid.appendChild(lbl);
   });
 })();
 
-// ── Brainy-Karten-Chips ──────────────────────────────
 (function baueBrainy(){
   var grid = document.getElementById('brainy-grid');
   BRAINY_KARTEN.forEach(function(b){
@@ -364,14 +546,11 @@ document.getElementById('datum-heute').value = heuteDeutsch();
     lbl.className = 'chip-check';
     lbl.id = 'chip-brainy-'+b.id;
     lbl.innerHTML = '<input type="checkbox" value="'+b.id+'">🃏 '+b.name;
-    lbl.querySelector('input').addEventListener('change', function(){
-      lbl.classList.toggle('aktiv', this.checked);
-    });
+    lbl.querySelector('input').addEventListener('change', function(){ lbl.classList.toggle('aktiv', this.checked); });
     grid.appendChild(lbl);
   });
 })();
 
-// ── Admin-Status-Tabelle ─────────────────────────────
 (function baueAdminTabelle(){
   var wrap = document.getElementById('admin-status-tabelle');
   ADMIN_THEMEN.forEach(function(a){
@@ -389,11 +568,10 @@ document.getElementById('tab-row').addEventListener('click', function(e){
   if(!btn) return;
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('aktiv');});
   btn.classList.add('aktiv');
-  var v = btn.dataset.variante;
-  aktiveVariante = v;
+  aktiveVariante = btn.dataset.variante;
   document.querySelectorAll('.variante').forEach(function(el){el.classList.remove('aktiv');});
-  document.getElementById('variante-'+v).classList.add('aktiv');
-  ladeVarianteAusLocalStorage();
+  document.getElementById('variante-'+aktiveVariante).classList.add('aktiv');
+  ladeVarianteAusLocalStorage(aktiveVariante);
 });
 
 // ── localStorage: Felder je KT-ID + Variante ─────────
@@ -404,41 +582,32 @@ function feldIdsFuerVariante(v){
   if(v==='admin') return ['admin-sortierung','admin-termine'];
   return [];
 }
-function speicherKey(kindId, feldId){
-  return 'klartext_ressourcenbericht_'+kindId+'_'+feldId;
-}
+function speicherKey(ktId, feldId){ return 'klartext_ressourcenbericht_'+ktId+'_'+feldId; }
+
 function speichern(){
-  if(!aktuelleKindId){
-    document.getElementById('speicher-status').textContent = 'Bitte zuerst eine Teilnehmer-ID wählen.';
-    return;
-  }
+  if(!aktuelleKtId){ document.getElementById('speicher-status').textContent = 'Bitte zuerst eine Teilnehmer-ID wählen.'; return; }
   try{
     feldIdsFuerVariante(aktiveVariante).forEach(function(fid){
       var el = document.getElementById(fid);
-      if(el) localStorage.setItem(speicherKey(aktuelleKindId, fid), el.value);
+      if(el) localStorage.setItem(speicherKey(aktuelleKtId, fid), el.value);
     });
     if(aktiveVariante==='struktur'){
       ZONEN.forEach(function(z){
-        var cb = document.getElementById('zone-'+z.id);
-        var notiz = document.getElementById('zone-notiz-'+z.id);
-        localStorage.setItem(speicherKey(aktuelleKindId,'zone-'+z.id), cb.checked ? '1' : '0');
-        localStorage.setItem(speicherKey(aktuelleKindId,'zone-notiz-'+z.id), notiz.value);
+        localStorage.setItem(speicherKey(aktuelleKtId,'zone-'+z.id), document.getElementById('zone-'+z.id).checked ? '1' : '0');
+        localStorage.setItem(speicherKey(aktuelleKtId,'zone-notiz-'+z.id), document.getElementById('zone-notiz-'+z.id).value);
       });
     }
     if(aktiveVariante==='neuro'){
       SUPERKRAEFTE.forEach(function(s){
-        var cb = document.querySelector('#chip-super-'+s.id+' input');
-        localStorage.setItem(speicherKey(aktuelleKindId,'super-'+s.id), cb.checked ? '1' : '0');
+        localStorage.setItem(speicherKey(aktuelleKtId,'super-'+s.id), document.querySelector('#chip-super-'+s.id+' input').checked ? '1' : '0');
       });
       BRAINY_KARTEN.forEach(function(b){
-        var cb = document.querySelector('#chip-brainy-'+b.id+' input');
-        localStorage.setItem(speicherKey(aktuelleKindId,'brainy-'+b.id), cb.checked ? '1' : '0');
+        localStorage.setItem(speicherKey(aktuelleKtId,'brainy-'+b.id), document.querySelector('#chip-brainy-'+b.id+' input').checked ? '1' : '0');
       });
     }
     if(aktiveVariante==='admin'){
       ADMIN_THEMEN.forEach(function(a){
-        var sel = document.getElementById('admin-status-'+a.id);
-        localStorage.setItem(speicherKey(aktuelleKindId,'admin-status-'+a.id), sel.value);
+        localStorage.setItem(speicherKey(aktuelleKtId,'admin-status-'+a.id), document.getElementById('admin-status-'+a.id).value);
       });
     }
     document.getElementById('speicher-status').textContent = 'Gespeichert · ' + new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
@@ -447,131 +616,183 @@ function speichern(){
   }
 }
 
-function ladeVarianteAusLocalStorage(){
-  if(!aktuelleKindId) return;
+function ladeVarianteAusLocalStorage(v){
+  if(!aktuelleKtId) return;
   try{
-    feldIdsFuerVariante(aktiveVariante).forEach(function(fid){
+    feldIdsFuerVariante(v).forEach(function(fid){
       var el = document.getElementById(fid);
-      if(el){ var v = localStorage.getItem(speicherKey(aktuelleKindId, fid)); el.value = (v!=null) ? v : ''; }
+      if(el){ var val = localStorage.getItem(speicherKey(aktuelleKtId, fid)); el.value = (val!=null) ? val : ''; }
     });
-    if(aktiveVariante==='struktur'){
+    if(v==='struktur'){
       ZONEN.forEach(function(z){
-        var cb = document.getElementById('zone-'+z.id);
-        var notiz = document.getElementById('zone-notiz-'+z.id);
-        cb.checked = localStorage.getItem(speicherKey(aktuelleKindId,'zone-'+z.id)) === '1';
-        notiz.value = localStorage.getItem(speicherKey(aktuelleKindId,'zone-notiz-'+z.id)) || '';
+        document.getElementById('zone-'+z.id).checked = localStorage.getItem(speicherKey(aktuelleKtId,'zone-'+z.id)) === '1';
+        document.getElementById('zone-notiz-'+z.id).value = localStorage.getItem(speicherKey(aktuelleKtId,'zone-notiz-'+z.id)) || '';
       });
     }
-    if(aktiveVariante==='neuro'){
+    if(v==='neuro'){
       SUPERKRAEFTE.forEach(function(s){
-        var lbl = document.getElementById('chip-super-'+s.id);
-        var cb = lbl.querySelector('input');
-        cb.checked = localStorage.getItem(speicherKey(aktuelleKindId,'super-'+s.id)) === '1';
+        var lbl = document.getElementById('chip-super-'+s.id); var cb = lbl.querySelector('input');
+        cb.checked = localStorage.getItem(speicherKey(aktuelleKtId,'super-'+s.id)) === '1';
         lbl.classList.toggle('aktiv', cb.checked);
       });
       BRAINY_KARTEN.forEach(function(b){
-        var lbl = document.getElementById('chip-brainy-'+b.id);
-        var cb = lbl.querySelector('input');
-        cb.checked = localStorage.getItem(speicherKey(aktuelleKindId,'brainy-'+b.id)) === '1';
+        var lbl = document.getElementById('chip-brainy-'+b.id); var cb = lbl.querySelector('input');
+        cb.checked = localStorage.getItem(speicherKey(aktuelleKtId,'brainy-'+b.id)) === '1';
         lbl.classList.toggle('aktiv', cb.checked);
       });
     }
-    if(aktiveVariante==='admin'){
+    if(v==='admin'){
       ADMIN_THEMEN.forEach(function(a){
         var sel = document.getElementById('admin-status-'+a.id);
-        var v = localStorage.getItem(speicherKey(aktuelleKindId,'admin-status-'+a.id));
-        sel.value = v || 'Nicht begonnen';
+        sel.value = localStorage.getItem(speicherKey(aktuelleKtId,'admin-status-'+a.id)) || 'Nicht begonnen';
       });
     }
   }catch(e){}
 }
-
-// ── Teilnehmer-ID-Liste laden (identisches Muster wie BAROMETER_KIND.html) ──
-async function teilnehmerAuswahlLaden(){
-  try{
-    var select = document.getElementById('kt-select');
-    var query = supabase.from('Kinder').select('id, name').eq('aktiv', true).eq('bedarfsart', JOBCOACH_MARKER);
-    var { data: kinder, error } = await query;
-    if(error){ console.error('Teilnehmer-IDs laden fehlgeschlagen:', error); kinder = []; }
-    kinderNamen = {};
-    select.innerHTML = '<option value="">Bitte wählen …</option>';
-    (kinder||[]).forEach(function(k){
-      kinderNamen[k.id] = k.name;
-      var opt = document.createElement('option');
-      opt.value = k.id; opt.textContent = k.name;
-      select.appendChild(opt);
-    });
-  }catch(e){ console.error(e); }
+function ladeAlleVariantenAusLocalStorage(){
+  ['struktur','neuro','sprache','admin'].forEach(ladeVarianteAusLocalStorage);
 }
 
-// ── Barometer-Verlauf laden & zusammenfassen ─────────
-async function ladeBarometerVerlauf(){
-  var inhalt = document.getElementById('baro-verlauf-inhalt');
-  if(!aktuelleKindId){
-    inhalt.innerHTML = '<div class="baro-leer">Bitte zuerst oben eine Teilnehmer-ID wählen.</div>';
+document.getElementById('kt-select').addEventListener('change', function(){
+  aktuelleKtId = this.value;
+  zeigeBarometerVerlauf();
+  ladeAlleVariantenAusLocalStorage();
+  document.getElementById('zusammenfassung-text').value = '';
+});
+document.getElementById('zeitraum-select').addEventListener('change', zeigeBarometerVerlauf);
+
+// ── Bericht-Text erzeugen (alle ausgefüllten Bereiche) ──
+function berichtErzeugen(){
+  if(!aktuelleKtId){
+    document.getElementById('email-status').textContent = 'Bitte zuerst eine Teilnehmer-ID wählen.';
     return;
   }
+  var zeilen = [];
+  zeilen.push('KLARTEXT-Mentoring · Ressourcen-Bericht');
+  zeilen.push('Teilnehmer-ID: ' + aktuelleKtId);
+  zeilen.push('Erstellt am: ' + heuteDeutsch() + ' · Berichtszeitraum: letzte ' + document.getElementById('zeitraum-select').value + ' Tage');
+  zeilen.push('Klar. Warm. Menschlich.');
+  zeilen.push('');
+
   var tage = parseInt(document.getElementById('zeitraum-select').value, 10);
-  var seit = new Date();
-  seit.setDate(seit.getDate() - tage);
-
-  var { data, error } = await supabase
-    .from('barometer_kind')
-    .select('farbe, notiz, created_at')
-    .eq('kind_id', aktuelleKindId)
-    .gte('created_at', seit.toISOString())
-    .order('created_at', { ascending: true });
-
-  if(error){ inhalt.innerHTML = '<div class="baro-leer">Verlauf konnte nicht geladen werden.</div>'; return; }
-  if(!data || !data.length){ inhalt.innerHTML = '<div class="baro-leer">Noch keine Einträge im gewählten Zeitraum.</div>'; return; }
-
-  var werte = [];
-  data.forEach(function(e){
-    var m = /\[Status (\d+)\/10\]/.exec(e.notiz||'');
-    if(m) werte.push(parseInt(m[1],10));
-  });
-  var schnitt = werte.length ? (werte.reduce(function(a,b){return a+b;},0)/werte.length) : null;
-
-  var chips = data.map(function(e){
-    var farbe = FARBEN_K[e.farbe] || '#ccc';
-    var datum = new Date(e.created_at).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
-    return '<div class="baro-tag" style="background:'+farbe+';color:#fff;" title="'+datum+' · '+(FARBE_LABEL_KURZ[e.farbe]||e.farbe)+'">'+datum.split('.')[0]+'</div>';
-  }).join('');
-
-  var text = '';
-  if(schnitt != null){
-    text = '<div class="baro-verlauf-text">Über den gewählten Zeitraum ('+tage+' Tage) liegt die durchschnittliche Selbsteinschätzung bei <b>Ø '+schnitt.toFixed(1)+' von 10</b>, bei insgesamt <b>'+data.length+'</b> Einträgen.</div>';
+  var seit = new Date(); seit.setDate(seit.getDate() - tage);
+  var log = baroLogLaden(aktuelleKtId).filter(function(e){ return new Date(e.datum) >= seit; });
+  zeilen.push('BAROMETER-VERLAUF');
+  if(log.length){
+    var schnitt = log.reduce(function(a,e){return a+e.wert;},0) / log.length;
+    zeilen.push('Ø ' + schnitt.toFixed(1) + ' von 10 bei ' + log.length + ' Einträgen im gewählten Zeitraum.');
   } else {
-    text = '<div class="baro-verlauf-text">Insgesamt <b>'+data.length+'</b> Einträge im gewählten Zeitraum (keine genauen Werte hinterlegt, nur Farbbereiche).</div>';
+    zeilen.push('Keine Einträge im gewählten Zeitraum.');
   }
-  inhalt.innerHTML = text + '<div class="baro-tage">'+chips+'</div>';
-}
+  zeilen.push('');
 
-document.getElementById('kt-select').addEventListener('change', async function(){
-  aktuelleKindId = this.value;
-  await ladeBarometerVerlauf();
-  ladeVarianteAusLocalStorage();
-});
-document.getElementById('zeitraum-select').addEventListener('change', ladeBarometerVerlauf);
+  function feldWert(id){ var el = document.getElementById(id); return el ? (el.value||'').trim() : ''; }
 
-// ── Login/Träger-Hinweis (vereinfachte Variante wie BAROMETER_KIND.html) ──
-async function ermittleLoginUndZeigen(){
-  var hinweis = document.getElementById('login-hinweis');
-  try{
-    var { data: { session } } = await supabase.auth.getSession();
-    if(!session){
-      hinweis.style.display = 'block';
-      hinweis.textContent = 'Für die Teilnehmer-ID-Liste ist eine aktive Anmeldung nötig. Bitte über KLARTEXT_Login.html anmelden.';
-    } else {
-      hinweis.style.display = 'none';
+  // Struktur & Familie
+  var genutzteZonen = ZONEN.filter(function(z){ return localStorage.getItem(speicherKey(aktuelleKtId,'zone-'+z.id)) === '1'; });
+  var strukturTools = localStorage.getItem(speicherKey(aktuelleKtId,'struktur-tools')) || '';
+  var strukturRueck = localStorage.getItem(speicherKey(aktuelleKtId,'struktur-rueckmeldung')) || '';
+  var strukturAusblick = localStorage.getItem(speicherKey(aktuelleKtId,'struktur-ausblick')) || '';
+  if(genutzteZonen.length || strukturTools || strukturRueck || strukturAusblick){
+    zeilen.push('STRUKTUR & FAMILIE');
+    if(genutzteZonen.length){
+      zeilen.push('Genutzte Raumzonen: ' + genutzteZonen.map(function(z){
+        var notiz = localStorage.getItem(speicherKey(aktuelleKtId,'zone-notiz-'+z.id)) || '';
+        return z.name + (notiz ? ' (' + notiz + ')' : '');
+      }).join(', '));
     }
-  }catch(e){}
+    if(strukturTools) zeilen.push('Regulations-Tools: ' + strukturTools);
+    if(strukturRueck) zeilen.push('Rückmeldung: ' + strukturRueck);
+    if(strukturAusblick) zeilen.push('Ausblick: ' + strukturAusblick);
+    zeilen.push('');
+  }
+
+  // Neurodivergenz
+  var superkraefte = SUPERKRAEFTE.filter(function(s){ return localStorage.getItem(speicherKey(aktuelleKtId,'super-'+s.id)) === '1'; });
+  var brainy = BRAINY_KARTEN.filter(function(b){ return localStorage.getItem(speicherKey(aktuelleKtId,'brainy-'+b.id)) === '1'; });
+  var neuroReiz = localStorage.getItem(speicherKey(aktuelleKtId,'neuro-reizfilter')) || '';
+  var neuroNotiz = localStorage.getItem(speicherKey(aktuelleKtId,'neuro-notfall-notiz')) || '';
+  var neuroAusblick = localStorage.getItem(speicherKey(aktuelleKtId,'neuro-ausblick')) || '';
+  if(superkraefte.length || brainy.length || neuroReiz || neuroNotiz || neuroAusblick){
+    zeilen.push('NEURODIVERGENZ');
+    if(neuroReiz) zeilen.push('Reizfilter-Check: ' + neuroReiz);
+    if(superkraefte.length) zeilen.push('Superkräfte: ' + superkraefte.map(function(s){return s.name;}).join(', '));
+    if(brainy.length) zeilen.push('Notfall-Strategien: ' + brainy.map(function(b){return b.name;}).join(', '));
+    if(neuroNotiz) zeilen.push('Notiz: ' + neuroNotiz);
+    if(neuroAusblick) zeilen.push('Ausblick: ' + neuroAusblick);
+    zeilen.push('');
+  }
+
+  // Sprache & Integration
+  var sprNiveau = localStorage.getItem(speicherKey(aktuelleKtId,'sprache-niveau')) || '';
+  var sprKomp = localStorage.getItem(speicherKey(aktuelleKtId,'sprache-kompetenzen')) || '';
+  var sprUeb = localStorage.getItem(speicherKey(aktuelleKtId,'sprache-uebersetzung')) || '';
+  var sprTeil = localStorage.getItem(speicherKey(aktuelleKtId,'sprache-teilhabe')) || '';
+  var sprAusblick = localStorage.getItem(speicherKey(aktuelleKtId,'sprache-ausblick')) || '';
+  if(sprNiveau || sprKomp || sprUeb || sprTeil || sprAusblick){
+    zeilen.push('SPRACHE & INTEGRATION');
+    if(sprNiveau) zeilen.push('Sprachniveau (GER): ' + sprNiveau);
+    if(sprKomp) zeilen.push('Kulturelle Kompetenzen: ' + sprKomp);
+    if(sprUeb) zeilen.push('Übersetzung informeller Kompetenzen: ' + sprUeb);
+    if(sprTeil) zeilen.push('Teilhabe-Fortschritte: ' + sprTeil);
+    if(sprAusblick) zeilen.push('Ausblick: ' + sprAusblick);
+    zeilen.push('');
+  }
+
+  // Admin-Support
+  var adminZeilen = ADMIN_THEMEN.map(function(a){
+    var st = localStorage.getItem(speicherKey(aktuelleKtId,'admin-status-'+a.id));
+    return st ? (a.name + ': ' + st) : null;
+  }).filter(Boolean);
+  var adminSort = localStorage.getItem(speicherKey(aktuelleKtId,'admin-sortierung')) || '';
+  var adminTermine = localStorage.getItem(speicherKey(aktuelleKtId,'admin-termine')) || '';
+  var adminAusblick = localStorage.getItem(speicherKey(aktuelleKtId,'admin-ausblick')) || '';
+  if(adminZeilen.length || adminSort || adminTermine || adminAusblick){
+    zeilen.push('ADMIN-SUPPORT (Ausfüllhilfe & Strukturgeberin — keine Rechtsberatung)');
+    adminZeilen.forEach(function(z){ zeilen.push(z); });
+    if(adminSort) zeilen.push('Sortier-Status Unterlagen: ' + adminSort);
+    if(adminTermine) zeilen.push('Nächste Termine: ' + adminTermine);
+    if(adminAusblick) zeilen.push('Ausblick: ' + adminAusblick);
+    zeilen.push('');
+  }
+
+  zeilen.push('—');
+  zeilen.push('Anja Jolk · KLARTEXT-Mentoring');
+
+  document.getElementById('zusammenfassung-text').value = zeilen.join('\n');
+  document.getElementById('email-status').textContent = 'Bericht-Text erzeugt.';
 }
 
-(async function(){
-  await ermittleLoginUndZeigen();
-  await teilnehmerAuswahlLaden();
-})();
+function berichtKopieren(){
+  var text = document.getElementById('zusammenfassung-text').value;
+  if(!text){ document.getElementById('email-status').textContent = 'Bitte zuerst den Bericht-Text erzeugen.'; return; }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      document.getElementById('email-status').textContent = 'In die Zwischenablage kopiert.';
+    }, function(){
+      document.getElementById('email-status').textContent = 'Kopieren fehlgeschlagen — bitte Text manuell markieren und kopieren.';
+    });
+  } else {
+    document.getElementById('email-status').textContent = 'Kopieren nicht unterstützt — bitte Text manuell markieren und kopieren.';
+  }
+}
+
+function berichtPerEmail(){
+  var text = document.getElementById('zusammenfassung-text').value;
+  if(!text){ document.getElementById('email-status').textContent = 'Bitte zuerst den Bericht-Text erzeugen.'; return; }
+  var betreff = 'Ressourcen-Bericht ' + aktuelleKtId + ' · ' + heuteDeutsch();
+  var mailto = 'mailto:?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
+  if(mailto.length > 1800){
+    document.getElementById('email-status').textContent = 'Bericht ist lang — E-Mail-Programm könnte den Text abschneiden. Besser: Text kopieren und manuell einfügen.';
+  } else {
+    document.getElementById('email-status').textContent = 'E-Mail-Programm wird geöffnet …';
+  }
+  window.location.href = mailto;
+}
+
+// ── Init ──────────────────────────────────────────────
+teilnehmerListeRendern();
+aktualisiereKtSelect();
 </script>
 </body>
 </html>

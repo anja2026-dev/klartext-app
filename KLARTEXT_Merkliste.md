@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 76 ergänzt)
+Stand: 17.08.2026 (Strang 78 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2172,3 +2172,143 @@ Stundensätze und „0,40 € / km"; enthält kein „MDK" mehr. Layout visuell 
   ergänzen, bevor das Dokument verschickt wird.
 - Wie bei den Strang-73-Flyern kein automatischer Soll-Ist-Abgleich, falls sich Preise oder Tool-Namen
   künftig ändern — Dokument müsste dann manuell erneut geprüft werden.
+
+## Strang 77: Drei B2B-Landingpages für Kooperationspartner in klartext-shop (17.08.2026)
+
+Anja wollte laut Übergabe-Prompt "eine Landing-Page überarbeiten" — auf Rückfrage stellte sich heraus,
+dass sie eigentlich unsicher war, ob die App-Struktur ("alles in einer App") sinnvoll ist und wie sich
+daraus eine Landing-Page für die neuen Familienzentren-/Migrationszentren-/Pflegedienste-Angebote bauen
+lässt. Kein Umbau nötig — Architektur-Einschätzung + neue Verkaufsseiten im bestehenden Shop-Repo.
+
+**Architektur-Einschätzung (mit Anja abgestimmt):** `klartext-app` (437 HTML-Dateien) ist zu Recht eine
+zusammenhängende Mentoring-App für INGRA/Lehrkraft/Eltern/Teamkoordination — kein Aufräumfall.
+`klartext-shop` ist bereits sauber für Marketing/Verkauf getrennt (Muster: eine Übersichtsseite +
+eine `*_Verkaufsseite.html` pro Produkt). Zwei Nebenbefunde notiert, nicht akut: (1) Namenskollision
+"TK" — in klartext-app Teamkoordination-Modul, in klartext-shop ein Kartendeck-Produktkürzel; (2)
+`KLARTEXT_Traeger_Angebot.html` (Träger von Schulbegleitung) sitzt hinter Login, was für eine
+Akquise-Seite unpassend ist — betrifft aber eine andere Zielgruppe, nicht Teil dieses Strangs.
+
+**Entscheidung Seitenstruktur (mit Anja abgestimmt):** Drei getrennte Landingpages statt einer
+gemeinsamen Seite, analog zum bestehenden Shop-Muster — damit Anja z. B. einem Familienzentrum gezielt
+nur den passenden Link schicken kann, ohne Pflegedienst-Preise mitzuliefern.
+
+**Preismodell-Klärung (wichtiger Fakten-Konflikt, mit Anja aufgelöst):** Anja lieferte eine zweite
+Preisliste (aus einer NotebookLM-Recherche) mit zwei Tarif-Ebenen — niedrigschwellige Direktvermittlung
+(40–55 €) vs. institutionelle Fachberatung (75–110 €/h) für Träger mit eigenem Budget. Das stand im
+Widerspruch zur bereits committeten Pflegedienste-Übersicht aus Strang 76 (40/45/55 €/h). Klärung: Die
+Pflegedienste-Übersicht ist bereits korrekt, weil dort laut eigenem Text die Familie/Senior:in privat
+zahlt, nicht der Pflegedienst — das ist der Direktvermittlungs-Tarif, keine Korrektur nötig. Für alle
+drei neuen Seiten hat sich Anja für ausschließlich die niedrigschwellige Direktvermittlung entschieden
+(kein institutioneller Fachberatungs-Tarif, keine Workshop-Pauschalen — "ich muss mich erst einarbeiten
+mit niedrigen Schwellen").
+
+**Fact-Check DaZ (Migrationszentren):** Anja bestätigte, dass sie DaZ zwar unterrichten darf, aber
+keine BAMF-Zulassung hat — DaZ läuft also im Sinne von privater "Nachhilfe", nicht als anerkannter
+Integrationskurs. Auf der neuen Seite entsprechend explizit als "kein BAMF-anerkannter Integrationskurs"
+gekennzeichnet und in den niedrigschwelligen Gesamtpreis (50 €/Termin) integriert statt als eigene
+Institutionen-Pauschale. Der bestehende PDF-Flyer aus Strang 73 nennt "Deutschunterricht nach
+DAZ-Goethe-Standard" bereits ohne BAMF-Bezug — laut Anja unkritisch, keine Korrektur am Flyer nötig.
+
+**Marktrecherche zur Preis-Plausibilisierung (WebSearch):** Freiberufliche systemische Beratung liegt
+je nach Region/Zielgruppe bei 60–220 €/h (Beispiel Familienberatung 130 €/60 Min., Quellen:
+institut-bildung-coaching.de, systemische-beratung-mfr.de); Fachleistungsstunden in der ambulanten
+Erziehungshilfe NRW werden kommunal verhandelt, keine landesweite Festlegung (lwl-landesjugendamt.de).
+Damit sind sowohl die niedrigschwelligen 40–55 €/h als auch die (aktuell nicht genutzten) 75–110 €/h
+markt-plausibel — die 40–55 €/h sind bewusst niedrigschwellig unter dem Marktdurchschnitt angesetzt.
+
+**Gebaut (klartext-shop):**
+- `Familienzentren_Verkaufsseite.html` — 3 Säulen (Struktur-Coaching vor Ort, Emotionale
+  Stabilisierung, Ausfüllhilfe & Strukturgeberin), Preise 55 €/Termin (4/8 Termine 210 €/400 €) und
+  40 €/h (5/10 h 185 €/360 €).
+- `Migrationszentren_Verkaufsseite.html` — 3 Säulen inkl. sprach- und traumasensibler Begleitung,
+  DaZ-Nachhilfe explizit als "kein BAMF-Integrationskurs" gekennzeichnet, ein Gesamtpreis 50 €/Termin
+  inkl. DaZ (5/10 Termine 235 €/450 €).
+- `Pflegedienste_Verkaufsseite.html` — HTML-Fassung der Strang-76-Leistungsübersicht, gleiche drei
+  Preiskategorien (40/45/55 €/h) und Fahrtkosten.
+- Alle drei im bestehenden Shop-Design (Playfair Display/DM Sans, Navy `#1B3A4B`/Grün `#6EC6A0`),
+  ohne Login/Supabase, mit § 19 UStG-Hinweis (Kleinunternehmerregelung) und durchgängigem
+  "keine Rechtsberatung"-Disclaimer.
+- Die drei zugehörigen PDFs (zwei Flyer aus Strang 73, Pflegedienste-Übersicht aus Strang 76) wurden
+  zusätzlich von `klartext-app` nach `klartext-shop` kopiert, damit die Download-Links auf den neuen
+  Seiten funktionieren (Cloudflare Pages von klartext-shop kann nicht auf Dateien im
+  klartext-app-Repo zugreifen, die beiden Deployments sind bewusst getrennt).
+- `KLARTEXT_Shop_Uebersicht.html`: neue Sektion "Für Institutionen & Kooperationspartner"
+  (`#kooperation`) mit drei Karten im bestehenden `deck-grid`-Stil, verlinkt auf die drei neuen Seiten,
+  plus Nav-Link "Für Institutionen".
+
+**Getestet:** `tidy` (keine HTML-Fehler in allen vier geänderten/neuen Dateien), jsdom-Smoketest
+(Struktur-Zähler je Seite: 1 `<h1>`, korrekte Anzahl Preis-Karten je Preismodell — 2/1/3 —, je 4
+FAQ-Einträge), BeautifulSoup-Linkcheck (alle internen `href`/`src` — Impressum, Datenschutz, `anja.jpg`,
+die drei PDFs, `KLARTEXT_Shop_Uebersicht.html` — lösen auf existierende Dateien auf, keine toten Links).
+
+### Noch offen
+
+- **Git-Commit in `klartext-shop` konnte nicht abgeschlossen werden:** Alle sieben Dateien sind
+  `git add`-gestaged (verifiziert per `git status`), aber `git commit` ist an einer verwaisten
+  `.git/index.lock`-Datei hängen geblieben, die sich über das Sandbox-Dateisystem nicht löschen lässt
+  (Berechtigungsfehler beim Mount, reproduziert auch mit einer frisch angelegten Testdatei — kein
+  git-spezifisches Problem, sondern eine Mount-Einschränkung dieser Session). **Anja muss einmal
+  manuell** `klartext-shop/.git/index.lock` löschen (Terminal: `rm klartext-shop/.git/index.lock`,
+  oder einfach im Finder löschen), danach kann der Commit nachgeholt werden. Eine harmlose Testdatei
+  `klartext-shop/_test_remove_me.txt` (leer) ist aus dem gleichen Grund ebenfalls stehen geblieben und
+  kann mitgelöscht werden.
+- Telefonnummer fehlt weiterhin im Kontaktblock der Pflegedienste-Materialien (siehe Strang 76) — auch
+  auf der neuen `Pflegedienste_Verkaufsseite.html` nicht ergänzt, da bisher nur E-Mail als Kontaktweg
+  über die bestehenden Seiten läuft.
+- Auf `KLARTEXT_Shop_Uebersicht.html` verlinkt jetzt auch die neue Sektion — nicht geprüft: ob Anja die
+  drei neuen Seiten zusätzlich von `index.html` (Landing-Einstieg) aus verlinkt haben möchte.
+- Institutioneller Fachberatungs-Tarif (75–110 €/h) und Workshop-Pauschalen aus der NotebookLM-Recherche
+  sind bewusst nicht auf den Seiten – falls Anja sich später eingearbeitet hat und höhere Sätze für
+  Träger mit eigenem Budget anbieten möchte, wäre das eine spätere Ergänzung der drei Seiten.
+
+## Strang 78: LRS-Nachhilfe auf Familienzentren- und Migrationszentren-Seite ergänzt (17.08.2026)
+
+Anja wollte LRS-Training mit aufnehmen ("dort hab ich auch einige Fortbildungen und auch bereits selbst
+unterrichtet") und DaZ + LRS gemeinsam als "Nachhilfe" rahmen. Auf Rückfrage: Weiterbildung bei IFLW
+zur Lerntherapie und bei alphaPROF, auf beiden Seiten ergänzen (Familienzentren + Migrationszentren,
+nicht nur Migrationszentren, da LRS nicht migrationsspezifisch ist).
+
+**Fact-Check der beiden Fortbildungen (WebSearch):**
+- **IFLW** = Institut für integrative Lerntherapie und Weiterbildung, seit 2003, Fernstudien-Institut mit
+  Zertifizierung "Integrative Lerntherapeutin (IFLW)" — Kernkompetenzen Lerntherapie, Nachhilfe, Bildung,
+  Beratung (Quelle: iflw.de, bildungsserver.de). Korrekt zitiert als "Integrative Lerntherapie (IFLW)".
+- **alphaPROF** = kostenfreies Online-Fortbildungsprojekt der LegaKids-Stiftung zu LRS/Legasthenie für
+  Lehr- und Förderkräfte, Ziel: Diagnostik- und Förderkompetenz bei Lese-Rechtschreib-Schwierigkeiten
+  (Quelle: alphaprof.de, legakids.net). Korrekte Schreibweise "alphaPROF" (nicht "Alpha-Prof"), zitiert
+  als "alphaPROF (LegaKids-Stiftung)". Hinweis: Neuanmeldung endete zum 30.09.2025 — betrifft nur neue
+  Teilnehmer:innen, nicht Anjas bereits abgeschlossene Fortbildung.
+
+**Bewusste Abgrenzung (Disclaimer ergänzt, analog zum bestehenden "keine Rechtsberatung"-Muster):**
+LRS-Nachhilfe ist als ergänzende Lernbegleitung positioniert, ausdrücklich **kein Ersatz für eine
+schulische LRS-Feststellung oder -Diagnostik** — IFLW-Zertifizierung und alphaPROF-Fortbildung sind
+keine schulpsychologische Diagnostik-Berechtigung. Disclaimer auf beiden Seiten ergänzt.
+
+**Gebaut:**
+- `Familienzentren_Verkaufsseite.html`: neue Säule 4 "LRS-Nachhilfe", neue Preiskarte 55 €/Termin
+  (4/8 Termine 210 €/400 €, gleicher Satz wie Struktur-Coaching), zwei neue Badges (Integrative
+  Lerntherapie IFLW, LRS-Fortbildung alphaPROF), neue FAQ, Disclaimer erweitert. `.preis-grid`
+  max-width von 800px auf 1000px angepasst (jetzt 3 statt 2 Preiskarten).
+- `Migrationszentren_Verkaufsseite.html`: Säule 3 von "Sprachliche & administrative Begleitung" zu
+  "Sprachliche, lernbezogene & administrative Begleitung" erweitert (DaZ- und LRS-Nachhilfe gemeinsam
+  als "Nachhilfe" gerahmt), Preiskarte umbenannt zu "Alltagsbegleitung inkl. DaZ- & LRS-Nachhilfe"
+  (weiterhin 50 €/Termin, kein separater Preis — LRS wird wie DaZ in den bestehenden Gesamtpreis
+  integriert statt eigene Preiszeile), zwei neue Badges, neue FAQ, Check-Item und Disclaimer erweitert.
+
+**Getestet:** `tidy` (keine HTML-Fehler auf beiden Seiten nach der Änderung), jsdom-Smoketest
+(Familienzentren jetzt 3 Preiskarten/5 FAQ/6 Badges, Migrationszentren weiterhin 1 Preiskarte/jetzt
+5 FAQ/6 Badges — Preiskarten-Anzahl bei Migrationszentren bewusst unverändert, da LRS dort in den
+bestehenden Gesamtpreis integriert wurde statt eine neue Karte zu bekommen).
+
+### Noch offen
+
+- Git-Commit für Strang 77 **und** 78 steht weiterhin aus — beide hängen an derselben verwaisten
+  `.git/index.lock` in `klartext-shop` und `klartext-app` (siehe Strang 77, "Noch offen"). Anja muss
+  die drei Dateien manuell löschen, danach werden beide Stränge in einem gemeinsamen Commit-Durchgang
+  nachgeholt.
+- Kein separater Preis für LRS-Nachhilfe auf der Migrationszentren-Seite (anders als bei Familienzentren
+  mit eigener 55€-Karte) — falls Anja das lieber als eigene Preiszeile sehen möchte statt im
+  Pauschalpreis, wäre das eine kleine Nachbesserung.
+- Keine Aussage dazu, ob IFLW-Zertifizierung/alphaPROF-Fortbildung eine formale Berechtigung zur
+  amtlichen LRS-Feststellung beinhalten (z. B. für Nachteilsausgleich in der Schule) — bewusst nicht
+  behauptet, Disclaimer schließt das aus. Falls Anja hierzu weitere Qualifikationen hat, könnte das
+  präzisiert werden.

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 78 ergänzt)
+Stand: 17.08.2026 (Strang 79 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2260,6 +2260,67 @@ die drei PDFs, `KLARTEXT_Shop_Uebersicht.html` — lösen auf existierende Datei
 - Institutioneller Fachberatungs-Tarif (75–110 €/h) und Workshop-Pauschalen aus der NotebookLM-Recherche
   sind bewusst nicht auf den Seiten – falls Anja sich später eingearbeitet hat und höhere Sätze für
   Träger mit eigenem Budget anbieten möchte, wäre das eine spätere Ergänzung der drei Seiten.
+
+## Strang 79: Zusatzqualifikationen aus `10_Weiterbildung` auf die drei Seiten (17.08.2026)
+
+Anja hat den privaten Ordner `/Users/anjajolk/Beruf/Bewerbungen/10_Weiterbildung` freigegeben, um zu
+prüfen, welche ihrer vielen Fortbildungen sich zusätzlich für die drei B2B-Seiten eignen.
+
+**Vorgehen (wichtig für Verlässlichkeit):** Der Ordner enthält weit überwiegend reines Lern-/
+Referenzmaterial (E-Books, Worksheets, Artikel-PDFs von Blogs), das keinen Abschluss belegt. Nur
+Funde mit Name+Institution+Datum im PDF-Inhalt (nicht nur Dateiname) wurden als "echtes Zertifikat"
+gewertet und vorgeschlagen — alles andere ausdrücklich als "kein belastbarer Nachweis" verworfen, damit
+keine unbelegte Qualifikation auf einer öffentlichen Verkaufsseite landet.
+
+**Rückfrage zur Positionierung (mit Anja abgestimmt):** Die Familienzentren-Seite grenzt sich bisher
+rein ab ("kein Ersatz für ... Frühe Hilfen"). Anja ist aber selbst beim Nationalen Zentrum Frühe Hilfen
+(BZgA) fortgebildet (6 Module, 26./27.10.2022, Köln). Entscheidung: aktiv erwähnen — die Abgrenzung
+bleibt bestehen, zusätzlich aber als eigene Kompetenz sichtbar gemacht ("kenne die Ansätze der Frühen
+Hilfen und ergänze sie praxisnah"). Umfang: bewusst knapp, 2–3 stärkste Zusatz-Qualifikationen je Seite
+statt aller gefundenen Treffer.
+
+**Gebaut:**
+- `Familienzentren_Verkaufsseite.html`: Hero-Sub und ein Check-Item um die Frühe-Hilfen-Fortbildung
+  ergänzt (Positionierung von reiner Abgrenzung zu "kennt die Ansätze, ergänzt praxisnah"). Drei neue
+  Badges: Frühe Hilfen (Nationales Zentrum Frühe Hilfen, BZgA, 2022), Gesundheitsmanager*in
+  Kindertagesbetreuung (Stiftung Kindergesundheit, 24 LE + Prüfung, 25.04.2025), Kindeswohlgefährdung
+  & Schutzkonzept (Kita-Campus, 2019).
+- `Migrationszentren_Verkaufsseite.html`: Zwei neue Badges neben der bestehenden Trauma-Qualifikation:
+  Geflüchtete Kinder & Jugendliche (AUGEO Academy, NL, 10.10.2019), Flucht & Trauma (Johanniter,
+  25.04.2025).
+- `Pflegedienste_Verkaufsseite.html`: Referentin-Absatz und zwei neue Badges ergänzt: § 45 SGB
+  XI-Pflegekurse (Demenz, Schlaganfallvorsorge, Sicherheit im Pflegealltag — mehrere Anbieter:
+  Gesundheit von Morgen GmbH, curendo, Pflege-Betreuer, 2024–2026) sowie Pflegebedürftige Kinder:
+  ADHS & ASS (Pflege-Betreuer, 26.02.2026).
+
+**Nicht übernommen, geprüft und bewusst verworfen:**
+- GFK/Knotenlösen GmbH (10.08.2019) — echt, aber expliziter "Gratis"-Einsteigerkurs, nicht als
+  Qualifikation beworben.
+- DICS/DICIS-Institut ISO-9001-Zertifikat (21.12.2025) — echt, aber kein inhaltlicher Bezug zu den drei
+  Zielgruppen.
+- IndiPaed-Module und Nifbe "Individuelle Begabungsförderung" — echte, aber sehr kurze (1–2h)
+  Kinderschutz-/Begabungs-Module; nicht mit aufgenommen, um die Badge-Listen nicht zu überladen
+  (Vorgabe: 2–3 stärkste je Seite). Bei Bedarf nachrüstbar.
+- Uni-Ulm-Shelter-Material, sowie IU-Akademie/OPEN_HPI/openSAP-Kurse (außer dem einen DaZ-Kurs)/
+  ONCAMPUS/LECTURIO/fobizz/Siemens/iMOOX/BNE_hoch3/Städel/utb/UDEMY/badges — größtenteils reines
+  Kursmaterial ohne zugehöriges Zertifikat oder thematisch ohne Bezug zu den drei Zielgruppen.
+
+**Wichtige Korrektur (nicht Live-relevant, nur für künftige Genauigkeit):** IFLW-Abschluss "Integrative
+Lerntherapie" war laut Studiennachweis bereits am 20.07.2013, nicht wie zuvor angenommen 2021 — die
+2021er-Rechnung im Ordner war nur ein separater Buchkauf (Praxisbuch, 29 €), keine neue Ausbildung.
+Betrifft keine der Live-Seiten (dort steht nur "Integrative Lerntherapie (IFLW)" ohne Jahreszahl).
+
+**Getestet:** `tidy` (keine HTML-Fehler auf allen drei Seiten nach der Änderung), jsdom-Smoketest
+(Badge-Anzahl: Familienzentren 9, Migrationszentren 8, Pflegedienste 6).
+
+### Noch offen
+
+- Git-Commit für Strang 77, 78 **und** 79 steht weiterhin aus (gleiches Lock-Problem wie in Strang 77
+  beschrieben) — Anja committet aktuell direkt selbst über die von Claude bereitgestellten
+  Terminal-Befehle.
+- IndiPaed-, Nifbe- und weitere kurze Kinderschutz-Module wurden bewusst nicht aufgenommen (siehe oben)
+  — falls Anja die Badge-Listen doch umfangreicher haben möchte, sind die Fakten bereits recherchiert
+  und einsatzbereit.
 
 ## Strang 78: LRS-Nachhilfe auf Familienzentren- und Migrationszentren-Seite ergänzt (17.08.2026)
 

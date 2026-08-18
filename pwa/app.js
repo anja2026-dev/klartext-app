@@ -52,10 +52,85 @@ const appleTouchIcon = document.getElementById('appleTouchIcon');
 const DEFAULT_TITLE = document.title;
 const DEFAULT_ICON = 'icons/icon-192.png';
 
+const pwOverlay = document.getElementById('pwOverlay');
+const pwDeckTitel = document.getElementById('pwDeckTitel');
+const pwInput = document.getElementById('pwInput');
+const pwError = document.getElementById('pwError');
+const pwCancel = document.getElementById('pwCancel');
+const pwSubmit = document.getElementById('pwSubmit');
+
 let currentDeck = null;
 let currentIndex = 0;
+let allDecks = [];
+let accessMap = {};
 
 function lastIndexKey(deckId) { return `klartext_last_${deckId}`; }
+function unlockedKey(deckId) { return `klartext_unlocked_${deckId}`; }
+function isUnlocked(deckId) { return localStorage.getItem(unlockedKey(deckId)) === '1'; }
+
+async function loadAccess() {
+  try {
+    const res = await fetch('data/access.json');
+    accessMap = await res.json();
+  } catch (e) {
+    accessMap = {};
+  }
+}
+
+async function sha256Hex(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Passwort pro Deck: Hash-Vergleich, damit der Klartext-Code nicht 1:1 im Code steht.
+// Kein Ersatz für echten Login/Backend (die App bleibt eine rein statische Seite) — reicht
+// aber als Zugriffsschranke gegen zufälliges/beiläufiges Mitlesen fremder, nicht gekaufter Decks.
+async function checkPassword(deckId, pw) {
+  const expected = accessMap[deckId];
+  if (!expected) return false;
+  const hash = await sha256Hex(`${deckId}:${pw.trim().toLowerCase()}`);
+  return hash === expected;
+}
+
+function askForPassword(deckId, deckTitel) {
+  return new Promise((resolve) => {
+    pwDeckTitel.textContent = deckTitel;
+    pwInput.value = '';
+    pwError.hidden = true;
+    pwOverlay.hidden = false;
+    pwInput.focus();
+
+    function cleanup() {
+      pwOverlay.hidden = true;
+      pwSubmit.removeEventListener('click', onSubmit);
+      pwCancel.removeEventListener('click', onCancel);
+      pwInput.removeEventListener('keydown', onKeydown);
+    }
+    async function onSubmit() {
+      const ok = await checkPassword(deckId, pwInput.value);
+      if (ok) {
+        localStorage.setItem(unlockedKey(deckId), '1');
+        cleanup();
+        resolve(true);
+      } else {
+        pwError.hidden = false;
+        pwInput.value = '';
+        pwInput.focus();
+      }
+    }
+    function onCancel() {
+      cleanup();
+      resolve(false);
+    }
+    function onKeydown(e) {
+      if (e.key === 'Enter') { e.preventDefault(); onSubmit(); }
+      if (e.key === 'Escape') { e.preventDefault(); onCancel(); }
+    }
+    pwSubmit.addEventListener('click', onSubmit);
+    pwCancel.addEventListener('click', onCancel);
+    pwInput.addEventListener('keydown', onKeydown);
+  });
+}
 
 // Setzt Titel + apple-touch-icon passend zum offenen Deck, damit "Zum Home-Bildschirm
 // hinzufügen" (während das Deck offen ist) ein eigenes, unterscheidbares Icon + einen
@@ -79,6 +154,7 @@ function setAppIdentity(deckOrNull) {
 async function loadDecks() {
   const res = await fetch('data/decks.json');
   const decks = await res.json();
+  allDecks = decks;
   deckCategories.innerHTML = '';
 
   KATEGORIE_ORDER.forEach(katId => {
@@ -119,6 +195,18 @@ async function loadDecks() {
 
 async function openDeck(deckId, opts = {}) {
   const { pushState = true, karteNr = null } = opts;
+
+  if (!isUnlocked(deckId)) {
+    const meta = allDecks.find(d => d.id === deckId);
+    const ok = await askForPassword(deckId, meta ? meta.titel : 'dieses Deck');
+    if (!ok) {
+      // Abgebrochen: bei Deep-Link (?deck=...) URL bereinigen, sonst einfach auf der
+      // Übersicht bleiben (Klick auf eine Kachel hat noch keine URL geändert).
+      if (!pushState) closeDeck({ pushState: true });
+      return;
+    }
+  }
+
   let res;
   try {
     res = await fetch(`data/${deckId}.json`);
@@ -344,7 +432,7 @@ window.addEventListener('popstate', () => {
 // Deep-Link beim Start: ?deck=<id> öffnet direkt dieses Deck (z.B. eigenes Home-Bildschirm-Icon pro Deck).
 // Zusätzlich &karte=<nr> springt direkt zu einer bestimmten Karte (z.B. Verweis aus der Skill-Matrix
 // auf JD-05: pwa/index.html?deck=jd&karte=5), statt dass man sich durchs ganze Deck klicken muss.
-loadDecks().then(() => {
+Promise.all([loadDecks(), loadAccess()]).then(() => {
   const params = new URLSearchParams(location.search);
   const deckId = params.get('deck');
   const karteParam = params.get('karte');

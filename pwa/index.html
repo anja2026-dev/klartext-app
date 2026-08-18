@@ -25,6 +25,21 @@
   <a href="../DASHBOARD.html" class="iconbtn" id="homeBtn" aria-label="Zurück zur App" title="Zurück zur App">🏠</a>
 </header>
 
+<div id="pwOverlay" class="pw-overlay" hidden>
+  <div class="pw-modal">
+    <h2 class="pw-titel" id="pwDeckTitel"></h2>
+    <p class="pw-sub">Dieses Deck gehört zu einem gekauften Kartendeck. Bitte gib den Zugangscode
+      ein, den du nach dem Kauf erhalten hast.</p>
+    <input type="text" id="pwInput" class="pw-input" placeholder="Zugangscode" autocomplete="off"
+      autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text">
+    <p class="pw-error" id="pwError" hidden>Code stimmt nicht. Bitte nochmal versuchen.</p>
+    <div class="pw-actions">
+      <button type="button" class="pw-cancel" id="pwCancel">Abbrechen</button>
+      <button type="button" class="pw-submit" id="pwSubmit">Freischalten</button>
+    </div>
+  </div>
+</div>
+
 <main id="app">
 
   <section id="screen-decks" class="screen">

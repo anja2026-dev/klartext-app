@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 86 ergänzt)
+Stand: 18.08.2026 (Strang 87 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2730,3 +2730,37 @@ hier explizit NICHT als Schulbegleitung, sondern Koordination/Einarbeitung/Verwa
 - Anschreiben-Vorlagen enthalten Platzhalter `[Ihre geschäftliche E-Mail-Adresse]` — Anja muss die
   reale Absender-E-Mail vor dem ersten Versand ergänzen.
 - Git-Commit-Rückstand aus Strang 77/78 (`.git/index.lock`) weiterhin unverändert offen.
+
+## Strang 87 (18.08.2026) — Digistore24: alle 20 Kartendeck-Produkte angelegt
+
+Träger-Kontaktliste (`Traeger_Kontaktliste_Schwerte_Dortmund_Hagen.md`, recherchiert per
+Websuche, mit Quellen) für alle vier Zielgruppen fertiggestellt. Danach Digistore24-Produkte
+über Claude-in-Chrome-Browsersteuerung angelegt (Anja selbst eingeloggt, ich habe nur das
+Formular ausgefüllt, keine Zugangsdaten gesehen/eingegeben).
+
+**Wichtiger technischer Befund:** Das Datei-Upload-Werkzeug im Browser-Tool funktioniert aktuell
+nicht (Bug, unabhängig von Dateigröße — mehrfach mit unterschiedlichen Parametern getestet).
+Deshalb konnte ich die eigentlichen PDF-Dateien nicht selbst hochladen. Alles andere habe ich
+komplett automatisch erledigt:
+
+- Für alle 20 Produkte (KD, JD, AT, LRS, TK, FK, M3, HB, SMI, SP, MB, EL, LK, TR, ADHS, FS,
+  DaZ-GS, DaZ-Sek1, OGS, GK): Produktname, Produktname für Käufer, Produkttyp "Downloads",
+  Verkaufsseite-URL, Affiliate-Provision 0 % (Auto-Akzeptieren auf "Nein" gesetzt, sonst
+  Validierungsfehler), Preis lt. `KLARTEXT_Digistore24_Produktliste.md` gesetzt.
+- KD-PDF (Pilotprodukt, ID 719673) war schon angelegt, aber noch mit Alt-Preis 37 € — auf 18 €
+  korrigiert.
+- Pro Produkt ein leeres "Datei-Paket" im Download-Tresor angelegt und mit dem Produkt
+  verknüpft (Ausliefern-Tab). Bei MB/EL/LK ist im Paketnamen vermerkt, dass mehrere Dateien
+  zusammengehören (kein ZIP nötig — Digistore24 erlaubt mehrere Dateien pro Paket).
+- Datei `Digistore24_Upload_Anleitung.md` für Anja erstellt: Tabelle mit allen 20 Produkten,
+  Paket-Namen und genauen Dateinamen aus `klartext-app`, plus Schritt-für-Schritt-Anleitung für
+  den letzten Klick (Datei(en) hochladen → Mein Gerät → Datei(en) auswählen).
+
+### Noch offen
+- Anja muss pro Produkt die passende(n) PDF-Datei(en) selbst hochladen (Anleitung liegt bereit).
+- Genehmigung bei Digistore24 bewusst noch nicht beantragt (macht man laut Anleitung erst, wenn
+  alles fertig ist) — gemeinsam nachholen, sobald alle Dateien hochgeladen sind.
+- Produktgruppe "Kartendecks" noch nicht angelegt (nur "(Ohne Gruppe)" verfügbar), nicht
+  blockierend.
+- Insel-Set/Zonen-Set weiterhin bewusst zurückgestellt (Phase 2).
+- Instagram/TikTok-Aufbau weiterhin offen.

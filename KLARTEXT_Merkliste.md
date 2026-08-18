@@ -19,6 +19,18 @@ archivierten Bereich, die sonst verloren gegangen wären:
   in KD/JD integrierbar). Außerdem Methoden-Tools ohne Zielgruppenbindung: Familienbrett,
   Genogramm-Set, Fragetechniken-Set (Kandidat fürs TR-Deck), Werte-Kartenset. Assoziatives
   Bildercoaching-Set (Strang 1b) ebenfalls vorgemerkt, nicht konzipiert.
+- **Übergang Schule-Beruf (besprochen 18.08.2026), bewusst nicht als eigenes Fachdeck:** Anjas Idee, für
+  Jugendliche noch "Übergang Schule-Beruf" zu ergänzen — auf Nachfrage abgeglichen: Anja hat dafür
+  nur ihr systemisches Coaching-Kartenmaterial, keine praktische Erfahrung und keine
+  Arbeitsmarktkenntnisse (Ausbildungswege, Bewerbungsprozesse, Förderprogramme). Ein vollwertiges
+  Fachdeck dazu würde genau die Sorgfalt unterlaufen, die die anderen Materialien auszeichnet
+  (verifizierte Fachlichkeit). Stattdessen vorgemerkt: **kein eigenständiges Deck**, sondern
+  höchstens ein schmalerer Zusatzblock im JD-Deck (analog EL-Zusatzblöcke) zur *emotionalen* Seite
+  des Übergangs (Zukunftsängste, Entscheidungsdruck, Erwartungsdruck, Prokrastination) — klar als
+  "emotionale Begleitung, keine Berufsberatung" positioniert, mit Verweis auf Arbeitsagentur/BerEb
+  für die inhaltliche Beratung. Anknüpfungspunkte, die schon existieren: AJ-Tool "Toolbox für den
+  Berufseinstieg" (bisher nur für Jugendliche mit ADHS) und JD-Deck ("inkl. Berufsvorbereitung").
+  Nicht priorisiert, nur vorgemerkt.
 
 ## Strang 32 · Übergabe an Claude Free (Wochenlimit erreicht, 02.08.2026)
 

@@ -2663,6 +2663,53 @@ als Rückfalloption im Raum, falls bis 31.08. keine neue Anstellung/Teilzeitstel
 Nächster Schritt bei Anja: Anschreiben an alle drei Zielgruppen verschicken, ggf. weitere Träger
 (Kitas, Wohlfahrtsverbände) einbeziehen, falls die Zeit bis 31.08. knapp wird.
 
+**Fünfter Nachtrag — vierter Flyer für Schulbegleitungs-Träger (Anjas "eigentliches Projekt"):**
+Bisher komplett unberücksichtigt. Wichtige Klärung im Gespräch:
+
+- **Positionierung korrigiert:** Anjas erster Impuls war "Einarbeitung + Betreuung/Supervision"
+  anbieten. Zwei Korrekturen nötig: (1) Träger leisten die organisatorische Einarbeitung bereits
+  selbst — Anja kann dort nicht "reingrätschen", sondern muss fachlich ergänzen, nicht ersetzen.
+  (2) Anja hat noch nie Fallmanagement-Supervision geleitet und keine Supervisions-Zertifizierung
+  — "Supervision" als Begriff bewusst vermieden (in Deutschland oft an eigene Ausbildung geknüpft),
+  stattdessen ehrlich als "Begleitung & erste Ansprechpartnerin bei Redebedarf" positioniert.
+- **Zwei Bausteine:** Fachlicher Vertiefungs-Workshop (Barometer, kLAR-Modell, Krisenintervention
+  anhand der Feuerwehrkarten — Ergänzung zur bestehenden Einarbeitung) + Begleitung/Ansprechpartnerin
+  (kollegiale fachliche Begleitung, keine formale Supervision).
+- **Preisvorschlag (Expertenvorschlag auf Anjas Wunsch, Marktrecherche zu Supervisions-/
+  Dozentenhonoraren):** Workshop 320 € Pauschale (Halbtag, bis 10 Teilnehmende, entspricht
+  hochgerechnet ca. 640 €/Tag — bewusst über dem kritisierten "unter 500 €/Tag" öffentlicher
+  Träger). Begleitung 80 €/Termin (60 Min.), Monatspauschale 150 € (bis 2 Termine) — bewusst
+  niedriger als ursprünglich vorgeschlagene 120 €/Sitzung für "Supervision", da geringerer
+  Formalitätsgrad ehrlich abgebildet werden soll.
+- **Wichtiger Unterschied zu den ersten drei Flyern:** Hier zahlt der Träger selbst (kein
+  "Direktvermittlung, keine Kosten für die Einrichtung"-Modell) — im Anschreiben (Vorlage 4)
+  entsprechend vermerkt.
+- **Klärung "eigentliche Website":** `https://klartext-mentoring.de/` (Root-Domain) ist die
+  eigentliche Hauptseite — zeigt das komplette KLARTEXT-System für INGRA/Schulbegleitung inkl.
+  12-Wochen-Präsenzkurs mit Zertifikat (6 Seminare, Supervision, Praxisbegleitung durch Anja als
+  Trainerin), nicht nur Kartendecks. `KLARTEXT_Shop_Uebersicht.html` ist der reine
+  Kartendecks-Katalog, eine Unterseite davon.
+- **Sicherheitscheck "Kartendecks frei verfügbar":** Auf Anjas Sorge hin geprüft — Flip-Card-App
+  (`karten.klartext-mentoring.de`) ist passwortgeschützt ("Zugang nach Kauf"), direkte
+  PDF-Dateinamen der kompletten Decks (z. B. `KLARTEXT_KD-Deck_komplett.pdf`) sind auf dem Server
+  nicht erreichbar (fallen auf die Startseite zurück), Verkaufsseiten zeigen nur
+  wasserzeichenversehene Musterkarten. Kein Leak gefunden — falls Anja trotzdem etwas Konkretes
+  gesehen hat, steht eine gezielte Nachprüfung mit Screenshot/Link noch aus.
+
+**Gebaut:** `Anja_Jolk_Flyer_Schulbegleitung_Traeger.pdf` (HTML/CSS + WeasyPrint, gleiches
+Design-System, 1 Seite), in `klartext-app` UND `klartext-shop`. Vierte Anschreiben-Vorlage in
+`Anschreiben_Vorlagen_Familienzentren_Migrationszentren.md` ergänzt (Teilzeitanstellungs-Zusatz
+hier explizit NICHT als Schulbegleitung, sondern Koordination/Einarbeitung/Verwaltung formuliert
+— Anja möchte nicht selbst als Schulbegleitung eingesetzt werden).
+
+### Noch offen
+- Digistore24 (Anja ist wieder freigeschaltet) und Instagram/TikTok-Aufbau stehen noch aus,
+  bewusst zurückgestellt zugunsten dieses vierten Flyers — nächste Priorität laut Anja.
+- Die "Träger-Lizenz fürs ganze Team" (digitaler Zugang zum Kartensystem) ist weiterhin ungeklärt,
+  bewusst nicht in diesem Flyer bepreist.
+- Screenshot/Link von Anja zur "frei verfügbar"-Sorge steht noch aus, falls das Problem doch real
+  ist.
+
 ### Noch offen
 
 - Spot-Check der Pflegedienste-Seite/PDF war in Strang 85 bereits erledigt; für Familienzentren/

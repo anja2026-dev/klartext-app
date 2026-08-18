@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 18.08.2026 (Strang 89 ergänzt)
+Stand: 18.08.2026 (Strang 91 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2869,7 +2869,89 @@ Aufwand vor dem ersten echten Verkauf). Anja hat zugestimmt.
 - **Wichtig, blockiert die Funktion:** `klartext-app` (pwa-Ordner) und `klartext-shop`
   (Dankeseiten + entfernte Flip-Card-Links) müssen erst committet und gepusht werden, sonst
   laufen weder Passwortschutz noch Dankeseiten live. Git-Befehle unten.
-- Danach einmal selbst testen: eine Dankeseite öffnen, Code kopieren, in der Flip-Card-App beim
-  passenden Deck eingeben, prüfen ob es sich freischaltet.
+- ~~Danach einmal selbst testen~~ erledigt, siehe Strang 90 — Fund: falsches Repo bearbeitet.
 - Digistore24-Prüfergebnis für alle 20 Produkte weiterhin abwarten.
 - Produktgruppe "Kartendecks" weiterhin nicht angelegt, nicht blockierend.
+
+## Strang 90 (18.08.2026) — Passwortschutz war im falschen Repo, jetzt im echten Live-Repo korrigiert
+
+Anjas Test ("ohne Passwort reingekommen") deckte auf: `karten.klartext-mentoring.de` wird gar
+nicht aus `klartext-app/pwa/` ausgeliefert (dort hatte ich Strang 89 gebaut), sondern aus einem
+eigenen, dritten Repo `klartext-karten` (Cloudflare-Pages-Projekt `klartext-karten`,
+GitHub `anja2026-dev/klartext-karten`) — steht auch schon in Strang 55 (07.08.2026): Anja hatte
+den `pwa/`-Code damals komplett dorthin ausgelagert (inkl. eigener Suchleiste, die `klartext-app/
+pwa/` nie bekommen hat) und **zusätzlich am selben Tag eine einfache seitenweite Passwortsperre**
+eingebaut (ein Passwort `brainy-lernt-2026` für alle 24 Decks, Klartext im Code), weil sie durch
+die offene Zugänglichkeit alarmiert war, während Digistore24 an einem 2FA-Problem hing. Das war
+schon damals als Übergangslösung markiert, mit der offenen Notiz "Passwort-Weitergabe an
+Kund:innen einrichten, sobald Digistore24 läuft" — genau die Aufgabe aus Strang 89, nur eben im
+falschen Repo umgesetzt. `klartext-app/pwa/` ist seit 07.08. nur noch die (jetzt veraltete)
+Ursprungskopie, nicht mehr live.
+
+**Korrektur:** Zugriff auf `klartext-karten` (liegt lokal neben `klartext-app`/`klartext-shop`)
+angefordert und erhalten. Dort die alte seitenweite Sperre (`lockScreen`/`appShell`-Wrapper,
+`LOCK_PASSWORD`) entfernt und durch das Strang-89-System ersetzt (Passwort pro Deck, SHA-256-Hash
+in neuer `data/access.json`, Abfrage beim Öffnen eines Decks über `openDeck()` — greift damit
+automatisch auch bei Deep-Links und Sucher-Treffern, da beide über dieselbe Funktion laufen).
+Die 22-Decks-Suchleiste aus Strang 55 unverändert erhalten. `service-worker.js` Cache-Version
+v14→v15. `access.json` ist identisch mit der Version in `klartext-app/pwa/data/` — die 20 schon
+gebauten Dankeseiten bleiben also gültig, keine neuen Zugangscodes nötig.
+
+**Randnotiz:** `klartext-karten/data/decks.json` hat nur 24 Decks (kein TO-/DS-Deck) — die
+System-Erweiterung um Tourette/Trisomie-21 aus einer späteren `klartext-app`-Änderung wurde nie
+nach `klartext-karten` übertragen. Nicht Teil dieser Korrektur, aber als Lücke vermerkt: die
+beiden Decks sind über die Live-App aktuell nicht erreichbar.
+
+### Noch offen
+- **Wichtig:** `klartext-karten` muss noch committet und gepusht werden (Befehle unten), sonst
+  bleibt die alte Sperre live.
+- Nach dem Push: einmal in einem privaten/Inkognito-Fenster `karten.klartext-mentoring.de`
+  öffnen, ein Deck antippen, prüfen dass jetzt der deckeigene Code (nicht mehr
+  `brainy-lernt-2026`) abgefragt wird.
+- TO-/DS-Deck-Lücke zwischen `klartext-app` und `klartext-karten` — später einmal synchronisieren,
+  nicht dringend.
+- Digistore24-Prüfergebnis für alle 20 Produkte weiterhin abwarten.
+- Produktgruppe "Kartendecks" weiterhin nicht angelegt, nicht blockierend.
+
+## Strang 91 (18.08.2026) — Shop-Kaufbuttons von "Vormerken" auf echten Digistore24-Checkout umgestellt
+
+Anja fiel auf: Trotz der 20 live geschalteten Digistore24-Produkte zeigten alle Verkaufsseiten im
+`klartext-shop`-Repo weiterhin "Vormerken"-Buttons statt echter Kaufmöglichkeit — Rest vom
+Vorbestellungs-Stand vor dem Digistore24-Rollout. Betroffen war der komplette Shop, nicht nur
+einzelne Buttons.
+
+**Umgesetzt, für alle 20 Produkte mit fertigem Digistore24-Produkt (nicht für Insel-Set/
+Zonen-Set, die noch keins haben):**
+- "🛒 Jetzt kaufen"-Button (Digital/PDF) auf jeder Verkaufsseite: bisher ein Popup
+  ("Online-Kauf in Vorbereitung... per E-Mail bestellen"), jetzt ein direkter Link zur echten
+  Digistore24-Kasse (`https://www.checkout-ds24.com/product/<Produkt-ID>`, neuer Tab). Print- und
+  Träger-Lizenz-Buttons bewusst unverändert gelassen (dafür gibt es keine Digistore24-Produkte,
+  bleiben "Vormerken" per E-Mail).
+- Hero-Button "Jetzt vormerken" → "Jetzt kaufen" (Anker bleibt `#preise`).
+- Abschnitts-Überschrift "„Code" vormerken" → "„Code" kaufen".
+- Finale CTA am Seitenende: Text + Button ebenfalls auf echten Checkout-Link umgestellt, Text von
+  "Trag dich unverbindlich für die Vorbestellung ein" auf "Einmalig zahlen — direkt als
+  PDF-Download erhältlich" geändert.
+- **Wichtiger Zusatzfund:** Auf allen 20 Seiten stand im Preise-Bereich noch ein Hinweiskasten
+  ("Wir bereiten gerade Druck und Verkaufsstart vor. Trag dich jetzt schon unverbindlich ein...")
+  der dem neuen Kaufen-Button direkt widersprochen hätte. Auf "Als PDF-Download sofort erhältlich,
+  die Druckversion bereiten wir gerade vor." geändert (Kartenzahl-Bestätigung im ersten Satz
+  unverändert gelassen, die ist weiter korrekt).
+- Auf der JD-Seite zusätzlich einen ganzen Absatz entfernt, der noch behauptete "JD erscheint in
+  Kürze, Kartentexte werden gerade fertiggestellt" — obwohl JD-PDF längst live ist.
+- `KLARTEXT_Shop_Uebersicht.html`: Badge "Verfügbar zum Vormerken" → "Jetzt erhältlich" bei genau
+  den 20 echten Produkten (per Deck-Code-Zuordnung, nicht pauschal), Hinweistext am Seitenende
+  ergänzt ("20 Kartendecks sind als PDF-Download direkt käuflich").
+- Alle Änderungen automatisiert per Skript umgesetzt (Regex mit Vorher/Nachher-Zählung pro Datei,
+  keine stille Fehlanpassung), danach Div-Balance und Produkt-ID-Zuordnung stichprobenartig
+  geprüft — sauber.
+
+**Randnotiz, nicht behoben:** Die JD-Seite zeigt weiterhin "19–22 €" (Preisspanne, alte
+Platzhalter-Angabe) und "40 Coaching-Impulskarten", während der tatsächliche Digistore24-Preis
+22 € fest ist und das Deck laut `decks.json` inzwischen 52 Karten hat. Das ist ein
+Content-Veraltungs-Fund, keine Folge dieser Änderung — mit Anja klären, ob die Seite generell ein
+Update braucht.
+
+### Noch offen
+- `klartext-shop`-Änderungen (Kaufbuttons, Hinweistexte) noch nicht committet/gepusht.
+- JD-Verkaufsseite: veraltete Preisspanne/Kartenzahl klären (siehe Randnotiz oben).

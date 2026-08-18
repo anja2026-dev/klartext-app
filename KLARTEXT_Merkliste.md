@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 17.08.2026 (Strang 85 ergänzt)
+Stand: 17.08.2026 (Strang 86 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2575,3 +2575,99 @@ bestehenden Gesamtpreis integriert wurde statt eine neue Karte zu bekommen).
   amtlichen LRS-Feststellung beinhalten (z. B. für Nachteilsausgleich in der Schule) — bewusst nicht
   behauptet, Disclaimer schließt das aus. Falls Anja hierzu weitere Qualifikationen hat, könnte das
   präzisiert werden.
+
+## Strang 86: Live-Check Familienzentren/Migrationszentren + Anschreiben-Vorlagen (17.08.2026)
+
+Anja ist freigegeben, Träger aktiv anzuschreiben. Zwei Schritte in dieser Session:
+
+**Live-Check per web_fetch** (Cache-Busting `?v=2`): `Familienzentren_Verkaufsseite.html` und
+`Migrationszentren_Verkaufsseite.html` erneut abgerufen und mit dem dokumentierten Stand
+abgeglichen — Preise (Familienzentren: 55 €/Termin Struktur-Coaching+Stabilisierung, 40 €/h
+Administrativer Support, 55 €/Termin LRS-Nachhilfe; Migrationszentren: 50 €/Termin
+Alltagsbegleitung inkl. DaZ- & LRS-Nachhilfe), Badges, Qualifikationstitel ("Systemische Beraterin
+und Coachin (IHK)") und alle Disclaimer (kein Ersatz für Jugendamt/Frühe Hilfen, keine
+Rechtsberatung, DaZ kein BAMF-Integrationskurs, keine schulische LRS-Diagnostik) stimmen mit dem
+letzten Stand überein. Beide Seiten sind live korrekt.
+
+**Zwei Anschreiben-Vorlagen erstellt** (E-Mail, ca. 180–200 Wörter, formelle Anrede, niedrigschwelliger
+CTA für ein kurzes Telefonat): eine für Familienzentren, eine für Migrationszentren. Datei: außerhalb
+des Repos bei Anja (`Anschreiben_Vorlagen_Familienzentren_Migrationszentren.md`, aus dem
+Cowork-Output-Ordner übernommen — kein Repo-Artefakt, da reine Text-Vorlage ohne Website-Bezug).
+
+**Nachtrag (auf Anjas Hinweis):** Flyer werden nicht nur verlinkt, sondern als PDF-Anhang mitgeschickt
+(`Anja_Jolk_Flyer_Familienzentren.pdf`, `Anja_Jolk_Flyer_Migrationszentren.pdf`, beide bereits in
+`klartext-app` vorhanden) — bei institutionellen Empfängern üblicher, da die Leitung den Flyer ohne
+Klick öffnen und intern weiterleiten kann. Website-Link bleibt zusätzlich in der Mail für
+Preise/FAQ, die nicht auf dem Flyer stehen. Vorlagen entsprechend angepasst (PS-Zeile).
+
+**Zweiter Nachtrag — Flyer waren veraltet, jetzt neu gebaut:** Auf Anjas Rückfrage ("die Flyer haben
+gar keine Preise?") geprüft: Beide PDFs hatten nur "Honorar auf Anfrage", keine Preise. Zusätzlich
+entdeckt: beide waren generell veraltet gegenüber dem Live-Stand der Seiten — Familienzentren-Flyer
+hatte nur 3 statt 4 Säulen (LRS-Nachhilfe aus Strang 78 fehlte), Migrationszentren-Flyer erwähnte in
+Säule 3 nur DaZ, nicht die LRS-Ergänzung; beide trugen noch den alten Titel "Systemische Beraterin
+(IHK)" statt der korrigierten Fassung "und Coachin" (Strang 80) und hatten keine Telefonnummer.
+
+Auf Anjas Entscheidung ("voll aktualisieren + Preise ergänzen") beide Flyer komplett neu gebaut
+(HTML/CSS → WeasyPrint, Farben/Struktur am Design-System orientiert: Navy #1B3A4B, Grün #6EC6A0,
+Orange #C47A00, Beige #F5F0E8). Jetzt enthalten: alle Säulen inkl. LRS, korrigierter Titel,
+Telefonnummer, vollständige Preistabellen 1:1 aus den Landingpages übernommen (Familienzentren:
+55 €/Termin Struktur-Coaching+Stabilisierung, 40 €/h Administrativer Support, 55 €/Termin
+LRS-Nachhilfe; Migrationszentren: 50 €/Termin Alltagsbegleitung inkl. DaZ- & LRS-Nachhilfe).
+Beide je 1 Seite, in `klartext-app` UND `klartext-shop` aktualisiert (identische Dateien).
+
+**Dritter Nachtrag — echte Schrift + Klarstellung zur Bezahlung:** Anja bestand zurecht auf der
+korrekten Schrift ("die schrift müssen wir unbedingt nachbessern"). Da die Sandbox keinen
+Netzwerkzugriff auf Google Fonts hat, hat Anja `Playfair Display` und `DM Sans` selbst von
+fonts.google.com heruntergeladen (Downloads-Ordner freigegeben), ich habe die TTF-Dateien
+lokal installiert und beide Flyer mit den echten Schriften neu gerendert — jetzt schriftidentisch
+mit der Website.
+
+Zweite Rückfrage von Anja: Was, wenn der Träger nicht zahlt, sondern nur empfiehlt, und die Familie
+selbst zahlt? Antwort: Genau das ist das vorgesehene Modell (Direktvermittlung, kein Vertrag mit dem
+Träger, kein Ausfallrisiko über den Träger) — stand aber im Flyer nicht deutlich genug direkt bei der
+Preisliste. Ergänzt: hervorgehobener Kasten direkt im Honorar-Block auf beiden Flyern: "Für Ihre
+Einrichtung entstehen keine Kosten. Die Familie bucht und bezahlt direkt und privat bei mir – Sie
+vermitteln lediglich den Kontakt, kein Vertrag, keine Rechnung an Sie."
+
+Beide PDFs final in `klartext-app` UND `klartext-shop` aktualisiert, je 1 Seite, Playfair
+Display/DM Sans korrekt eingebettet.
+
+**Bekanntes Sandbox-Problem erneut aufgetreten:** `.git/index.lock` in beiden Repos ließ sich beim
+`git status` nicht automatisch aufräumen ("Operation not permitted") — betrifft nur die Sandbox, die
+Dateiänderungen selbst sind unabhängig davon korrekt geschrieben. Anja muss vor dem Commit einmal
+manuell aufräumen (siehe Merkliste-Kopfbereich, Abschnitt "Bekanntes Sandbox-Problem").
+
+**Vierter Nachtrag — Pflegedienste-Flyer + dritte Anschreiben-Vorlage, plus Teilzeitanstellung als
+zusätzliche Frage in allen drei Vorlagen:** Kontext: Malteser Hausnotruf hat Anja zum 31.08. gekündigt
+(nur 3 Monate Beschäftigung, ALG-I-Anwartschaftszeit von 12/30 Monaten damit nicht erfüllt — Bürgergeld
+droht ohne neue Anstellung). Homeoffice-Jobsuche lief ins Leere (nur Kreditvertrieb/zu spezifisch).
+Idee: bei den ohnehin angeschriebenen Trägern zusätzlich nach einer Teilzeitanstellung fragen, nicht
+nur Honorar-Kooperation — sinnvoll, da diese Einrichtungen oft echte Teilzeitstellen passend zu Anjas
+Qualifikation haben. Umsetzung: **ein** Anschreiben mit **zwei** Angeboten (nicht zwei getrennte
+Kontakte), Homeoffice ist jetzt kein Muss mehr (Präsenzstellen ausdrücklich ok). Ergänzt in allen drei
+Vorlagen (Familienzentren, Migrationszentren, jetzt auch Pflegedienste): "Ergänzend: Da ich meine
+Selbstständigkeit gerade aufbaue, bin ich aktuell auch offen für eine sozialversicherungspflichtige
+Teilzeitanstellung bei Ihnen..." Datei: `Anschreiben_Vorlagen_Familienzentren_Migrationszentren.md`
+(jetzt mit drei statt zwei Vorlagen, Dateiname bewusst nicht geändert).
+
+Zusätzlich Pflegedienste-Flyer (`Anja_Jolk_Leistungsuebersicht_Pflegedienste.pdf`) geprüft und neu
+gebaut (bisher LibreOffice-Erstellung ohne HTML-Quelle, jetzt wie die anderen zwei per HTML/CSS +
+WeasyPrint mit Playfair Display/DM Sans): fehlende Kredential-Kopfzeile ("Systemische Beraterin und
+Coachin (IHK)") ergänzt, "Für Ihren Pflegedienst entstehen keine Kosten"-Hinweis direkt im
+Honorar-Block ergänzt (gleiches Muster wie bei den anderen zwei Flyern), Inhalte 1:1 mit
+Pflegedienste_Verkaufsseite.html abgeglichen (drei Leistungsbereiche, Preise 40/45/55 €/Std.,
+Pflegekurse § 45 SGB XI erwähnt). In `klartext-app` UND `klartext-shop` aktualisiert, 1 Seite.
+
+**Offen:** Anja beantragt parallel keine ALG I (Anwartschaftszeit nicht erfüllt) — Bürgergeld bleibt
+als Rückfalloption im Raum, falls bis 31.08. keine neue Anstellung/Teilzeitstelle zustande kommt.
+Nächster Schritt bei Anja: Anschreiben an alle drei Zielgruppen verschicken, ggf. weitere Träger
+(Kitas, Wohlfahrtsverbände) einbeziehen, falls die Zeit bis 31.08. knapp wird.
+
+### Noch offen
+
+- Spot-Check der Pflegedienste-Seite/PDF war in Strang 85 bereits erledigt; für Familienzentren/
+  Migrationszentren war es bisher nur die Text-Zusammenfassung aus der Vorsession — jetzt mit
+  echtem `web_fetch` nachgeholt und bestätigt.
+- Anschreiben-Vorlagen enthalten Platzhalter `[Ihre geschäftliche E-Mail-Adresse]` — Anja muss die
+  reale Absender-E-Mail vor dem ersten Versand ergänzen.
+- Git-Commit-Rückstand aus Strang 77/78 (`.git/index.lock`) weiterhin unverändert offen.

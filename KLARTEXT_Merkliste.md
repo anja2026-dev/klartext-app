@@ -2946,12 +2946,22 @@ Zonen-Set, die noch keins haben):**
   keine stille Fehlanpassung), danach Div-Balance und Produkt-ID-Zuordnung stichprobenartig
   geprüft — sauber.
 
-**Randnotiz, nicht behoben:** Die JD-Seite zeigt weiterhin "19–22 €" (Preisspanne, alte
-Platzhalter-Angabe) und "40 Coaching-Impulskarten", während der tatsächliche Digistore24-Preis
-22 € fest ist und das Deck laut `decks.json` inzwischen 52 Karten hat. Das ist ein
-Content-Veraltungs-Fund, keine Folge dieser Änderung — mit Anja klären, ob die Seite generell ein
-Update braucht.
+**Nachtrag (gleicher Tag): JD-Preisspanne geprüft und Kartenzahl korrigiert.** Anja bat, den oben
+genannten Fund vollständig zu klären. Ergebnis: Die "X–Y €"-Preisspannen auf allen 20
+Verkaufsseiten sind kein Fehler — bei allen 20 Produkten entspricht der obere Wert der Spanne
+exakt dem echten, fest in Digistore24 hinterlegten Preis (geprüft über den Tab "Zahlungspläne" je
+Produkt, z. B. JD: Spanne 19–22 €, echter Preis 22,00 €; KD: Spanne 15–18 €, echter Preis
+18,00 €; usw. — alle 20 stimmen exakt überein). Keine Änderung nötig.
+
+Die Kartenzahl bei JD war dagegen tatsächlich veraltet (40 statt 52, laut `decks.json`) und wurde
+an allen vier Stellen auf der Seite korrigiert: Hero-Text, Hero-Statistik, Leistungs-Kachel,
+beide Preis-Listen (PDF und Print). Dabei zusätzlich zwei weitere Reste aus der
+Vorbereitungsphase gefunden und mitkorrigiert, die ausschließlich auf JD noch vorhanden waren
+(alle anderen 19 Seiten hatten das schon richtig): die dritte Hero-Statistik zeigte noch
+"24/40 Karten in Gestaltung" (jetzt: "fertig / Karten & PDF stehen", wie bei allen anderen
+Decks), und die finale CTA-Überschrift hieß noch "JD erscheint in Kürze" (jetzt: "JD ist
+startklar", wie bei KD/EL/LK/TR). Alle Änderungen nur in `JD_Verkaufsseite.html`, Div-Balance
+geprüft (117/117), keine Auswirkung auf die anderen 19 Dateien.
 
 ### Noch offen
-- `klartext-shop`-Änderungen (Kaufbuttons, Hinweistexte) noch nicht committet/gepusht.
-- JD-Verkaufsseite: veraltete Preisspanne/Kartenzahl klären (siehe Randnotiz oben).
+- `klartext-shop`-Änderungen (Kaufbuttons, Hinweistexte, JD-Korrektur) noch nicht committet/gepusht.

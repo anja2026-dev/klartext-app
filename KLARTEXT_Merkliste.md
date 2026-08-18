@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 18.08.2026 (Strang 91 ergänzt)
+Stand: 18.08.2026 (Strang 92 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2965,3 +2965,57 @@ geprüft (117/117), keine Auswirkung auf die anderen 19 Dateien.
 
 ### Noch offen
 - `klartext-shop`-Änderungen (Kaufbuttons, Hinweistexte, JD-Korrektur) noch nicht committet/gepusht.
+
+## Strang 92 (18.08.2026) — Kostenloses "KLARTEXT-Schnupperpaket" als Lead-Magnet aufgesetzt
+
+Anja erinnerte sich an eine alte Idee: neben den 20 bezahlten Decks auch etwas Kostenloses anbieten.
+Auf Nachfrage keine konkrete Erinnerung mehr an Details — gemeinsam neu entschieden.
+
+**Verworfene Optionen, mit Begründung:**
+- FK-Krisendeck komplett gratis: verworfen, weil die Verkaufsseite selbst "nur für qualifizierte
+  Fachkräfte" sagt und ausdrücklich kein Kinderschutz-/Rechtsberatungs-Ersatz ist — ein offener
+  Gratis-Download hätte genau diese bewusste Zielgruppen-Eingrenzung unterlaufen.
+- SP-Deck komplett gratis: von Anja abgelehnt.
+- Reiner Karten-Querschnitt (3-5 Einzelkarten aus verschiedenen Decks): erster Vorschlag, von Anja
+  zu Recht hinterfragt ("nicht querbeet") — zu wenig echter Nutzwert.
+- Ein komplettes größeres Deck (KD/JD/GK/M3) gratis: verworfen wegen zu hohem Umsatzverlust.
+
+**Entschieden:** Ein neues, eigenständiges 8-Karten-PDF ("KLARTEXT-Schnupperpaket") aus drei
+allgemeinen, nicht diagnose-gebundenen Decks — 4 Karten aus M3 (Werkzeugkarten: "Kind kommt
+aufgewühlt an", "Übergang zwischen Situationen", "Mini-Pause", "Lob-Sandwich"), 2 aus KD ("Wie geht
+es mir heute?", "Was ist ein guter Freund?"), 2 aus JD ("Meine Stärken sehen", "Nein sagen
+können"). Bewusst nur alltagsnahe, nicht-krisenhafte Karten gewählt.
+
+**Umgesetzt:**
+- Neues PDF gebaut (`KLARTEXT_Schnupperpaket.pdf`, 18 Seiten: Cover + 8×2 Kartenseiten +
+  Cross-Sell-Schlussseite), mit den bestehenden Karten-Renderern (`build_card_kd.py`,
+  `build_card_jd.py`, `build_card_werkzeug.py`) und echten Kartenbildern/-texten aus den
+  bestehenden Datenquellen — keine neuen Inhalte erfunden. Skript:
+  `build_schnupperpaket.py` (im Repo-Root abgelegt, analog zu den bestehenden `build_pdf_*.py`).
+- Neues Digistore24-Produkt "Schnupperpaket-PDF" (ID 723604) angelegt: Produkttyp Downloads,
+  Zahlungsplan auf 0,00 € gesetzt (ein versehentlich mitangelegter 37-€-Plan wieder gelöscht),
+  Datei im Download-Tresor hinterlegt (Anja hat den Datei-Upload selbst gemacht, da der
+  automatische Upload über den Browser-Agent technisch nicht ging).
+- `Schnupperpaket_Verkaufsseite.html` und `Schnupperpaket_Dankeseite.html` neu gebaut (Stil wie
+  die 20 bestehenden Seiten), Dankeseite mit Cross-Sell-Hinweis auf alle 20 kostenpflichtigen
+  Decks statt Flip-Card-Bonus (der Bonus gilt nur für echte Käufe, siehe Strang 89/90).
+- Digistore24-Eigenschaften: Verkaufsseite/Dankeseite-URLs eingetragen.
+- **Genehmigung beantragt:** Der übliche Weg (Testkauf über den Kaufen-Button vor Antragstellung)
+  ging nicht, weil der öffentliche Checkout-Link vor Genehmigung generell "nicht verfügbar" zeigt —
+  auch für eingeloggte Vendors. Anja hat das Produkt stattdessen direkt über den echten
+  Kaufen-Button gekauft (0 €, kein Testkauf-Modus nötig) und selbst die Genehmigung beantragt.
+  Status jetzt "Warte..." wie bei den anderen 20 Produkten.
+- `KLARTEXT_Shop_Uebersicht.html`: neue Kachel ganz oben im Grid, grün hervorgehoben, Status
+  "Kostenlos" statt "Jetzt erhältlich".
+
+**Randnotiz:** Beim ersten Speichern der Verkaufsseite/Dankeseite-URLs gingen die Werte verloren
+(vermutlich weil der Genehmigungs-Checkliste-Dialog den Eigenschaften-Save abgefangen hat) —
+beim zweiten Versuch, getrennt von der Genehmigungs-Anfrage, hat es funktioniert. Beide Felder
+vor dem Commit noch einmal geprüft und bestätigt korrekt gespeichert.
+
+### Noch offen
+- `klartext-shop`-Änderungen aus Strang 92 (2 neue Dateien + Shop-Übersicht-Kachel) noch nicht
+  committet/gepusht.
+- `KLARTEXT_Schnupperpaket.pdf` und `build_schnupperpaket.py` in `klartext-app` noch nicht
+  committet/gepusht.
+- Digistore24-Prüfergebnis fürs Schnupperpaket (wie bei den anderen 20) abwarten.

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 18.08.2026 (Strang 87 ergänzt)
+Stand: 18.08.2026 (Strang 89 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -2757,10 +2757,119 @@ komplett automatisch erledigt:
   den letzten Klick (Datei(en) hochladen → Mein Gerät → Datei(en) auswählen).
 
 ### Noch offen
-- Anja muss pro Produkt die passende(n) PDF-Datei(en) selbst hochladen (Anleitung liegt bereit).
-- Genehmigung bei Digistore24 bewusst noch nicht beantragt (macht man laut Anleitung erst, wenn
-  alles fertig ist) — gemeinsam nachholen, sobald alle Dateien hochgeladen sind.
+- ~~Anja muss pro Produkt die passende(n) PDF-Datei(en) selbst hochladen~~ erledigt (Anja hat
+  alle 20 Dateien hochgeladen).
+- ~~Genehmigung bei Digistore24 beantragen~~ erledigt für alle 20 Produkte (siehe Strang 88).
 - Produktgruppe "Kartendecks" noch nicht angelegt (nur "(Ohne Gruppe)" verfügbar), nicht
   blockierend.
 - Insel-Set/Zonen-Set weiterhin bewusst zurückgestellt (Phase 2).
 - Instagram/TikTok-Aufbau weiterhin offen.
+- **Offener Verdacht, noch nicht bestätigt:** MB-PDF-Datei-Paket (ID 138548) zeigt im
+  Download-Tresor weiterhin nur 1 Datei/4 MB, erwartet werden aber 2 Dateien (~6,2 MB:
+  `KLARTEXT_Mobbing-Intervention_komplett.pdf` + `KLARTEXT_AntiMobbing_Arbeitsmaterialien.pdf`,
+  siehe Kit-Entscheidung 07.08.2026). Vermutlich hat Anja nur eine der zwei Dateien hochgeladen —
+  mit ihr klären und ggf. zweite Datei ergänzen.
+
+## Strang 88 (18.08.2026) — Digistore24-Genehmigung für alle 20 Produkte + Flip-Card-App-Leck geschlossen
+
+**Genehmigung beantragt (technischer Befund):** Der erste Versuch, die Genehmigung für KD-PDF zu
+beantragen, zeigte auch nach korrekt ausgefüllter Checkliste (7 Häkchen) + Speichern weiterhin
+"Genehmigung beantragen" statt "Warte...", mit neuer Inline-Warnung "Bitte führen Sie einen
+Testkauf durch!". Vermutung: Digistore24 verlangt serverseitig einen tatsächlichen (Test-)Kauf,
+bevor ein Genehmigungsantrag angenommen wird — unabhängig vom Checkliste-Häkchen "Testkauf
+gemacht". Anja hat das für GK-PDF (723461) über die kostenlose TEST-PAY-Zahlungsart verifiziert:
+nach ihrem Testkauf wurde der erneute Genehmigungsantrag sofort zu "Warte..." — Hypothese
+bestätigt. Anja hat danach selbstständig für alle 20 Produkte Testkäufe gemacht und die
+Genehmigung beantragt; Produktliste zeigt jetzt für alle 20 Produkte "Warte... - Antrag
+zurückziehen". Damit ist der komplette Digistore24-Rollout (Anlage, Preise, Dateien, Genehmigung)
+für alle 20 Kartendeck-PDFs abgeschlossen, es fehlt nur noch die Prüfung durch Digistore24 selbst.
+
+**Flip-Card-App war öffentlich frei zugänglich, ohne dass das so gedacht war:** Anja fiel beim
+Blick auf die Verkaufsseiten auf, dass der Button "📱 Als Flip-Card ausprobieren" nicht zu einer
+begrenzten Vorschau führt, sondern zur kompletten Flip-Card-Web-App
+(`karten.klartext-mentoring.de`) — dort sind alle 26 Decks komplett und ohne jede Zugriffssperre
+durchsuchbar. Klärung mit Anja: Diese App war ursprünglich **nur als privates Werkzeug für sie
+selbst** gedacht (um alle Karten durchzusehen), nicht als Kundenprodukt — das deckt sich mit der
+bewussten Entscheidung aus `KLARTEXT_Konzept_Kartendecks-App.md` ("Zugriffssteuerung pro
+gekauftem Deck bewusst noch nicht gelöst, alle Decks vorerst frei zugänglich, Zugriffsschutz erst
+mit echtem Checkout nachziehen"). Die echte Kunden-Vorschau sind die Wasserzeichen-Bildmuster in
+der `vorschau/`-Galerie auf jeder Verkaufsseite — die bleiben unverändert.
+
+Mit Anjas Bestätigung alle 25 öffentlichen Links zur Flip-Card-App entfernt (22 Verkaufsseiten +
+2 Links auf `index.html` + 1 Link auf `KLARTEXT_Shop_Uebersicht.html`, alle im
+`klartext-shop`-Repo). Zusätzlich eine dadurch falsch gewordene Werbeaussage auf `index.html`
+entfernt ("Jedes Deck zusätzlich als digitale Flip-Card-App zum Ausprobieren"). Die App selbst
+läuft technisch unverändert weiter (z. B. per Lesezeichen für Anja privat erreichbar), ist aber
+nirgendwo mehr im Shop verlinkt.
+
+### Noch offen
+- ~~MB-PDF-Datei-Paket-Diskrepanz~~ erledigt: Anja hat die fehlende zweite Datei
+  (`KLARTEXT_AntiMobbing_Arbeitsmaterialien.pdf`) nachgeladen, Paket zeigt jetzt korrekt 2
+  Dateien/6 MB.
+- Digistore24-Prüfergebnis für alle 20 Produkte abwarten.
+- Produktgruppe "Kartendecks" weiterhin nicht angelegt, nicht blockierend.
+
+## Strang 89 (18.08.2026) — Flip-Card-App als echter Bonus: Passwortschutz + Dankeseiten
+
+Anja erinnerte sich an den ursprünglichen Plan aus `KLARTEXT_Konzept_Kartendecks-App.md`: PDF und
+Flip-Card sollten irgendwann zusammen angeboten werden, Zugriffsschutz war bewusst auf "sobald
+echter Checkout da ist" verschoben — der Checkout ist jetzt da. Auf Nachfrage, wie genau
+(PDF/Flip/Bundle als drei Preisstufen vs. Flip als Bonus zum bestehenden Preis) meine Empfehlung
+gegeben: **Flip-Card als kostenloser Bonus zu jedem PDF-Kauf**, keine neue Preisstruktur bei
+Digistore24 (hätte 60 statt 20 Produkte oder unsichere Preisplan-Logik bedeutet, unnötiger
+Aufwand vor dem ersten echten Verkauf). Anja hat zugestimmt.
+
+**Umgesetzt:**
+- **Passwortschutz in der Flip-Card-App** (`klartext-app/pwa/`): pro Deck ein zufälliger
+  6-stelliger Code (Kleinbuchstaben/Ziffern, ohne verwechselbare Zeichen), als SHA-256-Hash in
+  neuer `pwa/data/access.json` hinterlegt (nicht der Klartext-Code selbst im Code). Beim Öffnen
+  eines Decks (Kachel-Klick oder `?deck=`-Link) fragt die App den Code ab, merkt sich freigeschaltete
+  Decks danach per `localStorage` auf dem Gerät. Wichtig zu wissen: das ist eine reine
+  Client-Schranke (kein Backend/Login), kein Schutz gegen technisch versierte Nutzer, die im
+  Quelltext nachsehen — aber ausreichend, um zufälliges/beiläufiges Mitlesen fremder Decks zu
+  verhindern, was der eigentliche Anlass war. `service-worker.js` Cache-Version v12→v13 erhöht.
+- **20 einzelne Dankeseiten** (`klartext-shop/<CODE>_Dankeseite.html`, eine pro verkauftem
+  Produkt) statt einer gemeinsamen Seite mit `?deck=`-Parameter — bewusst so, damit niemand durch
+  Ändern eines Parameters an fremde Passwörter kommt (jede Datei enthält nur ihren eigenen Code).
+  Jede Seite zeigt: Bestätigung des Kaufs, Pflichtsatz "Die Abbuchung erfolgt durch
+  Digistore24.com", den Zugangscode fürs jeweilige Deck, und einen Button direkt zur Flip-Card-App.
+- **Dankeseite-Feld in allen 20 Digistore24-Produkten gesetzt** (Eigenschaften-Tab), z. B. KD-PDF
+  → `https://klartext-mentoring.de/KD_Dankeseite.html`, per Browser-Automation gesetzt und
+  einzeln nach dem Speichern verifiziert.
+- Passwörter auch für die 6 noch nicht verkauften Decks (Insel-Set × 2, Zonen-Set × 2, TO, DS)
+  vorsorglich mit angelegt, damit `access.json` vollständig ist — werden aber erst verteilt, wenn
+  diese Produkte live gehen (Phase 2).
+
+**Zugangscodes (nur intern, nicht weitergeben):**
+
+| Deck | Code | Zugangscode |
+|---|---|---|
+| KD-Deck | KD | `7e555w` |
+| JD-Deck | JD | `u7fm8b` |
+| AT-Deck | AT | `hmmae4` |
+| LRS/Dyskalkulie-Deck | LRS | `xnfnwj` |
+| TK-Deck | TK | `uebfrk` |
+| Krisendeck | FK | `jvx3qq` |
+| Werkzeugkarten | M3 | `z45wmk` |
+| Hochbegabung | HB | `692n67` |
+| SMI-Deck | SMI | `d6f35x` |
+| SP-Deck | SP | `3nkhhs` |
+| Mobbing-Intervention (MB-Kit) | MB | `hd3mt9` |
+| EL-Deck | EL | `kd3th7` |
+| LK-Deck | LK | `bts8p6` |
+| TR-Deck | TR | `4s3q3m` |
+| ADHS-Deck | ADHS | `4f3c49` |
+| FS-Deck | FS | `y7xmg2` |
+| DaZ-GS-Deck | DaZ-GS | `52q7ck` |
+| DaZ-Sek-I-Deck | DaZ-Sek I | `c9p5qp` |
+| OGS-Deck | OGS | `tcqrs2` |
+| Geschichtenkarten | GK | `hjtxz2` |
+
+### Noch offen
+- **Wichtig, blockiert die Funktion:** `klartext-app` (pwa-Ordner) und `klartext-shop`
+  (Dankeseiten + entfernte Flip-Card-Links) müssen erst committet und gepusht werden, sonst
+  laufen weder Passwortschutz noch Dankeseiten live. Git-Befehle unten.
+- Danach einmal selbst testen: eine Dankeseite öffnen, Code kopieren, in der Flip-Card-App beim
+  passenden Deck eingeben, prüfen ob es sich freischaltet.
+- Digistore24-Prüfergebnis für alle 20 Produkte weiterhin abwarten.
+- Produktgruppe "Kartendecks" weiterhin nicht angelegt, nicht blockierend.

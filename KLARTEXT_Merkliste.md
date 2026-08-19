@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 18.08.2026 (Strang 92 ergänzt)
+Stand: 18.08.2026 (Strang 94 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3019,3 +3019,146 @@ vor dem Commit noch einmal geprüft und bestätigt korrekt gespeichert.
 - `KLARTEXT_Schnupperpaket.pdf` und `build_schnupperpaket.py` in `klartext-app` noch nicht
   committet/gepusht.
 - Digistore24-Prüfergebnis fürs Schnupperpaket (wie bei den anderen 20) abwarten.
+
+## Strang 93 (18.08.2026) — Google-Indexierung: sitemap.xml erstellt
+
+**Auslöser:** Anja hat bei Google gesucht und "Die Domain klartext-mentoring.de ist derzeit nicht
+als aktive Website mit spezifischem Inhalt verzeichnet" gefunden.
+
+**Befund:** Die Seite selbst ist technisch in Ordnung — lädt normal, hat echten Inhalt, kein
+"noindex"-Tag, robots.txt erlaubt Crawling ausdrücklich (`Content-Signal: search=yes`,
+`Allow: /`). Eine `site:klartext-mentoring.de`-Suche liefert 0 Treffer — Google kennt die
+Domain schlicht noch nicht. Ursache: keine `sitemap.xml` vorhanden (Aufruf lieferte bisher
+die Startseite als Fallback zurück) und vermutlich keine Google Search Console eingerichtet,
+über die man neue Seiten aktiv zur Indexierung anmelden kann. Bei einer neuen Domain ohne
+eingehende Links ist das normal, kein technischer Fehler.
+
+**Umgesetzt:**
+- `klartext-shop/sitemap.xml` neu angelegt — 37 URLs (Startseite, Shop-Übersicht, App-Verkaufsseite,
+  Brainy-Welt, Barometer-Erklärung, alle 26 Kartendeck-Verkaufsseiten inkl. Schnupperpaket, 6
+  Rechts-Seiten). Dankeseiten und alte verwaiste Kurz-URL-Seiten (z. B. `adhs.html`, `kd.html`) bewusst
+  **nicht** aufgenommen — Dankeseiten sind nur für Käufer:innen relevant, nicht für Google, und die
+  Kurz-URL-Seiten sind nirgends mehr verlinkt (vermutlich alte Vorgänger-Seiten).
+- `klartext-shop/robots.txt`: Zeile `Sitemap: https://klartext-mentoring.de/sitemap.xml` ergänzt,
+  damit Google die Sitemap auch automatisch beim Crawlen findet.
+
+**Noch offen (nächster Schritt, außerhalb meines Zugriffs):** Google Search Console ist der
+eigentliche Hebel, damit die Indexierung schnell passiert (Tage statt Wochen) — dafür braucht Anja
+ein Google-Konto und muss die Domain per DNS-Eintrag bei Cloudflare bestätigen. Das kann ich ihr
+Schritt für Schritt anleiten bzw. per Bildschirm-Zusammenarbeit begleiten, sobald sie will.
+
+**Update:** Erledigt. Anja hat die Search-Console-Property angelegt, die HTML-Bestätigungsdatei
+(`googleb9a0d075d0a91e86.html`) heruntergeladen — ich habe sie in `klartext-shop` kopiert, gepusht
+und live geprüft (Cloudflare-Deploy hat innerhalb weniger Minuten funktioniert). Inhaberschaft
+bestätigt, Sitemap in der Search Console eingereicht. Domain ist jetzt offiziell bei Google
+angemeldet, Indexierung läuft (dauert erfahrungsgemäß einige Tage).
+
+## Strang 94 (18.08.2026) — Website-Rundum-Check auf Anjas Bitte
+
+**Auslöser:** Anja fand beim Durchklicken mehrere mögliche Probleme und bat um eine
+Gesamtprüfung: Navigationsstruktur, doppelte "Über mich"-Seiten inkl. einer "peinlichen" Note
+"1,7" irgendwo, Insel-/Zonen-Set (Flip-Cards nicht auffindbar), Status "Vormerken" bei den
+interaktiven Tools.
+
+**Befund 1 — Navigation:** Kein Fehler, sondern Standard-Struktur (Startseite = Teaser, Klick auf
+"Kartendecks entdecken" führt zum Katalog mit allen 5 Kategorien: Zielgruppen, Spezialdecks,
+Institutionen, Interaktive Tools, Material-Pakete). Anja informiert, keine Änderung ohne
+ausdrücklichen Wunsch vorgenommen.
+
+**Befund 2 — Die "1,7":** Gefunden und behoben. Es war keine einzelne Stelle, sondern ein
+Referenz-Badge ("Fortbildung Transitionspsychiatrie (1.7, Prof. Dr. Fegert, Uniklinikum Ulm)"),
+das identisch auf **40 Dateien** stand (alle 24 aktuellen `*_Verkaufsseite.html` + 16 alte,
+unverlinkte Kurz-URL-Duplikate wie `adhs.html`, `kd.html` usw.). Per `sed` in einem Rutsch über
+alle Dateien entfernt — jetzt überall nur noch "Fortbildung Transitionspsychiatrie (Prof. Dr.
+Fegert, Uniklinikum Ulm)" ohne Zahl. Nebenbefund (noch offen, s. u.): Auf
+`SHOP_KLARTEXT_Ueber_Anja_Jolk.html` zeigt der Kontakt-Link den Text "anja.jolk@gmx.de" an,
+verlinkt aber tatsächlich auf "info@klartext-mentoring.de" — Anja gefragt, welche Adresse richtig
+ist, Antwort steht noch aus.
+
+**Befund 3 — Insel-/Zonen-Set:** Alle Materialien (PDFs, Raummarkierungen, Booklets) und sogar die
+Flip-Card-Version (Zugangscodes bereits in `klartext-karten/data/access.json` vorhanden) existieren
+komplett fertig — nur die Digistore24-Anbindung fehlt. Aktuell nur Vorbestellung per E-Mail, kein
+echter Checkout, keine Dankeseite (die den Flip-Card-Code ausliefern würde). Auf Anjas Wunsch:
+Umbau zu echten Digistore24-Produkten. Bereits umgesetzt: IS/ZS zusätzlich im Abschnitt
+"Interaktive Coaching-Tools" der Shop-Übersicht verlinkt (vorher nur unter "Material-Pakete" zu
+finden), inklusive Hinweis auf die Flip-Card-Version im Kartentext. **Noch offen:** Bevor ich
+echte Digistore24-Produkte mit Preis anlege, muss ich von Anja wissen (a) welchen konkreten Preis
+sie je Deck fest einstellen möchte — Seite zeigt Spannen (IS: 18–22 €, ZS: 15–18 €), kein fixer
+Preis bisher hinterlegt, und (b) welche der beiden Schule-PDF-Varianten für IS als Standard-
+Verkaufsdatei dienen soll (`KLARTEXT_Insel-Set_Schule_INGRA.pdf` vs.
+`KLARTEXT_Insel-Set_Schule_LK.pdf` — inhaltlich vermutlich fast gleich, aber unterschiedlich
+zugeschnitten) sowie ob die "Raummarkierungen"-PDF (separate 8-Seiten-Datei) mit der Karten-PDF zu
+einer einzigen Verkaufsdatei zusammengeführt werden soll (wie bei allen anderen 20 Decks üblich).
+
+**Befund 4 — Interaktive Tools "Vormerken":** Kein Fehler, die 6 Tools sind schlicht noch nicht
+gebaut. Anja fragte nach meiner Einschätzung, ob sie kostenlos angeboten werden sollten. Meine
+Empfehlung (gegeben, noch keine Entscheidung/Umsetzung nötig): nicht alle 6 kostenlos machen,
+bevor überhaupt eins existiert — das nimmt die Monetarisierungsmöglichkeit vorweg. Stattdessen
+erst eins bauen, als bezahltes Produkt testen, und höchstens später eins davon als Lead-Magnet
+kostenlos anbieten (analog zum Schnupperpaket-Modell aus Strang 92).
+
+**Update:** Beide Anja-Antworten liegen vor. E-Mail auf beiden "Über mich"-Seiten (öffentlich +
+intern) korrigiert auf "info@klartext-mentoring.de" (Text und Link stimmen jetzt überein). Für
+IS: Anja möchte beide Schule-Varianten (INGRA + LK) anbieten, weil sie das Set auch auf
+Lehrer-Material-Seiten vermarkten will — Preis 22 € (oberes Ende der Spanne, wie bei den anderen
+Decks) unwidersprochen übernommen.
+
+**Umgesetzt (vorbereitend, ohne Digistore24-Zugriff):**
+- Neue Flip-Card-Zugangscodes generiert und in `access.json` (klartext-karten UND klartext-app/pwa)
+  eingetragen: Insel-Set Schule = `h1qf9m`, Zonen-Set Schule = `qj874v` (die alten, nie
+  ausgegebenen Hash-Platzhalter waren nicht mehr rekonstruierbar, da SHA-256 nicht umkehrbar ist —
+  unkritisch, da noch nie an eine:n Käufer:in ausgegeben).
+- `KLARTEXT_Insel-Set_Digital.zip` (Raummarkierungen Schule + Begleitkarten INGRA + Begleitkarten
+  LK, 3 PDFs, 5,5 MB) und `KLARTEXT_Zonen-Set_Digital.zip` (Begleitkarten Schule + Token-Karten,
+  2 PDFs, 4,2 MB) gebaut — beide unter dem 10-MB-Limit für automatischen Upload.
+- `IS_Dankeseite.html` und `ZS_Dankeseite.html` neu gebaut, nach demselben Muster wie bei den
+  anderen Decks (Flip-Card-Bonus-Box mit Zugangscode und Link zu `karten.klartext-mentoring.de`).
+
+**Blockiert (zunächst):** Beim ersten Versuch war die Vendor-Session abgelaufen. Login übernehme
+ich nicht selbst (Passwort-Eingabe ist mir grundsätzlich nicht erlaubt) — Anja hat sich neu
+eingeloggt, danach ging es automatisch weiter.
+
+**Update — beide Digistore24-Produkte vollständig angelegt:**
+- **Insel-Set-PDF**, Produkt-ID **723777**, Produktname für Käufer "KLARTEXT-Insel-Set ·
+  Raumzonen für Kinder (Schule und Lehrkräfte)", Preis **22,00 €** (oberes Ende der Spanne, wie
+  besprochen), Verkaufsseite/Dankeseite eingetragen (`IS_Verkaufsseite.html` /
+  `IS_Dankeseite.html`), Datei-Paket 138668 (`KLARTEXT_Insel-Set_Digital.zip`, 5 MB) verknüpft.
+  Checkout: `https://www.checkout-ds24.com/product/723777`.
+- **Zonen-Set-PDF**, Produkt-ID **723781**, Produktname für Käufer "KLARTEXT-Zonen-Set ·
+  Raumzonen für Jugendliche", Preis **18,00 €**, Verkaufsseite/Dankeseite eingetragen
+  (`ZS_Verkaufsseite.html` / `ZS_Dankeseite.html`), Datei-Paket 138669
+  (`KLARTEXT_Zonen-Set_Digital.zip`, 4 MB) verknüpft. Checkout:
+  `https://www.checkout-ds24.com/product/723781`.
+- Bei beiden Produkten wieder der bekannte Zahlungsplan-Bug aufgetreten (automatisch ein
+  zusätzlicher 37 €-Plan erzeugt) — jeweils gelöscht, nur der korrekte Plan (22 €/18 €) blieb aktiv.
+- Datei-Upload (Filestack-Widget) erneut vom bekannten `file_upload`-Tool-Bug betroffen — beide
+  ZIPs hat Anja manuell hochgeladen, ich habe sie danach jeweils vom "Ungenutzte Dateien"-Bereich
+  ins Paket gezogen und gespeichert.
+- `IS_Verkaufsseite.html` / `ZS_Verkaufsseite.html`: "Jetzt kaufen"-Button bei der Digital/PDF-
+  Variante von der Vorbestell-E-Mail-Modal auf echten Checkout-Link umgestellt, Überschrift
+  "IS/ZS vormerken" → "IS/ZS kaufen", Hinweisbox-Text an echten Kaufstatus angepasst. Bundle/
+  Print/Träger-Lizenz-Kacheln bleiben bewusst bei "Vormerken" (nicht Teil dieses Rollouts).
+- `KLARTEXT_Shop_Uebersicht.html`: Status für IS/ZS an beiden Stellen (Material-Pakete UND
+  Interaktive Tools) von "Verfügbar zum Vormerken" auf "Jetzt erhältlich" aktualisiert.
+
+**Noch offen — Genehmigung:** Wie bei allen anderen Produkten verlangt Digistore24 vor der
+Genehmigungs-Anfrage einen bestätigten Testkauf über den echten "Kaufen"-Button. Da IS/ZS diesmal
+echte Preise haben (22 €/18 €, nicht 0 € wie das Schnupperpaket), braucht es dafür die kostenlose
+**TEST-PAY-Zahlungsart** (dieselbe, die Anja laut Strang-Notiz schon für GK-PDF genutzt hat) —
+einen echten Kauf mit echtem Geld habe ich bewusst nicht ausgelöst, das ist mir ohnehin nicht
+erlaubt. Anja muss für beide Produkte je einmal: über den Checkout-Link mit TEST-PAY „kaufen",
+danach auf der Eigenschaften-Seite unter „Genehmigung durch Digistore24" → „Genehmigung jetzt
+beantragen" wählen und speichern (Checkliste erscheint automatisch mit angehaktem Testkauf-Punkt).
+
+### Noch offen
+- `klartext-shop`-Änderungen aus Strang 94 (40x "1,7"-Fix, E-Mail-Fix, Shop-Übersicht-Kacheln/
+  Status für IS/ZS, umgestellte Kaufen-Buttons, neue Dateien `IS_Dankeseite.html` +
+  `ZS_Dankeseite.html`) noch nicht committet/gepusht.
+- `klartext-app`-Änderungen aus Strang 94 (neue ZIPs `KLARTEXT_Insel-Set_Digital.zip` +
+  `KLARTEXT_Zonen-Set_Digital.zip`) noch nicht committet/gepusht.
+- `klartext-karten`-Änderung aus Strang 94 (neue Zugangscodes in `access.json`) noch nicht
+  committet/gepusht — **wichtig: muss ins echte Live-Repo, nicht nur den lokalen Ordner**, analog
+  zu Strang-Hinweis bei früherem Passwortschutz-Rollout.
+- Digistore24-Genehmigung für IS (723777) und ZS (723781) noch offen — wartet auf Anjas
+  TEST-PAY-Testkauf + Antragstellung, wie oben beschrieben.
+- Alle offenen Punkte aus Strang 91–93 (siehe oben) weiterhin gültig.

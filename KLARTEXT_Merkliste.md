@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 19.08.2026 (Strang 96 ergänzt)
+Stand: 19.08.2026 (Strang 97 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3296,3 +3296,35 @@ möglich, stattdessen wurden zwei schlanke Neubauten erstellt:
 - Commit/Push für die Checkout-Link-Korrektur an Anja übergeben (siehe Git-Befehle im Chat).
 - Paket 2 (Alltags-Anker & Regulation) komplett offen: welche weiteren Tools rein, Hub-Seite,
   Zugangscode, Verkaufsseite, Digistore24-Produkt — erst nach Freigabe durch Anja.
+
+## Strang 97 (19.08.2026) — Jobsuche parallel zu KLARTEXT: mehrere Bewerbungen, Termin eubia
+
+**Kontext:** Parallel zum KLARTEXT-Aufbau bewirbt sich Anja aktuell auf Anstellungen im
+Kinder-/Jugend-/Behindertenhilfe-Bereich (Nebenstrang, nicht Teil des KLARTEXT-Produkts, aber
+hier dokumentiert, damit nichts verloren geht):
+- **Lebenshilfe Dortmund** ("Kinder, Jugend & Familie", Schwerpunkt (Kurzzeit-)Wohnen):
+  Initiativbewerbung über bewerbungen.sozialjob24.de, Anschreiben + Lebenslauf als Word/PDF
+  gebaut (Dateien im Chat), Ansprechpartnerin Lena Schulmann korrekt adressiert. Lebenslauf mit
+  echtem Foto und echter Unterschrift, zwei getrennte Stationen VeBu e.V. (2010–2013) und
+  ALW/Lebenshilfe Witten (2013–2017) nach Abgleich mit echten Arbeitszeugnissen korrigiert,
+  drei aktuelle Kinderschutz-Zertifikate (Uniklinikum Ulm) ergänzt.
+- **VHS Ennepe-Ruhr-Süd:** Absage erhalten (Auswahlverfahren bereits am 21.07.2026 beendet),
+  Zusage zur Aufnahme in den Bewerberpool in Vorbereitung.
+- **Caritas Dortmund:** Initiativbewerbung/Talent-Pool über Karriereportal, drei Freitext-Fragen
+  beantwortet (Interesse, mittelfristige Erwartungen, Qualifikation) statt klassischem
+  Anschreiben.
+- **eubia (Europäische BildungsAkademie, Standort Bochum/Dortmund):** Bewerbung auf Jobcoach-
+  Position, inkl. beigelegtem Projektprofil "KLARTEXT – Coaching-System für Aktivierung,
+  Motivation und berufliche Orientierung" (positioniert als Nutzen für eubia). **Rückmeldung
+  erhalten: Vorstellungsgespräch (Teams) am Montag, 24.08.2026, 10:30 Uhr, mit Sandra Keck
+  (Standortkoordinatorin Bochum/Dortmund).** Terminzusage verschickt.
+- Weitere angedachte, noch nicht umgesetzte Bewerbungen: katholische/evangelische
+  Jugendhilfe-Träger (Dortmund/Hagen/Unna) — dort meist Studium/staatliche Anerkennung
+  vorausgesetzt, falls Anja das weiterverfolgt: gezielt auf Ergänzungskraft/Nachtbereitschaft/
+  Vertretungspool statt volle Fachkraftstelle bewerben.
+
+**Noch offen / für Montag vorzubereiten:**
+- **Gesprächsvorbereitung für den eubia-Termin am Montag, 24.08.2026, 10:30 Uhr — gemeinsam
+  (Anja + Claude) rechtzeitig vor dem Termin erledigen.** Basis: Projektprofil KLARTEXT
+  (Nutzen für eubia), Lebenslauf-Version "eubia" (Bürokauffrau/Beratung & Aktivierung-Framing),
+  typische Fragen zur Jobcoach-Rolle, Motivation für eubia.

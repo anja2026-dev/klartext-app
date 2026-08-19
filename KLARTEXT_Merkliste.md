@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 19.08.2026 (Strang 97 ergänzt)
+Stand: 19.08.2026 (Strang 99 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3328,3 +3328,93 @@ hier dokumentiert, damit nichts verloren geht):
   (Anja + Claude) rechtzeitig vor dem Termin erledigen.** Basis: Projektprofil KLARTEXT
   (Nutzen für eubia), Lebenslauf-Version "eubia" (Bürokauffrau/Beratung & Aktivierung-Framing),
   typische Fragen zur Jobcoach-Rolle, Motivation für eubia.
+
+## Strang 98 (19.08.2026) — Digistore24: alle 21 abgelehnten Produkte korrigiert und erneut zur Genehmigung eingereicht
+
+**Ausgangslage:** 21 Digistore24-Produkte waren abgelehnt worden, offiziell wegen fehlender
+"Produktbeschreibung für Bestellformular". Beim Bearbeiten des ersten Produkts (KD-PDF) zeigte
+die Digistore24-Ablehnungs-Checkliste einen **zweiten, bis dahin unbekannten Ablehnungsgrund**:
+verbotene "Lifetime"-Formulierungen ("lifetime", "Lebenslang", "dauerhaft", "unbegrenzt", "für
+immer", "unlimitiert") auf Verkaufsseite/Bestellformular, da diese den Eindruck eines
+dauerhaften Produktzugangs erwecken. Da das eine Änderung an live öffentlichen Verkaufsseiten
+bedeutet hätte, wurde vor der Umsetzung explizit bei Anja nachgefragt — sie hat den konkreten
+Formulierungsvorschlag freigegeben.
+
+**Durchgeführt:**
+1. **Produktbeschreibung ergänzt** (Digistore24 → Produkt → Bestellformular-Tab) für alle 21
+   Produkte nach einheitlichem Muster: "Inhalt: 1 PDF-Dokument mit [N] [Kartenart] zum
+   Ausdrucken und Einsetzen im pädagogischen Alltag. Auslieferung: vollständig digital – Sie
+   erhalten den Download-Link direkt nach der Bestellung per E-Mail, kein physischer Versand."
+   Betroffene Produkte: KD, JD, AT, LRS, TK, FK, M3, HB, SMI, SP, MB, EL, LK, TR, ADHS, FS,
+   DaZGS, DaZSek1, OGS, GK (GK zusätzlich mit Hinweis auf kostenloses A4-Druckset).
+2. **Lifetime-Wortlaut auf allen ~26 Verkaufsseiten site-weit ersetzt** (nicht nur bei den 21
+   abgelehnten Produkten, da der Fehler grundsätzlicher Natur war und sonst bei jedem Produkt
+   erneut aufgetreten wäre):
+   - "Einmalig zahlen — dauerhaft nutzen" → "Einmalig zahlen — sofort startklar"
+   - "Dauerhafter Zugriff" → "Uneingeschränkter Zugriff"
+   - "Zugriff dauerhaft, keine Zeitbegrenzung" (nur WB) → "Uneingeschränkter Zugriff, keine
+     Zeitbegrenzung"
+   Committed im klartext-shop-Repo (Commit fcd341d), **Push durch Anja noch offen** (Befehl:
+   `git push`).
+3. **Genehmigung für alle 21 Produkte erneut beantragt** (Eigenschaften-Tab → Genehmigung-Dropdown
+   auf "pending" → Checkliste bestätigt → gespeichert). Bei allen 21 Produkten ist die rote
+   Ablehnungs-Banner danach verschwunden.
+
+**Noch offen:**
+- Digistore24-Prüfergebnis abwarten (kann einige Tage dauern).
+- `git push` im klartext-shop-Repo durch Anja, damit die Wortlaut-Korrektur auch live auf der
+  Website sichtbar wird (aktuell nur lokal committed).
+
+## Strang 99 (19.08.2026) — "Paket Alltags-Anker & Regulation" (Paket 2) fertiggestellt und live
+
+**Auslöser:** Anja fragte nach Abschluss von Strang 98 explizit, ob mit dem nächsten Paket
+weitergemacht werden kann ("dann können wir mit den nächsten paket ja weiter machen oder nicht?").
+Per AskUserQuestion geklärt: zuerst nur die Hub-Seite mit den 2 bereits vorbereiteten Tools
+(Barometer, Tagesjournal aus Strang 96) bauen. Anja gab danach die Anweisung "push und dann
+verkaufsseite und digistore".
+
+**Preisfrage:** Anja legte einen NotebookLM-Vorschlag vor, der Paket 2 mit 5 Tools (inkl.
+Reizfilter, Körper-Kompass, Fokus-Trainer, Ruhe-Ballon, Joker-Signale) bei 34 € ansetzte — zu dem
+Zeitpunkt existierten aber erst 2 der Tools als Standalone-Version. Diskrepanz aktiv gemeldet statt
+stillschweigend zu 34 € mit nur 2 Tools zu verkaufen. Anja entschied per AskUserQuestion: "Erst die
+restlichen Tools bauen, dann 34 €".
+
+**Umgesetzt — 5 weitere Tools aus `klartext-app` extrahiert, `paket-alltag/`:**
+- `Reizfilter.html` (aus `KLARTEXT_Spiel_Reizfilter.html`): Login-Redirect, INGRA-Kontextbox,
+  Tic-Dokumentationsbox und `KLARTEXT_ContextMapper.js` entfernt, Regler-Logik/localStorage
+  (`klartext_reizfilter_verlauf`) erhalten.
+- `Koerperkompass.html` (aus `KLARTEXT_Spiel_Koerperkompass.html`): Login-Redirect und
+  ContextMapper entfernt, SVG-Körperumriss-Interaktion/localStorage
+  (`klartext_koerperkompass_verlauf`) erhalten.
+- `Fokus.html` (aus `KLARTEXT_Spiel_Fokus.html`, kein Login vorhanden): nur Navigation korrigiert,
+  Pomodoro-Timer/localStorage (`fokus_sterne`) erhalten.
+- `Ruheballon.html` (aus `KLARTEXT_Spiel_Ruheballon.html`, kein Login vorhanden): nur Navigation
+  korrigiert, Atemanimation/localStorage (`ruheballon_atemzuege`) erhalten.
+- `Joker-Signale.html`: **nicht extrahiert** (zu eng an INGRA/TK/M3-Branding und Login-Sperre
+  gekoppelt), stattdessen neu gebaut als reine Druckvorlage nach dem Muster von
+  `WertePoker_Basteln.html` — Erklärung, Einsatz-Situationen, mögliche Signale, ausfüllbare
+  Vereinbarungstabelle, Unterschriftenzeile.
+- `index.html`: Hub-Seite von 2 auf alle 7 Tools erweitert (Barometer, Tagesjournal, Reizfilter,
+  Körper-Kompass, Fokus-Trainer, Ruhe-Ballon, plus separat markierte Druckvorlage
+  Joker-Signale), gemeinsamer Zugangscode `anker26`.
+
+**Umgesetzt — Verkaufsseite, Dankeseite, Digistore24-Produkt 724031:**
+- `Alltag_Verkaufsseite.html` (neu, analog `WB_Verkaufsseite.html`): Tool-Grid mit allen 7 Tools,
+  3 Zielgruppen-Karten, Preis 34,00 €.
+- `Alltag_Dankeseite.html` (neu, analog `WB_Dankeseite.html`): liefert Zugangscode `anker26` und
+  Link zur Hub-Seite.
+- `KLARTEXT_Shop_Uebersicht.html`: neue Kachel "Paket Alltags-Anker & Regulation" ergänzt.
+- Digistore24-Produkt 724031 angelegt ("Alltag-Paket"). Produktname mit `&` löste
+  Sicherheits-Validierungsfehler aus ("diese Zeichen nicht erlaubt: < > &"), behoben durch
+  Schreibweise "und" statt "&". Auto-generierter Default-Zahlungsplan (37,00 €) über den
+  Bearbeiten-Stift auf 34,00 € korrigiert (bestehenden Plan aktualisiert, nicht dupliziert).
+  Bestellformular-Link `https://www.checkout-ds24.com/product/724031` ermittelt und in den
+  "Jetzt kaufen"-Button der Verkaufsseite eingetragen.
+- Alle Commits (Hub-Seite, 5 Tools, Verkaufsseite/Dankeseite/Shop-Übersicht) von Anja gepusht.
+
+**Noch offen:**
+- Genehmigungsstatus des neuen Produkts 724031 bei Digistore24 noch nicht geprüft (Erstanlage,
+  ggf. ist dort kein erneutes "Genehmigung beantragen" nötig wie bei den 21 abgelehnten Produkten
+  aus Strang 98 — noch zu klären).
+- Paket 3 ("Integration & Sprache", laut NotebookLM-Vorschlag) komplett offen, wartet auf
+  Freigabe durch Anja.

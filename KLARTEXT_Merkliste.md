@@ -3151,14 +3151,17 @@ danach auf der Eigenschaften-Seite unter „Genehmigung durch Digistore24" → �
 beantragen" wählen und speichern (Checkliste erscheint automatisch mit angehaktem Testkauf-Punkt).
 
 ### Noch offen
-- `klartext-shop`-Änderungen aus Strang 94 (40x "1,7"-Fix, E-Mail-Fix, Shop-Übersicht-Kacheln/
-  Status für IS/ZS, umgestellte Kaufen-Buttons, neue Dateien `IS_Dankeseite.html` +
-  `ZS_Dankeseite.html`) noch nicht committet/gepusht.
-- `klartext-app`-Änderungen aus Strang 94 (neue ZIPs `KLARTEXT_Insel-Set_Digital.zip` +
-  `KLARTEXT_Zonen-Set_Digital.zip`) noch nicht committet/gepusht.
-- `klartext-karten`-Änderung aus Strang 94 (neue Zugangscodes in `access.json`) noch nicht
-  committet/gepusht — **wichtig: muss ins echte Live-Repo, nicht nur den lokalen Ordner**, analog
-  zu Strang-Hinweis bei früherem Passwortschutz-Rollout.
-- Digistore24-Genehmigung für IS (723777) und ZS (723781) noch offen — wartet auf Anjas
-  TEST-PAY-Testkauf + Antragstellung, wie oben beschrieben.
+**Update:** Alle drei Repos committet/gepusht (`klartext-shop` caa944e, `klartext-app` 1501323,
+`klartext-karten` 1e74268) — unterwegs kam zweimal die bekannte `.git/index.lock`-Blockade in
+`klartext-app`/`klartext-karten` vor (vermutlich durch ein im Hintergrund laufendes Programm, das
+kurz auf die Ordner zugreift), jeweils per manuellem `rm .git/index.lock` durch Anja behoben.
+Zugangscodes sind jetzt live in der echten Flip-Card-App.
+
+**Update — Genehmigung:** Anja hat für beide Produkte den TEST-PAY-Testkauf gemacht und die
+Genehmigung beantragt. Status jetzt "Warte..." wie bei den anderen 20 Produkten + Schnupperpaket —
+Strang 94 ist damit inhaltlich abgeschlossen, es fehlt nur noch Digistore24s eigene Prüfung.
+
+### Noch offen
+- Digistore24-Prüfergebnis für IS (723777) und ZS (723781) abwarten (wie bei allen anderen 22
+  Produkten).
 - Alle offenen Punkte aus Strang 91–93 (siehe oben) weiterhin gültig.

@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 18.08.2026 (Strang 94 ergänzt)
+Stand: 19.08.2026 (Strang 95 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3165,3 +3165,56 @@ Strang 94 ist damit inhaltlich abgeschlossen, es fehlt nur noch Digistore24s eig
 - Digistore24-Prüfergebnis für IS (723777) und ZS (723781) abwarten (wie bei allen anderen 22
   Produkten).
 - Alle offenen Punkte aus Strang 91–93 (siehe oben) weiterhin gültig.
+
+## Strang 95 (19.08.2026) — "IS" zu "IN" umbenannt, Verkaufsseiten-Navigation vereinheitlicht
+
+**Auslöser:** Anja fiel auf, dass die Abkürzung "IS" für das Insel-Set politisch-religiös besetzt
+ist (Assoziation mit "Islamischer Staat") und bat um Umbenennung. Zusätzlich bemängelte sie erneut
+die uneinheitliche Navigation auf den Verkaufsseiten (aus Strang 94, Befund 1 nicht behoben, da
+damals ohne konkreten Wunsch). Auf Nachfrage per AskUserQuestion entschieden: "IN" statt "IS"
+(Empfehlung), Navigation für alle ~26 Seiten vereinheitlichen (Empfehlung).
+
+**Umgesetzt — IS → IN Umbenennung (`klartext-shop`):**
+- Dateien umbenannt: `IS_Verkaufsseite.html` → `IN_Verkaufsseite.html`, `IS_Dankeseite.html` →
+  `IN_Dankeseite.html`, `is.html` (alte unverlinkte Duplikatseite) → `in.html`,
+  `vorschau/is/` → `vorschau/in/` (4 Vorschaubilder).
+- Alle Textstellen angepasst: Überschrift "IS kaufen" → "IN kaufen", Hero-Badge, Bildpfade,
+  Footer-Text, mailto-Betreffzeilen (Bundle/Träger-Lizenz-Kacheln). Per `grep '\bIS\b'` auf 0
+  verbleibende Treffer geprüft.
+- `KLARTEXT_Shop_Uebersicht.html`: Deck-Code-Badges und Verlinkungen (Material-Pakete +
+  Interaktive Tools) von "IS"/`IS_Verkaufsseite.html` auf "IN"/`IN_Verkaufsseite.html` umgestellt.
+- `sitemap.xml` entsprechend aktualisiert.
+- **Digistore24-Produkt 723777 (Insel-Set-PDF):** Verkaufsseite- und Dankeseite-Feld von den alten
+  `IS_...`-URLs auf `https://klartext-mentoring.de/IN_Verkaufsseite.html` /
+  `.../IN_Dankeseite.html` umgestellt und gespeichert (Checkout-URL selbst unverändert, da nur
+  über die numerische Produkt-ID `723777` aufgerufen — von der Umbenennung nicht betroffen).
+- Committet und gepusht: `klartext-shop` Commit `194d1f9`.
+- **Hinweis:** "ZS" (Zonen-Set) war von der Umbenennung nicht betroffen, keine Änderung nötig.
+
+**Umgesetzt — Navigation auf 23 Verkaufsseiten vereinheitlicht (`klartext-shop`):**
+Betroffen: alle 22 Kartendeck-Verkaufsseiten (ADHS, AT, DaZGS, DaZSek1, EL, FK, FS, GK, HB, IN,
+JD, KD, LK, LRS, M3, MB, OGS, SMI, SP, TK, TR, ZS) sowie `Schnupperpaket_Verkaufsseite.html`.
+Bewusst unverändert gelassen: die 3 B2B-Landingpages (Familienzentren, Migrationszentren,
+Pflegedienste — hatten bereits einen korrekten Katalog-Link und passenden CTA-Text "Kontakt
+aufnehmen") sowie `KLARTEXT_Verkaufsseite.html` (App-System-Hauptseite, eigener Kontext).
+
+- Neuer Link "← Alle Kartendecks" zu `KLARTEXT_Shop_Uebersicht.html` in der Navigationsleiste
+  ergänzt — vorher gab es von den einzelnen Produktseiten keinen Weg zurück zum Katalog, nur die
+  Logo-Verlinkung zur Startseite.
+- Veralteter "Vormerken"-Button (Sprungmarke zu `#preise`) auf allen 22 Deck-Seiten in "Jetzt
+  kaufen" umbenannt — war irreführend, da alle diese Decks längst echte, kaufbare
+  Digistore24-Produkte sind, nicht mehr in Vorbestellung.
+- Uneinheitlicher Logo-Link auf JD-Seite (`href="#"` statt `href="/"`) korrigiert.
+- Legitime "Vormerken"-Buttons in den Preis-Kacheln für Print-/Bundle-/Träger-Lizenz-Varianten
+  (echte E-Mail-Vorbestellung, kein Fehler) bewusst unangetastet gelassen — 1 pro Seite verblieben,
+  geprüft per `grep`.
+- Umsetzung automatisiert per Skript (identisches Nav-Muster + identische CSS-Zeile auf allen
+  Seiten bestätigt), anschließend stichprobenartig auf 5 Seiten kontrolliert.
+
+**Noch offen:**
+- Commit/Push für die Navigations-Änderung an Anja übergeben (siehe Git-Befehle im Chat).
+- Digistore24-Prüfergebnis für alle 22 Produkte weiterhin ausstehend (unverändert seit Strang 94).
+- Thematische Verknüpfung "Interaktive Tools ↔ passende Kartendecks" (in Strang 94/95-Chat als
+  Empfehlung besprochen: Werte-Poker/Skill-Matrix/Online-Identity-Lab ↔ JD, Perspektiv-Wechsler ↔
+  EL+JD, ADHS-Toolbox ↔ ADHS-Deck, Brainy-Wort-Würfel ↔ DaZ-Decks) — noch keine ausdrückliche
+  Freigabe zur Umsetzung von Anja erhalten, nur als Richtung präsentiert.

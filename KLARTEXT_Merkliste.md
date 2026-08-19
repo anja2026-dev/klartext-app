@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 19.08.2026 (Strang 95 ergänzt)
+Stand: 19.08.2026 (Strang 96 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3218,3 +3218,81 @@ aufnehmen") sowie `KLARTEXT_Verkaufsseite.html` (App-System-Hauptseite, eigener 
   Empfehlung besprochen: Werte-Poker/Skill-Matrix/Online-Identity-Lab ↔ JD, Perspektiv-Wechsler ↔
   EL+JD, ADHS-Toolbox ↔ ADHS-Deck, Brainy-Wort-Würfel ↔ DaZ-Decks) — noch keine ausdrückliche
   Freigabe zur Umsetzung von Anja erhalten, nur als Richtung präsentiert.
+
+## Strang 96 (19.08.2026) — "Paket Berufswelt & Superkräfte" (Paket 1) fertiggestellt und live
+
+**Auslöser:** Anja hatte per NotebookLM einen Vorschlag für 3 thematische Tool-Bundles erhalten
+(Paket 1 "Berufswelt & Superkräfte", Paket 2 "Alltags-Anker & Regulation", Paket 3 "Integration &
+Sprache") und bat um fachliche Prüfung, ob dies stimmig ist. Klargestellt: die 5 Tools in Paket 1
+(Werte-Poker, Skill-Matrix, Bewerbungsgespräch-Training, Toolbox für den Berufseinstieg/ADHS,
+Bewerbungs-Generator) waren entgegen einer früheren, falschen Aussage in dieser Merkliste ("noch
+nicht gebaut") längst als funktionierende Tools im App-System vorhanden — nur hinter dem
+Supabase-Login der Haupt-App verborgen. Per Git-Historie/Code-Check bestätigt: alle 5 Tools sind
+rein clientseitig (kein Supabase-Bezug), also portierbar in ein eigenständiges Produkt. Anja gab
+Freigabe: "ja mit paket 1 fangen wir dann an".
+
+**Umgesetzt — 5 Tools aus `klartext-app` extrahiert, eigenständiges Produkt gebaut (`klartext-shop`):**
+- Neuer Ordner `paket-berufswelt/`: Kopien von `KLARTEXT_Spiel_WertePoker.html`,
+  `KLARTEXT_Spiel_SkillMatrix.html`, `KLARTEXT_Spiel_Bewerbungsgespraech.html`,
+  `KLARTEXT_Spiel_ADHS_Toolbox.html`, `KLARTEXT_Bewerbungs_Generator.html` sowie
+  `KLARTEXT_Spiel_WertePoker_Basteln.html` (Druckvorlage) und `KLARTEXT_ContextMapper.js`
+  (übersetzt Schul-Sprache in professionelle Jobcoaching-Sprache).
+- Supabase-Login-Sperre in jeder Datei durch einen einfachen Zugangscode-Check ersetzt (gleiches
+  Muster wie bei den Flip-Card-Kartendecks): ein gemeinsamer Code für alle 5 Tools statt einzelner
+  Codes pro Tool.
+- `paket-berufswelt/index.html`: neue Hub-Seite mit Zugangscode-Eingabe, verlinkt alle 5 Tools plus
+  die Druckvorlage in der empfohlenen Sitzungs-Reihenfolge. Setzt nach Freischaltung den
+  Jobcoach-Sprachmodus automatisch (`localStorage.klartext_modus = 'jobcoach'`).
+- `paket-berufswelt/WB_Regiebuch.pdf`: 3-seitiger Sitzungsleitfaden (5 Phasen: Einstieg,
+  Werte-Poker, Skill-Matrix, Bewerbungsgespräch-Training & Toolbox, Bewerbungs-Generator/Abschluss)
+  aus Anjas Vorlage gebaut, mit `weasyprint` aus HTML gerendert. Deckblatt auf Anjas Wunsch
+  ("das deckblatt ist sehr weiß") mit vollflächigem dunklem Verlauf und dezenten Kreis-Elementen
+  neu gestaltet.
+- `WB_Verkaufsseite.html` (neu): Verkaufsseite mit Tool-Übersicht, Ablauf-Diagramm, Zielgruppe,
+  Preis 34,00 €.
+- `WB_Dankeseite.html` (neu): liefert Zugangscode `w2tfn1` und Link zur Hub-Seite.
+- `KLARTEXT_Shop_Uebersicht.html`: neue Kachel "Paket Berufswelt & Superkräfte" im Bereich
+  Interaktive Tools ergänzt, 6 alte "Vormerken"-Kacheln entfernt.
+- `sitemap.xml`: Eintrag für `WB_Verkaufsseite.html` ergänzt.
+
+**Umgesetzt — Digistore24-Produkt 723810:**
+- Produkt angelegt, Preis 34,00 € (nach Rückfrage bei Anja bestätigt), Verkaufs-/Dankeseiten-URLs
+  hinterlegt.
+- Wiederkehrender Digistore24-Fehler beim Anlegen des Zahlungsplans (vorausgefüllter Default-Preis
+  erzeugt einen zusätzlichen Geister-Zahlungsplan) erneut aufgetreten und wie gewohnt behoben:
+  richtigen Plan zuerst angelegt, Geister-Plan über Papierkorb-Symbol + "Ja"-Bestätigung gelöscht.
+- PDF-Regiebuch als Datei-Paket (`file_vault` ID 138675, "WB-PDF") hochgeladen und im
+  Ausliefern-Tab verknüpft. Beim ersten Versuch schlug der automatische Datei-Upload über das
+  Chrome-Tool fehl (bekannter, wiederkehrender Bug), daher Upload manuell an Anja übergeben.
+  Zwischenzeitlich kam es zu einer Verwechslung: Anjas erster Bericht "testkauf und genehmigung
+  beantragt erledigt" war unvollständig — das Datei-Paket zeigte bei eigener Nachprüfung weiterhin
+  "0 kB". Nach Rückfrage und einem zweiten Upload-Versuch von Anja war die Datei vorhanden, dabei
+  ist versehentlich ein zweites, doppeltes Datei-Paket entstanden (ID 138677, "WB_Regiebuch").
+  Produkt 723810 wurde auf das ursprüngliche Paket 138675 verknüpft, das doppelte Paket 138677
+  anschließend gelöscht.
+- Testkauf durchgeführt und Genehmigung bei Digistore24 beantragt (Anja bestätigt: "testkauf und
+  genehmigung beantragt erledigt").
+- Checkout-Link auf der Verkaufsseite von Platzhalter auf die echte Produkt-ID 723810 umgestellt.
+
+**Zusätzlich vorbereitet (nicht Teil von Paket 1, für späteres Paket 2) — `klartext-shop`:**
+Anja fragte, ob Barometer und Tagesjournal wieder ohne Supabase (nur localStorage) nutzbar wären.
+Per Git-Historie geklärt: beide Tools hatten in der App **nie** eine reine localStorage-Version,
+sondern waren von Anfang an mit Firebase/Supabase verbunden — ein "Zurückbauen" war also nicht
+möglich, stattdessen wurden zwei schlanke Neubauten erstellt:
+- `paket-alltag/Barometer.html`: 0–10-Status-Kacheln, Farb-/Emoji-Logik wie im Original,
+  Coach-Einschätzung-Vergleich und Konfetti-Animation übernommen. Kein Supabase, kein Login.
+- `paket-alltag/Tagesjournal.html`: Tagesbarometer, Notizfeld, Besonderheiten-Auswahl, 14-Tage-
+  Verlauf. "Übergabe an TK" (Team-Koordination) bewusst weggelassen, da funktionslos ohne Backend.
+- Auf Anjas ausdrücklichen Wunsch generische Bezeichnungen statt "Kind" verwendet
+  ("Teilnehmer:in"); das Haupt-App-System (`BAROMETER_KIND.html`, `KLARTEXT_Tagesjournal.html`)
+  bleibt unverändert.
+- Beide Tools teilen sich eine gemeinsame Teilnehmerliste (`klartext_paket_teilnehmer_v1`) über
+  localStorage.
+- **Noch nicht verpackt/verkauft** — kein Hub, kein Zugangscode, keine Verkaufsseite, kein
+  Digistore24-Produkt. Wartet auf explizite Freigabe für Paket 2.
+
+**Noch offen:**
+- Digistore24-Genehmigung für Produkt 723810 abwarten.
+- Commit/Push für die Checkout-Link-Korrektur an Anja übergeben (siehe Git-Befehle im Chat).
+- Paket 2 (Alltags-Anker & Regulation) komplett offen: welche weiteren Tools rein, Hub-Seite,
+  Zugangscode, Verkaufsseite, Digistore24-Produkt — erst nach Freigabe durch Anja.

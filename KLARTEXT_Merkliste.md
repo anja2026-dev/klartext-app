@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 19.08.2026 (Strang 100 ergänzt)
+Stand: 20.08.2026 (Strang 101 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3467,3 +3467,75 @@ nur hinter dem Supabase-Login verborgen — exakt dasselbe Muster wie bei Paket 
   Sprache) als eigenständige Produkte umgesetzt. Von Anja im Gespräch erwähnter strategischer
   Folgeschritt (nicht beauftragt, nur vorgemerkt): ein "KLARTEXT-Komplett-Bundle" mit allen Tools
   zu einem Sammelpreis (79–89 €) als vierte Option anbieten.
+
+## Strang 101 (20.08.2026) — Paket 3 Genehmigung abgeschlossen + Komplett-Bundle (79 €)
+
+**Paket 3 (Produkt 724045) abgeschlossen:**
+- Testkauf durch Anja bestätigt ("// testkauf erledigt").
+- Genehmigung über den bewährten `javascript_exec`-Pattern beantragt (Select-Element per nativem
+  Setter auf `pending` gesetzt, `change`-Event ausgelöst → Checkliste-Modal → alle Boxen inkl. der
+  finalen Compliance-Box angehakt → Ok → Speichern). Nach Reload bestätigt: Dropdown zeigt
+  dauerhaft "Genehmigung jetzt beantragen".
+- Zwischenzeitlich Digistore24-Session mitten in der Arbeit ausgeloggt — Anja hat sich manuell neu
+  eingeloggt ("Erledigt, bin eingeloggt"), danach ohne Probleme fortgesetzt.
+
+**Git-Lock-Problem gelöst:** Der seit Strang 100 hängende `.git/index.lock`/`.git/HEAD.lock` in
+`klartext-app` ließ sich weder aus der Sandbox noch von Anjas Mac aus per `rm -f` entfernen
+("Operation not permitted"), obwohl `stat` die Sandbox als Eigentümer auswies — vermutlich eine
+Eigenheit der FUSE-Brücke zum Mac-Ordner. Lösung: Anja hat mit `ps aux | grep git` geprüft, dass
+kein Git-Prozess mehr läuft, danach ließ sich `rm -f .git/index.lock .git/HEAD.lock` sauber
+ausführen und der ausstehende Commit (Strang 100) wurde erfolgreich gepusht (`691e938`).
+
+**Auf Anjas Nachfrage zum offenen NotebookLM-Tipp: KLARTEXT-Komplett-Bundle umgesetzt.**
+Anja fragte gezielt nach dem in Strang 100 nur vorgemerkten Bundle-Vorschlag. Preisfrage gestellt
+("79 € oder 89 €, was ist professioneller?") — mit Rechnung begründet: Einzelsumme der drei Pakete
+34 € (Berufswelt) + 34 € (Alltag) + 24 € (Sprache) = 92 €. Bei 79 € ergibt sich eine sichtbare
+Ersparnis von 13 € (~14 %), bei 89 € nur 3 € (~3 %, kaum wahrnehmbar). Anja hat 79 € bestätigt.
+
+**Umgesetzt — PDF-Regiebücher für Paket 2 und Paket 3 nachgezogen** (der Notebook-Tipp verlangt
+das PDF-Regiebuch bei jedem Paket, bisher hatte nur Paket 1/WB eines):
+- `paket-alltag/Alltag_Regiebuch.pdf` (neu, mit `weasyprint` aus HTML gerendert, grünes
+  Farbschema): 6 Phasen (Einstieg, Barometer, Tagesjournal, Reizfilter-Regler & Körper-Kompass,
+  Fokus-Trainer, Ruhe-Ballon & Abschluss) plus Extra-Box zur Joker-Signale-Druckvorlage.
+- `paket-sprache/Sprache_Regiebuch.pdf` (neu, teal Farbschema): 4 Phasen (Einstieg,
+  Schulalltag-Wörterbuch, Brainy-Wort-Würfel, Perspektiv-Wechsler & Abschluss).
+- `Alltag_Dankeseite.html`, `Sprache_Dankeseite.html`: Hinweissatz auf das per E-Mail von
+  Digistore24 zugestellte PDF-Regiebuch ergänzt (analog zu `WB_Dankeseite.html`).
+- `paket-alltag/index.html`, `paket-sprache/index.html`: Hinweisbox am Hub-Ende um denselben Satz
+  ergänzt.
+- `Alltag_Verkaufsseite.html`, `Sprache_Verkaufsseite.html`: Hero-Untertitel und Preis-Liste um
+  "PDF-Regiebuch" ergänzt.
+
+**Umgesetzt — KLARTEXT-Komplett-Bundle (`klartext-shop`):**
+- `paket-komplett/index.html` (neu): eigene Hub-Seite mit Zugangscode-Sperre (Code `komplett79`,
+  goldenes Farbschema `#D9A441`). Besonderheit gegenüber den Einzelpaket-Hubs: beim Freischalten
+  setzt das Skript zusätzlich die `localStorage`-Unlock-Keys aller drei Einzelpakete
+  (`klartext_paket_berufswelt_unlocked`, `klartext_paket_alltag_unlocked`,
+  `klartext_paket_sprache_unlocked`) — Käufer:innen müssen den Code nur einmal eingeben, alle drei
+  Unterseiten sind danach direkt ohne erneute Code-Eingabe erreichbar. Verlinkt alle 3 Pakete samt
+  direktem Link zum jeweiligen PDF-Regiebuch.
+- `Komplett_Verkaufsseite.html` (neu): listet alle 14 Tools + 3 Druckvorlagen + 3 Regiebücher aus
+  den drei Paketen auf, Preis-Karte mit durchgestrichenem Vergleichspreis "statt 92,00 €", Badge
+  "Du sparst 13 €", goldenes Farbschema.
+- `Komplett_Dankeseite.html` (neu): liefert Zugangscode `komplett79`, Hinweis dass alle 3
+  Regiebücher per separater Digistore24-E-Mail zugestellt werden.
+- `KLARTEXT_Shop_Uebersicht.html`: neue Kachel "Komplett-Bundle (Alle Tools)" als erste Karte im
+  Bereich "Interaktive Coaching-Tools" ergänzt (goldener Rahmen, Badge "14 Tools").
+- Digistore24-Produkt 724157 angelegt ("Komplett-Bundle"), Produkttyp Downloads, Preis über den
+  automatisch angelegten Zahlungsplan (ID 1486012) von 37,00 € auf 79,00 € korrigiert (bestehenden
+  Plan editiert, nicht dupliziert). Verkaufs-/Dankeseiten-URLs hinterlegt. Checkout-Link
+  `https://www.checkout-ds24.com/product/724157` ermittelt und in den "Jetzt kaufen"-Button
+  eingetragen.
+- Datei-Paket "Komplett-PDF" (`file_vault` ID 138797) im Ausliefern-Tab von Produkt 724157
+  verknüpft. Der automatische Datei-Upload über das Chrome-Tool scheiterte erneut am bekannten,
+  wiederkehrenden Bug (`file_upload can't accept pre-read files in this session`) — ein ZIP mit
+  allen drei Regiebüchern (`Komplett_Regiebuecher.zip`) liegt zur manuellen Fertigstellung im
+  Ordner `klartext-shop/`, Anja muss es noch im Download-Tresor-Paket 138797 hochladen.
+
+**Noch offen:**
+- Anja lädt `Komplett_Regiebuecher.zip` manuell im Digistore24-Datei-Paket 138797 hoch
+  (Konto → Download-Tresor → Komplett-PDF → Datei(en) hochladen).
+- Testkauf durch Anja über den echten Checkout-Link für Produkt 724157, danach
+  Digistore24-Checkliste bestätigen und Genehmigung beantragen (identischer Ablauf wie bei den
+  Produkten 723810/724031/724045).
+- Damit wären alle vier Produkte (3 Einzelpakete + Komplett-Bundle) vollständig live.

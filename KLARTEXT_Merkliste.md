@@ -3622,3 +3622,50 @@ und wartet auf Digistore24s eigene Prüfung.
 - Gesprächsvorbereitung für den eubia-Termin (Montag, 24.08.2026, 10:30 Uhr, Sandra Keck) weiterhin offen.
 - Alle offenen Punkte aus Strang 91–101 (Digistore24-Prüfergebnisse, IN/ZS-Genehmigung, thematische
   Verknüpfung Tools↔Kartendecks) weiterhin gültig.
+
+## Strang 103 (20.08.2026) — Marketing-Audit (Landingpage, Workbook, freie Kanäle) + erste SEO-Fixes
+
+**Anlass:** Anja: Digistore24/Sitemap laufen erst seit sehr kurzer Zeit, daher jetzt Fokus auf kostenlose
+Werbung statt Conversion-Sorgen. Vier Fragen: (1) wie/wo kostenlos werben, (2) ist die Landingpage ok,
+(3) Workbook + Kartendecks noch verknüpft?, (4) Trainerhandbuch/Fachbuch/System noch stimmig?
+
+**Befunde App-Konsistenz:**
+- Dashboard (Desktop + Mobile) verlinkt sowohl Kartendecks als auch Workbook — entgegen Anjas Sorge NICHT
+  "komplett vernachlässigt".
+- Aber: `KLARTEXT_Workbook.html` (1426 Zeilen, Modul 0–8, Woche 1–10) verweist an keiner Stelle auf ein
+  konkretes Kartendeck — kein Cross-Selling innerhalb des Workbooks.
+- `KLARTEXT_Trainerhandbuch.html` (487 Zeilen) hat genau 1 eingebetteten Deck-Verweis (JD-3/JD-27-Beispiel).
+- `KLARTEXT_Fachbuch_Neu.html` (1039 Z.) und `KLARTEXT_Downloads.html` (590 Z.): 0 Deck-Verweise — eher
+  Nachschlagewerke, aber verschenktes Cross-Selling-Potenzial.
+
+**Befunde Landingpage:**
+- `index.html`, `KLARTEXT_Verkaufsseite.html` (App-System) und `KLARTEXT_Shop_Uebersicht.html`
+  (Kartendecks) hatten **keine** Meta-Description/Keywords/Open-Graph-Tags — kritisch, weil geteilte Links
+  (Social Media) ohne OG-Tags keine Vorschau zeigen.
+- `KLARTEXT_Verkaufsseite.html` (App-System, 79€/Ab 400€ Tag) und `KLARTEXT_Shop_Uebersicht.html`
+  (Kartendecks) verlinken sich nicht gegenseitig — nur die Startseite verbindet beide. Risiko bei Traffic
+  über geteilte Direktlinks (z. B. aus Social Media).
+
+**Umgesetzt (Punkt 1, mit Anjas Ok):** Meta-Description, Keywords, Open-Graph-Tags (+ twitter:card) in
+`index.html`, `KLARTEXT_Verkaufsseite.html`, `KLARTEXT_Shop_Uebersicht.html` ergänzt (og:image vorerst
+`anja.jpg`, könnte später durch dediziertes Social-Bild ersetzt werden). Committed `ae313cd`, gepusht.
+
+**Freie Werbekanäle recherchiert:** eduki.com (kostenloses Listing, Neukunden-Bonus, organischer Traffic
+über die Plattform) und Pinterest (verbreiteter kostenloser Traffic-Kanal für digitale Produkte Richtung
+Eltern/Fachkräfte) als konkrete, empfohlene Startpunkte.
+
+**Fund: bereits vorbereitetes Social-Media-Material entdeckt** — `klartext-shop/social/`:
+- `barometer-karussell/` — fertiges 7-teiliges Instagram/TikTok-Karussell (01_cover–07_outro, 1080×1350)
+  zur Barometer-Methode, inkl. `caption.txt` (Instagram, ausführlich) und `caption_tiktok.txt` (TikTok,
+  kurz). Bilder + Captions an Anja geschickt, bereit zum Posten (Di/Fr empfohlen).
+- `Redaktionsplan.md` — Rhythmus 2–3 Posts/Woche, Reihenfolge der nächsten Stücke: (1) Barometer-Karussell
+  ✅ fertig, (2) "Was tue ich jetzt?"-Karussell (kLAR-Modell + Feuerwehr-Protokoll) — als Nächstes zu bauen,
+  (3) Musterkarten-Post — erst bei erster Reichweite, (4) Schnupper-Paket/Lead-Magnet — erst später, bewusst
+  ohne Verkaufsabsicht am Anfang.
+
+**Noch offen:**
+- Workbook: konkrete Deck-Verweise an thematisch passenden Stellen ergänzen.
+- Verkaufsseite ⟷ Shop-Übersicht gegenseitig verlinken.
+- "Was tue ich jetzt?"-Karussell (nächstes Social-Media-Stück laut Redaktionsplan) noch zu bauen.
+- eduki.com-Profil/Listing noch anzulegen.
+- Entscheidung zum möglichen "Vielfalt verstehen"-Paket bewusst zurückgestellt, bis Marketing-Basis steht.

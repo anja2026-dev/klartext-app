@@ -3933,3 +3933,52 @@ dieser Session.
 - Entscheidung zum systemischen Befund (ältere Produkte mit derselben Formulierungsschwäche) noch
   von Anja zu treffen.
 - Alle offenen Punkte aus Strang 91–105 weiterhin gültig.
+
+## Strang 107 (20.08.2026) — Zwei weitere Digistore24-Produkte gefunden & behoben (723810, 724031)
+
+**Auslöser:** Anja hat einen Screenshot der Produktliste geschickt — zwei weitere Produkte standen
+mit rotem Status "Genehmigung beantragen": 723810 (Paket-Berufswelt-Superkraefte) und 724031
+(Alltag-Paket). Frage: "was ist mit den beiden?"
+
+**Befund:** Beide zeigten live in Digistore24 exakt denselben systemischen Fehler, der in Strang 106
+bereits für ältere Produkte dokumentiert, aber dort noch nicht behoben worden war: (1) fehlende
+Inhalts-/Auslieferungs-Beschreibung auf Verkaufsseite UND Bestellformular, (2) verbotene
+"lifetime/dauerhaft/unbegrenzt"-Formulierungen.
+
+**Behoben — 723810 (Paket Berufswelt & Superkräfte):**
+- `WB_Verkaufsseite.html`: "Zeitbegrenzung"-Formulierung ersetzt durch "Uneingeschränkter Zugriff,
+  jederzeit nutzbar"; Hinweisbox ergänzt mit expliziter Beschreibung der 5 Tools (Werte-Poker,
+  Skill-Matrix, Bewerbungsgespräch-Training, Toolbox für den Berufseinstieg, Bewerbungs-Generator)
+  + PDF-Regiebuch + "Die Abbuchung erfolgt durch Digistore24."
+- `WB_Dankeseite.html`: Digitales-Produkt-Hinweis samt exaktem Digistore24-Pflichttext ergänzt.
+- Digistore24-Bestellformular (Produktbeschreibung) über TinyMCE-JS gefüllt, Genehmigung über das
+  Select-Pattern (nativer Setter → `pending` → `change`-Event → Checkliste-Modal, alle 11 Checkboxen
+  bestätigen → Ok → zusätzlich Seiten-weiten "Speichern"-Button klicken) neu beantragt. Nach Reload
+  bestätigt: Dropdown zeigt dauerhaft "Genehmigung jetzt beantragen".
+
+**Behoben — 724031 (Alltag-Paket):**
+- `Alltag_Verkaufsseite.html`: gleiche Zeitbegrenzung-Korrektur; Hinweisbox mit den 7 Tools
+  (Stimmungsbarometer, Tagesjournal, Reizfilter-Regler, Körper-Kompass, Fokus-Trainer, Ruhe-Ballon,
+  Druckvorlage Joker-Signale) + "Die Abbuchung erfolgt durch Digistore24."
+- `Alltag_Dankeseite.html`: Digitales-Produkt-Hinweis mit exaktem Digistore24-Pflichttext ergänzt.
+- Digistore24-Bestellformular gefüllt, Genehmigung nach demselben Muster neu beantragt. **Wichtige
+  Beobachtung:** Beim ersten Versuch zeigte das Dropdown nach dem Reload fälschlich wieder
+  "abgelehnt" — der erste Save-Zyklus hatte offenbar nicht vollständig gegriffen. Zweiter Durchlauf
+  (Select erneut auf `pending`, Checkliste-Modal erneut bestätigen, Seiten-Speichern klicken) hat
+  zuverlässig funktioniert, danach per Reload verifiziert: Dropdown zeigt dauerhaft "Genehmigung
+  jetzt beantragen". Lehre für künftige Sessions: nach dem Setzen auf `pending` **immer per Reload
+  verifizieren**, bevor man den Fix als erledigt betrachtet — ein einzelner erfolgreicher Ok-Klick
+  reicht nicht garantiert aus.
+
+**Von Anja noch zu erledigen:** `git add`/`commit`/`push` für die vier geänderten
+`klartext-shop`-Dateien (`WB_Verkaufsseite.html`, `WB_Dankeseite.html`, `Alltag_Verkaufsseite.html`,
+`Alltag_Dankeseite.html`) sowie für dieses Merkliste-Update in `klartext-app`.
+
+### Noch offen
+- Digistore24-Prüfergebnis für alle fünf bearbeiteten Produkte (724045, 723777, 723781, 723810,
+  724031) abwarten.
+- `Uebergaenge_Verkaufsseite.html`/`Uebergaenge_Dankeseite.html` und
+  `Komplett_Verkaufsseite.html`/`Komplett_Dankeseite.html` haben laut Strang 106 dieselbe
+  Formulierungsschwäche — noch nicht behoben, Anja hat noch nicht danach gefragt (mögliche
+  Kandidaten für den nächsten Screenshot: 724173 Übergänge-Paket, 724157 Komplett-Bundle).
+- Alle offenen Punkte aus Strang 91–106 weiterhin gültig.

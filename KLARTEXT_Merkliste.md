@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 19.08.2026 (Strang 99 ergänzt)
+Stand: 19.08.2026 (Strang 100 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -3418,3 +3418,52 @@ restlichen Tools bauen, dann 34 €".
   aus Strang 98 — noch zu klären).
 - Paket 3 ("Integration & Sprache", laut NotebookLM-Vorschlag) komplett offen, wartet auf
   Freigabe durch Anja.
+
+## Strang 100 (19.08.2026) — "Paket Sprache & Integration" (Paket 3) fertiggestellt und live
+
+**Auslöser:** Anja gab nach Abschluss von Paket 2 die kurze Anweisung "ok jetzt noch letztes
+bundle". Für Paket 3 fehlten anders als bei Paket 1/2 zunächst konkrete Tool-Kandidaten — per
+AskUserQuestion nachgefragt, was rein soll. Anja lieferte den vollständigen NotebookLM-Vorschlag:
+Schulalltag-Wörterbuch (5 Sprachen), Brainy-Wort-Würfel (digital + Bastelvorlage) und
+Perspektiv-Wechsler, Preisempfehlung 24 € oder 29 €. Per Recherche in `klartext-app` bestätigt:
+alle drei Tools existierten bereits fertig gebaut (`KLARTEXT_Spiel_SchulalltagWoerterbuch.html`,
+`KLARTEXT_Spiel_Wortwuerfel.html` + `_Basteln.html`, `KLARTEXT_Spiel_PerspektivWechsler.html`),
+nur hinter dem Supabase-Login verborgen — exakt dasselbe Muster wie bei Paket 1.
+
+**Umgesetzt — 3 Tools + Druckvorlage aus `klartext-app` extrahiert, `paket-sprache/`:**
+- `Woerterbuch.html`: Login-Sperre entfernt, sonst unverändert — 5 Sprachen (Englisch, Arabisch,
+  Ukrainisch, Türkisch, Russisch) mit Web-Speech-Vorlesefunktion, keine App-Abhängigkeiten.
+- `Wortwuerfel.html`: Login-Sperre entfernt, Brainy-Bilder (grau/rot/gruen/gelb/orange/joker.png)
+  mitkopiert, Nav-Link auf `index.html` umgestellt.
+- `Wortwuerfel_Basteln.html`: Druckvorlage (Würfelnetz zum Ausschneiden), Login-Sperre entfernt,
+  "für INGRA" aus dem Bastel-Tipp entfernt (generische Bezeichnung wie bei allen Shop-Produkten).
+- `PerspektivWechsler.html`: Login-Sperre entfernt, App-interner Link
+  `pwa/index.html?deck=jd&karte=37` entfernt (Käufer:innen ohne JD-Deck-Zugang hätten ihn nicht
+  nutzen können), Nav-Link auf `index.html` umgestellt. Sonst unverändert: Jugendliche und
+  Bezugsperson wählen unabhängig voneinander ein Thema, daraus entsteht eine Brücken-Erklärung.
+- `index.html`: neue Hub-Seite mit Zugangscode-Sperre (Code `sprache24`), verlinkt alle 3 Tools
+  plus die Druckvorlage.
+
+**Umgesetzt — Verkaufsseite, Dankeseite, Digistore24-Produkt 724045:**
+- `Sprache_Verkaufsseite.html` (neu, analog `Alltag_Verkaufsseite.html`): Tool-Grid, 3
+  Zielgruppen-Karten (Fachkräfte Migrationszentren, DaZ-Lehrkräfte, Eltern mit Fluchtgeschichte),
+  Preis 24,00 € (nach Rückfrage bei Anja: 24 € statt 29 € oder 34 €, da kleinstes der drei
+  Pakete).
+- `Sprache_Dankeseite.html` (neu, analog `Alltag_Dankeseite.html`): liefert Zugangscode
+  `sprache24` und Link zur Hub-Seite.
+- `KLARTEXT_Shop_Uebersicht.html`: neue Kachel "Paket Sprache & Integration" ergänzt.
+- Digistore24-Produkt 724045 angelegt ("Sprache-Paket"), Produkttyp Downloads, Preis über den
+  automatisch angelegten Zahlungsplan (ID 1485854) von 37,00 € auf 24,00 € korrigiert (bestehenden
+  Plan aktualisiert, nicht dupliziert — wie bei allen vorherigen Produkten). Verkaufs-/
+  Dankeseiten-URLs hinterlegt. Bestellformular-Link `https://www.checkout-ds24.com/product/724045`
+  ermittelt und in den "Jetzt kaufen"-Button der Verkaufsseite eingetragen.
+- Alle Commits von Anja gepusht.
+
+**Noch offen:**
+- Testkauf durch Anja über den echten Checkout-Link, danach Digistore24-Checkliste bestätigen und
+  Genehmigung für Produkt 724045 beantragen (identischer Ablauf wie bei Produkt 724031 in
+  Strang 99).
+- Damit sind alle drei ursprünglich von NotebookLM vorgeschlagenen Pakete (Berufswelt, Alltag,
+  Sprache) als eigenständige Produkte umgesetzt. Von Anja im Gespräch erwähnter strategischer
+  Folgeschritt (nicht beauftragt, nur vorgemerkt): ein "KLARTEXT-Komplett-Bundle" mit allen Tools
+  zu einem Sammelpreis (79–89 €) als vierte Option anbieten.

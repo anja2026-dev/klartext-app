@@ -3539,3 +3539,82 @@ das PDF-Regiebuch bei jedem Paket, bisher hatte nur Paket 1/WB eines):
   Digistore24-Checkliste bestätigen und Genehmigung beantragen (identischer Ablauf wie bei den
   Produkten 723810/724031/724045).
 - Damit wären alle vier Produkte (3 Einzelpakete + Komplett-Bundle) vollständig live.
+
+## Strang 102 (20.08.2026) — App-Audit: 15 ungenutzte Tools gefunden + viertes Paket "Übergänge & Neuanfänge" gebaut
+
+**Auslöser:** Anja bat um Prüfung, was aus der App noch verkauft werden könnte.
+
+**Audit (`klartext-app`):** Alle HTML-Dateien nach ungenutzten interaktiven Tools durchsucht (nicht nur die
+Spiele-Hub-Seite `KLARTEXT_Spiele.html`, sondern auch `KLARTEXT_Downloads.html`). Ergebnis: 15 fertige,
+rein clientseitige Tools (kein Firebase, kein echtes Supabase-Backend nötig) noch in keinem Digistore24-
+Produkt. Vier thematische Cluster identifiziert:
+- **Übergänge** (Kita→Schule, Grundschule→weiterführende Schule, Schule→Arbeit/Werkstatt) — eigenständiges
+  Thema, sofort umsetzbar.
+- **Vielfalt verstehen** (Autismus, Gehörlosigkeit, Sehbehinderung im Alltag) — andere Zielgruppe
+  (ausdrücklich "für INGRAs und Lehrkräfte"), verlinkt nur über `KLARTEXT_Downloads.html`, nicht über die
+  normale Spiele-Hub-Seite.
+- **Alltag-Erweiterung** (Gefühls-Ampel-Memory, Mein Tag, Mini-Fitness, Was hilft mir gerade?, Mein
+  Wochenplan) — thematisch nah an Paket 2, Frage offen ob Erweiterung eines bestehenden Pakets oder eigenes
+  Produkt.
+- **Sozialkompetenz/Berufsorientierung** (Online-Identity-Lab, Richtig oder Komisch?, Stärken-Check, Was tun
+  bei...?) — thematisch nah an Paket 1, gleiche offene Frage.
+- Dazu `Wortwuerfel_Karten.html` (Wortkarten-/Aktions-Set) als unextrahiertes Bonusmaterial zum bereits
+  verkauften Sprache-Paket, kein eigenes Produkt.
+
+Anja entschied per Nachfrage: Übergänge-Paket zuerst bauen, die anderen drei Cluster später besprechen.
+
+**Umgesetzt — 3 Tools + Hub, `paket-uebergaenge/` (`klartext-shop`):**
+- `KitaSchule.html`, `NeueSchule.html`, `SchuleArbeit.html` (aus `KLARTEXT_Spiel_UebergangKitaSchule.html`,
+  `_UebergangNeueSchule.html`, `_UebergangSchuleArbeit.html`): Login-Redirect entfernt, Logo/Zurück-Link auf
+  `index.html` umgestellt, einzige INGRA-Erwähnung ("gemeinsam mit deiner INGRA anschauen") auf generisch
+  "eurer Bezugsperson" geändert (gleiches Prinzip wie bei Paket 1/2: Shop-Produkte bekommen zielgruppen-
+  neutrale Sprache statt INGRA-spezifischer Begriffe).
+- `index.html`: neue Hub-Seite mit Zugangscode-Sperre (Code `wechsel25`, warmes Orange `#E0793C` als neues,
+  bisher unbenutztes Paket-Farbschema).
+- `Uebergaenge_Regiebuch.pdf`: neues PDF-Regiebuch (4 Phasen: Einstieg, Kita→Schule, Neue Schule,
+  Schule→Arbeit & Abschluss), mit `weasyprint` gerendert. Google-Fonts (Playfair Display, DM Sans) waren in
+  der Sandbox nicht direkt ladbar (fonts.googleapis.com nicht auf der Allowlist) — stattdessen über die
+  npm-Pakete `@fontsource/playfair-display` und `@fontsource/dm-sans` als woff2-Dateien bezogen und per
+  `@font-face` eingebunden.
+
+**Umgesetzt — Verkaufsseite, Dankeseite, Digistore24-Produkt 724173:**
+- `Uebergaenge_Verkaufsseite.html` / `Uebergaenge_Dankeseite.html` (neu, analog Sprache-Paket-Vorlage,
+  gleiches Orange-Schema).
+- Preisfrage gestellt (24 € analog Sprache-Paket vs. 29 € vs. 34 € analog Berufswelt/Alltag) — Anja
+  entschied 34 €.
+- Digistore24-Produkt 724173 angelegt ("Übergänge-Paket"), Produkttyp Downloads. "&" im Produktnamen für
+  Käufer von vornherein durch "und" ersetzt (bekannter Validierungsfehler aus Strang 99, diesmal vermieden
+  statt nachträglich korrigiert). Auto-generierter Zahlungsplan (37,00 €) über den Bearbeiten-Stift auf
+  34,00 € korrigiert (bestehenden Plan editiert, kein Duplikat entstanden). Produktbeschreibung fürs
+  Bestellformular von Anfang an ausgefüllt (Lehre aus Strang 98, vermeidet die dortige Ablehnung).
+  Checkout-Link `https://www.checkout-ds24.com/product/724173` ermittelt und in den "Jetzt kaufen"-Button
+  der Verkaufsseite eingetragen.
+- Datei-Paket "Uebergaenge-PDF" (`file_vault` ID 138800) angelegt und im Ausliefern-Tab verknüpft — noch
+  ohne Inhalt, da der automatische Datei-Upload über den Chrome-Agenten weiterhin zuverlässig scheitert
+  (bekannter Bug). `Uebergaenge_Regiebuch.pdf` liegt bereits in `klartext-shop/paket-uebergaenge/`.
+- `KLARTEXT_Shop_Uebersicht.html`: neue Kachel "Paket Übergänge & Neuanfänge" nach der Sprache-Kachel
+  ergänzt. `sitemap.xml`: Eintrag ergänzt.
+
+**Git-Lock-Problem trat diesmal bei praktisch jedem einzelnen Schritt auf** (nicht nur einmalig wie in
+Strang 101) — offenbar hinterlässt inzwischen schon `git add` und sogar `git status` einen hängenden
+`index.lock`/`HEAD.lock`, den nur Anja von ihrem echten Mac-Terminal aus löschen kann (`rm -f` aus der
+Sandbox scheitert weiterhin mit "Operation not permitted", obwohl `stat` die Sandbox als Eigentümer zeigt).
+Anja musste den Lock während dieser Session vier separate Male manuell entfernen. `GIT_OPTIONAL_LOCKS=0`
+vor `git status`/`git log` reduziert einen Teil des Problems, löst es aber nicht vollständig. Für
+zukünftige Sessions vormerken: nach jedem `git add`/`git commit` direkt prüfen, ob ein neuer Lock entstanden
+ist, statt mehrere Git-Befehle hintereinander zu verketten.
+
+Beide `klartext-shop`-Commits (`fe75fa7`, `e75a72a`) sind lokal fertig, **`git push` durch Anja noch offen.**
+
+### Noch offen
+- **`git push` in `klartext-shop`** (Übergänge-Paket komplett + Checkout-Link-Korrektur).
+- Anja lädt `Uebergaenge_Regiebuch.pdf` manuell im Digistore24-Datei-Paket 138800 hoch (Konto →
+  Download-Tresor → Uebergaenge-PDF → Datei(en) hochladen).
+- Testkauf durch Anja über den Checkout-Link (TEST-PAY) für Produkt 724173, danach Digistore24-Checkliste
+  bestätigen und Genehmigung beantragen (identischer Ablauf wie bei den Produkten 723810/724031/724045).
+- Die drei restlichen Cluster aus dem App-Audit (Vielfalt verstehen, Alltag-Erweiterung,
+  Sozialkompetenz/Berufsorientierung) warten auf Anjas Entscheidung — insbesondere die Frage "Erweiterung
+  bestehender Pakete vs. eigenständige neue Produkte" bei den letzten beiden Clustern.
+- Gesprächsvorbereitung für den eubia-Termin (Montag, 24.08.2026, 10:30 Uhr, Sandra Keck) weiterhin offen.
+- Alle offenen Punkte aus Strang 91–101 (Digistore24-Prüfergebnisse, IN/ZS-Genehmigung, thematische
+  Verknüpfung Tools↔Kartendecks) weiterhin gültig.

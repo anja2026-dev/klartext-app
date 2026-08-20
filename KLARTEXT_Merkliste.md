@@ -3606,12 +3606,16 @@ ist, statt mehrere Git-Befehle hintereinander zu verketten.
 
 Beide `klartext-shop`-Commits (`fe75fa7`, `e75a72a`) sind lokal fertig, **`git push` durch Anja noch offen.**
 
+**Update:** `git push` für `klartext-shop` (dbb4a05..e75a72a) und `klartext-app` (f5d6797..cb1cb4f)
+von Anja ausgeführt. Anja hat `Uebergaenge_Regiebuch.pdf` im Datei-Paket 138800 hochgeladen und den
+Testkauf über den Checkout-Link bestätigt ("datei hochgeladen und testkauf durchgeführt"). Genehmigung
+danach über den bewährten `javascript_exec`-Pattern beantragt (Select-Element per nativem Setter auf
+`pending` gesetzt, Checkliste-Modal mit allen 11 Boxen angehakt, gespeichert). Nach Reload bestätigt:
+Dropdown zeigt dauerhaft "Genehmigung jetzt beantragen". Damit ist Produkt 724173 vollständig eingerichtet
+und wartet auf Digistore24s eigene Prüfung.
+
 ### Noch offen
-- **`git push` in `klartext-shop`** (Übergänge-Paket komplett + Checkout-Link-Korrektur).
-- Anja lädt `Uebergaenge_Regiebuch.pdf` manuell im Digistore24-Datei-Paket 138800 hoch (Konto →
-  Download-Tresor → Uebergaenge-PDF → Datei(en) hochladen).
-- Testkauf durch Anja über den Checkout-Link (TEST-PAY) für Produkt 724173, danach Digistore24-Checkliste
-  bestätigen und Genehmigung beantragen (identischer Ablauf wie bei den Produkten 723810/724031/724045).
+- Digistore24-Prüfergebnis für Produkt 724173 abwarten (wie bei allen anderen Produkten).
 - Die drei restlichen Cluster aus dem App-Audit (Vielfalt verstehen, Alltag-Erweiterung,
   Sozialkompetenz/Berufsorientierung) warten auf Anjas Entscheidung — insbesondere die Frage "Erweiterung
   bestehender Pakete vs. eigenständige neue Produkte" bei den letzten beiden Clustern.

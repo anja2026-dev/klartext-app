@@ -3663,9 +3663,11 @@ Eltern/Fachkräfte) als konkrete, empfohlene Startpunkte.
   (3) Musterkarten-Post — erst bei erster Reichweite, (4) Schnupper-Paket/Lead-Magnet — erst später, bewusst
   ohne Verkaufsabsicht am Anfang.
 
+**Update 20.08.2026:** Cross-Link Verkaufsseite ⟷ Shop-Übersicht und allgemeiner Kartendeck-Link im
+Workbook (→ `pwa/index.html`, statt riskanter Modul-für-Modul-Zuordnung einzelner Deck-Codes ohne Anjas
+Bestätigung) umgesetzt und gepusht (klartext-shop `13bc46a`, klartext-app `e0185c5`).
+
 **Noch offen:**
-- Workbook: konkrete Deck-Verweise an thematisch passenden Stellen ergänzen.
-- Verkaufsseite ⟷ Shop-Übersicht gegenseitig verlinken.
 - "Was tue ich jetzt?"-Karussell (nächstes Social-Media-Stück laut Redaktionsplan) noch zu bauen.
 - eduki.com-Profil/Listing noch anzulegen.
 - Entscheidung zum möglichen "Vielfalt verstehen"-Paket bewusst zurückgestellt, bis Marketing-Basis steht.

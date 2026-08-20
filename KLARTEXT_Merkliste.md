@@ -3671,3 +3671,265 @@ Bestätigung) umgesetzt und gepusht (klartext-shop `13bc46a`, klartext-app `e018
 - "Was tue ich jetzt?"-Karussell (nächstes Social-Media-Stück laut Redaktionsplan) noch zu bauen.
 - eduki.com-Profil/Listing noch anzulegen.
 - Entscheidung zum möglichen "Vielfalt verstehen"-Paket bewusst zurückgestellt, bis Marketing-Basis steht.
+
+## Strang 102 (20.08.2026) — eduki-Rollout gestartet: 4 von 5 Produkten live, DaZ-GS als Nächstes
+
+**Ausgangslage:** Anja hat bei eduki (Lehrkräfte-Marktplatz, ehemals lehrermarktplatz.de) ein
+Verkäuferkonto und lädt dort — parallel zu Digistore24 — Kartendecks als PDF hoch. Empfehlung aus
+einer früheren Session: für die "ersten 5 Uploads" (zählt inkl. Schnupperpaket für eine
+25-€-eduki-Gutschrift) bewusst unterschiedliche, breit gesuchte Themen mischen statt Nische:
+1. ADHS-Deck, 2. AT-Deck, 3. LRS/Dyskalkulie-Deck, 4. DaZ-GS-Deck, 5. Krisendeck.
+
+**Umgesetzt in dieser Session — 4 von 5 Materialien bei eduki angelegt (Status "Wird überprüft"):**
+- Schnupperpaket (`KLARTEXT_Schnupperpaket.pdf`, #2158619, kostenlos, 18 Seiten).
+- LRS/Dyskalkulie-Deck (`KLARTEXT_LRS-Dyskalkulie-Deck_komplett.pdf`, #2158794, 16,99 €,
+  24 Seiten — 10 Karten).
+- ADHS-Impulskarten (`KLARTEXT_ADHS-Deck_komplett.pdf`, #2158746, 19,99 €, 56 Seiten — 24 Karten).
+- AT-Impulskarten (`KLARTEXT_AT-Deck_komplett.pdf`, 19,99 €, 56 Seiten — 24 Karten). Titel
+  "AT-Impulskarten — 24 Karten für Kinder/Jugendliche", Kurzbeschreibung "24 autismus-sensible
+  Impulskarten für Schulbegleitung, Lehrkräfte und Eltern — wörtliche Sprache, klare Struktur,
+  fachlich geprüft.". Schultyp: Förderunterricht (eduki erlaubt nur 1 Schultyp). Klassenstufen:
+  3. und 8. Klasse (eduki erlaubt nur 2 Auswahlen — als Anker für die Altersspanne
+  Kind–Jugendliche gewählt).
+
+**Preis-Logik eduki vs. Digistore24:** eduki hat nur feste Preis-Stufen (kein Freitext-Preis),
+Digistore24-Preise liegen meist knapp darunter (z. B. ADHS/AT bei Digistore24 18 €). Vorgehen:
+bei eduki jeweils die nächsthöhere verfügbare Stufe nehmen (18 € → 19,99 €).
+
+**Als Nächstes (5. von 5): DaZ-GS-Deck** (`KLARTEXT_DAZ-GS-Deck_komplett.pdf`, liegt fertig in
+`klartext-app/`).
+- Titel-Vorschlag: "DaZ-Impulskarten — 25 Karten für Kinder mit Deutsch als Zweitsprache
+  (Grundschule)".
+- Kurzbeschreibung-Vorschlag: "25 sprachsensible Impulskarten für Kinder mit DaZ im
+  Grundschulalter — Ankommen, Sprache lernen, Zugehörigkeit."
+- Noch zu klären: Seitenzahl der PDF prüfen (pdfinfo), Schultyp (vermutlich "Grundschule"),
+  Klassenstufen (2 Auswahlen, z. B. 1./3. Klasse als Anker), Preis (Digistore24 hat DaZ-GS bei
+  15 €, nächsthöhere eduki-Stufe ermitteln).
+- Danach folgt Punkt 5: Krisendeck (`KLARTEXT_Krisendeck_komplett.pdf`).
+
+**Für die nächste Session wichtig:**
+- Zugriff auf die drei lokalen Repo-Ordner (`klartext-app`, `klartext-shop`, `klartext-karten`
+  unter `/Users/anjajolk/Documents/GitHub/`) muss über die Geräte-Brücke neu angefordert werden
+  (`device_request_folder_access`) — Verbindung besteht nicht automatisch in einer neuen Session.
+- Für eduki-Uploads reicht Dateizugriff; falls auch Digistore24-Verwaltung (Produktanlage,
+  Preise, Genehmigungen) ansteht, braucht es zusätzlich Chrome-Browser-Zugriff
+  (`claude-in-chrome`-Tools) — dafür aktiv nachfragen/bestätigen lassen, bevor losgelegt wird.
+- Diese Merkliste bitte laufend fortschreiben — jede Session trägt neue Erkenntnisse/
+  Entscheidungen/offene Punkte als neuen "Strang" ein, damit der Kontext über Sessions hinweg
+  erhalten bleibt.
+
+## Strang 104 (20.08.2026) — DaZ-GS-Deck bei eduki: Felder erarbeitet, Upload läuft bei Anja manuell
+
+**Ausgangslage:** Neue Session, Zugriff auf die drei Repo-Ordner erneut angefordert (wie in
+Strang 102/103 vorgemerkt). Anja füllt das eduki-Formular selbst manuell aus und fragt Feld für
+Feld nach, Claude liefert die Inhalte/Empfehlungen ohne Browser-Zugriff auf eduki selbst.
+
+**DaZ-GS-Deck (`KLARTEXT_DAZ-GS-Deck_komplett.pdf`) — Felder erarbeitet:**
+- Seitenzahl geprüft (`pdfinfo`): 57 Seiten (25 Karten, konsistent mit ADHS/AT-Muster: 24 Karten =
+  56 Seiten).
+- Kartendaten zur Verifikation aus `pwa/data/dazgs.json` gelesen (25 Karten mit Titel, Anleitung,
+  2 Fragen, Hinweis für Bezugsperson/Lehrkraft, Bild) — Themenspektrum: erster Schultag,
+  Sprachüberforderung, Auslachen wegen Akzent, Familiensprache/Übersetzen für Eltern, Heimweh,
+  Zugehörigkeit zwischen zwei Welten, Stolz auf Fortschritt, Übergang von Sprachförderung in
+  Regelklasse.
+- Titel: "DaZ-Impulskarten — 25 Karten für Kinder mit Deutsch als Zweitsprache (Grundschule)".
+- Kurzbeschreibung (nach Anjas Korrektur — erster Vorschlag war zu kurz, Longform-Muster analog
+  LRS-Deck-Kurzbeschreibung übernommen): "25 Impulskarten für Kinder mit Deutsch als Zweitsprache
+  in der Grundschule — begleitet vom ersten Schultag über Sprachverlust, Auslachen wegen Akzent
+  und Heimweh bis zum Übergang von der Sprachförderung in die Regelklasse, macht Mehrsprachigkeit
+  als Stärke statt Defizit sichtbar. Jede Karte enthält zusätzlich einen konkreten Hinweis im
+  Hinweisfeld — gleichzeitig Gesprächsimpuls für die Kinder und direkt umsetzbare Handreichung für
+  Bezugsperson oder Lehrkraft. Fachlich geprüft, sofort einsetzbar."
+- Schultyp: Grundschule. Klassenstufen: 1. und 3. Klasse (Anker für die Altersspanne).
+- Fach: DaZ (von Anja im Formular ausgewählt).
+- Thema: Sprechen & Zuhören → Gespräch & Dialog (Karten sind reine mündliche Gesprächsimpulse,
+  keine Lese-/Grammatik-/Wortschatzübung; Erzählen & Beschreiben als Alternative/Zusatz genannt,
+  falls Mehrfachauswahl möglich ist).
+- Preis: weiterhin offen — Digistore24 hat DaZ-GS bei 15 €, nächsthöhere eduki-Preisstufe im
+  Dropdown noch zu ermitteln (Muster aus Strang 102: 18 € → 19,99 €, exakte Stufe über 15 € nicht
+  aus der Merkliste ableitbar, muss im eduki-Formular selbst geprüft werden).
+
+**Standard-Urheberrechtsangaben für eduki-Uploads (von Anja bestätigt, für alle künftigen
+Kartendeck-Uploads wiederverwenden):**
+- Bilder (Cliparts, Fotos): "Selbst erstellt mit Google Gemini, bearbeitet mit Canva"
+- Anbieter der Schrift: Google Fonts (Playfair Display, DM Sans)
+- Texte: "Konzept und fachliche Inhalte von Anja Jolk, Ausformulierung mit KI-Unterstützung
+  (Claude, teilweise NotebookLM)"
+
+**Noch offen:**
+- Nächstes Formularfeld bei eduki für das DaZ-GS-Deck von Anja zu benennen (nicht klar, ob als
+  Nächstes Preis, GER-Kompetenzniveau — stand in derselben Themenliste wie "Sprechen & Zuhören" —
+  oder ein weiteres Feld ansteht).
+- Danach: Krisendeck (Punkt 5/5 aus Strang 102) noch komplett offen.
+- Alle offenen Punkte aus Strang 91–103 (Digistore24-Prüfergebnisse, Genehmigungen, "Was tue ich
+  jetzt?"-Karussell, restliche App-Audit-Cluster) weiterhin gültig.
+
+## Strang 105 (20.08.2026) — DaZ-GS- und Krisendeck bei eduki komplett + Recherche freie Werbekanäle
+
+**DaZ-GS-Deck (5. von 5 der eduki-Erstupload-Reihe) fertiggestellt:**
+- Seitenzahl geprüft (`pdfinfo`): 57 Seiten, 25 Karten. Kartendaten aus `pwa/data/dazgs.json`
+  verifiziert (Themen: erster Schultag, Sprachüberforderung, Auslachen wegen Akzent,
+  Familiensprache/Übersetzen für Eltern, Heimweh, Zugehörigkeit, Übergang Sprachförderung →
+  Regelklasse).
+- Titel: "DaZ-Impulskarten — 25 Karten für Kinder mit Deutsch als Zweitsprache (Grundschule)".
+- Kurzbeschreibung (Longform-Muster nach Anjas Korrektur, analog LRS-Deck-Vorlage übernommen):
+  "25 Impulskarten für Kinder mit Deutsch als Zweitsprache in der Grundschule — begleitet vom
+  ersten Schultag über Sprachverlust, Auslachen wegen Akzent und Heimweh bis zum Übergang von der
+  Sprachförderung in die Regelklasse, macht Mehrsprachigkeit als Stärke statt Defizit sichtbar.
+  Jede Karte enthält zusätzlich einen konkreten Hinweis im Hinweisfeld — gleichzeitig
+  Gesprächsimpuls für die Kinder und direkt umsetzbare Handreichung für Bezugsperson oder
+  Lehrkraft. Fachlich geprüft, sofort einsetzbar."
+- Fach: DaZ. Thema: Sprechen & Zuhören → Gespräch & Dialog. Schultyp: Grundschule. Klassenstufen:
+  1. und 3. Klasse.
+
+**Krisendeck (bewusst als 6. Upload ergänzt, ursprünglich Punkt 5 der Erstliste) fertiggestellt:**
+- Seitenzahl geprüft: 22 Seiten, 8 Handlungskarten (FK-01–FK-08). Inhalt aus
+  `pwa/data/krisendeck.json` verifiziert (Akutinterventionsprotokolle: Eskalation, Shutdown,
+  Panikattacke, Fremdgefährdung, Selbstverletzung, Weglaufen, Dissoziation, Meltdown).
+- Andere Produktart als die vorherigen Decks: Handlungs-/Protokollkarten für Fachkräfte, keine
+  Gesprächskarten für Kinder — Titel/Kurzbeschreibung entsprechend angepasst und am bestehenden
+  Disclaimer aus `klartext-shop/FK_Verkaufsseite.html` orientiert ("ersetzt kein
+  Kinderschutz-Verfahren und keine Rechtsberatung").
+- Titel: "Krisendeck — 8 Handlungskarten für akute Krisensituationen in der Schulbegleitung
+  (Barometer Rot)".
+- Kurzbeschreibung: "8 Handlungskarten für den akuten Krisenmoment in der Schulbegleitung — von
+  Eskalation und Meltdown über Dissoziation bis Fremd- und Selbstgefährdung: klare
+  Erkennungssignale, Sofortschritte und eine Tun/Nicht-tun-Abgrenzung pro Karte. Ausschließlich für
+  qualifizierte pädagogische Fachkräfte, ersetzt kein Kinderschutz-Verfahren und keine
+  Rechtsberatung. Fachlich geprüft, sofort einsetzbar."
+- Fach: fächerübergreifend. Thema: Classroom Management. Schultyp: "Material ist unabhängig von
+  Schultyp & Klassenstufen" (eduki-Option genutzt, da Zielgruppe Fachkräfte statt eine bestimmte
+  Klassenstufe) — Klassenstufen-Auswahl entfällt dadurch.
+- Preis-Logik bestätigt: Digistore24-Preis für DaZ-GS und Krisendeck jeweils 15 € (ermittelt über
+  den Preisspannen-Text auf den jeweiligen `klartext-shop`-Verkaufsseiten, z. B. "12–15 €" für FK
+  in `FK_Verkaufsseite.html` — oberes Ende der Spanne ist der tatsächliche Digistore24-Preis,
+  bestätigt durch Abgleich mit ADHS/AT [Spanne 15–18 €, tatsächlich 18 €] und LRS [Spanne 13–15 €,
+  tatsächlich 15 €, eduki-Preis 16,99 €]). Daraus abgeleitet: nächsthöhere eduki-Stufe für beide
+  neuen Decks ebenfalls 16,99 € (gleiche Stufe wie beim LRS-Deck).
+
+**Standard-Urheberrechtsangaben für eduki-Uploads bestätigt, für alle künftigen Kartendecks
+wiederverwenden:**
+- Bilder (Cliparts, Fotos): "Selbst erstellt mit Google Gemini, bearbeitet mit Canva"
+- Anbieter der Schrift: Google Fonts (Playfair Display, DM Sans)
+- Texte: "Konzept und fachliche Inhalte von Anja Jolk, Ausformulierung mit KI-Unterstützung
+  (Claude, teilweise NotebookLM)"
+
+**Damit sind alle 6 für diese Runde geplanten eduki-Uploads erledigt** (Schnupperpaket,
+LRS/Dyskalkulie, ADHS, AT, DaZ-GS, Krisendeck) — alle im Status "Wird überprüft".
+
+**Recherche: kostenlose Werbe-/Vertriebskanäle jenseits von eduki (mit Quellenangaben):**
+
+*eduki-Prüfdauer:* laut eduki-Hilfecenter in der Regel wenige Tage, bei Feiertagen/Aktionen/hohem
+Upload-Aufkommen länger; Nachfragen erst bei deutlicher Verzögerung sinnvoll.
+(https://help.eduki.com/hc/de/articles/360020721419)
+
+*Kostenlose Plattformen allgemein (Lehrkräfte-Zielgruppe), kein Verkauf, aber Reichweite/Backlink
+fürs Schnupperpaket:* 4teachers.de (1,5 Mio. Mitglieder), Schulportal.de (~600.000 Lehrkräfte,
+300.000 Materialien), Tutory.de (kostenlos, Verkaufsprovision laut Anbieter erst geplant). ZUM/
+ZUM-Unterrichten und WirLernenOnline sind reine OER/CC-Plattformen, für bezahlte PDFs ungeeignet.
+Einzige gefundene Plattform mit echter Bezahlung pro Ansicht (Studypool.com) ist
+englischsprachig/US-Publikum, passt nicht zur Zielgruppe.
+(Quelle: lehrer24.net/lehrerlinks.net „8 Plattformen im Vergleich", lernmarktplatz.de-Vergleich)
+
+*Zielgruppenspezifisch — Eltern & Schulbegleiter:* **REHAkids.de**, großes kostenloses Forum für
+Eltern von Kindern mit Behinderung/Förderbedarf UND Fachkräfte (Schulbegleiter, Therapeuten),
+eigener Marktplatz-Bereich plus Themenforen (Krankheitsbilder wie Autismus/ADHS, Spiele/
+Anregungen) — passt inhaltlich zu ADHS-/AT-/Krisendeck. Facebook-Gruppen speziell für
+Schulbegleiter-Austausch: "Schulbegleitung suchen – finden – Austausch", "Austausch Schulbegleiter
+NRW", "Schulbegleiter zum Austausch und Informationen" (Gruppenregeln zu Eigenwerbung vorher
+prüfen). (rehakids.de, facebook.com/groups/320755325846258, facebook.com/groups/3046854135629526)
+
+*Zielgruppenspezifisch — Übergang Schule/Berufsvorbereitung im Förderbedarfs-Kontext* (nicht
+allgemeine Firmen-Ausbilder/AEVO — dort keine passende kostenlose Community gefunden): **BAG UB –
+Forum Übergang Schule-Beruf**, seit 2003 kostenloses Fachnetzwerk für Förderschulen, Werkstätten
+für behinderte Menschen, Integrationsfachdienste, Berufsbildungswerke, Kostenträger; läuft über
+E-Mail-Verteiler + Themen-Treffen, Teilnahme/Präsentation unentgeltlich, gut zum Vernetzen/
+Bekanntmachen (kein Upload-Marktplatz). **REHADAT-Bildung**: staatlich geförderte Materialdatenbank
+für Berufsorientierung/Übergangsmanagement nach Bundesländern (NRW-Bereich passt zu KAoA), kein
+Self-Service-Upload — Material müsste zur Aufnahme aktiv vorgeschlagen werden.
+(bag-ub.de/seite/428727, rehadat-bildung.de/de/einstieg-paedagogen)
+
+*Pinterest — Einschätzung "lohnt sich das?":* Ja, empfehlenswert. Pinterest funktioniert als
+Suchmaschine (Lehrkräfte suchen aktiv nach Lösungen wie "Classroom Management Ideen"), Pins bleiben
+lt. Quelle auch ein Jahr später noch in Suchergebnissen sichtbar (im Gegensatz zu Social-Media-Posts
+mit 24–48h Lebensdauer) — passt gut als Trichter für das Schnupperpaket zur eigenen Landingpage.
+Aufwand: laut Quelle 30–50 frische Pins/Monat empfohlen, eigene Website hilfreich (hat Anja mit
+klartext-mentoring.de bereits). (schoolofsellers.com/pinterest-and-tpt)
+
+*Etsy — Einschätzung "lohnt sich das?":* Eher als späterer Ergänzungskanal, nicht als Priorität.
+Gebühren: Einstellgebühr 0,18 € (4 Monate gültig), Transaktionsgebühr 6,5 %, Zahlungsbearbeitung
+0,30 € + 4 % — Gesamtbelastung im Schnitt 12–17 % pro Verkauf, zzgl. optional Etsy-Ads/Offsite-Ads.
+Eine Verkäuferin mit ähnlichem Lehrmaterial-Hintergrund berichtet: Etsy ist stark visuell geprägt
+und begünstigt selbsterklärende, bildstarke Produkte — pädagogisch erklärungsbedürftige Materialien
+(wie KLARTEXT-Kartendecks mit Konzepthintergrund) taten sich bei ihr schwer, keines ihrer ersten
+Produkte hat sich dort langfristig gehalten. Empfehlung: falls überhaupt, klein starten mit einem
+einzigen, selbsterklärenden Produkt und starken Produktfotos, nicht als Hauptkanal.
+(kassenklingeln.de/etsy-gebuehren, lernfitness.eu/40-gratis-einstellungen-bei-etsy)
+
+**Noch offen:**
+- Konkrete nächste Schritte zu den recherchierten Kanälen (Schnupperpaket bei 4teachers.de/
+  Schulportal.de einstellen, REHAkids-Beitrag vorbereiten, BAG-UB-Verteiler kontaktieren,
+  REHADAT-Bildung wegen Materialaufnahme anschreiben, Pinterest-Board aufsetzen) — von Anja noch zu
+  priorisieren/beauftragen.
+- Digistore24-Genehmigung für Produkt 724173 (Übergänge-Paket) weiterhin ausstehend.
+- Alle offenen Punkte aus Strang 91–104 weiterhin gültig.
+
+## Strang 106 (20.08.2026) — Digistore24-Ablehnungen behoben (724045, 723777, 723781) + Genehmigung neu beantragt
+
+**Auslöser:** Anja erhielt drei Digistore24-Ablehnungsmails für Produkt 724045 (Sprache-Paket)
+sowie gemeinsam für 723777 (Insel-Set) und 723781 (Zonen-Set).
+
+**Produkt 724045 (Sprache-Paket) — zwei Ursachen behoben:**
+- "Uneingeschränkter Zugriff, keine Zeitbegrenzung" in `Sprache_Verkaufsseite.html` verstößt gegen
+  Digistore24s Verbot von "lifetime/dauerhaft/unbegrenzt"-Formulierungen → geändert zu
+  "Uneingeschränkter Zugriff, jederzeit nutzbar" (von Digistore24 selbst als erlaubte Alternative
+  genannt).
+- Hinweisbox der Verkaufsseite um explizite Formulierung "Digitales Produkt" ergänzt.
+  Bestellformular-Feld "Produktbeschreibung für Bestellformular" bei Digistore24 war komplett leer
+  (Pflichtfeld laut Ablehnung: Inhalt + Lieferform digital/physisch müssen dort UND auf der
+  Verkaufsseite sichtbar sein) → im Digistore24-Backend befüllt (Inhalt, Lieferweg, "Die Abbuchung
+  erfolgt durch Digistore24.").
+
+**Produkte 723777 (Insel-Set) und 723781 (Zonen-Set) — unterschiedliche tatsächliche Ursachen
+festgestellt** (die Sammel-Ablehnungsmail nannte für beide dieselben zwei Dankeseite-Gründe, live im
+Digistore24-Konto zeigte sich aber nur bei 723777 exakt dieser Grund; 723781 hatte stattdessen
+denselben Verkaufsseite-/Bestellformular-Grund wie 724045 — beide separat geprüft und passend
+behoben):
+- 723777: Dankeseite (`IN_Dankeseite.html`) klarer formuliert (digitales Produkt, Lieferung sofort
+  nach Kauf) und exakter Digistore24-Pflichttext "Die Abbuchung erfolgt durch Digistore24."
+  ergänzt (vorher unvollständig als "...Digistore24.com." formuliert).
+- 723781: `ZS_Dankeseite.html` genauso korrigiert; zusätzlich fehlendes
+  Bestellformular-Beschreibungsfeld bei Digistore24 befüllt (Inhalt: PDF-Sammlung Raumzonen für
+  Jugendliche + Flip-Card-Bonus, Lieferweg digital).
+- `Sprache_Dankeseite.html` vorsorglich mit demselben exakten Digistore24-Pflichttext
+  aktualisiert (war nicht Teil dieser Ablehnung, hatte aber dieselbe unvollständige Formulierung).
+
+**Systemischer Befund (nicht behoben, nur dokumentiert):** dieselbe "keine Zeitbegrenzung"-Formulierung
+und dieselbe unvollständige "...Digistore24.com."-Formulierung finden sich unverändert auch in den
+bereits genehmigten/laufenden Produkten `WB_Verkaufsseite.html`, `Alltag_Verkaufsseite.html`,
+`Uebergaenge_Verkaufsseite.html`, `Komplett_Verkaufsseite.html` sowie deren Dankeseiten und
+`Komplett_Dankeseite.html`/`Uebergaenge_Dankeseite.html`/`WB_Dankeseite.html`/`Alltag_Dankeseite.html`.
+Nicht angetastet, da nicht Teil der aktuellen Ablehnung — Anja müsste entscheiden, ob diese
+proaktiv vor einer möglichen Nachprüfung korrigiert werden sollen.
+
+**Digistore24-Bearbeitung:** Anja musste sich in einem von Claude geöffneten Chrome-Tab neu
+einloggen (Login in einem anderen Fenster wurde nicht erkannt). Bestellformular-Beschreibungsfelder
+ließen sich über den normalen `type`-Befehl nur mit ASCII-Ersatz für Umlaute (ae/oe/ue) befüllen —
+zuverlässig funktioniert hat stattdessen direktes Setzen über die TinyMCE-JS-API
+(`tinymce.get(id).setContent(...)` + `.save()`). Genehmigung für alle drei Produkte über das
+bewährte Select-Pattern (nativer Setter auf `pending` + `change`-Event → Checkliste-Modal → Ok)
+neu beantragt — wichtig dabei: zusätzlich den Seiten-weiten "Speichern"-Button am Ende der
+Eigenschaften-Seite klicken, sonst geht die Dropdown-Änderung beim nächsten Laden wieder auf
+"abgelehnt" zurück (einmal live beobachtet). Nach Reload bei allen drei Produkten bestätigt:
+Dropdown zeigt dauerhaft "Genehmigung jetzt beantragen".
+
+**Von Anja noch zu erledigen:** `git push` für die geänderten `klartext-shop`-Dateien
+(`Sprache_Verkaufsseite.html`, `IN_Dankeseite.html`, `ZS_Dankeseite.html`,
+`Sprache_Dankeseite.html`) — Claude hat sie nur lokal auf den Mac geschrieben, kein Git-Zugriff in
+dieser Session.
+
+### Noch offen
+- Digistore24-Prüfergebnis für 724045, 723777, 723781 abwarten.
+- Entscheidung zum systemischen Befund (ältere Produkte mit derselben Formulierungsschwäche) noch
+  von Anja zu treffen.
+- Alle offenen Punkte aus Strang 91–105 weiterhin gültig.

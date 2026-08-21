@@ -151,6 +151,53 @@ function setAppIdentity(deckOrNull) {
   probe.src = deckIconUrl;
 }
 
+// ═══════════════════════════════════════
+// 22.08.2026 Rollen-Sperre fuer Kartendecks: zusaetzlich zum bestehenden
+// Zugangscode-System (pro Deck, localStorage) wird jetzt geprueft, ob die
+// aktuelle klartext_role (gleiche Domain wie der App-Login) das jeweilige
+// Deck ueberhaupt sehen/oeffnen darf. Ohne bekannte Rolle bleibt alles
+// sichtbar (fail-open, wie ueberall sonst im System). Wird bei jedem
+// 'pageshow' erneut angewendet, damit auch eine per Browser-Zurueck aus dem
+// bfcache wiederhergestellte Ansicht den aktuellen Rollen-Stand zeigt statt
+// eines veralteten, ungefilterten Snapshots.
+// ═══════════════════════════════════════
+const ROLLEN_DECKS = {
+  ingra: null, tk: null, admin: null, // null = alle Decks erlaubt
+  eltern: ['el', 'kd', 'at', 'fs', 'to', 'ds', 'lrs-sek1', 'insel-eltern', 'zonen-eltern', 'geschichtenkarten'],
+  lehrkraft: ['lk', 'kd', 'at', 'fs', 'dazgs', 'dazsek1', 'ogs', 'to', 'ds', 'lrs-sek1', 'hb', 'insel-schule', 'zonen-schule', 'geschichtenkarten'],
+  jobcoach: ['jd', 'adhs', 'zonen-schule', 'zonen-eltern', 'geschichtenkarten'],
+  mobbing: ['mb', 'smi', 'krisendeck', 'geschichtenkarten'],
+};
+
+function deckErlaubt(deckId) {
+  const rolle = sessionStorage.getItem('klartext_role') || '';
+  if (!rolle) return true; // keine Rolle bekannt -> nichts sperren
+  if (!(rolle in ROLLEN_DECKS)) return true; // unbekannte Rolle -> fail-open
+  const erlaubt = ROLLEN_DECKS[rolle];
+  return erlaubt === null || erlaubt.includes(deckId);
+}
+
+function deckSperrHinweisZeigen() {
+  const alt = document.getElementById('deck-sperr-popup');
+  if (alt) alt.remove();
+  const pop = document.createElement('div');
+  pop.id = 'deck-sperr-popup';
+  pop.setAttribute('role', 'alert');
+  pop.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#1B3A4B;color:#fff;padding:.85rem 1.3rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);border:1px solid rgba(110,198,160,.4);z-index:9999;max-width:90vw;text-align:center;opacity:0;transition:opacity .25s;';
+  pop.textContent = '🔒 Dieses Kartendeck ist in deinem Paket nicht enthalten.';
+  document.body.appendChild(pop);
+  requestAnimationFrame(() => { pop.style.opacity = '1'; });
+  setTimeout(() => { pop.style.opacity = '0'; }, 2600);
+  setTimeout(() => { pop.remove(); }, 3000);
+}
+
+function deckKachelnRollenFiltern() {
+  document.querySelectorAll('.decktile[data-deck-id]').forEach(function(tile) {
+    const id = tile.getAttribute('data-deck-id');
+    tile.style.display = deckErlaubt(id) ? '' : 'none';
+  });
+}
+
 async function loadDecks() {
   const res = await fetch('data/decks.json');
   const decks = await res.json();
@@ -174,6 +221,7 @@ async function loadDecks() {
     inKat.forEach(d => {
       const btn = document.createElement('button');
       btn.className = 'decktile';
+      btn.setAttribute('data-deck-id', d.id);
       btn.innerHTML = `
         <div class="dt-kopf" style="background:${d.farbe};">
           <span class="dt-code">${d.code}</span>
@@ -195,6 +243,12 @@ async function loadDecks() {
 
 async function openDeck(deckId, opts = {}) {
   const { pushState = true, karteNr = null } = opts;
+
+  if (!deckErlaubt(deckId)) {
+    deckSperrHinweisZeigen();
+    if (!pushState) closeDeck({ pushState: true });
+    return;
+  }
 
   if (!isUnlocked(deckId)) {
     const meta = allDecks.find(d => d.id === deckId);
@@ -419,6 +473,16 @@ document.addEventListener('keydown', (e) => {
   if (e.key === ' ') { e.preventDefault(); flip(); }
 });
 
+// Rollen-Filter bei jedem Seitenaufruf neu anwenden - auch wenn die Seite aus
+// dem Browser-Cache (bfcache) wiederhergestellt wird, wofuer 'load'/
+// 'DOMContentLoaded' NICHT erneut feuern, 'pageshow' aber schon.
+window.addEventListener('pageshow', function() {
+  deckKachelnRollenFiltern();
+  if (currentDeck && !deckErlaubt(currentDeck.id)) {
+    closeDeck({ pushState: false });
+  }
+});
+
 // Zurück/Vor-Buttons des Browsers respektieren (falls genutzt), ohne neuen History-Eintrag
 window.addEventListener('popstate', () => {
   const params = new URLSearchParams(location.search);
@@ -433,6 +497,7 @@ window.addEventListener('popstate', () => {
 // Zusätzlich &karte=<nr> springt direkt zu einer bestimmten Karte (z.B. Verweis aus der Skill-Matrix
 // auf JD-05: pwa/index.html?deck=jd&karte=5), statt dass man sich durchs ganze Deck klicken muss.
 Promise.all([loadDecks(), loadAccess()]).then(() => {
+  deckKachelnRollenFiltern();
   const params = new URLSearchParams(location.search);
   const deckId = params.get('deck');
   const karteParam = params.get('karte');

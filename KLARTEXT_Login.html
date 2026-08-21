@@ -49,21 +49,12 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 
 <div class="card">
   <div class="card-titel">Willkommen</div>
-  <div class="card-sub">Bitte melde dich mit deinem persönlichen Konto an.</div>
+  <div class="card-sub">Bitte gib deinen Lizenzschlüssel ein, um fortzufahren.</div>
 
   <div class="feld">
-    <span class="feld-label">E-Mail</span>
-    <input class="feld-input" type="email" id="email-input" placeholder="name@beispiel.de" autocomplete="username"
-      onkeydown="if(event.key==='Enter')document.getElementById('pw-input').focus();">
-  </div>
-
-  <div class="feld">
-    <span class="feld-label">Passwort</span>
-    <div class="pw-row">
-      <input class="feld-input" type="password" id="pw-input" placeholder="Passwort eingeben …" autocomplete="current-password"
-        onkeydown="if(event.key==='Enter')login();">
-      <button class="pw-toggle" onclick="togglePw()" type="button" aria-label="Passwort anzeigen">👁️</button>
-    </div>
+    <span class="feld-label">Lizenzschlüssel</span>
+    <input class="feld-input" type="text" id="code-input" placeholder="z. B. anker26" autocomplete="off" autocapitalize="off" spellcheck="false"
+      onkeydown="if(event.key==='Enter')login();">
   </div>
 
   <button class="login-btn" id="login-btn" onclick="login()" type="button">
@@ -71,27 +62,34 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
     Einloggen
   </button>
 
-  <div class="err" id="err">Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.</div>
+  <div class="err" id="err">Dieser Lizenzschlüssel wurde nicht erkannt.</div>
 
   <div class="hint">
     <a href="KLARTEXT_Landing.html">← Zurück zur Startseite</a>
   </div>
 </div>
 
-<script type="module">
-  import { supabase } from './supabase/auth_client.js';
-  // neuer Login-Code kommt hier rein
-
-// Ziel-Seite je Rolle nach erfolgreichem Login (unverändert gegenüber dem bisherigen Modell)
-var ZIELE = {
-  ingra: 'DASHBOARD.html', 'ingra-beta': 'DASHBOARD.html', admin: 'DASHBOARD.html',
-  lk: 'KLARTEXT_Lehrerkurs.html', eltern: 'KLARTEXT_Elternkurs.html',
-  tk: 'DASHBOARD.html', trainer: 'DASHBOARD.html'
+<script>
+// ═══════════════════════════════════════
+// OFFLINE-FIRST: kein Supabase-Login mehr. Der Zugang läuft rein
+// clientseitig über einen Lizenzschlüssel, dessen SHA-256-Hash gegen
+// eine feste Liste geprüft wird (die Klartext-Codes selbst stehen nicht
+// im Quelltext, nur ihre Hashes). Bei Treffer wird das Paket-Kürzel unter
+// localStorage['klartext_active_bundle'] abgelegt und die bestehende
+// Login-Gate-Zeile (sessionStorage['klartext_login'], die weiterhin in
+// allen anderen Seiten unverändert geprüft wird) gesetzt.
+// ═══════════════════════════════════════
+var LIZENZ_HASHES = {
+  '444524db37fbbdf998367f11f5828a838b1b085f0110ad6af15e6cb3210c5f45': 'alltag',   // anker26
+  '9325f5e2db165b7d9fc2bb53d6a299db811f7576c3f4023033a18ed394dbdae5': 'beruf',    // w2tfn1
+  '1550e6234375a76a19ab22c89f50739d790ece390c16ddf5bbdc5ddadebf9bd0': 'sprache',  // sprache24
+  '99395d07aa6bbfa7e5d8287d0857c1d65227d1a109de0d6db7c4512a90c5085f': 'komplett'  // komplett79
 };
 
-function togglePw() {
-  var inp = document.getElementById('pw-input');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
+async function sha256Hex(text) {
+  var buf = new TextEncoder().encode(text.trim().toLowerCase());
+  var hashBuf = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hashBuf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
 }
 
 function zeigeFehler(text) {
@@ -100,118 +98,43 @@ function zeigeFehler(text) {
   err.classList.add('show');
 }
 
-// Übergangs-Kompatibilität: die übrigen, noch nicht migrierten Seiten
-// prüfen weiterhin sessionStorage['klartext_login']/['klartext_role'].
-// Sobald jede Seite direkt gegen Supabase-Sessions prüft, kann dieser
-// Block entfallen.
-function setzeUebergangsSession(rolle, userId, name) {
-  try {
-    sessionStorage.setItem('klartext_login', 'true');
-    sessionStorage.setItem('klartext_role', rolle);
-    sessionStorage.setItem('klartext_user_id', userId);
-    sessionStorage.setItem('klartext_name', name || rolle);
-  } catch (e) {}
-}
-
-function weiterleiten(rolle) {
-  window.location.href = ZIELE[rolle] || 'DASHBOARD.html';
-}
-
-// Echten Anzeigenamen für person_auth_map ermitteln (statt E-Mail als
-// Platzhalter). ingra/ingra-beta: Namen aus der "ingra"-Tabelle
-// nachschlagen, analog zu aktuelleIngraId() in KLARTEXT_Tagesjournal.html.
-// tk/trainer/admin haben keine eigene Namens-Tabelle, daher feste Labels.
-async function ermittleAnzeigename(rolle, email) {
-  if (rolle === 'ingra' || rolle === 'ingra-beta') {
-    const { data, error } = await supabase.from('ingra').select('name').eq('email', email).maybeSingle();
-    return (!error && data && data.name) ? data.name : email;
-  }
-  if (rolle === 'tk') return 'Teamkoordination';
-  if (rolle === 'trainer') return 'Trainer';
-  if (rolle === 'admin') return 'Admin';
-  return email;
-}
-
-// Admin-Rolle bleibt auf dieses eine Konto beschränkt. Client-seitige
-// Schranke, konsistent mit dem bestehenden Muster dieser Seite (Rolle
-// kommt generell aus der Auswahl im Login, nicht aus einer serverseitig
-// geprüften Quelle) - kein Ersatz für eine echte DB-seitige Durchsetzung.
-var ADMIN_ERLAUBTE_EMAIL = 'klartext.mentoring@gmx.de';
-
 async function login() {
   var btn = document.getElementById('login-btn');
-  var email = document.getElementById('email-input').value.trim();
-  var passwort = document.getElementById('pw-input').value.trim();
-  // Rollenauswahl entfernt (02.08.2026) - die App hat aktuell nur eine Nutzerin,
-  // Rolle ist fest auf "admin" gesetzt. Falls die App künftig wieder mehrere
-  // Rollen braucht, hier wieder ein Auswahlfeld einbauen (siehe Git-Historie).
-  var rolle = 'admin';
+  var code = document.getElementById('code-input').value.trim();
   document.getElementById('err').classList.remove('show');
 
-  if (!email || !passwort) {
-    zeigeFehler('Bitte E-Mail und Passwort eingeben.');
-    return;
-  }
-
-  if (rolle === 'admin' && email.toLowerCase() !== ADMIN_ERLAUBTE_EMAIL) {
-    zeigeFehler('Admin-Zugang ist auf ein bestimmtes Konto beschränkt.');
+  if (!code) {
+    zeigeFehler('Bitte deinen Lizenzschlüssel eingeben.');
     return;
   }
 
   btn.disabled = true;
+  var hash = await sha256Hex(code);
+  var bundle = LIZENZ_HASHES[hash];
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password: passwort });
-  if (error) {
-    zeigeFehler('Anmeldung fehlgeschlagen — bitte E-Mail und Passwort prüfen.');
+  if (!bundle) {
+    zeigeFehler('Dieser Lizenzschlüssel wurde leider nicht erkannt — bitte prüfe die Schreibweise. Bei Fragen meldet sich dein Support-Team gerne.');
     btn.disabled = false;
     return;
   }
 
-  // Baustein für die echte KlarApp-Kontaktliste (siehe
-  // supabase/migrations/0036_person_auth_map.sql): eigene Zeile
-  // E-Mail → echte Auth-UID upserten. Best-effort - ein Fehler hier
-  // darf den Login nicht blockieren.
   try {
-    const anzeigename = await ermittleAnzeigename(rolle, email);
-    // Echten Anzeigenamen zusätzlich unter einem eigenen Key ablegen -
-    // klartext_name bleibt unverändert die E-Mail, da andere Seiten sich
-    // ggf. darauf verlassen (siehe Kommentare in KLARTEXT_Tagesjournal.html
-    // etc.). klartext_display_name ist für reine Anzeigezwecke gedacht
-    // (z.B. Kontoanzeige im DASHBOARD.html-Header).
-    try { sessionStorage.setItem('klartext_display_name', anzeigename); } catch (e) {}
-    await supabase.from('person_auth_map').upsert(
-      { email: email, auth_uid: data.user.id, name: anzeigename, role: rolle },
-      { onConflict: 'email' }
-    );
-  } catch (e) {
-    console.error('person_auth_map-Upsert fehlgeschlagen:', e);
-  }
+    localStorage.setItem('klartext_active_bundle', bundle);
+    sessionStorage.setItem('klartext_login', 'true');
+  } catch (e) {}
 
-  // Rolle kommt bewusst aus der Auswahl im Login, nicht aus profiles.rolle.
-  setzeUebergangsSession(rolle, data.user.id, email);
-  // Phase 3 / Schritt 3.5: Eine neue, explizite Anmeldung (Login-Formular
-  // ausgefüllt, nicht Auto-Login) beginnt eine frische Session - eine
-  // zuvor im mobilen Dashboard gewählte Kind-ID der vorherigen Sitzung
-  // darf hier nicht mitgeschleppt werden. Schließt die Lücke aus PR #7,
-  // wo dies mangels Zugriff auf diese Datei nicht möglich war.
-  try { sessionStorage.removeItem('klartext_kind_id'); } catch (e) {}
-  weiterleiten(rolle);
+  window.location.href = 'DASHBOARD.html';
 }
 
-// Module-Skripte sind nicht global sichtbar — für die inline onclick/onkeydown-
-// Attribute im HTML oben müssen die Funktionen explizit an window gehängt werden.
 window.login = login;
-window.togglePw = togglePw;
 
-// Auto-Login, falls bereits eine gültige Supabase-Session UND eine in dieser
-// Session bereits gewählte Rolle besteht (Rolle kommt nie aus profiles.rolle).
-(async function(){
+// Bereits in dieser Session eingeloggt (z.B. nach Reload) -> direkt weiter,
+// kein erneutes Eintippen nötig.
+(function(){
   try {
-    var sitzung = await supabase.auth.getSession();
-    if (!sitzung.data.session) return;
-    var vorherigeRolle = sessionStorage.getItem('klartext_role');
-    if (!vorherigeRolle) return;
-    weiterleiten(vorherigeRolle);
+    if (sessionStorage.getItem('klartext_login') === 'true') {
+      window.location.href = 'DASHBOARD.html';
+    }
   } catch (e) {}
 })();
 </script>

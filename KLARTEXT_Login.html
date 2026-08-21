@@ -72,18 +72,25 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(135deg,#0F2230 
 <script>
 // ═══════════════════════════════════════
 // OFFLINE-FIRST: kein Supabase-Login mehr. Der Zugang läuft rein
-// clientseitig über einen Lizenzschlüssel, dessen SHA-256-Hash gegen
-// eine feste Liste geprüft wird (die Klartext-Codes selbst stehen nicht
-// im Quelltext, nur ihre Hashes). Bei Treffer wird das Paket-Kürzel unter
-// localStorage['klartext_active_bundle'] abgelegt und die bestehende
-// Login-Gate-Zeile (sessionStorage['klartext_login'], die weiterhin in
-// allen anderen Seiten unverändert geprüft wird) gesetzt.
+// clientseitig über einen Lizenzschlüssel, dessen SHA-256-Hash gegen eine
+// feste Liste geprüft wird (die Klartext-Codes selbst stehen nicht im
+// Quelltext, nur ihre Hashes). Jeder Code trägt jetzt zwei Infos: ein
+// optionales Paket-Kürzel (bundle, für gekaufte Digistore24-Inhaltspakete)
+// und eine Rolle (role, steuert die Dashboard-Kachel-Filterung). Die vier
+// bestehenden Bundle-Codes bleiben unverändert gültig (echte Kundschaft!)
+// und bekommen zusätzlich eine sinnvolle Standard-Rolle; die fünf neuen
+// Codes sind reine Rollen-Logins ohne Paket-Bindung (bundle: null).
 // ═══════════════════════════════════════
 var LIZENZ_HASHES = {
-  '444524db37fbbdf998367f11f5828a838b1b085f0110ad6af15e6cb3210c5f45': 'alltag',   // anker26
-  '9325f5e2db165b7d9fc2bb53d6a299db811f7576c3f4023033a18ed394dbdae5': 'beruf',    // w2tfn1
-  '1550e6234375a76a19ab22c89f50739d790ece390c16ddf5bbdc5ddadebf9bd0': 'sprache',  // sprache24
-  '99395d07aa6bbfa7e5d8287d0857c1d65227d1a109de0d6db7c4512a90c5085f': 'komplett'  // komplett79
+  '444524db37fbbdf998367f11f5828a838b1b085f0110ad6af15e6cb3210c5f45': { bundle: 'alltag',   role: 'ingra'    }, // anker26
+  '9325f5e2db165b7d9fc2bb53d6a299db811f7576c3f4023033a18ed394dbdae5': { bundle: 'beruf',     role: 'jobcoach' }, // w2tfn1
+  '1550e6234375a76a19ab22c89f50739d790ece390c16ddf5bbdc5ddadebf9bd0': { bundle: 'sprache',   role: 'lehrkraft'}, // sprache24
+  '99395d07aa6bbfa7e5d8287d0857c1d65227d1a109de0d6db7c4512a90c5085f': { bundle: 'komplett',  role: 'admin'    }, // komplett79
+  'af004ec4b152089d31cf7d5b157a8cecb8c1507777c0ee20fff2458582f139c6': { bundle: null,        role: 'ingra'    }, // sb-ingra26
+  'd371c436104677cc05cbbdb793f41cdbc3dbce6c210e49e5982195fe579d4566': { bundle: null,        role: 'jobcoach' }, // jc-beruf26
+  'af7ccdd8307de34f5f6bbbf452be7879b97cfdd64fc572e64a68695ba27804e7': { bundle: null,        role: 'lehrkraft'}, // lehrkraft24
+  'e4e9c7753a17762cb5da4be450fcf8af3767af804364057dcce6c2bd8b9fcbe5': { bundle: null,        role: 'eltern'   }, // eltern-anker
+  '417988be54939c1fbdd3b89145f3483186f9cc284fc06df45b0a525463d34d4a': { bundle: null,        role: 'tk'       }  // tk-leitung26
 };
 
 async function sha256Hex(text) {
@@ -110,16 +117,17 @@ async function login() {
 
   btn.disabled = true;
   var hash = await sha256Hex(code);
-  var bundle = LIZENZ_HASHES[hash];
+  var eintrag = LIZENZ_HASHES[hash];
 
-  if (!bundle) {
+  if (!eintrag) {
     zeigeFehler('Dieser Lizenzschlüssel wurde leider nicht erkannt — bitte prüfe die Schreibweise. Bei Fragen meldet sich dein Support-Team gerne.');
     btn.disabled = false;
     return;
   }
 
   try {
-    localStorage.setItem('klartext_active_bundle', bundle);
+    if (eintrag.bundle) localStorage.setItem('klartext_active_bundle', eintrag.bundle);
+    sessionStorage.setItem('klartext_role', eintrag.role);
     sessionStorage.setItem('klartext_login', 'true');
   } catch (e) {}
 

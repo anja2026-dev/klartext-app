@@ -100,7 +100,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="schritt-liste">
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Suchfeld</b> — tippe ein Stichwort (z.B. „Mobbing", „ADHS") und alle passenden Karten erscheinen sofort.</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Modul-Filter</b> — klick auf M0–M8 oder LK/TK/FK, um nur diesen Bereich zu sehen.</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Header-Navigation</b> — Dashboard · Nachrichten · Weiterleitungen · Lernmaterialien · Logout.</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Header-Navigation</b> — Dashboard · Weiterleitungen · To-do-Liste · Feuerwehrkarten · Notizblock · Tagesjournal · Portale · Interaktive Tools.</div></div>
   </div>
 </div>
 
@@ -109,12 +109,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="block-titel">⚡ Quick-Start<span class="neu-badge">NEU</span></div>
   <div class="block-text">Die häufigsten Abläufe in je drei Schritten:</div>
   <div class="quick-grid">
-    <div class="quick-box">
-      <div class="quick-titel">💬 Nachricht senden</div>
-      <div class="quick-schritt"><span class="quick-nr">1</span>Header → Nachrichten öffnen</div>
-      <div class="quick-schritt"><span class="quick-nr">2</span>„＋ Neu" → Person wählen</div>
-      <div class="quick-schritt"><span class="quick-nr">3</span>Text schreiben · Enter senden</div>
-    </div>
     <div class="quick-box">
       <div class="quick-titel">📤 Weiterleiten</div>
       <div class="quick-schritt"><span class="quick-nr">1</span>Header → Weiterleitungen</div>
@@ -141,15 +135,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="block-titel">📚 Die neun Module</div>
   <div class="block-text">Jedes Modul behandelt einen Themenbereich deiner Arbeit als Schulbegleitung — von den Grundlagen bis zur Selbstfürsorge.</div>
   <div class="modul-grid">
-    <div class="modul-chip" style="background:#EAF0F4;color:#1B3A4B;"><div class="modul-chip-name">M0 · Grundlagen</div><div class="modul-chip-desc">Das Fundament</div></div>
-    <div class="modul-chip" style="background:#E8EEF5;color:#2E5E8A;"><div class="modul-chip-name">M1 · Recht & Rolle</div><div class="modul-chip-desc">10 Karten</div></div>
-    <div class="modul-chip" style="background:#EAF5EE;color:#3B8A68;"><div class="modul-chip-name">M2 · Kinder verstehen</div><div class="modul-chip-desc">41 Karten</div></div>
-    <div class="modul-chip" style="background:#FBF4E8;color:#B07D2A;"><div class="modul-chip-name">M3 · Sofort-Werkzeuge</div><div class="modul-chip-desc">20 Karten</div></div>
-    <div class="modul-chip" style="background:#F3E5F5;color:#5D3A7A;"><div class="modul-chip-name">M4 · Kommunikation</div><div class="modul-chip-desc">19 Karten</div></div>
-    <div class="modul-chip" style="background:#FBEEE5;color:#B7500A;"><div class="modul-chip-name">M5 · Dokumentation</div><div class="modul-chip-desc">19 Karten</div></div>
-    <div class="modul-chip" style="background:#FCE4EC;color:#D81B60;"><div class="modul-chip-name">M6 · Krise & Mobbing</div><div class="modul-chip-desc">15 Karten</div></div>
-    <div class="modul-chip" style="background:#EFE5E2;color:#8B4A38;"><div class="modul-chip-name">M7 · Praxisfälle</div><div class="modul-chip-desc">20 Fälle</div></div>
-    <div class="modul-chip" style="background:#F0E5F0;color:#6B3F6B;"><div class="modul-chip-name">M8 · Selbstfürsorge</div><div class="modul-chip-desc">19 Karten</div></div>
+    <div class="modul-chip" style="background:#EAF0F4;color:#1B3A4B;" data-roles="ingra tk jobcoach lehrkraft eltern mobbing admin"><div class="modul-chip-name">M0 · Grundlagen</div><div class="modul-chip-desc">Das Fundament</div></div>
+    <div class="modul-chip" style="background:#E8EEF5;color:#2E5E8A;" data-roles="ingra tk admin"><div class="modul-chip-name">M1 · Recht & Rolle</div><div class="modul-chip-desc">10 Karten</div></div>
+    <div class="modul-chip" style="background:#EAF5EE;color:#3B8A68;" data-roles="ingra tk admin jobcoach lehrkraft eltern"><div class="modul-chip-name">M2 · Kinder verstehen</div><div class="modul-chip-desc">41 Karten</div></div>
+    <div class="modul-chip" style="background:#FBF4E8;color:#B07D2A;" data-roles="ingra tk admin"><div class="modul-chip-name">M3 · Sofort-Werkzeuge</div><div class="modul-chip-desc">20 Karten</div></div>
+    <div class="modul-chip" style="background:#F3E5F5;color:#5D3A7A;" data-roles="ingra tk admin lehrkraft eltern"><div class="modul-chip-name">M4 · Kommunikation</div><div class="modul-chip-desc">19 Karten</div></div>
+    <div class="modul-chip" style="background:#FBEEE5;color:#B7500A;" data-roles="ingra tk admin"><div class="modul-chip-name">M5 · Dokumentation</div><div class="modul-chip-desc">19 Karten</div></div>
+    <div class="modul-chip" style="background:#FCE4EC;color:#D81B60;" data-roles="ingra tk mobbing admin"><div class="modul-chip-name">M6 · Krise & Mobbing</div><div class="modul-chip-desc">15 Karten</div></div>
+    <div class="modul-chip" style="background:#EFE5E2;color:#8B4A38;" data-roles="ingra tk admin lehrkraft"><div class="modul-chip-name">M7 · Praxisfälle</div><div class="modul-chip-desc">20 Fälle</div></div>
+    <div class="modul-chip" style="background:#F0E5F0;color:#6B3F6B;" data-roles="ingra tk admin"><div class="modul-chip-name">M8 · Selbstfürsorge</div><div class="modul-chip-desc">19 Karten</div></div>
   </div>
 </div>
 
@@ -160,7 +154,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="schritt-liste">
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Kind-Barometer</b> — das Kind wählt täglich seinen Zustand, die INGRA gibt ihre Einschätzung daneben ab. Übereinstimmungen und Abweichungen sind sofort sichtbar.</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>INGRA-Barometer</b> — dein eigener Wochenrückblick als Schieberegler. Täglich (Mo–Fr) ausfüllen, am Ende der Woche siehst du dein Wochenfazit.</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Brainy-Coach</b> — im Chat kannst du Brainy fragen: die letzten 10 Nachrichten werden als Textblock aufbereitet, den du in jede KI kopieren kannst, um Formulierungshilfe zu bekommen.</div></div>
   </div>
 </div>
 
@@ -186,18 +179,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="tipp-box">
     <b>💡 Leselinks</b>
     Lehrkräfte und Eltern haben keinen Login. Sie erhalten einen direkten Link, der die Information im Browser öffnet — kein App-Download, kein Konto nötig.
-  </div>
-</div>
-
-<!-- NACHRICHTEN (NEU) -->
-<div class="block">
-  <div class="block-titel">💬 Nachrichten<span class="neu-badge">NEU</span></div>
-  <div class="block-text">Direktnachrichten zwischen Teammitgliedern — innerhalb von KLARTEXT, ohne externe Messenger.</div>
-  <div class="schritt-liste">
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Wer kann chatten:</b> INGRA und Teamkoordination (auch Anna, Ben, Clara als eigene Zugänge). Lehrkräfte und Eltern haben keinen Chat-Zugang.</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Neue Konversation:</b> Header → Nachrichten → „＋ Neu" → Person aus der Liste wählen. Falls bereits ein Chat existiert, wird er geöffnet statt ein neuer erstellt.</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Ungelesene Nachrichten:</b> Ein grüner Badge am Nachrichten-Icon zeigt an, wie viele Nachrichten noch nicht gelesen wurden.</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Brainy-Coach im Chat:</b> Schaltfläche „🧠 Brainy fragen" öffnet ein Panel mit den letzten 10 Nachrichten als kopierbaren Text — für Formulierungshilfe per KI.</div></div>
   </div>
 </div>
 
@@ -229,10 +210,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="block-titel">🆕 Was ist neu?</div>
   <div class="block-text">Diese Funktionen wurden zuletzt hinzugefügt oder überarbeitet:</div>
   <div class="schritt-liste">
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Nachrichten-System</b> — Direktchat zwischen INGRA, Anna, Ben, Clara und TK · Brainy-Coach-Panel im Chat</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Weiterleitungssystem</b> — Zeitkonto, Krankmeldung, Urlaubsantrag, Übergaben mit Leselink-Funktion</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Lehrkraft-Karten</b> — 16 Karten direkt als Paket teilbar über die neue Lehrkraft-Übersichtsseite</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Kind-Barometer Firebase</b> — Einträge werden jetzt dauerhaft gespeichert und sind kindspezifisch filterbar</div></div>
+    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Kind-Barometer</b> — Einträge werden lokal dauerhaft gespeichert (offline-first) und sind kindspezifisch filterbar</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Bereich senden</b> — komplette Lehrkraft- oder Eltern-Kachel als Sammel-Leselink teilbar (Tab „📦 Bereich senden" unter Weiterleitungen)</div></div>
   </div>
 </div>
@@ -243,7 +223,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   <div class="schritt-liste">
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Barometer speichert nicht?</b> — Prüfe, ob du ein Kind aus dem Dropdown gewählt hast. Ohne Kindauswahl wird kein Eintrag gespeichert.</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Leselink funktioniert nicht?</b> — Links sind einmalig und zeitlich unbegrenzt gültig. Falls sie nicht öffnen, war die ID möglicherweise falsch kopiert.</div></div>
-    <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Chat zeigt keine Nachrichten?</b> — Stelle sicher, dass du eingeloggt bist und Firebase verbunden ist (Internetverbindung prüfen).</div></div>
     <div class="schritt"><div class="schritt-nr"></div><div class="schritt-text"><b>Neue LK/Eltern nach Login-Wechsel?</b> — Logout oben rechts im Header, dann mit neuem Zugang einloggen. Sitzungsdaten werden beim Logout gelöscht.</div></div>
   </div>
   <div class="warn-box">
@@ -259,5 +238,19 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 
 </div>
 <div class="footer-note">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    if (!rolle) return;
+    document.querySelectorAll('[data-roles]').forEach(function(el){
+      var erlaubt = el.getAttribute('data-roles').split(/\s+/);
+      if (erlaubt.indexOf(rolle) === -1){
+        el.style.display = 'none';
+      }
+    });
+  } catch(e) {}
+});
+</script>
 </body>
 </html>

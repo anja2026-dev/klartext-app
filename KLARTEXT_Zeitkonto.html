@@ -115,19 +115,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 .monat-typ{display:flex;align-items:center;gap:.5rem;}
 .monat-dot{width:8px;height:8px;border-radius:50%;}
 </style>
-<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
-<script>(function(){try{
-  if(window.location.protocol==='file:') return;
-  var login = sessionStorage.getItem('klartext_login');
-  var role  = sessionStorage.getItem('klartext_role') || '';
-  if(login!=='true' || !['ingra','ingra-beta','admin'].includes(role)){
-    window.location.href='KLARTEXT_Login.html';
-  }
-}catch(e){}})();</script>
 </head>
 <body>
 
@@ -237,7 +224,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 </div><!-- /shell -->
 
 <script type="module">
-import { supabase } from './supabase/auth_client.js';
+// ═══════════════════════════════════════
+// OFFLINE-FIRST: keine Datenbank, kein Login.
+// Arbeitszeiten liegen komplett lokal in einem flachen Array
+// unter localStorage['klartext_arbeitszeiten'] (INGRA-eigene Zeiten,
+// daher NICHT pro Teilnehmer-ID gesplittet wie bei Barometer/Tagesjournal).
+// ═══════════════════════════════════════
+const ARBEITSZEITEN_KEY = 'klartext_arbeitszeiten';
+const KINDER_KEY = 'klartext_kinder'; // gemeinsame anonyme TN-ID-Liste
 
 function kindIdErmitteln(){
   try {
@@ -249,12 +243,6 @@ function kindIdErmitteln(){
     return sessionStorage.getItem('klartext_kind_id') || '';
   } catch(e) { return ''; }
 }
-
-// ═══════════════════════════════════════
-// DATEN
-// ═══════════════════════════════════════
-// Etappe 6.1: Lookup für childId -> Kindname (für lesbare Anzeige statt roher ID)
-const zkKindNamen = {};
 
 const TYPEN = [
   {
@@ -309,42 +297,34 @@ let aktFilter = 'alle';
 let wocheOffset = 0;
 
 // ═══════════════════════════════════════
-// AUTH
+// STORAGE (Offline-First: localStorage statt Supabase)
 // ═══════════════════════════════════════
-async function aktuellerUserId(){
-  const { data } = await supabase.auth.getUser();
-  return data.user ? data.user.id : null;
+function ladeEintraege() {
+  try { return JSON.parse(localStorage.getItem(ARBEITSZEITEN_KEY)) || []; }
+  catch(e) { return []; }
 }
 
-// Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
-// INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
-// wird daher über die Login-E-Mail (sessionStorage.klartext_name, trotz
-// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "ingra" abgeglichen.
-async function aktuelleIngraId(){
-  const email = sessionStorage.getItem('klartext_name') || '';
-  if (!email) return null;
-  const { data, error } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
-  if (error || !data) return null;
-  return data.id;
+function speichereEintraege(arr) {
+  localStorage.setItem(ARBEITSZEITEN_KEY, JSON.stringify(arr));
 }
 
-// ═══════════════════════════════════════
-// STORAGE
-// ═══════════════════════════════════════
-// Ersetzt localStorage['kt_eintraege']
-async function ladeEintraege() {
-  const userId = await aktuellerUserId();
-  const { data, error } = await supabase
-    .from('zeiteintraege')
-    .select('id, ingra_id, kind_id, datum, von_uhrzeit, bis_uhrzeit, pause_minuten, dauer_stunden, typ, notiz, created_at')
-    .eq('ingra_id', userId)
-    .order('datum', { ascending: false });
-  if (error) { console.error('Einträge laden fehlgeschlagen:', error); return []; }
-  return data || [];
+function ladeKinderListe() {
+  try { return JSON.parse(localStorage.getItem(KINDER_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function ladeKindDropdown() {
+  const select = document.getElementById('e-kind');
+  const vorausgewaehlt = kindIdErmitteln();
+  select.innerHTML = '<option value="">Kein Kind / Allgemein</option>' +
+    ladeKinderListe().map(id => `<option value="${id}">${id}</option>`).join('');
+  if (vorausgewaehlt && ladeKinderListe().includes(vorausgewaehlt)) {
+    select.value = vorausgewaehlt;
+  }
 }
 
 // ═══════════════════════════════════════
-// HILFSFUNKTIONEN
+// HILFSFUNKTIONEN (unverändert, rein clientseitig)
 // ═══════════════════════════════════════
 function calcH(von, bis, pause) {
   if (!von || !bis) return 0;
@@ -377,19 +357,18 @@ function getTyp(id) { return TYPEN.find(t => t.id === id) || TYPEN[0]; }
 function heute() { return new Date().toISOString().split('T')[0]; }
 
 // ═══════════════════════════════════════
-// TYP-CHIPS + INFO-BOX
+// TYP-CHIPS + INFO-BOX (unverändert)
 // ═══════════════════════════════════════
 function renderTypChips() {
   const chips = document.getElementById('typ-chips');
   const info  = document.getElementById('typ-info');
-  
+
   chips.innerHTML = TYPEN.map(t => `
     <button class="typ-chip ${t.id === aktTyp ? 'aktiv' : ''}"
       style="${t.id === aktTyp ? `background:${t.farbe};border-color:${t.farbe};` : ''}"
       onclick="waehleTyp('${t.id}')">${t.label}
     </button>`).join('');
 
-  // Info-Box für aktiven Typ anzeigen
   const t = getTyp(aktTyp);
   info.style.display = 'block';
   info.style.borderColor = t.farbe;
@@ -408,7 +387,7 @@ function waehleTyp(id) {
 }
 
 // ═══════════════════════════════════════
-// PREVIEW
+// PREVIEW (unverändert)
 // ═══════════════════════════════════════
 function updatePreview() {
   const von   = document.getElementById('e-von').value;
@@ -426,10 +405,9 @@ function updatePreview() {
 }
 
 // ═══════════════════════════════════════
-// SPEICHERN
+// SPEICHERN (lokal, synchron)
 // ═══════════════════════════════════════
-// INSERT INTO zeiteintraege (Dauerberechnung bleibt clientseitig über calcH)
-async function speichern() {
+function speichern() {
   const datum = document.getElementById('e-datum').value;
   const von   = document.getElementById('e-von').value;
   const bis   = document.getElementById('e-bis').value;
@@ -442,11 +420,10 @@ async function speichern() {
 
   const kindId = document.getElementById('e-kind').value;
   const notiz  = document.getElementById('e-notiz').value.trim();
-  const userId = await aktuellerUserId();
 
-  const { error } = await supabase.from('zeiteintraege').insert({
-    ingra_id: userId,
-    kind_id: kindId || null, // ab Etappe 6.1: enthält die childId statt freiem Text
+  const eintrag = {
+    id: Date.now(),
+    kind_id: kindId || null,
     datum,
     von_uhrzeit: von,
     bis_uhrzeit: bis,
@@ -454,72 +431,49 @@ async function speichern() {
     dauer_stunden: h,
     typ: aktTyp,
     notiz
-  });
-  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+  };
 
-  // Zusätzlich nach Firebase schreiben (Etappe 6.1) - unverändert, separates Log.
-  // Keine automatische Weiterleitung an TK mehr hier - die läuft jetzt
-  // ausschließlich gebündelt über wochenuebersichtAnTkSenden().
-  if (kindId) {
-    try {
-      db.ref('time_entry/' + kindId).push({
-        childId: kindId,
-        date: datum,
-        start: von,
-        end: bis,
-        pause: pause,
-        duration: h,
-        type: aktTyp,
-        note: notiz,
-        timestamp: Date.now(),
-        createdBy: 'ingra',
-        role: 'ingra'
-      });
-    } catch(e) {
-      console.error('Firebase-Speicherung fehlgeschlagen:', e);
-    }
-  }
+  const alle = ladeEintraege();
+  alle.unshift(eintrag);
+  speichereEintraege(alle);
 
   zkGespeichertHinweisAnzeigen();
 
-  // Reset
   document.getElementById('e-datum').value = heute();
   document.getElementById('e-kind').value  = '';
   document.getElementById('e-notiz').value = '';
   document.getElementById('preview').style.display = 'none';
 
-  await renderAlles();
+  renderAlles();
 }
 
 // ═══════════════════════════════════════
-// LÖSCHEN
+// LÖSCHEN (lokal)
 // ═══════════════════════════════════════
-// DELETE FROM zeiteintraege WHERE id = ...
-async function loeschen(id) {
+function loeschen(id) {
   if (!confirm('Diesen Eintrag löschen?')) return;
-  const { error } = await supabase.from('zeiteintraege').delete().eq('id', id);
-  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
-  await renderAlles();
+  const alle = ladeEintraege().filter(e => String(e.id) !== String(id));
+  speichereEintraege(alle);
+  renderAlles();
 }
 
 // ═══════════════════════════════════════
 // FILTER
 // ═══════════════════════════════════════
-async function setFilter(f, btn) {
+function setFilter(f, btn) {
   aktFilter = f;
   document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('ak'));
   btn.classList.add('ak');
-  await renderListe();
+  renderListe();
 }
 
 // ═══════════════════════════════════════
 // STATS
 // ═══════════════════════════════════════
-async function renderStats() {
-  const alle = await ladeEintraege();
+function renderStats() {
+  const alle = ladeEintraege();
   const jetzt = new Date();
 
-  // Diese Woche (Mo–So)
   const mo = new Date(jetzt);
   mo.setDate(jetzt.getDate() - (jetzt.getDay()||7) + 1 + wocheOffset*7);
   mo.setHours(0,0,0,0);
@@ -530,7 +484,6 @@ async function renderStats() {
     return d >= mo && d <= so;
   }).reduce((s,e) => s + e.dauer_stunden, 0);
 
-  // Dieser Monat
   const monat = alle.filter(e => {
     const d = new Date(e.datum);
     return d.getMonth() === jetzt.getMonth() && d.getFullYear() === jetzt.getFullYear();
@@ -548,8 +501,8 @@ async function renderStats() {
 // ═══════════════════════════════════════
 // WOCHENANSICHT
 // ═══════════════════════════════════════
-async function renderWoche() {
-  const alle = await ladeEintraege();
+function renderWoche() {
+  const alle = ladeEintraege();
   const jetzt = new Date();
   const mo = new Date(jetzt);
   mo.setDate(jetzt.getDate() - (jetzt.getDay()||7) + 1 + wocheOffset*7);
@@ -574,18 +527,18 @@ async function renderWoche() {
   document.getElementById('woche-tage').innerHTML = html;
 }
 
-async function wocheNav(delta) {
+function wocheNav(delta) {
   if (delta === 0) { wocheOffset = 0; }
   else { wocheOffset += delta; }
-  await renderWoche();
-  await renderStats();
+  renderWoche();
+  renderStats();
 }
 
 // ═══════════════════════════════════════
 // EINTRÄGE-LISTE
 // ═══════════════════════════════════════
-async function renderListe() {
-  const alle = await ladeEintraege();
+function renderListe() {
+  const alle = ladeEintraege();
   const gefiltert = aktFilter === 'alle' ? alle : alle.filter(e => e.typ === aktFilter);
   const el = document.getElementById('eintraege-liste');
 
@@ -608,7 +561,7 @@ async function renderListe() {
           <span class="e-datum">${dStr}</span>
           <span class="e-zeit">${e.von_uhrzeit}–${e.bis_uhrzeit}</span>
           <span class="e-typ-badge" style="background:${t.farbe};">${t.label}</span>
-          ${e.kind_id ? `<span class="e-kind">${zkKindNamen[e.kind_id] || e.kind_id}</span>` : ''}
+          ${e.kind_id ? `<span class="e-kind">${e.kind_id}</span>` : ''}
         </div>
         ${e.notiz ? `<div class="e-notiz">${e.notiz}</div>` : ''}
       </div>
@@ -621,8 +574,8 @@ async function renderListe() {
 // ═══════════════════════════════════════
 // MONATSÜBERSICHT
 // ═══════════════════════════════════════
-async function renderMonat() {
-  const alle = await ladeEintraege();
+function renderMonat() {
+  const alle = ladeEintraege();
   const jetzt = new Date();
   const monat = alle.filter(e => {
     const d = new Date(e.datum);
@@ -652,12 +605,8 @@ async function renderMonat() {
 }
 
 // ═══════════════════════════════════════
-// AN TK WEITERLEITEN (manuell) -> Supabase weiterleitungen
-// Bisher lief die Weiterleitung an TK nur unsichtbar in speichern()
-// mit (und nur mit) Kind-Bezug. Dieser Button fasst die Einträge der
-// aktuellen Kalenderwoche zusammen und sendet sie manuell, unabhängig
-// von Kind-Bezug - gleiches UI-Muster wie in KLARTEXT_Tagesjournal.html
-// (uebergabeAnTK()) und BAROMETER_KIND.html (wochenverlaufAnTkSenden()).
+// AN TK WEITERLEITEN (Offline-First: Zwischenablage + mailto:,
+// gleiches Muster wie BAROMETER_KIND.html / KLARTEXT_Tagesjournal.html)
 // ═══════════════════════════════════════
 function montagAktuelleWoche() {
   const d = new Date();
@@ -668,11 +617,9 @@ function montagAktuelleWoche() {
   return montag;
 }
 
-async function wochenuebersichtAnTkSenden() {
+function wochenuebersichtAnTkSenden() {
   const status = document.getElementById('wl-status');
-  if (status) { status.textContent = '⏳ Wird gesendet …'; status.style.display = 'block'; }
-
-  const alle = await ladeEintraege();
+  const alle = ladeEintraege();
   const montagStr = montagAktuelleWoche().toISOString().split('T')[0];
   const woche = alle.filter(e => e.datum >= montagStr);
   const gesamt = woche.reduce((s,e) => s + e.dauer_stunden, 0);
@@ -686,73 +633,57 @@ async function wochenuebersichtAnTkSenden() {
   const text = 'Zeitkonto-Wochenübersicht (' + fmtH(gesamt) + ' gesamt):\n'
     + (zeilen.length ? zeilen.join('\n') : 'Noch keine Einträge in dieser Woche.');
 
-  const userId = await aktuellerUserId();
-  const vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
-  const { error } = await supabase.from('weiterleitungen').insert({
-    kind_id: null,
-    von_profil: userId,
-    von_rolle: vonRolle,
-    ziel_rolle: 'tk',
-    typ: 'hinweis',
-    text: text,
-    dringlichkeit: 'normal',
-    status: 'offen'
-  });
+  try { navigator.clipboard.writeText(text); } catch(e) {}
+  window.location.href = 'mailto:?subject=' + encodeURIComponent('Zeitkonto-Wochenübersicht')
+    + '&body=' + encodeURIComponent(text);
 
   if (status) {
-    status.textContent = error ? '⚠ Fehler beim Weiterleiten.' : '✓ Wochenübersicht an TK weitergeleitet.';
-    setTimeout(() => { status.style.display = 'none'; }, 3000);
+    status.textContent = '✓ Wochenübersicht kopiert & E-Mail vorbereitet.';
+    status.style.display = 'block';
+    setTimeout(() => { status.style.display = 'none'; }, 4000);
   }
 
-  if (!error) {
-    // In localStorage merken (tagesbezogen) - verhindert, dass das
-    // Häkchen nach dem Neuladen der Seite verschwindet, und ist die
-    // Grundlage für den "Bereits heute weitergeleitet"-Hinweis.
-    localStorage.setItem('zk_gesendet_' + heute(), 'true');
-    const inline = document.getElementById('zk-inline-bestaetigung');
-    if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
-  }
+  localStorage.setItem('zk_gesendet_' + heute(), 'true');
+  const inline = document.getElementById('zk-inline-bestaetigung');
+  if (inline) { inline.textContent = '✓ Weitergeleitet an TK'; inline.style.display = 'inline'; }
 }
 
 // ═══════════════════════════════════════
-// CSV EXPORT
+// CSV EXPORT — berücksichtigt den aktuell aktiven Filter (aktFilter),
+// exportiert also genau die gerade angezeigten Einträge.
 // ═══════════════════════════════════════
-async function exportCSV() {
-  const alle = await ladeEintraege();
-  if (!alle.length) { alert('Keine Einträge zum Exportieren.'); return; }
+function exportCSV() {
+  const alle = ladeEintraege();
+  const gefiltert = aktFilter === 'alle' ? alle : alle.filter(e => e.typ === aktFilter);
+  if (!gefiltert.length) { alert('Keine Einträge zum Exportieren.'); return; }
   const header = 'Datum;Typ;Von;Bis;Pause(Min);Stunden;Kind/Schule;Notiz';
-  const rows = alle.map(e =>
+  const rows = gefiltert.map(e =>
     `${e.datum};${getTyp(e.typ).label};${e.von_uhrzeit};${e.bis_uhrzeit};${e.pause_minuten};${e.dauer_stunden};${e.kind_id||''};${e.notiz||''}`
   );
-  const csv = '\uFEFF' + [header, ...rows].join('\n');
+  const csv = '﻿' + [header, ...rows].join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `Zeitkonto_${heute()}.csv`;
+  const filterSuffix = aktFilter === 'alle' ? '' : '_' + aktFilter;
+  a.download = `Zeitkonto_${heute()}${filterSuffix}.csv`;
   a.click();
 }
 
 // ═══════════════════════════════════════
 // RENDER ALLES
 // ═══════════════════════════════════════
-async function renderAlles() {
-  await renderStats();
-  await renderWoche();
-  await renderListe();
-  await renderMonat();
+function renderAlles() {
+  renderStats();
+  renderWoche();
+  renderListe();
+  renderMonat();
 }
 
-// Dezenter, unaufdringlicher Hinweis direkt nach dem lokalen Speichern
-// eines Eintrags (zeiteintraege + Firebase time_entry) - keine
-// Weiterleitung an TK ausgelöst, daher kein "Weitergeleitet"-Text.
 function zkGespeichertHinweisAnzeigen() {
   const inline = document.getElementById('zk-gespeichert-hinweis');
   if (inline) inline.style.display = 'inline';
 }
-// Beim Laden der Seite: falls die Wochenübersicht heute schon einmal an
-// TK gesendet wurde (z.B. nach einem Reload), das Häkchen sofort wieder
-// anzeigen statt erst nach einem erneuten Senden - verhindert außerdem
-// versehentliche Doppel-/Dreifachsendungen am selben Tag.
+
 function zkGesendetHinweisAnzeigen() {
   if (localStorage.getItem('zk_gesendet_' + heute())) {
     const inline = document.getElementById('zk-inline-bestaetigung');
@@ -772,73 +703,18 @@ window.loeschen = loeschen;
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('e-datum').value = heute();
   zkGesendetHinweisAnzeigen();
   renderTypChips();
-  await renderAlles();
-
-  // Kind-Dropdown aus Supabase "Kinder" (großes K, neues Schema) befüllen,
-  // gefiltert auf die eingeloggte INGRA über Kinder.ingra_id - ersetzt die
-  // vorherige Firebase-Quelle (/children).
-  try {
-    const ingraId = await aktuelleIngraId();
-    const { data: kinder, error } = await supabase
-      .from('Kinder')
-      .select('id, name, klasse')
-      .eq('ingra_id', ingraId)
-      .eq('aktiv', true)
-      .order('name');
-    if (!error) {
-      const alleKinder = kinder || [];
-
-      // Zusätzlich Kinder aus aktiven Vertretungen (kind_ingra_zuteilung) einblenden.
-      const { data: zuteilungen, error: zError } = await supabase
-        .from('kind_ingra_zuteilung')
-        .select('kind_id')
-        .eq('ingra_id', ingraId)
-        .eq('rolle', 'vertretung')
-        .eq('aktiv', true);
-      if (!zError && zuteilungen && zuteilungen.length) {
-        const vertretKindIds = zuteilungen.map(z => z.kind_id);
-        const { data: vertretKinder, error: vkError } = await supabase
-          .from('Kinder')
-          .select('id, name, klasse')
-          .in('id', vertretKindIds)
-          .eq('aktiv', true);
-        if (!vkError && vertretKinder) {
-          vertretKinder.forEach(function(vk) {
-            if (!alleKinder.some(k => k.id === vk.id)) {
-              vk.istVertretung = true;
-              alleKinder.push(vk);
-            }
-          });
-        }
-      }
-
-      const select = document.getElementById('e-kind');
-      alleKinder.forEach(function(kind) {
-        const option = document.createElement('option');
-        option.value = kind.id;
-        option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '') + (kind.istVertretung ? ' (Vertretung)' : '');
-        select.appendChild(option);
-        zkKindNamen[kind.id] = kind.name; // für lesbare Anzeige in der Liste
-      });
-
-      // Etappe 4.6: Kind-Vorauswahl aus ?kind=<ID> bzw. sessionStorage.klartext_kind_id
-      var vorausgewaehlteId = kindIdErmitteln();
-      if (vorausgewaehlteId && zkKindNamen[vorausgewaehlteId]) {
-        select.value = vorausgewaehlteId;
-      }
-
-      renderAlles(); // Liste neu zeichnen, damit Namen statt IDs angezeigt werden
-    }
-  } catch(e) {}
+  ladeKindDropdown();
+  renderAlles();
 
   ['e-von','e-bis','e-pause'].forEach(id =>
     document.getElementById(id).addEventListener('input', updatePreview)
   );
 });
+
 </script>
 </body>
 </html>

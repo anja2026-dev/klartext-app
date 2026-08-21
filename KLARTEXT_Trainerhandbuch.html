@@ -10,8 +10,7 @@
 (function(){
   try{
     var login = sessionStorage.getItem('klartext_login');
-    var role  = sessionStorage.getItem('klartext_role') || '';
-    if(login!=='true' || !['admin','trainer'].includes(role)){
+    if(login!=='true'){
       window.location.href='KLARTEXT_Login.html';
     }
   }catch(e){}

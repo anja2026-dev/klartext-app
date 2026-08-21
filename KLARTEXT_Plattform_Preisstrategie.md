@@ -4,15 +4,17 @@ Stand: 07.08.2026, erstellt nach Gewerbeanmeldung. Grundlage: bestehende Verkauf
 
 ## 1. Angebots-Inventar: Was gibt es aktuell zu verkaufen?
 
-**22 fertige Produkte** (Kartendecks + Sets), aber nur **19 haben eine Verkaufsseite**. Drei sind bereits als fertiges PDF vorhanden, aber noch nirgends gelistet:
+**22 fertige Produkte** (Kartendecks + Sets), jetzt **alle 22 mit Verkaufsseite** (Stand 07.08.2026).
 
-| Kürzel | Produkt | Karten | Verkaufsseite? |
+**Korrektur (07.08.2026):** Die drei zuvor fehlenden Verkaufsseiten waren mit falschen Themenbeschreibungen in diesem Dokument gelistet — vermutlich eine Verwechslung mit anderen Deck-Ideen. Gegen den echten Code (`pwa/data/*.json`) geprüft, korrekter Inhalt:
+
+| Kürzel | Produkt (tatsächlicher Inhalt) | Karten | Verkaufsseite? |
 |---|---|---|---|
-| SMI | Sinnesbeeinträchtigungen | 10 | ❌ fehlt |
-| LRS | LRS/Dyskalkulie Sek I | 10 | ❌ fehlt |
-| SP | Selektiver Mutismus/Sprache (SP-Deck) | 7 | ❌ fehlt |
+| SMI | Systemische Mobbing-Intervention (nicht "Sinnesbeeinträchtigungen") | 10 | ✅ `SMI_Verkaufsseite.html` |
+| LRS | LRS/Dyskalkulie Sek I (Beschreibung war korrekt) | 10 | ✅ `LRS_Verkaufsseite.html` |
+| SP | Springer-INGRAs (nicht "Selektiver Mutismus/Sprache") | 7 | ✅ `SP_Verkaufsseite.html` |
 
-Das sind die einzigen "unsichtbaren" Produkte — bevor du auf neue Plattformen gehst, lohnt es sich, für diese drei erst noch eine Verkaufsseite zu bauen, sonst verkaufst du woanders Produkte, die auf deiner eigenen Seite gar nicht auffindbar sind. Sag Bescheid, wenn ich das anstoßen soll.
+Alle drei Seiten neu gebaut (Vorschaubilder aus den echten Kartendaten gerendert, Quellen gegen den tatsächlichen Karteninhalt geprüft — beim SP-Deck ehrlich als überwiegend praxisbasiert statt wissenschaftlich referenziert ausgewiesen, da es dafür keine 1:1-Forschung gibt). In `KLARTEXT_Shop_Uebersicht.html` verlinkt: SMI/SP unter "Handlungskarten & Spezialdecks", LRS unter "Kartendecks nach Zielgruppe" (konsistent mit der bestehenden Kategorisierung in `pwa/data/decks.json`). Hero-Zahlen der Übersichtsseite und `index.html` von 19 auf 22 Kartendecks korrigiert.
 
 Die restlichen 19 Produkte (JD, KD, EL, LK, TR, AT, ADHS, FS, DaZ-GS, DaZ-Sek-I, OGS, Geschichtenkarten, TK, Krisendeck, Werkzeugkarten, Mobbing, Hochbegabung, Insel-Set, Zonen-Set) sind fertig und auf `klartext-mentoring.de` gelistet — aktuell aber nur mit "Vormerken per Mail" statt echtem Checkout, weil bisher kein Gewerbe vorlag. Das ist jetzt der nächste logische Schritt (siehe #213 in der Aufgabenliste).
 
@@ -67,22 +69,25 @@ Die Verkaufsseiten zeigen aktuell Preisspannen (z. B. "15–18 €"). Für einen
 | OGS | 32 | 15 € | 27 € |
 | TK | 19 | 18 € | 27 € |
 | Zonen-Set (ZS) | – | 18 € | 27 € |
-| JD | 52 | 18 € | 29 € |
+| JD | 52 | **22 €** | **34 €** |
 | KD | 35 | 18 € | 29 € |
-| EL | 58 | 18 € | 29 € |
-| LK | 71 | 18 € | 29 € |
+| EL | 58 | **22 €** | **34 €** |
+| LK | 71 | **22 €** | **34 €** |
 | TR | 33 | 18 € | 29 € |
 | AT | 24 | 18 € | 29 € |
 | ADHS | 24 | 18 € | 29 € |
 | Geschichtenkarten (GK) | 30 | 18 € | 29 € |
 | Insel-Set (IS) | 16 | 22 € | 36 € (beide Sets) |
-| SMI *(noch keine Seite)* | 10 | 15 €* | 25 €* |
-| LRS-Sek1 *(noch keine Seite)* | 10 | 15 €* | 25 €* |
-| SP *(noch keine Seite)* | 7 | 15 €* | 22 €* |
+| SMI | 10 | 13–15 € | 22–25 € |
+| LRS-Sek1 | 10 | 13–15 € | 22–25 € |
+| SP | 7 | 12–15 € | 19–22 € |
 
-*mit * markiert: vorläufige Einordnung nach Kartenzahl, noch nicht offiziell verabschiedet.
+**Entschieden (07.08.2026):** EL/LK auf 22 €/34 € angehoben (wertbasierte Preisgestaltung — Umfang + höhere Zahlungsbereitschaft der Fachkräfte-Zielgruppe statt reiner Konsistenz mit den kleineren Decks). Auf den Verkaufsseiten (`EL_Verkaufsseite.html`, `LK_Verkaufsseite.html`) als Spanne 19–22 €/31–34 € dargestellt, konsistent mit dem Range-Stil der übrigen, noch nicht auf Festpreis umgestellten Seiten.
 
-**Ein Punkt, den ich nicht einfach automatisch angepasst habe, sondern dir zur Entscheidung vorlege:** EL (58 Karten) und LK (71 Karten) sind die mit Abstand größten Decks im Sortiment, kosten aber genauso viel wie JD (52) oder KD (35). Bei reiner Karten-pro-Euro-Logik wären sie unterpreist. Da beide sich an Fachkräfte (Eltern-Ratgeber bzw. Lehrkräfte) statt an Endkund:innen mit Kind richten, kann man argumentieren, dass die Zielgruppe zahlungsbereiter ist — dann wäre ein höherer Preis (z. B. 22 €/34 €) gerechtfertigt. Sag mir, ob du das anheben willst, oder ob dir Konsistenz über die ganze Serie wichtiger ist als die Kartenzahl.
+**Nachtrag (07.08.2026):** JD (52 Karten, zweitgrößtes Deck nach LK/EL) der Einheitlichkeit halber
+in dieselbe Preisstufe gezogen — ebenfalls 22 €/34 € (Spanne 19–22 €/31–34 € auf
+`JD_Verkaufsseite.html`). Damit bilden EL/LK/JD gemeinsam die "große Decks"-Preisstufe, klar
+abgesetzt von den 18 €/29 €-Decks wie KD (35 Karten).
 
 ## 4. Was bleibt kostenlos?
 
@@ -97,7 +102,7 @@ Alles andere (die 22 Decks/Sets) bleibt kostenpflichtig — das ist dein eigentl
 
 ## Offene Entscheidungen für dich
 
-1. EL/LK höher bepreisen wegen Kartenzahl, oder Konsistenz behalten? (siehe oben)
-2. Sollen SMI/LRS-Sek1/SP zuerst eine Verkaufsseite bekommen, bevor du auf Etsy/eduki gehst?
-3. Auf welchen Marktplätzen willst du zuerst starten — alle drei gleichzeitig, oder erst Etsy, dann eduki?
-4. Soll "Brainy muss mal kurz…" als offizielles Freebie (z. B. gegen E-Mail-Adresse) eingerichtet werden?
+1. ~~EL/LK höher bepreisen wegen Kartenzahl, oder Konsistenz behalten?~~ **Entschieden 07.08.2026: angehoben auf 22 €/34 €.**
+2. ~~Sollen SMI/LRS-Sek1/SP zuerst eine Verkaufsseite bekommen?~~ **Erledigt 07.08.2026: alle drei Seiten gebaut und verlinkt.**
+3. Auf welchen Marktplätzen willst du zuerst starten — alle drei gleichzeitig, oder erst Etsy, dann eduki? *(weiterhin offen, zurückgestellt)*
+4. Soll "Brainy muss mal kurz…" als offizielles Freebie (z. B. gegen E-Mail-Adresse) eingerichtet werden? *(weiterhin offen, zurückgestellt)*

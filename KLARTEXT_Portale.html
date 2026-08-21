@@ -106,15 +106,17 @@ input[type="text"]:focus{outline:none;border-color:var(--navy);}
   </div>
 </div>
 
-<script type="module">
-import { supabase } from './supabase/auth_client.js';
-
-// Portale kommen aus der Supabase-Tabelle "portale"
-// (id, name, url, sortierung, kategorie, aktiv, created_at). RLS: SELECT
-// für alle eingeloggten Rollen (aktiv=true), INSERT/UPDATE/DELETE nur
-// tk/admin. Der Verwalten-Button pro Kategorie ist zusätzlich per
-// sessionStorage.klartext_role auf tk/admin beschränkt (reiner UI-Schutz,
-// RLS ist die eigentliche Schranke).
+<script>
+// ═══════════════════════════════════════
+// OFFLINE-FIRST: keine Datenbank, kein Login-Rollen-Schutz mehr nötig.
+// Jede:r pflegt die eigenen Portallinks komplett lokal unter
+// localStorage['klartext_custom_portals'] (flaches JSON-Array
+// {id, name, url, kategorie, sortierung}). Da die Links nicht mehr
+// zentral von TK/Admin gepflegt, sondern pro Gerät/Person verwaltet
+// werden, kann "Verwalten" jetzt jede:r für die eigene Liste nutzen -
+// die frühere tk/admin-Beschränkung entfällt.
+// ═══════════════════════════════════════
+const PORTALE_KEY = 'klartext_custom_portals';
 const KATEGORIEN = [
   { key: 'jugendamt',       label: 'Jugendamt',       icon: '🏛️' },
   { key: 'schulen',         label: 'Schulen',         icon: '🏫' }
@@ -123,31 +125,19 @@ const KATEGORIEN = [
 let PORTALE = [];
 let verwaltenKategorie = null;
 
-function istTkOderAdmin() {
-  let rolle = '';
-  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
-  return rolle === 'tk' || rolle === 'admin';
-}
-
 function escapeAttr(text) {
   return (text || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
 }
 
-async function ladePortale() {
-  const wrap = document.getElementById('portal-kategorien');
-  const { data, error } = await supabase
-    .from('portale')
-    .select('id, name, url, sortierung, kategorie')
-    .eq('aktiv', true)
-    .order('sortierung', { ascending: true });
-
-  if (error) {
-    wrap.innerHTML = '<div class="leer">Fehler beim Laden: ' + error.message + '</div>';
-    return;
-  }
-  PORTALE = data || [];
+function ladePortale() {
+  try { PORTALE = JSON.parse(localStorage.getItem(PORTALE_KEY)) || []; }
+  catch(e) { PORTALE = []; }
   renderKategorien();
   if (verwaltenKategorie) renderVerwaltenListe();
+}
+
+function speicherePortale() {
+  localStorage.setItem(PORTALE_KEY, JSON.stringify(PORTALE));
 }
 
 function eintraegeFuer(katKey) {
@@ -164,13 +154,8 @@ function portalKachelHtml(p) {
 
 function kategorieSektionHtml(kat) {
   const eintraege = eintraegeFuer(kat.key);
-  const tkAdmin = istTkOderAdmin();
 
-  if (eintraege.length === 0 && !tkAdmin) return ''; // leere Kategorien für normale Nutzer ausblenden
-
-  const verwaltenBtn = tkAdmin
-    ? '<button class="portal-verwalten-btn" onclick="verwaltenOeffnen(\'' + kat.key + '\')">✏️ Verwalten</button>'
-    : '';
+  const verwaltenBtn = '<button class="portal-verwalten-btn" onclick="verwaltenOeffnen(\'' + kat.key + '\')">✏️ Verwalten</button>';
   const kacheln = eintraege.length
     ? eintraege.map(portalKachelHtml).join('')
     : '<div class="leer leer-klein">Noch keine Links in dieser Kategorie.</div>';
@@ -192,7 +177,6 @@ function renderKategorien() {
 
 // ── VERWALTEN-OVERLAY ────────────────────────────────────────
 function verwaltenOeffnen(katKey) {
-  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
   verwaltenKategorie = katKey;
   const kat = KATEGORIEN.find(function(k) { return k.key === katKey; });
   document.getElementById('verwalten-titel').textContent = 'Verwalten: ' + (kat ? kat.label : katKey);
@@ -224,28 +208,26 @@ function renderVerwaltenListe() {
   }).join('');
 }
 
-async function verwaltenSpeichern(id) {
-  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
+function verwaltenSpeichern(id) {
   const name = document.getElementById('v-name-' + id).value.trim();
   const url = document.getElementById('v-url-' + id).value.trim();
   if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
 
-  const { error } = await supabase.from('portale').update({ name: name, url: url }).eq('id', id);
-  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
-  await ladePortale();
+  const eintrag = PORTALE.find(function(p) { return String(p.id) === String(id); });
+  if (eintrag) { eintrag.name = name; eintrag.url = url; }
+  speicherePortale();
+  ladePortale();
 }
 
-async function verwaltenLoeschen(id) {
-  if (!istTkOderAdmin()) return; // zweite Sicherheitsebene
+function verwaltenLoeschen(id) {
   if (!confirm('Diesen Link wirklich löschen?')) return;
-
-  const { error } = await supabase.from('portale').delete().eq('id', id);
-  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
-  await ladePortale();
+  PORTALE = PORTALE.filter(function(p) { return String(p.id) !== String(id); });
+  speicherePortale();
+  ladePortale();
 }
 
-async function verwaltenLinkHinzufuegen() {
-  if (!istTkOderAdmin() || !verwaltenKategorie) return; // zweite Sicherheitsebene
+function verwaltenLinkHinzufuegen() {
+  if (!verwaltenKategorie) return;
   const name = document.getElementById('verwalten-neu-name').value.trim();
   const url = document.getElementById('verwalten-neu-url').value.trim();
   if (!name || !url) { alert('Bitte Name und URL eingeben.'); return; }
@@ -255,18 +237,18 @@ async function verwaltenLinkHinzufuegen() {
     ? Math.max.apply(null, eintraegeKat.map(function(p){ return p.sortierung || 0; })) + 1
     : 1;
 
-  const { error } = await supabase.from('portale').insert({
+  PORTALE.push({
+    id: Date.now(),
     name: name,
     url: url,
     kategorie: verwaltenKategorie,
-    sortierung: naechsteSortierung,
-    aktiv: true
+    sortierung: naechsteSortierung
   });
-  if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
+  speicherePortale();
 
   document.getElementById('verwalten-neu-name').value = '';
   document.getElementById('verwalten-neu-url').value = '';
-  await ladePortale();
+  ladePortale();
 }
 
 ladePortale();

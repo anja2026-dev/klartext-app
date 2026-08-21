@@ -526,6 +526,27 @@ weiterleitungenBadgeAktualisieren();
     } catch(e) {}
   })();
   </script>
+  <script>
+  // ═══════════════════════════════════════
+  // OFFLINE-FIRST ROLLEN-FILTER: Elemente mit data-roles="rolle1 rolle2 ..."
+  // werden ausgeblendet, wenn die aktuelle klartext_role NICHT in der Liste
+  // steht. Sicherer Default: fehlt data-roles ganz, oder ist klartext_role
+  // (noch) leer/nicht gesetzt, bleibt das Element sichtbar - lieber zu viel
+  // zeigen als jemanden mit gueltigem Login versehentlich auszusperren.
+  // ═══════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', function(){
+    try {
+      var rolle = sessionStorage.getItem('klartext_role') || '';
+      if(!rolle) return; // keine Rolle bekannt -> nichts ausblenden
+      document.querySelectorAll('[data-roles]').forEach(function(el){
+        var erlaubt = el.getAttribute('data-roles').split(/\s+/);
+        if(erlaubt.indexOf(rolle) === -1){
+          el.style.display = 'none';
+        }
+      });
+    } catch(e) {}
+  });
+  </script>
 </header>
 <!-- GLOBALE HAUPTNAVIGATION -->
 <nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
@@ -780,7 +801,7 @@ weiterleitungenBadgeAktualisieren();
     </div>
   </section>
 
-  <section class="modul-sektion" id="sek-m1" style="scroll-margin-top:135px;--sek-color:var(--c-m1);--sek-light:var(--c-m1-l);">
+  <section class="modul-sektion" id="sek-m1" style="scroll-margin-top:135px;--sek-color:var(--c-m1);--sek-light:var(--c-m1-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -802,7 +823,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="M1-02_Datenschutzcheck.html" data-modul="m1" data-search="datenschutz dsgvo einwilligung foto sicher" style="--kachel-color:var(--c-m1);--kachel-bg:var(--c-m1-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">↓ DL</span><span class="kachel-emoji">🔒</span></div><div class="kachel-body"><div class="kachel-titel">Datenschutz-Basischeck</div><div class="kachel-sub">DSGVO im Schulalltag</div><span class="kachel-tag">Formular</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-m2" style="scroll-margin-top:135px;--sek-color:var(--c-m2);--sek-light:var(--c-m2-l);">
+  <section class="modul-sektion" id="sek-m2" style="scroll-margin-top:135px;--sek-color:var(--c-m2);--sek-light:var(--c-m2-l);" data-roles="ingra tk admin jobcoach">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -930,7 +951,7 @@ weiterleitungenBadgeAktualisieren();
           </a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-m3" style="scroll-margin-top:135px;--sek-color:var(--c-m3);--sek-light:var(--c-m3-l);">
+  <section class="modul-sektion" id="sek-m3" style="scroll-margin-top:135px;--sek-color:var(--c-m3);--sek-light:var(--c-m3-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -946,7 +967,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="M3_DL_Joker-Karte.html" data-modul="m3" data-search="joker druck karte ausschneiden signal" style="--kachel-color:#B07D2A;--kachel-bg:#FBF4E8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">🖨️</span><span class="kachel-emoji">🃏</span></div><div class="kachel-body"><div class="kachel-titel">Joker-Karte (Druck)</div><div class="kachel-sub">8 Karten zum Ausschneiden</div><span class="kachel-tag">Material</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-m4" style="scroll-margin-top:135px;--sek-color:var(--c-m4);--sek-light:var(--c-m4-l);">
+  <section class="modul-sektion" id="sek-m4" style="scroll-margin-top:135px;--sek-color:var(--c-m4);--sek-light:var(--c-m4-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -974,7 +995,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="M4-16_Migrantische_Eltern.html" data-modul="m4" data-search="migrantische eltern ingra elterngespräch kulturell" style="--kachel-color:var(--c-m4);--kachel-bg:var(--c-m4-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M4-16</span><span class="kachel-emoji">🌍</span></div><div class="kachel-body"><div class="kachel-titel">Migrantische Eltern</div><div class="kachel-sub">Elterngespräche · Kultur</div><span class="kachel-tag">Neu</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-m5" style="scroll-margin-top:135px;--sek-color:var(--c-m5);--sek-light:var(--c-m5-l);">
+  <section class="modul-sektion" id="sek-m5" style="scroll-margin-top:135px;--sek-color:var(--c-m5);--sek-light:var(--c-m5-l);" data-roles="ingra tk admin jobcoach">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1000,7 +1021,7 @@ weiterleitungenBadgeAktualisieren();
     </div></section>
 
   <!-- ANTI-MOBBING TRAINING -->
-  <section class="modul-sektion" id="sek-m6" style="scroll-margin-top:135px;--sek-color:var(--c-m6);--sek-light:var(--c-m6-l);">
+  <section class="modul-sektion" id="sek-m6" style="scroll-margin-top:135px;--sek-color:var(--c-m6);--sek-light:var(--c-m6-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1031,7 +1052,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="M6_DL_Digitale_Spuren_Sichern.html" data-modul="m6" data-search="digital spuren sichern cybermobbing druck" style="--kachel-color:var(--c-m6);--kachel-bg:var(--c-m6-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📥</span><span class="kachel-emoji">🟦</span></div><div class="kachel-body"><div class="kachel-titel">Spuren sichern (Druck)</div><div class="kachel-sub">Kompakt zu M6-08 · zum Ausdrucken</div><span class="kachel-tag">Material</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-m7" style="scroll-margin-top:135px;--sek-color:var(--c-m7);--sek-light:var(--c-m7-l);">
+  <section class="modul-sektion" id="sek-m7" style="scroll-margin-top:135px;--sek-color:var(--c-m7);--sek-light:var(--c-m7-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1063,7 +1084,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="M7-20_Konflikte_mit_Eltern.html" data-modul="m7" data-search="eltern konflikt gespräch rahmen vereinbaren" style="--kachel-color:var(--c-m7);--kachel-bg:var(--c-m7-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M7-20</span><span class="kachel-emoji">👨‍👩‍👧</span></div><div class="kachel-body"><div class="kachel-titel">Konflikte Eltern</div><div class="kachel-sub">5-Schritte-Gespräch</div><span class="kachel-tag">Abschluss</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-m8" style="scroll-margin-top:135px;--sek-color:var(--c-m8);--sek-light:var(--c-m8-l);">
+  <section class="modul-sektion" id="sek-m8" style="scroll-margin-top:135px;--sek-color:var(--c-m8);--sek-light:var(--c-m8-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1095,7 +1116,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="M8-19_Wie_eine_Schildkroete.html" data-modul="m8" data-search="schildkroete langsam entschleunigen humor" style="--kachel-color:var(--c-m8);--kachel-bg:var(--c-m8-l);position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">M8-19</span><span class="kachel-emoji">🐢</span></div><div class="kachel-body"><div class="kachel-titel">Wie eine Schildkröte</div><div class="kachel-sub">Bewusst verlangsamen — mit Augenzwinkern</div><span class="kachel-tag">Selbstfürsorge</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-mh" style="scroll-margin-top:135px;--sek-color:var(--c-mh);--sek-light:var(--c-mh-l);">
+  <section class="modul-sektion" id="sek-mh" style="scroll-margin-top:135px;--sek-color:var(--c-mh);--sek-light:var(--c-mh-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1121,7 +1142,7 @@ weiterleitungenBadgeAktualisieren();
 
   <!-- LK-KURS -->
   <!-- LK-KURS -->
-  <section class="modul-sektion" id="sek-lk" style="scroll-margin-top:135px;--sek-color:#1565C0;--sek-light:#EAF1F8;">
+  <section class="modul-sektion" id="sek-lk" style="scroll-margin-top:135px;--sek-color:#1565C0;--sek-light:#EAF1F8;" data-roles="lehrkraft admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1135,7 +1156,7 @@ weiterleitungenBadgeAktualisieren();
   </section>
 
   <!-- TEAMKOORDINATION -->
-  <section class="modul-sektion" id="sek-tk" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;">
+  <section class="modul-sektion" id="sek-tk" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;" data-roles="tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot"><span class="sek-chevron">▼</span></div>
       <span class="modul-sektion-titel">🗂️ Teamkoordination</span>
@@ -1207,7 +1228,7 @@ weiterleitungenBadgeAktualisieren();
 
   <!-- FALLMANAGEMENT -->
   <!-- DOWNLOADS -->
-    <!-- ══ ZEITKONTO + KRANKMELDUNG ══════════════════════════════ --><section id="sek-tools" class="modul-sektion">
+    <!-- ══ ZEITKONTO + KRANKMELDUNG ══════════════════════════════ --><section id="sek-tools" class="modul-sektion" data-roles="ingra tk admin">
         <div class="modul-sektion-header" onclick="toggleSek(this)">
           <div class="modul-sektion-titel">⏱️ Zeitkonto & Meldungen
       <span class="sek-chevron">▼</span>
@@ -1243,7 +1264,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="KLARTEXT_Listen.html" data-modul="tools" data-search="liste todo aufgaben nach testphase ideen wunschliste merkliste" style="position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">NEU</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📋</span><span class="kachel-emoji">✅</span></div><div class="kachel-body"><div class="kachel-titel">Meine Listen</div><div class="kachel-sub">To-do · Nach der Testphase</div><span class="kachel-tag">Planung</span></div></a></div></section>
 
 <!-- ELTERN-INFO -->
-  <section class="modul-sektion" id="sek-elterninfo" style="scroll-margin-top:135px;--sek-color:#AD1457;--sek-light:#FCE4EC;">
+  <section class="modul-sektion" id="sek-elterninfo" style="scroll-margin-top:135px;--sek-color:#AD1457;--sek-light:#FCE4EC;" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1259,7 +1280,7 @@ weiterleitungenBadgeAktualisieren();
   <!-- WEITERGABE LK/ELTERN -->
     <!-- TK-FEEDBACK -->
 
-  <section class="modul-sektion" id="sek-kd" style="scroll-margin-top:135px;--sek-color:#4FC3C7;--sek-light:#E0F7F8;scroll-margin-top:135px;">
+  <section class="modul-sektion" id="sek-kd" style="scroll-margin-top:135px;--sek-color:#4FC3C7;--sek-light:#E0F7F8;scroll-margin-top:135px;" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1295,7 +1316,7 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="KD-14_Mein_Comeback-Plan.html" data-modul="kd" data-search="comeback jugendlich aelter plan selbst" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-14</span><span class="kachel-emoji">💪</span></div><div class="kachel-body"><div class="kachel-titel">Mein Comeback-Plan</div><div class="kachel-sub">Ab 7. Klasse · Selbstbestimmt</div><span class="kachel-tag">Download</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-fk" style="scroll-margin-top:135px;--sek-color:var(--c-fk);--sek-light:var(--c-fk-l);">
+  <section class="modul-sektion" id="sek-fk" style="scroll-margin-top:135px;--sek-color:var(--c-fk);--sek-light:var(--c-fk-l);" data-roles="ingra tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>

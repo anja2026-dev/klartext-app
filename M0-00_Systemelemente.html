@@ -239,6 +239,33 @@ footer strong{color:var(--kt-accent);}
   </div>
 </section>
 
+<div id="rollen-empfehlung" style="display:none;max-width:640px;margin:1.25rem auto 0;padding:1rem 1.25rem;border-radius:12px;background:#EEF7F2;border:1.5px solid #3B8A68;font-size:.85rem;color:#1A2A1A;line-height:1.6;"></div>
+<script>
+// ═══════════════════════════════════════
+// Rollen-abhaengige Priorisierung der M0-Basics (Offline-First, liest nur
+// sessionStorage.klartext_role - keine Sektionen werden entfernt, nur eine
+// kurze Empfehlung eingeblendet).
+// ═══════════════════════════════════════
+(function(){
+  try{
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    var box = document.getElementById('rollen-empfehlung');
+    if(!box) return;
+    if(rolle === 'jobcoach'){
+      box.innerHTML = '<strong>👋 Für dich als Jobcoach besonders relevant:</strong> Starte mit den Berufswelt-Basics — '
+        + '<a href="KLARTEXT_Spiel_WertePoker.html">🃏 Werte-Poker</a> und '
+        + '<a href="KLARTEXT_Spiel_SkillMatrix.html">📊 Skill-Matrix</a>. Barometer, Joker und KLAR-Formel weiter unten gelten systemweit und lohnen sich trotzdem als Hintergrundwissen.';
+      box.style.display = 'block';
+    } else if(rolle === 'ingra' || rolle === 'tk'){
+      box.innerHTML = '<strong>👋 Für dich besonders relevant:</strong> Starte mit '
+        + '<a href="#barometer">🌡️ Barometer</a>, <a href="#joker">🃏 Joker</a> und '
+        + '<a href="#klar">💬 der KLAR-Formel</a> — den Basics für den Alltag mit dem Kind.';
+      box.style.display = 'block';
+    }
+  }catch(e){}
+})();
+</script>
+
 <!-- PAGE WRAP -->
 <div class="page-wrap">
 

@@ -143,11 +143,6 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 <meta name="apple-mobile-web-app-title" content="KLARTEXT">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#1B3A4B">
-<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
 </head>
 <body>
 
@@ -162,6 +157,14 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
 </header>
 
+<!-- FREITAGS-ERINNERUNG (ersetzt den frueheren stillen Auto-Versand, der ohne
+     Server/Datenbank nicht mehr moeglich ist - hier bewusst sichtbar mit
+     Klick-Aktion statt automatischem Hintergrundversand) -->
+<div class="ingra-hinweis" id="freitag-banner" style="display:none;max-width:500px;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;">
+  <span>Es ist Freitag! 📅 Vergiss nicht, deinen wöchentlichen Barometer-Verlauf an die Teamkoordination zu senden.</span>
+  <button class="freitag-senden-btn" onclick="wochenverlaufManuellSenden()" type="button" style="background:#1B3A4B;color:#fff;border:none;border-radius:8px;padding:.45rem .85rem;font-size:.76rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">Wochenverlauf senden</button>
+</div>
+
 <!-- BEGRÜSSUNG -->
 <div class="begruess">
   <div class="begruess-name" id="begruess-name">Hallo! 👋</div>
@@ -175,9 +178,6 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
     <summary>🗂️ Teilnehmer-IDs verwalten</summary>
     <div class="tn-verwaltung-box">
       <div class="tn-verwaltung-sub">Anonyme Kürzel statt Klarnamen (z. B. „TN-DO-01"). Es werden keine echten Namen gespeichert.</div>
-      <div id="tn-login-hinweis" class="tn-login-hinweis" style="display:none;">
-        Zum Anlegen/Löschen von Teilnehmer-IDs bitte zuerst <a href="KLARTEXT_Login.html">einloggen</a> — die Auswahl bereits angelegter IDs funktioniert auch ohne Login.
-      </div>
       <div id="tn-verwaltung-aktiv">
         <div class="tn-anlegen-zeile">
           <input type="text" id="tn-neu-input" class="tn-anlegen-input" placeholder="z. B. KT-X8R2">
@@ -294,7 +294,8 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
   <div class="bilanz-leer" id="wl-status" style="display:none;width:100%;margin-top:.5rem;"></div>
 </div>
 
-<!-- VERLAUF (Supabase "barometer_kind" - ersetzt die vorherige Firebase-Historie) -->
+<!-- VERLAUF (Offline-First 21.08.2026: rein lokal aus localStorage, ersetzt
+     die vorherige Supabase-/Firebase-Historie) -->
 <div class="bilanz-wrap" id="historie-wrap">
   <div class="bilanz-titel">Verlauf ☁️</div>
   <div id="historie-liste">
@@ -310,38 +311,26 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 </div>
 
 <script type="module">
-import { supabase } from './supabase/auth_client.js';
-
 const FARBEN_K = {gruen:'#2E9E5A',gelb:'#D4A800',orange:'#D4651A',rot:'#C0392B',grau:'#757575'};
 var aktuelleWahl = null;
 
-// KIND-AUSWAHL — lädt echte Kinder aus Supabase (Tabelle "kinder"), befüllt
-// Dropdown, merkt Auswahl. Bewusst ohne Login/INGRA-Filter: Diese Seite ist
-// ein Kind-Self-Service-Gerät ("Wer bist du?"), kein INGRA-Werkzeug - ein
-// Filter über kinder_zuordnung würde eine eingeloggte INGRA-Session
-// voraussetzen, die es hier absichtlich nicht gibt.
-// Hinweis (Strang 70): Die RLS-Regeln auf "kinder" (0002/0003_...sql)
-// verlangen für JEDEN Zugriff, auch select, tatsächlich bereits eine
-// eingeloggte tk/admin-Session — ohne Login liefert die Abfrage unten
-// nach aktuellem Stand der Datenbank-Regeln vermutlich ohnehin leer
-// zurück. Der obige Kommentar ("bewusst ohne Login") war offenbar nie
-// vollständig zutreffend; hier nicht repariert (außerhalb dieses
-// Auftrags), aber für den neuen Jobcoach-Teil unten bewusst korrekt
-// berücksichtigt: dort wird Login aktiv vorausgesetzt.
+// KIND-AUSWAHL — Offline-First (21.08.2026): keine Datenbank mehr. Teilnehmer-
+// IDs (anonym, z. B. "TN-DO-01") liegen als einfaches Array unter
+// localStorage['klartext_kinder']. Gilt jetzt einheitlich fuer Schule- UND
+// Jobcoach-Modus (vorher: Schule = echte Namen aus Supabase, Jobcoach =
+// anonyme IDs) — entspricht dem Grundsatz "nie personenbezogene Daten
+// speichern" der neuen Architektur.
+var KINDER_KEY = 'klartext_kinder';
 var aktuellesKindId = '';
-var kinderNamen = {}; // id -> name, ersetzt die vorherige localStorage-Namenszwischenspeicherung (baro_kind_name)
 
-function aktualisiereBegruessung(name){
-  document.getElementById('begruess-name').textContent = name ? ('Hallo '+name+' 👋') : 'Hallo! 👋';
+function aktualisiereBegruessung(id){
+  document.getElementById('begruess-name').textContent = id ? ('Hallo '+id+' 👋') : 'Hallo! 👋';
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// JOBCOACH-MODUS (Strang 70): professionelle Selbsteinschätzung statt
-// Kind-Barometer. Eigene, schlanke Kopie der klartext_modus-Erkennung
-// aus KLARTEXT_ContextMapper.js (nicht per <script src> eingebunden,
-// weil hier mehr als reine Text-Ersetzung nötig ist: ganze
-// UI-Abschnitte werden ein-/ausgeblendet und Daten unterschiedlich
-// geladen/gespeichert).
+// JOBCOACH-MODUS (Strang 70): professionelle Selbsteinschaetzung statt
+// Kind-Barometer. Eigene, schlanke Erkennung ueber ?modus=jobcoach bzw.
+// den zuletzt gewaehlten Modus in localStorage.
 // ═══════════════════════════════════════════════════════════════════
 var MODUS_STORAGE_KEY = 'klartext_modus';
 function istJobcoachModus(){
@@ -354,13 +343,10 @@ function istJobcoachModus(){
 }
 var JOBCOACH = istJobcoachModus();
 
-// ── Slider (0–10) <-> bestehende 5-Farben-Skala ─────────────────────
-// Die Supabase-Spalte barometer_kind.farbe hat eine feste Datenbank-Regel
-// (check farbe in ('gruen','gelb','orange','rot','grau')) und kann daher
-// keinen rohen Zahlenwert aufnehmen. Der exakte Wert geht dabei nicht
-// verloren — er wird zusätzlich lesbar vor die Notiz gestellt (siehe
-// speichereKind()) und zusätzlich als eigenes Feld nach Firebase
-// geschrieben (dort schemalos, kein Problem).
+// ── Farb-/Statuslogik (0–10 <-> 5-Farben-Skala) ─────────────────────
+// Der exakte Status (0–10) landet jetzt direkt im gespeicherten Eintrag
+// (status-Feld) — die fruehere Text-Praefix-Notloesung ("[Status 4/10]"
+// in der Notiz, noetig wegen einer Datenbank-Farbregel) entfaellt.
 var SLIDER_FARBE_EMOJI = {gruen:'😊',gelb:'😐',orange:'😟',rot:'😰',grau:'😶'};
 function sliderWertZuFarbe(wert){
   wert = Number(wert);
@@ -370,15 +356,8 @@ function sliderWertZuFarbe(wert){
   if (wert <= 8) return 'rot';
   return 'grau';
 }
-// Rückwärts-Mapping beim Wechsel der Teilnehmer-ID: obere Grenze je
-// Farbbereich verwendet (nicht exakt rekonstruierbar, da mehrere
-// Slider-Werte auf dieselbe Farbe abbilden) — entspricht dem Beispiel
-// aus dem Auftrag: gespeicherter Wert "gelb" -> Slider auf 4.
 var FARBE_ZU_SLIDER = {gruen:2, gelb:4, orange:6, rot:8, grau:10};
 
-// Dezente Bereichsfarben für die Status-Kacheln (Strang 72 — ersetzt den
-// Slider aus Strang 70): Kacheln sind standardmäßig neutral und nehmen
-// erst BEI Auswahl die sanfte Farbe ihres Bereichs an, wie gefordert.
 var STATUS_KACHEL_FARBEN = {
   gruen:  {bg:'#DCF3E4', rand:'#2E9E5A', text:'#1B5E2E'},
   gelb:   {bg:'#FCF0C8', rand:'#D4A800', text:'#7A5500'},
@@ -388,9 +367,7 @@ var STATUS_KACHEL_FARBEN = {
 };
 
 // Baut die 11 Kacheln (0–10) einmalig auf. Keine Kachel ist beim Laden
-// vorausgewählt — die/der Teilnehmende muss aktiv klicken (methodisch
-// bewusst, siehe geführter Workflow: eine echte Selbsteinschätzung soll
-// nicht durch einen stillen Default-Wert vorweggenommen werden).
+// vorausgewaehlt — die/der Teilnehmende muss aktiv klicken.
 function statusKachelnRendern(){
   var grid = document.getElementById('status-kacheln-grid');
   if (!grid) return;
@@ -422,10 +399,6 @@ function statusWertWaehlen(wert){
 }
 window.statusWertWaehlen = statusWertWaehlen;
 
-// Öffnet die Coach-/Mentor:in-Einschätzung erst NACH bewusstem Klick auf
-// den Zusatz-Button, der wiederum erst nach dem Speichern erscheint
-// (siehe speichereKind() und jobcoachUiEinrichten()) — der eigentliche
-// "geführte Workflow" aus Strang 72.
 function coachEinschaetzungOeffnen(){
   var wrap = document.getElementById('ingra-wrap');
   var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
@@ -434,63 +407,11 @@ function coachEinschaetzungOeffnen(){
 }
 window.coachEinschaetzungOeffnen = coachEinschaetzungOeffnen;
 
-// ── Teilnehmer-ID-Verwaltung (nur Jobcoach-Modus) ───────────────────
-// Anonyme IDs werden als normale Zeilen in der bestehenden Tabelle
-// "kinder" angelegt (name = die anonyme ID, z. B. "TN-DO-01" — keine
-// echten Namen, keine weiteren Felder befüllt). Bewusst KEINE neue
-// Tabelle/Migration: so bleiben barometer_kind (kind_id-Fremdschlüssel),
-// bestehende RLS-Policies und die TK-Weiterleitung unverändert
-// funktionsfähig. bedarfsart='jobcoach-anonym' markiert diese Zeilen,
-// damit sie sich von echten Kindern unterscheiden lassen (eine eigene
-// Spalte wäre sauberer, wurde hier aber bewusst vermieden, um keine
-// Migration zu brauchen — bei Bedarf später leicht nachrüstbar).
-// "Löschen" ist ein Soft-Delete (aktiv=false, ausgetreten_am=heute,
-// genau wie die bestehenden Felder es für echte Kinder vorsehen) statt
-// eines echten DELETE: barometer_kind.kind_id verweist ohne "on delete
-// cascade" auf kinder.id — ein echtes Löschen würde an bereits
-// gespeicherten Verlaufsdaten mit einem Fremdschlüssel-Fehler scheitern.
-var JOBCOACH_MARKER = 'jobcoach-anonym';
-var traegerIdAktuell = null;
-var eingeloggt = false;
-
-async function ermittleLoginUndTraeger(){
-  try {
-    var sitzung = await supabase.auth.getSession();
-    if (!sitzung.data || !sitzung.data.session) { eingeloggt = false; return; }
-    eingeloggt = true;
-    var userId = sitzung.data.session.user.id;
-    var profil = await supabase.from('profiles').select('traeger_id').eq('id', userId).maybeSingle();
-    if (!profil.error && profil.data) { traegerIdAktuell = profil.data.traeger_id; }
-  } catch(e) { eingeloggt = false; }
-}
-
-function jobcoachLoginHinweisAktualisieren(){
-  var hinweis = document.getElementById('tn-login-hinweis');
-  var aktiv = document.getElementById('tn-verwaltung-aktiv');
-  if (!hinweis || !aktiv) return;
-  hinweis.style.display = eingeloggt ? 'none' : 'block';
-  aktiv.style.display = eingeloggt ? 'block' : 'none';
-}
-
-async function teilnehmerIdsLaden(){
-  var liste = document.getElementById('tn-liste');
-  if (!eingeloggt) { if(liste) liste.innerHTML=''; return; }
-  var ergebnis = await supabase.from('Kinder').select('id, name').eq('bedarfsart', JOBCOACH_MARKER).eq('aktiv', true);
-  if (ergebnis.error) { console.error('Teilnehmer-IDs laden fehlgeschlagen:', ergebnis.error); return; }
-  if (liste) {
-    var zeilen = (ergebnis.data || []).map(function(t){
-      return '<div class="tn-liste-item"><span>'+escHtml(t.name)+'</span>'+
-        '<button class="tn-loeschen-btn" onclick="teilnehmerIdLoeschen(\''+t.id+'\')" title="Löschen">✕</button></div>';
-    }).join('');
-    liste.innerHTML = zeilen || '<div class="bilanz-leer" style="width:100%;">Noch keine Teilnehmer-IDs angelegt.</div>';
-  }
-}
-
-// ID-Generierung (Strang 71): KT- + 4 zufällige alphanumerische Zeichen,
-// z. B. "KT-X8R2". Zeichensatz bewusst ohne leicht verwechselbare
-// Zeichen (0/O, 1/I/L) ausgewählt — laut Hinweistext soll die ID von
-// Hand auf eine physische Liste übertragen werden, da darf beim Lesen/
-// Abschreiben nichts kippen.
+// ── Teilnehmer-ID-Verwaltung — Offline-First, KEIN Login mehr noetig ──
+// (Architektur-Entscheidung 21.08.2026: Login-Pflicht komplett entfernt.
+// Anlegen/Loeschen laeuft direkt und lokal im Browser. Der Hinweistext
+// "In der App werden keine Klarnamen gespeichert" bleibt im HTML
+// unveraendert stehen — weiterhin zentral fuer den Datenschutz-Grundsatz.)
 var TN_ID_ZEICHEN = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 function teilnehmerIdGenerieren(){
   var teil = '';
@@ -500,53 +421,64 @@ function teilnehmerIdGenerieren(){
   return 'KT-' + teil;
 }
 
+function ladeKinderListe(){
+  try { return JSON.parse(localStorage.getItem(KINDER_KEY) || '[]'); } catch(e){ return []; }
+}
+function speichereKinderListe(liste){
+  try { localStorage.setItem(KINDER_KEY, JSON.stringify(liste)); } catch(e){}
+}
+
+function teilnehmerIdsLaden(){
+  var liste = document.getElementById('tn-liste');
+  if (!liste) return;
+  var kinder = ladeKinderListe();
+  liste.innerHTML = kinder.length
+    ? kinder.map(function(id){
+        return '<div class="tn-liste-item"><span>'+escHtml(id)+'</span>'+
+          '<button class="tn-loeschen-btn" onclick="teilnehmerIdLoeschen(\''+id+'\')" title="Löschen">✕</button></div>';
+      }).join('')
+    : '<div class="bilanz-leer" style="width:100%;">Noch keine Teilnehmer-IDs angelegt.</div>';
+}
+
 function teilnehmerIdWuerfeln(){
   var input = document.getElementById('tn-neu-input');
   if (!input) return;
-  // Kollision mit bereits angelegten IDs vermeiden (gegen die aktuell
-  // geladene Verwaltungsliste geprüft; höchstens 20 Versuche, damit bei
-  // einem sehr unwahrscheinlichen Dauer-Konflikt kein Endlos-Loop droht).
-  var bestehende = Array.prototype.map.call(
-    document.querySelectorAll('#tn-liste .tn-liste-item span'),
-    function(el){ return el.textContent; }
-  );
+  var bestehende = ladeKinderListe();
   var neu, versuche = 0;
   do { neu = teilnehmerIdGenerieren(); versuche++; } while (bestehende.indexOf(neu) !== -1 && versuche < 20);
   input.value = neu;
 }
 window.teilnehmerIdWuerfeln = teilnehmerIdWuerfeln;
 
-async function teilnehmerIdAnlegen(){
+function teilnehmerIdAnlegen(){
   var input = document.getElementById('tn-neu-input');
   var wert = (input.value || '').trim();
   if (!wert) return;
-  if (!eingeloggt || !traegerIdAktuell) { alert('Bitte zuerst einloggen, um Teilnehmer-IDs anzulegen.'); return; }
-  // Anonymisierung läuft NICHT über ein Präfix im Namensfeld (das würde
-  // die ID überall dort, wo t.name angezeigt wird — Dropdown, Begrüßung,
-  // Verwaltungsliste — mit einer technischen Vorsilbe verunstalten).
-  // Stattdessen bereits seit Strang 70 über bedarfsart='jobcoach-anonym'
-  // gelöst (eigenes Feld statt Text-Präfix): name bleibt die reine,
-  // saubere ID, bedarfsart trennt sie zuverlässig von echten Kindern.
-  var ergebnis = await supabase.from('Kinder').insert({
-    name: wert,
-    traeger_id: traegerIdAktuell,
-    bedarfsart: JOBCOACH_MARKER,
-    aktiv: true
-  });
-  if (ergebnis.error) { console.error('Teilnehmer-ID anlegen fehlgeschlagen:', ergebnis.error); alert('Anlegen fehlgeschlagen: ' + ergebnis.error.message); return; }
+  var kinder = ladeKinderListe();
+  if (kinder.indexOf(wert) === -1) {
+    kinder.push(wert);
+    speichereKinderListe(kinder);
+  }
   input.value = '';
-  await teilnehmerIdsLaden();
-  await teilnehmerAuswahlLaden();
+  teilnehmerIdsLaden();
+  ladeKinderDropdown();
+  document.getElementById('kind-select').value = wert;
+  waehleTeilnehmer(wert);
 }
 window.teilnehmerIdAnlegen = teilnehmerIdAnlegen;
 
-async function teilnehmerIdLoeschen(id){
-  if (!confirm('Diese Teilnehmer-ID wirklich entfernen? Bereits gespeicherte Verlaufsdaten bleiben in der Datenbank erhalten, die ID verschwindet aber aus der Auswahl.')) return;
-  var heute = new Date().toISOString().slice(0,10);
-  var ergebnis = await supabase.from('Kinder').update({ aktiv:false, ausgetreten_am: heute }).eq('id', id);
-  if (ergebnis.error) { console.error('Teilnehmer-ID entfernen fehlgeschlagen:', ergebnis.error); alert('Entfernen fehlgeschlagen: ' + ergebnis.error.message); return; }
-  await teilnehmerIdsLaden();
-  await teilnehmerAuswahlLaden();
+function teilnehmerIdLoeschen(id){
+  if (!confirm('Diese Teilnehmer-ID wirklich aus der Auswahl entfernen? Bereits gespeicherte Verlaufsdaten bleiben lokal erhalten, die ID verschwindet aber aus der Liste.')) return;
+  var kinder = ladeKinderListe().filter(function(x){ return x !== id; });
+  speichereKinderListe(kinder);
+  teilnehmerIdsLaden();
+  ladeKinderDropdown();
+  if (aktuellesKindId === id) {
+    aktuellesKindId = '';
+    aktualisiereBegruessung('');
+    starteHistorie();
+    renderWoche();
+  }
 }
 window.teilnehmerIdLoeschen = teilnehmerIdLoeschen;
 
@@ -565,73 +497,60 @@ function jobcoachUiEinrichten(){
   if (label) label.textContent = 'Teilnehmer-ID wählen';
   if (ingraTitel) ingraTitel.textContent = '💼 Coach/Mentor:in-Einschätzung (optional)';
   if (ingraSub) ingraSub.textContent = 'Wie schätzt du als Coach/Mentor:in den aktuellen Status der/des Teilnehmenden ein? Erst nachdem die Selbsteinschätzung erfolgt ist.';
-  if (ingraHinweis) ingraHinweis.innerHTML = '💡 Tipp: Lass die/den Teilnehmende:n zuerst frei einschätzen. Nach dem Speichern kannst du über den Button „Perspektive des Coaches ergänzen" gezielt deine eigene Einschätzung abgeben — der Vergleich zeigt euch beiden, ob ihr ähnlich oder unterschiedlich wahrnehmt.';
-  // 11 Status-Kacheln aufbauen. Bewusst KEINE Kachel vorausgewählt (siehe
-  // Kommentar bei statusKachelnRendern) — anders als der frühere Slider,
-  // der immer einen Startwert zeigte.
+  if (ingraHinweis) ingraHinweis.innerHTML = '💡 Tipp: Lass die/den Teilnehmende:n zuerst frei einschätzen. Nach dem Speichern kannst du über den Button „Perspektive des Coaches ergänzen” gezielt deine eigene Einschätzung abgeben — der Vergleich zeigt euch beiden, ob ihr ähnlich oder unterschiedlich wahrnehmt.';
   statusKachelnRendern();
 }
 
-// ── Teilnehmer-Auswahl laden/befüllen ────────────────────────────────
-async function teilnehmerAuswahlLaden(){
-  try{
-    var select = document.getElementById('kind-select');
-    var vorherigeAuswahl = select.value; // beim Neu-Laden nach Anlegen/Entfernen erhalten
-    var query = supabase.from('Kinder').select('id, name, klasse').eq('aktiv', true);
-    // Jobcoach-Modus: NUR anonyme Teilnehmer-IDs anzeigen, nie echte
-    // Kindernamen (DSGVO-Kern dieses Auftrags) — daher immer nach der
-    // Markierung gefiltert, nicht nur "zusätzlich" zur Schul-Auswahl.
-    if (JOBCOACH) query = query.eq('bedarfsart', JOBCOACH_MARKER);
-    var { data: kinder, error } = await query;
-    if (error) { console.error('Kinder laden fehlgeschlagen:', error); kinder = []; }
+// ── Kinder-Dropdown — rein lokal, keine Datenbank-Abfrage mehr ──────
+function ladeKinderDropdown(){
+  var select = document.getElementById('kind-select');
+  var vorherigeAuswahl = select.value;
+  var kinder = ladeKinderListe();
 
-    kinderNamen = {};
-    select.innerHTML = '<option value="">Bitte wählen …</option>';
+  select.innerHTML = kinder.length
+    ? kinder.map(function(id){ return '<option value="'+id+'">'+id+'</option>'; }).join('')
+    : '<option value="">Bitte ID anlegen…</option>';
 
-    (kinder || []).forEach(function(kind){
-      kinderNamen[kind.id] = kind.name;
-      var option = document.createElement('option');
-      option.value = kind.id;
-      option.textContent = kind.name + (!JOBCOACH && kind.klasse ? ' (' + kind.klasse + ')' : '');
-      select.appendChild(option);
-    });
-
-    var gespeicherteId = (vorherigeAuswahl && kinderNamen[vorherigeAuswahl]) ? vorherigeAuswahl : (localStorage.getItem('baro_kind_id') || '');
-    if (gespeicherteId && kinderNamen[gespeicherteId]) {
-      select.value = gespeicherteId;
-      aktuellesKindId = gespeicherteId;
-      aktualisiereBegruessung(kinderNamen[gespeicherteId]);
-      starteHistorie(); // erneut starten, da select.value keinen change-Event auslöst
-      pruefeAutomatischeWochenauswertung();
-    } else {
-      aktuellesKindId = '';
-    }
-  }catch(e){ console.error(e); }
+  var gespeicherteId = (vorherigeAuswahl && kinder.indexOf(vorherigeAuswahl) !== -1) ? vorherigeAuswahl : (localStorage.getItem('baro_kind_id') || '');
+  if (gespeicherteId && kinder.indexOf(gespeicherteId) !== -1) {
+    select.value = gespeicherteId;
+    waehleTeilnehmer(gespeicherteId);
+  } else {
+    aktuellesKindId = '';
+  }
 }
+window.ladeKinderDropdown = ladeKinderDropdown;
 
-(async function(){
-  await ermittleLoginUndTraeger();
+// Laedt die Daten einer ausgewaehlten Teilnehmer-ID (Auswahl ueber das
+// <select>). Heisst bewusst NICHT waehleKind — dieser Name ist bereits an
+// die 5 Stimmungsbuttons im Schule-Modus vergeben (siehe waehleKind weiter
+// unten, referenziert per onclick direkt im HTML).
+function waehleTeilnehmer(id){
+  aktuellesKindId = id || '';
+  try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
+  aktualisiereBegruessung(aktuellesKindId);
+  if (JOBCOACH) {
+    var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
+    var ingraWrap = document.getElementById('ingra-wrap');
+    if (oeffnenWrap) oeffnenWrap.style.display = 'none';
+    if (ingraWrap) ingraWrap.style.display = 'none';
+  }
+  starteHistorie();
+  renderWoche();
+  freitagBannerPruefen();
+}
+window.waehleTeilnehmer = waehleTeilnehmer;
+
+(function(){
   jobcoachUiEinrichten();
-  if (JOBCOACH) jobcoachLoginHinweisAktualisieren();
-  await teilnehmerAuswahlLaden();
-  if (JOBCOACH) await teilnehmerIdsLaden();
+  ladeKinderDropdown();
+  if (JOBCOACH) teilnehmerIdsLaden();
+  starteHistorie();
+  renderWoche();
+  freitagBannerPruefen();
 
   document.getElementById('kind-select').addEventListener('change', function(){
-    aktuellesKindId = this.value;
-    var kindName = kinderNamen[aktuellesKindId] || '';
-    try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
-    aktualisiereBegruessung(kindName);
-    if (JOBCOACH) {
-      // Geführter Workflow pro Teilnehmer:in neu starten: die Coach-
-      // Einschätzung einer vorher gewählten Person soll beim Wechsel zu
-      // einer anderen Person nicht einfach offen stehen bleiben.
-      var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
-      var ingraWrap = document.getElementById('ingra-wrap');
-      if (oeffnenWrap) oeffnenWrap.style.display = 'none';
-      if (ingraWrap) ingraWrap.style.display = 'none';
-    }
-    starteHistorie();
-    pruefeAutomatischeWochenauswertung();
+    waehleTeilnehmer(this.value);
   });
 })();
 
@@ -654,69 +573,64 @@ function checkSpeichern(){
   if(aktuelleWahl){btn.classList.add('aktiv');btn.style.background=aktuelleWahl.color;}
 }
 
-async function speichereKind(){
-  if(!aktuelleWahl)return;
-  var notizRoh=document.getElementById('notiz-kind').value.trim();
-  // Jobcoach-Modus: exakter 0–10-Wert geht in der Farb-Rundung (s.
-  // sliderWertZuFarbe) sonst verloren — deshalb lesbar vor die Notiz
-  // gestellt, statt eine eigene Spalte zu brauchen (barometer_kind.farbe
-  // erlaubt laut Datenbank-Regel nur die 5 Farbnamen, keine Zahl).
-  var statusPräfix = (aktuelleWahl.wert != null) ? ('[Status ' + aktuelleWahl.wert + '/10] ') : '';
-  var notiz = statusPräfix + notizRoh;
-  var eintrag={
-    id:Date.now(),
-    farbe:aktuelleWahl.id,
-    color:aktuelleWahl.color,
-    name:aktuelleWahl.name,
-    emoji:aktuelleWahl.emoji,
-    notiz:notiz,
-    zeit:new Date().toLocaleString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
+// ── Speichern — rein lokal (localStorage), keine Firebase-/Supabase-
+// Schreibvorgaenge mehr. Format je Eintrag entspricht der Vorgabe
+// { datum, status, notiz, ingra_status } plus abgeleiteten Anzeige-Feldern
+// (farbe/color/name/emoji/zeit), die von renderWoche()/druckeKind()
+// unveraendert weiterverwendet werden.
+var BARO_PREFIX = 'klartext_baro_';
+
+function formatDatum(d){
+  var pad = function(n){ return String(n).padStart(2,'0'); };
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+// Erwartet exakt das Format aus formatDatum() ("YYYY-MM-DD HH:MM") — bewusst
+// ohne new Date(string), da das Parsen dieses Formats browserabhaengig ist.
+function parseDatum(str){
+  var teile = String(str||'').split(' ');
+  var datumTeile = teile[0].split('-');
+  var zeitTeile = (teile[1]||'00:00').split(':');
+  return new Date(+datumTeile[0], (+datumTeile[1])-1, +datumTeile[2], +zeitTeile[0]||0, +zeitTeile[1]||0);
+}
+
+function ladeKind(id){
+  try{ return JSON.parse(localStorage.getItem(BARO_PREFIX + (id||aktuellesKindId)) || '[]'); }catch(e){ return []; }
+}
+function speichereKindHistorie(id, eintraege){
+  try{ localStorage.setItem(BARO_PREFIX + id, JSON.stringify(eintraege)); }catch(e){}
+}
+
+function speichereKind(){
+  if(!aktuelleWahl) return;
+  if(!aktuellesKindId){ alert(JOBCOACH ? 'Bitte zuerst oben eine Teilnehmer-ID wählen.' : 'Bitte zuerst oben ein Kind wählen.'); return; }
+
+  var notiz = document.getElementById('notiz-kind').value.trim();
+  var status = (aktuelleWahl.wert != null) ? aktuelleWahl.wert : FARBE_ZU_SLIDER[aktuelleWahl.id];
+
+  var eintrag = {
+    datum: formatDatum(new Date()),
+    status: status,
+    notiz: notiz,
+    ingra_status: null,
+    farbe: aktuelleWahl.id,
+    color: aktuelleWahl.color,
+    name: aktuelleWahl.name,
+    emoji: aktuelleWahl.emoji,
+    zeit: new Date().toLocaleString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
   };
-  var e=ladeKind();e.unshift(eintrag);
-  try{localStorage.setItem('baro_kind_eintraege',JSON.stringify(e));}catch(e){}
 
-  // Zusätzlich nach Firebase schreiben (Etappe 5.1, ab 5.3 mit childId) — localStorage bleibt unverändert für die Wochenansicht
-  try{
-    db.ref('barometer_kind').push({
-      childId: aktuellesKindId,
-      value: aktuelleWahl.id,
-      wert: (aktuelleWahl.wert != null) ? aktuelleWahl.wert : null,
-      text: notiz,
-      timestamp: Date.now(),
-      source: 'kind-self'
-    });
-  }catch(e){}
-
-  // Zusätzlich nach Supabase "barometer_kind" schreiben - dieselbe Tabelle, die
-  // TK_Fallmanagement.html bereits liest/schreibt (siehe barometerLaden()/
-  // barometerSpeichern() dort). Ohne diesen Eintrag sähe TK die Selbstauskunft
-  // des Kindes im Fallmanagement nie. Grundlage für Verlauf-Anzeige unten und
-  // die Wochenverlauf-Weiterleitung an TK.
-  if (aktuellesKindId) {
-    var sbErgebnis = await supabase.from('barometer_kind').insert({
-      kind_id: aktuellesKindId,
-      farbe: aktuelleWahl.id,
-      notiz: notiz || null,
-      source: 'kind-self'
-    });
-    if (sbErgebnis.error) {
-      console.error('Supabase-Barometer speichern fehlgeschlagen:', sbErgebnis.error);
-    } else {
-      starteHistorie();
-      pruefeAutomatischeWochenauswertung();
-    }
-  }
+  var historie = ladeKind(aktuellesKindId);
+  historie.unshift(eintrag);
+  speichereKindHistorie(aktuellesKindId, historie);
 
   document.getElementById('notiz-kind').value='';
+  starteHistorie();
   renderWoche();
+
   var btn=document.getElementById('sp-btn');
   if (JOBCOACH) {
-    // Geführter Workflow (Strang 72): die Coach-/Mentor:in-Einschätzung
-    // öffnet sich NICHT automatisch — erst der eigene "Perspektive des
-    // Coaches ergänzen"-Button (erscheint jetzt) blendet sie ein.
     var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
     if (oeffnenWrap) oeffnenWrap.style.display = 'block';
-    // Sachliche Rückmeldung ohne Konfetti/Brainy-Emoji im Jobcoach-Modus.
     btn.textContent='✓ Gespeichert';
     setTimeout(()=>{btn.textContent='✓ Speichern';},1500);
   } else {
@@ -755,7 +669,18 @@ function waehleIngra(id){
     el.classList.toggle('aktiv', INGRA_OPTIONEN[i].id===id);
   });
   zeigeVergleich();
+  // Coach-/INGRA-Einschaetzung wird jetzt dauerhaft auf den zuletzt
+  // gespeicherten Eintrag dieser Teilnehmer-ID geschrieben (ingra_status) —
+  // vorher nur fluechtig im Vergleichs-Kasten sichtbar, nie gespeichert.
+  if (aktuellesKindId) {
+    var historie = ladeKind(aktuellesKindId);
+    if (historie.length) {
+      historie[0].ingra_status = FARBE_ZU_SLIDER[id];
+      speichereKindHistorie(aktuellesKindId, historie);
+    }
+  }
 }
+window.waehleIngra = waehleIngra;
 
 function zeigeVergleich(){
   if(!ingraWahl || !aktuelleWahl) return;
@@ -772,16 +697,7 @@ function zeigeVergleich(){
   }
 }
 
-
-function ladeKind(){
-  try{return JSON.parse(localStorage.getItem('baro_kind_eintraege')||'[]');}catch(e){return [];}
-}
-
-// VERLAUF (Supabase "barometer_kind") — ersetzt die vorherige Firebase-Historie
-// (/barometer_kind, live-Listener). TK_Fallmanagement.html liest/schreibt bereits
-// dieselbe Tabelle (siehe barometerLaden()/barometerSpeichern() dort) - gleiches
-// Muster hier übernommen. Kein Live-Listener nötig: einmaliger Reload reicht,
-// wird nach jedem Speichern und bei Kindwechsel erneut aufgerufen.
+// ── Verlauf — rein lokal (ersetzt die vorherige Supabase-Abfrage) ────
 var FARBE_LABEL = {
   gruen: '🟢 Grün · Stabil',
   gelb: '🟡 Gelb · Angespannt',
@@ -794,9 +710,8 @@ function escHtml(s){
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function formatZeitHistorie(iso){
-  if(!iso)return '';
-  var d=new Date(iso);
+function formatZeitAnzeige(datumStr){
+  var d=parseDatum(datumStr);
   return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+' · '+d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
 }
 
@@ -808,49 +723,36 @@ function historieRendern(eintraege){
     return;
   }
   liste.innerHTML=eintraege.map(function(e){
-    var farbe=FARBEN_K[e.farbe]||'#ccc';
-    return '<div class="fb-eintrag" style="border-left-color:'+farbe+';">'
-      +'<div class="fb-farbpunkt" style="background:'+farbe+';"></div>'
+    var farbe=e.farbe||sliderWertZuFarbe(e.status);
+    var farbHex=FARBEN_K[farbe]||'#ccc';
+    var ingraZeile=e.ingra_status!=null?(' · INGRA: '+(FARBE_LABEL[sliderWertZuFarbe(e.ingra_status)]||'')):'';
+    return '<div class="fb-eintrag" style="border-left-color:'+farbHex+';">'
+      +'<div class="fb-farbpunkt" style="background:'+farbHex+';"></div>'
       +'<div class="fb-eintrag-inhalt">'
-      +'<div class="fb-eintrag-zeile1"><span class="fb-eintrag-wert">'+(FARBE_LABEL[e.farbe]||e.farbe||'—')+'</span><span class="fb-eintrag-zeit">'+formatZeitHistorie(e.created_at)+'</span></div>'
+      +'<div class="fb-eintrag-zeile1"><span class="fb-eintrag-wert">'+(FARBE_LABEL[farbe]||farbe||'—')+ingraZeile+'</span><span class="fb-eintrag-zeit">'+formatZeitAnzeige(e.datum)+'</span></div>'
       +(e.notiz?'<div class="fb-eintrag-text">'+escHtml(e.notiz)+'</div>':'')
       +'</div></div>';
   }).join('');
 }
 
-async function starteHistorie(){
+function starteHistorie(){
   var liste=document.getElementById('historie-liste');
   if(!aktuellesKindId){
     if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">'+(JOBCOACH ? 'Noch keine Teilnehmer-ID ausgewählt.' : 'Noch kein Kind ausgewählt.')+'</div>';
     return;
   }
-  if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Lade Verlauf …</div>';
-  var ergebnis = await supabase
-    .from('barometer_kind')
-    .select('farbe, notiz, created_at')
-    .eq('kind_id', aktuellesKindId)
-    .order('created_at', { ascending: false });
-  if (ergebnis.error) {
-    console.error('Verlauf laden fehlgeschlagen:', ergebnis.error);
-    if(liste)liste.innerHTML='<div class="bilanz-leer" style="width:100%;">Verlauf konnte nicht geladen werden.</div>';
-    return;
-  }
-  historieRendern(ergebnis.data || []);
-  // Jobcoach-Modus: die Kachel auf die zuletzt gespeicherte Farbe springen
-  // lassen (Auftrag: "Datenbankwert gelb -> Slider auf 4", jetzt Kachel
-  // statt Slider). Nicht exakt rekonstruierbar (mehrere Werte -> eine
-  // Farbe), daher obere Grenze je Bereich, siehe FARBE_ZU_SLIDER oben.
-  if (JOBCOACH && ergebnis.data && ergebnis.data.length && FARBE_ZU_SLIDER[ergebnis.data[0].farbe] != null) {
-    statusWertWaehlen(FARBE_ZU_SLIDER[ergebnis.data[0].farbe]);
+  var eintraege=ladeKind(aktuellesKindId);
+  historieRendern(eintraege);
+  // Jobcoach-Modus: Kachel auf den zuletzt gespeicherten (exakten!) Status
+  // springen lassen — jetzt verlustfrei moeglich, da status direkt
+  // gespeichert wird (frueher nur ueber FARBE_ZU_SLIDER naeherungsweise
+  // rekonstruierbar).
+  if (JOBCOACH && eintraege.length) {
+    statusWertWaehlen(eintraege[0].status);
   }
 }
-starteHistorie();
 
-// WOCHENVERLAUF AN TK (manuell + automatisch freitags) — schreibt in
-// Supabase "weiterleitungen" (ziel_rolle='tk'), gleiches Muster wie die
-// Übergabe aus KLARTEXT_Tagesjournal.html (uebergabeAnTK()). Kein Login auf
-// dieser Seite vorhanden (Kind-Self-Service-Gerät) - daher von_profil=null,
-// von_rolle='kind-self' statt eines echten Nutzer-Ids.
+// ── Wochenverlauf an TK — lokal generiert, Versand per mailto:/Zwischenablage ──
 function montagDieserWoche(){
   var d=new Date();
   var tag=d.getDay(); // 0=So,1=Mo,...,6=Sa
@@ -860,95 +762,64 @@ function montagDieserWoche(){
   return montag;
 }
 
-async function wochenverlaufLaden(kindId){
+function wochenverlaufLaden(kindId){
   var montag=montagDieserWoche();
-  var ergebnis = await supabase
-    .from('barometer_kind')
-    .select('farbe, notiz, created_at')
-    .eq('kind_id', kindId)
-    .gte('created_at', montag.toISOString())
-    .order('created_at', { ascending: true });
-  if (ergebnis.error) {
-    console.error('Wochenverlauf laden fehlgeschlagen:', ergebnis.error);
-    return [];
-  }
-  return ergebnis.data || [];
+  return ladeKind(kindId).filter(function(e){ return parseDatum(e.datum) >= montag; }).reverse();
 }
 
 function wochenverlaufText(eintraege){
   if(!eintraege.length)return 'Noch keine Barometer-Einträge in dieser Woche.';
   return eintraege.map(function(e){
-    var tag=new Date(e.created_at).toLocaleDateString('de-DE',{weekday:'long'});
-    var zeile=tag+': '+(FARBE_LABEL[e.farbe]||e.farbe);
+    var tag=parseDatum(e.datum).toLocaleDateString('de-DE',{weekday:'long'});
+    var farbe=e.farbe||sliderWertZuFarbe(e.status);
+    var zeile=tag+': '+(FARBE_LABEL[farbe]||farbe);
     if(e.notiz)zeile+=' – '+e.notiz;
     return zeile;
   }).join('\n');
 }
 
-async function wochenverlaufAnTkSenden(){
-  if(!aktuellesKindId)return {ok:false};
-  var eintraege=await wochenverlaufLaden(aktuellesKindId);
-  var kindName=kinderNamen[aktuellesKindId]||'';
-  var text='Wochenverlauf Barometer'+(kindName?' – '+kindName:'')+':\n'+wochenverlaufText(eintraege);
-  var ergebnis=await supabase.from('weiterleitungen').insert({
-    kind_id: aktuellesKindId,
-    von_profil: null,
-    von_rolle: 'kind-self',
-    ziel_rolle: 'tk',
-    typ: 'barometer',
-    text: text,
-    dringlichkeit: 'normal',
-    status: 'offen'
-  });
-  return {ok: !ergebnis.error, error: ergebnis.error};
-}
-
-async function wochenverlaufManuellSenden(){
+// Ersetzt den vorherigen Supabase-Insert in "weiterleitungen": der Text wird
+// lokal gebaut, in die Zwischenablage kopiert UND als mailto:-Entwurf
+// geoeffnet — die INGRA verschickt ihn selbst (kein automatischer, stiller
+// Versand mehr moeglich/gewuenscht ohne Server).
+function wochenverlaufManuellSenden(){
   var status=document.getElementById('wl-status');
   if(!aktuellesKindId){
     if(status){status.textContent=(JOBCOACH ? 'Bitte zuerst oben eine Teilnehmer-ID wählen.' : 'Bitte zuerst oben ein Kind wählen.');status.style.display='block';}
     return;
   }
-  if(status){status.textContent='⏳ Wird gesendet …';status.style.display='block';}
-  var ergebnis=await wochenverlaufAnTkSenden();
+  var eintraege=wochenverlaufLaden(aktuellesKindId);
+  var text='Wochenverlauf Barometer – '+aktuellesKindId+':\n'+wochenverlaufText(eintraege);
+
+  try{ if (navigator.clipboard) navigator.clipboard.writeText(text); }catch(e){}
+
+  var betreff=encodeURIComponent('Wochenverlauf Barometer – '+aktuellesKindId);
+  var body=encodeURIComponent(text);
+  window.location.href='mailto:?subject='+betreff+'&body='+body;
+
   if(status){
-    status.textContent=ergebnis.ok ? '✓ Wochenverlauf an TK weitergeleitet.' : '⚠ Fehler beim Weiterleiten.';
+    status.textContent='✓ Wochenverlauf kopiert & E-Mail-Entwurf geöffnet.';
+    status.style.display='block';
     setTimeout(function(){status.style.display='none';},3000);
   }
 }
+window.wochenverlaufManuellSenden = wochenverlaufManuellSenden;
 
-// Automatische Wochenauswertung: ohne Cron-Server gelöst - beim Laden der
-// Seite (bzw. bei Kindwechsel/nach dem Speichern) wird geprüft, ob heute
-// Freitag ist und für dieses Kind/diese Woche noch nichts automatisch
-// gesendet wurde. Flag pro Kind+Kalenderwoche in localStorage, damit ein
-// erneuter Aufruf am selben Freitag nicht doppelt sendet.
-function heuteIstFreitag(){
-  return new Date().getDay()===5;
-}
-
-function wochenFlagKey(kindId){
-  var montag=montagDieserWoche();
-  var iso=montag.getFullYear()+'-'+String(montag.getMonth()+1).padStart(2,'0')+'-'+String(montag.getDate()).padStart(2,'0');
-  return 'baro_woche_gesendet_'+kindId+'_'+iso;
-}
-
-async function pruefeAutomatischeWochenauswertung(){
-  if(!aktuellesKindId)return;
-  if(!heuteIstFreitag())return;
-  var flagKey=wochenFlagKey(aktuellesKindId);
-  var schonGesendet=false;
-  try{schonGesendet=localStorage.getItem(flagKey)==='true';}catch(e){}
-  if(schonGesendet)return;
-  var ergebnis=await wochenverlaufAnTkSenden();
-  if(ergebnis.ok){
-    try{localStorage.setItem(flagKey,'true');}catch(e){}
-  }
+// Freitags-Erinnerung (ersetzt den frueheren stillen Auto-Versand — ohne
+// Server kann sich ein mailto:-Fenster nicht von selbst oeffnen/versenden;
+// stattdessen ein sichtbarer Hinweis mit Klick-Aktion, siehe HTML-Banner
+// #freitag-banner).
+function heuteIstFreitag(){ return new Date().getDay()===5; }
+function freitagBannerPruefen(){
+  var banner=document.getElementById('freitag-banner');
+  if (!banner) return;
+  banner.style.display = (heuteIstFreitag() && aktuellesKindId) ? 'flex' : 'none';
 }
 
 function renderWoche(){
-  var e=ladeKind();
+  var e=ladeKind(aktuellesKindId);
   var sieben=Date.now()-7*24*60*60*1000;
-  var w=e.filter(x=>x.id>sieben);
+  var w=e.filter(x=>parseDatum(x.datum).getTime()>sieben);
   var grid=document.getElementById('woche-grid');
   if(w.length===0){grid.innerHTML='<div class="bilanz-leer" style="width:100%;">Noch nichts gespeichert.</div>';return;}
   grid.innerHTML=w.slice(0,20).map(x=>`
@@ -974,10 +845,10 @@ function konfetti(color){
 }
 
 function druckeKind(){
-  var e=ladeKind();
+  var e=ladeKind(aktuellesKindId);
   var sieben=Date.now()-7*24*60*60*1000;
-  var w=e.filter(x=>x.id>sieben);
-  var name = kinderNamen[aktuellesKindId] || '';
+  var w=e.filter(x=>parseDatum(x.datum).getTime()>sieben);
+  var name = aktuellesKindId || '';
   var chips=w.map(x=>`<span style="display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;border-radius:10px;background:${x.color};margin:3px;">
     <img src="${brainyBild(x.emoji)}" style="width:24px;height:24px;object-fit:contain;">
     <span style="font-size:.6rem;color:#fff;font-weight:700;">${x.name}</span>
@@ -1007,14 +878,12 @@ function druckeKind(){
 window.waehleKind = waehleKind;
 window.checkSpeichern = checkSpeichern;
 window.speichereKind = speichereKind;
-window.waehleIngra = waehleIngra;
 window.druckeKind = druckeKind;
-window.wochenverlaufManuellSenden = wochenverlaufManuellSenden;
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderWoche();
   renderIngraChips();
 });
+
 </script>
 </body>
 </html>

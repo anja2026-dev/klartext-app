@@ -3982,3 +3982,151 @@ Inhalts-/Auslieferungs-Beschreibung auf Verkaufsseite UND Bestellformular, (2) v
   Formulierungsschwäche — noch nicht behoben, Anja hat noch nicht danach gefragt (mögliche
   Kandidaten für den nächsten Screenshot: 724173 Übergänge-Paket, 724157 Komplett-Bundle).
 - Alle offenen Punkte aus Strang 91–106 weiterhin gültig.
+
+## Strang 108 (20.08.2026) — Nachrecherche: weitere kostenlose Plattformen speziell für Lehrkräfte
+
+**Anfrage:** Anja wollte gezielt nachfragen, welche kostenlosen Plattformen sich für die
+Lehrkräfte-Zielgruppe noch lohnen, über die in Strang 105 bereits genannten (eduki, 4teachers.de,
+Schulportal.de, Tutory.de) hinaus.
+
+**Geprüft und bestätigt/verworfen:**
+- **Lehrermarktplatz.de** ist keine eigene Plattform mehr, sondern der alte Name von **eduki** —
+  2021 umbenannt, bereits vollständig abgedeckt.
+  (https://eduki.com/de/lehrermarktplatz)
+- **MaterialGuru.de**: kein Autoren-Upload/Marktplatz, sondern rein kuratiertes Material der
+  Betreiber; kommerzielle Nutzung des Materials ist laut Nutzungsbedingungen explizit untersagt —
+  für Anja nicht nutzbar. (https://www.materialguru.de/nutzungsbedingungen/)
+- Kostenpflichtige Plattformen wie RAAbits, Lehrer-Online (Abo-Bereich), meinUnterricht, Friedrich+,
+  Cornelsen Unterrichtsmanager, Twinkl, School-Scout, scolix, Kohl Verlag, Auer Verlag, Persen sind
+  Anbieter-eigene Verlagsshops mit Abo-/Einzelkauf-Modell für Käufer, kein Self-Service-Upload für
+  externe Autor:innen — für den Vertrieb nicht relevant.
+  (https://lernmarktplatz.de/pages/die-besten-plattformen-fuer-unterrichtsmaterialien)
+
+**Neu gefunden, mit echtem Honorar-/Verkaufspotenzial, kostenlose Teilnahme:**
+- **GRIN** (grin.com): Veröffentlichung kostenlos, laut lehrer24.net-Vergleich auch für
+  Unterrichtsmaterial (nicht nur Abschlussarbeiten) offen. Zwei Honorarmodelle: prozentuale
+  Autorenbeteiligung am Verkauf (genaue Prozentsätze nicht öffentlich einsehbar, laut GRIN
+  "hoher Anteil", vierteljährliche Auszahlung) ODER bei Werken ab 50 Seiten wahlweise eine fixe
+  Einmalzahlung von 10 € beim Erscheinen. Achtung: eher auf Textwerke/Skripte ausgerichtet, ob sich
+  Kartendecks dort gut einordnen lassen, wäre vor Einreichung zu klären.
+  (https://www.grin.com/en/authors-fees/, https://www.lehrer24.net/unterricht/unterrichtsmaterial-online-stellen-und-weitergeben-und-teilweise-sogar-geld-damit-verdienen-8-plattformen-im-vergleich/)
+- **Lehrerselbstverlag.de**: kein Self-Service-Upload wie eduki, sondern klassisches
+  Bewerbungs-/Kuratierungsmodell — Kontaktaufnahme per E-Mail (autor@lehrerselbstverlag.de),
+  Verlag entscheidet über Aufnahme. Kostenlos einzureichen, laut Verlag "Beteiligung am Gewinn ab
+  dem ersten verkauften Exemplar", Veröffentlichung als Buch oder Download. Genaue Honorarhöhe nur
+  auf Anfrage. (https://lehrerselbstverlag.de/Autor-werden)
+- **Lehrer-Online** (Cornelsen-Tochter): ebenfalls kein offener Upload, sondern Autorenpool — man
+  bewirbt sich formlos per E-Mail (redaktion@lehrer-online.de) mit Arbeitsproben, die Redaktion
+  fragt bei passenden Projekten aktiv an. Kostenlose Bewerbung, "adäquate Honorierung" zugesagt,
+  genaue Sätze nicht öffentlich. Eher Auftragsarbeit als eigenständiger Verkaufskanal für bereits
+  fertige KLARTEXT-Decks. (https://www.lehrer-online.de/ueber-uns/werden-sie-autorin-oder-autor/)
+
+**Einschätzung:** Von den neu geprüften Plattformen ist keine ein direktes Äquivalent zu eduki
+(sofortiger Self-Service-Verkauf eigener PDFs). GRIN kommt dem noch am nächsten (kostenlos, echtes
+Verkaufshonorar, kein Bewerbungsprozess), passt inhaltlich aber eher zu textlastigen Werken als zu
+Kartendecks. Lehrerselbstverlag.de und Lehrer-Online sind beides kuratierte Bewerbungsmodelle mit
+Honorar, aber ohne Upload-Automatismus — realistischer als Ergänzung nach Anfrage, nicht als
+Sofort-Kanal.
+
+### Noch offen
+- Alle offenen Punkte aus Strang 91–107 weiterhin gültig.
+
+## Strang 109 (20.08.2026) — Klarstellung: Udemy & ähnliche Plattformen für Lernpfad und interaktive Förderbereich-Spiele
+
+**Klarstellung durch Anja:** Strang 108 zielte versehentlich nochmal auf die Lehrkräfte-Zielgruppe
+und Kartendecks. Eigentliche Frage: allgemein weitere kostenlose Anbietungs-Möglichkeiten, konkret
+für zwei andere Produktarten — den 13-Wochen-**Lernpfad** (`KLARTEXT_Lernpfad_INGRA.html`, statisches
+HTML-Programm) und die **kleinen interaktiven Browser-Spiele/Tools für den Förderbereich**
+(`KLARTEXT_Spiele.html`-Hub, z. B. Stimmungsbarometer, Werte-Poker etc.) — und ob sich dafür Udemy
+oder Ähnliches eignet.
+
+**Udemy — geprüft, für beide Produktarten ungeeignet ohne Zusatzaufwand:** Udemy verlangt zwingend
+Videoinhalt: mindestens 30 Minuten Video UND mindestens 5 Lektionen, HD-Qualität (720p/1080p)
+Pflicht. Ausnahme nur "Practice Test Only"-Kurse ganz ohne Video. Reine Text-/PDF-/interaktive
+HTML-Inhalte zählen nicht als Kursgrundlage, sondern nur als Ergänzung. Weder der Lernpfad noch die
+Browser-Tools ließen sich 1:1 hochladen — es müsste eigens Videomaterial (z. B.
+Bildschirm-Screencasts mit Erklärung) produziert werden, das ist ein eigenständiges Projekt, kein
+Zweitverwertungskanal für Bestehendes.
+(https://support.udemy.com/hc/en-us/articles/229604328-Calculating-Course-Length,
+https://support.udemy.com/hc/en-us/articles/229604988-Udemy-Course-Quality-Checklist)
+
+**itch.io — kostenlos, aber mit wichtiger Einschränkung für die Spiele:** Hochladen von HTML5-Spielen
+ist kostenlos (ZIP mit index.html oder einzelne HTML-Datei, bis 500 MB). Wichtig: HTML5-Spiele, die
+direkt im Browser eingebettet laufen (also genau das Format der KLARTEXT-Tools), können auf itch.io
+laut offizieller Dokumentation **nur als Spende ("donation-based payment") bezahlt werden, kein
+Festpreis**. Für Festpreis-Verkauf müsste das Projekt als "Downloadable" (herunterladbare Datei statt
+Browser-Einbettung) eingestellt werden — technisch mit den aktuell serverseitig/zugangscode-
+geschützten Tools nicht ohne Weiteres kompatibel. Realistisch eher als kostenloser Reichweitenkanal
+nutzbar (ähnlich Schnupperpaket-Logik: z. B. eine Demo/ein einzelnes Gratis-Tool einstellen, Backlink
+zu klartext-mentoring.de), nicht als Hauptverkaufskanal.
+(https://itch.io/docs/creators/html5)
+
+**Interaktive Übungs-/Quiz-Tools (Wordwall, LearningApps.org, Kahoot, Wooclap u. a.):** laut
+Vergleichsseite überwiegend Freemium-Werkzeuge zum *Erstellen* eigener Übungen innerhalb der
+jeweiligen Plattform — keines davon ist ein Marktplatz, auf dem man fertige eigene Tools/Apps zum
+Verkauf einstellen kann. Für KLARTEXT nicht als Vertriebskanal nutzbar, höchstens als Werkzeug, um
+zusätzlich *dort* neue Gratis-Häppchen zu bauen.
+(https://lernmarktplatz.de/pages/interaktive-uebungen-lernspiele-fuer-den-unterricht-anbieter-im-vergleich)
+
+**Kursplattformen mit Gratis-Einstieg, für den Lernpfad technisch passender als Udemy:** **Thinkific**
+(kostenloser Tarif, unbegrenzt viele Kurse, kein Video-Zwang, Quizze/Fortschrittstracking) und
+**Systeme.io** (kostenloser Plan, bis 3 Kurse inkl. E-Mail-Marketing) erlauben text-/interaktions-
+basierte Kurse ohne Pflicht-Video. Wichtiger Unterschied zu Udemy: das sind "eigene Schule"-Baukästen
+ohne eingebautes Marktplatz-Publikum — Anja müsste den Traffic selbst mitbringen, genau wie aktuell
+schon bei klartext-mentoring.de. Kein zusätzlicher Reichweitengewinn gegenüber dem bestehenden
+Digistore24-Modell, nur eine andere technische Verpackung.
+(https://kursplattform-vergleich.de/)
+
+**Fazit/Einschätzung:** Für den Lernpfad gibt es aktuell keine kostenlose Plattform mit echtem
+Marktplatz-Publikum, die ohne Video auskommt — Udemy scheidet aus, Thinkific/Systeme.io bringen kein
+zusätzliches Publikum. Das bestehende Modell (eigene Verkaufsseite + Digistore24) bleibt vermutlich
+der pragmatischste Weg für den Lernpfad. Für die kleinen Förderbereich-Spiele ist itch.io die einzige
+gefundene kostenlose Option mit echter (Nischen-)Reichweite — aber nur für kostenlose/Spenden-Modelle
+geeignet, nicht für Festpreis-Verkauf der geschützten Tools.
+
+### Noch offen
+- Falls gewünscht: prüfen, ob sich ein einzelnes Förderbereich-Tool als Gratis-Demo auf itch.io
+  eignet (Format-Frage: Browser-Embed vs. Downloadable technisch klären).
+- Alle offenen Punkte aus Strang 91–108 weiterhin gültig.
+
+## Strang 110 (20.08.2026) — Nachfrage: Etsy und ähnliche Digital-Product-Marktplätze für Lernpfad/Spiele
+
+**Frage:** Anschluss an Strang 109 — ob Etsy oder vergleichbare Plattformen für den Lernpfad bzw. die
+interaktiven Förderbereich-Spiele infrage kommen.
+
+**Etsy — strukturell ungeeignet für beide Produktarten:** Etsy ist laut Recherche auf direkt
+herunterladbare Einzeldateien ausgelegt (PDF, Bilder, Vorlagen, ZIP mit bis zu 5 Dateien pro
+Listing) — nicht auf Zugangscode-geschützte Web-Tools, Mitgliedschaften oder mehrwöchige
+Kursprogramme. Dazu kommt der bereits in Strang 105 dokumentierte Befund einer vergleichbaren
+Anbieterin: erklärungsbedürftige pädagogische Inhalte performen auf Etsy schlecht, das Format ist
+stark auf selbsterklärende, bildstarke Sofort-Produkte ausgelegt — der Lernpfad (13-Wochen-Programm)
+und die interaktiven Tools sind beide noch erklärungsbedürftiger als die Kartendecks, für die Etsy
+schon als nachrangig eingestuft wurde. Fazit: für den Lernpfad und die Spiele noch weniger geeignet
+als für die Kartendecks.
+(https://www.shopify.com/de/blog/etsy-digitale-produkte-verkaufen)
+
+**Alternativen ("und Co"), technisch besser für Zugangscodes/Kurse geeignet als Etsy, aber ohne
+Etsy-Suchtraffic:**
+- **Gumroad**: kostenlos startbar, 10 % + 0,50 € pro Verkauf im Direktverkauf (30 % bei Nutzung der
+  hauseigenen "Discover"-Marktplatzfläche mit etwas mehr organischer Sichtbarkeit). Unterstützt
+  Lizenzschlüssel/Zugangscodes und Mitgliedschaften, nicht nur reine Dateien.
+- **Payhip**: kostenloser Tarif mit 5 % Gebühr, Plus-Tarif 29 $/Monat mit 2 %, Pro-Tarif 99 $/Monat
+  mit 0 % (jeweils zzgl. Zahlungsanbieter-Gebühr ca. 2,9 % + 0,30 $). Ebenfalls für Zugangscodes/
+  Kurse/Mitgliedschaften ausgelegt.
+- **Sellfy**: keine Transaktionsgebühr, dafür feste Monatspreise 29–159 $.
+(https://www.sendowl.com/blog/tips-and-advice/where-to-sell-pdfs-online)
+
+**Wichtiger Unterschied zu Etsy:** all diese Plattformen sind wie Thinkific/Systeme.io aus Strang 109
+reine "eigener Shop"-Werkzeuge ohne eingebautes Käufer-Publikum — der Traffic muss wie beim
+bestehenden Digistore24-Modell selbst mitgebracht werden. Etsys eigentlicher Wert (Marktplatz-
+Suchtraffic) passt inhaltlich nicht zum Produkt, und die Alternativen haben zwar die technisch
+richtigen Funktionen, aber genau den Reichweitenvorteil nicht, den man von einem Marktplatz erwarten
+würde.
+
+**Fazit:** Weder Etsy noch die Alternativen bringen für Lernpfad oder Förderbereich-Spiele einen
+echten Zusatznutzen gegenüber dem bestehenden eigenen Shop + Digistore24 — Etsy scheitert inhaltlich
+am Format, die Alternativen bringen kein zusätzliches Publikum. Einzige neue, wirklich kostenlose
+Reichweiten-Option bleibt itch.io für die Spiele (nur Spenden-Modell, siehe Strang 109).
+
+### Noch offen
+- Alle offenen Punkte aus Strang 91–109 weiterhin gültig.

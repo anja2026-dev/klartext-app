@@ -525,9 +525,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);l
     }return;
   }
   var login=sessionStorage.getItem('klartext_login');
-  var role=sessionStorage.getItem('klartext_role')||'';
   if(login!=='true'){window.location.href='KLARTEXT_Login.html';return;}
-  if(!['lk','admin','ingra','trainer'].includes(role))window.location.href='KLARTEXT_Login.html';
 }catch(e){}})();
 </script></head>
 <body>

@@ -26,6 +26,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
 .tab.lk.aktiv{background:#1565C0;border-color:#1565C0;color:#fff;}
 .tab.tk.aktiv{background:#4A148C;border-color:#4A148C;color:#fff;}
 .tab.kd.aktiv{background:#3B8A68;border-color:#3B8A68;color:#fff;}
+.tab.raum.aktiv{background:#00695C;border-color:#00695C;color:#fff;}
 .tab.am.aktiv{background:#C62828;border-color:#C62828;color:#fff;}
 .hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:2rem clamp(1rem,4vw,2rem);text-align:center;}
 .hero-icon{font-size:2rem;margin-bottom:.5rem;}
@@ -65,6 +66,20 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
 <meta name="theme-color" content="#1B3A4B">
 
 <script>
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    if(!rolle) return; // keine Rolle bekannt -> nichts ausblenden (sicherer Default)
+    document.querySelectorAll('[data-roles]').forEach(function(el){
+      var erlaubt = el.getAttribute('data-roles').split(/\s+/);
+      if(erlaubt.indexOf(rolle) === -1){
+        el.style.display = 'none';
+      }
+    });
+  } catch(e) {}
+});
+</script>
+<script>
 (function(){
   try{
     var role = sessionStorage.getItem('klartext_role') || '';
@@ -95,6 +110,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
   <a class="tab el" href="#el">❤️ Eltern</a>
   <a class="tab lk" href="#lk">🏫 Lehrkraft</a>
   <a class="tab tk" href="#tk">🗂️ Teamkoordination</a>
+  <a class="tab raum" href="#raum">🏝️ Insel &amp; Zonen</a>
   <a class="tab kd" href="#kd">🧒 Kinder</a>
   <a class="tab am" href="#am">🛡️ Anti-Mobbing</a>
 </nav>
@@ -489,42 +505,47 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
       <div class="sek-info"><div class="sek-titel" style="color:#00695C;">Raum-Material · Insel- &amp; Zonen-Set</div><div class="sek-sub" style="color:#00695C;">Großformatige Wandschilder zum Aufhängen — nicht zum Durchklicken</div></div>
     </div>
     <div class="dl-grid">
-      <div class="dl-item">
+      <div class="dl-item" data-roles="eltern ingra tk admin">
+        <div class="dl-icon">💾</div>
+        <div class="dl-info"><div class="dl-name">Insel-Set — Digital</div><div class="dl-desc">Digitale Vorlagen des kompletten Insel-Sets zur Weiterverarbeitung</div></div>
+        <a class="dl-btn" href="KLARTEXT_Insel-Set_Digital.zip" style="background:#00695C;" target="_blank" rel="noopener">📦 ZIP</a>
+      </div>
+      <div class="dl-item" data-roles="eltern ingra tk admin">
         <div class="dl-icon">🪧</div>
         <div class="dl-info"><div class="dl-name">Insel-Set Schule — Raummarkierungen</div><div class="dl-desc">8 großformatige Wandschilder (A4) zum Ausdrucken &amp; Laminieren — für Klassenraum/Förderraum</div></div>
         <a class="dl-btn" href="KLARTEXT_Insel-Set_Raummarkierungen_Schule.pdf" style="background:#00695C;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="eltern ingra tk admin">
         <div class="dl-icon">🪧</div>
         <div class="dl-info"><div class="dl-name">Insel-Set Zuhause — Raummarkierungen</div><div class="dl-desc">8 großformatige Wandschilder (A4) zum Ausdrucken &amp; Laminieren — fürs Kinderzimmer</div></div>
         <a class="dl-btn" href="KLARTEXT_Insel-Set_Raummarkierungen_Eltern.pdf" style="background:#00695C;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="eltern ingra tk admin">
         <div class="dl-icon">📘</div>
         <div class="dl-info"><div class="dl-name">Insel-Set Schule — Handbuch (INGRA)</div><div class="dl-desc">Konzept, Regeln, kleine Begleitkarten — Hintergrundwissen zu den 4 Inseln</div></div>
         <a class="dl-btn" href="KLARTEXT_Insel-Set_Schule_INGRA.pdf" style="background:#26A69A;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="eltern ingra tk lehrkraft admin">
         <div class="dl-icon">📘</div>
-        <div class="dl-info"><div class="dl-name">Insel-Set Schule — Handbuch (LK)</div><div class="dl-desc">Konzept, Regeln, kleine Begleitkarten — Variante für Lehrkräfte</div></div>
+        <div class="dl-info"><div class="dl-name">Insel-Set Schule — Handbuch (LK)</div><div class="dl-desc">Konzept, Regeln, kleine Begleitkarten — Variante für Lehrkräfte (laut Deckblatt explizit fuer Lehrkraefte, deshalb hier zusaetzlich fuer die Rolle Lehrkraft sichtbar)</div></div>
         <a class="dl-btn" href="KLARTEXT_Insel-Set_Schule_LK.pdf" style="background:#26A69A;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="eltern ingra tk admin">
         <div class="dl-icon">📘</div>
         <div class="dl-info"><div class="dl-name">Insel-Set Zuhause — Handbuch (Eltern)</div><div class="dl-desc">Konzept, Regeln, kleine Begleitkarten — fürs Kinderzimmer</div></div>
         <a class="dl-btn" href="KLARTEXT_Insel-Set_Eltern.pdf" style="background:#26A69A;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="ingra tk jobcoach lehrkraft eltern admin">
         <div class="dl-icon">🪧</div>
         <div class="dl-info"><div class="dl-name">Zonen-Set Schule — Komplettpaket</div><div class="dl-desc">Handbuch + 4 dezente Wandschilder (A6, bewusst unauffällig für Jugendliche) + Token-Vorlage</div></div>
         <a class="dl-btn" href="KLARTEXT_Zonen-Set_Schule.pdf" style="background:#37474F;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="ingra tk jobcoach lehrkraft eltern admin">
         <div class="dl-icon">🪧</div>
         <div class="dl-info"><div class="dl-name">Zonen-Set Zuhause — Komplettpaket</div><div class="dl-desc">Handbuch + 4 dezente Wandschilder (A6) — Variante fürs Zuhause</div></div>
         <a class="dl-btn" href="KLARTEXT_Zonen-Set_Eltern.pdf" style="background:#5B7A80;" target="_blank" rel="noopener">📄 PDF</a>
       </div>
-      <div class="dl-item">
+      <div class="dl-item" data-roles="ingra tk jobcoach lehrkraft eltern admin">
         <div class="dl-icon">🎫</div>
         <div class="dl-info"><div class="dl-name">Zonen-Set — Token-Karten</div><div class="dl-desc">4 Karten im Scheckkartenformat zum Nachdrucken/Laminieren, separat vom Handbuch</div></div>
         <a class="dl-btn" href="KLARTEXT_Zonen-Set_Token-Karten.pdf" style="background:#5B7A80;" target="_blank" rel="noopener">📄 PDF</a>

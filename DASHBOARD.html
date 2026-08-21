@@ -396,84 +396,16 @@ function mobileBarometerStatusLaden(){
 }
 (window.firebaseAuthReady || Promise.resolve()).then(mobileBarometerStatusLaden);
 
-// Ungelesene Chat-Nachrichten auf der KlarApp-Kachel (chat.js: readBy pro
-// Nachricht, siehe chatZaehleUngelesen() - bereits genutzt für die
-// Badges in CHAT_List.html). Summiert die ungelesenen Nachrichten über
-// alle Konversationen des aktuellen Users.
-function chatBadgeAktualisieren(){
-  // Zwei Badges gleichzeitig aktuell halten: die mobile Menü-Kachel
-  // (m-chat-badge) und der "💬 KLARapp"-Link in der Desktop-Navigation
-  // (gnav-chat-badge) - je nach Viewport ist nur eines davon sichtbar,
-  // beide existieren aber im DOM.
-  var badges = [
-    document.getElementById('m-chat-badge'),
-    document.getElementById('gnav-chat-badge')
-  ].filter(Boolean);
-  if (!badges.length) return;
-  chatLadeConversations(function(conversations){
-    var ids = Object.keys(conversations || {});
-    if (!ids.length) { badges.forEach(function(b){ b.style.display = 'none'; }); return; }
-    var gesamt = 0;
-    var ausstehend = ids.length;
-    ids.forEach(function(cid){
-      chatZaehleUngelesen(cid, function(anzahl){
-        gesamt += anzahl;
-        ausstehend--;
-        if (ausstehend === 0) {
-          badges.forEach(function(b){
-            if (gesamt > 0) { b.textContent = gesamt; b.style.display = 'inline-block'; }
-            else { b.style.display = 'none'; }
-          });
-        }
-      });
-    });
-  });
-}
-
-// Nur für Rollen mit Chat-Zugriff aufrufen - identische Liste wie die
-// data-rollen-Attribute auf den KlarApp-Links, damit Kachel-Sichtbarkeit
-// und Badge-Logik nicht auseinanderlaufen. Diese Datei hat sonst keinen
-// generischen data-rollen-Mechanismus - daher ein eigenständiger Check
-// nur für diese Funktion, statt den Mechanismus nachzubauen.
-(function(){
-  var chatRolle = '';
-  try { chatRolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
-  if (['tk','fm','ingra','ingra-beta','trainer','admin'].indexOf(chatRolle) !== -1) {
-    (window.firebaseAuthReady || Promise.resolve()).then(chatBadgeAktualisieren);
-  }
-})();
+// Chat-Badge-Logik entfernt (21.08.2026): chatLadeConversations()/chatZaehleUngelesen()
+// existieren nicht mehr (KlarApp-Chat/chat.js stillgelegt). Die Badge-Elemente
+// (m-chat-badge, gnav-chat-badge) bleiben im DOM, sind aber per Default
+// display:none und werden nicht mehr befüllt.
 </script>
 
-<script type="module">
-import { supabase } from './supabase/auth_client.js';
-
-// Ungelesene Weiterleitungen auf der Weiterleitungen-Kachel - exakt gleiches
-// Muster wie chatBadgeAktualisieren() oben (zwei Badges: mobile Menü-Kachel
-// m-wl-badge und Desktop-Navigation gnav-wl-badge), nur mit Supabase
-// weiterleitungen statt Firebase chat conversations als Datenquelle.
-function weiterleitungenBadgeAktualisieren(){
-  var badges = [
-    document.getElementById('m-wl-badge'),
-    document.getElementById('gnav-wl-badge')
-  ].filter(Boolean);
-  if (!badges.length) return;
-
-  var rolle = '';
-  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
-  if (!rolle) return;
-
-  supabase.from('weiterleitungen').select('id', { count: 'exact', head: true })
-    .eq('status', 'offen').eq('ziel_rolle', rolle)
-    .then(function(ergebnis){
-      var anzahl = (!ergebnis.error && ergebnis.count) ? ergebnis.count : 0;
-      badges.forEach(function(b){
-        if (anzahl > 0) { b.textContent = anzahl; b.style.display = 'inline-block'; }
-        else { b.style.display = 'none'; }
-      });
-    });
-}
-weiterleitungenBadgeAktualisieren();
-</script>
+<!-- Supabase-Weiterleitungen-Badge entfernt (21.08.2026): letzter Supabase-Aufruf
+     in DASHBOARD.html, damit ist die Datei jetzt vollständig offline-first.
+     Badge-Elemente (m-wl-badge, gnav-wl-badge) bleiben im DOM (display:none per
+     Default), werden aber nicht mehr befüllt. -->
 
 <div id="dashboard-desktop">
 
@@ -699,7 +631,7 @@ weiterleitungenBadgeAktualisieren();
   <!-- LERNMATERIALIEN -->
 
 <!-- FEEDBACK -->
-  <section class="modul-sektion" id="sek-feedback" style="scroll-margin-top:210px;--sek-color:#6EC6A0;--sek-light:#EAF7EF;">
+  <section class="modul-sektion" id="sek-feedback" style="scroll-margin-top:210px;--sek-color:#6EC6A0;--sek-light:#EAF7EF;" data-roles="ingra tk jobcoach lehrkraft admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot"><span class="sek-chevron">▼</span></div>
       <span class="modul-sektion-titel">⭐ Feedback</span>
@@ -741,10 +673,10 @@ weiterleitungenBadgeAktualisieren();
       <span class="modul-sektion-sub">Workbook · Lernpfad · Fachbuch · Glossar</span>
     </div>
     <div class="karten-grid">
-      <a class="kachel" href="KLARTEXT_Workbook.html" data-modul="learn" data-search="workbook reflexion aufgaben modul vertiefung" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe" style="background:#1B3A4B;"></div><div class="kachel-header"><span class="kachel-nr">📓</span><span class="kachel-emoji">✏️</span></div><div class="kachel-body"><div class="kachel-titel">Workbook</div><div class="kachel-sub">Reflexion · Aufgaben · Vertiefung</div><span class="kachel-tag">Lernmaterial</span></div></a>
-      <a class="kachel" href="KLARTEXT_Lernhandbuch_KOMPLETT.html" data-modul="learn" data-search="lernhandbuch nachlesen inhalt vertiefung modul" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">📚</span></div><div class="kachel-body"><div class="kachel-titel">Lernhandbuch</div><div class="kachel-sub">Alle Inhalte zum Nachlesen · Zur Vertiefung</div><span class="kachel-tag">Optional</span></div></a>
+      <a class="kachel" href="KLARTEXT_Workbook.html" data-modul="learn" data-search="workbook reflexion aufgaben modul vertiefung" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="ingra tk jobcoach admin"><div class="kachel-stripe" style="background:#1B3A4B;"></div><div class="kachel-header"><span class="kachel-nr">📓</span><span class="kachel-emoji">✏️</span></div><div class="kachel-body"><div class="kachel-titel">Workbook</div><div class="kachel-sub">Reflexion · Aufgaben · Vertiefung</div><span class="kachel-tag">Lernmaterial</span></div></a>
+      <a class="kachel" href="KLARTEXT_Lernhandbuch_KOMPLETT.html" data-modul="learn" data-search="lernhandbuch nachlesen inhalt vertiefung modul" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);" data-roles="ingra tk jobcoach admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">📚</span></div><div class="kachel-body"><div class="kachel-titel">Lernhandbuch</div><div class="kachel-sub">Alle Inhalte zum Nachlesen · Zur Vertiefung</div><span class="kachel-tag">Optional</span></div></a>
       <a class="kachel" href="KLARTEXT_Lernpfad_INGRA.html"
-         data-modul="learn" data-search="lernpfad curriculum kurs basiskurs erweiterung">
+         data-modul="learn" data-search="lernpfad curriculum kurs basiskurs erweiterung" data-roles="ingra tk jobcoach admin">
         <div class="kachel-stripe" style="background:#1B3A4B;"></div>
         <div class="kachel-header"><span class="kachel-nr">LP</span><span class="kachel-emoji">🗺️</span></div>
         <div class="kachel-body">
@@ -753,7 +685,7 @@ weiterleitungenBadgeAktualisieren();
         </div>
       </a>
       <a class="kachel" href="KLARTEXT_Quellenverzeichnis.html" data-modul="learn" data-search="quellen wissenschaft literatur nachweise" style="--kachel-color:var(--c-m0);--kachel-bg:var(--c-m0-l);"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📑</span><span class="kachel-emoji">📑</span></div><div class="kachel-body"><div class="kachel-titel">Quellenverzeichnis</div><div class="kachel-sub">Wissenschaftliche Nachweise</div><span class="kachel-tag">Nachschlagen</span></div></a>
-      <a class="kachel" href="KLARTEXT_Fachbuch_Neu.html" data-modul="learn" data-search="fachbuch buch kapitel grundlagen recht krise" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Fachbuch</span><span class="kachel-emoji">📕</span></div><div class="kachel-body"><div class="kachel-titel">Fachbuch Schulbegleitung</div><div class="kachel-sub">12 Kapitel + 5 Vertiefungskapitel · Fallbeispiele · Trainingsmodule</div><span class="kachel-tag">Vertiefung</span></div></a>
+      <a class="kachel" href="KLARTEXT_Fachbuch_Neu.html" data-modul="learn" data-search="fachbuch buch kapitel grundlagen recht krise" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;" data-roles="ingra tk jobcoach admin"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Fachbuch</span><span class="kachel-emoji">📕</span></div><div class="kachel-body"><div class="kachel-titel">Fachbuch Schulbegleitung</div><div class="kachel-sub">12 Kapitel + 5 Vertiefungskapitel · Fallbeispiele · Trainingsmodule</div><span class="kachel-tag">Vertiefung</span></div></a>
       <a class="kachel" href="KLARTEXT_Glossar.html" data-modul="learn" data-search="glossar fachbegriffe definitionen barometer klar joker ingra trauma adhs" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Glossar</span><span class="kachel-emoji">🔤</span></div><div class="kachel-body"><div class="kachel-titel">Glossar</div><div class="kachel-sub">64 Fachbegriffe · A–Ü</div><span class="kachel-tag">Nachschlagen</span></div></a>
       <a class="kachel" href="KLARTEXT_Systemanleitung.html" data-modul="learn" data-search="anleitung hilfe erklaerung uebersicht start" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">🧭</span></div><div class="kachel-body"><div class="kachel-titel">So funktioniert KLARTEXT</div><div class="kachel-sub">Kurze Übersicht über das ganze System</div><span class="kachel-tag">Hilfe</span></div></a>
     
@@ -776,14 +708,14 @@ weiterleitungenBadgeAktualisieren();
       <a class="kachel" href="KLARTEXT_Trainer_Ausbildung.html" data-modul="learn" data-trainer-only data-search="trainer ausbildung schulung kurs werden" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Trainer</span><span class="kachel-emoji">🎓</span></div><div class="kachel-body"><div class="kachel-titel">Trainer-Ausbildung</div><div class="kachel-sub">Selbst KLARTEXT-Trainer werden</div><span class="kachel-tag">Ausbildung</span></div></a>
       <a class="kachel" href="KLARTEXT_Curriculum_Trainer-Leitfaden_12_Wochen.html" data-modul="learn" data-trainer-only data-search="curriculum trainer leitfaden wochen kurs aufbau" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Curriculum</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Trainer-Leitfaden</div><div class="kachel-sub">15-Wochen-Curriculum für Trainer</div><span class="kachel-tag">Ausbildung</span></div></a>
       <a class="kachel" href="KLARTEXT_Trainerhandbuch.html" data-modul="learn" data-trainer-only data-search="trainerhandbuch didaktik methoden feedback gruppendynamik" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Handbuch</span><span class="kachel-emoji">📘</span></div><div class="kachel-body"><div class="kachel-titel">Trainerhandbuch</div><div class="kachel-sub">Didaktik · Methoden · Gruppendynamik · Feedback</div><span class="kachel-tag">Nachschlagen</span></div></a>
-      <a class="kachel" href="KLARTEXT_Zertifikat_ELearning.html" data-modul="learn" data-search="zertifikat e-learning abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🏆</span></div><div class="kachel-body"><div class="kachel-titel">E-Learning-Zertifikat</div><div class="kachel-sub">Abschlussnachweis E-Learning-Kurs</div><span class="kachel-tag">Zertifikat</span></div></a>
-      <a class="kachel" href="KLARTEXT_Zertifikat_Praesenzkurs.html" data-modul="learn" data-search="zertifikat praesenz kurs abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🎖️</span></div><div class="kachel-body"><div class="kachel-titel">Präsenzkurs-Zertifikat</div><div class="kachel-sub">Abschlussnachweis Präsenzkurs</div><span class="kachel-tag">Zertifikat</span></div></a>
+      <a class="kachel" href="KLARTEXT_Zertifikat_ELearning.html" data-modul="learn" data-search="zertifikat e-learning abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="ingra tk jobcoach admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🏆</span></div><div class="kachel-body"><div class="kachel-titel">E-Learning-Zertifikat</div><div class="kachel-sub">Abschlussnachweis E-Learning-Kurs</div><span class="kachel-tag">Zertifikat</span></div></a>
+      <a class="kachel" href="KLARTEXT_Zertifikat_Praesenzkurs.html" data-modul="learn" data-search="zertifikat praesenz kurs abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="ingra tk jobcoach admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🎖️</span></div><div class="kachel-body"><div class="kachel-titel">Präsenzkurs-Zertifikat</div><div class="kachel-sub">Abschlussnachweis Präsenzkurs</div><span class="kachel-tag">Zertifikat</span></div></a>
       <a class="kachel" href="KLARTEXT_Glossar.html" data-modul="learn" data-search="glossar fachbegriffe definitionen barometer klar joker ingra trauma adhs" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Glossar</span><span class="kachel-emoji">🔤</span></div><div class="kachel-body"><div class="kachel-titel">Glossar</div><div class="kachel-sub">64 Fachbegriffe · A–Ü</div><span class="kachel-tag">Nachschlagen</span></div></a>
       <a class="kachel" href="KLARTEXT_Systemanleitung.html" data-modul="learn" data-search="anleitung hilfe erklaerung uebersicht start" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">🧭</span></div><div class="kachel-body"><div class="kachel-titel">So funktioniert KLARTEXT</div><div class="kachel-sub">Kurze Übersicht über das ganze System</div><span class="kachel-tag">Hilfe</span></div></a>
 
     </div></div></section>
 
-  <section class="modul-sektion" id="sek-m0" style="scroll-margin-top:135px;--sek-color:var(--c-m0);--sek-light:var(--c-m0-l);">
+  <section class="modul-sektion" id="sek-m0" style="scroll-margin-top:135px;--sek-color:var(--c-m0);--sek-light:var(--c-m0-l);" data-roles="ingra tk jobcoach lehrkraft eltern admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1433,17 +1365,19 @@ weiterleitungenBadgeAktualisieren();
 
   // ── HIDE-CONFIG ──────────────────────────────────────────
   var HIDE = {
-    // INGRA: sieht Module + Tools + Kind-Karten + Downloads + Lernmaterialien + Lehrerkurs-Kachel + Eltern-Infopaket + Weitergabe-Anleitung — KEIN TK-Feedback, KEINE TK-Inbox, kein sek-learn (Trainer-intern)
-    ingra:   ['sek-lkkurs','sek-tk','sek-elkurs','sek-el','sek-learn','sek-tkfeedback'],
+    // INGRA: sieht Module + Tools + Kind-Karten + Downloads + Lernmaterialien + Lehrerkurs-Kachel + Eltern-Infopaket + Weitergabe-Anleitung — KEIN TK-Feedback, KEINE TK-Inbox. sek-learn NICHT mehr pauschal versteckt (21.08.2026): die Trainer-/Zertifikat-Inhalte darin sind jetzt einzeln per data-roles gesperrt, Meta-Seiten (Ueber mich/Impressum/Glossar) bleiben laut Entscheidung fuer alle Rollen sichtbar.
+    ingra:   ['sek-lkkurs','sek-tk','sek-elkurs','sek-el','sek-tkfeedback'],
     // LK: NUR eigene LK-Karten + Kinderkarten + Downloads — KEIN Chat, KEINE Lernmaterialien (INGRA-intern)
     lk:      ['sek-m0','sek-m1','sek-m2','sek-m3','sek-m4','sek-m5','sek-m6',
                'sek-m7','sek-m8','sek-mh','sek-fk','sek-tk',
                'sek-elkurs','sek-el','sek-learn','sek-tools','sek-lernmaterialien','sek-feedback',
                'sek-elterninfo','sek-weitergabe','sek-tkfeedback'],
-    // ELTERN: NUR Kinderkarten + Downloads (für Material zum Kind) — sonst nichts, KEIN Chat
-    eltern:  ['sek-m0','sek-m1','sek-m2','sek-m3','sek-m4','sek-m5','sek-m6',
+    // ELTERN: NUR Kinderkarten + Downloads (für Material zum Kind) — sonst nichts, KEIN Chat.
+    // sek-m0 (21.08.2026, ausdrueckliche Anweisung: fuer jede Rolle offen) und
+    // sek-learn (Meta-Seiten-Konflikt, s.o. bei INGRA) nicht mehr pauschal versteckt.
+    eltern:  ['sek-m1','sek-m2','sek-m3','sek-m4','sek-m5','sek-m6',
                'sek-m7','sek-m8','sek-mh','sek-fk','sek-lkkurs','sek-lk','sek-tk',
-               'sek-learn','sek-tools','sek-elterninfo','sek-weitergabe','sek-tkfeedback','sek-feedback'],
+               'sek-tools','sek-elterninfo','sek-weitergabe','sek-tkfeedback','sek-feedback'],
     // TK: alles wie Trainer + Fachbuch + Eltern-Infopaket + Weitergabe-Anleitung + EIGENES Feedback-Formular + Weiterleiten + Inbox + Nachrichten
     tk:      ['sek-lkkurs','sek-elkurs'],
     // TRAINER: Module + E-Learning + Curriculum + Fachbuch — NICHT Teilnehmerkurse, NICHT Weitergabe-Anleitung, NICHT TK-Feedback, NICHT Weiterleiten, NICHT Chat (operative Funktionen, nicht Trainer-Aufgabe)

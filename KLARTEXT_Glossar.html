@@ -878,5 +878,63 @@ function filterAlles(suche, filter) {
   document.getElementById('no-results').style.display = gesamt === 0 ? 'block' : 'none';
 }
 </script>
+<script>
+// ═══════════════════════════════════════
+// 22.08.2026 Modul-Sperre im Glossar: Klicks auf Links zu einzelnen
+// Vertiefungsmodulen (Mx-yy_*.html) werden abgefangen und geprueft, ob die
+// aktive klartext_role ueberhaupt Zugriff auf dieses Modul hat (gleiche
+// Zuordnung wie DASHBOARD.html data-roles fuer #sek-m0 .. #sek-m8). Fehlt
+// die Rolle (noch nicht eingeloggt), wird NICHTS gesperrt (fail-open, wie
+// ueberall sonst im System).
+// ═══════════════════════════════════════
+(function(){
+  var MODUL_ZUGRIFF = {
+    0: ['ingra','tk','jobcoach','lehrkraft','eltern','mobbing','admin'],
+    1: ['ingra','tk','admin'],
+    2: ['ingra','tk','admin','jobcoach'],
+    3: ['ingra','tk','admin'],
+    4: ['ingra','tk','admin'],
+    5: ['ingra','tk','admin','jobcoach'],
+    6: ['ingra','tk','mobbing','admin'],
+    7: ['ingra','tk','admin'],
+    8: ['ingra','tk','admin']
+  };
+
+  function moduleAusHref(href){
+    var m = href.match(/^M([0-8])-/);
+    return m ? parseInt(m[1], 10) : null;
+  }
+
+  function zeigeSperrHinweis(){
+    var alt = document.getElementById('modul-sperr-popup');
+    if (alt) alt.remove();
+    var pop = document.createElement('div');
+    pop.id = 'modul-sperr-popup';
+    pop.setAttribute('role', 'alert');
+    pop.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#1B3A4B;color:#fff;padding:.85rem 1.3rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);border:1px solid rgba(110,198,160,.4);z-index:9999;max-width:90vw;text-align:center;opacity:0;transition:opacity .25s;';
+    pop.textContent = '🔒 Dieses Vertiefungsmodul ist in Ihrem Paket nicht enthalten.';
+    document.body.appendChild(pop);
+    requestAnimationFrame(function(){ pop.style.opacity = '1'; });
+    setTimeout(function(){ pop.style.opacity = '0'; }, 2600);
+    setTimeout(function(){ pop.remove(); }, 3000);
+  }
+
+  document.addEventListener('click', function(e){
+    var link = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!link) return;
+    var href = link.getAttribute('href') || '';
+    var modul = moduleAusHref(href);
+    if (modul === null) return;
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    if (!rolle) return; // keine Rolle bekannt -> nichts sperren
+    var erlaubt = MODUL_ZUGRIFF[modul] || [];
+    if (erlaubt.indexOf(rolle) === -1){
+      e.preventDefault();
+      e.stopPropagation();
+      zeigeSperrHinweis();
+    }
+  }, true);
+})();
+</script>
 </body>
 </html>

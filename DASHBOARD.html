@@ -126,12 +126,7 @@ footer strong{color:var(--kt-accent);}
 <meta name="apple-mobile-web-app-title" content="KLARTEXT">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#1B3A4B">
-<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js?v=2"></script>
-<script src="chat.js"></script>
+<!-- Firebase/chat.js entfernt (21.08.2026): KlarApp-Chat stillgelegt, System vollstaendig offline-first. -->
 </head>
 <body>
 
@@ -220,7 +215,6 @@ footer strong{color:var(--kt-accent);}
   <nav id="m-menu" class="m-menu">
     <button class="m-menu-close" onclick="mobileMenuToggle()" aria-label="Schließen">✕</button>
     <div id="m-konto-anzeige" style="color:rgba(255,255,255,.55);font-size:13px;padding:4px 8px 12px;"></div>
-    <a href="CHAT_View.html">💬 KlarApp</a>
     <a href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen</a>
     <a href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
     <a href="#sek-fk">🚒 Feuerwehrkarten</a>
@@ -261,7 +255,6 @@ footer strong{color:var(--kt-accent);}
     <section class="m-section">
       <span class="m-label">Schnellzugriff</span>
       <div class="m-grid-2">
-        <a class="m-chip" href="CHAT_View.html"><span class="m-chip-emoji">💬</span><span>KlarApp</span><span id="m-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:4px;">0</span></a>
         <a class="m-chip" href="KLARTEXT_Listen.html"><span class="m-chip-emoji">📋</span><span>To-do-Liste</span></a>
         <a class="m-chip" href="KLARTEXT_Weiterleitungen.html"><span class="m-chip-emoji">📤</span><span>Weiterleitungen</span><span id="m-wl-badge" style="display:none;background:#C62828;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:4px;">0</span></a>
         <a class="m-chip" href="KLARTEXT_Notizblock.html"><span class="m-chip-emoji">📝</span><span>Notizblock</span></a>
@@ -380,21 +373,19 @@ function mobileBarometerStatusLaden(){
   var kindId = kindIdErmitteln();
   if (!kindId) { badge.style.display = 'none'; return; }
   try {
-    db.ref('barometer_kind').orderByChild('childId').equalTo(kindId).limitToLast(1).once('value').then(function(snapshot){
-      var eintraege = snapshot.val();
-      if (!eintraege) { badge.style.display = 'none'; return; }
-      var letzter = Object.values(eintraege)[0];
-      var info = BARO_STATUS[letzter.value];
-      if (!info) { badge.style.display = 'none'; return; }
-      text.textContent = info.label;
-      badge.style.background = info.bg;
-      badge.style.color = info.farbe;
-      badge.querySelector('.m-baro-status-dot').style.background = info.farbe;
-      badge.style.display = 'inline-flex';
-    }).catch(function(){ badge.style.display = 'none'; });
+    var eintraege = JSON.parse(localStorage.getItem('klartext_baro_' + kindId) || '[]');
+    var letzter = eintraege[eintraege.length - 1];
+    if (!letzter) { badge.style.display = 'none'; return; }
+    var info = BARO_STATUS[letzter.farbe];
+    if (!info) { badge.style.display = 'none'; return; }
+    text.textContent = info.label;
+    badge.style.background = info.bg;
+    badge.style.color = info.farbe;
+    badge.querySelector('.m-baro-status-dot').style.background = info.farbe;
+    badge.style.display = 'inline-flex';
   } catch(e) { badge.style.display = 'none'; }
 }
-(window.firebaseAuthReady || Promise.resolve()).then(mobileBarometerStatusLaden);
+mobileBarometerStatusLaden();
 
 // Chat-Badge-Logik entfernt (21.08.2026): chatLadeConversations()/chatZaehleUngelesen()
 // existieren nicht mehr (KlarApp-Chat/chat.js stillgelegt). Die Badge-Elemente
@@ -484,7 +475,6 @@ function mobileBarometerStatusLaden(){
 <nav id="global-nav" style="background:#0F2230;border-bottom:1px solid rgba(110,198,160,.2);position:sticky;top:0;z-index:111;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;flex-shrink:0;">
   <style>#global-nav::-webkit-scrollbar{display:none;}.gnav-link{display:inline-flex;align-items:center;gap:.3rem;padding:.55rem .8rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.72rem;font-weight:600;white-space:nowrap;transition:all .15s;border-bottom:2px solid transparent;}.gnav-link:hover{color:#fff;background:rgba(255,255,255,.07);}.gnav-link.aktiv{color:#6EC6A0;border-bottom-color:#6EC6A0;}</style>
   <a class="gnav-link aktiv" href="DASHBOARD.html">🏠 Dashboard</a>
-  <a class="gnav-link" href="CHAT_View.html">💬 KLARapp<span id="gnav-chat-badge" style="display:none;background:#C62828;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:4px;">0</span></a>
   <a class="gnav-link" href="KLARTEXT_Weiterleitungen.html">📤 Weiterleitungen<span id="gnav-wl-badge" style="display:none;background:#C62828;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:4px;">0</span></a>
   <a class="gnav-link" href="KLARTEXT_Listen.html">📋 To-do-Liste</a>
   <a class="gnav-link" href="#sek-fk">🚒 Feuerwehrkarten</a>
@@ -527,7 +517,7 @@ function mobileBarometerStatusLaden(){
       <a href="#sek-m7" class="filter-btn" data-modul="m7" title="M7 · Praxissituationen" style="border-color:var(--c-m7);color:var(--c-m7);">M7</a>
       <a href="#sek-m8" class="filter-btn" data-modul="m8" title="M8 · Selbstfürsorge" style="border-color:var(--c-m8);color:var(--c-m8);">M8</a>
       <a href="#sek-lk" class="filter-btn" data-modul="lk" title="Lehrkraft-Karten" style="border-color:var(--c-m1);color:var(--c-m1);">LK</a>
-      <a href="#sek-tk" class="filter-btn" data-modul="tk" title="Teamkoordination" style="border-color:#4A148C;color:#4A148C;">TK</a>
+      <a href="#sek-tk" class="filter-btn" data-modul="tk" title="Teamkoordination" style="border-color:#4A148C;color:#4A148C;" data-roles="tk admin">TK</a>
       <a href="#sek-fk" class="filter-btn" data-modul="fk" title="Feuerwehrkarten" style="border-color:#C62828;color:#C62828;">FK</a>
     </div>
     <div class="filter-group">
@@ -708,14 +698,14 @@ function mobileBarometerStatusLaden(){
       <a class="kachel" href="KLARTEXT_Trainer_Ausbildung.html" data-modul="learn" data-trainer-only data-search="trainer ausbildung schulung kurs werden" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Trainer</span><span class="kachel-emoji">🎓</span></div><div class="kachel-body"><div class="kachel-titel">Trainer-Ausbildung</div><div class="kachel-sub">Selbst KLARTEXT-Trainer werden</div><span class="kachel-tag">Ausbildung</span></div></a>
       <a class="kachel" href="KLARTEXT_Curriculum_Trainer-Leitfaden_12_Wochen.html" data-modul="learn" data-trainer-only data-search="curriculum trainer leitfaden wochen kurs aufbau" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Curriculum</span><span class="kachel-emoji">📋</span></div><div class="kachel-body"><div class="kachel-titel">Trainer-Leitfaden</div><div class="kachel-sub">15-Wochen-Curriculum für Trainer</div><span class="kachel-tag">Ausbildung</span></div></a>
       <a class="kachel" href="KLARTEXT_Trainerhandbuch.html" data-modul="learn" data-trainer-only data-search="trainerhandbuch didaktik methoden feedback gruppendynamik" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Handbuch</span><span class="kachel-emoji">📘</span></div><div class="kachel-body"><div class="kachel-titel">Trainerhandbuch</div><div class="kachel-sub">Didaktik · Methoden · Gruppendynamik · Feedback</div><span class="kachel-tag">Nachschlagen</span></div></a>
-      <a class="kachel" href="KLARTEXT_Zertifikat_ELearning.html" data-modul="learn" data-search="zertifikat e-learning abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="ingra tk jobcoach admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🏆</span></div><div class="kachel-body"><div class="kachel-titel">E-Learning-Zertifikat</div><div class="kachel-sub">Abschlussnachweis E-Learning-Kurs</div><span class="kachel-tag">Zertifikat</span></div></a>
-      <a class="kachel" href="KLARTEXT_Zertifikat_Praesenzkurs.html" data-modul="learn" data-search="zertifikat praesenz kurs abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="ingra tk jobcoach admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🎖️</span></div><div class="kachel-body"><div class="kachel-titel">Präsenzkurs-Zertifikat</div><div class="kachel-sub">Abschlussnachweis Präsenzkurs</div><span class="kachel-tag">Zertifikat</span></div></a>
+      <a class="kachel" href="KLARTEXT_Zertifikat_ELearning.html" data-modul="learn" data-search="zertifikat e-learning abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🏆</span></div><div class="kachel-body"><div class="kachel-titel">E-Learning-Zertifikat</div><div class="kachel-sub">Abschlussnachweis E-Learning-Kurs</div><span class="kachel-tag">Zertifikat</span></div></a>
+      <a class="kachel" href="KLARTEXT_Zertifikat_Praesenzkurs.html" data-modul="learn" data-search="zertifikat praesenz kurs abschluss nachweis" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;" data-roles="admin"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Zertifikat</span><span class="kachel-emoji">🎖️</span></div><div class="kachel-body"><div class="kachel-titel">Präsenzkurs-Zertifikat</div><div class="kachel-sub">Abschlussnachweis Präsenzkurs</div><span class="kachel-tag">Zertifikat</span></div></a>
       <a class="kachel" href="KLARTEXT_Glossar.html" data-modul="learn" data-search="glossar fachbegriffe definitionen barometer klar joker ingra trauma adhs" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;"><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">Glossar</span><span class="kachel-emoji">🔤</span></div><div class="kachel-body"><div class="kachel-titel">Glossar</div><div class="kachel-sub">64 Fachbegriffe · A–Ü</div><span class="kachel-tag">Nachschlagen</span></div></a>
       <a class="kachel" href="KLARTEXT_Systemanleitung.html" data-modul="learn" data-search="anleitung hilfe erklaerung uebersicht start" style="--kachel-color:#1B3A4B;--kachel-bg:#EAF0F4;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">📖</span><span class="kachel-emoji">🧭</span></div><div class="kachel-body"><div class="kachel-titel">So funktioniert KLARTEXT</div><div class="kachel-sub">Kurze Übersicht über das ganze System</div><span class="kachel-tag">Hilfe</span></div></a>
 
     </div></div></section>
 
-  <section class="modul-sektion" id="sek-m0" style="scroll-margin-top:135px;--sek-color:var(--c-m0);--sek-light:var(--c-m0-l);" data-roles="ingra tk jobcoach lehrkraft eltern admin">
+  <section class="modul-sektion" id="sek-m0" style="scroll-margin-top:135px;--sek-color:var(--c-m0);--sek-light:var(--c-m0-l);" data-roles="ingra tk jobcoach lehrkraft eltern mobbing admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -953,7 +943,7 @@ function mobileBarometerStatusLaden(){
     </div></section>
 
   <!-- ANTI-MOBBING TRAINING -->
-  <section class="modul-sektion" id="sek-m6" style="scroll-margin-top:135px;--sek-color:var(--c-m6);--sek-light:var(--c-m6-l);" data-roles="ingra tk admin">
+  <section class="modul-sektion" id="sek-m6" style="scroll-margin-top:135px;--sek-color:var(--c-m6);--sek-light:var(--c-m6-l);" data-roles="ingra tk mobbing admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>
@@ -1135,7 +1125,7 @@ function mobileBarometerStatusLaden(){
   </section>
 
   <!-- TK-RECRUITING -->
-  <section class="modul-sektion" id="sek-tk-recruiting" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;">
+  <section class="modul-sektion" id="sek-tk-recruiting" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;" data-roles="tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot"><span class="sek-chevron">▼</span></div>
       <span class="modul-sektion-titel">🎯 TK-Recruiting</span>
@@ -1248,7 +1238,7 @@ function mobileBarometerStatusLaden(){
       <a class="kachel" href="KD-14_Mein_Comeback-Plan.html" data-modul="kd" data-search="comeback jugendlich aelter plan selbst" style="--kachel-color:#4FC3C7;--kachel-bg:#E0F7F8;position:relative;"><span style="position:absolute;top:6px;right:6px;background:#C47A00;color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .4rem;border-radius:10px;z-index:2;">✨ Neu</span><div class="kachel-stripe"></div><div class="kachel-header"><span class="kachel-nr">KD-14</span><span class="kachel-emoji">💪</span></div><div class="kachel-body"><div class="kachel-titel">Mein Comeback-Plan</div><div class="kachel-sub">Ab 7. Klasse · Selbstbestimmt</div><span class="kachel-tag">Download</span></div></a>
     </div></section>
 
-  <section class="modul-sektion" id="sek-fk" style="scroll-margin-top:135px;--sek-color:var(--c-fk);--sek-light:var(--c-fk-l);" data-roles="ingra tk admin">
+  <section class="modul-sektion" id="sek-fk" style="scroll-margin-top:135px;--sek-color:var(--c-fk);--sek-light:var(--c-fk-l);" data-roles="ingra tk mobbing admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
       <div class="modul-sektion-dot">
       <span class="sek-chevron">▼</span>

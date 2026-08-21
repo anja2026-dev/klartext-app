@@ -253,13 +253,33 @@ footer strong{color:var(--kt-accent);}
     if(!box) return;
     if(rolle === 'jobcoach'){
       box.innerHTML = '<strong>👋 Für dich als Jobcoach besonders relevant:</strong> Starte mit den Berufswelt-Basics — '
-        + '<a href="KLARTEXT_Spiel_WertePoker.html">🃏 Werte-Poker</a> und '
-        + '<a href="KLARTEXT_Spiel_SkillMatrix.html">📊 Skill-Matrix</a>. Barometer, Joker und KLAR-Formel weiter unten gelten systemweit und lohnen sich trotzdem als Hintergrundwissen.';
+        + '<a href="KLARTEXT_Spiel_WertePoker.html">🃏 Werte-Poker</a>, '
+        + '<a href="KLARTEXT_Spiel_SkillMatrix.html">📊 Skill-Matrix</a> und '
+        + '<a href="DASHBOARD.html#sek-m5">➔ Übergang Schule–Beruf (M5)</a>. Barometer, Joker und KLAR-Formel weiter unten gelten systemweit und lohnen sich trotzdem als Hintergrundwissen.';
       box.style.display = 'block';
     } else if(rolle === 'ingra' || rolle === 'tk'){
       box.innerHTML = '<strong>👋 Für dich besonders relevant:</strong> Starte mit '
-        + '<a href="#barometer">🌡️ Barometer</a>, <a href="#joker">🃏 Joker</a> und '
-        + '<a href="#klar">💬 der KLAR-Formel</a> — den Basics für den Alltag mit dem Kind.';
+        + '<a href="#barometer">🌡️ Barometer</a>, <a href="#joker">🃏 Joker-Signale</a> und '
+        + '<a href="#klar">💬 dem KLAR-Deeskalationsmodell</a> — den Basics für den Alltag mit dem Kind.';
+      box.style.display = 'block';
+    } else if(rolle === 'eltern'){
+      box.innerHTML = '<strong>👋 Für dich als Elternteil besonders relevant:</strong> Die wichtigsten Basics fürs Zuhause — '
+        + '<a href="#barometer">🌡️ Barometer</a>, Ruhe-Ballon und Sorgen-Kiste (in deinem Alltags-Paket) sowie das '
+        + '<a href="KLARTEXT_Downloads.html#raum">🏝️ Insel-Set fürs Kinderzimmer</a>. Die restlichen Kapitel unten richten sich eher an Fachkräfte — du kannst reinschauen, brauchst es aber nicht.';
+      box.style.display = 'block';
+    } else if(rolle === 'lehrkraft'){
+      box.innerHTML = '<strong>👋 Für dich als Lehrkraft besonders relevant:</strong> '
+        + '<a href="KLARTEXT_Downloads.html#lk">📘 deine LK-Materialien</a> im Downloadbereich, DaZ-Spiele (in deinem Sprache-Paket) und der '
+        + '<a href="KLARTEXT_Spiel_PerspektivWechsler.html">🔄 Perspektiv-Wechsler</a> für den Unterricht.';
+      box.style.display = 'block';
+    } else if(rolle === 'mobbing'){
+      box.innerHTML = '<strong>👋 Für dich besonders relevant:</strong> Das SMI-Mobbing-Interventionsdeck (dein Kartendeck) sowie hier auf dieser Seite '
+        + '<a href="#klar">💬 die Deeskalations-Basics (KLAR-Modell)</a> und im Dashboard das '
+        + '<a href="DASHBOARD.html#sek-m6">🦸 Modul M6 · Krise &amp; Mobbing</a>.';
+      box.style.display = 'block';
+    } else if(rolle === 'admin'){
+      box.innerHTML = '<strong>👋 Admin-Überblick:</strong> Dir stehen alle Pfade offen — Details zu den einzelnen Rollen-Sichten findest du weiter unten unter '
+        + '<a href="#rollen">👥 Rollen</a>.';
       box.style.display = 'block';
     }
   }catch(e){}

@@ -6,7 +6,6 @@
 <title>KLARTEXT · Urlaubsantrag INGRA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--navy:#1B3A4B;--green:#3B8A68;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--muted:#6A6878;}
@@ -36,11 +35,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
   .fr.s2{grid-template-columns:1fr;}
 }
 </style>
-<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
 </head>
 <body>
 
@@ -97,23 +91,33 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:#1A1A2E;min-
 </div>
 
 <script type="module">
-import { supabase } from './supabase/auth_client.js';
+// ═══════════════════════════════════════
+// OFFLINE-FIRST: keine Datenbank, kein Login.
+// Urlaubsanträge liegen lokal in einem flachen Array unter
+// localStorage['klartext_urlaubsantraege'] (eigene INGRA-Anträge,
+// wie beim Zeitkonto nicht pro Teilnehmer-ID gesplittet).
+// ═══════════════════════════════════════
+const URLAUB_KEY = 'klartext_urlaubsantraege';
+const KINDER_KEY = 'klartext_kinder'; // gemeinsame anonyme TN-ID-Liste
 
-async function aktuellerUserId(){
-  const { data } = await supabase.auth.getUser();
-  return data.user ? data.user.id : null;
+function ladeKinderListe() {
+  try { return JSON.parse(localStorage.getItem(KINDER_KEY)) || []; }
+  catch(e) { return []; }
 }
 
-// Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
-// INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
-// wird daher über die Login-E-Mail (sessionStorage.klartext_name, trotz
-// des Namens tatsächlich die E-Mail) mit ihrer Zeile in "ingra" abgeglichen.
-async function aktuelleIngraId(){
-  const email = sessionStorage.getItem('klartext_name') || '';
-  if (!email) return null;
-  const { data, error } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
-  if (error || !data) return null;
-  return data.id;
+function ladeKindDropdown() {
+  const select = document.getElementById('u-kind');
+  select.innerHTML = '<option value="">Kein Kind / Allgemein</option>' +
+    ladeKinderListe().map(id => `<option value="${id}">${id}</option>`).join('');
+}
+
+function ladeAntraege() {
+  try { return JSON.parse(localStorage.getItem(URLAUB_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function speichereAntraege(arr) {
+  localStorage.setItem(URLAUB_KEY, JSON.stringify(arr));
 }
 
 function fmtDatum(d) {
@@ -135,11 +139,10 @@ function arbeitstage(von, bis) {
   return count;
 }
 
-async function generiere() {
+// ══ TEXT GENERIEREN + LOKAL SPEICHERN + AN TK SENDEN (Zwischenablage + mailto:)
+function generiere() {
   const name       = document.getElementById('u-name').value.trim();
-  const kindSelect = document.getElementById('u-kind');
-  const childId    = kindSelect.value;
-  const childName  = childId && window.uKinderDaten && window.uKinderDaten[childId] ? window.uKinderDaten[childId].name : '';
+  const childId    = document.getElementById('u-kind').value;
   const von        = document.getElementById('u-von').value;
   const bis        = document.getElementById('u-bis').value;
   const vertretung = document.getElementById('u-vertretung').value.trim();
@@ -154,7 +157,7 @@ async function generiere() {
   let text = `Urlaubsantrag\n`;
   text += `─────────────────────────────\n`;
   text += `Name: ${name}\n`;
-  if (childName) text += `Begleitkind: ${childName}\n`;
+  if (childId) text += `Begleitkind: ${childId}\n`;
   text += `\n`;
   text += `Ich beantrage Urlaub für den Zeitraum:\n`;
   text += `${fmtDatum(von)} bis ${fmtDatum(bis)}\n`;
@@ -168,37 +171,13 @@ async function generiere() {
   document.getElementById('result-box').style.display = 'block';
   document.getElementById('result-box').scrollIntoView({behavior:'smooth'});
 
-  // INSERT INTO urlaubsantraege (ersetzt db.ref('vacation_request').push())
-  const userId = await aktuellerUserId();
-  const { error } = await supabase.from('urlaubsantraege').insert({
-    ingra_id: userId,
-    kind_id: childId || null,
-    von_datum: von,
-    bis_datum: bis,
-    tage,
-    vertretung,
-    notiz,
-    status: 'beantragt'
-  });
-  if (error) { console.error('Speichern fehlgeschlagen:', error); }
+  const alle = ladeAntraege();
+  alle.unshift({ id: Date.now(), kind_id: childId || null, von_datum: von, bis_datum: bis, tage, vertretung, notiz, status: 'beantragt' });
+  speichereAntraege(alle);
 
-  // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward),
-  // unabhängig vom Kind-Status
-  const vonRolle = sessionStorage.getItem('klartext_role') || 'ingra';
-  const { error: wlError } = await supabase.from('weiterleitungen').insert({
-    kind_id: childId || null,
-    von_profil: userId,
-    von_rolle: vonRolle,
-    ziel_rolle: 'tk',
-    typ: 'hinweis',
-    text: 'Urlaubsantrag: ' + fmtDatum(von) + '–' + fmtDatum(bis) +
-          ' (' + tage + ' Arbeitstage)' +
-          (childName ? ' – ' + childName : '') +
-          (vertretung ? ' – Vertretung: ' + vertretung : ''),
-    dringlichkeit: 'normal',
-    status: 'offen'
-  });
-  if (wlError) { console.error('Weiterleitung fehlgeschlagen:', wlError); }
+  try { navigator.clipboard.writeText(text); } catch(e) {}
+  window.location.href = 'mailto:?subject=' + encodeURIComponent('Urlaubsantrag') + '&body=' + encodeURIComponent(text);
+
   uZeigeErfolg();
 }
 
@@ -228,66 +207,10 @@ window.generiere = generiere;
 window.kopiere = kopiere;
 window.reset = reset;
 
-// Kind-Dropdown aus Supabase "Kinder" (großes K, neues Schema) befüllen,
-// gefiltert auf die eingeloggte INGRA über Kinder.ingra_id - ersetzt die
-// vorherige Firebase-Quelle (/children).
-document.addEventListener('DOMContentLoaded', async function() {
-  try {
-    const ingraId = await aktuelleIngraId();
-
-    // "Mein Name" automatisch aus der ingra-Tabelle befüllen, nur wenn leer
-    // (kein Überschreiben, falls die Person bereits manuell etwas eingegeben hat).
-    const nameFeld = document.getElementById('u-name');
-    if (ingraId && nameFeld && !nameFeld.value.trim()) {
-      const { data: ingraZeile } = await supabase.from('ingra').select('name').eq('id', ingraId).maybeSingle();
-      if (ingraZeile && ingraZeile.name) nameFeld.value = ingraZeile.name;
-    }
-
-    const { data: kinder, error } = await supabase
-      .from('Kinder')
-      .select('id, name, klasse')
-      .eq('ingra_id', ingraId)
-      .eq('aktiv', true)
-      .order('name');
-    if (!error) {
-      const alleKinder = kinder || [];
-
-      // Zusätzlich Kinder aus aktiven Vertretungen (kind_ingra_zuteilung) einblenden.
-      const { data: zuteilungen, error: zError } = await supabase
-        .from('kind_ingra_zuteilung')
-        .select('kind_id')
-        .eq('ingra_id', ingraId)
-        .eq('rolle', 'vertretung')
-        .eq('aktiv', true);
-      if (!zError && zuteilungen && zuteilungen.length) {
-        const vertretKindIds = zuteilungen.map(z => z.kind_id);
-        const { data: vertretKinder, error: vkError } = await supabase
-          .from('Kinder')
-          .select('id, name, klasse')
-          .in('id', vertretKindIds)
-          .eq('aktiv', true);
-        if (!vkError && vertretKinder) {
-          vertretKinder.forEach(function(vk) {
-            if (!alleKinder.some(k => k.id === vk.id)) {
-              vk.istVertretung = true;
-              alleKinder.push(vk);
-            }
-          });
-        }
-      }
-
-      const select = document.getElementById('u-kind');
-      window.uKinderDaten = {};
-      alleKinder.forEach(function(kind) {
-        const option = document.createElement('option');
-        option.value = kind.id;
-        option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '') + (kind.istVertretung ? ' (Vertretung)' : '');
-        select.appendChild(option);
-        window.uKinderDaten[kind.id] = kind; // für Namensauflösung in generiere()
-      });
-    }
-  } catch(e) {}
+document.addEventListener('DOMContentLoaded', function() {
+  ladeKindDropdown();
 });
+
 </script>
 
 <!-- ERFOLGS-OVERLAY (Etappe 6.3) -->

@@ -6,7 +6,6 @@
 <title>KLARTEXT · Krankmeldung</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <style>
 :root{--m:#1B3A4B;--acc:#6EC6A0;--rot:#C62828;--rotl:#FDEAEA;--gold:#C47A00;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#1A1A2E;--muted:#6A6878;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -84,11 +83,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
 
 @media(max-width:480px){.fr{grid-template-columns:1fr;}}
 </style>
-<!-- Firebase SDK (erforderlich, damit firebase.js funktioniert) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="firebase.js"></script>
 </head>
 <body>
 
@@ -281,24 +275,33 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);}
 </div>
 
 <script type="module">
-import { supabase } from './supabase/auth_client.js';
+// ═══════════════════════════════════════
+// OFFLINE-FIRST: keine Datenbank, kein Login.
+// Krank-/Ausfallmeldungen liegen lokal in einem flachen Array unter
+// localStorage['klartext_krankmeldungen'] (eigene INGRA-Meldungen,
+// wie beim Zeitkonto nicht pro Teilnehmer-ID gesplittet).
+// ═══════════════════════════════════════
+const KRANK_KEY = 'klartext_krankmeldungen';
+const KINDER_KEY = 'klartext_kinder'; // gemeinsame anonyme TN-ID-Liste
 
-async function aktuellerUserId(){
-  const { data } = await supabase.auth.getUser();
-  return data.user ? data.user.id : null;
+function ladeKinderListe() {
+  try { return JSON.parse(localStorage.getItem(KINDER_KEY)) || []; }
+  catch(e) { return []; }
 }
 
-// Neues Schema: INGRA/TK/Kinder statt profiles/kinder/kinder_zuordnung. Die
-// INGRA-Tabelle hat keine auth.users-Verknüpfung - die eingeloggte Person
-// wird daher über die echte Login-E-Mail (aus der Supabase-Auth-Session)
-// mit ihrer Zeile in "ingra" abgeglichen. krankmeldungen.ingra_id
-// referenziert live ingra(id), nicht profiles(id) (Repo-Migrationen
-// 0018/0025 sind hier veraltet, siehe 0037_krankmeldungen_schema_korrektur.sql).
-async function aktuelleIngraId(){
-  const { data: userData } = await supabase.auth.getUser();
-  const email = userData.user ? userData.user.email : null;
-  const { data } = await supabase.from('ingra').select('id').eq('email', email).maybeSingle();
-  return data ? data.id : null;
+function ladeKindDropdown() {
+  const select = document.getElementById('ka-kind');
+  select.innerHTML = '<option value="">Bitte wählen …</option>' +
+    ladeKinderListe().map(id => `<option value="${id}">${id}</option>`).join('');
+}
+
+function ladeMeld() {
+  try { return JSON.parse(localStorage.getItem(KRANK_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function speichereMeld(arr) {
+  localStorage.setItem(KRANK_KEY, JSON.stringify(arr));
 }
 
 // ══ TABS
@@ -372,26 +375,19 @@ function copyMsg(id){
   });
 }
 
-// ══ SPEICHERN / LADEN
-// Ersetzt localStorage['kz_meldungen']
-async function ladeMeld(){
-  const ingraId = await aktuelleIngraId();
-  const { data, error } = await supabase
-    .from('krankmeldungen')
-    .select('id, ingra_id, typ, kind_id, von_datum, bis_datum, datum, grund, zeit, notiz, created_at')
-    .eq('ingra_id', ingraId)
-    .order('created_at', { ascending: false });
-  if (error) { console.error('Meldungen laden fehlgeschlagen:', error); return []; }
-  return data || [];
+// ══ AN TK WEITERLEITEN (Offline-First: Zwischenablage + mailto:,
+// ersetzt den bisherigen Supabase-Insert in "weiterleitungen")
+function sendeAnTk(text, betreff){
+  try { navigator.clipboard.writeText(text); } catch(e) {}
+  window.location.href = 'mailto:?subject=' + encodeURIComponent(betreff) + '&body=' + encodeURIComponent(text);
 }
 
-// INSERT INTO krankmeldungen (kein UPDATE - wie im Originalcode)
-async function speichKrank(typ){
-  // userId (echte Auth-UID) bleibt für weiterleitungen.von_profil nötig
-  // (RLS dort verlangt weiterhin auth.uid()). ingraId (ingra(id), neues
-  // Schema) wird für krankmeldungen.ingra_id verwendet.
-  const userId = await aktuellerUserId();
-  const ingraId = await aktuelleIngraId();
+const GRUND_L={krank:'Kind krank',ferien:'Ferien/Schulausfall',termin:'Arzttermin/Therapie',sonstiges:'Sonstiges'};
+const ZEIT_L={ausfall:'Ausfalltag',vertretung:'Vertretungseinsatz',nachgeholt:'Zeit nachgeholt',bezahlt:'Bezahlter Ausfall'};
+
+// ══ SPEICHERN (lokal, synchron)
+function speichKrank(typ){
+  const alle = ladeMeld();
 
   if(typ==='ingra'){
     const von=document.getElementById('ik-von').value;
@@ -399,120 +395,42 @@ async function speichKrank(typ){
     const bis=document.getElementById('ik-bis').value;
     const notiz=document.getElementById('ik-notiz').value;
 
-    const { error } = await supabase.from('krankmeldungen').insert({
-      ingra_id: ingraId,
-      typ: 'ingra',
-      von_datum: von,
-      bis_datum: bis || null,
-      notiz
-    });
-    if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
-
+    alle.unshift({ id: Date.now(), typ:'ingra', von_datum: von, bis_datum: bis || null, notiz });
+    speichereMeld(alle);
     document.getElementById('ik-notiz').value='';
 
-    // Firebase-Speichern (Etappe 6.2) - unverändert, separates Log, nicht die Weiterleitung
-    try {
-      db.ref('sick_note_ingra').push({
-        typ: 'ingra',
-        von: von,
-        bis: bis,
-        notiz: notiz,
-        timestamp: Date.now(),
-        createdBy: 'ingra',
-        role: 'ingra'
-      });
-    } catch(err) {
-      console.error('Firebase-Speicherung fehlgeschlagen:', err);
-    }
-
-    // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward)
-    const vonRolleIngra = sessionStorage.getItem('klartext_role') || 'ingra';
-    const { error: wlErrorIngra } = await supabase.from('weiterleitungen').insert({
-      kind_id: null,
-      von_profil: userId,
-      von_rolle: vonRolleIngra,
-      ziel_rolle: 'tk',
-      typ: 'hinweis',
-      text: 'Krankmeldung INGRA: ' + von + (bis ? (' bis ' + bis) : ''),
-      dringlichkeit: 'normal',
-      status: 'offen'
-    });
-    if (wlErrorIngra) { console.error('Weiterleitung fehlgeschlagen:', wlErrorIngra); }
+    sendeAnTk('Krankmeldung INGRA: ' + von + (bis ? (' bis ' + bis) : '') + (notiz ? '\nNotiz: ' + notiz : ''), 'Krankmeldung');
     kzZeigeErfolg('Krankmeldung gespeichert', 'ingra');
 
   }else{
-    const kindSelect=document.getElementById('ka-kind');
-    const childId=kindSelect.value;
-    const kindName=childId && window.kzKinderDaten && window.kzKinderDaten[childId] ? window.kzKinderDaten[childId].name : '';
+    const childId=document.getElementById('ka-kind').value;
     const datum=document.getElementById('ka-datum').value;
     if(!childId||!datum){alert('Bitte Kind und Datum angeben.');return;}
     const grund=document.getElementById('ka-grund').value;
     const zeit=document.getElementById('ka-zeit').value;
     const notiz=document.getElementById('ka-notiz').value;
 
-    const { error } = await supabase.from('krankmeldungen').insert({
-      ingra_id: ingraId,
-      typ: 'kind',
-      kind_id: childId,
-      datum,
-      grund,
-      zeit,
-      notiz
-    });
-    if (error) { alert('Fehler beim Speichern: ' + error.message); return; }
-
+    alle.unshift({ id: Date.now(), typ:'kind', kind_id: childId, datum, grund, zeit, notiz });
+    speichereMeld(alle);
     document.getElementById('ka-kind').value='';document.getElementById('ka-notiz').value='';
 
-    // Firebase-Speichern (Etappe 6.2) - unverändert, separates Log, nicht die Weiterleitung
-    try {
-      db.ref('sick_note/' + childId).push({
-        typ: 'kind',
-        childId: childId,
-        childName: kindName,
-        datum: datum,
-        grund: grund,
-        zeit: zeit,
-        notiz: notiz,
-        timestamp: Date.now(),
-        createdBy: 'ingra',
-        role: 'ingra'
-      });
-    } catch(err) {
-      console.error('Firebase-Speicherung fehlgeschlagen:', err);
-    }
-
-    // Weiterleitung an TK -> Supabase weiterleitungen (ersetzt sendForward()/Firebase forward)
-    const vonRolleKind = sessionStorage.getItem('klartext_role') || 'ingra';
-    const { error: wlErrorKind } = await supabase.from('weiterleitungen').insert({
-      kind_id: childId,
-      von_profil: userId,
-      von_rolle: vonRolleKind,
-      ziel_rolle: 'tk',
-      typ: 'hinweis',
-      text: 'Kind fehlt: ' + kindName + ' am ' + datum + ' – Grund: ' + grund,
-      dringlichkeit: 'normal',
-      status: 'offen'
-    });
-    if (wlErrorKind) { console.error('Weiterleitung fehlgeschlagen:', wlErrorKind); }
+    sendeAnTk('Kind fehlt: ' + childId + ' am ' + datum + ' – Grund: ' + (GRUND_L[grund]||grund) + (notiz ? '\nNotiz: ' + notiz : ''), 'Ausfallmeldung');
     kzZeigeErfolg('Ausfall gespeichert', 'kind');
   }
 
-  await renderListen();
+  renderListen();
 }
 
-// DELETE FROM krankmeldungen WHERE id = ...
-async function delMeld(id){
+// ══ LÖSCHEN (lokal)
+function delMeld(id){
   if(!confirm('Eintrag löschen?'))return;
-  const { error } = await supabase.from('krankmeldungen').delete().eq('id', id);
-  if (error) { alert('Fehler beim Löschen: ' + error.message); return; }
-  await renderListen();
+  const alle = ladeMeld().filter(e => String(e.id) !== String(id));
+  speichereMeld(alle);
+  renderListen();
 }
 
-const GRUND_L={krank:'Kind krank',ferien:'Ferien/Schulausfall',termin:'Arzttermin/Therapie',sonstiges:'Sonstiges'};
-const ZEIT_L={ausfall:'Ausfalltag',vertretung:'Vertretungseinsatz',nachgeholt:'Zeit nachgeholt',bezahlt:'Bezahlter Ausfall'};
-
-async function renderListen(){
-  const l=await ladeMeld();
+function renderListen(){
+  const l=ladeMeld();
   // INGRA
   const ingra=l.filter(e=>e.typ==='ingra');
   const el_i=document.getElementById('liste-ingra');
@@ -524,14 +442,11 @@ async function renderListen(){
   // KIND
   const kind=l.filter(e=>e.typ==='kind');
   const el_k=document.getElementById('liste-kind');
-  el_k.innerHTML=kind.length?kind.map(e=>{
-    const kindName = window.kzKinderDaten && window.kzKinderDaten[e.kind_id] ? window.kzKinderDaten[e.kind_id].name : e.kind_id;
-    return `
+  el_k.innerHTML=kind.length?kind.map(e=>`
     <div class="meldung" style="border-left-color:#C62828;">
-      <div class="m-hdr"><div class="m-icon">🧒</div><div class="m-name">${kindName}</div><div class="m-dat">${e.datum}</div><button class="m-del" onclick="delMeld('${e.id}')">✕</button></div>
+      <div class="m-hdr"><div class="m-icon">🧒</div><div class="m-name">${e.kind_id}</div><div class="m-dat">${e.datum}</div><button class="m-del" onclick="delMeld('${e.id}')">✕</button></div>
       <div class="m-txt">${GRUND_L[e.grund]||e.grund} · ${ZEIT_L[e.zeit]||e.zeit}${e.notiz?' · '+e.notiz:''}</div>
-    </div>`;
-  }).join(''):'<div class="leer">Noch keine Ausfälle erfasst.</div>';
+    </div>`).join(''):'<div class="leer">Noch keine Ausfälle erfasst.</div>';
 }
 
 window.switchTab = switchTab;
@@ -544,63 +459,14 @@ window.copyMsg = copyMsg;
 window.speichKrank = speichKrank;
 window.delMeld = delMeld;
 
-document.addEventListener('DOMContentLoaded', async ()=>{
+document.addEventListener('DOMContentLoaded', () => {
   const h=new Date().toISOString().split('T')[0];
   document.getElementById('ik-von').value=h;
   document.getElementById('ka-datum').value=h;
-  await renderListen();
-
-  // Kind-Dropdown aus Supabase "Kinder" (großes K, neues Schema) befüllen,
-  // gefiltert auf die eingeloggte INGRA über Kinder.ingra_id - ersetzt die
-  // vorherige Firebase-Quelle (/children).
-  try {
-    const ingraId = await aktuelleIngraId();
-    const { data: kinder, error } = await supabase
-      .from('Kinder')
-      .select('id, name, klasse')
-      .eq('ingra_id', ingraId)
-      .eq('aktiv', true)
-      .order('name');
-    if (!error) {
-      const alleKinder = kinder || [];
-
-      // Zusätzlich Kinder aus aktiven Vertretungen (kind_ingra_zuteilung) einblenden.
-      const { data: zuteilungen, error: zError } = await supabase
-        .from('kind_ingra_zuteilung')
-        .select('kind_id')
-        .eq('ingra_id', ingraId)
-        .eq('rolle', 'vertretung')
-        .eq('aktiv', true);
-      if (!zError && zuteilungen && zuteilungen.length) {
-        const vertretKindIds = zuteilungen.map(z => z.kind_id);
-        const { data: vertretKinder, error: vkError } = await supabase
-          .from('Kinder')
-          .select('id, name, klasse')
-          .in('id', vertretKindIds)
-          .eq('aktiv', true);
-        if (!vkError && vertretKinder) {
-          vertretKinder.forEach(function(vk) {
-            if (!alleKinder.some(k => k.id === vk.id)) {
-              vk.istVertretung = true;
-              alleKinder.push(vk);
-            }
-          });
-        }
-      }
-
-      const select = document.getElementById('ka-kind');
-      window.kzKinderDaten = {};
-      alleKinder.forEach(function(kind) {
-        const option = document.createElement('option');
-        option.value = kind.id;
-        option.textContent = kind.name + (kind.klasse ? ' (' + kind.klasse + ')' : '') + (kind.istVertretung ? ' (Vertretung)' : '');
-        select.appendChild(option);
-        window.kzKinderDaten[kind.id] = kind; // für Namensauflösung beim Speichern und Anzeigen
-      });
-      renderListen(); // Liste neu zeichnen, damit Namen statt IDs angezeigt werden
-    }
-  } catch(e) {}
+  renderListen();
+  ladeKindDropdown();
 });
+
 </script>
 
 <!-- ERFOLGS-OVERLAY (Etappe 6.2) -->

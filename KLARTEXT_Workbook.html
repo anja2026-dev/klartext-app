@@ -1427,8 +1427,9 @@ document.addEventListener('DOMContentLoaded', loadAll);
 document.addEventListener('DOMContentLoaded', function(){
   try {
     var rolle = sessionStorage.getItem('klartext_role') || '';
-    if (!rolle) return;
+    // Fail-closed: fehlt die Rolle, werden ALLE data-roles-Elemente versteckt statt gezeigt.
     document.querySelectorAll('[data-roles]').forEach(function(el){
+      if (!rolle) { el.style.display = 'none'; return; }
       var erlaubt = el.getAttribute('data-roles').split(/\s+/);
       if (erlaubt.indexOf(rolle) === -1){
         el.style.display = 'none';

@@ -449,14 +449,15 @@ seks.forEach(function(s){ obs.observe(s); });
 // ═══════════════════════════════════════
 // OFFLINE-FIRST ROLLEN-FILTER (gleiches Muster wie DASHBOARD.html):
 // Kacheln mit data-roles="rolle1 rolle2 ..." werden ausgeblendet, wenn die
-// aktuelle klartext_role nicht enthalten ist. Ohne data-roles oder ohne
-// gesetzte Rolle bleibt die Kachel sichtbar (sicherer Default).
+// aktuelle klartext_role nicht enthalten ist. Fail-closed: fehlt data-roles
+// ganz, bleibt die Kachel sichtbar; fehlt die Rolle, wird JEDE Kachel mit
+// data-roles versteckt.
 // ═══════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function(){
   try {
     var rolle = sessionStorage.getItem('klartext_role') || '';
-    if(!rolle) return;
     document.querySelectorAll('[data-roles]').forEach(function(el){
+      if(!rolle){ el.style.display = 'none'; return; }
       var erlaubt = el.getAttribute('data-roles').split(/\s+/);
       if(erlaubt.indexOf(rolle) === -1){
         el.style.display = 'none';

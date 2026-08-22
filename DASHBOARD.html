@@ -453,15 +453,16 @@ mobileBarometerStatusLaden();
   // ═══════════════════════════════════════
   // OFFLINE-FIRST ROLLEN-FILTER: Elemente mit data-roles="rolle1 rolle2 ..."
   // werden ausgeblendet, wenn die aktuelle klartext_role NICHT in der Liste
-  // steht. Sicherer Default: fehlt data-roles ganz, oder ist klartext_role
-  // (noch) leer/nicht gesetzt, bleibt das Element sichtbar - lieber zu viel
-  // zeigen als jemanden mit gueltigem Login versehentlich auszusperren.
+  // steht. Fail-closed: fehlt data-roles ganz, bleibt das Element sichtbar
+  // (kein Zugriffsschutz nötig); ist klartext_role (noch) leer/nicht gesetzt,
+  // wird JEDES data-roles-Element versteckt - lieber kurz zu wenig zeigen
+  // als bezahlten Rollen-Inhalt an alle ausliefern.
   // ═══════════════════════════════════════
   document.addEventListener('DOMContentLoaded', function(){
     try {
       var rolle = sessionStorage.getItem('klartext_role') || '';
-      if(!rolle) return; // keine Rolle bekannt -> nichts ausblenden
       document.querySelectorAll('[data-roles]').forEach(function(el){
+        if(!rolle){ el.style.display = 'none'; return; }
         var erlaubt = el.getAttribute('data-roles').split(/\s+/);
         if(erlaubt.indexOf(rolle) === -1){
           el.style.display = 'none';

@@ -926,9 +926,9 @@ function filterAlles(suche, filter) {
     var modul = moduleAusHref(href);
     if (modul === null) return;
     var rolle = sessionStorage.getItem('klartext_role') || '';
-    if (!rolle) return; // keine Rolle bekannt -> nichts sperren
     var erlaubt = MODUL_ZUGRIFF[modul] || [];
-    if (erlaubt.indexOf(rolle) === -1){
+    // Fail-closed: fehlt die Rolle, wird gesperrt statt durchgelassen.
+    if (!rolle || erlaubt.indexOf(rolle) === -1){
       e.preventDefault();
       e.stopPropagation();
       zeigeSperrHinweis();

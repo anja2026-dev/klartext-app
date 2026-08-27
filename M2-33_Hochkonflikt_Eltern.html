@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    var rolle = sessionStorage.getItem('klartext_role') || '';
+    document.querySelectorAll('[data-roles]').forEach(function(el){
+      if(!rolle){ el.style.display = 'none'; return; }
+      var erlaubt = el.getAttribute('data-roles').split(/\s+/);
+      if(erlaubt.indexOf(rolle) === -1){
+        el.style.display = 'none';
+      }
+    });
+  } catch(e) {}
+});
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLARTEXT M2-33 Hochkonflikt-Eltern & SB-Schutz</title>
@@ -117,7 +131,7 @@
     </div>
   </div>
   
-      <div style="margin:.75rem 0 0;padding:.6rem var(--pad-card,1.25rem);border-top:1px solid var(--m3-border);"><a href="M2_DL_SB_Schutzprotokoll.html" style="display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;background:var(--m3);color:#fff;border-radius:8px;text-decoration:none;font-size:.78rem;font-weight:700;">🖨️ SB-Schutzprotokoll drucken / PDF</a></div>
+      <div data-roles="ingra tk admin" style="margin:.75rem 0 0;padding:.6rem var(--pad-card,1.25rem);border-top:1px solid var(--m3-border);"><a href="M2_DL_SB_Schutzprotokoll.html" style="display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;background:var(--m3);color:#fff;border-radius:8px;text-decoration:none;font-size:.78rem;font-weight:700;">🖨️ SB-Schutzprotokoll drucken / PDF</a></div>
 <nav class="karte-nav"><a class="nav-prev" href="M2-32_Pflegekinder_Jugendhilfe.html"><svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg> 32</a><span class="spacer"></span><a class="nav-next" href="M2-34_Esstoerungen_Schulbegleitung.html">34 <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg></a></nav>
   <div class="karte-footer">
     <span class="footer-links">M2 &middot; Karte 33 &middot; <a href="DASHBOARD.html">Dashboard</a></span>

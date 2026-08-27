@@ -177,6 +177,21 @@ function deckErlaubt(deckId) {
   return erlaubt === null || erlaubt.includes(deckId);
 }
 
+// 22.08.2026 Auto-Freischaltung fuer im Rollen-Paket enthaltene Decks: anders als
+// deckErlaubt() (die bei UNBEKANNTER Rolle grosszuegig fail-open ist, nur fuer die
+// Kachel-Sichtbarkeit gedacht) greift diese Funktion NUR, wenn eine echte, bekannte
+// Rolle vorliegt UND das Deck laut ROLLEN_DECKS Teil des gekauften Pakets ist. Nur
+// dann entfaellt die zusaetzliche Einzeldeck-Passwortabfrage - eine unbekannte/fehlende
+// Rolle schaltet dagegen NICHTS automatisch frei, das bestehende Passwort-System bleibt
+// fuer alle anderen Faelle unveraendert bestehen (z.B. Einzelkauf zusaetzlicher Decks).
+function deckAutoFreigeschaltet(deckId) {
+  const rolle = sessionStorage.getItem('klartext_role') || '';
+  if (!rolle) return false;
+  if (!(rolle in ROLLEN_DECKS)) return false;
+  const erlaubt = ROLLEN_DECKS[rolle];
+  return erlaubt === null || erlaubt.includes(deckId);
+}
+
 function deckSperrHinweisZeigen() {
   const alt = document.getElementById('deck-sperr-popup');
   if (alt) alt.remove();
@@ -250,7 +265,7 @@ async function openDeck(deckId, opts = {}) {
     return;
   }
 
-  if (!isUnlocked(deckId)) {
+  if (!isUnlocked(deckId) && !deckAutoFreigeschaltet(deckId)) {
     const meta = allDecks.find(d => d.id === deckId);
     const ok = await askForPassword(deckId, meta ? meta.titel : 'dieses Deck');
     if (!ok) {

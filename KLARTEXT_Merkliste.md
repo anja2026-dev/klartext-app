@@ -4341,3 +4341,14 @@ neben dem neuen Interessen-Check.
   unkomittiert im selben Arbeitsverzeichnis — auf Anjas Wunsch als eigener, separater Commit vor
   diesem Strang zu committen.
 - Alle offenen Punkte aus Strang 91–110 weiterhin gültig.
+
+**Nachtrag Strang 112 (gleicher Tag):** Anja entschied auf Nachfrage: statische data-roles-Prüfung
+reicht, kein zusätzlicher Playwright-Durchlauf nötig; und ja, alle Fließtext-Referenzen sollen aktualisiert
+werden. Umgesetzt in `KLARTEXT_Trainerhandbuch.html`, `KLARTEXT_Anleitungen_Tools.html`,
+`KLARTEXT_Glossar.html`, `M0-00_Systemelemente.html`, `KLARTEXT_Spiel_WasHilftMir.html`,
+`KLARTEXT_Ressourcenbericht_Jobcoach.html` — "Skill-Matrix"/"Hobby-Check" durchgängig auf
+"Interessen-Check"/"Interessen" umgestellt, Links auf `KLARTEXT_Spiel_InteressenCheck.html`
+umgebogen. Extra geprüft: die "So funktioniert KLARTEXT"-Kachel (`KLARTEXT_Systemanleitung.html`)
+enthielt gar keine Skill-Matrix-Erwähnung — dort war nichts zu tun. Bewusst unverändert gelassen:
+Code-Kommentare in `KLARTEXT_Ressourcenbericht.html`/`KLARTEXT_Bewerbungs_Generator.html`, die
+"Skill-Matrix" nur zur Erklärung des gemeinsamen Storage-Keys erwähnen (nicht nutzerseitig sichtbar).

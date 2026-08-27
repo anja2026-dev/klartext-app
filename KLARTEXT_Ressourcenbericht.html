@@ -57,6 +57,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .trend-tag{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
 .trend-tag-label{font-size:.6rem;color:var(--muted);text-align:center;margin-top:.2rem;}
 .trend-tag-wrap{display:flex;flex-direction:column;align-items:center;}
+.ogs-zeilen-label{font-size:.7rem;color:var(--muted);font-weight:700;margin-bottom:.4rem;}
+.ogs-kontext{margin-top:.9rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:.8rem;color:var(--jd);}
 
 .zone-eintrag{display:flex;align-items:flex-start;gap:.6rem;background:#EEF0FA;border-radius:12px;padding:.7rem .9rem;margin-bottom:.5rem;}
 .zone-eintrag:last-child{margin-bottom:0;}
@@ -135,6 +137,8 @@ footer strong{color:var(--acc);}
 
   <div class="bericht-card" id="trend-card"></div>
 
+  <div class="bericht-card" id="ogs-card"></div>
+
   <div class="bericht-card" id="zone-card"></div>
 
   <div class="bericht-card" id="tic-card"></div>
@@ -184,6 +188,7 @@ var REIZFILTER_VERLAUF_KEY = 'klartext_reizfilter_verlauf';
 var ZONE_HILFREICH_KEY = 'klartext_zone_hilfreich_v1';
 var SORGEN_KEY = 'klartext_sorgen_v1';
 var KOERPERKOMPASS_KEY = 'klartext_koerperkompass_verlauf';
+var OGS_UEBERGABE_KEY = 'klartext_ogs_uebergabe_v1';
 
 /* Ordnet die 5 Reizfilter-Reglerstufen den 4 Barometer-Farben zu — gleiche
    Zuordnung wie im Reizfilter selbst (dort: BAROMETER_STUFE). */
@@ -304,6 +309,79 @@ function trendCardRendern(){
     (tageHtml ? '<div class="trend-tage">' + tageHtml + '</div>' : '');
 }
 
+/* ── OGS-BRÜCKE: VORMITTAG (Reizfilter, Selbsteinschätzung) vs. NACHMITTAG
+   (OGS-Übergabe) ── rein additive Karte, nutzt dieselbe REIZFILTER_STUFEN-
+   Farbskala wie die Stimmungs-Trend-Karte oben, damit beide Zeilen optisch
+   zusammengehören, ohne die bestehende Karte/Logik zu verändern. ───────── */
+var OGS_TRIGGER_TITEL = {
+  hausaufgaben: 'Hausaufgaben-Stress', streit: 'Streit in der Gruppe',
+  vorfreude: 'Vorfreude/Aufregung', muede: 'Müdigkeit',
+  abholung: 'Abholsituation', sonstiges: 'Sonstiges'
+};
+var OGS_ENERGIE_TITEL = { bewegung: 'Bewegungs-Bedarf', ruhe: 'Ruhe-Bedarf' };
+
+/* Das echte KLARTEXT-Barometer aus Modul 0 (5 Stufen inkl. Grau) — eigene
+   Farbskala, NICHT REIZFILTER_STUFEN (andere Bedeutungen/nur 4 Kernfarben).
+   Reihenfolge/Index muss zu OGS_BAROMETER in KLARTEXT_Spiel_OGSBruecke.html passen. */
+var OGS_BAROMETER_STUFEN = [
+  { emoji: '😊', chip: '#6EC6A0', label: 'Grün · Stabil' },
+  { emoji: '😐', chip: '#E8C34D', label: 'Gelb · Angespannt' },
+  { emoji: '😣', chip: '#E8934D', label: 'Orange · Belastet' },
+  { emoji: '😖', chip: '#D9483D', label: 'Rot · Akute Krise' },
+  { emoji: '😶', chip: '#9CA3AF', label: 'Grau · Erschöpft/Unklar' }
+];
+
+function letzte7TageFiltern(verlauf){
+  var heute = new Date();
+  return verlauf.filter(function(e){
+    var diffTage = Math.round((heute - new Date(e.datum + 'T00:00:00')) / 86400000);
+    return diffTage >= 0 && diffTage < 7;
+  }).sort(function(a,b){ return a.datum < b.datum ? -1 : 1; });
+}
+
+function ogsTageHtmlRendern(eintraege, stufeFeld, stufenTabelle){
+  return eintraege.map(function(e){
+    var s = stufenTabelle[e[stufeFeld]];
+    if (!s) return '';
+    var tagLabel = new Date(e.datum + 'T00:00:00').toLocaleDateString('de-DE', { weekday: 'short' });
+    return '<div class="trend-tag-wrap"><div class="trend-tag" style="background:' + s.chip + ';">' + s.emoji + '</div><div class="trend-tag-label">' + tagLabel + '</div></div>';
+  }).join('');
+}
+
+function ogsUebergabeCardRendern(){
+  var card = document.getElementById('ogs-card');
+  var vormittag = letzte7TageFiltern(ladeJSON(REIZFILTER_VERLAUF_KEY) || []);
+  var nachmittag = letzte7TageFiltern(ladeJSON(OGS_UEBERGABE_KEY) || []);
+
+  if (!vormittag.length && !nachmittag.length) {
+    card.innerHTML = '<div class="bericht-titel">🌉 OGS-Übergabe</div>' +
+      '<div class="leer-hinweis">Noch keine Einträge. Sobald der <a href="KLARTEXT_Spiel_Reizfilter.html">Reizfilter</a> und/oder die <a href="KLARTEXT_Spiel_OGSBruecke.html">OGS-Brücke</a> genutzt wurden, erscheint hier die Gegenüberstellung von Vormittag und Nachmittag.</div>';
+    return;
+  }
+
+  var vormittagHtml = vormittag.length
+    ? '<div class="ogs-zeilen-label">Vormittag (Reizfilter, Selbsteinschätzung)</div><div class="trend-tage" style="margin-bottom:.9rem;">' + ogsTageHtmlRendern(vormittag, 'stufe', REIZFILTER_STUFEN) + '</div>'
+    : '';
+  var nachmittagHtml = nachmittag.length
+    ? '<div class="ogs-zeilen-label">Nachmittag (OGS-Übergabe)</div><div class="trend-tage">' + ogsTageHtmlRendern(nachmittag, 'ampelStufe', OGS_BAROMETER_STUFEN) + '</div>'
+    : '';
+
+  var heutigerOgs = nachmittag.filter(function(e){ return e.datum === heuteISO(); })[0];
+  var kontextTeile = [];
+  if (heutigerOgs) {
+    if (heutigerOgs.ampel === 'grau') kontextTeile.push('Grau (erschöpft/unklar) — Rückzug ermöglichen, nicht drängen');
+    if (heutigerOgs.energie && OGS_ENERGIE_TITEL[heutigerOgs.energie]) kontextTeile.push(OGS_ENERGIE_TITEL[heutigerOgs.energie]);
+    if (heutigerOgs.trigger && OGS_TRIGGER_TITEL[heutigerOgs.trigger]) kontextTeile.push('Tages-Trigger: ' + OGS_TRIGGER_TITEL[heutigerOgs.trigger]);
+    if (typeof heutigerOgs.fokusRunden === 'number' && heutigerOgs.fokusRunden > 0) kontextTeile.push(heutigerOgs.fokusRunden + ' Fokus-Runde(n) geschafft');
+  }
+  var kontextHtml = kontextTeile.length
+    ? '<div class="ogs-kontext">Heute außerdem: ' + kontextTeile.join(' · ') + '</div>'
+    : '';
+
+  card.innerHTML = '<div class="bericht-titel">🌉 OGS-Übergabe<span class="bericht-stand">' + (vormittag.length || nachmittag.length) + ' Tag(e) diese Woche</span></div>' +
+    vormittagHtml + nachmittagHtml + kontextHtml;
+}
+
 /* ── KRISEN-KOMPETENZ (als hilfreich markierte Zonen aus dem schulischen Zonen-Set) ─────────────────────────────── */
 function zoneCardRendern(){
   var card = document.getElementById('zone-card');
@@ -420,6 +498,7 @@ document.getElementById('footer-datum').textContent = new Date().toLocaleDateStr
 
 profilCardRendern();
 trendCardRendern();
+ogsUebergabeCardRendern();
 zoneCardRendern();
 ticCardRendern();
 koerperCardRendern();

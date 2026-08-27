@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · OGS-Brücke</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --jd:#2F6B6E; --jd-light:#EAF3F3;
+  --m:#1B3A4B; --acc:#6EC6A0;
+  --gruen:#6EC6A0; --gelb:#E8C34D; --orange:#E8934D; --rot:#D9483D; --grau:#9CA3AF;
+}
+body{
+  font-family:"DM Sans",sans-serif;
+  background:linear-gradient(160deg,#0F2027 0%,#1B3A4B 55%,#2F6B6E 100%);
+  color:#fff; min-height:100vh; padding-bottom:6rem;
+}
+
+.header{max-width:1000px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.35);border-radius:20px;color:rgba(255,255,255,.85);font-size:.72rem;font-weight:700;text-decoration:none;}
+.back-btn:hover{border-color:#fff;color:#fff;}
+
+.hero{max-width:1000px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 1.25rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;letter-spacing:-.01em;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.65);max-width:660px;margin-top:.4rem;line-height:1.6;}
+
+.modus-leiste{max-width:1000px;margin:0 auto 1.6rem;padding:0 clamp(1rem,4vw,2rem);display:flex;gap:.5rem;flex-wrap:wrap;}
+.modus-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.18);border-radius:20px;padding:.6rem 1.1rem;font-family:inherit;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;}
+.modus-btn:hover{background:rgba(255,255,255,.12);}
+.modus-btn.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+
+.sektion{max-width:1000px;margin:0 auto 1.6rem;padding:0 clamp(1rem,4vw,2rem);}
+.sektion-titel{display:flex;align-items:baseline;gap:.55rem;margin-bottom:.7rem;flex-wrap:wrap;}
+.sektion-titel h2{font-family:"Playfair Display",serif;font-weight:700;font-size:1.05rem;}
+.sektion-hinweis{font-size:.72rem;color:rgba(255,255,255,.5);font-style:italic;}
+
+/* ---------- Ampel-Barometer (5 Stufen, identisch zum KLARTEXT-Barometer aus
+   Modul 0/Systemelemente: Grün·Stabil, Gelb·Angespannt, Orange·Belastet,
+   Rot·Akute Krise, Grau·Erschöpft/Unklar) ---------- */
+.ampel-reihe{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:.6rem;}
+.ampel-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.18);border-radius:18px;padding:.9rem .5rem;cursor:pointer;font-family:inherit;color:#fff;text-align:center;transition:all .15s;touch-action:manipulation;}
+.ampel-btn:hover{background:rgba(255,255,255,.11);}
+.ampel-btn .ampel-icon{font-size:1.9rem;display:block;margin-bottom:.35rem;}
+.ampel-btn .ampel-label{font-size:.74rem;font-weight:700;display:block;line-height:1.25;}
+.ampel-btn .ampel-desc{font-size:.62rem;color:rgba(255,255,255,.55);margin-top:.2rem;display:block;line-height:1.35;}
+.ampel-btn.gruen.aktiv{background:rgba(110,198,160,.22);border-color:var(--gruen);}
+.ampel-btn.gelb.aktiv{background:rgba(232,195,77,.2);border-color:var(--gelb);}
+.ampel-btn.orange.aktiv{background:rgba(232,147,77,.2);border-color:var(--orange);}
+.ampel-btn.rot.aktiv{background:rgba(217,72,61,.2);border-color:var(--rot);}
+.ampel-btn.grau.aktiv{background:rgba(156,163,175,.25);border-color:var(--grau);}
+
+.grau-hinweis{display:none;margin-top:.9rem;background:rgba(156,163,175,.16);border:1px solid rgba(156,163,175,.45);border-radius:14px;padding:1rem 1.1rem;}
+.grau-hinweis.zeigen{display:block;animation:einblenden .3s ease;}
+.grau-hinweis .gh-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:#C7CCD1;margin-bottom:.35rem;font-weight:700;}
+.grau-hinweis .gh-text{font-size:.85rem;line-height:1.55;color:rgba(255,255,255,.92);}
+
+/* ---------- Energie-Level ---------- */
+.energie-reihe{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;}
+.energie-btn{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.18);border-radius:18px;padding:1.1rem 1rem;cursor:pointer;font-family:inherit;color:#fff;text-align:center;transition:all .15s;touch-action:manipulation;}
+.energie-btn:hover{background:rgba(255,255,255,.11);}
+.energie-btn .energie-icon{font-size:1.9rem;display:block;margin-bottom:.4rem;}
+.energie-btn .energie-label{font-size:.85rem;font-weight:700;display:block;}
+.energie-btn.aktiv{background:rgba(110,198,160,.2);border-color:var(--acc);}
+
+.vorschlag-karte{margin-top:.9rem;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.4);border-radius:14px;padding:1rem 1.1rem;display:none;}
+.vorschlag-karte.zeigen{display:block;animation:einblenden .3s ease;}
+@keyframes einblenden{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.vorschlag-karte .vk-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--acc);margin-bottom:.35rem;}
+.vorschlag-karte .vk-text{font-size:.85rem;line-height:1.55;color:rgba(255,255,255,.85);}
+.vorschlag-karte a.vk-link{display:inline-flex;align-items:center;gap:.3rem;margin-top:.6rem;color:#fff;font-size:.78rem;font-weight:700;text-decoration:none;background:var(--acc);color:#0F2027;padding:.5rem 1rem;border-radius:20px;}
+
+/* ---------- Tages-Trigger ---------- */
+.trigger-chips{display:flex;flex-wrap:wrap;gap:.55rem;}
+.trigger-chip{display:flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.18);border-radius:16px;padding:.65rem 1rem;cursor:pointer;transition:all .15s;font-family:inherit;color:#fff;font-size:.8rem;font-weight:600;touch-action:manipulation;}
+.trigger-chip:hover{background:rgba(255,255,255,.13);}
+.trigger-chip.aktiv{background:rgba(110,198,160,.2);border-color:var(--acc);color:var(--acc);}
+
+/* ---------- Fokus-Timer ---------- */
+.timer-wrap{max-width:480px;margin:0 auto;text-align:center;}
+.timer-anzeige{font-family:"Playfair Display",serif;font-size:clamp(3.4rem,14vw,5rem);font-weight:700;letter-spacing:.02em;margin:1.2rem 0 .6rem;font-variant-numeric:tabular-nums;}
+.timer-status{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1.4rem;min-height:1.3em;}
+.timer-ring{width:min(70vw,260px);height:min(70vw,260px);margin:0 auto 1rem;border-radius:50%;border:6px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;position:relative;}
+.timer-ring .timer-fortschritt{position:absolute;inset:0;border-radius:50%;border:6px solid var(--acc);clip-path:inset(0 0 0 0);opacity:.9;}
+.timer-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:.5rem;}
+.timer-btn{padding:.85rem 1.8rem;border-radius:50px;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .15s;touch-action:manipulation;}
+.timer-btn.primaer{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+.timer-btn:hover{transform:translateY(-1px);}
+.fokus-runden{margin-top:1.4rem;font-size:.78rem;color:rgba(255,255,255,.55);}
+
+.pause-overlay{position:fixed;inset:0;background:rgba(15,32,39,.94);display:none;align-items:center;justify-content:center;z-index:500;padding:1.5rem;}
+.pause-overlay.zeigen{display:flex;}
+.pause-karte{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:2rem 1.7rem;max-width:420px;width:100%;text-align:center;animation:einblenden .3s ease;}
+.pause-karte .pk-brainy{font-size:3rem;margin-bottom:.7rem;}
+.pause-karte .pk-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:1.2rem;margin-bottom:.8rem;}
+.pause-karte .pk-text{font-size:.9rem;line-height:1.65;color:rgba(255,255,255,.85);margin-bottom:1.4rem;}
+.pause-karte button{background:var(--acc);color:#0F2027;border:none;padding:.75rem 1.8rem;border-radius:50px;font-family:inherit;font-weight:700;font-size:.85rem;cursor:pointer;}
+
+/* ---------- Speichern / Status ---------- */
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;align-items:center;gap:.9rem;flex-wrap:wrap;z-index:200;}
+.save-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;touch-action:manipulation;}
+.save-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(110,198,160,.35);}
+.speicher-hinweis{font-size:.72rem;color:rgba(255,255,255,.55);}
+.copy-feedback{position:fixed;bottom:5.2rem;left:50%;transform:translateX(-50%) translateY(10px);background:var(--acc);color:#0F2027;padding:.55rem 1.2rem;border-radius:20px;font-size:.78rem;font-weight:700;opacity:0;pointer-events:none;transition:all .25s;z-index:250;}
+.copy-feedback.zeigen{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:520px){
+  .ampel-reihe{gap:.5rem;}
+  .ampel-btn{padding:.9rem .35rem;}
+  .ampel-btn .ampel-desc{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Zurück</a>
+</div>
+
+<div class="hero">
+  <div class="hero-titel">🌉 OGS-Brücke</div>
+  <div class="hero-sub">Die 5-Sekunden-Übergabe für den Schichtwechsel: KLARTEXT-Barometer, Energie-Level und Tages-Trigger auf einen Blick — plus ein 15-Minuten-Fokus-Timer für die Hausaufgabenzeit. Deine Selbsteinschätzung als Jugendliche·r bleibt dabei immer erhalten — die OGS-Einschätzung wird separat dazu gespeichert, nicht überschrieben.</div>
+</div>
+
+<div class="modus-leiste">
+  <button class="modus-btn aktiv" onclick="modusWechseln('uebergabe')" id="modus-uebergabe">🔄 5-Sekunden-Übergabe</button>
+  <button class="modus-btn" onclick="modusWechseln('timer')" id="modus-timer">⏱️ Fokus-Timer</button>
+</div>
+
+<!-- ═══════════════ ÜBERGABE-MODUS ═══════════════ -->
+<div id="ansicht-uebergabe">
+
+  <div class="sektion">
+    <div class="sektion-titel"><h2>🚦 KLARTEXT-Barometer</h2><span class="sektion-hinweis">Wie ist die Stimmung gerade? (5 Stufen wie in Modul 0)</span></div>
+    <div class="ampel-reihe" id="ampel-reihe"></div>
+    <div class="grau-hinweis" id="grau-hinweis">
+      <div class="gh-label">Aktion bei Grau</div>
+      <div class="gh-text">Beobachten, nicht drängen! Dem Kind reizarmen Rückzug ermöglichen, bis es wieder ansprechbar ist.</div>
+    </div>
+  </div>
+
+  <div class="sektion">
+    <div class="sektion-titel"><h2>⚡ Energie-Level</h2><span class="sektion-hinweis">Bewegungs- oder Ruhe-Bedarf?</span></div>
+    <div class="energie-reihe">
+      <button class="energie-btn" onclick="energieWaehlen('bewegung')" id="energie-bewegung">
+        <span class="energie-icon">🏃</span><span class="energie-label">Bewegungs-Bedarf</span>
+      </button>
+      <button class="energie-btn" onclick="energieWaehlen('ruhe')" id="energie-ruhe">
+        <span class="energie-icon">🎈</span><span class="energie-label">Ruhe-Bedarf</span>
+      </button>
+    </div>
+    <div class="vorschlag-karte" id="vorschlag-karte">
+      <div class="vk-label">Vorschlag</div>
+      <div class="vk-text" id="vorschlag-text"></div>
+      <a class="vk-link" id="vorschlag-link" href="#">Öffnen →</a>
+    </div>
+  </div>
+
+  <div class="sektion">
+    <div class="sektion-titel"><h2>🎯 Tages-Trigger</h2><span class="sektion-hinweis">Was war heute besonders (optional)?</span></div>
+    <div class="trigger-chips" id="trigger-chips"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ FOKUS-TIMER-MODUS ═══════════════ -->
+<div id="ansicht-timer" style="display:none;">
+  <div class="sektion">
+    <div class="timer-wrap">
+      <div class="timer-ring"><div class="timer-anzeige" id="timer-anzeige">15:00</div></div>
+      <div class="timer-status" id="timer-status">Bereit für eine fokussierte Hausaufgaben-Runde.</div>
+      <div class="timer-btns">
+        <button class="timer-btn primaer" onclick="timerStart()" id="timer-start-btn">▶ Start</button>
+        <button class="timer-btn" onclick="timerPause()" id="timer-pause-btn">⏸ Pause</button>
+        <button class="timer-btn" onclick="timerZuruecksetzen()">↺ Zurücksetzen</button>
+      </div>
+      <div class="fokus-runden" id="fokus-runden">Heute noch keine Fokus-Runde abgeschlossen.</div>
+    </div>
+  </div>
+</div>
+
+<div class="pause-overlay" id="pause-overlay">
+  <div class="pause-karte">
+    <div class="pk-brainy">🧠</div>
+    <div class="pk-titel">Bewegungspause mit Brainy!</div>
+    <div class="pk-text" id="pause-text"></div>
+    <button onclick="pauseSchliessen()">Weiter geht's</button>
+  </div>
+</div>
+
+<div class="aktionsleiste">
+  <button class="save-btn" onclick="uebergabeSpeichern()">💾 Übergabe speichern</button>
+  <span class="speicher-hinweis" id="speicher-hinweis"></span>
+</div>
+<div class="copy-feedback" id="copyFeedback"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   KLARTEXT OGS-Brücke — Datenmodell
+   Eigener, separater localStorage-Key (NICHT der bestehende Reizfilter-
+   Verlauf!), damit die Selbsteinschätzung der/des Jugendlichen aus
+   KLARTEXT_Spiel_Reizfilter.html niemals durch eine Übergabe-Eingabe
+   der OGS-Kraft überschrieben werden kann. Beide Verläufe existieren
+   unabhängig nebeneinander und werden im Ressourcenbericht als
+   "Vormittags-Trend" (Reizfilter, Selbsteinschätzung) und
+   "Nachmittags-Trend" (OGS-Brücke, Übergabe) gegenübergestellt.
+   ═══════════════════════════════════════════════════════════════ */
+var OGS_KEY = 'klartext_ogs_uebergabe_v1';
+
+/* Das echte KLARTEXT-Barometer aus Modul 0 (Systemelemente) — 5 Stufen,
+   NICHT zu verwechseln mit der 5-Stufen-Skala des bestehenden Reizfilter-
+   Reglers (andere Bedeutungen/Farben). ampelStufe = Array-Index (0-4),
+   damit der Ressourcenbericht dieselbe Reihenfolge/Farbe verwenden kann. */
+var OGS_BAROMETER = [
+  { id: 'gruen',  ziffer: 1, icon: '😊', label: 'Grün',  kurz: 'Stabil',            beschreibung: 'Gut reguliert, kooperativ, aufnahmebereit' },
+  { id: 'gelb',   ziffer: 2, icon: '😐', label: 'Gelb',  kurz: 'Angespannt',        beschreibung: 'Erste Stresszeichen, Unruhe, Ablenkbarkeit' },
+  { id: 'orange', ziffer: 3, icon: '😣', label: 'Orange',kurz: 'Belastet',          beschreibung: 'Deutliche Dysregulation, blockiert' },
+  { id: 'rot',    ziffer: 4, icon: '😖', label: 'Rot',   kurz: 'Akute Krise',       beschreibung: 'Gefahr, Panik, totale Blockade' },
+  { id: 'grau',   ziffer: 5, icon: '😶', label: 'Grau',  kurz: 'Erschöpft/Unklar',  beschreibung: 'Leer, ausgebrannt, orientierungslos, starkes Schweigen' }
+];
+
+var TRIGGER_OPTIONEN = [
+  { id: 'hausaufgaben', icon: '📚', label: 'Hausaufgaben-Stress' },
+  { id: 'streit',       icon: '💥', label: 'Streit in der Gruppe' },
+  { id: 'vorfreude',    icon: '🎉', label: 'Vorfreude/Aufregung' },
+  { id: 'muede',        icon: '😴', label: 'Müdigkeit' },
+  { id: 'abholung',     icon: '🚗', label: 'Abholsituation' },
+  { id: 'sonstiges',    icon: '💭', label: 'Sonstiges' }
+];
+
+var PAUSEN_TEXTE = [
+  'Überkreuz-Marsch: Hebe abwechselnd das rechte Knie zum linken Ellbogen und das linke Knie zum rechten Ellbogen — 20 Mal.',
+  'Liegende Acht: Male mit dem ausgestreckten Arm eine große liegende Acht in die Luft — erst mit rechts, dann mit links, dann mit beiden Händen zusammen.',
+  'Ohren-Massage: Rolle beide Ohrmuscheln sanft von oben nach unten aus — dreimal, tief durchatmen dabei.',
+  'Wasserpumpe: Stell dich hüftbreit hin und pumpe abwechselnd die Arme wie beim Wasserholen — 15 Mal, dabei laut ausatmen.',
+  'Überkreuz-Tippen: Tippe mit der rechten Hand auf den linken Fuß, dann mit der linken Hand auf den rechten Fuß — 10 Mal im Wechsel.',
+  'Brainy-Strecken: Strecke beide Arme hoch, dann kreuze sie vor der Brust — fünfmal im Wechsel, dabei bewusst ausatmen.'
+];
+
+function heuteISO(){
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function verlaufLaden(){
+  try {
+    var roh = localStorage.getItem(OGS_KEY);
+    return roh ? JSON.parse(roh) : [];
+  } catch(e) { return []; }
+}
+
+function heutigenEintragFinden(){
+  var heute = heuteISO();
+  return verlaufLaden().filter(function(e){ return e.datum === heute; })[0] || null;
+}
+
+function eintragSpeichern(teilUpdate){
+  var heute = heuteISO();
+  var bestehend = heutigenEintragFinden() || { datum: heute, ampel: null, ampelStufe: null, energie: null, trigger: null, fokusRunden: 0 };
+  var neu = Object.assign({}, bestehend, teilUpdate, { datum: heute });
+  var verlauf = verlaufLaden().filter(function(e){ return e.datum !== heute; });
+  verlauf.push(neu);
+  verlauf.sort(function(a, b){ return a.datum < b.datum ? -1 : 1; });
+  if (verlauf.length > 60) verlauf = verlauf.slice(verlauf.length - 60);
+  try { localStorage.setItem(OGS_KEY, JSON.stringify(verlauf)); } catch(e) {}
+  return neu;
+}
+
+/* ── Modus-Wechsel ─────────────────────────────────────────────── */
+function modusWechseln(modus){
+  document.getElementById('ansicht-uebergabe').style.display = modus === 'uebergabe' ? 'block' : 'none';
+  document.getElementById('ansicht-timer').style.display = modus === 'timer' ? 'block' : 'none';
+  document.getElementById('modus-uebergabe').classList.toggle('aktiv', modus === 'uebergabe');
+  document.getElementById('modus-timer').classList.toggle('aktiv', modus === 'timer');
+}
+
+/* ── Ampel-Barometer (5 Stufen) ────────────────────────────────── */
+var aktuelleAmpel = null;
+function ampelChipsRendern(){
+  var wrap = document.getElementById('ampel-reihe');
+  wrap.innerHTML = OGS_BAROMETER.map(function(s){
+    return '<button class="ampel-btn ' + s.id + '" onclick="ampelWaehlen(\'' + s.id + '\')" id="ampel-' + s.id + '">' +
+      '<span class="ampel-icon">' + s.icon + '</span><span class="ampel-label">' + s.label + '<br>' + s.kurz + '</span>' +
+      '<span class="ampel-desc">' + s.beschreibung + '</span></button>';
+  }).join('');
+}
+function ampelWaehlen(id){
+  aktuelleAmpel = id;
+  OGS_BAROMETER.forEach(function(s){
+    document.getElementById('ampel-' + s.id).classList.toggle('aktiv', s.id === id);
+  });
+  document.getElementById('grau-hinweis').classList.toggle('zeigen', id === 'grau');
+}
+
+/* ── Energie-Level ─────────────────────────────────────────────── */
+var aktuelleEnergie = null;
+var VORSCHLAEGE = {
+  bewegung: { text: 'Eine kurze Bewegungspause hilft jetzt, überschüssige Energie sinnvoll rauszulassen — z. B. eine Runde Mini-Fitness (Body-and-Brain-Übungen).', link: 'KLARTEXT_Spiel_MiniFitness.html' },
+  ruhe: { text: 'Ein paar bewusste Atemzüge helfen jetzt beim Runterkommen — z. B. mit dem Ruhe-Ballon.', link: 'KLARTEXT_Spiel_Ruheballon.html' }
+};
+function energieWaehlen(stufe){
+  aktuelleEnergie = stufe;
+  document.getElementById('energie-bewegung').classList.toggle('aktiv', stufe === 'bewegung');
+  document.getElementById('energie-ruhe').classList.toggle('aktiv', stufe === 'ruhe');
+  var v = VORSCHLAEGE[stufe];
+  document.getElementById('vorschlag-text').textContent = v.text;
+  document.getElementById('vorschlag-link').setAttribute('href', v.link);
+  document.getElementById('vorschlag-karte').classList.add('zeigen');
+}
+
+/* ── Tages-Trigger ─────────────────────────────────────────────── */
+var aktuellerTrigger = null;
+function triggerChipsRendern(){
+  var wrap = document.getElementById('trigger-chips');
+  wrap.innerHTML = TRIGGER_OPTIONEN.map(function(t){
+    return '<button class="trigger-chip" id="trigger-' + t.id + '" onclick="triggerWaehlen(\'' + t.id + '\')">' +
+      '<span>' + t.icon + '</span><span>' + t.label + '</span></button>';
+  }).join('');
+}
+function triggerWaehlen(id){
+  aktuellerTrigger = (aktuellerTrigger === id) ? null : id; // erneutes Antippen hebt die Auswahl wieder auf
+  TRIGGER_OPTIONEN.forEach(function(t){
+    document.getElementById('trigger-' + t.id).classList.toggle('aktiv', t.id === aktuellerTrigger);
+  });
+}
+
+/* ── Speichern ─────────────────────────────────────────────────── */
+function uebergabeSpeichern(){
+  var update = {};
+  if (aktuelleAmpel) { update.ampel = aktuelleAmpel; update.ampelStufe = OGS_BAROMETER.findIndex(function(s){ return s.id === aktuelleAmpel; }); }
+  if (aktuelleEnergie) update.energie = aktuelleEnergie;
+  update.trigger = aktuellerTrigger;
+  eintragSpeichern(update);
+  copyFeedbackZeigen('✓ Übergabe für heute gespeichert');
+  document.getElementById('speicher-hinweis').textContent = 'Zuletzt gespeichert: ' + new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'});
+}
+
+function copyFeedbackZeigen(text){
+  var el = document.getElementById('copyFeedback');
+  el.textContent = text;
+  el.classList.add('zeigen');
+  setTimeout(function(){ el.classList.remove('zeigen'); }, 2200);
+}
+
+/* ── Fokus-Timer (15 Minuten) ──────────────────────────────────── */
+var TIMER_DAUER = 15 * 60;
+var timerRest = TIMER_DAUER;
+var timerLauft = false;
+var timerHandle = null;
+
+function timerAnzeigeAktualisieren(){
+  var min = Math.floor(timerRest / 60);
+  var sek = timerRest % 60;
+  document.getElementById('timer-anzeige').textContent = String(min).padStart(2,'0') + ':' + String(sek).padStart(2,'0');
+}
+
+function timerStart(){
+  if (timerLauft) return;
+  timerLauft = true;
+  document.getElementById('timer-status').textContent = 'Fokus läuft …';
+  timerHandle = setInterval(function(){
+    timerRest--;
+    timerAnzeigeAktualisieren();
+    if (timerRest <= 0) {
+      timerFertig();
+    }
+  }, 1000);
+}
+
+function timerPause(){
+  timerLauft = false;
+  clearInterval(timerHandle);
+  document.getElementById('timer-status').textContent = 'Pausiert.';
+}
+
+function timerZuruecksetzen(){
+  timerLauft = false;
+  clearInterval(timerHandle);
+  timerRest = TIMER_DAUER;
+  timerAnzeigeAktualisieren();
+  document.getElementById('timer-status').textContent = 'Bereit für eine fokussierte Hausaufgaben-Runde.';
+}
+
+function timerFertig(){
+  timerLauft = false;
+  clearInterval(timerHandle);
+  document.getElementById('timer-status').textContent = 'Runde geschafft! 🎉';
+  var text = PAUSEN_TEXTE[Math.floor(Math.random() * PAUSEN_TEXTE.length)];
+  document.getElementById('pause-text').textContent = text;
+  document.getElementById('pause-overlay').classList.add('zeigen');
+
+  var heutiger = heutigenEintragFinden();
+  var runden = (heutiger && typeof heutiger.fokusRunden === 'number') ? heutiger.fokusRunden : 0;
+  eintragSpeichern({ fokusRunden: runden + 1 });
+  fokusRundenAnzeigeAktualisieren();
+}
+
+function pauseSchliessen(){
+  document.getElementById('pause-overlay').classList.remove('zeigen');
+  timerZuruecksetzen();
+}
+
+function fokusRundenAnzeigeAktualisieren(){
+  var heutiger = heutigenEintragFinden();
+  var runden = (heutiger && typeof heutiger.fokusRunden === 'number') ? heutiger.fokusRunden : 0;
+  document.getElementById('fokus-runden').textContent = runden === 0
+    ? 'Heute noch keine Fokus-Runde abgeschlossen.'
+    : 'Heute schon ' + runden + (runden === 1 ? ' Fokus-Runde' : ' Fokus-Runden') + ' geschafft. 🎉';
+}
+
+/* ── Init: heutigen Stand vorbelegen, falls schon etwas gespeichert wurde ── */
+function initAusVorhandenemEintrag(){
+  var heutiger = heutigenEintragFinden();
+  if (heutiger) {
+    if (heutiger.ampel) ampelWaehlen(heutiger.ampel);
+    if (heutiger.energie) energieWaehlen(heutiger.energie);
+    if (heutiger.trigger) {
+      aktuellerTrigger = heutiger.trigger;
+      TRIGGER_OPTIONEN.forEach(function(t){
+        document.getElementById('trigger-' + t.id).classList.toggle('aktiv', t.id === aktuellerTrigger);
+      });
+    }
+  }
+}
+
+ampelChipsRendern();
+triggerChipsRendern();
+timerAnzeigeAktualisieren();
+fokusRundenAnzeigeAktualisieren();
+initAusVorhandenemEintrag();
+</script>
+</body>
+</html>

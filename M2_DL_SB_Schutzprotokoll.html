@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<script>
-(function(){
-  try{
-    if(sessionStorage.getItem('klartext_login')!=='true'){
-      window.location.href='KLARTEXT_Login.html';
-      return;
-    }
-    var role = sessionStorage.getItem('klartext_role') || '';
-    if(['ingra','tk','admin'].indexOf(role) === -1){
-      window.location.href='KLARTEXT_Downloads.html';
-    }
-  }catch(e){}
-})();
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KLARTEXT · SB-Schutzprotokoll</title>

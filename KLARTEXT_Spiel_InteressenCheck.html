@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Interessen-Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --jd:#2F6B6E; --jd-light:#EAF3F3;
+  --m:#1B3A4B; --acc:#6EC6A0;
+}
+body{
+  font-family:"DM Sans",sans-serif;
+  background:linear-gradient(160deg,#0F2027 0%,#1B3A4B 55%,#2F6B6E 100%);
+  color:#fff; min-height:100vh; padding-bottom:6rem;
+}
+
+.header{max-width:1000px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.35);border-radius:20px;color:rgba(255,255,255,.85);font-size:.72rem;font-weight:700;text-decoration:none;}
+.back-btn:hover{border-color:#fff;color:#fff;}
+
+.hero{max-width:1000px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 1.25rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;letter-spacing:-.01em;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.65);max-width:660px;margin-top:.4rem;line-height:1.6;}
+
+.modus-leiste{max-width:1000px;margin:0 auto 1.6rem;padding:0 clamp(1rem,4vw,2rem);display:flex;gap:.5rem;flex-wrap:wrap;}
+.modus-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.18);border-radius:20px;padding:.6rem 1.1rem;font-family:inherit;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;}
+.modus-btn:hover{background:rgba(255,255,255,.12);}
+.modus-btn.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+
+.kategorie-gruppe{max-width:1000px;margin:0 auto 1.3rem;padding:0 clamp(1rem,4vw,2rem);}
+.kategorie-kopf{display:flex;align-items:baseline;gap:.55rem;margin-bottom:.55rem;flex-wrap:wrap;}
+.kategorie-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;}
+.kategorie-hinweis{font-size:.72rem;color:rgba(255,255,255,.5);font-style:italic;}
+.kategorie-chips{display:flex;flex-wrap:wrap;gap:.6rem;}
+
+.hobby-chip{display:flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.18);border-radius:16px;padding:.85rem 1.1rem;cursor:pointer;transition:all .15s;font-family:inherit;color:#fff;text-align:left;}
+.hobby-chip:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.35);}
+.hobby-chip .icon{font-size:1.4rem;}
+.hobby-chip .label{font-size:.85rem;font-weight:700;}
+.hobby-chip.aktiv{background:rgba(110,198,160,.2);border-color:var(--acc);}
+.hobby-chip.aktiv .label{color:var(--acc);}
+
+.ergebnisse{max-width:1000px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem);}
+.leer-hinweis{color:rgba(255,255,255,.45);font-size:.85rem;padding:2rem 0;text-align:center;border:1.5px dashed rgba(255,255,255,.15);border-radius:16px;}
+
+.hobby-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.2rem 1.3rem;margin-bottom:1rem;animation:einblenden .3s ease;}
+@keyframes einblenden{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.hobby-block-titel{display:flex;align-items:center;gap:.5rem;font-family:"Playfair Display",serif;font-weight:700;font-size:1.05rem;margin-bottom:.85rem;}
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.6rem;}
+.skill-karte{background:rgba(110,198,160,.1);border:1px solid rgba(110,198,160,.35);border-radius:12px;padding:.7rem .85rem;}
+.skill-karte .skill-name{font-size:.85rem;font-weight:700;color:var(--acc);margin-bottom:.2rem;}
+.skill-karte .skill-desc{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.4;}
+
+.transfer{margin-top:.6rem;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.1);}
+.transfer-frage{font-size:.68rem;color:rgba(255,255,255,.55);line-height:1.4;margin-bottom:.4rem;font-style:italic;}
+.transfer-chips{display:flex;flex-wrap:wrap;gap:.3rem;}
+.transfer-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.25rem .6rem;font-size:.68rem;font-weight:600;color:rgba(255,255,255,.75);cursor:pointer;font-family:inherit;}
+.transfer-chip:hover{background:rgba(255,255,255,.12);}
+.transfer-chip.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+
+/* ---------- Frust-Check ---------- */
+.frust-wrap{max-width:480px;margin:0 auto 2rem;padding:0 clamp(1rem,4vw,2rem);}
+.swipe-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.2);border-radius:20px;padding:1.7rem 1.4rem;text-align:center;touch-action:pan-y;user-select:none;transition:transform .25s ease;}
+.swipe-zaehler{font-size:.68rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.9rem;}
+.swipe-frage{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;line-height:1.4;margin-bottom:1rem;}
+.swipe-hinweis{font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:1.3rem;line-height:1.5;}
+.swipe-btns{display:flex;gap:.7rem;justify-content:center;}
+.swipe-btn{flex:1;padding:.85rem .5rem;border-radius:14px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:#fff;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;}
+.swipe-btn.ablehnen:hover{border-color:#e0745c;background:rgba(224,116,92,.15);}
+.swipe-btn.passt:hover{border-color:var(--acc);background:rgba(110,198,160,.15);}
+.frust-fertig{text-align:center;font-size:.92rem;color:var(--acc);font-weight:700;padding:1rem 0;line-height:1.5;}
+.frust-verlauf{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:1.3rem;}
+.frust-badge{font-size:.68rem;padding:.3rem .65rem;border-radius:10px;background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);color:var(--acc);}
+.frust-badge.neutral{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.55);}
+
+/* ---------- Zeitarbeits-Toolbox ---------- */
+.toolbox-wrap{max-width:640px;margin:0 auto 2rem;padding:0 clamp(1rem,4vw,2rem);}
+.toolbox-frage{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.05rem 1.15rem;margin-bottom:1.1rem;}
+.toolbox-checkbox{display:flex;gap:.6rem;font-size:.85rem;line-height:1.5;cursor:pointer;align-items:flex-start;}
+.toolbox-checkbox input{margin-top:.2rem;}
+.reframe-hinweis{margin-top:.75rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.1);font-size:.78rem;color:rgba(255,255,255,.8);line-height:1.55;}
+.toolbox-liste{display:flex;flex-direction:column;gap:.6rem;}
+.toolbox-item{display:flex;gap:.7rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.8rem .9rem;cursor:pointer;align-items:flex-start;}
+.toolbox-item input{margin-top:.25rem;}
+.toolbox-kategorie{font-size:.65rem;text-transform:uppercase;letter-spacing:.04em;color:var(--acc);margin-bottom:.15rem;}
+.toolbox-statement{font-size:.82rem;line-height:1.5;color:rgba(255,255,255,.85);}
+
+.aktionsleiste{position:fixed;left:0;right:0;bottom:0;background:rgba(15,32,39,.92);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);padding:.9rem clamp(1rem,4vw,2rem);display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;z-index:200;}
+.save-btn{background:var(--acc);color:#0F2027;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
+.save-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(110,198,160,.35);}
+.save-btn:disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+.profil-btn{background:transparent;color:var(--acc);border:1.5px solid var(--acc);padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;transition:all .15s;}
+.profil-btn:hover:not(:disabled){background:rgba(110,198,160,.12);}
+.profil-btn:disabled{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:not-allowed;}
+
+/* Superpower-Profil Overlay */
+.profil-modal{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:1.5rem;max-width:600px;width:100%;max-height:85vh;overflow:auto;}
+.profil-modal h2{font-family:"Playfair Display",serif;font-size:1.15rem;margin-bottom:.9rem;}
+.tab-leiste{display:flex;gap:.4rem;margin-bottom:1.1rem;flex-wrap:wrap;}
+.tab-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:.5rem 1rem;font-family:inherit;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.7);cursor:pointer;}
+.tab-btn.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+
+.staerkste-zone{background:rgba(110,198,160,.14);border:1px solid rgba(110,198,160,.4);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:1.1rem;}
+.staerkste-zone .sz-titel{font-size:.72rem;font-weight:700;letter-spacing:.03em;color:var(--acc);text-transform:uppercase;margin-bottom:.3rem;}
+.staerkste-zone .sz-text{font-size:.85rem;line-height:1.5;color:rgba(255,255,255,.85);}
+.staerkste-zone .sz-schritt{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.6);margin-top:.5rem;font-style:italic;}
+
+.cluster-block{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1rem 1.1rem;margin-bottom:.8rem;}
+.cluster-block:last-child{margin-bottom:0;}
+.cluster-titel{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.92rem;margin-bottom:.5rem;}
+.cluster-text{font-size:.82rem;line-height:1.55;color:rgba(255,255,255,.8);}
+.cluster-skills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem;}
+.cluster-skill-chip{background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.3);border-radius:10px;padding:.2rem .55rem;font-size:.68rem;color:var(--acc);}
+
+.felder-wrap{margin-top:.7rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.1);}
+.felder-label{font-size:.68rem;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.4rem;}
+.feld-zeile{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.8);margin-bottom:.25rem;}
+.feld-zeile b{color:#fff;}
+
+.jd-box{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:1rem 1.1rem;margin-top:.4rem;}
+.jd-box .jd-titel{font-size:.72rem;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.55rem;}
+.jd-zeile{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.75);margin-bottom:.5rem;}
+.jd-zeile:last-of-type{margin-bottom:0;}
+.jd-zeile b{color:var(--acc);}
+.jd-karten-link{color:inherit;text-decoration:none;}
+.jd-karten-link b{text-decoration:underline;}
+.jd-karten-link:hover b{color:#fff;}
+.jd-hinweis{margin-top:.6rem;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.1);font-size:.68rem;line-height:1.5;color:rgba(255,255,255,.45);font-style:italic;}
+
+.bewerbung-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:1.1rem 1.2rem;margin-top:.8rem;}
+.bewerbung-titel{font-size:.72rem;font-weight:700;letter-spacing:.03em;color:rgba(255,255,255,.55);text-transform:uppercase;margin-bottom:.6rem;}
+.bewerbung-abschnitt{margin-bottom:.9rem;}
+.bewerbung-abschnitt:last-child{margin-bottom:0;}
+.bewerbung-abschnitt-label{font-size:.68rem;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem;}
+.bewerbung-text{font-size:.82rem;line-height:1.55;color:rgba(255,255,255,.85);font-style:italic;}
+.mut-box{background:rgba(255,255,255,.06);border:1.5px dashed rgba(255,255,255,.3);border-radius:12px;padding:.8rem .9rem;margin-top:.9rem;}
+.mut-box .mut-text{font-size:.78rem;line-height:1.5;color:rgba(255,255,255,.75);}
+.mut-box a{color:var(--acc);font-weight:700;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:400;padding:1rem;}
+.overlay.zeigen{display:flex;}
+.modal{background:#132832;border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:1.5rem;max-width:480px;width:100%;max-height:80vh;overflow:auto;}
+.modal h2{font-family:"Playfair Display",serif;font-size:1.15rem;margin-bottom:.9rem;}
+.modal textarea{width:100%;min-height:220px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:10px;color:#fff;font-family:"DM Sans",sans-serif;font-size:.82rem;line-height:1.6;padding:.8rem;resize:vertical;}
+.modal-btns{display:flex;gap:.6rem;margin-top:1rem;}
+.modal-btns button, .modal-btns a{flex:1;padding:.7rem 1rem;border-radius:30px;border:none;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;text-align:center;justify-content:center;}
+.copy-btn{background:var(--acc);color:#0F2027;}
+.close-btn{background:rgba(255,255,255,.12);color:#fff;}
+.copy-feedback{font-size:.72rem;color:var(--acc);margin-top:.5rem;height:1em;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hero-titel" style="font-size:1rem;letter-spacing:.02em;">KLARTEXT</div>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Tools</a>
+</div>
+
+<div class="hero">
+  <h1 class="hero-titel">Interessen-Check</h1>
+  <p class="hero-sub">Wähl aus, was dich beschäftigt — egal ob Vereins-Hobby, Serien-Wissen, Chillen oder „eigentlich nix Besonderes". Du wirst überrascht sein, welche beruflichen Stärken du dadurch schon längst besitzt. Wenn du gerade eher keinen Bock auf irgendwas hast, probier den Frust-Check.</p>
+</div>
+
+<div class="modus-leiste">
+  <button class="modus-btn aktiv" id="modusInteressen" onclick="modusWechseln('interessen')">🧭 Interessen-Check</button>
+  <button class="modus-btn" id="modusFrust" onclick="modusWechseln('frust')">🚫 Frust-Check</button>
+  <button class="modus-btn" id="modusToolbox" onclick="modusWechseln('toolbox')">🧳 Zeitarbeits-Toolbox</button>
+</div>
+
+<div id="ansichtInteressen">
+  <div id="interessenListe"></div>
+  <div class="ergebnisse" id="ergebnisse">
+    <div class="leer-hinweis" id="leerHinweis">Wähl oben mindestens ein Interesse aus, um deine geheimen Stärken freizuschalten.</div>
+  </div>
+</div>
+
+<div id="ansichtFrust" style="display:none;">
+  <div class="frust-wrap" id="frustWrap"></div>
+</div>
+
+<div id="ansichtToolbox" style="display:none;">
+  <div class="toolbox-wrap" id="toolboxWrap"></div>
+</div>
+
+<div class="aktionsleiste">
+  <button class="profil-btn" id="profilBtn" onclick="profilOeffnen()" disabled>✨ Superpower-Profil ansehen</button>
+  <button class="save-btn" id="saveBtn" onclick="listeOeffnen()" disabled>💾 Als Stärken-Liste speichern</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2>Deine Stärken-Liste</h2>
+    <textarea id="listeText" readonly></textarea>
+    <div class="copy-feedback" id="copyFeedback"></div>
+    <div class="modal-btns">
+      <button class="copy-btn" onclick="listeKopieren()">📋 Kopieren</button>
+      <button class="close-btn" onclick="modalSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="toolboxOverlay">
+  <div class="modal">
+    <h2>Dein Onboarding-Spickzettel</h2>
+    <textarea id="toolboxText" readonly></textarea>
+    <div class="copy-feedback" id="toolboxCopyFeedback"></div>
+    <div class="modal-btns">
+      <button class="copy-btn" onclick="toolboxKopieren()">📋 Kopieren</button>
+      <button class="close-btn" onclick="toolboxModalSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="profilOverlay">
+  <div class="profil-modal">
+    <h2 id="profilTitel">Dein Superpower-Profil</h2>
+    <div class="tab-leiste">
+      <button class="tab-btn" id="tabJugend" onclick="tabWechseln('jugend')">Für dich</button>
+      <button class="tab-btn" id="tabEltern" onclick="tabWechseln('eltern')">Für Eltern</button>
+      <button class="tab-btn" id="tabLehrkraft" onclick="tabWechseln('lehrkraft')">Für Lehrkräfte</button>
+    </div>
+    <div id="profilInhalt"></div>
+    <div class="copy-feedback" id="profilCopyFeedback"></div>
+    <div class="modal-btns">
+      <button class="copy-btn" onclick="profilKopieren()">📋 Kopieren</button>
+      <a class="copy-btn" style="text-decoration:none;display:inline-flex;align-items:center;" href="KLARTEXT_Ressourcenbericht.html" target="_blank">📄 Bericht</a>
+      <button class="close-btn" onclick="profilSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   KLARTEXT · Interessen-Check (v2.0)
+   Eigenständiges Modul neben KLARTEXT_Spiel_SkillMatrix.html ("Hobby-Check").
+   Schreibt in denselben localStorage-Key wie die Skill-Matrix
+   (SKILLMATRIX_PROFIL_KEY = 'klartext_skillmatrix_profil_v1'), damit
+   KLARTEXT_Ressourcenbericht.html das Profil ohne Anpassungen ausliest.
+   Die 6 bestehenden Superpower-Cluster (team/fokus/kreativ/verantwortung/
+   problem/mutig) bleiben unverändert — alle neuen Interessen-, Frust-Check-
+   und Zeitarbeits-Inhalte werden als zusätzliche, benannte Spezialisierungen
+   (z.B. "Ruhepol", "Struktur-Motor") auf genau diese 6 Cluster gemappt.
+   ========================================================================= */
+
+var JOBS = ['Büro','Werkstatt','Pflege','Verkauf','Handwerk','Kreativbranche'];
+
+var KATEGORIEN = [
+  { id:'alltag', label:'Alltag & Freizeit', icon:'🎈', hinweis:'' },
+  { id:'deepdive', label:'Deep-Dive-Themen', icon:'🔬', hinweis:'Für alle mit einem Thema, in das sie richtig tief eintauchen — das ist eine Stärke, kein „Sonderinteresse".' },
+  { id:'denker', label:'Denker- & Tüftler-Welten', icon:'🧠', hinweis:'Für alle, die Systeme knacken, eigene Welten bauen oder große Fragen wälzen wollen.' },
+  { id:'chillen', label:'Chillen', icon:'😌', hinweis:'Auch Chillen ist eine Kompetenz — entscheidend ist, WIE du chillst.' }
+];
+
+var SKILL_CLUSTER = {
+  /* ---- Original aus der Skill-Matrix (unverändert) ---- */
+  'Teamfähigkeit':'team', 'Teamkoordination':'team', 'Fairplay':'team', 'Konfliktlösung':'team',
+  'Community-Management':'team', 'Moderation':'team', 'Empathie':'team', 'Kundenkontakt':'team', 'Respekt':'team',
+  'Ausdauer':'fokus', 'Fokus':'fokus', 'Konzentrationsfähigkeit':'fokus', 'Durchhaltevermögen':'fokus',
+  'Geduld':'fokus', 'Ruhe bewahren':'fokus', 'Systematisches Denken':'fokus', 'Sorgfalt':'fokus',
+  'Kreativität':'kreativ', 'Digitale Kompetenz':'kreativ', 'Selbstpräsentation':'kreativ', 'Auge für Details':'kreativ',
+  'Feingefühl für Details':'kreativ', 'Bildkomposition':'kreativ', 'Wortschatz':'kreativ', 'Ausdrucksfähigkeit':'kreativ',
+  'Strukturierung von Gedanken':'kreativ', 'Feinmotorik':'kreativ', 'Präzision':'kreativ', 'Körperbewusstsein':'kreativ', 'Rhythmusgefühl':'kreativ',
+  'Verantwortung':'verantwortung', 'Zuverlässigkeit':'verantwortung', 'Fürsorge':'verantwortung', 'Verbindlichkeit':'verantwortung',
+  'Verantwortungsübernahme':'verantwortung', 'Pünktlichkeit':'verantwortung', 'Selbstorganisation':'verantwortung',
+  'Struktur':'verantwortung', 'Eigeninitiative':'verantwortung', 'Hygienebewusstsein':'verantwortung',
+  'Logisches Denken':'problem', 'Problemlösefähigkeit':'problem', 'Strategie':'problem', 'Schnelle Auffassungsgabe':'problem',
+  'Prozessplanung':'problem', 'Planung':'problem', 'Technisches Setup':'problem', 'Technisches Verständnis':'problem', 'Genauigkeit beim Abmessen':'problem',
+  'Mut':'mutig', 'Umgang mit Scheitern':'mutig', 'Belastbarkeit':'mutig', 'Belastbarkeit unter Druck':'mutig',
+  'Selbstdisziplin':'mutig', 'Wetterfestigkeit':'mutig', 'Auftrittssicherheit':'mutig', 'Körperbeherrschung':'mutig', 'Naturverbundenheit':'mutig',
+
+  /* ---- Neu v2.0: Deep-Dive-Themen / Denker-Welten / Chillen ---- */
+  'Beziehungs-Anker':'team', 'Soziale Antennen':'team', 'Deeskalationstoleranz':'team',
+  'Ruhepol':'fokus', 'Selbstfürsorge':'fokus', 'Krisen-Kompetenz':'fokus', 'Deep-Dive-Analytiker':'fokus', 'Stoische Präzision':'fokus',
+  'Weltenbauer':'kreativ',
+  'Archivierungstalent':'verantwortung',
+  'Systemanalyse':'problem', 'Struktur-Motor':'problem', 'Fehleranalyse':'problem', 'Konzeptionelles Denken':'problem', 'Kritisches Denken':'problem',
+  'Stoischer Beobachter':'mutig', 'Analytische Ruhe':'mutig',
+
+  /* ---- Neu v2.0: Frust-Check-Reframings ---- */
+  'Kritischer Querdenker':'problem', 'Prozess-Optimierer':'problem',
+  'Spätaktiv-Kompetenz':'verantwortung', 'Direkter Umsetzer':'verantwortung',
+  'Fokus im Hintergrund':'fokus',
+  'Praktiker der Tat':'mutig',
+
+  /* ---- Neu v2.0: Zeitarbeits-Toolbox / Job-Hopper-Reframing ---- */
+  'Sprint-Kompetenz':'mutig', 'Vielseitigkeits-Anker':'team'
+};
+
+var CLUSTERS = [
+  { id:'team', icon:'🤝', titel:'Team-Power',
+    alltag:'wenn ihr euch in der Schule oder im Job als Team auf ein gemeinsames Ziel einigen müsst',
+    schritt:'Frag beim nächsten Gruppenprojekt aktiv nach, wie du helfen kannst.',
+    elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} mit anderen zusammenarbeitet. Bestärken Sie genau diesen Moment – wertfrei, ohne zu bewerten.',
+    elternFrage:'Ich hab gesehen, wie gut du bei {hobby} mit anderen klarkommst. Wo hilft dir das auch außerhalb?',
+    lehrBeob:'Beobachten Sie, wie die Jugendliche/der Jugendliche in Gruppenarbeit oder in der Pause Verantwortung fürs Miteinander übernimmt. Diese Momente lohnt es, sichtbar zu machen.',
+    lehrFrage:'Mir ist aufgefallen, wie gut du mit anderen zusammenarbeitest. Wo im Unterricht könnte dir das auch helfen?',
+    felder:['Soziale Arbeit & Erziehung','Verkauf & Kundenservice','Team-Handwerk (z. B. Bau, Gastronomie)'],
+    beispiele:['Erzieher:in','Verkäufer:in im Einzelhandel','Bäcker:in / Konditor:in'],
+    anschreiben:'Bei {hobby} habe ich gelernt, im Team Verantwortung zu übernehmen und gemeinsam Ziele zu erreichen.',
+    interview:'Eine Stärke von mir ist Teamfähigkeit — bei {hobby} zeigt sich das, wenn ich mit anderen an einem gemeinsamen Ziel arbeite.' },
+  { id:'fokus', icon:'🎯', titel:'Fokus-Champion',
+    alltag:'wenn du dranbleiben musst, obwohl eine Aufgabe erstmal zäh oder langweilig ist',
+    schritt:'Nimm dir morgen 15 Minuten für eine Aufgabe, die du sonst aufschiebst.',
+    elternBeob:'Achten Sie darauf, wie lange und konzentriert Ihr Kind bei {hobby} dabeibleibt. Genau dieses Durchhalten verdient Anerkennung – auch wenn das Ergebnis nicht perfekt ist.',
+    elternFrage:'Ich hab gemerkt, wie konzentriert du bei {hobby} bist. Wann fällt dir das bei den Hausaufgaben auch leicht – und wann schwer?',
+    lehrBeob:'Beobachten Sie, in welchen Unterrichtsmomenten die/der Jugendliche über längere Zeit konzentriert bei der Sache bleibt. Das lässt sich gezielt auf andere Fächer übertragen.',
+    lehrFrage:'Du bist bei {hobby} richtig dran geblieben. Wo im Unterricht gelingt dir das genauso gut?',
+    felder:['Handwerk & Feinarbeit','Labor & Technik','Wissenschaft & Forschung'],
+    beispiele:['Feinwerkmechaniker:in','Chemielaborant:in','Fachinformatiker:in'],
+    anschreiben:'Durch {hobby} bin ich es gewohnt, auch bei anspruchsvollen Aufgaben konzentriert dranzubleiben.',
+    interview:'Ich bin ausdauernd und konzentriert — das übe ich regelmäßig bei {hobby}, wo Dranbleiben den Unterschied macht.' },
+  { id:'kreativ', icon:'🎨', titel:'Kreativ-Genie',
+    alltag:'wenn du eigene Ideen einbringen oder etwas gestalten sollst',
+    schritt:'Zeig heute jemandem eine eigene Idee, auch wenn sie noch nicht fertig ist.',
+    elternBeob:'Achten Sie darauf, welche eigenen Ideen Ihr Kind bei {hobby} entwickelt. Kreativität zeigt sich oft leise – ein ehrliches „Das ist eine gute Idee" wirkt viel.',
+    elternFrage:'Deine Ideen bei {hobby} finde ich stark. Wo könntest du das noch einbringen?',
+    lehrBeob:'Beobachten Sie, wann die/der Jugendliche eigene, ungewöhnliche Lösungswege vorschlägt. Das ist ein guter Anknüpfungspunkt für Anerkennung im Unterricht.',
+    lehrFrage:'Deine Idee bei {hobby} war kreativ gelöst. Wo im Unterricht könntest du das auch mal ausprobieren?',
+    felder:['Mediengestaltung & Design','IT-Entwicklung','Handwerkliches Gestalten'],
+    beispiele:['Mediengestalter:in','Fotograf:in','Schneider:in'],
+    anschreiben:'{hobby} hat mir gezeigt, wie ich eigene Ideen entwickle und in ein fertiges Ergebnis umsetze.',
+    interview:'Ich bin kreativ und hab ein Auge für Details — das zeigt sich bei {hobby}, wo ich eigene Ideen umsetze.' },
+  { id:'verantwortung', icon:'🧭', titel:'Verantwortungs-Anker',
+    alltag:'wenn andere sich darauf verlassen, dass du etwas zuverlässig erledigst',
+    schritt:'Übernimm diese Woche eine kleine Aufgabe komplett selbstständig.',
+    elternBeob:'Achten Sie darauf, wie zuverlässig Ihr Kind seine Aufgaben rund um {hobby} erledigt, ohne dass Sie erinnern müssen. Sprechen Sie genau das aus.',
+    elternFrage:'Ich hab gesehen, wie verlässlich du dich um {hobby} kümmerst. Wo im Alltag zeigst du das noch?',
+    lehrBeob:'Beobachten Sie, wann die/der Jugendliche zuverlässig Aufgaben übernimmt, ohne dass nachgefragt werden muss. Das ist ein guter Ankerpunkt für positive Rückmeldung.',
+    lehrFrage:'Ich hab bemerkt, wie zuverlässig du bist. Wo im Schulalltag konntest du das heute zeigen?',
+    felder:['Pflege & Betreuung','Verwaltung & Organisation','Logistik'],
+    beispiele:['Pflegefachkraft','Verwaltungsfachangestellte:r','Fachkraft Lagerlogistik'],
+    anschreiben:'Bei {hobby} übernehme ich zuverlässig Verantwortung, auch ohne dass mich jemand daran erinnern muss.',
+    interview:'Ich bin zuverlässig — bei {hobby} verlassen sich andere auf mich, und das nehme ich ernst.' },
+  { id:'problem', icon:'🧩', titel:'Problem-Löser',
+    alltag:'wenn etwas nicht auf Anhieb klappt und du einen neuen Weg finden musst',
+    schritt:'Wenn heute etwas nicht klappt, probier einen zweiten Weg, bevor du aufgibst.',
+    elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} Probleme angeht, wenn etwas nicht sofort funktioniert. Das ruhige Dranbleiben statt Aufgeben ist die eigentliche Stärke.',
+    elternFrage:'Du hast bei {hobby} eine richtig gute Lösung gefunden. Wo hilft dir dieses Denken sonst noch?',
+    lehrBeob:'Beobachten Sie, wie die/der Jugendliche bei Aufgaben mit mehreren Lösungswegen vorgeht. Systematisches Vorgehen lässt sich gut auf andere Fächer übertragen.',
+    lehrFrage:'Deine Lösung bei {hobby} war clever gedacht. Wo im Unterricht könntest du genauso vorgehen?',
+    felder:['IT & Softwareentwicklung','Mechatronik & Elektrotechnik','Eventmanagement'],
+    beispiele:['Fachinformatiker:in Anwendungsentwicklung','Mechatroniker:in','Veranstaltungskaufmann/-frau'],
+    anschreiben:'Durch {hobby} habe ich gelernt, Probleme systematisch anzugehen und eigenständig Lösungswege zu finden.',
+    interview:'Ich geh Probleme gern systematisch an — bei {hobby} übe ich das, wenn etwas nicht auf Anhieb funktioniert.' },
+  { id:'mutig', icon:'💪', titel:'Mutig & Stressfest',
+    alltag:'wenn eine neue oder unangenehme Situation ansteht, vor der du dich erstmal überwinden musst',
+    schritt:'Trau dich diese Woche an eine Sache, vor der du bisher zurückgeschreckt bist.',
+    elternBeob:'Achten Sie darauf, wie Ihr Kind bei {hobby} mit Rückschlägen oder ungemütlichen Momenten umgeht. Genau dieses Dranbleiben trotz Gegenwind ist bemerkenswert.',
+    elternFrage:'Ich hab gesehen, wie du bei {hobby} auch bei Gegenwind dranbleibst. Wo brauchst du diesen Mut sonst noch?',
+    lehrBeob:'Beobachten Sie, wie die/der Jugendliche mit Fehlern oder neuen, unsicheren Situationen umgeht. Genau das ist ein guter Moment für ehrliche Anerkennung.',
+    lehrFrage:'Du hast bei {hobby} richtig Mut bewiesen. Wo im Schulalltag könntest du dir das auch zutrauen?',
+    felder:['Rettungsdienst & Sicherheit','Handwerk im Außeneinsatz','Sport & Bewegung'],
+    beispiele:['Notfallsanitäter:in','Landschaftsgärtner:in','Sport- und Fitnesskaufmann/-frau'],
+    anschreiben:'{hobby} hat mich gelehrt, auch bei Rückschlägen dranzubleiben und mutig Neues auszuprobieren.',
+    interview:'Ich bin belastbar und probier gern Neues aus — genau das zeigt sich bei {hobby}, auch wenn es mal nicht auf Anhieb klappt.' }
+];
+
+var JD_BEGLEITUNG = [
+  { anlass:'Wenn du unsicher bist, was du eigentlich willst', nr:'JD-05', karteNr:5, titel:'Alle wissen schon, was sie wollen – nur ich nicht' },
+  { anlass:'Wenn du Angst hast, dich falsch zu entscheiden', nr:'JD-08', karteNr:8, titel:'Was, wenn ich meine Meinung später ändere?' },
+  { anlass:'Wenn du erstmal klären willst, was dir wirklich wichtig ist', nr:'JD-27', karteNr:27, titel:'Was mir wichtig ist' }
+];
+
+/* Alle 24 Original-Interessen aus der Skill-Matrix (Wortlaut/Skills unverändert,
+   nur um kategorie:'alltag' ergänzt), plus 8 neue Interessen für Deep-Dive-Themen,
+   Denker-Welten und die drei Chillen-Varianten. */
+var INTERESSEN = [
+  { id:'gaming', icon:'🎮', label:'Gaming', kategorie:'alltag', skills:[
+      { name:'Teamfähigkeit', desc:'Im Team koordinieren und gemeinsam gewinnen.' },
+      { name:'Strategie', desc:'Vorausdenken und Pläne an neue Situationen anpassen.' },
+      { name:'Schnelle Auffassungsgabe', desc:'Neue Situationen sofort erfassen und reagieren.' }
+  ]},
+  { id:'sport', icon:'🛹', label:'Skaten / Sport', kategorie:'alltag', skills:[
+      { name:'Ausdauer', desc:'Dranbleiben, auch wenn es anstrengend wird.' },
+      { name:'Mut', desc:'Neues wagen, auch mit Risiko zu scheitern.' },
+      { name:'Umgang mit Scheitern', desc:'Hinfallen, aufstehen, weitermachen.' }
+  ]},
+  { id:'social', icon:'📱', label:'Social Media', kategorie:'alltag', skills:[
+      { name:'Kreativität', desc:'Ideen in Bilder, Videos und Texte umsetzen.' },
+      { name:'Digitale Kompetenz', desc:'Tools und Plattformen sicher nutzen.' },
+      { name:'Selbstpräsentation', desc:'Sich und Themen überzeugend zeigen.' }
+  ]},
+  { id:'technik', icon:'🔧', label:'Reparieren / Basteln', kategorie:'alltag', skills:[
+      { name:'Logisches Denken', desc:'Schritt für Schritt folgerichtig denken.' },
+      { name:'Feinmotorik', desc:'Präzise und sauber arbeiten.' },
+      { name:'Problemlösefähigkeit', desc:'Für jedes Problem einen Weg finden.' }
+  ]},
+  { id:'familie', icon:'👨‍👩‍👧', label:'Familie', kategorie:'alltag', skills:[
+      { name:'Verantwortung', desc:'Für andere da sein, auch wenn\'s unbequem ist.' },
+      { name:'Zuverlässigkeit', desc:'Was ich zusage, halte ich auch ein.' },
+      { name:'Fürsorge', desc:'Auf die Bedürfnisse anderer achten.' }
+  ]},
+  { id:'kochen', icon:'🍳', label:'Kochen / Haushalts-Hilfe', kategorie:'alltag', skills:[
+      { name:'Prozessplanung', desc:'Mehrere Schritte so timen, dass am Ende alles passt.' },
+      { name:'Hygienebewusstsein', desc:'Sauberkeit und Ordnung als Standard, nicht als Ausnahme.' },
+      { name:'Belastbarkeit', desc:'Auch unter Zeitdruck ruhig und konzentriert bleiben.' }
+  ]},
+  { id:'zeichnen', icon:'🎨', label:'Zeichnen / Kreatives', kategorie:'alltag', skills:[
+      { name:'Auge für Details', desc:'Kleinigkeiten sehen, die anderen entgehen.' },
+      { name:'Ausdauer', desc:'An einer Sache dranbleiben, bis sie wirklich fertig ist.' },
+      { name:'Fokus', desc:'Sich über längere Zeit auf eine Aufgabe konzentrieren.' }
+  ]},
+  { id:'discord', icon:'💬', label:'Organisation (z. B. Discord-Server, Partys planen)', kategorie:'alltag', skills:[
+      { name:'Community-Management', desc:'Eine Gruppe zusammenhalten und aktiv halten.' },
+      { name:'Moderation', desc:'Konflikte schlichten und Regeln fair durchsetzen.' },
+      { name:'Technisches Setup', desc:'Tools einrichten und am Laufen halten.' }
+  ]},
+  { id:'gassi', icon:'🐕', label:'Haustier / Gassi gehen', kategorie:'alltag', skills:[
+      { name:'Verbindlichkeit', desc:'Auch bei Wind und Wetter zur vereinbarten Zeit da sein.' },
+      { name:'Verantwortungsübernahme', desc:'Für ein Lebewesen einstehen, das sich nicht selbst helfen kann.' },
+      { name:'Wetterfestigkeit', desc:'Auch bei ungemütlichen Bedingungen zuverlässig bleiben.' }
+  ]},
+  { id:'musik', icon:'🎸', label:'Musik / Instrument', kategorie:'alltag', skills:[
+      { name:'Durchhaltevermögen', desc:'Über Wochen üben, bevor sich Fortschritt zeigt.' },
+      { name:'Feingefühl für Details', desc:'Kleine Unterschiede in Ton und Timing wahrnehmen.' },
+      { name:'Auftrittssicherheit', desc:'Vor anderen etwas zeigen, auch mit Lampenfieber.' }
+  ]},
+  { id:'tanzen', icon:'💃', label:'Tanzen', kategorie:'alltag', skills:[
+      { name:'Körperbewusstsein', desc:'Bewegungen gezielt steuern und wahrnehmen.' },
+      { name:'Rhythmusgefühl', desc:'Sich in Timing und Struktur einfügen.' },
+      { name:'Teamkoordination', desc:'Sich mit anderen synchronisieren, z. B. bei Gruppenchoreos.' }
+  ]},
+  { id:'foto', icon:'📷', label:'Fotografieren / Filmen / Videos schneiden', kategorie:'alltag', skills:[
+      { name:'Bildkomposition', desc:'Aus vielen Möglichkeiten die stimmige Perspektive wählen.' },
+      { name:'Geduld', desc:'Auf den richtigen Moment warten können.' },
+      { name:'Technisches Verständnis', desc:'Geräte und Einstellungen gezielt nutzen.' }
+  ]},
+  { id:'lesen', icon:'📚', label:'Lesen', kategorie:'alltag', skills:[
+      { name:'Konzentrationsfähigkeit', desc:'Sich über längere Zeit in einen Text vertiefen.' },
+      { name:'Wortschatz', desc:'Sich klar und differenziert ausdrücken können.' },
+      { name:'Empathie', desc:'Sich in andere Perspektiven hineindenken.' }
+  ]},
+  { id:'schreiben', icon:'📝', label:'Schreiben (Geschichten, Blog)', kategorie:'alltag', skills:[
+      { name:'Ausdrucksfähigkeit', desc:'Gedanken so formulieren, dass andere sie verstehen.' },
+      { name:'Strukturierung von Gedanken', desc:'Aus Ideen eine nachvollziehbare Ordnung machen.' },
+      { name:'Durchhaltevermögen', desc:'Ein Projekt auch über viele Seiten hinweg fertigstellen.' }
+  ]},
+  { id:'mannschaftssport', icon:'⚽', label:'Mannschaftssport', kategorie:'alltag', skills:[
+      { name:'Teamfähigkeit', desc:'Eigene Interessen zugunsten der Gruppe zurückstellen können.' },
+      { name:'Fairplay', desc:'Sich auch bei Niederlagen an Regeln halten.' },
+      { name:'Belastbarkeit unter Druck', desc:'In entscheidenden Momenten einen klaren Kopf behalten.' }
+  ]},
+  { id:'babysitten', icon:'👶', label:'Babysitten / Geschwister betreuen', kategorie:'alltag', skills:[
+      { name:'Verantwortung', desc:'Für die Sicherheit eines anderen Menschen sorgen.' },
+      { name:'Geduld', desc:'Ruhig bleiben, auch wenn es laut oder chaotisch wird.' },
+      { name:'Konfliktlösung', desc:'Streit schlichten und Kompromisse finden.' }
+  ]},
+  { id:'nebenjob', icon:'💼', label:'Nebenjob (Kiosk, Aushilfe, Zeitung austragen)', kategorie:'alltag', skills:[
+      { name:'Pünktlichkeit', desc:'Verlässlich zur vereinbarten Zeit erscheinen.' },
+      { name:'Kundenkontakt', desc:'Freundlich und professionell mit Fremden umgehen.' },
+      { name:'Zuverlässigkeit', desc:'Aufgaben auch ohne ständige Kontrolle erledigen.' }
+  ]},
+  { id:'naehen', icon:'🧵', label:'Nähen / Mode gestalten', kategorie:'alltag', skills:[
+      { name:'Feinmotorik', desc:'Mit den Händen präzise und sauber arbeiten.' },
+      { name:'Kreativität', desc:'Eigene Ideen in ein fertiges Ergebnis umsetzen.' },
+      { name:'Präzision', desc:'Genau nach Maß und Plan arbeiten.' }
+  ]},
+  { id:'backen', icon:'🧁', label:'Backen', kategorie:'alltag', skills:[
+      { name:'Genauigkeit beim Abmessen', desc:'Mengen und Zeiten exakt einhalten.' },
+      { name:'Geduld', desc:'Warten können, bis ein Prozess von selbst fertig wird.' },
+      { name:'Planung', desc:'Reihenfolge und Timing im Voraus durchdenken.' }
+  ]},
+  { id:'sammeln', icon:'🗂️', label:'Sammeln (Karten, Modelle etc.)', kategorie:'alltag', skills:[
+      { name:'Systematisches Denken', desc:'Dinge sinnvoll ordnen und kategorisieren.' },
+      { name:'Sorgfalt', desc:'Mit Gegenständen und Details behutsam umgehen.' },
+      { name:'Ausdauer', desc:'Über lange Zeit an einem Ziel dranbleiben.' }
+  ]},
+  { id:'ehrenamt', icon:'🤝', label:'Ehrenamt / Freiwilligenarbeit', kategorie:'alltag', skills:[
+      { name:'Empathie', desc:'Die Bedürfnisse anderer erkennen und ernst nehmen.' },
+      { name:'Zuverlässigkeit', desc:'Sich auf freiwilliger Basis trotzdem verbindlich einbringen.' },
+      { name:'Teamfähigkeit', desc:'Mit ganz unterschiedlichen Menschen zusammenarbeiten.' }
+  ]},
+  { id:'kampfsport', icon:'🥋', label:'Kampfsport', kategorie:'alltag', skills:[
+      { name:'Selbstdisziplin', desc:'Sich auch ohne äußeren Druck an Regeln halten.' },
+      { name:'Respekt', desc:'Gegenüber Trainer:innen und Partner:innen fair auftreten.' },
+      { name:'Körperbeherrschung', desc:'Kraft und Bewegung kontrolliert einsetzen.' }
+  ]},
+  { id:'angeln', icon:'🎣', label:'Angeln / Draußen sein', kategorie:'alltag', skills:[
+      { name:'Geduld', desc:'Lange auf ein Ergebnis warten, ohne aufzugeben.' },
+      { name:'Naturverbundenheit', desc:'Aufmerksam mit der Umgebung umgehen.' },
+      { name:'Ruhe bewahren', desc:'Auch bei Stillstand gelassen bleiben.' }
+  ]},
+  { id:'ordnung', icon:'🗓️', label:'Ordnung / Selbstorganisation', kategorie:'alltag', skills:[
+      { name:'Selbstorganisation', desc:'Sich eigene Struktur geben, ohne dass jemand mahnt.' },
+      { name:'Struktur', desc:'Aufgaben und Dinge sinnvoll einteilen.' },
+      { name:'Eigeninitiative', desc:'Dinge angehen, bevor sie zum Problem werden.' }
+  ]},
+
+  /* ---- Neu v2.0: Deep-Dive-Themen (Spezialinteressen, z. B. ASS) ---- */
+  { id:'popkultur', icon:'🌌', label:'Popkultur-Lore & Sammeln (z. B. Star Wars, Anime, Comics)', kategorie:'deepdive', skills:[
+      { name:'Deep-Dive-Analytiker', desc:'Sich stundenlang in ein Themenfeld vertiefen, ohne dass es anstrengt.' },
+      { name:'Systemanalyse', desc:'Komplexe Figuren-, Regel- und Zeitlinien-Geflechte durchschauen.' },
+      { name:'Archivierungstalent', desc:'Große Wissensmengen strukturiert ordnen und wiederfindbar machen.' }
+  ]},
+  { id:'systemstrukturen', icon:'🚆', label:'System-Strukturen (Fahrpläne, Liniennetze, Automarken)', kategorie:'deepdive', skills:[
+      { name:'Struktur-Motor', desc:'Muster in großen, komplexen Systemen erkennen und ordnen.' },
+      { name:'Fehleranalyse', desc:'Abweichungen und Unstimmigkeiten in Abläufen sofort auffinden.' },
+      { name:'Stoische Präzision', desc:'Auch bei viel Wiederholung konzentriert und genau bleiben.' }
+  ]},
+
+  /* ---- Neu v2.0: Denker- & Tüftler-Welten (Hochbegabung) ---- */
+  { id:'weltenbauer', icon:'🗺️', label:'Eigene Welten erschaffen (Pen-and-Paper leiten, Game-Modding)', kategorie:'denker', skills:[
+      { name:'Weltenbauer', desc:'Komplexe, in sich stimmige Regelsysteme und Welten von Grund auf entwerfen.' },
+      { name:'Kreativität', desc:'Eigene Ideen in ein fertiges, spielbares Ergebnis umsetzen.' },
+      { name:'Konzeptionelles Denken', desc:'Viele bewegliche Teile so verzahnen, dass ein großes Ganzes funktioniert.' }
+  ]},
+  { id:'strategie', icon:'♟️', label:'Systeme knacken (Strategiespiele, Schach)', kategorie:'denker', skills:[
+      { name:'Strategie', desc:'Mehrere Züge vorausdenken und Pläne an neue Situationen anpassen.' },
+      { name:'Struktur-Motor', desc:'Muster im Spiel des Gegenübers erkennen, bevor er sie selbst sieht.' },
+      { name:'Ruhe bewahren', desc:'Auch unter Zeitdruck einen klaren Kopf behalten.' }
+  ]},
+  { id:'deepthink', icon:'🔭', label:'Deep-Dive-Recherchen (Philosophie, Physik-Theorien)', kategorie:'denker', skills:[
+      { name:'Deep-Dive-Analytiker', desc:'Sich in ein anspruchsvolles Thema vertiefen, bis es wirklich verstanden ist.' },
+      { name:'Kritisches Denken', desc:'Aussagen und Theorien systematisch hinterfragen statt sie einfach zu übernehmen.' },
+      { name:'Konzentrationsfähigkeit', desc:'Über lange Zeit an komplexen Gedankengängen dranbleiben.' }
+  ]},
+
+  /* ---- Neu v2.0: Chillen (systemisches Reframing, Säule 5) ---- */
+  { id:'chillen_freunde', icon:'🛋️', label:'Chillen mit Freunden', kategorie:'chillen', skills:[
+      { name:'Beziehungs-Anker', desc:'Soziale Bindungen halten, ohne dass ein Ziel dahinterstehen muss.' },
+      { name:'Soziale Antennen', desc:'Stimmungen und Gruppendynamik intuitiv erfassen.' },
+      { name:'Deeskalationstoleranz', desc:'Reibung in der Gruppe abfedern, bevor daraus Streit wird.' }
+  ]},
+  { id:'chillen_allein', icon:'🎧', label:'Chillen allein (Musik, Rückzug, Reizregulation)', kategorie:'chillen', skills:[
+      { name:'Ruhepol', desc:'Bewusst Reize herunterfahren, um wieder klar bei sich zu sein.' },
+      { name:'Selbstfürsorge', desc:'Eigene Grenzen erkennen und sich rechtzeitig Erholung holen.' },
+      { name:'Krisen-Kompetenz', desc:'Eine eigene Rückzugs-Strategie für stressige Momente parat haben.' }
+  ]},
+  { id:'chillen_beobachter', icon:'👀', label:'Chillen als Beobachter (im Trubel dabei, aber am Rand)', kategorie:'chillen', skills:[
+      { name:'Stoischer Beobachter', desc:'Auch in lauten, hektischen Situationen gelassen den Überblick behalten.' },
+      { name:'Analytische Ruhe', desc:'Genau wahrnehmen, was um einen herum passiert, ohne sich hineinziehen zu lassen.' },
+      { name:'Belastbarkeit', desc:'Trubel aushalten, ohne selbst unruhig zu werden.' }
+  ]}
+];
+
+/* ---- Neu v2.0: Frust-Check (Tinder-Swipe-Ausschlussprinzip, Säule 6) ---- */
+var FRUST_ITEMS = [
+  { id:'early_mornings', trigger:'Früh aufstehen — der Wecker am Morgen ist mein Feind', kurz:'Kein Bock auf früh aufstehen',
+    reframeTitel:'Pragmatischer Spätaktiv-Spezialist', skillName:'Spätaktiv-Kompetenz', clusterId:'verantwortung',
+    reframeText:'Du brauchst keine 6-Uhr-Schicht, um gut zu arbeiten — du brauchst die richtige Zeit dafür.',
+    felder:['Spätschichten (z. B. IT-Support, Gastronomie)','Flexible Gleitzeit-Modelle'] },
+  { id:'annoying_customers', trigger:'Mit fremden Leuten labern müssen', kurz:'Kein Bock auf Smalltalk',
+    reframeTitel:'Fokus-Spezialist im Hintergrund', skillName:'Fokus im Hintergrund', clusterId:'fokus',
+    reframeText:'Du arbeitest am besten, wenn dich niemand ständig anspricht — das ist eine Stärke, kein Makel.',
+    felder:['Daten- & IT-Verarbeitung','Lager- & Qualitätskontrolle'] },
+  { id:'endless_sitting', trigger:'Ewiges Stillsitzen', kurz:'Kein Bock auf Stillsitzen',
+    reframeTitel:'Dynamischer Praktiker der Tat', skillName:'Praktiker der Tat', clusterId:'mutig',
+    reframeText:'Du brauchst Bewegung und sichtbare Ergebnisse — kein Stuhl, der dich den ganzen Tag festhält.',
+    felder:['Logistik & Kommissionierung','Garten- & Grünpflege'] },
+  { id:'constant_orders', trigger:'Sich ständig reinreden lassen müssen', kurz:'Kein Bock auf Befehle',
+    reframeTitel:'Eigenverantwortlicher Qualitäts-Optimierer', skillName:'Kritischer Querdenker', clusterId:'problem',
+    reframeText:'Du hinterfragst Anweisungen, statt sie blind zu befolgen — genau das macht gute Qualitätskontrolle aus.',
+    felder:['Qualitätsprüfung & Testing','Eigenständige Arbeitsbereiche'] },
+  { id:'boring_paperwork', trigger:'Bürokratischer Schreibkram', kurz:'Kein Bock auf Formulare',
+    reframeTitel:'Direkter Umsetzer ohne Schnörkel', skillName:'Direkter Umsetzer', clusterId:'verantwortung',
+    reframeText:'Du willst anpacken statt Formulare ausfüllen — das ist eine klare Präferenz, kein Manko.',
+    felder:['Handwerkliche Fertigung','Praktische Kommissionierung'] },
+  { id:'minimalismus', trigger:'Nur das unbedingt Nötigste tun wollen', kurz:'Nur das Nötigste',
+    reframeTitel:'Pragmatischer Prozess-Optimierer', skillName:'Prozess-Optimierer', clusterId:'problem',
+    reframeText:'Du suchst instinktiv den effizientesten Weg — Betriebe, die Abläufe verschlanken wollen, suchen genau das.',
+    felder:['Prozessoptimierung','Effiziente Abläufe in Lager & Produktion'] }
+];
+
+/* ---- Neu v2.0: Zeitarbeits-Toolbox (Onboarding-Spickzettel, Säule 7) ---- */
+var TOOLBOX_ITEMS = [
+  { id:'noise_cancelling_permission', kategorie:'Arbeitsplatz · Reize & Fokus',
+    statement:'Ich bitte um Erlaubnis für Noise-Cancelling-Kopfhörer bei konzentrierter Arbeit.',
+    benefit:'Sichert maximale Fehlerfreiheit und Konzentration durch Reizabschirmung.' },
+  { id:'written_checklist_first_day', kategorie:'Aufgaben · Struktur & Klarheit',
+    statement:'Ich bitte darum, wichtige Arbeitsschritte und Aufgaben am ersten Tag schriftlich oder als Liste zu erhalten.',
+    benefit:'Verhindert Missverständnisse und beschleunigt die selbstständige Einarbeitung deutlich.' },
+  { id:'short_scheduled_breaks', kategorie:'Pausen · Energiemanagement',
+    statement:'Ich bitte um kurze, fest einplanbare Kurzpausen (z. B. 5 Min. alle 90 Min.) statt einer einzigen großen Pause.',
+    benefit:'Vermeidet mentale Erschöpfung und hält die Arbeitsqualität über den Tag hinweg konstant hoch.' },
+  { id:'direct_concrete_feedback', kategorie:'Kommunikation · Feedback & Haltung',
+    statement:'Ich bitte um direktes und konkretes Feedback zu meiner Arbeit anstelle von indirekten Hinweisen.',
+    benefit:'Ermöglicht sofortige Kurskorrektur und gibt emotionale Sicherheit.' }
+];
+
+var ausgewaehlt = [];
+var transferAuswahl = {};
+var frustEntschieden = {};
+var toolboxAuswahl = {};
+var jobHopperAktiv = false;
+var aktiverModus = 'interessen';
+var aktiverTab = 'jugend';
+
+function listeVerbinden(arr){
+  if (arr.length === 0) return '';
+  if (arr.length === 1) return arr[0];
+  return arr.slice(0, -1).join(', ') + ' und ' + arr[arr.length - 1];
+}
+
+/* ---------- Modus-Umschaltung (Interessen / Frust-Check / Toolbox) ---------- */
+function modusWechseln(m){
+  aktiverModus = m;
+  document.getElementById('modusInteressen').classList.toggle('aktiv', m === 'interessen');
+  document.getElementById('modusFrust').classList.toggle('aktiv', m === 'frust');
+  document.getElementById('modusToolbox').classList.toggle('aktiv', m === 'toolbox');
+  document.getElementById('ansichtInteressen').style.display = m === 'interessen' ? 'block' : 'none';
+  document.getElementById('ansichtFrust').style.display = m === 'frust' ? 'block' : 'none';
+  document.getElementById('ansichtToolbox').style.display = m === 'toolbox' ? 'block' : 'none';
+  if (m === 'frust') frustRendern();
+  if (m === 'toolbox') toolboxRendern();
+}
+
+/* ---------- Tab 1: Interessen-Check ---------- */
+function interessenListeRendern(){
+  var wrap = document.getElementById('interessenListe');
+  wrap.innerHTML = '';
+  KATEGORIEN.forEach(function(kat){
+    var items = INTERESSEN.filter(function(h){ return h.kategorie === kat.id; });
+    if (!items.length) return;
+    var gruppe = document.createElement('div');
+    gruppe.className = 'kategorie-gruppe';
+    var kopf = document.createElement('div');
+    kopf.className = 'kategorie-kopf';
+    kopf.innerHTML = '<span class="kategorie-titel">'+kat.icon+' '+kat.label+'</span>' + (kat.hinweis ? '<span class="kategorie-hinweis">'+kat.hinweis+'</span>' : '');
+    gruppe.appendChild(kopf);
+    var chips = document.createElement('div');
+    chips.className = 'kategorie-chips';
+    items.forEach(function(h){
+      var btn = document.createElement('button');
+      btn.className = 'hobby-chip' + (ausgewaehlt.indexOf(h.id) !== -1 ? ' aktiv' : '');
+      btn.innerHTML = '<span class="icon">'+h.icon+'</span><span class="label">'+h.label+'</span>';
+      btn.addEventListener('click', function(){ interesseToggeln(h.id); });
+      chips.appendChild(btn);
+    });
+    gruppe.appendChild(chips);
+    wrap.appendChild(gruppe);
+  });
+}
+
+function interesseToggeln(id){
+  var idx = ausgewaehlt.indexOf(id);
+  if (idx !== -1) ausgewaehlt.splice(idx, 1);
+  else ausgewaehlt.push(id);
+  interessenListeRendern();
+  ergebnisseRendern();
+}
+
+function ergebnisseRendern(){
+  var wrap = document.getElementById('ergebnisse');
+  if (ausgewaehlt.length === 0) {
+    wrap.innerHTML = '<div class="leer-hinweis" id="leerHinweis">Wähl oben mindestens ein Interesse aus, um deine geheimen Stärken freizuschalten.</div>';
+    aktionsleisteAktualisieren();
+    return;
+  }
+  wrap.innerHTML = '';
+  INTERESSEN.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; }).forEach(function(h){
+    var block = document.createElement('div');
+    block.className = 'hobby-block';
+    var skillsHtml = h.skills.map(function(s, i){
+      var key = h.id + '_' + i;
+      var gewaehlterJob = transferAuswahl[key];
+      var chips = JOBS.map(function(job){
+        var aktiv = gewaehlterJob === job ? ' aktiv' : '';
+        return '<button type="button" class="transfer-chip'+aktiv+'" onclick="transferWaehlen(\''+h.id+'\','+i+',\''+job+'\')">'+job+'</button>';
+      }).join('');
+      return '<div class="skill-karte"><div class="skill-name">🔓 '+s.name+'</div><div class="skill-desc">'+s.desc+'</div>'+
+        '<div class="transfer"><div class="transfer-frage">Transfer-Check: In welchem Job (z. B. Büro, Werkstatt, Pflege) hilft dir das am meisten?</div><div class="transfer-chips">'+chips+'</div></div></div>';
+    }).join('');
+    block.innerHTML = '<div class="hobby-block-titel"><span>'+h.icon+'</span><span>'+h.label+' — deine freigeschalteten Stärken</span></div><div class="skill-grid">'+skillsHtml+'</div>';
+    wrap.appendChild(block);
+  });
+  aktionsleisteAktualisieren();
+}
+
+function transferWaehlen(hobbyId, skillIdx, job){
+  var key = hobbyId + '_' + skillIdx;
+  transferAuswahl[key] = (transferAuswahl[key] === job) ? undefined : job;
+  ergebnisseRendern();
+}
+
+/* ---------- Tab 2: Frust-Check ---------- */
+function frustRendern(){
+  var wrap = document.getElementById('frustWrap');
+  var offen = FRUST_ITEMS.filter(function(f){ return !frustEntschieden[f.id]; });
+  var verlaufHtml = '<div class="frust-verlauf">' + FRUST_ITEMS.filter(function(f){ return frustEntschieden[f.id]; }).map(function(f){
+    var links = frustEntschieden[f.id] === 'links';
+    return '<span class="frust-badge' + (links ? '' : ' neutral') + '">' + (links ? '🔓 ' + f.skillName : '↷ ' + f.kurz) + '</span>';
+  }).join('') + '</div>';
+
+  if (!offen.length) {
+    wrap.innerHTML = '<div class="frust-fertig">✅ Alle Karten durchgeswiped!<br>Deine Ausschlüsse sind jetzt als Stärken in deinem Superpower-Profil hinterlegt.</div>' + verlaufHtml +
+      '<div style="text-align:center;margin-top:1rem;"><button class="modus-btn" onclick="frustZuruecksetzen()" style="background:transparent;">↺ Nochmal von vorn</button></div>';
+    aktionsleisteAktualisieren();
+    return;
+  }
+  var f = offen[0];
+  wrap.innerHTML = '<div class="swipe-card" id="swipeCard" data-id="'+f.id+'">' +
+     '<div class="swipe-zaehler">Karte ' + (FRUST_ITEMS.length - offen.length + 1) + ' von ' + FRUST_ITEMS.length + '</div>' +
+     '<div class="swipe-frage">'+f.trigger+'</div>' +
+     '<div class="swipe-hinweis">Nix für dich? Wisch nach links oder tippe ❌ — wir machen daraus eine Stärke. Passt für dich eigentlich ganz gut? Wisch nach rechts oder tippe ✅.</div>' +
+     '<div class="swipe-btns">' +
+       '<button class="swipe-btn ablehnen" onclick="frustEntscheiden(\''+f.id+'\',\'links\')">❌ Nix für mich</button>' +
+       '<button class="swipe-btn passt" onclick="frustEntscheiden(\''+f.id+'\',\'rechts\')">✅ Passt eigentlich</button>' +
+     '</div></div>' + verlaufHtml;
+  swipeDragAktivieren();
+  aktionsleisteAktualisieren();
+}
+
+function swipeDragAktivieren(){
+  var card = document.getElementById('swipeCard');
+  if (!card) return;
+  var startX = 0, deltaX = 0, dragging = false;
+  var id = card.getAttribute('data-id');
+  function starten(e){ dragging = true; startX = (e.touches ? e.touches[0].clientX : e.clientX); card.style.transition = 'none'; }
+  function bewegen(e){
+    if (!dragging) return;
+    var x = (e.touches ? e.touches[0].clientX : e.clientX);
+    deltaX = x - startX;
+    card.style.transform = 'translateX('+deltaX+'px) rotate('+(deltaX/18)+'deg)';
+  }
+  function loslassen(){
+    if (!dragging) return;
+    dragging = false;
+    card.style.transition = 'transform .25s ease';
+    if (deltaX < -80) {
+      card.style.transform = 'translateX(-420px) rotate(-18deg)';
+      setTimeout(function(){ frustEntscheiden(id, 'links'); }, 160);
+    } else if (deltaX > 80) {
+      card.style.transform = 'translateX(420px) rotate(18deg)';
+      setTimeout(function(){ frustEntscheiden(id, 'rechts'); }, 160);
+    } else {
+      card.style.transform = 'translateX(0) rotate(0)';
+    }
+    deltaX = 0;
+  }
+  card.addEventListener('pointerdown', starten);
+  card.addEventListener('pointermove', bewegen);
+  card.addEventListener('pointerup', loslassen);
+  card.addEventListener('pointerleave', function(){ if (dragging) loslassen(); });
+}
+
+function frustEntscheiden(id, richtung){
+  frustEntschieden[id] = richtung;
+  frustRendern();
+}
+
+function frustZuruecksetzen(){
+  frustEntschieden = {};
+  frustRendern();
+}
+
+/* ---------- Tab 3: Zeitarbeits-Toolbox ---------- */
+function toolboxRendern(){
+  var wrap = document.getElementById('toolboxWrap');
+  var jobHopperHtml = '<div class="toolbox-frage">' +
+    '<label class="toolbox-checkbox"><input type="checkbox" id="jobHopperCheck" ' + (jobHopperAktiv ? 'checked' : '') + ' onchange="jobHopperToggeln(this.checked)"> ' +
+    'Ich hatte in der Vergangenheit mehrere kurze Jobs oder Einsätze (Zeitarbeit, Praktika, Aushilfsjobs).</label>' +
+    (jobHopperAktiv ? '<div class="reframe-hinweis">💪 Das ist deine <b>Sprint-Kompetenz</b> (schnelle Einarbeitung, Mut zur Veränderung) und dein <b>Vielseitigkeits-Anker</b> (Anpassung an neue Teams) — beides ist jetzt in deinem Superpower-Profil hinterlegt.</div>' : '') +
+  '</div>';
+  var itemsHtml = TOOLBOX_ITEMS.map(function(t){
+    var checked = toolboxAuswahl[t.id] ? 'checked' : '';
+    return '<label class="toolbox-item"><input type="checkbox" ' + checked + ' onchange="toolboxToggeln(\''+t.id+'\', this.checked)">' +
+      '<div><div class="toolbox-kategorie">'+t.kategorie+'</div><div class="toolbox-statement">'+t.statement+'</div></div></label>';
+  }).join('');
+  wrap.innerHTML = jobHopperHtml +
+    '<div class="kategorie-hinweis" style="display:block;margin-bottom:.6rem;">Für den ersten Tag beim Einsatzbetrieb: Kreuz an, was dir hilft — daraus entsteht dein Onboarding-Spickzettel zum Mitgeben.</div>' +
+    '<div class="toolbox-liste">' + itemsHtml + '</div>' +
+    '<button class="save-btn" style="margin-top:1.2rem;" onclick="toolboxSpickzettelOeffnen()">📋 Onboarding-Spickzettel erzeugen</button>';
+}
+
+function jobHopperToggeln(checked){
+  jobHopperAktiv = checked;
+  toolboxRendern();
+  aktionsleisteAktualisieren();
+}
+
+function toolboxToggeln(id, checked){
+  toolboxAuswahl[id] = checked;
+}
+
+function toolboxSpickzettelOeffnen(){
+  var ausgewaehlteItems = TOOLBOX_ITEMS.filter(function(t){ return toolboxAuswahl[t.id]; });
+  var text = 'Onboarding-Spickzettel für den ersten Arbeitstag\n——————————————————————\n\n';
+  if (!ausgewaehlteItems.length) {
+    text += 'Noch keine Bedürfnisse angekreuzt. Geh zurück zur Zeitarbeits-Toolbox und wähl aus, was dir am ersten Tag hilft.\n';
+  } else {
+    ausgewaehlteItems.forEach(function(t){
+      text += '☑ ' + t.statement + '\n   → Nutzen für den Betrieb: ' + t.benefit + '\n\n';
+    });
+  }
+  if (jobHopperAktiv) {
+    text += 'Hintergrund: Mehrere kurze Einsätze bedeuten schnelle Einarbeitung, hohe Anpassungsfähigkeit und Mut zur Veränderung (Sprint-Kompetenz & Vielseitigkeits-Anker) — kein Makel im Lebenslauf.\n\n';
+  }
+  text += '— erstellt mit KLARTEXT · Interessen-Check';
+  document.getElementById('toolboxText').value = text;
+  document.getElementById('toolboxCopyFeedback').textContent = '';
+  document.getElementById('toolboxOverlay').classList.add('zeigen');
+}
+
+function toolboxModalSchliessen(){
+  document.getElementById('toolboxOverlay').classList.remove('zeigen');
+}
+
+function toolboxKopieren(){
+  var textarea = document.getElementById('toolboxText');
+  var feedback = document.getElementById('toolboxCopyFeedback');
+  textarea.select();
+  textarea.setSelectionRange(0, 999999);
+  var kopiert = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(textarea.value); kopiert = true; }
+    else { kopiert = document.execCommand('copy'); }
+  } catch(e) { kopiert = false; }
+  feedback.textContent = kopiert ? '✓ In die Zwischenablage kopiert!' : 'Bitte manuell mit Strg/Cmd+C kopieren.';
+}
+
+/* ---------- Gemeinsame Aktionsleiste (über alle 3 Tabs hinweg) ---------- */
+function beitraegeVorhanden(){
+  if (ausgewaehlt.length > 0) return true;
+  if (Object.keys(frustEntschieden).length > 0) return true;
+  if (jobHopperAktiv) return true;
+  return false;
+}
+
+function aktionsleisteAktualisieren(){
+  var aktiv = beitraegeVorhanden();
+  document.getElementById('saveBtn').disabled = !aktiv;
+  document.getElementById('profilBtn').disabled = !aktiv;
+}
+
+/* ---------- Superpower-Profil: aggregiert Interessen + Frust-Check + Toolbox ---------- */
+function clusterDatenBerechnen(){
+  var daten = {};
+  CLUSTERS.forEach(function(c){ daten[c.id] = { hobbys: [], skills: [] }; });
+
+  function eintragen(clusterId, hobbyLabel, skillName, job){
+    if (!clusterId || !daten[clusterId]) return;
+    if (daten[clusterId].hobbys.indexOf(hobbyLabel) === -1) daten[clusterId].hobbys.push(hobbyLabel);
+    daten[clusterId].skills.push({ name: skillName, hobby: hobbyLabel, job: job });
+  }
+
+  INTERESSEN.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; }).forEach(function(h){
+    h.skills.forEach(function(s, i){
+      var job = transferAuswahl[h.id + '_' + i];
+      eintragen(SKILL_CLUSTER[s.name], h.label, s.name, job);
+    });
+  });
+
+  FRUST_ITEMS.forEach(function(f){
+    if (frustEntschieden[f.id] === 'links') {
+      eintragen(f.clusterId, 'Frust-Check: ' + f.kurz, f.skillName);
+    }
+  });
+
+  if (jobHopperAktiv) {
+    eintragen('mutig', 'Zeitarbeits-Erfahrung', 'Sprint-Kompetenz');
+    eintragen('team', 'Zeitarbeits-Erfahrung', 'Vielseitigkeits-Anker');
+  }
+
+  return daten;
+}
+
+function profilOeffnen(){
+  if (!beitraegeVorhanden()) return;
+  aktiverTab = 'jugend';
+  document.getElementById('profilOverlay').classList.add('zeigen');
+  document.getElementById('profilCopyFeedback').textContent = '';
+  tabWechseln('jugend');
+}
+
+function tabWechseln(tab){
+  aktiverTab = tab;
+  document.getElementById('tabJugend').classList.toggle('aktiv', tab === 'jugend');
+  document.getElementById('tabEltern').classList.toggle('aktiv', tab === 'eltern');
+  document.getElementById('tabLehrkraft').classList.toggle('aktiv', tab === 'lehrkraft');
+  document.getElementById('profilTitel').textContent = tab === 'jugend' ? 'Dein Superpower-Profil' : (tab === 'eltern' ? 'Ressourcen-Blick für Eltern' : 'Ressourcen-Blick für Lehrkräfte');
+  renderProfilTab();
+}
+
+function renderProfilTab(){
+  var daten = clusterDatenBerechnen();
+  var aktiveCluster = CLUSTERS.filter(function(c){ return daten[c.id].skills.length > 0; });
+  var html = '';
+
+  if (aktiverTab === 'jugend') {
+    var staerkste = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; })[0];
+    if (staerkste) {
+      html += '<div class="staerkste-zone"><div class="sz-titel">Deine stärkste Zone gerade</div>' +
+        '<div class="sz-text">'+staerkste.icon+' <b>'+staerkste.titel+'</b> — hier zeigst du besonders viele Stärken.</div>' +
+        '<div class="sz-schritt">Kleiner nächster Schritt: '+staerkste.schritt+'</div></div>';
+    }
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      var chips = daten[c.id].skills.map(function(s){
+        return '<span class="cluster-skill-chip">'+s.name+(s.job ? ' · '+s.job : '')+'</span>';
+      }).join('');
+      var felderHtml = c.felder.map(function(feld, i){
+        return '<div class="feld-zeile">• <b>'+feld+'</b> — z. B. '+c.beispiele[i]+'</div>';
+      }).join('');
+      html += '<div class="cluster-block"><div class="cluster-titel"><span>'+c.icon+'</span><span>'+c.titel+'</span></div>' +
+        '<div class="cluster-text">Weil du bei '+hobbyListe+' zeigst, wie stark du hier bist, hilft dir das genau dann, '+c.alltag+'.</div>' +
+        '<div class="cluster-skills">'+chips+'</div>' +
+        '<div class="felder-wrap"><div class="felder-label">Könnte beruflich zu dir passen</div>'+felderHtml+'</div></div>';
+    });
+    if (aktiveCluster.length > 0) {
+      var jdZeilen = JD_BEGLEITUNG.map(function(j){
+        return '<div class="jd-zeile">'+j.anlass+': <a class="jd-karten-link" href="pwa/index.html?deck=jd&karte='+j.karteNr+'" target="_blank"><b>'+j.nr+'</b> „'+j.titel+'"</a></div>';
+      }).join('');
+      html += '<div class="jd-box"><div class="jd-titel">Falls dich die Berufswahl gerade beschäftigt</div>' +
+        jdZeilen +
+        '<div class="jd-hinweis">Tippen öffnet die Karte direkt in der App. Ohne digitalen Zugang: gleiche Karten im physischen JD-Deck.</div></div>';
+    }
+    if (aktiveCluster.length > 0) {
+      var topCluster = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; }).slice(0, 2);
+      var anschreibenSaetze = topCluster.map(function(c){
+        return c.anschreiben.replace('{hobby}', listeVerbinden(daten[c.id].hobbys));
+      }).join(' ');
+      var interviewZeilen = topCluster.map(function(c){
+        return '<div class="bewerbung-text">„'+c.interview.replace('{hobby}', listeVerbinden(daten[c.id].hobbys))+'"</div>';
+      }).join('');
+
+      html += '<div class="bewerbung-box"><div class="bewerbung-titel">📝 Bausteine für Anschreiben &amp; Gespräch</div>' +
+        '<div class="bewerbung-abschnitt"><div class="bewerbung-abschnitt-label">Für dein Anschreiben</div><div class="bewerbung-text">'+anschreibenSaetze+'</div></div>' +
+        '<div class="bewerbung-abschnitt"><div class="bewerbung-abschnitt-label">Für die Frage „Was sind Ihre Stärken?"</div>'+interviewZeilen+'</div>' +
+        '<div class="bewerbung-abschnitt"><a href="KLARTEXT_Bewerbungs_Generator.html" target="_blank" style="color:#fff;font-size:.78rem;font-weight:700;">📝 Diese Sätze direkt ins Anschreiben übernehmen — Bewerbungs-Generator öffnen →</a></div>' +
+        '<div class="bewerbung-abschnitt"><a href="KLARTEXT_Superpower_Card.html" target="_blank" style="color:#fff;font-size:.78rem;font-weight:700;">🪪 Deine Top-3-Stärken als Karte zum Mitgeben drucken — Superpower-Card öffnen →</a></div>' +
+        '<div class="mut-box"><div class="mut-text">Der schwerste Schritt ist oft das Abschicken der ersten Bewerbung. Karte <a href="pwa/index.html?deck=jd&karte=37" target="_blank">JD-37 „Etwas Neues ausprobieren"</a> fragt genau danach: Was wäre dein kleinster erster Schritt — heute schon die Vorlage speichern, oder gleich abschicken?</div></div>' +
+        '</div>';
+    }
+  } else {
+    var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
+    var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      html += '<div class="cluster-block"><div class="cluster-titel"><span>'+c.icon+'</span><span>'+c.titel+'</span></div>' +
+        '<div class="cluster-text"><b>Beobachtungs-Tipp:</b> '+c[beobKey].replace('{hobby}', hobbyListe)+'</div>' +
+        '<div class="cluster-text" style="margin-top:.5rem;"><b>Gesprächsimpuls:</b> „'+c[frageKey].replace('{hobby}', hobbyListe)+'"</div>' +
+        '<div class="cluster-text" style="margin-top:.5rem;"><b>Berufsfeld-Impuls:</b> Vorgeschlagen wurden '+c.felder.join(', ')+' — als Gesprächsanlass, nicht als Festlegung.</div></div>';
+    });
+  }
+
+  document.getElementById('profilInhalt').innerHTML = html || '<div class="leer-hinweis">Keine Stärken gefunden.</div>';
+
+  if (aktiverTab === 'jugend' && aktiveCluster.length > 0) {
+    profilSpeichern(daten, aktiveCluster);
+  }
+}
+
+/* Sichert die 3 staerksten Cluster des zuletzt erzeugten Superpower-Profils lokal, damit der
+   Ressourcen-Bericht (KLARTEXT_Ressourcenbericht.html) darauf zugreifen kann — exakt derselbe
+   Key wie in KLARTEXT_Spiel_SkillMatrix.html, damit beide Tools denselben Bericht befüllen.
+   Ueberschreibt bei jedem neuen Profil den vorherigen Stand — es wird nur der jeweils
+   aktuellste Stand gespeichert, kein Verlauf. */
+var SKILLMATRIX_PROFIL_KEY = 'klartext_skillmatrix_profil_v1';
+
+function profilSpeichern(daten, aktiveCluster){
+  var top3 = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; }).slice(0, 3);
+  var eintrag = {
+    datum: new Date().toISOString(),
+    cluster: top3.map(function(c){
+      return {
+        titel: c.titel,
+        icon: c.icon,
+        hobbys: daten[c.id].hobbys,
+        felder: c.felder,
+        beispiele: c.beispiele
+      };
+    })
+  };
+  try { localStorage.setItem(SKILLMATRIX_PROFIL_KEY, JSON.stringify(eintrag)); } catch(e) {}
+}
+
+function profilSchliessen(){
+  document.getElementById('profilOverlay').classList.remove('zeigen');
+}
+
+function profilTextErzeugen(){
+  var daten = clusterDatenBerechnen();
+  var aktiveCluster = CLUSTERS.filter(function(c){ return daten[c.id].skills.length > 0; });
+  var text = '';
+  if (aktiverTab === 'jugend') {
+    text += 'Mein Superpower-Profil\n——————————————————————\n\n';
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      text += c.icon+' '+c.titel+'\n';
+      text += 'Weil du bei '+hobbyListe+' zeigst, wie stark du hier bist, hilft dir das genau dann, '+c.alltag+'.\n';
+      daten[c.id].skills.forEach(function(s){ text += '  • '+s.name+(s.job ? ' → '+s.job : '')+'\n'; });
+      text += 'Könnte beruflich zu dir passen:\n';
+      c.felder.forEach(function(feld, i){ text += '  • '+feld+' — z. B. '+c.beispiele[i]+'\n'; });
+      text += '\n';
+    });
+    if (aktiveCluster.length > 0) {
+      text += 'Falls dich die Berufswahl gerade beschäftigt (JD-Kartendeck, digital in der App oder physisch):\n';
+      JD_BEGLEITUNG.forEach(function(j){ text += '  • '+j.anlass+': '+j.nr+' „'+j.titel+'" → pwa/index.html?deck=jd&karte='+j.karteNr+'\n'; });
+      text += '\n';
+    }
+    if (aktiveCluster.length > 0) {
+      var topClusterTxt = aktiveCluster.slice().sort(function(a,b){ return daten[b.id].skills.length - daten[a.id].skills.length; }).slice(0, 2);
+      text += 'Bausteine für Anschreiben & Gespräch\n';
+      text += 'Für dein Anschreiben:\n';
+      text += '  ' + topClusterTxt.map(function(c){ return c.anschreiben.replace('{hobby}', listeVerbinden(daten[c.id].hobbys)); }).join(' ') + '\n';
+      text += 'Für die Frage „Was sind Ihre Stärken?":\n';
+      topClusterTxt.forEach(function(c){ text += '  • „'+c.interview.replace('{hobby}', listeVerbinden(daten[c.id].hobbys))+'"\n'; });
+      text += 'Mut-Impuls: Der schwerste Schritt ist oft das Abschicken der ersten Bewerbung. Karte JD-37 „Etwas Neues ausprobieren" (pwa/index.html?deck=jd&karte=37) fragt: Was wäre dein kleinster erster Schritt?\n\n';
+    }
+  } else {
+    var beobKey = aktiverTab === 'eltern' ? 'elternBeob' : 'lehrBeob';
+    var frageKey = aktiverTab === 'eltern' ? 'elternFrage' : 'lehrFrage';
+    text += (aktiverTab === 'eltern' ? 'Ressourcen-Blick für Eltern' : 'Ressourcen-Blick für Lehrkräfte') + '\n——————————————————————\n\n';
+    aktiveCluster.forEach(function(c){
+      var hobbyListe = listeVerbinden(daten[c.id].hobbys);
+      text += c.icon+' '+c.titel+'\n';
+      text += 'Beobachtungs-Tipp: '+c[beobKey].replace('{hobby}', hobbyListe)+'\n';
+      text += 'Gesprächsimpuls: „'+c[frageKey].replace('{hobby}', hobbyListe)+'"\n';
+      text += 'Berufsfeld-Impuls: '+c.felder.join(', ')+' — als Gesprächsanlass, nicht als Festlegung.\n\n';
+    });
+  }
+  text += '— erstellt mit KLARTEXT · Interessen-Check';
+  return text;
+}
+
+function profilKopieren(){
+  var text = profilTextErzeugen();
+  var feedback = document.getElementById('profilCopyFeedback');
+  var kopiert = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+      kopiert = true;
+    } else {
+      var temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      kopiert = document.execCommand('copy');
+      document.body.removeChild(temp);
+    }
+  } catch(e) { kopiert = false; }
+  feedback.textContent = kopiert ? '✓ In die Zwischenablage kopiert!' : 'Bitte manuell kopieren.';
+}
+
+/* ---------- Rohliste (schneller Copy-Export nur der gewählten Interessen) ---------- */
+function listeOeffnen(){
+  if (!beitraegeVorhanden()) return;
+  var text = 'Meine Stärken (aus meinen Interessen)\n——————————————————————\n\n';
+  var gewaehlteInteressen = INTERESSEN.filter(function(h){ return ausgewaehlt.indexOf(h.id) !== -1; });
+  gewaehlteInteressen.forEach(function(h){
+    text += h.label + ':\n';
+    h.skills.forEach(function(s, i){
+      var job = transferAuswahl[h.id + '_' + i];
+      text += '  • ' + s.name + (job ? '  →  hilfreich im Bereich: ' + job : '') + '\n';
+    });
+    text += '\n';
+  });
+  var frustLinks = FRUST_ITEMS.filter(function(f){ return frustEntschieden[f.id] === 'links'; });
+  if (frustLinks.length) {
+    text += 'Frust-Check — daraus gewordene Stärken:\n';
+    frustLinks.forEach(function(f){ text += '  • ' + f.skillName + ' (statt „' + f.kurz + '")\n'; });
+    text += '\n';
+  }
+  if (jobHopperAktiv) {
+    text += 'Zeitarbeits-/Job-Hopper-Erfahrung:\n  • Sprint-Kompetenz\n  • Vielseitigkeits-Anker\n\n';
+  }
+  text += '— erstellt mit KLARTEXT · Interessen-Check';
+  document.getElementById('listeText').value = text;
+  document.getElementById('copyFeedback').textContent = '';
+  document.getElementById('overlay').classList.add('zeigen');
+}
+
+function modalSchliessen(){
+  document.getElementById('overlay').classList.remove('zeigen');
+}
+
+function listeKopieren(){
+  var textarea = document.getElementById('listeText');
+  var feedback = document.getElementById('copyFeedback');
+  textarea.select();
+  textarea.setSelectionRange(0, 999999);
+  var kopiert = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(textarea.value);
+      kopiert = true;
+    } else {
+      kopiert = document.execCommand('copy');
+    }
+  } catch(e) { kopiert = false; }
+  feedback.textContent = kopiert ? '✓ In die Zwischenablage kopiert!' : 'Bitte manuell mit Strg/Cmd+C kopieren.';
+}
+
+interessenListeRendern();
+ergebnisseRendern();
+</script>
+<script src="KLARTEXT_ContextMapper.js"></script>
+
+</body>
+</html>

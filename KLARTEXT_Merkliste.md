@@ -4130,3 +4130,214 @@ Reichweiten-Option bleibt itch.io für die Spiele (nur Spenden-Modell, siehe Str
 
 ### Noch offen
 - Alle offenen Punkte aus Strang 91–109 weiterhin gültig.
+
+## Strang 111 (21.08.2026) — Firebase-Aufräumung Block 2 + Kartendecks-Rollensperre + Supabase-Bestandsaufnahme
+
+**Kontext:** Fortsetzung der Absicherungsarbeit an klartext-app. Erst Block 2 (Rollen-Filter für
+Glossar/Workbook/Systemanleitung, Daniel-Mann-Anonymisierung, Portale-Migration), dann ein
+Sicherheits-Bugfix (Kartendecks bleiben nach Browser-Zurück aus dem bfcache ungefiltert sichtbar),
+dann auf Nutzerinnen-Wunsch eine Bestandsaufnahme: sind alle Apps DSGVO-mäßig verkaufsbereit?
+
+**Erledigt und mit Playwright grün getestet:**
+- Glossar-Sperre (Klick-Interception auf Modul-Links M0–M8, Popup bei fehlender Berechtigung).
+- Workbook/Systemanleitung: rollenbasierte Kapitel-/Chip-Sichtbarkeit (`data-roles`-Filter).
+- "Daniel Mann" → "Daniel M." in 5 HTML-Dateien (3 zugehörige PDFs noch offen, siehe unten).
+- Portale.html: vollständig auf localStorage umgestellt, Beispiel-Kategorien ausgetauscht.
+- pwa/app.js (klartext-app, NICHT klartext-karten): Rollen-Sperre für Kartendecks (`ROLLEN_DECKS`-Map)
+  + `pageshow`-Listener, damit ein aus dem bfcache wiederhergestelltes Deck-Übersichtsfenster nach
+  Browser-Zurück wieder korrekt gefiltert wird. Bewusst nur in klartext-app umgesetzt, nicht in
+  klartext-karten (separates, cross-origin, login-freies Produkt ohne Rollenkonzept).
+- 4 tote Dateien archiviert nach `_to_delete/` (nicht gelöscht, `device_bash` kann nicht löschen):
+  DASHBOARD_mobile.html, CHAT_List.html, CHAT_New.html, CHAT_View.html.
+
+**Firebase-Audit der 9 restlichen Firebase-SDK-Dateien — Ergebnis: 4 Feature-Gruppen statt 1:**
+1. **Weiterleitungen/Übergaben**: KLARTEXT_Weiterleitungen.html (schreibt `forward`), KLARTEXT_Forward_Read.html
+   (liest `forward`+`children`), TK_Uebergaben.html (schreibt `forward/status`, aber selbst nirgends
+   verlinkt — vermutlich tot). KLARTEXT_TK_Inbox.html liest bereits teilweise aus Supabase (`weiterleitungen`-
+   Tabelle, "Phase 3/Schritt 3.2.5"), aber die anderen Dateien noch komplett auf Firebase — inkonsistenter
+   Zwischenzustand.
+2. **Feedback-System**: feedback.html/feedback.js (schreibt Firebase `feedback`), feedbackAdmin.html/
+   feedbackAdmin.js (liest/verwaltet `feedback`), KLARTEXT_Feedback_INGRA.html (schreibt ebenfalls
+   `feedback`). Live, aktiv genutzt, kein Supabase-Äquivalent vorhanden.
+3. **TK_Vertretungsassistent.html**: eigene Firebase-Knoten `personen`+`vertretung_log`, UND parallel
+   schon eine Supabase-Tabelle `kind_ingra_zuteilung` — hybrider Zwischenzustand, live genutzt
+   (verlinkt von Kinderverwaltung.html, TK_Kinderzuordnung.html, TK_Landing.html, DASHBOARD.html).
+4. **Gefundene weitere tote/verwaiste Dateien** (noch NICHT archiviert, Rückfrage stand aus):
+   KLARTEXT_Weiterleiten.html (Singular! Duplikat/Vorläufer von Weiterleitungen.html, nirgends verlinkt),
+   TK_Uebergaben.html, KLARTEXT_Feedback_TK.html, chat.js (Firebase-Chat, DASHBOARD.html hat Firebase/
+   chat.js laut eigenem Kommentar schon am 21.08.2026 entfernt — chat.js selbst liegt nur noch
+   ungenutzt im Repo).
+
+**Wichtiger Fund: SHOP_PACKAGE_AUSSCHLUSSLISTE.md** listet die meisten der oben genannten TK-/Admin-
+Dateien (Feedback_INGRA, Feedback_TK, Forward_Read, Portale, Setup_Demo_Kinder, Tagesjournal,
+Urlaubsantrag_INGRA, Weiterleiten, Weiterleitungen, TK_Landing, TK_Uebergaben, TK_Vertretungsassistent)
+als NICHT Teil des an Kund:innen verkauften App-Pakets — das sind interne Team-/TK-Werkzeuge. Senkt die
+Verkaufs-Dringlichkeit dieser Baustellen deutlich, ändert aber nichts an ihrer Wichtigkeit für Anjas
+eigenes Team.
+
+**Supabase-Bestandsaufnahme (Projekt `wtfsrgxwhdugtyuurhsh`, Account "anja2026-dev", GitHub-Login):**
+Dashboard zeigte "Keine Migrationen" — das bezieht sich nur auf das Supabase-CLI-Tracking, NICHT auf
+den echten Tabellenbestand. Tatsächlich existieren bereits 21 Tabellen, u.a. `Kinder` UND `kinder`
+(Duplikat durch Groß-/Kleinschreibung — potenzielle Fehlerquelle für künftige Foreign Keys),
+`barometer_kind`, `weiterleitungen`, `tagesjournal_eintraege`, `krankmeldungen`, `traeger`, `ingra`,
+`tk`, `fallakte`, `fall_timeline`, `fall_risikostatus`, `fallabschluss`, `meldebogen_8a`,
+`kind_ingra_zuteilung`, `person_auth_map`, `portale`, `externe_portale`, `schulen`,
+`tk_fallbesprechungen`, `zeiteintraege`. **`notizen` fehlt als einzige geprüfte Tabelle komplett** —
+bestätigt durch echten Fehler beim Testen ("Could not find the table 'public.notizen' in the schema
+cache"). Der Notizblock (KLARTEXT_Notizblock.html) speichert aktuell nichts dauerhaft. Tagesjournal
+und Krankmeldungen haben laut Nutzerin-Erfahrung weiterhin funktioniert — ihre Tabellen existieren
+tatsächlich, wurden aber nicht einzeln neu verifiziert (Spalten/RLS nicht geprüft wie bei
+weiterleitungen/barometer_kind unten).
+
+**RLS-Check (nur weiterleitungen + barometer_kind geprüft):** `barometer_kind` hat aktuell eine
+komplett offene Policy für anonyme Zugriffe (Lesen UND Schreiben ohne jede Einschränkung) — echte
+Sicherheitslücke für Kinderdaten, aber noch nicht ausgenutzt, da BAROMETER_KIND.html diese Tabelle
+noch gar nicht anspricht (weiterhin nur localStorage). `weiterleitungen` ist enger gefasst: anonymes
+Einfügen nur erlaubt für `typ='barometer' AND ziel_rolle='tk'`; die übrigen Policies
+(`authenticated_can_...`) verlangen einen echten eingeloggten Supabase-Nutzer, den es in der App
+nirgends gibt (kein `supabase.auth.signIn*` im gesamten Code gefunden) — diese Policies greifen also
+vermutlich nie in der Praxis.
+
+**Ein kombiniertes SQL-Skript aus allen 41 Migrations-Dateien** (`supabase/migrations/*.sql`, in
+Reihenfolge zusammengefügt) wurde erstellt und der Nutzerin geschickt, aber beim Ausführen kam
+sofort ein Fehler ("relation 'traeger' already exists"), da die DB eben schon teilweise bestückt ist.
+Nicht weiterverfolgt — für die Weiterleitungen/Barometer-Migration braucht es stattdessen ein
+gezieltes Diff (nur fehlende Teile ergänzen), keine Komplett-Ausführung aller 41 Dateien.
+
+**Nutzerinnen-Entscheidung (heute):** Migration "Weiterleitungen + Barometer → Supabase" erst
+gestartet ("Option 1"), dann nach dem RLS-Sicherheitsfund komplett zurückgestellt — keine
+Migrationsarbeit an diesem Strang mehr, bis neu entschieden wird.
+
+**Fazit zur eigentlichen Frage ("sind die Apps verkaufsbereit?"):** Die verkauften Kartendecks/
+Bundles (reine PDF-Inhalte bzw. eigenständige klartext-karten-PWA) sind unabhängig von alldem und
+unkritisch. Die rollenbasierte Sichtbarkeit in der eigentlichen App (das "Komplett-Zugang"-Produkt,
+79 €) ist nach der heutigen Arbeit solide und getestet. Der einzige konkret bestätigte, akute Bug ist
+der nicht-speichernde Notizblock — ob dieser Teil des Kundenpakets ist, ist noch ungeklärt.
+
+### Noch offen
+- Klären, ob KLARTEXT_Notizblock.html Teil des verkauften Kundenpakets ist (nicht in der
+  SHOP_PACKAGE_AUSSCHLUSSLISTE.md gefunden, also vermutlich ja — nicht abschließend verifiziert).
+- Fehlende `notizen`-Tabelle in Supabase anlegen, damit der Notizblock wieder speichert.
+- Tagesjournal/Krankmeldungen NICHT einzeln als kaputt bestätigt (Tabellen existieren) — aber auch
+  nicht im Detail (Spalten/RLS) neu verifiziert wie weiterleitungen/barometer_kind.
+- 4 weitere tote/verwaiste Dateien (KLARTEXT_Weiterleiten.html [Singular], TK_Uebergaben.html,
+  KLARTEXT_Feedback_TK.html, chat.js) — Archivierung nach `_to_delete/` noch nicht bestätigt/
+  durchgeführt.
+- `barometer_kind`-RLS schließen (offene anon-Policy), bevor die Barometer-Funktion je an Supabase
+  angeschlossen wird.
+- Weiterleitungen/Barometer-Migration: komplett pausiert, keine neue Entscheidung getroffen.
+- Weiterhin unbeantwortet aus vorherigen Strängen dieser Sitzung: veralteter "Wer ist wer?"-Text in
+  KLARTEXT_Systemanleitung.html (behauptet fälschlich "kein Login" für Lehrkraft/Eltern); Platzierung
+  des Datenschutz/Schweigepflicht-Merkzettels (KLARTEXT_Datenschutz.html vs. Workbook Modul 1);
+  Lehrkraft-Deeskalationssimulation (Spezifikation geprüft und für gut befunden, noch nicht gebaut);
+  3 PDF-Dateien mit "Daniel Mann" müssen manuell neu exportiert werden (HTML-Quellen sind bereits
+  korrigiert); Git-Commits für alle heutigen Batches (Block 1, Block 2, pwa-Rollensperre) stehen noch
+  aus — Befehle wurden jeweils gegeben, Ausführung durch die Nutzerin nicht bestätigt.
+
+## Strang 103 (21.08.2026) — Digistore24-Preis-Default-Bug entdeckt + 20 Verkaufsseiten korrigiert
+
+**Problem entdeckt:** Anja bemerkte, dass bei Digistore24 mehrere/alle Produkte 27,00 € zeigten,
+obwohl die dokumentierten Preise (`KLARTEXT_Digistore24_Produktliste.md`) 10–22 € vorsehen.
+Ursache identifiziert: Digistore24 füllt beim Anlegen eines neuen Zahlungsplans automatisch einen
+Platzhalter-Preis vor (diesmal 27,00 €, in früheren Strängen z. B. 37,00 €) — dieser muss jedes
+Mal manuell auf den korrekten Wert überschrieben werden, sonst wird der Platzhalter live gespeichert.
+**Noch offen (Anja macht das selbst, morgen):** bei allen betroffenen Produkten den Preis im
+Zahlungsplan von 27,00 € auf den korrekten Wert korrigieren (Liste siehe
+`KLARTEXT_Digistore24_Produktliste.md` bzw. oben in Strang 102).
+
+**Umgesetzt — 20 Verkaufsseiten korrigiert (`klartext-shop`):** Die Kartendeck-Verkaufsseiten
+zeigten unter "📄 Digital / PDF" (der Kachel mit dem echten Digistore24-Kaufbutton) noch eine alte
+Preis-SPANNE aus der Planungsphase (z. B. "15–18 €") statt des tatsächlichen festen Preises. Per
+Python-Skript in allen 20 betroffenen Dateien (KD, JD, EL, LK, TR, AT, ADHS, FS, DaZGS, DaZSek1,
+LRS, OGS, GK, TK, FK, M3, MB, HB, SMI, SP) den ersten `preis-betrag`-Wert nach "📄 Digital / PDF"
+durch den festen Preis aus der Produktliste ersetzt (18 €: KD/TR/AT/ADHS/GK/TK; 22 €: JD/EL/LK;
+15 €: FS/DaZGS/DaZSek1/LRS/OGS/M3/FK/SMI/SP; 10 €: MB/HB). Die "🃏 Print (Print-on-Demand)"-Kachel
+bewusst NICHT angefasst — die ist noch "Vormerken" per Mail, kein echtes Produkt, die Spanne dort
+bleibt also weiterhin ein Platzhalter.
+
+**Git-Lock-Problem erneut aufgetreten** (wie schon in Strang 101): `.git/index.lock` blockierte den
+Commit, ließ sich weder aus der Sandbox noch über die Geräte-Brücke von Anjas Mac aus entfernen
+(`device_bash` kann grundsätzlich keine Dateien löschen — Bridge-Limitierung, nicht reparierbar).
+Anja hat es selbst im Terminal gelöst: `ps aux | grep git` (kein laufender Prozess mehr) → `rm -f
+.git/index.lock .git/HEAD.lock` → `git commit` → `git push`. Erfolgreich gepusht als Commit
+`bb431cd` (20 files changed, 20 insertions, 20 deletions) nach
+`https://github.com/anja2026-dev/klartext-shop.git` (main).
+
+**Für die nächste Session wichtig:** `git commit`/`git push` in diesen Repos funktionieren NICHT
+zuverlässig über die Geräte-Brücke (`device_bash`) — weder Lock-Dateien lassen sich von dort
+löschen, noch ist ein GitHub-Login für `git push` verfügbar ("could not read Username"). Diese
+zwei Schritte (Lock lösen, committen, pushen) muss Anja im Zweifel immer selbst im eigenen
+Terminal ausführen; ich kann höchstens `git add`/den Diff vorbereiten.
+
+## Strang 112 (27.08.2026) — Interessen-Check v2.0, Login-Redirect-Fix, OGS-Brücke, systemweiter Rollen-/Code-Sync
+
+**Kontext:** Vier zusammenhängende Aufträge in einer Sitzung: neues Interessen-Check-Modul, ein
+Login-Bug in zwei Tools, ein komplett neues OGS-Übergabe-Tool samt neuer Rolle, und zuletzt ein
+systemweiter Sync, weil die 6 Live-Login-Codes nach den vorherigen Änderungen nicht mehr zum
+aktuellen Stand passten (blockierte Kacheln, falsches Barometer, komplett offene Downloads).
+
+**1) Interessen-Check v2.0 (eigenständiges Modul, Skill-Matrix-Datei unangetastet):**
+`KLARTEXT_Spiel_InteressenCheck.html` neu — 32 Interessen (24 original + 8 neu), Frust-Check-Swipe-Tab,
+Zeitarbeits-Toolbox-Tab. Bestehende 6 Superpower-Cluster beibehalten. Schreibt in denselben Key
+`klartext_skillmatrix_profil_v1` wie die alte Skill-Matrix — Ressourcenbericht liest ohne
+Codeänderung. Dashboard-Kachel zunächst `data-roles="jobcoach admin"`, später auf
+`"jobcoach admin ingra tk"` erweitert. Zusätzlich Entwickler-JSON-Datenmodell + pädagogischer
+Leitfaden (Word, mit Quellen: Rothlin/Werder Boreout, Singer Neurodiversität, Baron-Cohen
+Systemizing, Silverman asynchrone Entwicklung, Arthur/Rousseau Boundaryless Career, Saleebey
+Strengths Perspective).
+
+**2) Login-Redirect-Bug gefixt:** 4 Overlay-Links (Bewerbungs-Generator, Superpower-Card,
+Bericht-Button, JD-37) hatten `target="_blank"` → sessionStorage-Session fehlte im neuen Tab →
+Redirect zu Login. `target="_blank"` in beiden betroffenen Dateien entfernt, Playwright-verifiziert.
+
+**3) OGS-Brücken-Upgrade:** neues `KLARTEXT_Spiel_OGSBruecke.html` (5-Sekunden-Übergabe:
+Reizfilter-Ampel/Energie-Level/Tages-Trigger + 15-Min-Fokus-Timer mit Brainy-Bewegungspausen). Neue
+Rolle `ogs` (Code `ogs-team26`). Schreibt bewusst in eigenen Key `klartext_ogs_uebergabe_v1` statt in
+den bestehenden Reizfilter-Verlauf, um die Selbsteinschätzung der Jugendlichen nicht zu überschreiben
+(Anjas explizite Entscheidung). Ressourcenbericht additiv um Karte "🌉 OGS-Übergabe" erweitert,
+bestehende Karten unverändert. KORREKTUR direkt danach: echtes KLARTEXT-Barometer hat FÜNF Stufen
+(Grün·Stabil, Gelb·Angespannt, Orange·Belastet, Rot·Akute Krise, Grau·Erschöpft/Unklar), nicht die 3
+vereinfachten Farben, die zuerst gebaut wurden — `OGS_BAROMETER`-Array (5 Stufen, dynamisch
+gerendert) ersetzt die 3 hartcodierten Buttons; bei Grau erscheint automatisch eine
+Handlungsanweisungs-Box. Ressourcenbericht bekam eigene `OGS_BAROMETER_STUFEN`-Farbtabelle (5 Stufen
+inkl. Grau `#9CA3AF`), bewusst getrennt von `REIZFILTER_STUFEN`. Playwright-verifiziert: alle 5
+Stufen, Grau-Hinweis, Speichern+Reload-Persistenz, Bericht-Rendering, Regression Vormittag-Zeile.
+Zusätzlich (für eduki, nicht Teil der App): druckfertiges A6-Übergabe-Ticket als PDF und
+Workshop-Flyer-Text (Markdown) für Träger-Akquise.
+
+**4) Systemweiter Rollen-/Code-Sync (dieser Strang, nach Chat-Abbruch hier zu Ende geführt):**
+Anlass: die 6 Live-Codes (`sb-ingra26`→ingra, `tk-leitung26`→tk, `jc-beruf26`→jobcoach,
+`lehrkraft24`→lehrkraft, `eltern-anker`→eltern, `komplett79`→admin, alle bereits korrekt in
+`KLARTEXT_Login.html`/`LIZENZ_HASHES` gemappt) liefen auf veraltetem Stand: OGS-Brücke fehlte
+Lehrkraft, Downloads waren größtenteils komplett offen, alter Hobby-Check/Skill-Matrix stand noch
+neben dem neuen Interessen-Check.
+- `KLARTEXT_Spiele.html`: OGS-Brücke-Kachel um `lehrkraft` erweitert (`admin ogs ingra tk lehrkraft`);
+  alte "Skill-Matrix: Dein Hobby-Check"-Kachel vom Dashboard entfernt.
+- `KLARTEXT_Downloads.html`: alle 88 Kacheln jetzt mit `data-roles` getaggt (71 vorher komplett
+  offene + 17 bereits vorher korrekt getaggte, 0 verbleiben ungetaggt). Alte Skill-Matrix-Kachel im
+  Jugendliche/Jobcoach-Bereich durch Interessen-Check ersetzt (`jobcoach admin ingra tk`, analog zum
+  Dashboard), Beschreibungstexte von Bewerbungs-Generator/Superpower-Card dort ebenfalls auf
+  "Interessen-Check" umgestellt.
+- `KLARTEXT_Ressourcenbericht.html`, `KLARTEXT_Bewerbungs_Generator.html`,
+  `KLARTEXT_Superpower_Card.html`: alle verbleibenden Nutzertexte/Links "Skill-Matrix"/"Hobbys" auf
+  "Interessen-Check"/"Interessen" umgestellt (interne Variable `SKILLMATRIX_PROFIL_KEY` bewusst
+  unverändert, da gemeinsamer Speicher-Key). `target="_blank"` bei diesen Links ebenfalls entfernt
+  (gleiche Lektion wie Login-Redirect-Bug).
+- Barometer: kein Fund einer verbleibenden alten 4-Farben-Logik außerhalb der bereits in Block 3
+  korrigierten OGS-Brücke.
+- Bewusst NICHT angefasst: Fließtext-Erwähnungen von "Skill-Matrix"/"Hobby-Check" in
+  `KLARTEXT_Trainerhandbuch.html`, `KLARTEXT_Anleitungen_Tools.html`, `KLARTEXT_Glossar.html`,
+  `M0-00_Systemelemente.html`, `KLARTEXT_Spiel_WasHilftMir.html`,
+  `KLARTEXT_Ressourcenbericht_Jobcoach.html` — das sind Dokumentations-/Cross-Referenz-Texte, keine
+  Dashboard-Kacheln; Rückfrage bei Anja stand nicht im Fokus dieses Strangs, ggf. eigener Task.
+- `KLARTEXT_Login.html` selbst brauchte keine Änderung — Code→Rollen-Mapping war bereits korrekt.
+
+### Noch offen
+- Playwright-Verifikation über alle 6 Codes für die heutigen Änderungen (Block 4) — Anja um
+  Entscheidung gebeten, ob vor dem Push nötig oder ob die statische data-roles-Prüfung reicht.
+- Fließtext-Referenzen auf "Skill-Matrix"/"Hobby-Check" in 6 weiteren Dateien (siehe oben) — noch
+  nicht mit Anja geklärt, ob Update gewünscht.
+- Ältere unbestätigte Archivierung aus Strang 111 (4 tote Dateien nach `_to_delete/`) liegt weiterhin
+  unkomittiert im selben Arbeitsverzeichnis — auf Anjas Wunsch als eigener, separater Commit vor
+  diesem Strang zu committen.
+- Alle offenen Punkte aus Strang 91–110 weiterhin gültig.

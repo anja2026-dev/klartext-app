@@ -520,6 +520,7 @@ mobileBarometerStatusLaden();
       <a href="#sek-lk" class="filter-btn" data-modul="lk" title="Lehrkraft-Karten" style="border-color:var(--c-m1);color:var(--c-m1);">LK</a>
       <a href="#sek-tk" class="filter-btn" data-modul="tk" title="Teamkoordination" style="border-color:#4A148C;color:#4A148C;" data-roles="tk admin">TK</a>
       <a href="#sek-fk" class="filter-btn" data-modul="fk" title="Feuerwehrkarten" style="border-color:#C62828;color:#C62828;">FK</a>
+      <a href="#sek-ogs" class="filter-btn" data-modul="ogs" title="OGS-Workspace" style="border-color:#2FA5A0;color:#2FA5A0;" data-roles="ogs admin">OGS</a>
     </div>
     <div class="filter-group">
       <span class="filter-label">Bereich:</span>
@@ -1163,6 +1164,23 @@ mobileBarometerStatusLaden();
     </div>
   </section>
 
+  <!-- OGS-WORKSPACE -->
+  <section class="modul-sektion" id="sek-ogs" style="scroll-margin-top:135px;--sek-color:#2FA5A0;--sek-light:#E0F5F3;" data-roles="ogs admin">
+    <div class="modul-sektion-header" onclick="toggleSek(this)">
+      <div class="modul-sektion-dot">
+      <span class="sek-chevron">▼</span>
+    </div>
+      <span class="modul-sektion-titel">🧭 OGS-Workspace</span>
+      <span class="modul-sektion-sub">Klassen-Navi · Aufsichts-Spickzettel · Sofort-Tools</span>
+    </div>
+    <div class="karten-grid">
+      <a class="kachel" href="OGS_Klassen_Navi.html" data-modul="ogs" data-search="ogs klassen navi insel-set raumzonen reizfilter ruheballon" style="--kachel-color:#2FA5A0;--kachel-bg:#E0F5F3;"><div class="kachel-stripe" style="background:#2FA5A0;"></div><div class="kachel-header"><span class="kachel-nr">🧭</span><span class="kachel-emoji">🏝️</span></div><div class="kachel-body"><div class="kachel-titel">OGS-Klassen-Navi</div><div class="kachel-sub">Rauminseln ↔ digitale Tools</div><span class="kachel-tag">OGS</span></div></a>
+      <a class="kachel" href="OGS_Aufsichts_Spickzettel.html" data-modul="ogs" data-search="ogs aufsicht spickzettel deeskalation klar feuerwehr" style="--kachel-color:#2FA5A0;--kachel-bg:#E0F5F3;"><div class="kachel-stripe" style="background:#2FA5A0;"></div><div class="kachel-header"><span class="kachel-nr">📋</span><span class="kachel-emoji">🧑‍🏫</span></div><div class="kachel-body"><div class="kachel-titel">Aufsichts-Spickzettel</div><div class="kachel-sub">1-Minuten-Interventionen · ohne INGRA-Ausbildung</div><span class="kachel-tag">OGS</span></div></a>
+      <a class="kachel" href="KLARTEXT_Spiel_Reizfilter.html" data-modul="ogs" data-search="reizfilter regler ogs" style="--kachel-color:#2FA5A0;--kachel-bg:#E0F5F3;"><div class="kachel-stripe" style="background:#2FA5A0;"></div><div class="kachel-header"><span class="kachel-nr">🎚️</span><span class="kachel-emoji">🌡️</span></div><div class="kachel-body"><div class="kachel-titel">Reizfilter-Regler</div><div class="kachel-sub">Wie viel ist gerade los?</div><span class="kachel-tag">Tool</span></div></a>
+      <a class="kachel" href="KLARTEXT_Spiel_Ruheballon.html" data-modul="ogs" data-search="ruhe ballon atmen ogs" style="--kachel-color:#2FA5A0;--kachel-bg:#E0F5F3;"><div class="kachel-stripe" style="background:#2FA5A0;"></div><div class="kachel-header"><span class="kachel-nr">🎈</span><span class="kachel-emoji">🫁</span></div><div class="kachel-body"><div class="kachel-titel">Ruhe-Ballon</div><div class="kachel-sub">Kleine Atemübung zum Entspannen</div><span class="kachel-tag">Tool</span></div></a>
+    </div>
+  </section>
+
   <!-- TEAMKOORDINATION -->
   <section class="modul-sektion" id="sek-tk" style="scroll-margin-top:135px;--sek-color:#4A148C;--sek-light:#F3E5FF;" data-roles="tk admin">
     <div class="modul-sektion-header" onclick="toggleSek(this)">
@@ -1388,13 +1406,24 @@ mobileBarometerStatusLaden();
   function normalize(str) {
     return str.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9\s]/g,'');
   }
+  // ROLLEN-SCHUTZ: Filter/Suche duerfen ein data-roles-Element NIEMALS
+  // wieder sichtbar machen, auch nicht bei "Alle" oder leerer Suche.
+  function klartextRolleErlaubt(el) {
+    var dr = el.getAttribute('data-roles');
+    if (!dr) return true;
+    var rolle = '';
+    try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+    if (!rolle) return false;
+    return dr.split(/\s+/).indexOf(rolle) !== -1;
+  }
   function applyFilters() {
     const q = normalize(searchTerm.trim());
     let visible = 0;
     sektionen.forEach(function(sek) {
       const sekModul = sek.id.replace('sek-','');
       const sekMatch = activeModul === 'alle' || sekModul === activeModul;
-      sek.classList.toggle('hidden', !sekMatch && q === '');
+      const erlaubt = klartextRolleErlaubt(sek);
+      sek.classList.toggle('hidden', !erlaubt || (!sekMatch && q === ''));
     });
     kacheln.forEach(function(kachel) {
       const modul = kachel.getAttribute('data-modul') || '';
@@ -1402,14 +1431,15 @@ mobileBarometerStatusLaden();
       const titel = normalize(kachel.querySelector('.kachel-titel')?.textContent || '');
       const modulMatch = activeModul === 'alle' || modul === activeModul;
       const textMatch = !q || search.includes(q) || titel.includes(q);
-      const show = modulMatch && textMatch;
+      const erlaubt = klartextRolleErlaubt(kachel);
+      const show = erlaubt && modulMatch && textMatch;
       kachel.classList.toggle('hidden', !show);
       if (show) visible++;
     });
     if (q) {
       sektionen.forEach(function(sek) {
         const hasVisible = sek.querySelectorAll('.kachel:not(.hidden)').length > 0;
-        sek.classList.toggle('hidden', !hasVisible);
+        sek.classList.toggle('hidden', !klartextRolleErlaubt(sek) || !hasVisible);
       });
     }
     noResults.style.display = (visible === 0) ? 'block' : 'none';
@@ -1459,7 +1489,11 @@ mobileBarometerStatusLaden();
     // TRAINER: Module + E-Learning + Curriculum + Fachbuch — NICHT Teilnehmerkurse, NICHT Weitergabe-Anleitung, NICHT TK-Feedback, NICHT Weiterleiten, NICHT Chat (operative Funktionen, nicht Trainer-Aufgabe)
     trainer: ['sek-lkkurs','sek-elkurs','sek-weitergabe','sek-tkfeedback'],
     // ADMIN: sieht alles
-    admin:   []
+    admin:   [],
+    // OGS: nur der eigene OGS-Workspace (per data-roles geregelt) — Lernmaterial/Kurse fuer
+    // INGRA-Ausbildung sind hier fachlich nicht relevant und muessen (Fail-closed) explizit
+    // ausgeblendet werden, da sek-learn/sek-lernmaterialien selbst kein data-roles tragen.
+    ogs:     ['sek-learn','sek-lernmaterialien']
     // Hinweis: springer_ingra/pool_ingra/vertretung_ingra existieren noch nicht als echte Login-Rollen.
     // Sobald sie eingeführt werden, sollten sie wie 'ingra' behandelt werden (Chat sichtbar).
   };
@@ -1537,6 +1571,14 @@ document.addEventListener('DOMContentLoaded', function(){
   if(m3) m3.classList.add('open');
 });
 
+function klartextRolleErlaubtGlobal(el) {
+  var dr = el.getAttribute('data-roles');
+  if (!dr) return true;
+  var rolle = '';
+  try { rolle = sessionStorage.getItem('klartext_role') || ''; } catch(e) {}
+  if (!rolle) return false;
+  return dr.split(/\s+/).indexOf(rolle) !== -1;
+}
 function resetFilter() {
   // Filter-Buttons zurücksetzen
   document.querySelectorAll('.filter-btn').forEach(function(b){
@@ -1544,12 +1586,15 @@ function resetFilter() {
   });
   var alleBtn = document.querySelector('.filter-btn[data-modul="alle"]');
   if(alleBtn) alleBtn.classList.add('active');
-  // Alle Kacheln und Sektionen über die gleiche Klasse wie applyFilters() steuern
+  // Alle Kacheln und Sektionen über die gleiche Klasse wie applyFilters() steuern —
+  // aber NIE ein data-roles-Element wieder sichtbar machen (Rollen-Schutz).
   document.querySelectorAll('.kachel').forEach(function(k){
+    if (!klartextRolleErlaubtGlobal(k)) return;
     k.classList.remove('hidden');
     k.style.display = '';
   });
   document.querySelectorAll('.modul-sektion').forEach(function(s){
+    if (!klartextRolleErlaubtGlobal(s)) return;
     s.classList.remove('hidden');
     s.style.display = '';
   });

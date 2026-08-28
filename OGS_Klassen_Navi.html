@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>KLARTEXT · OGS-Klassen-Navi</title>
+<meta name="description" content="Verknüpft die haptischen Rauminseln des Insel-Sets mit den passenden digitalen KLARTEXT-Tools — Wegweiser für den OGS-Alltag.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:"DM Sans",sans-serif;background:#F5F0E8;color:#1A1A2E;}
+
+.header{background:#1B3A4B;padding:.75rem clamp(1rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-logo{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:.02em;}
+.header-logo span{color:#6EC6A0;}
+.back-btn{color:rgba(255,255,255,.75);text-decoration:none;font-size:.8rem;font-weight:600;}
+.back-btn:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#1B3A4B 0%,#2A4A5B 60%,#1B3A4B 100%);padding:3rem clamp(1rem,5vw,4rem) 2.5rem;text-align:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(110,198,160,.15);border:1px solid rgba(110,198,160,.4);border-radius:20px;padding:.3rem .85rem;font-size:.7rem;font-weight:700;color:#6EC6A0;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.1rem;}
+.hero h1{font-family:"Playfair Display",serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:.9rem;}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.72);line-height:1.75;max-width:620px;margin:0 auto;}
+
+.sek{padding:2.5rem clamp(1rem,5vw,4rem);}
+.sek-titel{font-family:"Playfair Display",serif;font-size:clamp(1.2rem,2.6vw,1.6rem);font-weight:700;color:#1B3A4B;text-align:center;margin-bottom:.4rem;}
+.sek-sub{font-size:.85rem;color:#6A6878;text-align:center;margin-bottom:1.75rem;line-height:1.7;max-width:640px;margin-left:auto;margin-right:auto;}
+.sek.weiss{background:#fff;}
+
+.zustand-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;max-width:900px;margin:0 auto;}
+.zustand-item{text-align:center;padding:1rem .5rem;border-radius:12px;background:#F5F0E8;}
+.zustand-dot{width:32px;height:32px;border-radius:50%;margin:0 auto .5rem;}
+.zustand-name{font-size:.68rem;font-weight:700;color:#1B3A4B;}
+.zustand-insel{font-size:.66rem;color:#3A3A4A;margin-top:.3rem;font-weight:600;}
+.zustand-desc{font-size:.6rem;color:#6A6878;margin-top:.15rem;line-height:1.4;}
+
+.insel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;max-width:900px;margin:0 auto;}
+.insel-card{background:#fff;border:1.5px solid #DDD8CE;border-radius:14px;padding:1.2rem 1.3rem;position:relative;}
+.insel-badge{position:absolute;top:.7rem;right:.7rem;font-size:.55rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .45rem;border-radius:10px;}
+.insel-badge.basis{background:#EAF7EF;color:#2E7D4F;}
+.insel-badge.erweiterung{background:#F3E5FF;color:#4A148C;}
+.insel-dot{width:26px;height:26px;border-radius:8px;margin-bottom:.6rem;}
+.insel-titel{font-size:.85rem;font-weight:700;color:#1B3A4B;margin-bottom:.3rem;}
+.insel-desc{font-size:.72rem;color:#6A6878;line-height:1.55;}
+.insel-klar{display:inline-block;margin-top:.5rem;font-size:.62rem;font-weight:700;color:#C47A00;background:#FFF4E0;border-radius:8px;padding:.15rem .5rem;}
+
+.tool-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;max-width:700px;margin:0 auto;}
+.tool-card{background:#F5F0E8;border-radius:14px;padding:1.3rem 1.4rem;text-decoration:none;display:block;border:1.5px solid transparent;}
+.tool-card:hover{border-color:#6EC6A0;}
+.tool-emoji{font-size:1.6rem;margin-bottom:.5rem;}
+.tool-titel{font-size:.9rem;font-weight:700;color:#1B3A4B;margin-bottom:.3rem;}
+.tool-desc{font-size:.76rem;color:#6A6878;line-height:1.55;}
+
+.note-light{max-width:700px;margin:1.5rem auto 0;font-size:.76rem;color:#8A7A50;text-align:center;line-height:1.65;background:#FFF4E0;border:1px solid #F0D9A8;border-radius:10px;padding:.9rem 1.15rem;}
+.quelle{max-width:700px;margin:1.25rem auto 0;font-size:.68rem;color:#9A9AA8;text-align:center;line-height:1.6;}
+
+footer{background:#0F2535;padding:1.75rem clamp(1rem,4vw,3rem);text-align:center;font-size:.72rem;color:rgba(255,255,255,.35);}
+footer a{color:rgba(255,255,255,.4);text-decoration:none;}
+
+@media(max-width:640px){
+  .zustand-grid{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="header-logo" href="DASHBOARD.html">KLAR<span>TEXT</span></a>
+  <a class="back-btn" href="DASHBOARD.html">← Dashboard</a>
+</div>
+
+<section class="hero">
+  <div class="hero-badge">🧭 OGS-Klassen-Navi</div>
+  <h1>Eure Rauminseln, digital verknüpft</h1>
+  <p class="hero-sub">Das Insel-Set macht Barometer und kLAR-Modell räumlich greifbar — hier findet ihr, welche digitale KLARTEXT-Anwendung zu welcher Insel und welchem Zustand passt.</p>
+</section>
+
+<section class="sek weiss">
+  <h2 class="sek-titel">Zustand → Insel → digitales Tool</h2>
+  <p class="sek-sub">Dieselbe Logik wie beim Barometer, nur mit dem realen Ort in eurem Raum ergänzt.</p>
+  <div class="zustand-grid">
+    <div class="zustand-item">
+      <div class="zustand-dot" style="background:#43A047;"></div>
+      <div class="zustand-name">GRÜN</div>
+      <div class="zustand-insel">Alle Inseln frei</div>
+      <div class="zustand-desc">Kind wählt selbstständig</div>
+    </div>
+    <div class="zustand-item">
+      <div class="zustand-dot" style="background:#F9A825;"></div>
+      <div class="zustand-name">GELB</div>
+      <div class="zustand-insel">Regel- o. Ruhe-Insel</div>
+      <div class="zustand-desc">+ Reizfilter-Regler</div>
+    </div>
+    <div class="zustand-item">
+      <div class="zustand-dot" style="background:#EF6C00;"></div>
+      <div class="zustand-name">ORANGE</div>
+      <div class="zustand-insel">Ruhe- o. Emotions-Insel</div>
+      <div class="zustand-desc">+ Ruhe-Ballon, INGRA begleitet</div>
+    </div>
+    <div class="zustand-item">
+      <div class="zustand-dot" style="background:#C62828;"></div>
+      <div class="zustand-name">ROT</div>
+      <div class="zustand-insel">Keine freie Wahl</div>
+      <div class="zustand-desc">Feuerwehr-Protokoll, INGRA führt</div>
+    </div>
+    <div class="zustand-item">
+      <div class="zustand-dot" style="background:#6A6878;"></div>
+      <div class="zustand-name">GRAU</div>
+      <div class="zustand-insel">Ruhe-Insel</div>
+      <div class="zustand-desc">Begleiten, nicht drängen</div>
+    </div>
+  </div>
+</section>
+
+<section class="sek" style="background:#F5F0E8;">
+  <h2 class="sek-titel">Die 8 Inseln</h2>
+  <p class="sek-sub">Basis-Set (Pflicht) und Erweiterungs-Set — je nachdem, welche Badges bei euch schon im Raum hängen.</p>
+  <div class="insel-grid">
+    <div class="insel-card"><span class="insel-badge basis">Basis</span><div class="insel-dot" style="background:#2FA5A0;"></div><div class="insel-titel">Regel-Insel</div><div class="insel-desc">Kurze, sachliche Klärung von Regeln.</div><span class="insel-klar">kLAR: K</span></div>
+    <div class="insel-card"><span class="insel-badge basis">Basis</span><div class="insel-dot" style="background:#1E6FBF;"></div><div class="insel-titel">Ruhe-Insel</div><div class="insel-desc">Reizreduktion und Rückzug, auch mit Noise-Cancelling-Kopfhörern.</div><span class="insel-klar">kLAR: R</span></div>
+    <div class="insel-card"><span class="insel-badge basis">Basis</span><div class="insel-dot" style="background:#0F6E5C;"></div><div class="insel-titel">Arbeits-Insel</div><div class="insel-desc">Konzentriertes Arbeiten, z.B. Hausaufgaben.</div></div>
+    <div class="insel-card"><span class="insel-badge basis">Basis</span><div class="insel-dot" style="background:#C2185B;"></div><div class="insel-titel">Emotions-Insel</div><div class="insel-desc">Gefühle zeigen dürfen, Anerkennung erfahren.</div><span class="insel-klar">kLAR: A</span></div>
+    <div class="insel-card"><span class="insel-badge erweiterung">Erweiterung</span><div class="insel-dot" style="background:#00BCD4;"></div><div class="insel-titel">Bewegungs-Insel</div><div class="insel-desc">Bewegungsdrang kontrolliert ausleben.</div></div>
+    <div class="insel-card"><span class="insel-badge erweiterung">Erweiterung</span><div class="insel-dot" style="background:#8E24AA;"></div><div class="insel-titel">Kreativ-Insel</div><div class="insel-desc">Freies Gestalten, Malen, Basteln.</div></div>
+    <div class="insel-card"><span class="insel-badge erweiterung">Erweiterung</span><div class="insel-dot" style="background:#3F51B5;"></div><div class="insel-titel">Gesprächs-Insel</div><div class="insel-desc">1:1-Gespräch mit einer Vertrauensperson.</div></div>
+    <div class="insel-card"><span class="insel-badge erweiterung">Erweiterung</span><div class="insel-dot" style="background:#8D8778;"></div><div class="insel-titel">Material-Insel</div><div class="insel-desc">Material holen und zurückbringen.</div></div>
+  </div>
+</section>
+
+<section class="sek weiss">
+  <h2 class="sek-titel">Passende digitale Tools</h2>
+  <p class="sek-sub">Direkt auf der Ruhe-Insel oder Emotions-Insel nutzbar, z.B. am Tablet.</p>
+  <div class="tool-row">
+    <a class="tool-card" href="KLARTEXT_Spiel_Reizfilter.html">
+      <div class="tool-emoji">🎚️</div>
+      <div class="tool-titel">Reizfilter-Regler</div>
+      <div class="tool-desc">Zeig, wie viel gerade los ist — ohne Bewertung, ohne Richtig oder Falsch.</div>
+    </a>
+    <a class="tool-card" href="KLARTEXT_Spiel_Ruheballon.html">
+      <div class="tool-emoji">🎈</div>
+      <div class="tool-titel">Ruhe-Ballon</div>
+      <div class="tool-desc">Eine kleine Atemübung zum Entspannen — einatmen, halten, ausatmen.</div>
+    </a>
+  </div>
+  <div class="note-light">
+    Akute Krise (Rot)? Die Insel-Wahl gilt dann nicht als Selbstwahl-System — es greift ausschließlich das Feuerwehr-Protokoll. Siehe <a href="OGS_Aufsichts_Spickzettel.html" style="color:#8A7A50;font-weight:700;">Aufsichts-Spickzettel →</a>
+  </div>
+  <p class="quelle">Insel-Set-Konzept angelehnt an Kuypers, L. (2011). <em>The Zones of Regulation.</em> Think Social Publishing · Siegel, D.J. (1999). <em>The Developing Mind.</em> Guilford Press · Deci, E.L., &amp; Ryan, R.M. (2000). <em>Psychological Inquiry</em>, 11(4), 227–268.</p>
+</section>
+
+<footer>
+  <p>KLARTEXT-Mentoring · © 2026 Anja Jolk · Schwerte</p>
+</footer>
+
+</body>
+</html>

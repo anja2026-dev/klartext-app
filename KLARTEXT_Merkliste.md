@@ -4352,3 +4352,71 @@ umgebogen. Extra geprüft: die "So funktioniert KLARTEXT"-Kachel (`KLARTEXT_Syst
 enthielt gar keine Skill-Matrix-Erwähnung — dort war nichts zu tun. Bewusst unverändert gelassen:
 Code-Kommentare in `KLARTEXT_Ressourcenbericht.html`/`KLARTEXT_Bewerbungs_Generator.html`, die
 "Skill-Matrix" nur zur Erklärung des gemeinsamen Storage-Keys erwähnen (nicht nutzerseitig sichtbar).
+
+## Strang 113 (28.08.2026) — Klassenzimmer-Upgrade v3: Gast-Bypass, Klassenzimmer-Manager, 5 Grundschul-Tools freigeschaltet
+
+Ausgangspunkt: `klassen-upgrade-prompt-claude.md` (v1) + `klassen-upgrade-prompt-claude-v3.md`
+(v3, in diesem Ordner abgelegt). Anja hat sich nach Rückfrage explizit für Option 1 entschieden:
+Klassenverwaltung baut auf dem bestehenden, robusten, anonymen Teilnehmer-ID-System auf (dasselbe
+`localStorage['klartext_kinder']`, das Barometer/Tagesjournal schon seit dem 21.08.2026-Offline-First-
+Umbau nutzen) — bewusst NICHT das im Prompt beschriebene, komplett neue System mit Klarnamen +
+`klartext_class_list`/`klartext_data_`+Name.
+
+**1) Gast-Bypass (`?guest=true`):** `BAROMETER_KIND.html`, `KLARTEXT_Spiel_Ruheballon.html`,
+`KLARTEXT_Zauberfaecher_Digital.html` (Hinweis: der Prompt nannte fälschlich einen nicht
+existierenden Dateinamen `KLARTEXT_Spiel_Zauberfaecher.html` — der echte digitale Zauberfächer heißt
+`KLARTEXT_Zauberfaecher_Digital.html`, `_Streifen.html` ist die Druckvariante). Fund vor dem Bauen:
+alle drei Dateien hatten schon KEINEN Login-Guard mehr (Architektur-Entscheidung 21.08.2026) —
+`Zauberfaecher_Digital.html` speichert zudem grundsätzlich nichts in localStorage, brauchte also gar
+keine Code-Änderung. Umgesetzt: `BAROMETER_KIND.html` blendet im Gast-Modus ID-Auswahl/Verlauf/
+Wochenbilanz/TK-Weiterleitung/Coach-Einschätzung komplett aus, Speichern zeigt nur Konfetti +
+"✓ Danke!" OHNE jeden localStorage-Schreibvorgang (`speichereKind()`-Gast-Zweig). `Ruheballon.html`
+zählt im Gast-Modus nur im Speicher (kein Lesen/Schreiben von `ruheballon_atemzuege`), Zurück-Link
+zeigt statt zur login-pflichtigen `KLARTEXT_Spiele.html` auf `KLARTEXT_Landing.html`.
+
+**2) Klassenzimmer-Manager:** neues Panel auf `DASHBOARD.html` (`data-roles="lehrkraft ingra admin"`
+— sichtbar für `lehrkraft24`, `sb-ingra26` UND alle anderen Logins mit Rolle `ingra` z.B. `anker26`,
+konsistent mit dem bestehenden rollenbasierten statt code-basierten Rechte-Modell; falls Anja das
+enger nur auf die zwei genannten Codes beschränkt haben will, ist das ein separater Nachtrag).
+Vergibt anonyme Kürzel nach Anjas Vorgabe im Format "Schüler 1", "Schüler 2", … (Lücken nach Löschen
+werden wieder aufgefüllt — gleiches Verhalten wie die bestehende Teilnehmer-ID-Verwaltung in
+`BAROMETER_KIND.html`), schreibt in denselben `klartext_kinder`-Pool. Neuer geteilter Zeiger
+`localStorage['klartext_active_student']`: Dashboard-Panel setzt ihn, `BAROMETER_KIND.html` (nur
+Nicht-Gast-Modus) und `KLARTEXT_Tagesjournal.html` lesen ihn als Vorbelegung UND schreiben ihn bei
+eigener Auswahl zurück — echter Zwei-Wege-Sync zwischen allen drei Stellen, ein Kind einmal wählen
+reicht.
+
+**3) Freischaltung 5 Grundschul-/Regulations-Tools für `lehrkraft`+`ingra`:** in `KLARTEXT_Spiele.html`
+`data-roles` um `ingra lehrkraft` ergänzt bei `KLARTEXT_Spiel_Fokus.html` (Fokus-Trainer) und
+`KLARTEXT_Spiel_Ruheballon.html` (Ruhe-Ballon) — `KD-11_Mutmach-Tier.html` und
+`KLARTEXT_Spiel_MeinTag.html` hatten beide Rollen bereits, `KLARTEXT_Zauberfaecher_Digital.html` hat
+dort gar kein `data-roles` (fail-open, für alle Rollen sichtbar) und wurde bewusst nicht eingeschränkt.
+
+**Bewusst NICHT umgesetzt (Rückfrage bei Anja steht aus):** Sektion 2 des v3-Prompts nennt auch
+"Ressourcenbericht" als Tool mit Aktives-Kind-Dropdown — `KLARTEXT_Ressourcenbericht.html` hat aber
+aktuell GAR KEIN Teilnehmer-ID-Konzept, sondern aggregiert ausschließlich aus festen globalen Keys
+(Interessen-Check/Skill-Matrix, Reizfilter-Verlauf, Körperkompass, OGS-Übergabe) — die selbst nicht
+pro Kind getrennt sind. Ein Dropdown dort einzubauen, ohne dass es echten Effekt auf den Berichtsinhalt
+hätte, wäre irreführend gewesen; eine echte Pro-Kind-Trennung würde bedeuten, auch Reizfilter/
+Körperkompass/Interessen-Check/OGS-Brücke auf das ID-System umzustellen — deutlich größerer Task,
+nicht ungefragt mitgemacht. Ebenso NICHT umgestellt: die 5 neu freigeschalteten Tools (Fokus-Sterne,
+Mein-Tag-Zustand, Mutmach-Tier-Ausmalung, Zauberfächer, Ruheballon-Zähler) speichern weiterhin
+geräteweit statt pro Kind — beim Herumreichen eines Klassen-Tablets überschreibt sich z.B. der
+Fokus-Sternestand weiterhin zwischen Kindern. `KLARTEXT_Login.html` brauchte keine Änderung (Code→
+Rollen-Mapping für `lehrkraft24`/`sb-ingra26` war schon korrekt).
+
+Verifikation: alle geänderten `<script>`-Blöcke mit `node --check` syntaktisch geprüft, alle
+String-Ersetzungen vorab auf exakt 1 Treffer verifiziert, neue Kern-Logik (Schüler-Namensvergabe,
+HTML-Escaping in der Kürzel-Liste, `?guest=true`-Erkennung) isoliert mit Node durchgetestet. Kein
+Playwright-Durchlauf im Browser (bewusst nicht installiert, um nicht ungefragt Software auf Anjas
+Rechner nachzuladen) — Anja bitte kurz gegenchecken, v.a. den Gast-Bypass per QR-Code-Testlink und das
+neue Dashboard-Panel als `lehrkraft24` und als `sb-ingra26` eingeloggt.
+
+### Noch offen
+- Rückfrage: soll "Klassenzimmer verwalten" auf die zwei konkreten Codes beschränkt werden statt auf
+  alle `ingra`-Logins?
+- Rückfrage: soll Ressourcenbericht (und die zugrundeliegenden Module Reizfilter/Körperkompass/
+  Interessen-Check/OGS-Brücke) ebenfalls auf das Teilnehmer-ID-System umgestellt werden?
+- Rückfrage: sollen die 5 freigeschalteten Tools (Fokus/Mein Tag/Mutmach-Tier/Zauberfächer/
+  Ruheballon) ebenfalls pro Kind getrennt speichern?
+- Alle offenen Punkte aus Strang 91–112 weiterhin gültig.

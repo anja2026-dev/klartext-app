@@ -107,6 +107,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 </div>
 
 <script>
+// GAST-BYPASS (Klassenzimmer-Upgrade, 28.08.2026): ?guest=true fuer den
+// QR-Code auf dem gedruckten Tagesjournal — DSGVO: im Gast-Modus wird der
+// Atemzuege-Zaehler bewusst NICHT in localStorage geschrieben/gelesen.
+var GAST_MODUS = (function(){
+  try { return new URLSearchParams(window.location.search).get('guest') === 'true'; }
+  catch(e) { return false; }
+})();
+
 var PHASE_MS = { einatmen: 4000, halten: 2000, ausatmen: 4000 };
 var ZYKLUS_MS = PHASE_MS.einatmen + PHASE_MS.halten + PHASE_MS.ausatmen;
 
@@ -122,11 +130,13 @@ function atemzuegeAnzeigen(){
 }
 
 function atemzuegeLaden(){
+  if (GAST_MODUS) { atemzuege = 0; atemzuegeAnzeigen(); return; }
   try { atemzuege = parseInt(localStorage.getItem('ruheballon_atemzuege') || '0', 10) || 0; } catch(e) { atemzuege = 0; }
   atemzuegeAnzeigen();
 }
 
 function atemzuegeSpeichern(){
+  if (GAST_MODUS) return; // Gast-Modus: nichts dauerhaft speichern (DSGVO)
   try { localStorage.setItem('ruheballon_atemzuege', String(atemzuege)); } catch(e) {}
 }
 
@@ -190,6 +200,11 @@ function anhalten(){
   phaseText.textContent = 'Bereit?';
 }
 
+if (GAST_MODUS) {
+  document.querySelectorAll('a[href="KLARTEXT_Spiele.html"]').forEach(function(a){ a.href = 'KLARTEXT_Landing.html'; });
+  var resetBtn = document.querySelector('.zaehler-reset-btn');
+  if (resetBtn) resetBtn.style.display = 'none';
+}
 atemzuegeLaden();
 </script>
 

@@ -619,6 +619,91 @@ mobileBarometerStatusLaden();
   </script>
   <div class="results-meta"><strong id="countDisplay">0</strong> Einträge</div>
 
+  <!-- KLASSENZIMMER-MANAGER (Klassenzimmer-Upgrade, 28.08.2026) — sichtbar fuer
+       Lehrkraft (lehrkraft24) und Schulbegleitung (sb-ingra26 sowie andere
+       INGRA-Logins). Verwaltet dieselbe anonyme Teilnehmer-ID-Liste
+       (localStorage['klartext_kinder']), die Barometer/Tagesjournal bereits
+       nutzen, plus einen geteilten "aktives Kind"-Zeiger
+       (localStorage['klartext_active_student']), den beide Tools als Vorbelegung
+       lesen. -->
+  <div id="klassenzimmer-panel" data-roles="lehrkraft ingra admin" style="background:#fff;border:1.5px solid #DDD8CE;border-radius:14px;padding:1.1rem 1.3rem;margin:.9rem clamp(.75rem,3vw,1.5rem) 1.4rem;box-shadow:0 2px 10px rgba(27,58,75,.08);">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;">
+      <span style="font-size:1.2rem;">🧑‍🏫</span>
+      <span style="font-family:'Playfair Display',serif;font-weight:700;color:#1B3A4B;font-size:1.02rem;">Klassenzimmer verwalten</span>
+    </div>
+    <div style="font-size:.78rem;color:#7A7060;margin-bottom:.8rem;max-width:640px;">
+      Lege für jedes Kind ein anonymes Kürzel an (keine Klarnamen) und wähle, welches Kind gerade am Tablet aktiv ist — Barometer und Tagesjournal übernehmen die Auswahl automatisch.
+    </div>
+    <button type="button" onclick="klassenzimmerSchuelerHinzufuegen()" style="background:#6EC6A0;color:#1B3A4B;border:none;border-radius:20px;padding:.45rem 1rem;font-size:.78rem;font-weight:700;cursor:pointer;margin-bottom:.7rem;">+ Neues Kind (anonym) anlegen</button>
+    <div id="klassenzimmer-liste" style="display:flex;flex-direction:column;gap:.4rem;max-width:420px;"></div>
+    <div style="font-size:.68rem;color:#9A97A0;margin-top:.6rem;">Es werden ausschließlich anonyme Kürzel gespeichert — keine Klarnamen, keine Klassenlisten.</div>
+  </div>
+  <script>
+  (function(){
+    var KZ_KINDER_KEY = 'klartext_kinder';
+    var KZ_AKTIV_KEY  = 'klartext_active_student';
+
+    function kzLadeKinder(){ try{ return JSON.parse(localStorage.getItem(KZ_KINDER_KEY)||'[]'); }catch(e){ return []; } }
+    function kzSpeichereKinder(l){ try{ localStorage.setItem(KZ_KINDER_KEY, JSON.stringify(l)); }catch(e){} }
+    function kzAktiv(){ try{ return localStorage.getItem(KZ_AKTIV_KEY)||''; }catch(e){ return ''; } }
+    function kzSetzeAktiv(id){ try{ localStorage.setItem(KZ_AKTIV_KEY, id); }catch(e){} }
+
+    function kzNaechsterName(liste){
+      var n = 1;
+      while (liste.indexOf('Schüler ' + n) !== -1) n++;
+      return 'Schüler ' + n;
+    }
+
+    window.klassenzimmerSchuelerHinzufuegen = function(){
+      var liste = kzLadeKinder();
+      var neu = kzNaechsterName(liste);
+      liste.push(neu);
+      kzSpeichereKinder(liste);
+      if (!kzAktiv()) kzSetzeAktiv(neu);
+      kzListeRendern();
+    };
+
+    window.klassenzimmerAktivSetzen = function(id){
+      kzSetzeAktiv(id);
+      kzListeRendern();
+    };
+
+    window.klassenzimmerLoeschen = function(id){
+      if (!confirm('„' + id + '" wirklich entfernen? Bereits gespeicherte Verlaufsdaten bleiben lokal erhalten, das Kürzel verschwindet nur aus der Auswahl.')) return;
+      var liste = kzLadeKinder().filter(function(x){ return x !== id; });
+      kzSpeichereKinder(liste);
+      if (kzAktiv() === id) kzSetzeAktiv(liste[0] || '');
+      kzListeRendern();
+    };
+
+    function kzEsc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+    function kzListeRendern(){
+      var wrap = document.getElementById('klassenzimmer-liste');
+      if (!wrap) return;
+      var liste = kzLadeKinder();
+      var aktiv = kzAktiv();
+      if (!liste.length){
+        wrap.innerHTML = '<div style="font-size:.78rem;color:#7A7060;font-style:italic;">Noch keine Kinder angelegt.</div>';
+        return;
+      }
+      wrap.innerHTML = liste.map(function(id){
+        var istAktiv = (id === aktiv);
+        var idAttr = kzEsc(id);
+        return '<div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;border:1.5px solid '+(istAktiv?'#1B3A4B':'#DDD8CE')+';background:'+(istAktiv?'#EAF0F4':'#fff')+';border-radius:10px;padding:.45rem .7rem;">'
+          + '<label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:#1B3A4B;cursor:pointer;flex:1;">'
+          + '<input type="radio" name="kz-aktiv" '+(istAktiv?'checked':'')+' onchange="klassenzimmerAktivSetzen(\''+idAttr+'\')"> '
+          + (istAktiv ? '<b>'+kzEsc(id)+' — aktiv am Tablet</b>' : kzEsc(id))
+          + '</label>'
+          + '<button type="button" onclick="klassenzimmerLoeschen(\''+idAttr+'\')" title="Entfernen" style="background:none;border:none;color:#C62828;font-size:.9rem;cursor:pointer;">✕</button>'
+          + '</div>';
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', kzListeRendern);
+  })();
+  </script>
+
   <!-- LERNMATERIALIEN -->
 
 <!-- FEEDBACK -->

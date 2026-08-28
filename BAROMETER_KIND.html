@@ -311,6 +311,15 @@ body{font-family:"Nunito",sans-serif;background:#FFF8F0;min-height:100vh;overflo
 </div>
 
 <script type="module">
+// GAST-BYPASS (Klassenzimmer-Upgrade, 28.08.2026): ?guest=true macht dieses
+// Tool fuer QR-Code-Zugriffe vom gedruckten Tisch-Barometer nutzbar, ganz
+// ohne Login/Teilnehmer-ID. DSGVO: im Gast-Modus wird NICHTS in localStorage
+// geschrieben, kein Name abgefragt — siehe gastModusEinrichten()/speichereKind().
+var GAST_MODUS = (function(){
+  try { return new URLSearchParams(window.location.search).get('guest') === 'true'; }
+  catch(e) { return false; }
+})();
+
 const FARBEN_K = {gruen:'#2E9E5A',gelb:'#D4A800',orange:'#D4651A',rot:'#C0392B',grau:'#757575'};
 var aktuelleWahl = null;
 
@@ -341,7 +350,7 @@ function istJobcoachModus(){
     return localStorage.getItem(MODUS_STORAGE_KEY) === 'jobcoach';
   } catch(e) { return false; }
 }
-var JOBCOACH = istJobcoachModus();
+var JOBCOACH = GAST_MODUS ? false : istJobcoachModus();
 
 // ── Farb-/Statuslogik (0–10 <-> 5-Farben-Skala) ─────────────────────
 // Der exakte Status (0–10) landet jetzt direkt im gespeicherten Eintrag
@@ -511,7 +520,11 @@ function ladeKinderDropdown(){
     ? kinder.map(function(id){ return '<option value="'+id+'">'+id+'</option>'; }).join('')
     : '<option value="">Bitte ID anlegen…</option>';
 
-  var gespeicherteId = (vorherigeAuswahl && kinder.indexOf(vorherigeAuswahl) !== -1) ? vorherigeAuswahl : (localStorage.getItem('baro_kind_id') || '');
+  var aktivGeteilt = '';
+  try { aktivGeteilt = localStorage.getItem('klartext_active_student') || ''; } catch(e) {}
+  var gespeicherteId = (vorherigeAuswahl && kinder.indexOf(vorherigeAuswahl) !== -1) ? vorherigeAuswahl
+    : (aktivGeteilt && kinder.indexOf(aktivGeteilt) !== -1) ? aktivGeteilt
+    : (localStorage.getItem('baro_kind_id') || '');
   if (gespeicherteId && kinder.indexOf(gespeicherteId) !== -1) {
     select.value = gespeicherteId;
     waehleTeilnehmer(gespeicherteId);
@@ -528,6 +541,7 @@ window.ladeKinderDropdown = ladeKinderDropdown;
 function waehleTeilnehmer(id){
   aktuellesKindId = id || '';
   try{ localStorage.setItem('baro_kind_id', aktuellesKindId); }catch(e){}
+  try{ localStorage.setItem('klartext_active_student', aktuellesKindId); }catch(e){}
   aktualisiereBegruessung(aktuellesKindId);
   if (JOBCOACH) {
     var oeffnenWrap = document.getElementById('coach-oeffnen-wrap');
@@ -541,7 +555,14 @@ function waehleTeilnehmer(id){
 }
 window.waehleTeilnehmer = waehleTeilnehmer;
 
+function gastModusEinrichten(){
+  ['.kind-auswahl-wrap','#ingra-hinweis','#ingra-wrap','#coach-oeffnen-wrap','.bilanz-wrap','#freitag-banner','.tn-verwaltung-wrap','#status-kacheln-wrap'].forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){ el.style.display = 'none'; });
+  });
+}
+
 (function(){
+  if (GAST_MODUS) { gastModusEinrichten(); return; }
   jobcoachUiEinrichten();
   ladeKinderDropdown();
   if (JOBCOACH) teilnehmerIdsLaden();
@@ -602,6 +623,22 @@ function speichereKindHistorie(id, eintraege){
 
 function speichereKind(){
   if(!aktuelleWahl) return;
+
+  if (GAST_MODUS) {
+    var notizFeld = document.getElementById('notiz-kind');
+    konfetti(aktuelleWahl.color);
+    var btnGast = document.getElementById('sp-btn');
+    btnGast.innerHTML = '✓ Danke! <img src="'+brainyBild(aktuelleWahl.emoji)+'" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;">';
+    setTimeout(function(){
+      btnGast.textContent = '✓ Speichern';
+      btnGast.classList.remove('aktiv');
+      aktuelleWahl = null;
+      document.querySelectorAll('.baro-big').forEach(function(b){ b.classList.remove('aktiv'); });
+      if (notizFeld) notizFeld.value = '';
+    }, 2500);
+    return; // Gast-Modus: bewusst KEIN localStorage-Schreibvorgang (DSGVO)
+  }
+
   if(!aktuellesKindId){ alert(JOBCOACH ? 'Bitte zuerst oben eine Teilnehmer-ID wählen.' : 'Bitte zuerst oben ein Kind wählen.'); return; }
 
   var notiz = document.getElementById('notiz-kind').value.trim();

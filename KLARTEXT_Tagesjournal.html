@@ -293,7 +293,12 @@
         sessionStorage.setItem('klartext_kind_id', ausUrl);
         return ausUrl;
       }
-      return sessionStorage.getItem('klartext_kind_id') || '';
+      var ausSession = sessionStorage.getItem('klartext_kind_id');
+      if (ausSession) return ausSession;
+      // Klassenzimmer-Upgrade (28.08.2026): faellt auf das ueber "Klassenzimmer
+      // verwalten" (DASHBOARD.html) geteilte aktive Kind zurueck, damit ein
+      // Wechsel dort auch hier automatisch ankommt.
+      return localStorage.getItem('klartext_active_student') || '';
     } catch(e) { return ''; }
   }
 
@@ -357,6 +362,10 @@
 
   function waehleTeilnehmer(id){
     aktuellerKindId = id || '';
+    try{
+      sessionStorage.setItem('klartext_kind_id', aktuellerKindId);
+      localStorage.setItem('klartext_active_student', aktuellerKindId);
+    }catch(e){}
     journalListeRendern();
     wocheRendern();
   }

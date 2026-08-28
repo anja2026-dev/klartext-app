@@ -11,15 +11,20 @@
 <meta name="theme-color" content="#2A6067">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--jd:#2A6067; --jd-dark:#1D454A; --jd-light:#EAF0F0; --acc:#6EC6A0; --ink:#20323A; --muted:#5C7278; --surface:#fff; --paper:#F4F7F7; --border:#DCE6E6;}
+:root{--jd:#2A6067; --jd-dark:#1D454A; --jd-light:#EAF0F0; --acc:#6EC6A0; --ink:#20323A; --muted:#5C7278; --surface:#fff; --paper:#F4F7F7; --border:#DCE6E6; --gelb:#E8C34D; --orange:#E8934D;}
 body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;padding-bottom:2rem;}
 
 .header{background:var(--jd);padding:1.1rem clamp(1rem,4vw,2rem);display:flex;align-items:center;justify-content:space-between;color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.1);}
 .header-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;}
-.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.4);border-radius:20px;color:#fff;font-size:.72rem;font-weight:700;text-decoration:none;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .85rem;border:1.5px solid rgba(255,255,255,.4);border-radius:20px;color:#fff;font-size:.72rem;font-weight:700;text-decoration:none;background:none;cursor:pointer;font-family:inherit;}
 .back-btn:hover{background:rgba(255,255,255,.12);}
 
-.hero{max-width:1100px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;}
+.schritt-leiste{max-width:1100px;margin:0 auto;padding:.9rem clamp(1rem,4vw,2rem) 0;display:flex;gap:.4rem;flex-wrap:wrap;}
+.schritt-chip{font-size:.66rem;font-weight:700;padding:.3rem .7rem;border-radius:20px;background:var(--jd-light);color:var(--muted);}
+.schritt-chip.aktiv{background:var(--jd);color:#fff;}
+.schritt-chip.erledigt{background:var(--acc);color:var(--jd-dark);}
+
+.hero{max-width:1100px;margin:0 auto;padding:1.25rem clamp(1rem,4vw,2rem) 1rem;}
 .hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;color:var(--jd-dark);}
 .hero-sub{font-size:.88rem;color:var(--muted);max-width:620px;margin-top:.4rem;line-height:1.6;}
 
@@ -37,8 +42,23 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .slot.dragover{border-color:var(--jd);background:var(--jd-light);}
 .slot.belegt{border-style:solid;border-color:var(--jd);background:var(--surface);padding:.3rem;}
 
-.pool-label{max-width:1100px;margin:0 auto .6rem;padding:0 clamp(1rem,4vw,2rem);font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
-.pool{max-width:1100px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem);display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.7rem;}
+.welt-block{max-width:1100px;margin:0 auto 1.1rem;padding:0 clamp(1rem,4vw,2rem);}
+.welt-titel{display:flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:800;letter-spacing:.04em;color:var(--jd-dark);margin-bottom:.6rem;}
+.welt-icon{font-size:1rem;}
+.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.7rem;}
+
+.zusatz-row{max-width:1100px;margin:.5rem auto 0;padding:0 clamp(1rem,4vw,2rem);}
+.zusatz-toggle{background:none;border:1.5px dashed var(--jd);color:var(--jd);border-radius:20px;padding:.55rem 1.1rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.zusatz-toggle:hover{background:var(--jd-light);}
+.zusatz-pool-wrap{display:none;margin-top:.9rem;}
+.zusatz-pool-wrap.zeigen{display:block;}
+
+.custom-row{max-width:1100px;margin:1.1rem auto 0;padding:0 clamp(1rem,4vw,2rem);}
+.custom-box{background:var(--surface);border:1.5px dashed var(--border);border-radius:16px;padding:.9rem 1rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+.custom-label{font-size:.78rem;font-weight:700;color:var(--jd-dark);flex-basis:100%;}
+.custom-input{flex:1;min-width:200px;border:1.5px solid var(--border);border-radius:12px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;background:var(--paper);}
+.custom-btn{background:var(--jd);color:#fff;border:none;border-radius:12px;padding:.6rem 1.1rem;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;}
+.custom-btn:hover{opacity:.9;}
 
 .karte{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:.9rem .7rem;text-align:center;cursor:grab;box-shadow:0 2px 8px rgba(32,50,58,.08);transition:transform .12s,box-shadow .12s;user-select:none;}
 .karte:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(32,50,58,.14);}
@@ -55,9 +75,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .save-btn{background:var(--acc);color:var(--jd-dark);border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;box-shadow:0 4px 16px rgba(110,198,160,.35);}
 .save-btn:hover:not(:disabled){transform:translateY(-1px);}
 .save-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;box-shadow:none;}
-.auswertung-btn{background:var(--jd);color:#fff;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;box-shadow:0 4px 16px rgba(42,96,103,.35);display:none;}
-.auswertung-btn.zeigen{display:inline-flex;align-items:center;gap:.4rem;}
-.auswertung-btn:hover{transform:translateY(-1px);}
+.weiter-btn{background:var(--jd);color:#fff;border:none;padding:.85rem 2.2rem;font-family:inherit;font-size:.9rem;font-weight:700;border-radius:50px;cursor:pointer;box-shadow:0 4px 16px rgba(42,96,103,.35);}
+.weiter-btn:hover:not(:disabled){transform:translateY(-1px);}
+.weiter-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;box-shadow:none;}
+.zurueck-link{background:none;border:none;color:var(--muted);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:underline;padding:.4rem;}
 
 .toast{position:fixed;left:50%;bottom:2rem;transform:translateX(-50%) translateY(20px);background:var(--jd-dark);color:#fff;padding:.85rem 1.4rem;border-radius:12px;font-size:.85rem;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.25);max-width:340px;text-align:center;line-height:1.5;opacity:0;pointer-events:none;transition:all .25s;z-index:300;}
 .toast.zeigen{opacity:1;transform:translateX(-50%) translateY(0);}
@@ -73,28 +94,60 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .close-btn{background:var(--jd-light);color:var(--jd-dark);}
 .copy-feedback{font-size:.72rem;color:#2E7D57;margin-top:.5rem;height:1em;}
 
-.aw-modal{background:#fff;border-radius:22px;padding:0;max-width:640px;width:100%;max-height:88vh;overflow:auto;}
-.aw-kopf{background:linear-gradient(135deg,var(--jd-dark),var(--jd));color:#fff;padding:1.75rem 1.75rem 1.5rem;text-align:center;position:relative;}
-.aw-kopf-label{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.75;}
-.aw-kopf-titel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:700;margin-top:.3rem;}
-.aw-close{position:absolute;top:.9rem;right:1.1rem;background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:1rem;cursor:pointer;line-height:1;}
-.aw-close:hover{background:rgba(255,255,255,.28);}
-.aw-body{padding:1.6rem 1.75rem 2rem;}
+/* ── Phasen 2-5 ─────────────────────────────────────────────────────── */
+.phase{max-width:700px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem) 3rem;}
+.phase-card{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:1.6rem 1.5rem;box-shadow:0 2px 10px rgba(32,50,58,.08);}
+.phase-titel{font-family:"Playfair Display",serif;font-size:1.2rem;font-weight:700;color:var(--jd-dark);margin-bottom:.4rem;}
+.phase-sub{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:1.3rem;}
 
-.aw-werte-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.7rem;margin-bottom:1.75rem;}
-.aw-wert-badge{background:var(--jd-light);border:1.5px solid var(--jd);border-radius:14px;padding:.9rem .6rem;text-align:center;}
-.aw-wert-badge .aw-icon{width:30px;height:30px;margin:0 auto .4rem;color:var(--jd);}
-.aw-wert-badge .aw-icon svg{width:100%;height:100%;}
-.aw-wert-badge .aw-name{font-size:.78rem;font-weight:700;color:var(--jd-dark);}
+.treppe-liste{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.4rem;}
+.treppe-eintrag{display:flex;align-items:center;gap:.8rem;background:var(--paper);border:1.5px solid var(--border);border-radius:14px;padding:.7rem .9rem;}
+.treppe-rang{width:34px;height:34px;border-radius:10px;background:var(--jd);color:#fff;font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.treppe-info{flex:1;}
+.treppe-name{font-size:.9rem;font-weight:700;color:var(--ink);}
+.treppe-label{font-size:.68rem;color:var(--muted);margin-top:.1rem;}
+.treppe-btns{display:flex;flex-direction:column;gap:.25rem;}
+.treppe-btn{width:30px;height:26px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:.8rem;font-weight:700;color:var(--jd);cursor:pointer;line-height:1;}
+.treppe-btn:hover:not(:disabled){border-color:var(--jd);background:var(--jd-light);}
+.treppe-btn:disabled{opacity:.3;cursor:not-allowed;}
 
-.aw-abschnitt-titel{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem;}
-.aw-fragen{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem;}
-.aw-frage{display:flex;gap:.7rem;align-items:flex-start;background:var(--paper);border-radius:12px;padding:.75rem .9rem;}
-.aw-frage-nr{font-family:"Playfair Display",serif;font-weight:700;color:var(--jd);font-size:1rem;flex-shrink:0;}
-.aw-frage-text{font-size:.85rem;line-height:1.55;color:var(--ink);}
+.barometer-frage{background:var(--jd-light);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1.3rem;font-size:.86rem;line-height:1.6;color:var(--jd-dark);}
+.barometer-chip-row{display:flex;gap:.4rem;margin-bottom:.6rem;}
+.barometer-chip{font-size:.65rem;font-weight:800;padding:.25rem .6rem;border-radius:20px;color:#fff;}
+.anker-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.7rem;}
+.anker-karte{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:.9rem .7rem;text-align:center;cursor:pointer;transition:border-color .15s,transform .15s;}
+.anker-karte:hover{transform:translateY(-2px);}
+.anker-karte.gewaehlt{border-color:var(--acc);background:var(--jd-light);}
+.anker-karte .anker-icon{width:28px;height:28px;margin:0 auto .4rem;color:var(--jd);}
+.anker-karte .anker-icon svg{width:100%;height:100%;}
+.anker-karte .anker-name{font-size:.8rem;font-weight:700;color:var(--ink);}
 
-.aw-tipp{background:var(--jd-light);border-left:4px solid var(--acc);border-radius:10px;padding:.9rem 1.1rem;font-size:.85rem;line-height:1.6;color:var(--jd-dark);}
-.aw-tipp b{color:var(--jd-dark);}
+.reflexion-wert{font-family:"Playfair Display",serif;color:var(--jd);}
+.luecken-frage{font-size:.9rem;line-height:1.6;margin-bottom:1rem;color:var(--ink);}
+.luecken-optionen{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1rem;}
+.luecken-kachel{display:flex;align-items:flex-start;gap:.6rem;background:var(--paper);border:1.5px solid var(--border);border-radius:12px;padding:.7rem .9rem;cursor:pointer;font-size:.84rem;line-height:1.5;color:var(--ink);text-align:left;}
+.luecken-kachel:hover{border-color:var(--jd);}
+.luecken-kachel.gewaehlt{border-color:var(--acc);background:var(--jd-light);}
+.luecken-box{width:16px;height:16px;border:1.5px solid var(--muted);border-radius:5px;flex-shrink:0;margin-top:.15rem;}
+.luecken-kachel.gewaehlt .luecken-box{background:var(--acc);border-color:var(--acc);}
+.luecken-frei-feld{display:none;margin-top:.3rem;}
+.luecken-frei-feld.zeigen{display:block;}
+.luecken-frei-feld textarea{width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:12px;padding:.7rem .8rem;font-family:inherit;font-size:.84rem;background:#fff;resize:vertical;}
+
+.ergebnis-titel{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:var(--jd-dark);margin-bottom:.3rem;}
+.ergebnis-liste{display:flex;flex-direction:column;gap:.5rem;margin:1.1rem 0;}
+.ergebnis-eintrag{display:flex;align-items:center;gap:.7rem;background:var(--paper);border-radius:12px;padding:.6rem .9rem;}
+.ergebnis-rang{width:26px;height:26px;border-radius:8px;background:var(--jd);color:#fff;font-weight:700;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ergebnis-name{font-size:.86rem;font-weight:700;color:var(--ink);flex:1;}
+.ergebnis-anker-tag{font-size:.65rem;font-weight:800;background:var(--acc);color:var(--jd-dark);padding:.2rem .55rem;border-radius:10px;}
+.ergebnis-absatz{background:var(--jd-light);border-left:4px solid var(--acc);border-radius:10px;padding:.9rem 1.1rem;font-size:.85rem;line-height:1.65;color:var(--jd-dark);margin-top:1.1rem;}
+.ergebnis-absatz b{color:var(--jd-dark);}
+.ergebnis-btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem;}
+
+.no-print{}
+@media print{
+  .header,.schritt-leiste,.reset-btn,.zusatz-row,.custom-row,.aktionsleiste,.overlay,.no-print{display:none !important;}
+}
 </style>
 </head>
 <body>
@@ -102,30 +155,109 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <div class="header">
   <a class="back-btn" href="KLARTEXT_Spiele.html">← Tools</a>
   <div class="header-titel">KLARTEXT · Werte-Poker</div>
-  <div style="width:70px;"></div>
+  <button class="back-btn" onclick="zuruecksetzen()" style="border-color:rgba(255,255,255,.4);">↺ Neu starten</button>
 </div>
 
-<div class="hero">
-  <h1 class="hero-titel">Werte-Poker</h1>
-  <p class="hero-sub">24 Werte, ein Budget von 5 Plätzen. Zieh deine wichtigsten Werte in den Setz-Bereich — was bleibt übrig, wenn du dich entscheiden musst?</p>
+<div class="schritt-leiste" id="schrittLeiste"></div>
+
+<!-- ══════════════════ PHASE 1: KARTEN-AUSWAHL ══════════════════ -->
+<div id="phase1">
+  <div class="hero">
+    <h1 class="hero-titel">Werte-Poker</h1>
+    <p class="hero-sub">24 Werte, ein Budget von 5 Plätzen. Zieh deine wichtigsten Werte in den Setz-Bereich — was bleibt übrig, wenn du dich entscheiden musst? Findest du nichts Passendes, gibt es unten weitere Ideen und ein Feld für deinen eigenen Wert.</p>
+  </div>
+
+  <div class="budget-row">
+    <div class="budget-badge">Budget: <b id="counter">0 / 5</b> gewählt</div>
+    <button class="reset-btn" onclick="zuruecksetzen()">Zurücksetzen</button>
+  </div>
+
+  <div class="setz-bereich">
+    <div class="setz-label">Setz-Bereich · Deine Top 5</div>
+    <div class="setz-slots" id="setzSlots"></div>
+  </div>
+
+  <div id="weltenWrap"></div>
+
+  <div class="zusatz-row">
+    <button class="zusatz-toggle" id="zusatzToggleBtn" onclick="zusatzToggeln()">➕ Mehr Ideen anzeigen</button>
+    <div class="zusatz-pool-wrap" id="zusatzWrap">
+      <div class="welt-titel"><span class="welt-icon">✨</span> Inspirations-Joker — moderne Zusatzkarten</div>
+      <div class="pool" id="zusatzPool"></div>
+    </div>
+  </div>
+
+  <div class="custom-row">
+    <div class="custom-box">
+      <div class="custom-label">✍️ Eigenen Wert erfinden</div>
+      <input type="text" class="custom-input" id="customInput" placeholder="z. B. Mein Hund">
+      <button class="custom-btn" onclick="customHinzufuegen()">Hinzufügen</button>
+    </div>
+  </div>
+
+  <div class="aktionsleiste">
+    <button class="weiter-btn" id="weiterZuTreppeBtn" onclick="phaseWechseln(2)" disabled>Weiter zur Werte-Treppe →</button>
+  </div>
 </div>
 
-<div class="budget-row">
-  <div class="budget-badge">Budget: <b id="counter">0 / 5</b> gewählt</div>
-  <button class="reset-btn" onclick="zuruecksetzen()">Zurücksetzen</button>
+<!-- ══════════════════ PHASE 2: WERTE-TREPPE ══════════════════ -->
+<div id="phase2" class="phase" style="display:none;">
+  <div class="phase-card">
+    <div class="phase-titel">🪜 Deine Werte-Treppe</div>
+    <div class="phase-sub">Bring deine 5 Werte in eine Reihenfolge — mit den Pfeilen nach oben und unten. Platz 1 ist dein Fundament, Platz 5 ist wichtig, aber am ehesten verhandelbar.</div>
+    <div class="treppe-liste" id="treppeListe"></div>
+    <div class="aktionsleiste" style="margin-top:0;justify-content:space-between;">
+      <button class="zurueck-link" onclick="phaseWechseln(1)">← Zurück zur Auswahl</button>
+      <button class="weiter-btn" onclick="phaseWechseln(3)">Weiter zur Barometer-Brücke →</button>
+    </div>
+  </div>
 </div>
 
-<div class="setz-bereich">
-  <div class="setz-label">Setz-Bereich · Deine Top 5</div>
-  <div class="setz-slots" id="setzSlots"></div>
+<!-- ══════════════════ PHASE 3: BAROMETER-BRÜCKE ══════════════════ -->
+<div id="phase3" class="phase" style="display:none;">
+  <div class="phase-card">
+    <div class="phase-titel">🌡️ Die Barometer-Brücke</div>
+    <div class="barometer-frage">
+      <div class="barometer-chip-row">
+        <span class="barometer-chip" style="background:var(--gelb);color:#5A4A17;">GELB · angespannt</span>
+        <span class="barometer-chip" style="background:var(--orange);color:#5A3417;">ORANGE · belastet</span>
+      </div>
+      Wenn dein Stimmungs-Barometer auf Gelb oder Orange steht — welcher deiner 5 Werte ist dein bester Rettungsanker, um wieder in den grünen Bereich zu kommen?
+    </div>
+    <div class="anker-grid" id="ankerGrid"></div>
+    <div class="aktionsleiste" style="margin-top:1.4rem;justify-content:space-between;">
+      <button class="zurueck-link" onclick="phaseWechseln(2)">← Zurück zur Treppe</button>
+      <button class="weiter-btn" id="weiterZuReflexionBtn" onclick="phaseWechseln(4)" disabled>Weiter zur Reflexion →</button>
+    </div>
+  </div>
 </div>
 
-<div class="pool-label">Kartenpool</div>
-<div class="pool" id="pool"></div>
+<!-- ══════════════════ PHASE 4: SINN-REFLEXION ══════════════════ -->
+<div id="phase4" class="phase" style="display:none;">
+  <div class="phase-card">
+    <div class="phase-titel">💭 Was das für dich bedeutet</div>
+    <div class="phase-sub">Klicken statt grübeln — ergänzen statt erfinden. Wähl die Antwort, die am besten passt, oder beschreib es mit eigenen Worten.</div>
+    <div class="luecken-frage" id="luekenFrage"></div>
+    <div class="luecken-optionen" id="luekenOptionen"></div>
+    <div class="aktionsleiste" style="margin-top:0;justify-content:space-between;">
+      <button class="zurueck-link" onclick="phaseWechseln(3)">← Zurück zur Barometer-Brücke</button>
+      <button class="save-btn" id="ergebnisSpeichernBtn" onclick="ergebnisSpeichern()" disabled>Ergebnisse speichern & zum Ressourcen-Bericht hinzufügen</button>
+    </div>
+  </div>
+</div>
 
-<div class="aktionsleiste">
-  <button class="auswertung-btn" id="auswertungBtn" onclick="auswertungOeffnen()">📊 Auswertung anzeigen</button>
-  <button class="save-btn" id="saveBtn" onclick="druckenVorbereiten()" disabled>🖨 Meine Auswahl drucken</button>
+<!-- ══════════════════ PHASE 5: ERGEBNIS ══════════════════ -->
+<div id="phase5" class="phase" style="display:none;">
+  <div class="phase-card">
+    <div class="ergebnis-titel">🎉 Gespeichert!</div>
+    <div class="phase-sub">Deine Werte-Ergebnisse sind jetzt lokal gespeichert und erscheinen automatisch im Ressourcen-Bericht für Jugendliche.</div>
+    <div class="ergebnis-liste" id="ergebnisListe"></div>
+    <div class="ergebnis-absatz" id="ergebnisAbsatz"></div>
+    <div class="ergebnis-btns">
+      <button class="weiter-btn" onclick="druckenVorbereiten()">🖨 Ergebnisse drucken</button>
+      <button class="reset-btn" onclick="zuruecksetzen()">↺ Neu starten</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast">Du hast nur ein Budget von 5 Werten. Wähle einen anderen Wert ab.</div>
@@ -138,29 +270,6 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <div class="modal-btns">
       <button class="copy-btn" onclick="listeKopieren()">📋 Kopieren</button>
       <button class="close-btn" onclick="modalSchliessen()">Schließen</button>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="auswertungOverlay">
-  <div class="aw-modal">
-    <div class="aw-kopf">
-      <button class="aw-close" onclick="auswertungSchliessen()">&times;</button>
-      <div class="aw-kopf-label">Deine Auswertung</div>
-      <div class="aw-kopf-titel">Das sind deine Top 5 Werte</div>
-    </div>
-    <div class="aw-body">
-      <div class="aw-werte-grid" id="awWerteGrid"></div>
-
-      <div class="aw-abschnitt-titel">Drei Fragen zur Selbstreflexion</div>
-      <div class="aw-fragen">
-        <div class="aw-frage"><div class="aw-frage-nr">1</div><div class="aw-frage-text">Welcher dieser fünf Werte war am leichtesten zu wählen — und welcher am schwersten?</div></div>
-        <div class="aw-frage"><div class="aw-frage-nr">2</div><div class="aw-frage-text">Wann hast du zuletzt gespürt, dass einer dieser Werte in deinem Alltag zu kurz kommt?</div></div>
-        <div class="aw-frage"><div class="aw-frage-nr">3</div><div class="aw-frage-text">Wenn du nur einen dieser fünf behalten dürftest — welchen würdest du wählen, und warum?</div></div>
-      </div>
-
-      <div class="aw-abschnitt-titel">Tipp für den Alltag</div>
-      <div class="aw-tipp"><b>Ein kleiner Schritt:</b> Nimm dir diese Woche für jeden deiner Top-5-Werte einen bewussten Moment — auch wenn es nur eine Kleinigkeit ist, in der du wirklich danach handelst.</div>
     </div>
   </div>
 </div>
@@ -190,72 +299,372 @@ var ICONS = {
   'Disziplin': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
   'Loyalität': '<path d="M12 2l7 3v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V5l7-3z"/><path d="M12 8l1 2 2.2.3-1.6 1.5.4 2.2-2-1.1-2 1.1.4-2.2-1.6-1.5L11 10z" fill="currentColor" stroke="none"/>',
   'Schönheit': '<circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="6" r="2.6"/><circle cx="12" cy="18" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/>',
-  'Macht': '<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z"/>'
+  'Macht': '<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5L3 8z"/>',
+  'Grenzen setzen': '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V6l8-4z"/><path d="M9 12h6"/>',
+  'Echtheit': '<circle cx="9" cy="12" r="6"/><path d="M15.5 7.5a6 6 0 0 1 0 9"/>',
+  'Digital-Life / Gaming': '<rect x="2" y="8" width="20" height="9" rx="4"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="18.5" cy="13.5" r="1" fill="currentColor" stroke="none"/>',
+  'Klimaschutz / Zukunft': '<path d="M5 21c8 0 14-6 14-14V4h-3C8 4 5 10 5 18v3z"/><path d="M5 21c3-6 6-9 12-13"/>',
+  'Gesehen werden': '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  'Einfach Chillen': '<rect x="3" y="11" width="18" height="7" rx="2"/><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M3 16v3M21 16v3"/>',
+  '_custom': '<path d="M12 2l1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5z"/>'
 };
 
+/* Basis: 24 Original-Werte, unverändert übernommen (Wortlaut/Definitionen
+   Strang-geprüft) — neu ist ausschließlich die Zuordnung zu einer der vier
+   Themenwelten (THEMENWELTEN), rein optisch zur kognitiven Entlastung. */
 var WERTE = [
-  { nr:1, wert:'Freiheit', def:'Tun können, was ich für richtig halte.' },
-  { nr:2, wert:'Freundschaft', def:'Leute haben, auf die ich mich verlassen kann.' },
-  { nr:3, wert:'Ehrlichkeit', def:'Sagen, was Sache ist – auch wenn es schwerfällt.' },
-  { nr:4, wert:'Erfolg', def:'Meine Ziele erreichen und stolz darauf sein.' },
-  { nr:5, wert:'Sicherheit', def:'Mich innerlich und äußerlich geschützt fühlen.' },
-  { nr:6, wert:'Gerechtigkeit', def:'Dass es fair zugeht – für mich und für andere.' },
-  { nr:7, wert:'Mut', def:'Etwas wagen, obwohl ich Angst habe.' },
-  { nr:8, wert:'Ruhe', def:'Zeit für mich, ohne Erwartungen von außen.' },
-  { nr:9, wert:'Treue', def:'Zu meinen Leuten und meinen Überzeugungen stehen.' },
-  { nr:10, wert:'Kreativität', def:'Etwas Eigenes erschaffen und ausdrücken.' },
-  { nr:11, wert:'Respekt', def:'So akzeptiert werden, wie ich bin.' },
-  { nr:12, wert:'Abenteuer', def:'Neues entdecken und die Komfortzone verlassen.' },
-  { nr:13, wert:'Familie', def:'Zusammenhalt erleben, auch wenn es mal kracht.' },
-  { nr:14, wert:'Gesundheit', def:'Auf meinen Körper und meine Seele achten.' },
-  { nr:15, wert:'Vertrauen', def:'Glauben können, dass es gut wird.' },
-  { nr:16, wert:'Unabhängigkeit', def:'Mein eigener Chef sein und selbst entscheiden.' },
-  { nr:17, wert:'Anerkennung', def:'Dass andere sehen, was ich leiste.' },
-  { nr:18, wert:'Toleranz', def:'Andere so lassen können, wie sie sind.' },
-  { nr:19, wert:'Humor', def:'Über mich selbst und die Welt lachen können.' },
-  { nr:20, wert:'Wissen', def:'Dinge verstehen und den Durchblick haben.' },
-  { nr:21, wert:'Disziplin', def:'Dranbleiben, auch wenn es anstrengend wird.' },
-  { nr:22, wert:'Loyalität', def:'Hinter meinem Team stehen.' },
-  { nr:23, wert:'Schönheit', def:'Die Welt und mich selbst ästhetisch finden.' },
-  { nr:24, wert:'Macht', def:'Einfluss haben und Dinge mitgestalten können.' }
+  { id:'Freiheit', wert:'Freiheit', def:'Tun können, was ich für richtig halte.' },
+  { id:'Freundschaft', wert:'Freundschaft', def:'Leute haben, auf die ich mich verlassen kann.' },
+  { id:'Ehrlichkeit', wert:'Ehrlichkeit', def:'Sagen, was Sache ist – auch wenn es schwerfällt.' },
+  { id:'Erfolg', wert:'Erfolg', def:'Meine Ziele erreichen und stolz darauf sein.' },
+  { id:'Sicherheit', wert:'Sicherheit', def:'Mich innerlich und äußerlich geschützt fühlen.' },
+  { id:'Gerechtigkeit', wert:'Gerechtigkeit', def:'Dass es fair zugeht – für mich und für andere.' },
+  { id:'Mut', wert:'Mut', def:'Etwas wagen, obwohl ich Angst habe.' },
+  { id:'Ruhe', wert:'Ruhe', def:'Zeit für mich, ohne Erwartungen von außen.' },
+  { id:'Treue', wert:'Treue', def:'Zu meinen Leuten und meinen Überzeugungen stehen.' },
+  { id:'Kreativität', wert:'Kreativität', def:'Etwas Eigenes erschaffen und ausdrücken.' },
+  { id:'Respekt', wert:'Respekt', def:'So akzeptiert werden, wie ich bin.' },
+  { id:'Abenteuer', wert:'Abenteuer', def:'Neues entdecken und die Komfortzone verlassen.' },
+  { id:'Familie', wert:'Familie', def:'Zusammenhalt erleben, auch wenn es mal kracht.' },
+  { id:'Gesundheit', wert:'Gesundheit', def:'Auf meinen Körper und meine Seele achten.' },
+  { id:'Vertrauen', wert:'Vertrauen', def:'Glauben können, dass es gut wird.' },
+  { id:'Unabhängigkeit', wert:'Unabhängigkeit', def:'Mein eigener Chef sein und selbst entscheiden.' },
+  { id:'Anerkennung', wert:'Anerkennung', def:'Dass andere sehen, was ich leiste.' },
+  { id:'Toleranz', wert:'Toleranz', def:'Andere so lassen können, wie sie sind.' },
+  { id:'Humor', wert:'Humor', def:'Über mich selbst und die Welt lachen können.' },
+  { id:'Wissen', wert:'Wissen', def:'Dinge verstehen und den Durchblick haben.' },
+  { id:'Disziplin', wert:'Disziplin', def:'Dranbleiben, auch wenn es anstrengend wird.' },
+  { id:'Loyalität', wert:'Loyalität', def:'Hinter meinem Team stehen.' },
+  { id:'Schönheit', wert:'Schönheit', def:'Die Welt und mich selbst ästhetisch finden.' },
+  { id:'Macht', wert:'Macht', def:'Einfluss haben und Dinge mitgestalten können.' }
+];
+
+/* Themenwelten sortieren ausschließlich die bestehenden 24 Werte optisch in
+   4 Gruppen (Spezifikation "Werte-Poker 2.0", Phase 1) — keine neuen Werte,
+   keine Änderung an WERTE selbst. */
+var THEMENWELTEN = [
+  { id:'leistung', icon:'🏆', label:'Leistung & Machen', namen:['Erfolg','Wissen','Disziplin','Macht','Kreativität','Abenteuer'] },
+  { id:'beziehungen', icon:'❤️', label:'Beziehungen & Team', namen:['Freundschaft','Familie','Treue','Respekt','Loyalität','Toleranz'] },
+  { id:'sicherheit', icon:'🛡️', label:'Sicherheit & Halt', namen:['Sicherheit','Gesundheit','Vertrauen','Gerechtigkeit','Ehrlichkeit','Schönheit'] },
+  { id:'freiraum', icon:'🌱', label:'Mein Freiraum', namen:['Freiheit','Unabhängigkeit','Ruhe','Anerkennung','Humor','Mut'] }
+];
+
+/* Inspirations-Joker: moderne Zusatzkarten, einblendbar über "Mehr Ideen
+   anzeigen". Eigener Kartenpool, zählt genauso gegen das 5er-Budget. */
+var ZUSATZKARTEN = [
+  { id:'Grenzen setzen', wert:'Grenzen setzen', def:'Selbstfürsorge: Nein sagen dürfen.' },
+  { id:'Echtheit', wert:'Echtheit', def:'Real-Me vs. Online-Me — so sein, wie ich wirklich bin.' },
+  { id:'Digital-Life / Gaming', wert:'Digital-Life / Gaming', def:'Meine Online-Welt zählt genauso.' },
+  { id:'Klimaschutz / Zukunft', wert:'Klimaschutz / Zukunft', def:'Verantwortung für morgen übernehmen.' },
+  { id:'Gesehen werden', wert:'Gesehen werden', def:'Anerkennung — nicht übersehen werden.' },
+  { id:'Einfach Chillen', wert:'Einfach Chillen', def:'Nichtstun ist auch eine Kompetenz.' }
+];
+
+var CUSTOM_PLATZHALTER = [
+  'z. B. Mein Hund',
+  'z. B. Zocken mit Freunden',
+  'z. B. Mein eigenes Zimmer',
+  'z. B. Musik hören',
+  'z. B. Meine Katze',
+  'z. B. Zeit für mich am Handy'
+];
+
+var TREPPE_LABELS = [
+  'Mein Fundament · Unverzichtbar',
+  'Sehr wichtig',
+  'Wichtig',
+  'Auch wichtig',
+  'Wichtig, aber verhandelbar'
+];
+
+/* Lückentext-Antwortkacheln je Wert (Phase 4). Für jeden der 24 Basis-Werte
+   und 6 Zusatzkarten liegt ein eigenes 4er-Set vor (Spezifikation, Beispiele
+   "Freiheit"/"Freundschaft" wörtlich übernommen). FALLBACK greift für frei
+   erfundene Werte, die hier nicht bekannt sein können. */
+var LUECKENTEXT_OPTIONEN = {
+  'Freiheit': [
+    'dass ich mir meine Zeit selbst einteilen kann.',
+    'dass mir niemand ständig reinredet oder mich kontrolliert.',
+    'dass ich meine eigenen kreativen Ideen ausprobieren darf.',
+    'dass ich mich auch mal zurückziehen und meine Ruhe haben kann.'
+  ],
+  'Freundschaft': [
+    'dass wir absolut ehrlich zueinander sind und keine Geheimnisse haben.',
+    'dass wir einfach zusammen chillen können, ohne viel zu labern.',
+    'dass wir ein festes Team sind (z. B. in der Gaming-Gilde oder beim Sport).',
+    'dass mich der andere so akzeptiert, wie ich wirklich bin (mein Real-Me).'
+  ],
+  'Ehrlichkeit': [
+    'dass ich sagen kann, was ich wirklich denke, ohne mich zu verstellen.',
+    'dass andere mir nichts vormachen oder mich anlügen.',
+    'dass ich Fehler zugeben kann, ohne gleich fertiggemacht zu werden.',
+    'dass Absprachen auch wirklich gelten und eingehalten werden.'
+  ],
+  'Erfolg': [
+    'dass ich sehe, wie ich besser werde — z. B. im Zocken, im Sport oder in der Schule.',
+    'dass sich harte Arbeit am Ende auch auszahlt.',
+    'dass ich mir selbst beweisen kann, dass ich was draufhab.',
+    'dass andere merken, dass ich richtig gut in etwas bin.'
+  ],
+  'Sicherheit': [
+    'dass ich weiß, worauf ich mich verlassen kann — zu Hause und im Alltag.',
+    'dass niemand mir plötzlich den Boden unter den Füßen wegzieht.',
+    'dass ich mich nicht ständig auf neue Situationen einstellen muss.',
+    'dass ich einen festen Rückzugsort habe, an dem ich zur Ruhe komme.'
+  ],
+  'Gerechtigkeit': [
+    'dass alle nach denselben Regeln behandelt werden — auch ich.',
+    'dass ich mich einmische, wenn jemand unfair behandelt wird.',
+    'dass Leistung auch wirklich anerkannt wird, egal wer sie bringt.',
+    'dass ich nicht wegschaue, wenn andere übergangen werden.'
+  ],
+  'Mut': [
+    'dass ich Dinge ausprobiere, auch wenn ich vorher Bammel habe.',
+    'dass ich meine Meinung sage, auch wenn sie nicht bei allen gut ankommt.',
+    'dass ich aus meiner Komfortzone rausgehe, wenn sich das lohnt.',
+    'dass ich auch nach einem Rückschlag wieder aufstehe.'
+  ],
+  'Ruhe': [
+    'dass ich Zeit für mich habe, ohne dass jemand was von mir will.',
+    'dass ich abschalten kann, wenn mir alles zu viel wird.',
+    'dass es um mich herum nicht ständig laut und hektisch ist.',
+    'dass ich einfach mal nichts tun darf, ohne ein schlechtes Gewissen zu haben.'
+  ],
+  'Treue': [
+    'dass ich zu meinen Leuten halte, auch wenn es mal schwierig wird.',
+    'dass ich Vereinbarungen einhalte, auch wenn es unbequem ist.',
+    'dass ich zu dem stehe, was ich einmal gesagt habe.',
+    'dass meine Leute sich zu 100 % auf mich verlassen können.'
+  ],
+  'Kreativität': [
+    'dass ich meine eigenen Ideen umsetzen kann, ohne dass mir reingeredet wird.',
+    'dass ich Dinge auf meine eigene Art machen darf, nicht nach Schema F.',
+    'dass ich mich über Kunst, Musik oder Gaming ausdrücken kann.',
+    'dass ich auch mal was Neues ausprobieren darf, das noch keiner so gemacht hat.'
+  ],
+  'Respekt': [
+    'dass man mich so nimmt, wie ich bin, ohne ständig was an mir rumzumeckern.',
+    'dass meine Meinung genauso zählt wie die von anderen.',
+    'dass ich nicht von oben herab behandelt werde.',
+    'dass meine Grenzen ernst genommen werden, wenn ich „Stopp" sage.'
+  ],
+  'Abenteuer': [
+    'dass ich Neues erlebe und nicht immer nur den gleichen Trott habe.',
+    'dass ich auch mal spontan was Verrücktes ausprobiere.',
+    'dass ich Orte oder Dinge entdecke, die ich noch nicht kenne.',
+    'dass es in meinem Alltag nicht nur Routine gibt.'
+  ],
+  'Familie': [
+    'dass ich weiß, dass meine Familie hinter mir steht, egal was passiert.',
+    'dass wir füreinander da sind, auch wenn es mal kracht.',
+    'dass ich zu Hause einen sicheren Rückzugsort habe.',
+    'dass ich Verantwortung übernehmen darf, wenn ich gebraucht werde (z. B. für Geschwister).'
+  ],
+  'Gesundheit': [
+    'dass ich auf meinen Körper und meinen Kopf achte, statt mich zu verausgaben.',
+    'dass ich genug Schlaf und Pausen bekomme, um klarzukommen.',
+    'dass ich merke, wenn mir etwas zu viel wird, und dann auch stoppen kann.',
+    'dass ich mich fit genug fühle, um die Dinge zu machen, die mir wichtig sind.'
+  ],
+  'Vertrauen': [
+    'dass ich mich auf das Wort anderer verlassen kann.',
+    'dass ich nicht ständig alles kontrollieren oder nachprüfen muss.',
+    'dass andere mir auch mal was zutrauen, ohne gleich nachzufragen.',
+    'dass ich mich fallen lassen kann, ohne Angst vor Enttäuschung.'
+  ],
+  'Unabhängigkeit': [
+    'dass ich meine eigenen Entscheidungen treffen kann.',
+    'dass ich nicht von anderen abhängig bin, um klarzukommen.',
+    'dass ich meinen eigenen Weg gehen darf, auch wenn er anders ist.',
+    'dass ich mein eigenes Ding durchziehen kann, ohne mich ständig abstimmen zu müssen.'
+  ],
+  'Anerkennung': [
+    'dass jemand merkt, wenn ich mir richtig Mühe gegeben habe.',
+    'dass meine Leistung auch mal laut ausgesprochen wird, nicht nur stillschweigend erwartet.',
+    'dass ich für das, was ich kann, ernst genommen werde.',
+    'dass ich nicht nur auffalle, wenn was schiefläuft, sondern auch wenn was gut läuft.'
+  ],
+  'Toleranz': [
+    'dass ich anderen ihr Ding lassen kann, auch wenn ich es anders sehe.',
+    'dass ich nicht über Leute urteile, bevor ich sie kenne.',
+    'dass ich in Ruhe gelassen werde, wenn ich mal anders ticke als andere.',
+    'dass ich mit Leuten klarkomme, die ganz anders sind als ich.'
+  ],
+  'Humor': [
+    'dass ich über mich selbst lachen kann, auch wenn mal was schiefgeht.',
+    'dass es in stressigen Momenten trotzdem was zu lachen gibt.',
+    'dass ich mit Leuten abhänge, mit denen ich mich kaputtlachen kann.',
+    'dass ich Dinge nicht immer zu ernst nehmen muss.'
+  ],
+  'Wissen': [
+    'dass ich Dinge wirklich verstehe und nicht nur auswendig lerne.',
+    'dass ich mich in ein Thema reinfuchsen kann, das mich richtig interessiert.',
+    'dass ich Durchblick habe, wenn andere keinen Plan haben.',
+    'dass ich immer wieder was Neues lerne, das mich weiterbringt.'
+  ],
+  'Disziplin': [
+    'dass ich dranbleibe, auch wenn eine Sache anstrengend wird.',
+    'dass ich mir selbst Regeln setze und die auch einhalte.',
+    'dass ich Dinge zu Ende bringe, statt sie liegen zu lassen.',
+    'dass ich mich auf mich selbst verlassen kann, auch ohne dass mich jemand kontrolliert.'
+  ],
+  'Loyalität': [
+    'dass ich zu meinem Team oder meiner Crew halte, komme was wolle.',
+    'dass ich niemanden hängen lasse, wenn es drauf ankommt.',
+    'dass ich innerhalb meiner Gruppe niemanden schlechtmache.',
+    'dass sich meine Leute zu 100 % auf meinen Rückhalt verlassen können.'
+  ],
+  'Schönheit': [
+    'dass ich Dinge gestalten kann, die gut aussehen — egal ob Zeichnung, Fit oder Zimmer.',
+    'dass ich ein Auge für Details habe, die andere übersehen.',
+    'dass ich mich in einer Umgebung wohlfühle, die mir gefällt.',
+    'dass ich Kunst, Mode oder Design genießen kann, ohne dass mir das wer madigmacht.'
+  ],
+  'Macht': [
+    'dass ich bei Entscheidungen mitreden darf, die mich betreffen.',
+    'dass ich Einfluss darauf habe, wie Dinge laufen, statt nur zuzuschauen.',
+    'dass ich in meiner Gruppe was zu sagen habe.',
+    'dass ich Verantwortung übernehmen und andere anleiten darf.'
+  ],
+  'Grenzen setzen': [
+    'dass ich „Nein" sagen kann, ohne mich schlecht dafür zu fühlen.',
+    'dass andere merken, wenn es mir zu viel wird, und das respektieren.',
+    'dass ich nicht über meine Kräfte gehen muss, um es allen recht zu machen.',
+    'dass ich für mich selbst einstehe, auch wenn das unbequem ist.'
+  ],
+  'Echtheit': [
+    'dass ich online genauso sein kann wie offline, ohne mich zu verstellen.',
+    'dass ich mich nicht hinter einer Fassade verstecken muss.',
+    'dass Leute mich mögen, wie ich wirklich bin, nicht nur mein Insta-Bild.',
+    'dass ich zu meinen Ecken und Kanten stehen kann.'
+  ],
+  'Digital-Life / Gaming': [
+    'dass ich in meiner Online-Welt genauso ernst genommen werde wie offline.',
+    'dass Zocken oder mein Online-Team für mich genauso zählt wie ein „echtes" Hobby.',
+    'dass ich Zeit für meine digitale Welt bekomme, ohne mich rechtfertigen zu müssen.',
+    'dass die Skills, die ich online lerne (Teamwork, Strategie), auch offline was wert sind.'
+  ],
+  'Klimaschutz / Zukunft': [
+    'dass ich das Gefühl habe, dass meine Zukunft noch was wert ist.',
+    'dass verantwortungsvoll mit der Umwelt umgegangen wird, auch von Erwachsenen.',
+    'dass ich selbst was verändern kann, auch wenn ich noch jung bin.',
+    'dass langfristig gedacht wird, statt nur an den nächsten Tag.'
+  ],
+  'Gesehen werden': [
+    'dass ich nicht einfach übersehen werde, auch wenn ich eher ruhig bin.',
+    'dass jemand nachfragt, wie es mir wirklich geht.',
+    'dass meine Fortschritte auffallen, auch die kleinen.',
+    'dass ich als Person zähle, nicht nur als Nummer in der Klasse.'
+  ],
+  'Einfach Chillen': [
+    'dass ich auch mal gar nichts leisten muss, um okay zu sein.',
+    'dass Nichtstun für mich genauso wichtig ist wie Action.',
+    'dass ich runterkommen kann, ohne dass mir das als faul ausgelegt wird.',
+    'dass ich meine Akkus in meinem eigenen Tempo wieder auflade.'
+  ]
+};
+var LUECKENTEXT_FALLBACK = [
+  'dass ich mich dabei wie ich selbst fühle.',
+  'dass mir das Kraft gibt, wenn ein Tag anstrengend war.',
+  'dass ich das nicht aufgeben will, egal was andere dazu sagen.'
 ];
 
 var LIMIT = 5;
 var setzBereich = [null, null, null, null, null];
+var alleKarten = {};       // id -> {id, wert, def}
+var customKarten = [];     // zusätzlich erfundene Werte (id === wert)
+var zusatzOffen = false;
 var toastTimer = null;
+var placeholderTimer = null;
+var placeholderIndex = 0;
+
+var rangfolge = [];        // Phase 2: 5 ids in Rang-Reihenfolge (Index 0 = Platz 1)
+var barometerAnker = null; // Phase 3: gewählte id
+var reflexionAuswahl = null; // Phase 4: gewählter Options-Index oder 'frei'
+var reflexionFreitext = '';
+var aktuellePhase = 1;
+
+function alleKartenAufbauen(){
+  WERTE.concat(ZUSATZKARTEN).forEach(function(w){ alleKarten[w.id] = w; });
+  customKarten.forEach(function(w){ alleKarten[w.id] = w; });
+}
+alleKartenAufbauen();
+
+function weltFuer(name){
+  for (var i = 0; i < THEMENWELTEN.length; i++){
+    if (THEMENWELTEN[i].namen.indexOf(name) !== -1) return THEMENWELTEN[i];
+  }
+  return null;
+}
 
 function iconSvg(name){
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || '') + '</svg>';
+  var pfad = ICONS[name] || ICONS['_custom'];
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + pfad + '</svg>';
 }
 
 function karteHtml(w, kontext){
-  return '<div class="karte" draggable="true" data-nr="' + w.nr + '" data-kontext="' + kontext + '">' +
+  return '<div class="karte" draggable="true" data-id="' + w.id + '" data-kontext="' + kontext + '">' +
     '<div class="karte-icon">' + iconSvg(w.wert) + '</div>' +
     '<div class="karte-name">' + w.wert + '</div>' +
     (kontext === 'slot' ? '<div class="slot-entfernen">Antippen zum Entfernen</div>' : '') +
     '</div>';
 }
 
-function poolRendern(){
-  var pool = document.getElementById('pool');
+function weltenRendern(){
+  var wrap = document.getElementById('weltenWrap');
   var platziert = setzBereich.filter(function(x){ return x !== null; });
-  var uebrig = WERTE.filter(function(w){ return platziert.indexOf(w.nr) === -1; });
-  pool.innerHTML = uebrig.map(function(w){ return karteHtml(w, 'pool'); }).join('');
+  wrap.innerHTML = THEMENWELTEN.map(function(welt){
+    var karten = WERTE.filter(function(w){ return welt.namen.indexOf(w.wert) !== -1 && platziert.indexOf(w.id) === -1; });
+    if (!karten.length) return '';
+    return '<div class="welt-block">' +
+      '<div class="welt-titel"><span class="welt-icon">' + welt.icon + '</span> ' + welt.label + '</div>' +
+      '<div class="pool">' + karten.map(function(w){ return karteHtml(w, 'pool'); }).join('') + '</div>' +
+      '</div>';
+  }).join('');
+  kartenKlickbarMachen(wrap);
+}
 
-  Array.prototype.forEach.call(pool.querySelectorAll('.karte'), function(el){
-    el.addEventListener('click', function(){ versucheHinzufuegen(parseInt(el.getAttribute('data-nr'), 10)); });
-    el.addEventListener('dragstart', function(e){ e.dataTransfer.setData('text/plain', el.getAttribute('data-nr')); });
+function zusatzPoolRendern(){
+  var pool = document.getElementById('zusatzPool');
+  var platziert = setzBereich.filter(function(x){ return x !== null; });
+  var karten = ZUSATZKARTEN.filter(function(w){ return platziert.indexOf(w.id) === -1; });
+  pool.innerHTML = karten.map(function(w){ return karteHtml(w, 'pool'); }).join('');
+  kartenKlickbarMachen(pool);
+}
+
+function customBereichRendern(){
+  // Eigene Werte, die noch nicht platziert sind, erscheinen als eigener kleiner Pool
+  // direkt über dem Eingabefeld, damit sie wie jede andere Karte wählbar bleiben.
+  var platziert = setzBereich.filter(function(x){ return x !== null; });
+  var offen = customKarten.filter(function(w){ return platziert.indexOf(w.id) === -1; });
+  var alt = document.getElementById('customPool');
+  if (alt) alt.remove();
+  if (!offen.length) return;
+  var row = document.querySelector('.custom-row');
+  var div = document.createElement('div');
+  div.id = 'customPool';
+  div.className = 'pool';
+  div.style.marginTop = '.8rem';
+  div.innerHTML = offen.map(function(w){ return karteHtml(w, 'pool'); }).join('');
+  row.parentNode.insertBefore(div, row.nextSibling);
+  kartenKlickbarMachen(div);
+}
+
+function kartenKlickbarMachen(scope){
+  Array.prototype.forEach.call(scope.querySelectorAll('.karte'), function(el){
+    el.addEventListener('click', function(){ versucheHinzufuegen(el.getAttribute('data-id')); });
+    el.addEventListener('dragstart', function(e){ e.dataTransfer.setData('text/plain', el.getAttribute('data-id')); });
   });
 }
 
 function slotsRendern(){
   var wrap = document.getElementById('setzSlots');
   wrap.innerHTML = '';
-  setzBereich.forEach(function(nr, idx){
+  setzBereich.forEach(function(id, idx){
     var slot = document.createElement('div');
-    slot.className = 'slot' + (nr !== null ? ' belegt' : '');
-    if (nr !== null) {
-      var w = WERTE.filter(function(x){ return x.nr === nr; })[0];
+    slot.className = 'slot' + (id !== null ? ' belegt' : '');
+    if (id !== null) {
+      var w = alleKarten[id];
       slot.innerHTML = karteHtml(w, 'slot');
       slot.querySelector('.karte').addEventListener('click', function(){ entferneAusSlot(idx); });
     }
@@ -264,21 +673,20 @@ function slotsRendern(){
     slot.addEventListener('drop', function(e){
       e.preventDefault();
       slot.classList.remove('dragover');
-      var nrGezogen = parseInt(e.dataTransfer.getData('text/plain'), 10);
-      versucheHinzufuegen(nrGezogen, idx);
+      versucheHinzufuegen(e.dataTransfer.getData('text/plain'), idx);
     });
     wrap.appendChild(slot);
   });
 }
 
-function versucheHinzufuegen(nr, bevorzugterSlot){
-  if (setzBereich.indexOf(nr) !== -1) return;
+function versucheHinzufuegen(id, bevorzugterSlot){
+  if (!id || setzBereich.indexOf(id) !== -1) return;
   var freierIndex = (bevorzugterSlot !== undefined && setzBereich[bevorzugterSlot] === null) ? bevorzugterSlot : setzBereich.indexOf(null);
   if (freierIndex === -1) {
     toastZeigen();
     return;
   }
-  setzBereich[freierIndex] = nr;
+  setzBereich[freierIndex] = id;
   allesRendern();
 }
 
@@ -288,7 +696,9 @@ function entferneAusSlot(idx){
 }
 
 function allesRendern(){
-  poolRendern();
+  weltenRendern();
+  zusatzPoolRendern();
+  customBereichRendern();
   slotsRendern();
   counterAktualisieren();
 }
@@ -296,25 +706,32 @@ function allesRendern(){
 function counterAktualisieren(){
   var anzahl = setzBereich.filter(function(x){ return x !== null; }).length;
   document.getElementById('counter').textContent = anzahl + ' / ' + LIMIT;
-  document.getElementById('saveBtn').disabled = anzahl === 0;
-  document.getElementById('auswertungBtn').classList.toggle('zeigen', anzahl === LIMIT);
+  document.getElementById('weiterZuTreppeBtn').disabled = anzahl !== LIMIT;
 }
 
-function auswertungOeffnen(){
-  var gewaehlteNr = setzBereich.filter(function(x){ return x !== null; });
-  if (gewaehlteNr.length !== LIMIT) return;
-  var gewaehlteWerte = WERTE.filter(function(w){ return gewaehlteNr.indexOf(w.nr) !== -1; });
-
-  var grid = document.getElementById('awWerteGrid');
-  grid.innerHTML = gewaehlteWerte.map(function(w){
-    return '<div class="aw-wert-badge"><div class="aw-icon">' + iconSvg(w.wert) + '</div><div class="aw-name">' + w.wert + '</div></div>';
-  }).join('');
-
-  document.getElementById('auswertungOverlay').classList.add('zeigen');
+function zusatzToggeln(){
+  zusatzOffen = !zusatzOffen;
+  document.getElementById('zusatzWrap').classList.toggle('zeigen', zusatzOffen);
+  document.getElementById('zusatzToggleBtn').textContent = zusatzOffen ? '➖ Weniger anzeigen' : '➕ Mehr Ideen anzeigen';
 }
 
-function auswertungSchliessen(){
-  document.getElementById('auswertungOverlay').classList.remove('zeigen');
+function customHinzufuegen(){
+  var input = document.getElementById('customInput');
+  var text = input.value.trim();
+  if (!text) return;
+  var id = 'custom_' + Date.now();
+  var karte = { id: id, wert: text, def: '' };
+  customKarten.push(karte);
+  alleKarten[id] = karte;
+  input.value = '';
+  versucheHinzufuegen(id);
+}
+
+function platzhalterRotieren(){
+  var input = document.getElementById('customInput');
+  if (!input || document.activeElement === input || input.value) return;
+  placeholderIndex = (placeholderIndex + 1) % CUSTOM_PLATZHALTER.length;
+  input.setAttribute('placeholder', CUSTOM_PLATZHALTER[placeholderIndex]);
 }
 
 function toastZeigen(){
@@ -326,20 +743,180 @@ function toastZeigen(){
 
 function zuruecksetzen(){
   setzBereich = [null, null, null, null, null];
+  customKarten = [];
+  rangfolge = [];
+  barometerAnker = null;
+  reflexionAuswahl = null;
+  reflexionFreitext = '';
+  alleKartenAufbauen();
   allesRendern();
+  phaseWechseln(1);
+}
+
+/* ══════════════════ Phasen-Steuerung ══════════════════ */
+function schrittLeisteRendern(){
+  var titel = ['Karten wählen', 'Werte-Treppe', 'Barometer-Brücke', 'Reflexion', 'Ergebnis'];
+  var leiste = document.getElementById('schrittLeiste');
+  leiste.innerHTML = titel.map(function(t, i){
+    var nr = i + 1;
+    var cls = nr === aktuellePhase ? 'aktiv' : (nr < aktuellePhase ? 'erledigt' : '');
+    return '<span class="schritt-chip ' + cls + '">' + nr + '. ' + t + '</span>';
+  }).join('');
+}
+
+function phaseWechseln(ziel){
+  if (ziel === 2) {
+    var gewaehlt = setzBereich.filter(function(x){ return x !== null; });
+    if (gewaehlt.length !== LIMIT) return;
+    if (!rangfolge.length || rangfolge.length !== LIMIT || gewaehlt.some(function(id){ return rangfolge.indexOf(id) === -1; })) {
+      rangfolge = gewaehlt.slice();
+    }
+  }
+  if (ziel === 3) barometerAnkerRendern();
+  if (ziel === 4) reflexionRendern();
+
+  [1,2,3,4,5].forEach(function(p){
+    document.getElementById('phase' + p).style.display = (p === ziel ? '' : 'none');
+  });
+  aktuellePhase = ziel;
+  schrittLeisteRendern();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (ziel === 2) treppeRendern();
+}
+
+/* ── Phase 2: Werte-Treppe ── */
+function treppeRendern(){
+  var wrap = document.getElementById('treppeListe');
+  wrap.innerHTML = rangfolge.map(function(id, idx){
+    var w = alleKarten[id];
+    return '<div class="treppe-eintrag">' +
+      '<div class="treppe-rang">' + (idx + 1) + '</div>' +
+      '<div class="treppe-info"><div class="treppe-name">' + w.wert + '</div><div class="treppe-label">' + TREPPE_LABELS[idx] + '</div></div>' +
+      '<div class="treppe-btns">' +
+        '<button class="treppe-btn" onclick="treppeVerschieben(' + idx + ',-1)" ' + (idx === 0 ? 'disabled' : '') + '>▲</button>' +
+        '<button class="treppe-btn" onclick="treppeVerschieben(' + idx + ',1)" ' + (idx === rangfolge.length - 1 ? 'disabled' : '') + '>▼</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function treppeVerschieben(idx, richtung){
+  var neuIdx = idx + richtung;
+  if (neuIdx < 0 || neuIdx >= rangfolge.length) return;
+  var tmp = rangfolge[idx];
+  rangfolge[idx] = rangfolge[neuIdx];
+  rangfolge[neuIdx] = tmp;
+  treppeRendern();
+}
+
+/* ── Phase 3: Barometer-Brücke ── */
+function barometerAnkerRendern(){
+  var grid = document.getElementById('ankerGrid');
+  grid.innerHTML = rangfolge.map(function(id){
+    var w = alleKarten[id];
+    return '<div class="anker-karte' + (barometerAnker === id ? ' gewaehlt' : '') + '" data-id="' + id + '" onclick="barometerAnkerWaehlen(\'' + id + '\')">' +
+      '<div class="anker-icon">' + iconSvg(w.wert) + '</div><div class="anker-name">' + w.wert + '</div></div>';
+  }).join('');
+  document.getElementById('weiterZuReflexionBtn').disabled = !barometerAnker;
+}
+
+function barometerAnkerWaehlen(id){
+  barometerAnker = id;
+  barometerAnkerRendern();
+}
+
+/* ── Phase 4: Sinn-Reflexion (Lückentext) ── */
+function reflexionRendern(){
+  reflexionAuswahl = null;
+  reflexionFreitext = '';
+  var topId = rangfolge[0];
+  var w = alleKarten[topId];
+  var optionen = LUECKENTEXT_OPTIONEN[w.wert] || LUECKENTEXT_FALLBACK;
+
+  document.getElementById('luekenFrage').innerHTML =
+    '<span class="reflexion-wert">' + w.wert + '</span> ist dein Platz 1. Das bedeutet für dich im Alltag vor allem...';
+
+  var kachelnHtml = optionen.map(function(text, i){
+    return '<div class="luecken-kachel" data-idx="' + i + '" onclick="luekenWaehlen(' + i + ')">' +
+      '<span class="luecken-box"></span><span>...' + text + '</span></div>';
+  }).join('') +
+  '<div class="luecken-kachel" data-idx="frei" onclick="luekenWaehlen(\'frei\')">' +
+    '<span class="luecken-box"></span><span>Ich möchte es mit eigenen Worten beschreiben...</span></div>' +
+  '<div class="luecken-frei-feld" id="luekenFreiFeld"><textarea id="luekenFreitext" placeholder="Für mich bedeutet das..." oninput="reflexionFreitextEingabe(this.value)"></textarea></div>';
+
+  document.getElementById('luekenOptionen').innerHTML = kachelnHtml;
+  document.getElementById('ergebnisSpeichernBtn').disabled = true;
+}
+
+function luekenWaehlen(idx){
+  reflexionAuswahl = idx;
+  Array.prototype.forEach.call(document.querySelectorAll('.luecken-kachel'), function(el){
+    el.classList.toggle('gewaehlt', el.getAttribute('data-idx') === String(idx));
+  });
+  var freiFeld = document.getElementById('luekenFreiFeld');
+  freiFeld.classList.toggle('zeigen', idx === 'frei');
+  var speichernBtn = document.getElementById('ergebnisSpeichernBtn');
+  speichernBtn.disabled = idx === 'frei' ? !reflexionFreitext.trim() : false;
+}
+
+function reflexionFreitextEingabe(text){
+  reflexionFreitext = text;
+  document.getElementById('ergebnisSpeichernBtn').disabled = !text.trim();
+}
+
+function reflexionTextErmitteln(){
+  var topId = rangfolge[0];
+  var w = alleKarten[topId];
+  if (reflexionAuswahl === 'frei') return reflexionFreitext.trim();
+  var optionen = LUECKENTEXT_OPTIONEN[w.wert] || LUECKENTEXT_FALLBACK;
+  return optionen[reflexionAuswahl] || '';
+}
+
+/* ── Phase 5: Speichern & Ergebnis ── */
+var WERTE_DEEPDIVE_KEY = 'klartext_werte_deepdive';
+
+function ergebnisSpeichern(){
+  var rangNamen = rangfolge.map(function(id){ return alleKarten[id].wert; });
+  var ankerName = alleKarten[barometerAnker].wert;
+  var bedeutung = reflexionTextErmitteln();
+  var daten = {
+    ranked_values: rangNamen,
+    barometer_anchor: ankerName,
+    top_value_meaning: bedeutung,
+    timestamp: new Date().toISOString()
+  };
+  try { localStorage.setItem(WERTE_DEEPDIVE_KEY, JSON.stringify(daten)); } catch(e) {}
+  ergebnisRendern(daten);
+  phaseWechseln(5);
+}
+
+function ergebnisRendern(daten){
+  var liste = document.getElementById('ergebnisListe');
+  liste.innerHTML = daten.ranked_values.map(function(name, i){
+    var istAnker = name === daten.barometer_anchor;
+    return '<div class="ergebnis-eintrag"><div class="ergebnis-rang">' + (i + 1) + '</div>' +
+      '<div class="ergebnis-name">' + name + '</div>' +
+      (istAnker ? '<span class="ergebnis-anker-tag">🌡️ Rettungsanker</span>' : '') +
+      '</div>';
+  }).join('');
+  document.getElementById('ergebnisAbsatz').innerHTML =
+    'Im Werte-Poker hat der/die Jugendliche <b>' + daten.ranked_values[0] + '</b> als wichtigsten Kernwert identifiziert. ' +
+    'Im praktischen Alltag bedeutet das: „' + daten.top_value_meaning + '" ' +
+    'Als Rettungsanker in Stressmomenten (Barometer Gelb/Orange) dient der Wert <b>' + daten.barometer_anchor + '</b>.';
 }
 
 function druckenVorbereiten(){
-  var gewaehlteNr = setzBereich.filter(function(x){ return x !== null; });
-  if (!gewaehlteNr.length) return;
-  var gewaehlteWerte = WERTE.filter(function(w){ return gewaehlteNr.indexOf(w.nr) !== -1; });
+  var gespeichert = null;
+  try { gespeichert = JSON.parse(localStorage.getItem(WERTE_DEEPDIVE_KEY)); } catch(e) {}
+  if (!gespeichert) return;
   var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
-  var html = 'WERTE-POKER — MEINE AUSWAHL\n';
+  var html = 'WERTE-POKER — MEINE WERTE-TREPPE\n';
   html += 'Erstellt am ' + heute + '\n';
   html += '========================================\n\n';
-  gewaehlteWerte.forEach(function(w){
-    html += '- ' + w.wert + '\n';
+  gespeichert.ranked_values.forEach(function(name, i){
+    html += (i + 1) + '. ' + name + (name === gespeichert.barometer_anchor ? '  ← Rettungsanker bei Gelb/Orange' : '') + '\n';
   });
+  html += '\nDas bedeutet für mich (' + gespeichert.ranked_values[0] + '):\n' + gespeichert.top_value_meaning + '\n';
   html += '\nErstellt mit KLARTEXT-Mentoring';
   document.getElementById('listeText').value = html;
   document.getElementById('copyFeedback').textContent = '';
@@ -367,7 +944,9 @@ function listeKopieren(){
   feedback.textContent = kopiert ? '✓ In die Zwischenablage kopiert!' : 'Bitte manuell mit Strg/Cmd+C kopieren.';
 }
 
+schrittLeisteRendern();
 allesRendern();
+placeholderTimer = setInterval(platzhalterRotieren, 2600);
 </script>
 
 </body>

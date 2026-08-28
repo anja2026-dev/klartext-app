@@ -64,6 +64,7 @@ body{
 .transfer-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.25rem .6rem;font-size:.68rem;font-weight:600;color:rgba(255,255,255,.75);cursor:pointer;font-family:inherit;}
 .transfer-chip:hover{background:rgba(255,255,255,.12);}
 .transfer-chip.aktiv{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+.wfbm-badge{display:inline-block;margin-top:.4rem;font-size:.66rem;color:var(--acc);background:rgba(110,198,160,.12);border:1px solid rgba(110,198,160,.35);border-radius:10px;padding:.25rem .6rem;}
 
 /* ---------- Frust-Check ---------- */
 .frust-wrap{max-width:480px;margin:0 auto 2rem;padding:0 clamp(1rem,4vw,2rem);}
@@ -250,6 +251,50 @@ body{
    ========================================================================= */
 
 var JOBS = ['Büro','Werkstatt','Pflege','Verkauf','Handwerk','Kreativbranche'];
+
+/* ─────────────────────────────────────────────────────────────────────────
+   WERKSTATT-KOMPASS-MAPPING (v4-Upgrade, interessen-mapping-config-v4.json)
+   Zwei Ebenen, damit die Zuordnung fuer alle ~32 Interessen fehlerfrei
+   greift, auch wenn nicht jedes einzeln von Anja/dem Datenmodell explizit
+   gepflegt wurde:
+   1) WFBM_KOMPASS_OVERRIDE: praezise Zuordnung fuer die Interessen, die im
+      v4-Datenmodell (oder inhaltlich eindeutig danach) eine eigene
+      wfbm_kompass_categories_de-Angabe haben.
+   2) WFBM_JOB_FALLBACK: für alle uebrigen Interessen wird die vom Nutzer
+      im Transfer-Check gewaehlte JOBS-Kategorie automatisch auf die
+      passende(n) Werkstatt-Kompass-Bereiche uebersetzt — kein Interesse
+      bleibt dadurch ohne Werkstatt-Kompass-Hinweis.
+   ───────────────────────────────────────────────────────────────────────── */
+var WFBM_KOMPASS_OVERRIDE = {
+  popkultur: ['Verwaltung & PC-Arbeiten'],
+  systemstrukturen: ['Verwaltung & PC-Arbeiten', 'Verpackung & Montage'],
+  weltenbauer: ['Verwaltung & PC-Arbeiten'],
+  strategie: ['Verwaltung & PC-Arbeiten'],
+  deepthink: ['Verwaltung & PC-Arbeiten'],
+  sport: ['Garten & Grünpflege', 'Holz- & Metallwerkstatt', 'Verpackung & Montage'],
+  mannschaftssport: ['Garten & Grünpflege', 'Holz- & Metallwerkstatt', 'Verpackung & Montage'],
+  kampfsport: ['Garten & Grünpflege', 'Holz- & Metallwerkstatt', 'Verpackung & Montage'],
+  angeln: ['Garten & Grünpflege', 'Holz- & Metallwerkstatt', 'Verpackung & Montage'],
+  technik: ['Garten & Grünpflege', 'Holz- & Metallwerkstatt', 'Verpackung & Montage'],
+  social: ['Kreativwerkstatt', 'Verwaltung & PC-Arbeiten'],
+  foto: ['Kreativwerkstatt', 'Verwaltung & PC-Arbeiten'],
+  discord: ['Verwaltung & PC-Arbeiten', 'Küche & Hauswirtschaft'],
+  gaming: ['Verwaltung & PC-Arbeiten'],
+  chillen_allein: ['Verwaltung & PC-Arbeiten', 'Kreativwerkstatt'],
+  chillen_freunde: ['Küche & Hauswirtschaft', 'Garten & Grünpflege'],
+  kochen: ['Küche & Hauswirtschaft', 'Verpackung & Montage']
+};
+var WFBM_JOB_FALLBACK = {
+  'Büro': ['Verwaltung & PC-Arbeiten'],
+  'Werkstatt': ['Verpackung & Montage'],
+  'Pflege': ['Küche & Hauswirtschaft'],
+  'Verkauf': ['Verwaltung & PC-Arbeiten'],
+  'Handwerk': ['Holz- & Metallwerkstatt'],
+  'Kreativbranche': ['Kreativwerkstatt']
+};
+function wfbmKompassFuer(interesseId, job){
+  return WFBM_KOMPASS_OVERRIDE[interesseId] || WFBM_JOB_FALLBACK[job] || [];
+}
 
 var KATEGORIEN = [
   { id:'alltag', label:'Alltag & Freizeit', icon:'🎈', hinweis:'' },
@@ -664,8 +709,10 @@ function ergebnisseRendern(){
         var aktiv = gewaehlterJob === job ? ' aktiv' : '';
         return '<button type="button" class="transfer-chip'+aktiv+'" onclick="transferWaehlen(\''+h.id+'\','+i+',\''+job+'\')">'+job+'</button>';
       }).join('');
+      var wfbmKategorien = gewaehlterJob ? wfbmKompassFuer(h.id, gewaehlterJob) : [];
+      var wfbmHtml = wfbmKategorien.length ? '<div class="wfbm-badge">🏭 Werkstatt-Kompass: '+wfbmKategorien.join(' · ')+'</div>' : '';
       return '<div class="skill-karte"><div class="skill-name">🔓 '+s.name+'</div><div class="skill-desc">'+s.desc+'</div>'+
-        '<div class="transfer"><div class="transfer-frage">Transfer-Check: In welchem Job (z. B. Büro, Werkstatt, Pflege) hilft dir das am meisten?</div><div class="transfer-chips">'+chips+'</div></div></div>';
+        '<div class="transfer"><div class="transfer-frage">Transfer-Check: In welchem Job (z. B. Büro, Werkstatt, Pflege) hilft dir das am meisten?</div><div class="transfer-chips">'+chips+'</div>'+wfbmHtml+'</div></div>';
     }).join('');
     block.innerHTML = '<div class="hobby-block-titel"><span>'+h.icon+'</span><span>'+h.label+' — deine freigeschalteten Stärken</span></div><div class="skill-grid">'+skillsHtml+'</div>';
     wrap.appendChild(block);

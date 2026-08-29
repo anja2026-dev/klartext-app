@@ -84,7 +84,7 @@ def schule_seite2():
     y = draw_para(d, y, "Kuypers und Siegel bereits im KLARTEXT-Register bestätigt. Deci & Ryan "
                   "etabliert. Reeve 2006 vorgeschlagen, bitte gegenprüfen.", size=3.9, color=(150, 120, 50))
     y += mm_(5)
-    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=zonen-schule")
+    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=zonen-schule", "qj874v")
     footer(d, "Zonen-Set · Schule", "Handbuch · 2/2")
     return img
 
@@ -142,7 +142,7 @@ def eltern_seite2():
     y = draw_para(d, y, "Kuypers und Siegel bereits im KLARTEXT-Register bestätigt. Deci & Ryan etabliert.",
                   size=3.9, color=(150, 120, 50))
     y += mm_(5)
-    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=zonen-eltern")
+    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=zonen-eltern", "ay3e6j")
     footer(d, "Zonen-Set · Zuhause", "Handbuch · 2/2")
     return img
 

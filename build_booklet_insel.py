@@ -96,26 +96,30 @@ def draw_numbered_short(d, y, num, text, size=4.3):
         ty += mm(size * 1.5)
     return max(ty, y + mm(8)) + mm(2.5)
 
-def draw_digitalzugang(img, d, y, url):
-    y = draw_h2(d, y, "Digitaler Zugang")
-    qr_px = mm(26)
+def draw_digitalzugang(img, d, y, url, code):
+    f_h2 = ImageFont.truetype(F_SERIF_BOLD, mm(5))
+    d.text((MARGIN, y), "Digitaler Zugang", font=f_h2, fill=KT_PRIMARY)
+    y += mm(6.5)
+    qr_px = mm(18)
     qr = qrcode.QRCode(border=1, box_size=10, error_correction=qrcode.constants.ERROR_CORRECT_M)
     qr.add_data(url)
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color=KT_PRIMARY, back_color="white").convert("RGB").resize((qr_px, qr_px))
     img.paste(qr_img, (MARGIN, y))
-    tx = MARGIN + qr_px + mm(6)
-    f1 = ImageFont.truetype(F_SANS_REG, mm(4.3))
-    ty = y + mm(1)
-    for ln in wrap(d, "Scanne den QR-Code fuer die digitale Flip-Card-Version dieses Sets.", f1, W - tx - MARGIN):
+    tx = MARGIN + qr_px + mm(5)
+    f1 = ImageFont.truetype(F_SANS_REG, mm(3.9))
+    ty = y
+    for ln in wrap(d, "QR-Code = digitale Flip-Card-Version. Freischaltcode:", f1, W - tx - MARGIN):
         d.text((tx, ty), ln, font=f1, fill=KT_INK)
-        ty += mm(6.5)
-    ty += mm(1.5)
-    f2 = ImageFont.truetype(F_SANS_REG, mm(3.8))
-    for ln in wrap(d, "Kein Login noetig - einfach den Freischaltcode aus deiner Bestellbestaetigung eingeben.", f2, W - tx - MARGIN):
+        ty += mm(5.6)
+    f_code = ImageFont.truetype(F_SERIF_BOLD, mm(5.5))
+    d.text((tx, ty), code, font=f_code, fill=KT_PRIMARY)
+    ty += mm(7.5)
+    f2 = ImageFont.truetype(F_SANS_REG, mm(3.5))
+    for ln in wrap(d, "Kein Login noetig - Code beim ersten Oeffnen des Decks eingeben.", f2, W - tx - MARGIN):
         d.text((tx, ty), ln, font=f2, fill=KT_MUTED)
-        ty += mm(5.3)
-    return max(ty, y + qr_px) + mm(6)
+        ty += mm(4.8)
+    return max(ty, y + qr_px) + mm(3)
 
 MINI_ANLEITUNG = [
     "Badge-Vorlage ausdrucken (zuhause, Copyshop oder – für INGRA/LK – über den Schuldrucker)",
@@ -149,7 +153,7 @@ def _seite1(deckname, ziel_text, inseln_liste, extra_h2=None, extra_text=None):
     footer(d, deckname, "Handbuch · 1/2")
     return img
 
-def _seite2(deckname, umsetzung_schritte, quellen, quellen_hinweis, qr_url=None):
+def _seite2(deckname, umsetzung_schritte, quellen, quellen_hinweis, qr_url=None, qr_code=None):
     img, d, y = new_page("GEBRAUCHSANWEISUNG", "Umsetzung, Anleitung & Quellen")
     y = draw_h2(d, y, "Umsetzung")
     for i, s in enumerate(umsetzung_schritte, 1):
@@ -169,8 +173,8 @@ def _seite2(deckname, umsetzung_schritte, quellen, quellen_hinweis, qr_url=None)
     y += mm(2)
     y = draw_para(d, y, quellen_hinweis, size=3.9, color=(150, 120, 50))
     if qr_url:
-        y += mm(5)
-        y = draw_digitalzugang(img, d, y, qr_url)
+        y += mm(2)
+        y = draw_digitalzugang(img, d, y, qr_url, qr_code)
     footer(d, deckname, "Handbuch · 2/2")
     return img
 
@@ -194,7 +198,8 @@ def eltern_seite2():
          "Brackett, M. & Rivers, S. (2014). Transforming students' lives with social and emotional learning."],
         "5 von 6 Quellen geprüft und zitierfähig. Zimmer (2010) „Selbstregulation im Kindesalter“ – "
         "exakter Titel nicht bestätigt, vor Druck gegenprüfen.",
-        qr_url="https://karten.klartext-mentoring.de/?deck=insel-eltern")
+        qr_url="https://karten.klartext-mentoring.de/?deck=insel-eltern",
+        qr_code="hc7msv")
 
 def ingra_seite1():
     return _seite1("INGRA",
@@ -219,7 +224,8 @@ def ingra_seite2():
          "Calming Corners – PBIS-/traumainformierte Forschung, 29.07.2026 recherchiert."],
         "Porges 2011 bestätigt. Mesibov/Shea/Schopler, Siegel als „vorgeschlagen, bitte gegenprüfen“ "
         "markiert. Kuypers/Calming Corners eigenständig recherchiert und belegt.",
-        qr_url="https://karten.klartext-mentoring.de/?deck=insel-schule")
+        qr_url="https://karten.klartext-mentoring.de/?deck=insel-schule",
+        qr_code="h1qf9m")
 
 def lk_seite1():
     return _seite1("Lehrkräfte",
@@ -242,7 +248,8 @@ def lk_seite2():
          "PBIS-Rahmenwerk (Positive Behavioral Interventions and Supports, OSEP)."],
         "Alle vier Quellen im bestehenden LK-Classroom-Management-Konzept bereits als „vorgeschlagen, "
         "bitte gegenprüfen“ markiert – gleicher Status hier übernommen.",
-        qr_url="https://karten.klartext-mentoring.de/?deck=insel-schule")
+        qr_url="https://karten.klartext-mentoring.de/?deck=insel-schule",
+        qr_code="h1qf9m")
 
 if __name__ == "__main__":
     pages = {

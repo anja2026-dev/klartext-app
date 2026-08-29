@@ -9,9 +9,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 from build_booklet_insel import (eltern_seite1, eltern_seite2, ingra_seite1, ingra_seite2,
                                   lk_seite1, lk_seite2)
 
-KARTEN_SCHULE = "/sessions/kind-beautiful-ptolemy/mnt/outputs/insel_karten_schule/"
-KARTEN_ELTERN = "/sessions/kind-beautiful-ptolemy/mnt/outputs/insel_karten_eltern/"
-OUT_DIR = "/sessions/kind-beautiful-ptolemy/mnt/outputs/"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+KARTEN_SCHULE = os.path.join(BASE_DIR, "karten/insel_schule/")
+KARTEN_ELTERN = os.path.join(BASE_DIR, "karten/insel_eltern/")
+OUT_DIR = BASE_DIR
 
 DPI = 300
 MM = DPI / 25.4

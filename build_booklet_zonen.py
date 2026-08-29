@@ -7,7 +7,8 @@ from PIL import ImageFont
 import sys, os
 sys.path.insert(0, os.path.dirname(__file__))
 from build_booklet_insel import (new_page, footer, draw_h2, draw_para, draw_bullet,
-                                  draw_numbered_short, wrap, KT_INK, KT_MUTED, F_SANS_REG, MARGIN)
+                                  draw_numbered_short, wrap, draw_digitalzugang, KT_INK, KT_MUTED,
+                                  F_SANS_REG, MARGIN)
 
 ZONEN_4 = ["Rückzugs-Zone", "Fokus-Zone", "Klärungs-Zone", "Gesprächs-Zone"]
 
@@ -82,6 +83,8 @@ def schule_seite2():
     y += mm_(2)
     y = draw_para(d, y, "Kuypers und Siegel bereits im KLARTEXT-Register bestätigt. Deci & Ryan "
                   "etabliert. Reeve 2006 vorgeschlagen, bitte gegenprüfen.", size=3.9, color=(150, 120, 50))
+    y += mm_(5)
+    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=zonen-schule")
     footer(d, "Zonen-Set · Schule", "Handbuch · 2/2")
     return img
 
@@ -138,6 +141,8 @@ def eltern_seite2():
     y += mm_(2)
     y = draw_para(d, y, "Kuypers und Siegel bereits im KLARTEXT-Register bestätigt. Deci & Ryan etabliert.",
                   size=3.9, color=(150, 120, 50))
+    y += mm_(5)
+    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=zonen-eltern")
     footer(d, "Zonen-Set · Zuhause", "Handbuch · 2/2")
     return img
 

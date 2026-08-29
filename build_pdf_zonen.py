@@ -9,10 +9,11 @@ Image.init()
 sys.path.insert(0, os.path.dirname(__file__))
 from build_booklet_zonen import schule_seite1, schule_seite2, eltern_seite1, eltern_seite2
 
-KARTEN_SCHULE = "/sessions/kind-beautiful-ptolemy/mnt/outputs/zonen_karten_schule/"
-KARTEN_ELTERN = "/sessions/kind-beautiful-ptolemy/mnt/outputs/zonen_karten_eltern/"
-TOKEN_SHEETS = "/sessions/kind-beautiful-ptolemy/mnt/outputs/zonen_token_sheets/"
-OUT_DIR = "/sessions/kind-beautiful-ptolemy/mnt/outputs/"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+KARTEN_SCHULE = os.path.join(BASE_DIR, "karten/zonen_schule/")
+KARTEN_ELTERN = os.path.join(BASE_DIR, "karten/zonen_eltern/")
+TOKEN_SHEETS = os.path.join(BASE_DIR, "karten/zonen_token/")
+OUT_DIR = BASE_DIR
 
 DPI = 300
 MM = DPI / 25.4

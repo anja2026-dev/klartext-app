@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mein Joker-Signal · KLARTEXT Freebie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kt-primary:#1B3A4B; --kt-accent:#6EC6A0; --kt-paper:#F5F0E8; --kt-ink:#2D2D2D;
+    --kt-muted:#7A7060; --kt-surface:#FFFFFF; --kt-border:#DDD8CE;
+    --m3:#B07D2A; --m3-dark:#7A5318; --m3-light:#FBF4E8; --m3-border:#E0C88A;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:#DCD5C6;color:var(--kt-ink);-webkit-font-smoothing:antialiased;padding:24px 0 48px;}
+
+  .toolbar{width:297mm;max-width:96vw;margin:0 auto 14px;display:flex;justify-content:flex-end;}
+  .print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--kt-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(27,58,75,.25);}
+  .print-btn:hover{background:#132a37;}
+
+  .sheet{
+    width:297mm;min-height:210mm;margin:0 auto;background:var(--kt-paper);
+    box-shadow:0 10px 40px rgba(0,0,0,.22);padding:11mm 13mm;
+    display:flex;flex-direction:column;
+  }
+
+  .kop{text-align:center;margin-bottom:5mm;}
+  .kop .marke{font-family:'Playfair Display',serif;font-weight:700;font-size:10px;letter-spacing:.22em;color:var(--m3);text-transform:uppercase;}
+  .kop h1{font-family:'Playfair Display',serif;font-weight:800;font-size:21px;color:var(--kt-primary);margin-top:1.5mm;}
+  .kop .sub{font-size:10.5px;color:var(--kt-muted);margin-top:1mm;}
+
+  .grid{
+    flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);
+    gap:6mm 7mm;
+  }
+
+  .karte{
+    position:relative;border-radius:14px;background:var(--kt-surface);
+    border:1.6px dashed var(--m3-border);
+    padding:4mm 4.5mm 3.5mm;
+    display:flex;flex-direction:column;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .karte::before,.karte::after,.karte .snip-tr,.karte .snip-bl{
+    content:'✂';position:absolute;font-size:9px;color:var(--m3-border);
+  }
+  .karte::before{content:'✂';top:-3.2mm;left:-2mm;transform:rotate(90deg);}
+  .karte .snip-br{content:'✂';position:absolute;bottom:-3.2mm;right:-1mm;font-size:9px;color:var(--m3-border);transform:rotate(-90deg);}
+
+  .karte-kopf{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5mm;}
+  .karte-marke{font-family:'Playfair Display',serif;font-size:8px;letter-spacing:.14em;color:var(--m3);text-transform:uppercase;font-weight:700;}
+  .karte-brainy{width:9mm;height:9mm;object-fit:contain;}
+
+  .karte-titel{font-family:'Playfair Display',serif;font-weight:800;font-size:13.5px;color:var(--kt-primary);line-height:1.28;margin-bottom:1.5mm;}
+  .karte-sub{font-size:9px;color:var(--kt-muted);line-height:1.35;flex:1;}
+
+  .karte-regel{
+    margin-top:2.5mm;background:var(--m3-light);border-radius:8px;padding:2mm 2.6mm;
+    font-size:7px;line-height:1.4;color:var(--m3-dark);font-style:italic;
+  }
+
+  .karte-fuss{display:flex;align-items:center;justify-content:space-between;margin-top:2.5mm;}
+  .karte-qr{width:10mm;height:10mm;color:var(--kt-primary);background:#fff;}
+  .karte-qr canvas,.karte-qr img{width:100%;height:100%;display:block;}
+  .karte-linkinfo{font-size:5.6px;color:var(--kt-muted);text-align:right;max-width:26mm;line-height:1.3;}
+
+  .karte.v-a .karte-marke,.karte.v-a .karte-titel{color:var(--m3);}
+  .karte.v-b{border-color:#B8CFC4;}
+  .karte.v-b .karte-marke{color:var(--kt-primary);}
+  .karte.v-b .karte-titel{color:var(--kt-primary);}
+  .karte.v-b .karte-regel{background:#EAF1EC;color:#1B3A4B;}
+
+  .fusszeile{margin-top:5mm;display:flex;justify-content:center;}
+  .fussnote{font-size:8.5px;color:var(--kt-muted);text-align:center;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .sheet{width:auto;min-height:auto;margin:0;box-shadow:none;padding:0;}
+    @page{size:A4 landscape;margin:10mm 12mm;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="toolbar"><button class="print-btn" onclick="window.print()">🖨️ Drucken / als PDF speichern</button></div>
+
+<div class="sheet">
+  <div class="kop">
+    <div class="marke">KLARTEXT</div>
+    <h1>Mein Joker-Signal — 6 Tisch-Karten zum Ausschneiden</h1>
+    <div class="sub">Für Kinder mit ADHS, Autismus oder emotionalem Förderbedarf · lautlose Abgrenzung am Tisch</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="fusszeile"><div class="fussnote">Entlang der gestrichelten Linien ausschneiden, laminieren und griffbereit auf den Tisch legen.</div></div>
+</div>
+
+<script>
+
+const varA = {titel:'Mein Joker-Signal', sub:'Ich brauche kurz eine Pause.'};
+const varB = {titel:'Ich bin in meiner', sub:'Rückzugs-Insel.'};
+const regel = 'Nach dem Joker gilt: Kein Druck, keine Fragen, kein Erklären müssen. Erst regulieren – dann besprechen.';
+const reihenfolge = ['a','b','a','b','a','b'];
+
+let html='';
+reihenfolge.forEach((v,i)=>{
+  const d = v==='a'?varA:varB;
+  html += `<div class="karte v-${v}">
+    <span class="snip-br">✂</span>
+    <div class="karte-kopf">
+      <span class="karte-marke">Joker · Karte ${i+1}</span>
+      <img class="karte-brainy" src="brainy-joker.png" alt="Brainy Joker">
+    </div>
+    <div class="karte-titel">${d.titel}</div>
+    <div class="karte-sub">${d.sub}</div>
+    <div class="karte-regel">${regel}</div>
+    <div class="karte-fuss">
+      <div class="karte-qr"></div>
+      <div class="karte-linkinfo">Scan → Ruhe-Ballon<br>als Gast-Version</div>
+    </div>
+  </div>`;
+});
+document.getElementById('grid').innerHTML = html;
+document.querySelectorAll('.karte-qr').forEach(function(el){
+  new QRCode(el, {
+    text: 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true',
+    width: 160, height: 160,
+    colorDark: '#1B3A4B', colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+});
+</script>
+
+</body>
+</html>

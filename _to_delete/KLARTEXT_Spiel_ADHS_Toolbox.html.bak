@@ -6,13 +6,7 @@
 <title>KLARTEXT · Toolbox für den Berufseinstieg</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>
-// GAST-BYPASS: ?guest=true erlaubt Login-freien Zugriff (z.B. QR-Code von gedruckten Freebies), analog BAROMETER_KIND.html
-(function(){try{
-  if(new URLSearchParams(window.location.search).get('guest')==='true')return;
-  if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
-}catch(e){}})();
-</script>
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#6B7FD7">
 <style>

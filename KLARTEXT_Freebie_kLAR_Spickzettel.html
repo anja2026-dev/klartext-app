@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>kLAR-Deeskalations-Fahrplan · KLARTEXT Freebie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kt-primary:#1B3A4B; --kt-accent:#6EC6A0; --kt-paper:#F5F0E8; --kt-ink:#2D2D2D;
+    --kt-muted:#7A7060; --kt-surface:#FFFFFF; --kt-border:#DDD8CE;
+    --k-col:#2E5E8A; --l-col:#3B8A68; --a-col:#B07D2A; --r-col:#B7500A;
+    --gelb:#D4A800; --orange:#D4651A; --rot:#C0392B;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:#DCD5C6;color:var(--kt-ink);-webkit-font-smoothing:antialiased;padding:24px 0 48px;}
+
+  .toolbar{width:210mm;margin:0 auto 14px;display:flex;justify-content:flex-end;}
+  .print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--kt-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(27,58,75,.25);}
+  .print-btn:hover{background:#132a37;}
+
+  .sheet{
+    width:210mm;min-height:297mm;margin:0 auto;background:var(--kt-paper);
+    box-shadow:0 10px 40px rgba(0,0,0,.22);padding:13mm 14mm 11mm;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .rahmen{display:flex;flex-direction:column;gap:6mm;}
+
+  .kop{text-align:center;margin-bottom:5mm;}
+  .kop .marke{font-family:'Playfair Display',serif;font-weight:700;font-size:10px;letter-spacing:.2em;color:var(--kt-accent);text-transform:uppercase;}
+  .kop h1{font-family:'Playfair Display',serif;font-weight:800;font-size:19px;color:var(--kt-primary);line-height:1.28;margin-top:2mm;}
+  .kop .sub{font-size:10.5px;color:var(--kt-muted);margin-top:2mm;}
+  .kop .sub b.pill-gelb{background:var(--gelb);color:#fff;border-radius:6px;padding:1px 6px;font-weight:700;}
+  .kop .sub b.pill-orange{background:var(--orange);color:#fff;border-radius:6px;padding:1px 6px;font-weight:700;}
+
+  .spalten{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;position:relative;
+  }
+  .schnittlinie{
+    position:absolute;left:50%;top:0;bottom:0;width:0;border-left:1.6px dashed var(--kt-border);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .schnittlinie span{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--kt-paper);
+    width:7mm;height:7mm;border-radius:50%;border:1.4px dashed var(--kt-border);
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--kt-muted);
+  }
+  .schnitt-hinweis{text-align:center;font-size:8.5px;color:var(--kt-muted);margin-top:-1mm;}
+
+  .spalte{display:flex;flex-direction:column;gap:4mm;}
+  .spalte.links{padding-right:6mm;}
+  .spalte.rechts{padding-left:6mm;}
+
+  .schritt{
+    background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:14px;
+    padding:4.5mm 5mm;display:flex;gap:4mm;align-items:flex-start;
+    box-shadow:0 3px 10px rgba(27,58,75,.08);
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .schritt .buchstabe{
+    flex-shrink:0;width:14mm;height:14mm;border-radius:50%;color:#fff;
+    font-family:'Playfair Display',serif;font-weight:800;font-size:20px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .schritt.s-k .buchstabe{background:var(--k-col);}
+  .schritt.s-l .buchstabe{background:var(--l-col);}
+  .schritt.s-a .buchstabe{background:var(--a-col);}
+  .schritt.s-r .buchstabe{background:var(--r-col);}
+
+  .schritt .inhalt h2{font-family:'Playfair Display',serif;font-size:13.5px;color:var(--kt-primary);margin-bottom:1mm;}
+  .schritt .inhalt p{font-size:10.2px;line-height:1.5;color:var(--kt-ink);}
+  .schritt .inhalt .zitat{display:block;margin-top:1.5mm;font-style:italic;color:var(--kt-muted);font-size:9.6px;}
+
+  .warnbox{
+    background:#FBEAE7;border:1.6px solid var(--rot);border-radius:12px;
+    padding:4mm 5mm;display:flex;gap:3mm;align-items:center;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .warnbox .icon{font-size:22px;flex-shrink:0;}
+  .warnbox p{font-size:10.2px;line-height:1.5;color:#7A241C;}
+  .warnbox b{color:#7A241C;}
+
+  .fusszeile{display:flex;justify-content:flex-end;}
+  .gast-box{display:flex;align-items:center;gap:3mm;background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:12px;padding:2.6mm 4mm;max-width:92mm;}
+  .gast-box .qr{width:16mm;height:16mm;color:var(--kt-primary);flex-shrink:0;background:#fff;}
+  .gast-box .qr canvas,.gast-box .qr img{width:100%;height:100%;display:block;}
+  .gast-box .txt{font-size:7.6px;line-height:1.4;color:var(--kt-muted);}
+  .gast-box .txt b{display:block;color:var(--kt-primary);font-size:8.4px;font-weight:700;margin-bottom:.5mm;}
+  .gast-box .txt .lnk{display:block;margin-top:1mm;color:var(--kt-accent);font-weight:700;word-break:break-all;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .sheet{width:auto;min-height:auto;margin:0;box-shadow:none;padding:12mm 14mm 10mm;}
+    @page{size:A4;margin:0;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="toolbar"><button class="print-btn" onclick="window.print()">🖨️ Drucken / als PDF speichern</button></div>
+
+<div class="sheet">
+ <div class="rahmen">
+  <div class="kop">
+    <div class="marke">KLARTEXT</div>
+    <h1>Mein Deeskalations-Fahrplan</h1>
+    <div class="sub">bei Anspannung (<b class="pill-gelb">Gelb</b>) &amp; Belastung (<b class="pill-orange">Orange</b>) — das kLAR-Modell</div>
+  </div>
+
+  <div class="spalten">
+    <div class="schnittlinie"><span>✂</span></div>
+
+    <div class="spalte links">
+      <div class="schritt s-k">
+        <div class="buchstabe">k</div>
+        <div class="inhalt">
+          <h2>Kontakt &amp; körperliche Sicherheit</h2>
+          <p>Auf Augenhöhe gehen, ruhige Stimme, räumliche Sicherheit herstellen.</p>
+        </div>
+      </div>
+      <div class="schritt s-l">
+        <div class="buchstabe">L</div>
+        <div class="inhalt">
+          <h2>Leise &amp; Langsam</h2>
+          <p>Stimme senken, Tempo rausnehmen, Pausen aushalten.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="spalte rechts">
+      <div class="schritt s-a">
+        <div class="buchstabe">A</div>
+        <div class="inhalt">
+          <h2>Anerkennung &amp; Atmen</h2>
+          <p>Das Erleben des Kindes verbal anerkennen.</p>
+          <span class="zitat">„Ich sehe, dass es dir gerade schwerfällt.“</span>
+        </div>
+      </div>
+      <div class="schritt s-r">
+        <div class="buchstabe">R</div>
+        <div class="inhalt">
+          <h2>Reizreduktion &amp; Rückzug</h2>
+          <p>Reize minimieren, Ruhe-Zone anbieten, keinen Erklärungsdruck erzeugen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="schnitt-hinweis">✂ Entlang der Linie ausschneiden &amp; als zwei schmale Streifen ins Lehrertagebuch kleben</div>
+
+  <div class="warnbox">
+    <div class="icon">⚠️</div>
+    <p><b>Achtung:</b> kLAR gilt nur für Gelb und Orange. Ab Rot (akute Krise) greift ausschließlich das Feuerwehr-Protokoll!</p>
+  </div>
+
+  <div class="fusszeile">
+    <div class="gast-box">
+      <div class="qr" id="qr-code"></div>
+      <div class="txt">
+        <b>Mehr Werkzeuge für den Alltag</b>
+        Scanne mich für weitere Deeskalations-Tools als Gast-Zugang.
+        <span class="lnk">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</span>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<script>
+new QRCode(document.getElementById('qr-code'), {
+  text: 'https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true',
+  width: 300, height: 300,
+  colorDark: '#1B3A4B', colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+</body>
+</html>

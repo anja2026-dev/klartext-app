@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mein Klassen-Barometer · KLARTEXT Freebie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kt-primary:#1B3A4B; --kt-accent:#6EC6A0; --kt-paper:#F5F0E8; --kt-ink:#2D2D2D;
+    --kt-muted:#7A7060; --kt-surface:#FFFFFF; --kt-border:#DDD8CE;
+    --gruen:#2E9E5A; --gruen-d:#1A7A3A; --gruen-l:#E8F7EE;
+    --gelb:#D4A800; --gelb-d:#A88000; --gelb-l:#FCF0C8;
+    --orange:#D4651A; --orange-d:#A84A10; --orange-l:#FBE1CB;
+    --rot:#C0392B; --rot-d:#8B1A1A; --rot-l:#FADAD7;
+    --grau:#757575; --grau-d:#555555; --grau-l:#E7E7E7;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'DM Sans',sans-serif; background:#DCD5C6; color:var(--kt-ink);
+    -webkit-font-smoothing:antialiased; padding:24px 0 48px;
+  }
+  .toolbar{max-width:210mm;margin:0 auto 14px;display:flex;justify-content:flex-end;padding:0 6px;}
+  .print-btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--kt-primary);color:#fff;
+    border:none;border-radius:999px;padding:10px 20px;font-family:'DM Sans',sans-serif;
+    font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(27,58,75,.25);
+  }
+  .print-btn:hover{background:#132a37;}
+
+  .sheet{
+    width:210mm;min-height:297mm;margin:0 auto;background:var(--kt-paper);
+    box-shadow:0 10px 40px rgba(0,0,0,.22);
+    padding:14mm 16mm 12mm;
+    display:flex;flex-direction:column;
+    position:relative;
+  }
+
+  .kop{text-align:center;margin-bottom:6mm;}
+  .kop .marke{
+    font-family:'Playfair Display',serif;font-weight:700;font-size:11px;letter-spacing:.22em;
+    color:var(--kt-accent);text-transform:uppercase;margin-bottom:3mm;
+  }
+  .kop .marke::before,.kop .marke::after{content:'—';color:var(--kt-border);margin:0 8px;}
+  .kop h1{
+    font-family:'Playfair Display',serif;font-weight:800;font-size:26px;color:var(--kt-primary);
+    line-height:1.2;
+  }
+  .kop .claim{
+    font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:14px;
+    color:var(--kt-muted);margin-top:2mm;
+  }
+
+  .hinweis{
+    background:var(--kt-surface);border:1px solid var(--kt-border);border-left:4px solid var(--kt-accent);
+    border-radius:10px;padding:3mm 5mm;margin-bottom:6mm;font-size:11px;line-height:1.55;color:var(--kt-muted);
+  }
+  .hinweis b{color:var(--kt-primary);}
+
+  .zonen{display:flex;flex-direction:column;gap:3.4mm;flex:1;}
+  .zone{
+    display:flex;align-items:stretch;border-radius:16px;overflow:hidden;
+    box-shadow:0 3px 10px rgba(27,58,75,.12);
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  .zone-farbe{
+    flex:1;display:flex;align-items:center;gap:5mm;padding:4mm 5mm;color:#fff;
+  }
+  .zone-icon{
+    width:19mm;height:19mm;border-radius:50%;background:rgba(255,255,255,.22);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    border:2px solid rgba(255,255,255,.55);
+  }
+  .zone-icon img{width:15mm;height:15mm;object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25));}
+  .zone-text .name{
+    font-family:'Playfair Display',serif;font-weight:800;font-size:16px;letter-spacing:.02em;
+    text-transform:uppercase;
+  }
+  .zone-text .desc{font-size:12.5px;font-weight:500;opacity:.96;margin-top:.5mm;}
+
+  .zone-klammer{
+    width:22mm;flex-shrink:0;background:rgba(255,255,255,.16);
+    border-left:2px dashed rgba(255,255,255,.55);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5mm;
+    color:rgba(255,255,255,.92);
+  }
+  .zone-klammer svg{width:8mm;height:16mm;}
+  .zone-klammer span{font-size:6.6px;letter-spacing:.06em;text-align:center;line-height:1.25;text-transform:uppercase;font-weight:700;}
+
+  .zone.z-gruen .zone-farbe{background:linear-gradient(135deg,var(--gruen),var(--gruen-d));}
+  .zone.z-gelb .zone-farbe{background:linear-gradient(135deg,var(--gelb),var(--gelb-d));}
+  .zone.z-orange .zone-farbe{background:linear-gradient(135deg,var(--orange),var(--orange-d));}
+  .zone.z-rot .zone-farbe{background:linear-gradient(135deg,var(--rot),var(--rot-d));}
+  .zone.z-grau .zone-farbe{background:linear-gradient(135deg,var(--grau),var(--grau-d));}
+
+  .fusszeile{
+    display:flex;justify-content:flex-end;margin-top:6mm;
+  }
+  .gast-box{
+    display:flex;align-items:center;gap:3mm;background:var(--kt-surface);
+    border:1px solid var(--kt-border);border-radius:12px;padding:2.6mm 4mm;max-width:92mm;
+  }
+  .gast-box .qr{width:16mm;height:16mm;color:var(--kt-primary);flex-shrink:0;background:#fff;}
+  .gast-box .qr canvas,.gast-box .qr img{width:100%;height:100%;display:block;}
+  .gast-box .txt{font-size:7.6px;line-height:1.4;color:var(--kt-muted);}
+  .gast-box .txt b{display:block;color:var(--kt-primary);font-size:8.4px;font-family:'DM Sans',sans-serif;font-weight:700;margin-bottom:.5mm;}
+  .gast-box .txt .lnk{display:block;margin-top:1mm;color:var(--kt-accent);font-weight:700;word-break:break-all;}
+
+  .fussmarke{
+    position:absolute;left:16mm;bottom:12mm;font-size:8px;color:var(--kt-border);
+    font-family:'Playfair Display',serif;letter-spacing:.08em;
+  }
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .sheet{width:auto;min-height:auto;margin:0;box-shadow:none;padding:0;}
+    @page{size:A4;margin:12mm 14mm;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="toolbar">
+  <button class="print-btn" onclick="window.print()">🖨️ Drucken / als PDF speichern</button>
+</div>
+
+<div class="sheet">
+  <div class="kop">
+    <div class="marke">KLARTEXT</div>
+    <h1>Mein Klassen-Barometer</h1>
+    <div class="claim">Eine Stimme ohne Worte</div>
+  </div>
+
+  <div class="hinweis">
+    <b>Für dich als Lehrkraft:</b> Laminiert an der Tafel oder Pinnwand angebracht, heften Kinder ihre Wäscheklammer mit Namen lautlos an ihren aktuellen Zustand. Das hilft Kindern mit und ohne Förderbedarf, ihren Regulationszustand mitzuteilen — ganz ohne ein Wort sagen zu müssen.
+  </div>
+
+  <div class="zonen">
+    <div class="zone z-gruen">
+      <div class="zone-farbe">
+        <div class="zone-icon"><img src="brainy-gruen.png" alt="Brainy entspannt"></div>
+        <div class="zone-text"><div class="name">Grün</div><div class="desc">Mir geht es gut — ich bin bereit zum Lernen!</div></div>
+      </div>
+      <div class="zone-klammer"><svg viewBox="0 0 24 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 8 L8 52"/><path d="M16 8 L16 52"/><path d="M6 8 Q12 3 18 8"/><circle cx="12" cy="18" r="4"/><path d="M6 52 L4 57M18 52 L20 57"/></svg><span>Klammer&nbsp;hier</span></div>
+          </div>
+
+    <div class="zone z-gelb">
+      <div class="zone-farbe">
+        <div class="zone-icon"><img src="brainy-gelb.png" alt="Brainy konzentriert"></div>
+        <div class="zone-text"><div class="name">Gelb</div><div class="desc">Ein bisschen schwierig — ich brauche etwas Konzentration.</div></div>
+      </div>
+      <div class="zone-klammer"><svg viewBox="0 0 24 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 8 L8 52"/><path d="M16 8 L16 52"/><path d="M6 8 Q12 3 18 8"/><circle cx="12" cy="18" r="4"/><path d="M6 52 L4 57M18 52 L20 57"/></svg><span>Klammer&nbsp;hier</span></div>
+          </div>
+
+    <div class="zone z-orange">
+      <div class="zone-farbe">
+        <div class="zone-icon"><img src="brainy-orange.png" alt="Brainy gestresst"></div>
+        <div class="zone-text"><div class="name">Orange</div><div class="desc">Ich brauche Hilfe — bitte kommt zu mir.</div></div>
+      </div>
+      <div class="zone-klammer"><svg viewBox="0 0 24 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 8 L8 52"/><path d="M16 8 L16 52"/><path d="M6 8 Q12 3 18 8"/><circle cx="12" cy="18" r="4"/><path d="M6 52 L4 57M18 52 L20 57"/></svg><span>Klammer&nbsp;hier</span></div>
+          </div>
+
+    <div class="zone z-rot">
+      <div class="zone-farbe">
+        <div class="zone-icon"><img src="brainy-rot.png" alt="Brainy in Not"></div>
+        <div class="zone-text"><div class="name">Rot</div><div class="desc">Ich bin in einer Krise — ich brauche sofort Hilfe.</div></div>
+      </div>
+      <div class="zone-klammer"><svg viewBox="0 0 24 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 8 L8 52"/><path d="M16 8 L16 52"/><path d="M6 8 Q12 3 18 8"/><circle cx="12" cy="18" r="4"/><path d="M6 52 L4 57M18 52 L20 57"/></svg><span>Klammer&nbsp;hier</span></div>
+          </div>
+
+    <div class="zone z-grau">
+      <div class="zone-farbe">
+        <div class="zone-icon"><img src="brainy-grau.png" alt="Brainy erschöpft"></div>
+        <div class="zone-text"><div class="name">Grau</div><div class="desc">Ich bin sehr müde — manchmal mag ich gar nicht reden.</div></div>
+      </div>
+      <div class="zone-klammer"><svg viewBox="0 0 24 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M8 8 L8 52"/><path d="M16 8 L16 52"/><path d="M6 8 Q12 3 18 8"/><circle cx="12" cy="18" r="4"/><path d="M6 52 L4 57M18 52 L20 57"/></svg><span>Klammer&nbsp;hier</span></div>
+          </div>
+  </div>
+
+  <div class="fusszeile">
+    <div class="gast-box">
+      <div class="qr" id="qr-code"></div>
+      <div class="txt">
+        <b>Interaktiv aufs Tablet</b>
+        Scanne den Code für die reizarme Gast-Version von Brainys Stimmungs-Check.
+        <span class="lnk">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="fussmarke">KLARTEXT · Freebie</div>
+</div>
+
+<script>
+new QRCode(document.getElementById('qr-code'), {
+  text: 'https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true',
+  width: 300, height: 300,
+  colorDark: '#1B3A4B', colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+</body>
+</html>

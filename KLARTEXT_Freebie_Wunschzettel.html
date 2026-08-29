@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mein Arbeitsplatz-Wunschzettel · KLARTEXT Freebie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kt-primary:#1B3A4B; --kt-accent:#6EC6A0; --kt-paper:#F5F0E8; --kt-ink:#2D2D2D;
+    --kt-muted:#7A7060; --kt-surface:#FFFFFF; --kt-border:#DDD8CE;
+    --c-reiz:#2E5E8A; --c-struktur:#3B8A68; --c-komm:#B07D2A; --c-pause:#4F7B95; --c-sozial:#8A5B9E;
+    --orange:#D4651A; --gelb:#D4A800;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:#DCD5C6;color:var(--kt-ink);-webkit-font-smoothing:antialiased;padding:24px 0 48px;}
+
+  .toolbar{width:210mm;margin:0 auto 14px;display:flex;justify-content:flex-end;}
+  .print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--kt-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(27,58,75,.25);}
+  .print-btn:hover{background:#132a37;}
+
+  .sheet{
+    width:210mm;min-height:297mm;margin:0 auto;background:var(--kt-paper);
+    box-shadow:0 10px 40px rgba(0,0,0,.22);padding:13mm 14mm 10mm;
+    display:flex;flex-direction:column;
+  }
+  .rahmen{display:flex;flex-direction:column;gap:3.6mm;flex:1;}
+
+  .kop{text-align:center;margin-bottom:1mm;}
+  .kop .marke{font-family:'Playfair Display',serif;font-weight:700;font-size:10px;letter-spacing:.2em;color:var(--kt-accent);text-transform:uppercase;}
+  .kop h1{font-family:'Playfair Display',serif;font-weight:800;font-size:21px;color:var(--kt-primary);line-height:1.25;margin-top:2mm;}
+  .kop .sub{font-size:10.5px;color:var(--kt-muted);margin-top:2mm;line-height:1.5;max-width:150mm;margin-left:auto;margin-right:auto;}
+
+  .nameszeile{display:flex;gap:6mm;justify-content:center;font-size:9.5px;color:var(--kt-muted);margin-top:1mm;}
+  .nameszeile span{display:flex;align-items:center;gap:1.5mm;}
+  .nameszeile .linie{display:inline-block;width:36mm;border-bottom:1px solid var(--kt-border);height:1px;}
+
+  .kategorien{display:grid;grid-template-columns:1fr 1fr;gap:3.4mm;}
+
+  .kat{
+    background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:12px;
+    padding:3.4mm 4mm;break-inside:avoid;page-break-inside:avoid;
+    box-shadow:0 3px 10px rgba(27,58,75,.06);
+  }
+  .kat h2{font-family:'Playfair Display',serif;font-size:11.5px;color:var(--kt-primary);display:flex;align-items:center;gap:2mm;margin-bottom:2mm;}
+  .kat h2 .dot{width:5mm;height:5mm;border-radius:50%;flex-shrink:0;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;}
+  .kat.k-reiz h2 .dot{background:var(--c-reiz);} .kat.k-struktur h2 .dot{background:var(--c-struktur);}
+  .kat.k-komm h2 .dot{background:var(--c-komm);} .kat.k-pause h2 .dot{background:var(--c-pause);}
+  .kat.k-sozial h2 .dot{background:var(--c-sozial);}
+
+  .kat ul{list-style:none;display:flex;flex-direction:column;gap:1.6mm;}
+  .kat li{display:flex;align-items:flex-start;gap:2mm;font-size:9.4px;line-height:1.4;color:var(--kt-ink);}
+  .box{
+    flex-shrink:0;width:3.6mm;height:3.6mm;margin-top:.3mm;border-radius:3px;
+    border:1.4px solid var(--kt-primary);appearance:none;-webkit-appearance:none;background:#fff;cursor:pointer;
+  }
+  .box:checked{background:var(--kt-accent);border-color:var(--kt-accent);}
+
+  .eigene{
+    background:#fff;border:1.6px dashed var(--kt-border);border-radius:12px;padding:3.4mm 4mm;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .eigene h2{font-family:'Playfair Display',serif;font-size:11.5px;color:var(--kt-primary);margin-bottom:1.8mm;}
+  .eigene .zeile{border-bottom:1px solid var(--kt-border);height:5.2mm;margin-bottom:.4mm;}
+
+  .prio{
+    background:#EFF7F1;border:1.6px solid var(--kt-accent);border-radius:12px;padding:3.4mm 4mm;
+    display:flex;gap:4mm;align-items:flex-start;break-inside:avoid;page-break-inside:avoid;
+  }
+  .prio .icon{font-size:19px;flex-shrink:0;}
+  .prio .inhalt{flex:1;}
+  .prio h2{font-family:'Playfair Display',serif;font-size:11.5px;color:var(--kt-primary);margin-bottom:1.4mm;}
+  .prio p{font-size:9.4px;color:var(--kt-muted);margin-bottom:2mm;}
+  .prio ol{padding-left:4.5mm;display:flex;flex-direction:column;gap:2mm;}
+  .prio li{font-size:9.6px;color:var(--kt-ink);}
+  .prio .zeile{display:inline-block;border-bottom:1px solid var(--kt-border);width:100%;height:4.4mm;}
+
+  .fusszeile{display:flex;justify-content:space-between;align-items:center;gap:4mm;margin-top:auto;padding-top:1mm;}
+  .copyright{font-size:7.2px;color:var(--kt-muted);line-height:1.5;max-width:88mm;}
+  .gast-box{display:flex;align-items:center;gap:3mm;background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:12px;padding:2.6mm 4mm;max-width:92mm;}
+  .gast-box .qr{width:16mm;height:16mm;color:var(--kt-primary);flex-shrink:0;background:#fff;}
+  .gast-box .qr canvas,.gast-box .qr img{width:100%;height:100%;display:block;}
+  .gast-box .txt{font-size:7.6px;line-height:1.4;color:var(--kt-muted);}
+  .gast-box .txt b{display:block;color:var(--kt-primary);font-size:8.4px;font-weight:700;margin-bottom:.5mm;}
+  .gast-box .txt .lnk{display:block;margin-top:1mm;color:var(--kt-accent);font-weight:700;word-break:break-all;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .sheet{width:auto;min-height:auto;margin:0;box-shadow:none;padding:11mm 14mm 9mm;}
+    @page{size:A4;margin:0;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="toolbar"><button class="print-btn" onclick="window.print()">🖨️ Drucken / als PDF speichern</button></div>
+
+<div class="sheet">
+ <div class="rahmen">
+
+  <div class="kop">
+    <div class="marke">KLARTEXT</div>
+    <h1>Mein Arbeitsplatz-Wunschzettel</h1>
+    <div class="sub">Was ich brauche, um gut arbeiten zu können — zum Ausfüllen, Ausschneiden und Mitnehmen ins Praktikum, die Ausbildung oder das nächste Gespräch mit meiner Chefin oder meinem Ausbilder.</div>
+  </div>
+
+  <div class="nameszeile">
+    <span>Name: <i class="linie"></i></span>
+    <span>Datum: <i class="linie"></i></span>
+  </div>
+
+  <div class="kategorien">
+
+    <div class="kat k-reiz">
+      <h2><span class="dot">👂</span>Reize &amp; Umgebung</h2>
+      <ul>
+        <li><input type="checkbox" class="box">Einen ruhigen Platz, möglichst ohne Blick auf viel Durchgangsverkehr</li>
+        <li><input type="checkbox" class="box">Kopfhörer oder Ohrstöpsel dürfen bei Lärm genutzt werden</li>
+        <li><input type="checkbox" class="box">Gedämpftes statt grelles Licht</li>
+        <li><input type="checkbox" class="box">Ein fester, gleichbleibender Arbeitsplatz</li>
+      </ul>
+    </div>
+
+    <div class="kat k-struktur">
+      <h2><span class="dot">🗂️</span>Struktur &amp; Zeit</h2>
+      <ul>
+        <li><input type="checkbox" class="box">Aufgaben schriftlich oder als Liste, nicht nur mündlich</li>
+        <li><input type="checkbox" class="box">Genug Zeit für eine Aufgabe, bevor die nächste kommt</li>
+        <li><input type="checkbox" class="box">Änderungen im Ablauf möglichst vorher ankündigen</li>
+        <li><input type="checkbox" class="box">Eine sichtbare Tages- oder Wochenstruktur (Plan, Uhr, Checkliste)</li>
+      </ul>
+    </div>
+
+    <div class="kat k-komm">
+      <h2><span class="dot">💬</span>Kommunikation</h2>
+      <ul>
+        <li><input type="checkbox" class="box">Klare, direkte Ansagen statt Andeutungen</li>
+        <li><input type="checkbox" class="box">Eine Anweisung nach der anderen</li>
+        <li><input type="checkbox" class="box">Rückfragen stellen dürfen, ohne blöd dazustehen</li>
+        <li><input type="checkbox" class="box">Feedback konkret und nachvollziehbar erklärt</li>
+      </ul>
+    </div>
+
+    <div class="kat k-pause">
+      <h2><span class="dot">🌿</span>Pausen &amp; Rückzug</h2>
+      <ul>
+        <li><input type="checkbox" class="box">Feste, verlässliche Pausenzeiten</li>
+        <li><input type="checkbox" class="box">Einen Rückzugsort für kurze Erholung</li>
+        <li><input type="checkbox" class="box">Kurze Bewegungspausen bei Unruhe erlaubt</li>
+        <li><input type="checkbox" class="box">Mich bei Reizüberflutung kurz rausnehmen dürfen (mit Bescheid geben)</li>
+      </ul>
+    </div>
+
+    <div class="kat k-sozial" style="grid-column:1 / -1;">
+      <h2><span class="dot">🤝</span>Soziales &amp; Feedback</h2>
+      <ul style="display:grid;grid-template-columns:1fr 1fr;gap:1mm 4mm;">
+        <li><input type="checkbox" class="box">Feedback unter vier Augen statt vor der Gruppe</li>
+        <li><input type="checkbox" class="box">Keine plötzlichen Überraschungen (z. B. spontane Präsentationen)</li>
+        <li><input type="checkbox" class="box">Verständnis, wenn Blickkontakt schwerfällt</li>
+        <li><input type="checkbox" class="box">Geduld bei ungewohnten sozialen Situationen</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="eigene">
+    <h2>Das brauche ich noch, das hier nicht steht:</h2>
+    <div class="zeile"></div>
+    <div class="zeile"></div>
+  </div>
+
+  <div class="prio">
+    <div class="icon">⭐</div>
+    <div class="inhalt">
+      <h2>Für das Gespräch mit meiner Chefin oder meinem Ausbilder</h2>
+      <p>Diese 3 Punkte von oben sind mir am wichtigsten — genau die möchte ich ansprechen:</p>
+      <ol>
+        <li><span class="zeile"></span></li>
+        <li><span class="zeile"></span></li>
+        <li><span class="zeile"></span></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="fusszeile">
+    <div class="copyright">
+      © 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de<br>
+      Fachliche Grundlage: Prinzip der angemessenen Vorkehrungen nach Art. 27 UN-BRK; Job Accommodation Network (JAN), U.S. Dept. of Labor; Nadeau, K. G. (2005). <i>Career Choices and Workplace Challenges for Individuals with ADHD.</i>
+    </div>
+    <div class="gast-box">
+      <div class="qr" id="qr-code"></div>
+      <div class="txt">
+        <b>Mehr Selbst-Reflexion</b>
+        Scanne mich für weitere Tools als Gast-Zugang.
+        <span class="lnk">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_WasHilftMir.html?guest=true</span>
+      </div>
+    </div>
+  </div>
+
+ </div>
+</div>
+
+<script>
+new QRCode(document.getElementById('qr-code'), {
+  text: 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_WasHilftMir.html?guest=true',
+  width: 300, height: 300,
+  colorDark: '#1B3A4B', colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
+</script>
+</body>
+</html>

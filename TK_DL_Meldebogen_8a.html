@@ -49,7 +49,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:1mm;}
 .a4-footer{background:var(--l);border-top:1px solid var(--b);padding:3mm 10mm;display:flex;justify-content:space-between;align-items:center;}
 .a4f-left,.a4f-right{font-size:.5rem;color:var(--muted);}
-@media print{body{background:white;padding:0;}.controls{display:none!important;}.a4{box-shadow:none;width:100%;}@page{size:A4;margin:0;}}
+@media print{input::placeholder,textarea::placeholder{color:transparent!important;}body{background:white;padding:0;}.controls{display:none!important;}.a4{box-shadow:none;width:100%;}@page{size:A4;margin:0;}}
 </style>
 <script>
 (function(){
@@ -111,7 +111,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
   <div class="meta-row">
     <div class="meta-feld"><span class="mf-label">Kind</span><input class="mf-input" type="text" placeholder="Name"></div>
     <div class="meta-feld"><span class="mf-label">Gemeldet von</span><input class="mf-input" type="text" placeholder="INGRA / LK / Name"></div>
-    <div class="meta-feld"><span class="mf-label">Datum</span><input class="mf-input" type="text" id="auto-datum"></div>
+    <div class="meta-feld"><span class="mf-label">Datum</span><input class="mf-input" type="text" placeholder="TT.MM.JJJJ"></div>
   </div>
   <div class="sek">
     <div class="sek-titel"><span>👁️</span> Beobachtete Anhaltspunkte (nur Fakten)</div>
@@ -147,14 +147,26 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
   </div></div>
   <div class="a4-footer">
     <span class="a4f-left">KLARTEXT Mentoring-System · © Anja Jolk</span>
-    <span class="a4f-right">anja.jolk@gmx.de</span>
+    <span class="a4f-right">info@klartext-mentoring.de</span>
   </div>
 </div>
 <script>
 function toggleCheck(el){el.classList.toggle('checked');el.textContent=el.classList.contains('checked')?'✓':'';}
 function setBaro(id,color){document.querySelectorAll('.baro-opt').forEach(b=>{b.classList.remove('aktiv');b.style.cssText='';});var o=document.getElementById(id);if(o){o.classList.add('aktiv');o.style.borderColor=color;o.style.background=color+'18';o.style.color=color;}}
-function resetForm(){if(!confirm('Formular leeren?'))return;document.querySelectorAll('input,textarea').forEach(e=>e.value='');document.querySelectorAll('.check-box').forEach(e=>{e.classList.remove('checked');e.textContent='';});document.querySelectorAll('.baro-opt').forEach(b=>{b.classList.remove('aktiv');b.style.cssText='';});}
-window.addEventListener('DOMContentLoaded',()=>{var d=document.getElementById('auto-datum');if(d)d.value=new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});});
+function resetForm(){if(!confirm('Formular leeren?'))return;document.querySelectorAll('input,textarea').forEach(e=>e.value='');document.querySelectorAll('.check-box').forEach(e=>{e.classList.remove('checked');e.textContent='';});document.querySelectorAll('.baro-opt').forEach(b=>{b.classList.remove('aktiv');b.style.cssText='';});}</script>
+<script>
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('input[placeholder]').forEach(function(el){
+    el.setAttribute('data-ph', el.placeholder);
+    el.removeAttribute('placeholder');
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('input[data-ph]').forEach(function(el){
+    el.setAttribute('placeholder', el.getAttribute('data-ph'));
+    el.removeAttribute('data-ph');
+  });
+});
 </script>
 </body>
 </html>

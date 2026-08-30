@@ -32,7 +32,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 .brainy-row{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;background:#F5F0E8;border-radius:8px;padding:.5rem .7rem;}
 .brainy-row img{width:48px;height:48px;object-fit:contain;flex-shrink:0;}
 .brainy-row p{font-size:.7rem;color:#6A6878;line-height:1.4;}
-@media print{body{background:white;padding:0;}.controls{display:none!important;}.a5{box-shadow:none;width:100%;}@page{size:A5;margin:0;}}
+@media print{input::placeholder,textarea::placeholder{color:transparent!important;}body{background:white;padding:0;}.controls{display:none!important;}.a5{box-shadow:none;width:100%;}@page{size:A5;margin:0;}}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 </head>
@@ -62,5 +62,19 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
     <div class="brainy-row"><img src="brainy.png" alt="Brainy"><p><strong>Brainy erinnert:</strong> Wenn ein Kind leidet und nicht mehr rauskommt — Muster prüfen, nicht nur Einzelsituationen.</p></div>
   </div>
 </div>
+<script>
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('input[placeholder]').forEach(function(el){
+    el.setAttribute('data-ph', el.placeholder);
+    el.removeAttribute('placeholder');
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('input[data-ph]').forEach(function(el){
+    el.setAttribute('placeholder', el.getAttribute('data-ph'));
+    el.removeAttribute('data-ph');
+  });
+});
+</script>
 </body>
 </html>

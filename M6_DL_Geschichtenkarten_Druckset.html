@@ -23,7 +23,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;padding:1.5rem 1rem 3re
 .pk-fragen li{padding:.05rem 0 .05rem .7rem;position:relative;}
 .pk-fragen li::before{content:"·";position:absolute;left:0;font-weight:700;}
 .pk-impuls{font-size:.68rem;font-style:italic;border-top:1px dashed;padding-top:.35rem;line-height:1.4;}
-@media print{
+@media print{input::placeholder,textarea::placeholder{color:transparent!important;}
   body{background:white;padding:0;}
   .controls,.info{display:none!important;}
   .print-grid{grid-template-columns:repeat(2,1fr);gap:3mm;}
@@ -259,5 +259,19 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;padding:1.5rem 1rem 3re
     </div>
 </div>
 
+<script>
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('input[placeholder]').forEach(function(el){
+    el.setAttribute('data-ph', el.placeholder);
+    el.removeAttribute('placeholder');
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('input[data-ph]').forEach(function(el){
+    el.setAttribute('placeholder', el.getAttribute('data-ph'));
+    el.removeAttribute('data-ph');
+  });
+});
+</script>
 </body>
 </html>

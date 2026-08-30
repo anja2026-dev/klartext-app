@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#1B3A4B">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--jd:#2F6B6E; --jd-light:#EAF3F3; --m:#1B3A4B; --acc:#6EC6A0;}
+:root{--jd:#2F6B6E; --jd-light:#EAF3F3; --m:#1B3A4B; --acc:#6EC6A0; --real:#8FD0FF; --beide:#F2B84B;}
 body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 0%,#1B3A4B 55%,#2F6B6E 100%);color:#fff;min-height:100vh;padding-bottom:6rem;}
 
 .header{max-width:1000px;margin:0 auto;padding:1.75rem clamp(1rem,4vw,2rem) 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;}
@@ -24,32 +24,29 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 
 .abschnitt{max-width:1000px;margin:0 auto 2rem;padding:0 clamp(1rem,4vw,2rem);}
 .abschnitt-titel{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;margin-bottom:.9rem;}
+.abschnitt-hinweis{font-size:.78rem;color:rgba(255,255,255,.55);margin:-.5rem 0 1rem;}
 
-.spalten{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-@media (max-width:640px){.spalten{grid-template-columns:1fr;}}
-.spalte{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:1.1rem 1.2rem;}
-.spalte-label{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.8rem;}
-.spalte-online .spalte-label{color:var(--acc);}
-.spalte-real .spalte-label{color:#8FD0FF;}
-.chip-grid{display:flex;flex-wrap:wrap;gap:.5rem;}
-.chip{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:20px;padding:.45rem .95rem;font-size:.8rem;font-weight:600;cursor:pointer;color:#fff;font-family:inherit;}
-.chip:hover{background:rgba(255,255,255,.15);}
-.chip.aktiv-online{background:rgba(110,198,160,.25);border-color:var(--acc);color:var(--acc);}
-.chip.aktiv-real{background:rgba(143,208,255,.2);border-color:#8FD0FF;color:#8FD0FF;}
-
-.venn-wrap{display:flex;justify-content:center;margin:1.5rem 0;}
-.venn{position:relative;width:280px;height:170px;}
-.venn-kreis{position:absolute;top:15px;width:170px;height:170px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;}
-.venn-online{left:0;background:rgba(110,198,160,.18);border:2px solid var(--acc);color:var(--acc);}
-.venn-real{right:0;background:rgba(143,208,255,.15);border:2px solid #8FD0FF;color:#8FD0FF;}
-.venn-mitte{position:absolute;top:15px;left:110px;width:60px;height:170px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:#fff;pointer-events:none;}
-
-.vergleich-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.7rem;}
-@media (max-width:700px){.vergleich-grid{grid-template-columns:1fr;}}
-.vergleich-spalte{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:.9rem 1rem;min-height:70px;}
-.vergleich-spalte-titel{font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.65;margin-bottom:.6rem;}
-.vergleich-tag{display:inline-block;background:rgba(255,255,255,.08);border-radius:12px;padding:.25rem .65rem;font-size:.75rem;margin:.15rem .2rem .15rem 0;}
-.vergleich-leer{font-size:.75rem;opacity:.4;}
+/* Checkbox-Matrix */
+.matrix-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+@media (max-width:800px){.matrix-grid{grid-template-columns:1fr;}}
+.matrix-spalte{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:1.1rem 1.1rem 1.2rem;}
+.matrix-kopf{display:flex;align-items:center;gap:.5rem;margin-bottom:.9rem;}
+.matrix-emoji{font-size:1.15rem;}
+.matrix-label{font-size:.82rem;font-weight:800;line-height:1.3;}
+.matrix-liste{display:flex;flex-direction:column;gap:.55rem;}
+.matrix-tile{display:flex;align-items:flex-start;gap:.6rem;width:100%;text-align:left;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;padding:.65rem .8rem;font-family:inherit;font-size:.82rem;color:#fff;cursor:pointer;line-height:1.45;}
+.matrix-tile:hover{background:rgba(255,255,255,.12);}
+.matrix-box{flex-shrink:0;width:19px;height:19px;border-radius:5px;border:1.6px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;margin-top:.05rem;}
+.matrix-text{flex:1;}
+.matrix-tile.ms-online.aktiv{background:rgba(110,198,160,.22);border-color:var(--acc);}
+.matrix-tile.ms-online.aktiv .matrix-box{background:var(--acc);border-color:var(--acc);color:#0F2027;}
+.matrix-tile.ms-real.aktiv{background:rgba(143,208,255,.18);border-color:var(--real);}
+.matrix-tile.ms-real.aktiv .matrix-box{background:var(--real);border-color:var(--real);color:#0F2027;}
+.matrix-tile.ms-beide.aktiv{background:rgba(242,184,75,.2);border-color:var(--beide);}
+.matrix-tile.ms-beide.aktiv .matrix-box{background:var(--beide);border-color:var(--beide);color:#0F2027;}
+.matrix-spalte:nth-child(1) .matrix-label{color:var(--acc);}
+.matrix-spalte:nth-child(2) .matrix-label{color:var(--real);}
+.matrix-spalte:nth-child(3) .matrix-label{color:var(--beide);}
 
 .frage-block{margin-bottom:1.1rem;}
 .frage-label{font-size:.85rem;font-weight:700;margin-bottom:.5rem;}
@@ -74,9 +71,11 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 #druckansicht h1{font-family:Georgia,serif;font-size:20px;margin-bottom:2px;color:#1B3A4B;}
 #druckansicht .dsub{font-size:11px;color:#666;margin-bottom:18px;}
 #druckansicht h3{font-size:13px;margin:16px 0 6px;color:#1B3A4B;border-bottom:1px solid #ddd;padding-bottom:4px;}
-#druckansicht .dgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:6px;}
-#druckansicht .dgrid div{border:1px solid #ddd;border-radius:6px;padding:8px;font-size:11.5px;min-height:50px;}
-#druckansicht .dlabel{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:4px;}
+#druckansicht .dchecklist{margin-bottom:12px;}
+#druckansicht .dchecklist-titel{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#555;margin-bottom:5px;}
+#druckansicht .dchecklist-item{font-size:11.5px;color:#333;padding:2.5px 0;display:flex;gap:7px;align-items:flex-start;line-height:1.4;}
+#druckansicht .dchecklist-box{width:11px;height:11px;border:1.3px solid #999;border-radius:2px;flex-shrink:0;margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#fff;}
+#druckansicht .dchecklist-box.on{background:#1B3A4B;border-color:#1B3A4B;}
 #druckansicht .dtext{font-size:12px;color:#333;line-height:1.6;border:1px solid #eee;border-radius:6px;padding:8px;min-height:30px;margin-bottom:4px;}
 #druckansicht .spick{background:#F5F0E8;border-left:4px solid #C47A00;padding:10px 14px;font-size:12px;line-height:1.6;margin:8px 0;}
 #druckansicht .hausaufgabe-linie{border-bottom:1px solid #aaa;height:22px;margin-top:6px;}
@@ -92,46 +91,31 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 
 <div class="hero">
   <h1 class="hero-titel">Online-Identity-Lab</h1>
-  <p class="hero-sub">Wer bist du online — und wer bist du im echten Leben? Wähl aus, was zu dir passt, und schau dir an, wo beides sich überschneidet.</p>
+  <p class="hero-sub">Wer bist du online — und wer bist du im echten Leben? Kreuz einfach an, was zu dir passt.</p>
 </div>
 
 <div class="abschnitt">
-  <div class="abschnitt-titel">Schritt 1 — Wähl deine Eigenschaften</div>
-  <div class="spalten">
-    <div class="spalte spalte-online">
-      <div class="spalte-label">Online-Me</div>
-      <div class="chip-grid" id="chipsOnline"></div>
+  <div class="abschnitt-titel">Schritt 1 — Kreuz an, was zu dir passt</div>
+  <div class="matrix-grid">
+    <div class="matrix-spalte">
+      <div class="matrix-kopf"><span class="matrix-emoji">💻</span><span class="matrix-label">Nur online bin ich...</span></div>
+      <div class="matrix-liste" id="matrix-online"></div>
     </div>
-    <div class="spalte spalte-real">
-      <div class="spalte-label">Real-Me</div>
-      <div class="chip-grid" id="chipsReal"></div>
+    <div class="matrix-spalte">
+      <div class="matrix-kopf"><span class="matrix-emoji">🏫</span><span class="matrix-label">Nur im echten Leben bin ich...</span></div>
+      <div class="matrix-liste" id="matrix-real"></div>
+    </div>
+    <div class="matrix-spalte">
+      <div class="matrix-kopf"><span class="matrix-emoji">🤝</span><span class="matrix-label">In beiden Welten bin ich...</span></div>
+      <div class="matrix-liste" id="matrix-beide"></div>
     </div>
   </div>
 </div>
 
-<div class="abschnitt">
-  <div class="abschnitt-titel">Schritt 2 — Deine Schnittmenge</div>
-  <div class="venn-wrap">
-    <div class="venn">
-      <div class="venn-kreis venn-online" id="vennOnlineZahl">0</div>
-      <div class="venn-kreis venn-real" id="vennRealZahl">0</div>
-      <div class="venn-mitte" id="vennMitteZahl">0</div>
-    </div>
-  </div>
-  <div class="vergleich-grid">
-    <div class="vergleich-spalte">
-      <div class="vergleich-spalte-titel">Nur Online-Me</div>
-      <div id="nurOnline"></div>
-    </div>
-    <div class="vergleich-spalte">
-      <div class="vergleich-spalte-titel">Beide</div>
-      <div id="beide"></div>
-    </div>
-    <div class="vergleich-spalte">
-      <div class="vergleich-spalte-titel">Nur Real-Me</div>
-      <div id="nurReal"></div>
-    </div>
-  </div>
+<div class="abschnitt" id="mitnehmenAbschnitt" style="display:none;">
+  <div class="abschnitt-titel">Schritt 2 — Was nimmst du mit ins echte Leben?</div>
+  <div class="abschnitt-hinweis">Das hast du bei „Nur online" angekreuzt. Was davon möchtest du auch offline mehr zeigen?</div>
+  <div class="mitnehmen-liste" id="mitnehmenListe"></div>
 </div>
 
 <div class="abschnitt">
@@ -144,11 +128,6 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
     <div class="frage-label">Was würde passieren, wenn beides gleicher wäre?</div>
     <textarea id="frage2"></textarea>
   </div>
-</div>
-
-<div class="abschnitt" id="mitnehmenAbschnitt" style="display:none;">
-  <div class="abschnitt-titel">Schritt 4 — Was nimmst du mit ins echte Leben?</div>
-  <div class="mitnehmen-liste" id="mitnehmenListe"></div>
 </div>
 
 <div class="abschnitt">
@@ -166,97 +145,115 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 <div id="druckansicht"></div>
 
 <script>
-var TRAITS = ['witzig','mutig','kreativ','offen','ruhig','ehrgeizig','spontan','geduldig','hilfsbereit','vorsichtig','selbstbewusst','sensibel','chaotisch','organisiert','extrovertiert','introvertiert'];
+var NUR_ONLINE = [
+  { id:'nO1', text:'...super gesprächig und offen.' },
+  { id:'nO2', text:'...witzig und schlagfertig.' },
+  { id:'nO3', text:'...der aktive Planer (z.B. Discord-Server).' },
+  { id:'nO4', text:'...mutig und traue mich, alles zu sagen.' },
+  { id:'nO5', text:'...voll fokussiert und ausdauernd (Gaming).' },
+  { id:'nO6', text:'...kreativ (Videos schneiden, Designs).' }
+];
+var NUR_REAL = [
+  { id:'nR1', text:'...eher ruhig und beobachte lieber.' },
+  { id:'nR2', text:'...zurückhaltend bei neuen Leuten.' },
+  { id:'nR3', text:'...schnell gestresst und reizüberflutet.' },
+  { id:'nR4', text:'...unsicher, was andere über mich denken.' },
+  { id:'nR5', text:'...oft antriebslos oder müde.' },
+  { id:'nR6', text:'...ein Macher, wenn mich ein Thema packt.' }
+];
+var BEIDE = [
+  { id:'b1', text:'...ein treuer Kumpel / Freund.' },
+  { id:'b2', text:'...ein guter Zuhörer.' },
+  { id:'b3', text:'...ehrlich und direkt.' },
+  { id:'b4', text:'...sensibel für Gerechtigkeit.' },
+  { id:'b5', text:'...hilfsbereit, wenn jemand mich braucht.' },
+  { id:'b6', text:'...gerne mal komplett am Chillen.' }
+];
 
-var online = {};
-var real = {};
+var COLUMNS = [
+  { id:'online', colorClass:'ms-online', titel:'Nur online', items: NUR_ONLINE },
+  { id:'real', colorClass:'ms-real', titel:'Nur im echten Leben', items: NUR_REAL },
+  { id:'beide', colorClass:'ms-beide', titel:'In beiden Welten', items: BEIDE }
+];
+
+var ausgewaehlt = {};
 var mitnehmen = {};
 
-function chipsRendern(){
-  var elOnline = document.getElementById('chipsOnline');
-  var elReal = document.getElementById('chipsReal');
-  elOnline.innerHTML = '';
-  elReal.innerHTML = '';
-  TRAITS.forEach(function(t){
-    var b1 = document.createElement('button');
-    b1.className = 'chip' + (online[t] ? ' aktiv-online' : '');
-    b1.textContent = t;
-    b1.addEventListener('click', function(){ online[t] = !online[t]; if(!online[t]) delete mitnehmen[t]; chipsRendern(); vergleichRendern(); });
-    elOnline.appendChild(b1);
-
-    var b2 = document.createElement('button');
-    b2.className = 'chip' + (real[t] ? ' aktiv-real' : '');
-    b2.textContent = t;
-    b2.addEventListener('click', function(){ real[t] = !real[t]; chipsRendern(); vergleichRendern(); });
-    elReal.appendChild(b2);
+function matrixRendern(){
+  COLUMNS.forEach(function(col){
+    var el = document.getElementById('matrix-' + col.id);
+    el.innerHTML = col.items.map(function(item){
+      var aktiv = ausgewaehlt[item.id] ? ' aktiv' : '';
+      return '<button type="button" class="matrix-tile ' + col.colorClass + aktiv + '" onclick="toggleAuswahl(\'' + item.id + '\')">' +
+        '<span class="matrix-box">' + (ausgewaehlt[item.id] ? '✓' : '') + '</span>' +
+        '<span class="matrix-text">' + item.text + '</span></button>';
+    }).join('');
   });
 }
 
-function vergleichRendern(){
-  var nurOnline = TRAITS.filter(function(t){ return online[t] && !real[t]; });
-  var beide = TRAITS.filter(function(t){ return online[t] && real[t]; });
-  var nurReal = TRAITS.filter(function(t){ return real[t] && !online[t]; });
+function toggleAuswahl(id){
+  ausgewaehlt[id] = !ausgewaehlt[id];
+  if (!ausgewaehlt[id]) delete mitnehmen[id];
+  matrixRendern();
+  mitnehmenRendern();
+}
 
-  document.getElementById('vennOnlineZahl').textContent = nurOnline.length;
-  document.getElementById('vennRealZahl').textContent = nurReal.length;
-  document.getElementById('vennMitteZahl').textContent = beide.length;
-
-  document.getElementById('nurOnline').innerHTML = nurOnline.length ? nurOnline.map(tagHtml).join('') : '<span class="vergleich-leer">—</span>';
-  document.getElementById('beide').innerHTML = beide.length ? beide.map(tagHtml).join('') : '<span class="vergleich-leer">—</span>';
-  document.getElementById('nurReal').innerHTML = nurReal.length ? nurReal.map(tagHtml).join('') : '<span class="vergleich-leer">—</span>';
-
-  var mitnehmenAbschnitt = document.getElementById('mitnehmenAbschnitt');
-  var mitnehmenListe = document.getElementById('mitnehmenListe');
-  if (nurOnline.length) {
-    mitnehmenAbschnitt.style.display = 'block';
-    mitnehmenListe.innerHTML = nurOnline.map(function(t){
-      var checked = mitnehmen[t] ? 'checked' : '';
-      return '<label class="mitnehmen-item"><input type="checkbox" '+checked+' onchange="mitnehmenToggeln(\''+t+'\')"> Ich möchte "'+t+'" auch im echten Leben mehr zeigen.</label>';
+function mitnehmenRendern(){
+  var abschnitt = document.getElementById('mitnehmenAbschnitt');
+  var liste = document.getElementById('mitnehmenListe');
+  var gewaehlt = NUR_ONLINE.filter(function(item){ return ausgewaehlt[item.id]; });
+  if (gewaehlt.length) {
+    abschnitt.style.display = 'block';
+    liste.innerHTML = gewaehlt.map(function(item){
+      var checked = mitnehmen[item.id] ? 'checked' : '';
+      var kurztext = item.text.replace(/^\.\.\./, '');
+      return '<label class="mitnehmen-item"><input type="checkbox" ' + checked + ' onchange="mitnehmenToggeln(\'' + item.id + '\')"> Ich möchte auch im echten Leben ' + kurztext + '</label>';
     }).join('');
   } else {
-    mitnehmenAbschnitt.style.display = 'none';
+    abschnitt.style.display = 'none';
   }
 }
 
-function mitnehmenToggeln(t){
-  if (mitnehmen[t]) delete mitnehmen[t];
-  else mitnehmen[t] = true;
+function mitnehmenToggeln(id){
+  if (mitnehmen[id]) delete mitnehmen[id];
+  else mitnehmen[id] = true;
 }
 
-function tagHtml(t){ return '<span class="vergleich-tag">'+t+'</span>'; }
+function checklistHtml(col){
+  var html = '<div class="dchecklist"><div class="dchecklist-titel">' + col.titel + '</div>';
+  html += col.items.map(function(item){
+    var on = ausgewaehlt[item.id] ? ' on' : '';
+    return '<div class="dchecklist-item"><span class="dchecklist-box' + on + '">' + (ausgewaehlt[item.id] ? '✓' : '') + '</span><span>' + item.text + '</span></div>';
+  }).join('');
+  html += '</div>';
+  return html;
+}
 
 function handoutDrucken(){
-  var nurOnline = TRAITS.filter(function(t){ return online[t] && !real[t]; });
-  var beide = TRAITS.filter(function(t){ return online[t] && real[t]; });
-  var nurReal = TRAITS.filter(function(t){ return real[t] && !online[t]; });
-  var mitnehmenListe = Object.keys(mitnehmen).filter(function(t){ return mitnehmen[t]; });
   var f1 = document.getElementById('frage1').value.trim();
   var f2 = document.getElementById('frage2').value.trim();
   var hausaufgabe = document.getElementById('hausaufgabe').value.trim();
+  var mitnehmenListe = NUR_ONLINE.filter(function(item){ return mitnehmen[item.id]; });
   var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
 
   var html = '<h1>Online-Identity-Lab — Mein Ergebnis</h1><div class="dsub">Erstellt am ' + heute + ' · KLARTEXT-Mentoring</div>';
 
-  html += '<h3>Meine Eigenschaften im Vergleich</h3>';
-  html += '<div class="dgrid">';
-  html += '<div><div class="dlabel">Nur Online-Me</div>' + (nurOnline.join(', ') || '—') + '</div>';
-  html += '<div><div class="dlabel">Beide</div>' + (beide.join(', ') || '—') + '</div>';
-  html += '<div><div class="dlabel">Nur Real-Me</div>' + (nurReal.join(', ') || '—') + '</div>';
-  html += '</div>';
-
-  html += '<h3>Reflexion</h3>';
-  html += '<div class="dlabel">Was zeigst du online, was du offline nicht zeigst?</div><div class="dtext">' + (f1 || '&nbsp;') + '</div>';
-  html += '<div class="dlabel">Was würde passieren, wenn beides gleicher wäre?</div><div class="dtext">' + (f2 || '&nbsp;') + '</div>';
+  html += '<h3>Meine Eigenschaften</h3>';
+  COLUMNS.forEach(function(col){ html += checklistHtml(col); });
 
   if (mitnehmenListe.length) {
-    html += '<h3>Das nehme ich mit ins echte Leben</h3><div class="dtext">' + mitnehmenListe.join(', ') + '</div>';
+    html += '<h3>Das nehme ich mit ins echte Leben</h3><div class="dtext">' + mitnehmenListe.map(function(i){ return i.text.replace(/^\.\.\./, ''); }).join('; ') + '</div>';
   }
+
+  html += '<h3>Reflexion</h3>';
+  html += '<div class="dchecklist-titel">Was zeigst du online, was du offline nicht zeigst?</div><div class="dtext">' + (f1 || '&nbsp;') + '</div>';
+  html += '<div class="dchecklist-titel">Was würde passieren, wenn beides gleicher wäre?</div><div class="dtext">' + (f2 || '&nbsp;') + '</div>';
 
   html += '<h3>Spickzettel für Eltern</h3>';
   html += '<div class="spick">Digitaler Rückzug ist oft Identitätstraining, keine Ablehnung. Wenn Jugendliche online anders auftreten als offline, probieren sie meist nur aus, wer sie noch sein könnten — das ist ein normaler Teil des Erwachsenwerdens, kein Alarmsignal.</div>';
 
   html += '<h3>Hausaufgabe</h3>';
-  html += '<div class="dlabel">Eine Sache, die ich morgen offline so mache wie online:</div>';
+  html += '<div class="dchecklist-titel">Eine Sache, die ich morgen offline so mache wie online:</div>';
   if (hausaufgabe) {
     html += '<div class="dtext">' + hausaufgabe + '</div>';
   } else {
@@ -272,8 +269,8 @@ function handoutDrucken(){
   window.print();
 }
 
-chipsRendern();
-vergleichRendern();
+matrixRendern();
+mitnehmenRendern();
 </script>
 
 </body>

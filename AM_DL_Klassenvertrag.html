@@ -26,7 +26,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);l
 .page-label{font-size:.65rem;font-weight:700;color:var(--am);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem;}
 .page-titel{font-family:"Playfair Display",serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:var(--am);margin-bottom:.3rem;}
 .page-sub{font-size:.85rem;color:var(--muted);}
-@media print{
+@media print{input::placeholder,textarea::placeholder{color:transparent!important;}
   .kt-header{display:none!important;}
   body{background:white;}
   .druckseite{box-shadow:none!important;border:2px solid #C62828!important;}
@@ -128,5 +128,19 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);l
 </div>
 
 </div>
+<script>
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('input[placeholder]').forEach(function(el){
+    el.setAttribute('data-ph', el.placeholder);
+    el.removeAttribute('placeholder');
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('input[data-ph]').forEach(function(el){
+    el.setAttribute('placeholder', el.getAttribute('data-ph'));
+    el.removeAttribute('data-ph');
+  });
+});
+</script>
 </body>
 </html>

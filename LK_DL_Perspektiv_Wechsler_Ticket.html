@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Perspektiv-Wechsler-Ticket</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--jd:#2F6B6E;--jd-l:#EAF3F3;--jd-b:#C7E0DF;--el:#BF5B3E;--el-l:#FAEBE3;--el-b:#F0C9B3;--kt:#1B3A4B;--accent:#6EC6A0;--ink:#1A1A2E;--muted:#6A6878;--border:#DDD8CE;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem 3rem;gap:1rem;}
+.controls{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;}
+.ctrl{padding:.4rem .9rem;border-radius:6px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;border:none;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem;}
+.ctrl-print{background:var(--kt);color:#fff;}
+.ctrl-back{background:rgba(27,58,75,.15);color:#1B3A4B;border:1.5px solid rgba(27,58,75,.2);}
+.a4{width:210mm;max-width:100%;background:#fff;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.a4-header{background:linear-gradient(135deg,var(--kt) 0%,#2A5570 100%);padding:7mm 10mm 5mm;display:flex;align-items:center;justify-content:space-between;}
+.a4h-logo{display:flex;align-items:center;gap:6px;}
+.a4h-mark{width:26px;height:26px;border:2px solid var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.a4h-mark span{font-family:"Playfair Display",serif;font-size:11px;font-weight:700;color:#fff;}
+.a4h-name{font-family:"Playfair Display",serif;font-size:.9rem;font-weight:700;color:#fff;}
+.a4h-sub{font-size:.5rem;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;display:block;}
+.a4h-form-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;text-align:right;}
+.a4h-form-sub{font-size:.55rem;color:rgba(255,255,255,.5);text-align:right;margin-top:1px;}
+.a4-stripe{height:3px;background:linear-gradient(90deg,var(--jd) 0%,var(--el) 100%);}
+.a4-body{padding:7mm 10mm 6mm;}
+.meta-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;margin-bottom:5mm;}
+.meta-feld .mf-label{font-size:.52rem;font-weight:700;color:var(--kt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5mm;display:block;}
+.mf-input{width:100%;border:none;border-bottom:1px solid #C0B8A8;padding:.2rem 0;font-family:"DM Sans",sans-serif;font-size:.78rem;color:var(--ink);outline:none;background:transparent;}
+.intro{font-size:.72rem;color:var(--muted);line-height:1.6;margin-bottom:5mm;padding-bottom:4mm;border-bottom:1px solid var(--border);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-bottom:5mm;}
+.pw-spalte{border-radius:8px;padding:4mm 4mm 4.5mm;}
+.pw-spalte-jd{background:var(--jd-l);border:1.5px solid var(--jd-b);}
+.pw-spalte-el{background:var(--el-l);border:1.5px solid var(--el-b);}
+.pw-kopf{margin-bottom:3mm;padding-bottom:2mm;border-bottom:1.5px solid;}
+.pw-spalte-jd .pw-kopf{border-color:var(--jd-b);}
+.pw-spalte-el .pw-kopf{border-color:var(--el-b);}
+.pw-label{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;}
+.pw-spalte-jd .pw-label{color:var(--jd);}
+.pw-spalte-el .pw-label{color:var(--el);}
+.pw-frage{font-family:"Playfair Display",serif;font-size:.92rem;font-weight:700;color:var(--kt);margin-top:.6mm;}
+.check-item{display:flex;align-items:flex-start;gap:2.2mm;font-size:.74rem;color:var(--ink);padding:1.3mm 0;line-height:1.4;}
+.check-box{width:12px;height:12px;border:1.5px solid #A89E8C;border-radius:3px;flex-shrink:0;margin-top:.5mm;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#fff;}
+.pw-spalte-jd .check-box{border-color:var(--jd);}
+.pw-spalte-el .check-box{border-color:var(--el);}
+.pw-spalte-jd .check-box.checked{background:var(--jd);border-color:var(--jd);}
+.pw-spalte-el .check-box.checked{background:var(--el);border-color:var(--el);}
+.bruecke{background:#F5F0E8;border:1.5px solid #E0D5C0;border-radius:10px;padding:5mm 5.5mm;}
+.bruecke-label{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8a7c5e;text-align:center;margin-bottom:1.5mm;}
+.bruecke-frage{font-family:"Playfair Display",serif;font-size:.95rem;font-weight:700;color:var(--kt);text-align:center;margin-bottom:4mm;}
+.bruecke-linien{display:flex;flex-direction:column;gap:5mm;margin-bottom:4mm;}
+.bruecke-linie{border-bottom:1px solid #C9BD9E;height:6mm;}
+.sig-row{display:grid;grid-template-columns:1fr 1fr;gap:8mm;margin-top:1mm;}
+.sig-feld .mf-label{font-size:.5rem;font-weight:700;color:#8a7c5e;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5mm;display:block;}
+.sig-linie{border-bottom:1px solid #C9BD9E;height:2mm;}
+.a4-footer{background:var(--jd-l);border-top:1px solid var(--jd-b);padding:3mm 10mm;display:flex;justify-content:space-between;align-items:center;}
+.a4f-left,.a4f-right{font-size:.5rem;color:var(--muted);}
+@media print{input::placeholder{color:transparent!important;}body{background:white;padding:0;}.controls{display:none!important;}.a4{box-shadow:none;width:100%;}@page{size:A4;margin:0;}}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KLARTEXT">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<div class="controls">
+  <button class="ctrl ctrl-print" onclick="window.print()">🖨️ Als PDF drucken</button>
+  <a class="ctrl ctrl-back" href="KLARTEXT_Landing.html">← Zurück</a>
+</div>
+<div class="a4">
+  <div class="a4-header">
+    <div class="a4h-logo">
+      <div class="a4h-mark"><span>K</span></div>
+      <div><div class="a4h-name">KLARTEXT</div><span class="a4h-sub">Mentoring-System</span></div>
+    </div>
+    <div><div class="a4h-form-titel">Perspektiv-Wechsler</div><div class="a4h-form-sub">Das 1-Minuten-Gesprächs-Ticket für Schule &amp; Zuhause</div></div>
+  </div>
+  <div class="a4-stripe"></div>
+  <div class="a4-body">
+    <div class="meta-row">
+      <div class="meta-feld"><span class="mf-label">Name</span><input class="mf-input" type="text" placeholder="Jugendliche/r"></div>
+      <div class="meta-feld"><span class="mf-label">Datum</span><input class="mf-input" type="text" placeholder="TT.MM.JJJJ"></div>
+      <div class="meta-feld"><span class="mf-label">Gesprächspartner:in</span><input class="mf-input" type="text" placeholder="Elternteil / Lehrkraft"></div>
+    </div>
+
+    <div class="intro">Jede Seite kreuzt still für sich an, was gerade am meisten zutrifft — dann kurz austauschen: Wo überschneiden sich die Kreuze? Das ist der beste Einstieg für die Brücken-Notiz unten.</div>
+
+    <div class="two-col">
+      <div class="pw-spalte pw-spalte-jd">
+        <div class="pw-kopf">
+          <div class="pw-label">Jugendliche/r</div>
+          <div class="pw-frage">Was beschäftigt dich gerade am meisten?</div>
+        </div>
+        <label class="check-item"><div class="check-box"></div>Niemand hört mir wirklich zu</label>
+        <label class="check-item"><div class="check-box"></div>Ich werde nicht ernst genommen</label>
+        <label class="check-item"><div class="check-box"></div>Druck von zu Hause</label>
+        <label class="check-item"><div class="check-box"></div>Erwartungen, die gar nicht meine sind</label>
+        <label class="check-item"><div class="check-box"></div>Kein Vertrauen, ständige Kontrolle</label>
+        <label class="check-item"><div class="check-box"></div>Ich darf nichts allein entscheiden</label>
+        <label class="check-item"><div class="check-box"></div>Stopp-Moment — meine Grenze wird nicht gesehen</label>
+        <label class="check-item"><div class="check-box"></div>Ich kann schwer Nein sagen</label>
+      </div>
+      <div class="pw-spalte pw-spalte-el">
+        <div class="pw-kopf">
+          <div class="pw-label">Eltern / Lehrkraft</div>
+          <div class="pw-frage">Was fällt dir gerade im Umgang am schwersten?</div>
+        </div>
+        <label class="check-item"><div class="check-box"></div>Handy-Sog — ich komm nicht los</label>
+        <label class="check-item"><div class="check-box"></div>Kopf voll — alles auf einmal</label>
+        <label class="check-item"><div class="check-box"></div>Ich brauche mehr echte Pausen</label>
+        <label class="check-item"><div class="check-box"></div>Berufs-Dschungel — du sollst schon alles wissen</label>
+        <label class="check-item"><div class="check-box"></div>Meine Superpower wird nicht gesehen</label>
+        <label class="check-item"><div class="check-box"></div>Sorge um deine Zukunft</label>
+      </div>
+    </div>
+
+    <div class="bruecke">
+      <div class="bruecke-label">Die Brücke</div>
+      <div class="bruecke-frage">Unsere Brücken-Notiz: Was ist unser kleinster, konkreter erster Schritt für die nächste Woche?</div>
+      <div class="bruecke-linien">
+        <div class="bruecke-linie"></div>
+        <div class="bruecke-linie"></div>
+      </div>
+      <div class="sig-row">
+        <div class="sig-feld"><span class="mf-label">Unterschrift Jugendliche/r</span><div class="sig-linie"></div></div>
+        <div class="sig-feld"><span class="mf-label">Unterschrift Eltern / Lehrkraft</span><div class="sig-linie"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="a4-footer">
+    <span class="a4f-left">KLARTEXT Mentoring-System · © Anja Jolk</span>
+    <span class="a4f-right">info@klartext-mentoring.de</span>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.check-box').forEach(function(box){
+  box.addEventListener('click', function(){ box.classList.toggle('checked'); box.textContent = box.classList.contains('checked') ? '✓' : ''; });
+});
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('input[placeholder]').forEach(function(el){
+    el.setAttribute('data-ph', el.placeholder);
+    el.removeAttribute('placeholder');
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('input[data-ph]').forEach(function(el){
+    el.setAttribute('placeholder', el.getAttribute('data-ph'));
+    el.removeAttribute('data-ph');
+  });
+});
+</script>
+</body>
+</html>

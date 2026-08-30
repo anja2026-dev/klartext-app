@@ -59,7 +59,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 .a4f-left{font-size:.5rem;color:var(--muted);}
 .a4f-right{font-size:.5rem;color:var(--muted);}
 
-@media print{
+@media print{input::placeholder,textarea::placeholder{color:transparent!important;}
   body{background:white;padding:0;}
   .controls{display:none!important;}
   .a4{box-shadow:none;width:100%;}
@@ -168,7 +168,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
   </div>
   <div class="a4-footer">
     <span class="a4f-left">KLARTEXT Mentoring-System · Modul 5 Dokumentation</span>
-    <span class="a4f-right">© Anja Jolk · anja.jolk@gmx.de</span>
+    <span class="a4f-right">© Anja Jolk · info@klartext-mentoring.de</span>
   </div>
 </div>
 
@@ -190,6 +190,20 @@ function resetForm(){
 window.addEventListener('DOMContentLoaded',()=>{
   var d=document.getElementById('auto-datum');
   if(d)d.value=new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+});
+</script>
+<script>
+window.addEventListener('beforeprint',function(){
+  document.querySelectorAll('input[placeholder]').forEach(function(el){
+    el.setAttribute('data-ph', el.placeholder);
+    el.removeAttribute('placeholder');
+  });
+});
+window.addEventListener('afterprint',function(){
+  document.querySelectorAll('input[data-ph]').forEach(function(el){
+    el.setAttribute('placeholder', el.getAttribute('data-ph'));
+    el.removeAttribute('data-ph');
+  });
 });
 </script>
 </body>

@@ -41,8 +41,11 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 .check-item{display:flex;align-items:center;gap:1.8mm;font-size:.56rem;color:var(--ink);margin-bottom:1.8mm;}
 .check-box{width:9px;height:9px;border:1.3px solid #A89E8C;border-radius:2px;flex-shrink:0;}
 .line-row{border-bottom:1px solid #E0D8CC;height:4.5mm;}
-.a5-footer{background:var(--l);border-top:1px solid var(--b);padding:1.2mm 6mm;text-align:center;}
+.a5-footer{background:var(--l);border-top:1px solid var(--b);padding:1.2mm 6mm;display:flex;align-items:center;justify-content:center;gap:2mm;}
 .a5f{font-size:.36rem;color:var(--muted);}
+.a5f-qr{width:7mm;height:7mm;flex-shrink:0;background:#fff;}
+.a5f-qr canvas,.a5f-qr img{width:100%;height:100%;display:block;}
+.a5f-txt{font-size:.34rem;line-height:1.3;color:var(--muted);text-align:left;}
 @media print{
   input::placeholder,textarea::placeholder{color:transparent!important;}
   body{background:white;padding:0;}
@@ -53,6 +56,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
   @page{size:A4;margin:0;}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div class="controls">
@@ -103,7 +107,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
           <div class="line-row" style="margin-top:2mm;"></div>
         </div>
       </div>
-      <div class="a5-footer"><span class="a5f">KLARTEXT Mentoring-System · info@klartext-mentoring.de</span></div>
+      <div class="a5-footer"><div class="a5f-qr qr-target"></div><span class="a5f-txt">Digitale Version: klartext-app-8kl.pages.dev/LK_DL_Therapeuten_Ticket.html</span></div>
     </div>
     <div class="a5-half back">
       <div class="a5h">
@@ -136,7 +140,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
           <div class="line-row" style="margin-top:2mm;"></div>
         </div>
       </div>
-      <div class="a5-footer"><span class="a5f">KLARTEXT Mentoring-System · info@klartext-mentoring.de</span></div>
+      <div class="a5-footer"><div class="a5f-qr qr-target"></div><span class="a5f-txt">Digitale Version: klartext-app-8kl.pages.dev/LK_DL_Therapeuten_Ticket.html</span></div>
     </div>
   </div>
 </template>
@@ -144,6 +148,9 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 const tpl = document.getElementById('card-template');
 const sheet = document.getElementById('sheet');
 for(let i=0;i<2;i++){ sheet.appendChild(tpl.content.cloneNode(true)); }
+document.querySelectorAll('.qr-target').forEach(function(el){
+  new QRCode(el, {text:'https://klartext-app-8kl.pages.dev/LK_DL_Therapeuten_Ticket.html', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
+});
 </script>
 <script>
 window.addEventListener('beforeprint',function(){

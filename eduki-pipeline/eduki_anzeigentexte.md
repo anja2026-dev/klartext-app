@@ -1,0 +1,214 @@
+# KLARTEXT-Mentoring · eduki-Anzeigentexte (Produktpipeline)
+
+Für jedes Produkt: Titel (max. ca. 70 Zeichen, mit Haupt-Keyword vorne), Beschreibung (Struktur: Nutzen → Inhalt → Format → Zielgruppe), Tags (eduki-Suchbegriffe), Preis-Empfehlung.
+
+---
+
+## 1. Der ADHS-Wunschzettel (Freebie · Berufseinstieg)
+
+**Titel:**
+Arbeitsplatz-Wunschzettel ADHS – Freebie für Berufseinstieg & Ausbildung
+
+**Beschreibung:**
+Ein kostenloses Reflexionsblatt für Jugendliche und junge Erwachsene mit ADHS im Übergang Schule–Beruf. Statt eines Diagnose-Formulars ein wertschätzendes „Wunschzettel"-Format: Die Teilnehmenden kreuzen konkrete, alltagstaugliche Arbeitsplatzanpassungen an (z. B. Struktur, Reizreduktion, Zeitpuffer) und bereiten damit selbstständig das Gespräch mit Ausbilder:in oder Chef:in vor.
+
+Fachlich fundiert nach dem Prinzip der angemessenen Vorkehrungen (Art. 27 UN-BRK) und Empfehlungen des Job Accommodation Network (JAN, US-Arbeitsministerium).
+
+Enthält einen QR-Code zur digitalen ADHS-Toolbox mit weiteren Selbstreflexions-Tools – ideal als Lead-Magnet / Einstieg in die KLARTEXT-Materialreihe.
+
+**Format:** 1 Seite, DIN A4, PDF zum Ausdrucken
+**Zielgruppe:** Berufsschule, Übergang Schule-Beruf, Jobcoaching, Ausbildungsbegleitung
+**Preis:** 0,00 € (Freebie)
+
+**Tags:** ADHS, Berufsorientierung, Ausbildung, Nachteilsausgleich, Neurodiversität, Übergang Schule Beruf, Selbstreflexion, kostenlos, Freebie, Inklusion, Berufsschule
+
+---
+
+## 2. Das Perspektiv-Wechsler-Ticket – Das 1-Minuten-Krisengespräch
+
+**Titel:**
+Perspektiv-Wechsler-Ticket – Elterngespräch bei Konflikten Sek I/II (A4, 2-seitig)
+
+**Beschreibung:**
+Ein doppelseitiges Gesprächs-Ticket, das eskalierte Familienkonflikte in unter 5 Minuten strukturiert entschärft – ganz ohne Diskussion, nur durch Ankreuzen.
+
+Vorderseite: Zwei Spalten stehen sich gegenüber – links die echten Sorgen der/des Jugendlichen ("Niemand hört mir zu", "Druck von zu Hause"), rechts die typischen Sorgen der Eltern ("Angst um die Zukunft", "Kommunikations-Kluft"). Beide Seiten kreuzen still an, was gerade am meisten zutrifft – die Überschneidungen zeigen sofort den gemeinsamen Ausgangspunkt.
+
+Rückseite ("Die Brücke"): 5 konkrete, deeskalierende KLARTEXT-Vorschläge zum gemeinsamen Ankreuzen (u. a. die 10-Minuten-Regel, der Reizfilter-Regler, die handyfreie Familienzeit) plus Unterschriftenfelder für eine verbindliche Mini-Vereinbarung.
+
+Ein QR-Code auf der Rückseite führt zur digitalen Version für weitere Materialien.
+
+**Format:** DIN A4, doppelseitiger Druck, PDF
+**Zielgruppe:** Elternarbeit, Schulsozialarbeit, Jugendhilfe, Erziehungsberatung, Sek I & Sek II
+**Preis:** 2,90 €
+
+**Tags:** Elterngespräch, Elternarbeit, Konfliktgespräch, Pubertät, Deeskalation, Familienkonflikt, Sek I, Sek II, Schulsozialarbeit, Erziehungsberatung, Kommunikation Eltern Jugendliche
+
+---
+
+## 3. Das Online-Identity-Lab (Ankreuz-Edition)
+
+**Titel:**
+Online-Identity-Lab – Medienkompetenz & Selbstreflexion Sek I/II (Ankreuz-Edition)
+
+**Beschreibung:**
+Ein interaktives Arbeitsblatt zur Medienkompetenz und Identitätsentwicklung im digitalen Raum – jetzt in der komplett ankreuzbaren Fassung ohne Schreibhürden.
+
+In drei Schritten reflektieren Jugendliche ihr Online- und Offline-Selbst:
+Schritt 1 – Kreuz an, was zu dir passt: strukturierte Matrix zu Eigenschaften online vs. real
+Schritt 2 – Was nimmst du mit ins echte Leben? Transfer der positiven Online-Anteile
+Schritt 3 – Reflexion: Auswertung der eigenen Muster, inklusive Spickzettel für Eltern und einer druckbaren Hausaufgaben-Seite
+
+Durch die neu programmierten Ankreuz-Kacheln (statt Freitext) ist das Material auch für schreibschwache, konzentrationsschwache oder sprachlernende Jugendliche zugänglich – ein echter Inklusions-Gewinn.
+
+**Format:** Interaktives HTML-Ergebnisblatt zum Ausdrucken, DIN A4, PDF
+**Zielgruppe:** Medienpädagogik, Klassenrat, Sek I & Sek II, Inklusion, DaZ
+**Preis:** 2,90 €
+
+**Tags:** Medienkompetenz, Online-Identität, Social Media Unterricht, Selbstreflexion, Inklusion, Ankreuzaufgaben, Sek I, Sek II, Medienbildung, Digitale Identität, Schreibhürden reduzieren
+
+---
+
+## 4. Das Therapeuten-Ticket – Schnittstelle Schule ↔ Therapie
+
+**Titel:**
+Therapeuten-Ticket – Übergabebogen Schule ↔ Ergo/Logo/Lerntherapie (DIN A5)
+
+**Beschreibung:**
+Der schnelle Übergabebogen für die oft fehlende Brücke zwischen Klassenzimmer und Therapiepraxis. Zwei DIN-A5-Hälften auf einem Blatt (kein beidseitiger Druck nötig, einfach in der Mitte trennen):
+
+Linke Seite (Schule → Therapie): Regulations-Barometer des Tages, Ankreuzliste der Tages-Trigger (Klassenarbeit, Streit, Lärm) und Freitextzeilen "Das lief heute gut / Das war heute schwer".
+
+Rechte Seite (Therapie → Schule): Schwerpunkt der heutigen Therapieeinheit (auditive Merkspanne, Stifthaltung, Frusttoleranz, Grob-/Feinmotorik) und ein Blitz-Tipp für den Unterrichtsalltag.
+
+So erfahren Lehrkräfte in unter 60 Sekunden, woran aktuell gearbeitet wird – und Therapeut:innen bekommen den Schulkontext direkt mit. Inklusive QR-Code zur digitalen Version.
+
+**Format:** DIN A5 quer, 2 Tickets pro A4-Blatt, PDF
+**Zielgruppe:** Schulbegleitung, Inklusion, Ergotherapie, Logopädie, Lerntherapie, Grundschule & Sek I
+**Preis:** 1,90 €
+
+**Tags:** Schulbegleitung, Ergotherapie Schule, Logopädie, Lerntherapie, Übergabebogen, Inklusion, Therapie Dokumentation, Schnittstelle Schule Therapie, Regulation, ADHS ASS
+
+---
+
+## 5. Der Nachteilsausgleich-Begleiter
+
+**Titel:**
+Nachteilsausgleich-Begleiter – Verlaufsprotokoll LRS, Dyskalkulie, ADHS/ASS (A4)
+
+**Beschreibung:**
+Ressourcenorientiertes Nachweisprotokoll zur rechtssicheren, alltagstauglichen Dokumentation gewährter Nachteilsausgleiche – ohne Bürokratiemonster.
+
+Pro Eintrag werden Datum, Situation/Fach, die eingesetzte Maßnahme (Zeitzuschlag, reizreduzierter Arbeitsplatz, visuelle Strukturhilfen, kompensatorische Hilfsmittel, kinesiologische Kurzpause) über ein einfaches Ankreuzsystem sowie die Auswirkung auf die Regulation (Ampel-System) und der Erfolg der Maßnahme erfasst.
+
+Ideal als Ergänzung – nicht Ersatz – zum offiziellen Nachteilsausgleichs-Bescheid, um gegenüber Schulleitung und Aufsicht die kontinuierliche Umsetzung zu belegen.
+
+Inklusive QR-Code zur digitalen Version.
+
+**Format:** DIN A4 Hochformat, PDF
+**Zielgruppe:** Klassenlehrkräfte, Schulbegleitung, Inklusion, LRS/Dyskalkulie-Förderung, Sek I & Sek II
+**Preis:** 2,50 €
+
+**Tags:** Nachteilsausgleich, LRS, Dyskalkulie, ADHS, Autismus, Dokumentation, Inklusion, Förderplan, Verlaufsprotokoll, Schulrecht, Nachweis
+
+---
+
+## 6. Das OGS-Übergabe-Ticket – Schichtwechsel Mittag
+
+**Titel:**
+OGS-Übergabe-Ticket – Übergabebogen Vormittag → Nachmittagsbetreuung (DIN A6)
+
+**Beschreibung:**
+Der Mini-Übergabebogen für den täglichen Schichtwechsel zwischen Vormittagsschule und Ganztagsbetreuung (OGS/Hort) – in unter 60 Sekunden ausgefüllt.
+
+Erfasst werden: Regulations-Barometer bei Schulschluss (Grün bis Grau), Besonderheiten am Vormittag (Konflikt gelöst, hohe Reizüberflutung, körperliche Unruhe) und eine daraus abgeleitete Empfehlung für die passende OGS-Startzone (Ruhe-Insel, Tobe-Insel, Hausaufgaben-Fokus-Insel, Freispiel) plus eine Kurznotiz-Zeile.
+
+So kommt jedes Kind mit einem kurzen, verständlichen "Fahrplan" vom Klassenzimmer in die Nachmittagsbetreuung – auch wenn die Betreuungskraft wechselt.
+
+Inklusive QR-Code zur digitalen Version auf jeder der 4 Karten.
+
+**Format:** DIN A6, 4 Karten pro A4-Blatt zum Ausschneiden, PDF
+**Zielgruppe:** Offener Ganztag (OGS), Hort, Grundschule, Übergabe Schule–Betreuung
+**Preis:** 1,90 €
+
+**Tags:** OGS, Ganztag, Hort, Übergabebogen, Regulation, Schichtwechsel, Grundschule, Betreuung, Barometer, Inklusion
+
+---
+
+## 7. Das Reizfilter-Audit – Checkliste Klassenraum
+
+**Titel:**
+Reizfilter-Audit – Checkliste reizarme Klassenraumgestaltung ADHS/ASS (A4)
+
+**Beschreibung:**
+Eine diagnosefreie Selbst-Checkliste zur systematischen Überprüfung des Klassenraums auf überflüssige Reizquellen – ganz ohne Etikettierung einzelner Kinder.
+
+Strukturiert in vier Bereiche: akustische Reize (Lärmquellen, Hall, Nebengeräusche), visuelle Reize (überladene Wände, Lichtverhältnisse, Sichtachsen), strukturelle Reize (Raumaufteilung, Wegeführung, Sitzordnung) und individuelle Reize (persönlicher Arbeitsplatz). Am Ende steht ein konkreter nächster Schritt.
+
+Das Audit hilft Lehrkräften und Schulbegleitungen, den Klassenraum präventiv so zu gestalten, dass er für Kinder mit ADHS, Autismus-Spektrum-Störung oder allgemeiner Reizempfindlichkeit entlastender wird – zum Wohl der ganzen Klasse.
+
+Inklusive QR-Code zur digitalen Version.
+
+**Format:** DIN A4 Hochformat, PDF
+**Zielgruppe:** Klassenlehrkräfte, Schulbegleitung, Inklusion, Raumgestaltung, Grundschule & Sek I
+**Preis:** 2,50 €
+
+**Tags:** Reizreduktion, Klassenraumgestaltung, ADHS, Autismus, Inklusion, Sensorik, Checkliste, Lernumgebung, reizarm, Schulraum
+
+---
+
+## 8. Das Krisenprotokoll- & Beobachtungsbogen-Set
+
+**Titel:**
+Krisenprotokoll & Beobachtungsbogen Set – Dokumentation Schule (A4, Kombipaket)
+
+**Beschreibung:**
+Das Kombipaket für die schnelle, rechtssichere Verhaltens- und Krisendokumentation im Schulalltag.
+
+**Krisenprotokoll:** erfasst Datum, Uhrzeit, Ort, nur beobachtbare Fakten (bewusst wertfrei formuliert), Beteiligte/Anwesende, die Reaktion der Lehrkraft, die Intervention der Schulbegleitung sowie ein Ankreuzfeld, wer informiert wurde (Schulleitung, Eltern, Teamkoordination, § 8a relevant) mit Unterschriftenfeldern.
+
+**Beobachtungsbogen:** strukturierte, wiederkehrende Verhaltensbeobachtung zur Musteranalyse über mehrere Tage/Wochen – Grundlage für Förderpläne, Elterngespräche und ggf. externe Abklärungen.
+
+Beide Bögen folgen demselben reizarmen KLARTEXT-Design und sind in unter einer Minute auszufüllen. Inklusive QR-Code zur digitalen Version.
+
+**Format:** DIN A4 Hochformat, 2 PDF-Vorlagen im Set
+**Zielgruppe:** Schulbegleitung, Klassenlehrkräfte, Schulleitung, Kinderschutz, Sek I & Sek II
+**Preis:** 1,90 € – 2,50 € (Kombipaket)
+
+**Tags:** Krisenprotokoll, Beobachtungsbogen, Verhaltensdokumentation, Kinderschutz, § 8a, Schulbegleitung, Deeskalation, Dokumentation, Inklusion, Förderplan
+
+---
+
+## 9. Das Selbstfürsorge-Bingo für das Kollegium (Freebie)
+
+**Titel:**
+Selbstfürsorge-Bingo für Lehrkräfte – Freebie fürs Lehrerzimmer (A4)
+
+**Beschreibung:**
+Ein liebevoll gestaltetes Bingo mit 16 kleinen Achtsamkeits-Impulsen für eine ganze Woche im Kollegium – zum Aufhängen am Kühlschrank im Lehrerzimmer.
+
+Von "Einmal richtig durchatmen, bevor du aus dem Auto steigst" über "Nein sagen – egal wozu" bis "Dich selbst loben – laut, nicht nur im Kopf": Jedes Feld ist ein realistischer, in Sekunden umsetzbarer Moment der Selbstfürsorge für stark belastete pädagogische Fachkräfte. Schon 4 Felder in einer Reihe zählen als Erfolg – es geht nicht um Perfektion.
+
+Ein herzliches, undramatisches Geschenk für Kolleginnen und Kollegen – und ein perfekter Reichweiten-Booster für dein eduki-Profil. Inklusive QR-Code zu weiteren kostenlosen KLARTEXT-Materialien.
+
+**Format:** 1 Seite, DIN A4, PDF zum Ausdrucken
+**Zielgruppe:** Lehrerkollegium, Schulteam, Lehrergesundheit, alle Schulformen
+**Preis:** 0,00 € (Freebie)
+
+**Tags:** Selbstfürsorge, Lehrergesundheit, Kollegium, Bingo, Achtsamkeit, Lehrerzimmer, kostenlos, Freebie, Teambuilding, Stressprävention
+
+---
+
+## Übersichtstabelle
+
+| # | Produkt | Preis | Hauptkategorie |
+|---|---|---|---|
+| 1 | ADHS-Wunschzettel | 0,00 € | Berufsorientierung / Freebie |
+| 2 | Perspektiv-Wechsler-Ticket | 2,90 € | Elternarbeit Sek I/II |
+| 3 | Online-Identity-Lab | 2,90 € | Inklusion / Medienkompetenz |
+| 4 | Therapeuten-Ticket | 1,90 € | Regeln & Rituale / Inklusion |
+| 5 | Nachteilsausgleich-Begleiter | 2,50 € | Inklusion / Dokumentation |
+| 6 | OGS-Übergabe-Ticket | 1,90 € | Regeln & Rituale |
+| 7 | Reizfilter-Audit | 2,50 € | Inklusion / Regeln & Rituale |
+| 8 | Krisenprotokoll & Beobachtungsbogen | 1,90–2,50 € | Regeln & Rituale / Dokumentation |
+| 9 | Selbstfürsorge-Bingo | 0,00 € | Freebie / Spiele & Rätsel |

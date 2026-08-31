@@ -6,9 +6,13 @@
 <title>KLARTEXT · Online-Identity-Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script>(function(){try{
+  var gastZugang = new URLSearchParams(window.location.search).get('guest')==='true';
+  if(!gastZugang && sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B3A4B">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--jd:#2F6B6E; --jd-light:#EAF3F3; --m:#1B3A4B; --acc:#6EC6A0; --real:#8FD0FF; --beide:#F2B84B;}
@@ -52,6 +56,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 .frage-label{font-size:.85rem;font-weight:700;margin-bottom:.5rem;}
 .frage-block textarea, .frage-block input[type=text]{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);border-radius:10px;color:#fff;font-family:inherit;font-size:.85rem;padding:.75rem .9rem;line-height:1.5;}
 .frage-block textarea{min-height:70px;resize:vertical;}
+.frage-tile-hint{display:block;font-weight:400;color:rgba(255,255,255,.68);font-size:.76rem;margin-top:.15rem;}
 
 .mitnehmen-liste{display:flex;flex-direction:column;gap:.5rem;}
 .mitnehmen-item{display:flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:.6rem .8rem;font-size:.85rem;}
@@ -79,7 +84,9 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 #druckansicht .dtext{font-size:12px;color:#333;line-height:1.6;border:1px solid #eee;border-radius:6px;padding:8px;min-height:30px;margin-bottom:4px;}
 #druckansicht .spick{background:#F5F0E8;border-left:4px solid #C47A00;padding:10px 14px;font-size:12px;line-height:1.6;margin:8px 0;}
 #druckansicht .hausaufgabe-linie{border-bottom:1px solid #aaa;height:22px;margin-top:6px;}
-#druckansicht .dfoot{margin-top:26px;font-size:10px;color:#999;border-top:1px solid #ddd;padding-top:10px;}
+#druckansicht .dfoot{margin-top:26px;font-size:10px;color:#999;border-top:1px solid #ddd;padding-top:10px;display:flex;align-items:center;gap:8px;}
+#druckansicht .dfoot-qr{width:40px;height:40px;flex-shrink:0;}
+#druckansicht .dfoot-qr canvas,#druckansicht .dfoot-qr img{width:100%;height:100%;display:block;}
 </style>
 </head>
 <body>
@@ -120,13 +127,14 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 
 <div class="abschnitt">
   <div class="abschnitt-titel">Schritt 3 — Reflexion (JD-30)</div>
+  <div class="abschnitt-hinweis">Kreuz an, was zu dir passt — auch mehrere Antworten sind okay.</div>
   <div class="frage-block">
     <div class="frage-label">Was zeigst du online, was du offline nicht zeigst?</div>
-    <textarea id="frage1"></textarea>
+    <div class="matrix-liste" id="frage1-tiles"></div>
   </div>
   <div class="frage-block">
     <div class="frage-label">Was würde passieren, wenn beides gleicher wäre?</div>
-    <textarea id="frage2"></textarea>
+    <div class="matrix-liste" id="frage2-tiles"></div>
   </div>
 </div>
 
@@ -134,7 +142,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
   <div class="abschnitt-titel">Hausaufgabe</div>
   <div class="frage-block">
     <div class="frage-label">Eine Sache, die ich morgen offline so mache wie online:</div>
-    <input type="text" id="hausaufgabe" placeholder="z. B. jemandem direkt ein ehrliches Kompliment machen">
+    <div class="matrix-liste" id="hausaufgabe-tiles"></div>
   </div>
 </div>
 
@@ -169,6 +177,38 @@ var BEIDE = [
   { id:'b5', text:'...hilfsbereit, wenn jemand mich braucht.' },
   { id:'b6', text:'...gerne mal komplett am Chillen.' }
 ];
+
+var FRAGE1 = [
+  { id:'f1_1', title:'Meine humorvolle & witzige Seite', hint:'(die ich mich im echten Leben oft nicht laut zu zeigen traue)' },
+  { id:'f1_2', title:'Meine sensible & verletzliche Seite', hint:'(über Sorgen und Gefühle zu schreiben fällt mir online leichter)' },
+  { id:'f1_3', title:'Meine ehrliche, ungefilterte Meinung', hint:'(ohne Angst, im echten Alltag direkt blöd angeschaut zu werden)' },
+  { id:'f1_4', title:'Meine leidenschaftliche Fan-Seite', hint:'(für meine Nischen-Hobbys wie Gaming, Anime, Cosplay, K-Pop, etc.)' },
+  { id:'f1_5', title:'Meine mutige & selbstbewusste Seite', hint:'(online traue ich mich eher, auf Leute zuzugehen)' },
+  { id:'f1_6', title:'Meine kreative Power', hint:'(Bilder, Designs, Musik, Videos oder Edits mit anderen teilen)' }
+];
+var FRAGE2 = [
+  { id:'f2_1', title:'Mehr Selbstbewusstsein:', hint:'Ich würde mich im echten Leben freier und weniger verstellt fühlen.' },
+  { id:'f2_2', title:'Echtere Beziehungen:', hint:'Meine realen Freunde würden mich noch besser verstehen und tiefer kennenlernen.' },
+  { id:'f2_3', title:'Weniger Druck:', hint:'Der Stress, offline eine "perfekte", "coole" oder "ruhige" Rolle spielen zu müssen, würde sinken.' },
+  { id:'f2_4', title:'Angst vor Bewertung:', hint:'Ich hätte Sorge vor negativen Reaktionen oder Sprüchen im realen Schulalltag.' },
+  { id:'f2_5', title:'Schutzraum-Verlust:', hint:'Es würde sich anstrengend anfühlen – ich brauche die Trennung, um offline meine Ruhe zu haben.' },
+  { id:'f2_6', title:'Erleichterung:', hint:'Ich würde merken, dass ich auch offline genau so okay bin, wie ich online bin.' }
+];
+var HAUSAUFGABE_OPTIONEN = [
+  { id:'hw_1', title:'Einem Freund/einer Freundin ehrlich und direkt sagen, was ich wirklich denke.' },
+  { id:'hw_2', title:'Zu einem meiner Nischen-Hobbys auch im echten Leben stehen (z. B. ein Shirt tragen oder darüber reden).' },
+  { id:'hw_3', title:'Meine Meinung laut sagen, wenn im Klassenzimmer etwas ungerecht läuft.' },
+  { id:'hw_4', title:'Jemanden im echten Leben genau so offen ansprechen oder anlächeln, wie ich es online per DM tun würde.' },
+  { id:'hw_5', title:'Mir eine bewusste Offline-Auszeit nehmen (Handy weg und ohne schlechtes Gewissen chillen).' },
+  { id:'hw_6', title:'Laut und deutlich "Stopp" sagen, wenn mir die reale Reizüberflutung oder der Lärm zu viel werden.' }
+];
+
+var frageState = { f1:{}, f2:{}, hw:{} };
+var FRAGE_GROUPS = {
+  f1: { items: FRAGE1, colorClass: 'ms-online', containerId: 'frage1-tiles' },
+  f2: { items: FRAGE2, colorClass: 'ms-real', containerId: 'frage2-tiles' },
+  hw: { items: HAUSAUFGABE_OPTIONEN, colorClass: 'ms-beide', containerId: 'hausaufgabe-tiles' }
+};
 
 var COLUMNS = [
   { id:'online', colorClass:'ms-online', titel:'Nur online', items: NUR_ONLINE },
@@ -219,6 +259,29 @@ function mitnehmenToggeln(id){
   else mitnehmen[id] = true;
 }
 
+function frageRendern(){
+  Object.keys(FRAGE_GROUPS).forEach(function(g){
+    var grp = FRAGE_GROUPS[g];
+    var el = document.getElementById(grp.containerId);
+    el.innerHTML = grp.items.map(function(item){
+      var aktiv = frageState[g][item.id] ? ' aktiv' : '';
+      var hint = item.hint ? ' <span class="frage-tile-hint">' + item.hint + '</span>' : '';
+      return '<button type="button" class="matrix-tile ' + grp.colorClass + aktiv + '" onclick="toggleFrage(\'' + g + '\',\'' + item.id + '\')">' +
+        '<span class="matrix-box">' + (frageState[g][item.id] ? '✓' : '') + '</span>' +
+        '<span class="matrix-text"><strong>' + item.title + '</strong>' + hint + '</span></button>';
+    }).join('');
+  });
+}
+
+function toggleFrage(g, id){
+  frageState[g][id] = !frageState[g][id];
+  frageRendern();
+}
+
+function ausgewaehlteFrageTexte(g){
+  return FRAGE_GROUPS[g].items.filter(function(item){ return frageState[g][item.id]; }).map(function(item){ return item.hint ? item.title + ' ' + item.hint : item.title; });
+}
+
 function checklistHtml(col){
   var html = '<div class="dchecklist"><div class="dchecklist-titel">' + col.titel + '</div>';
   html += col.items.map(function(item){
@@ -230,9 +293,9 @@ function checklistHtml(col){
 }
 
 function handoutDrucken(){
-  var f1 = document.getElementById('frage1').value.trim();
-  var f2 = document.getElementById('frage2').value.trim();
-  var hausaufgabe = document.getElementById('hausaufgabe').value.trim();
+  var f1Liste = ausgewaehlteFrageTexte('f1');
+  var f2Liste = ausgewaehlteFrageTexte('f2');
+  var hwListe = ausgewaehlteFrageTexte('hw');
   var mitnehmenListe = NUR_ONLINE.filter(function(item){ return mitnehmen[item.id]; });
   var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
 
@@ -246,16 +309,16 @@ function handoutDrucken(){
   }
 
   html += '<h3>Reflexion</h3>';
-  html += '<div class="dchecklist-titel">Was zeigst du online, was du offline nicht zeigst?</div><div class="dtext">' + (f1 || '&nbsp;') + '</div>';
-  html += '<div class="dchecklist-titel">Was würde passieren, wenn beides gleicher wäre?</div><div class="dtext">' + (f2 || '&nbsp;') + '</div>';
+  html += '<div class="dchecklist-titel">Was zeigst du online, was du offline nicht zeigst?</div>' + (f1Liste.length ? f1Liste.map(function(t){ return '<div class="dtext">' + t + '</div>'; }).join('') : '<div class="dtext">&nbsp;</div>');
+  html += '<div class="dchecklist-titel">Was würde passieren, wenn beides gleicher wäre?</div>' + (f2Liste.length ? f2Liste.map(function(t){ return '<div class="dtext">' + t + '</div>'; }).join('') : '<div class="dtext">&nbsp;</div>');
 
   html += '<h3>Spickzettel für Eltern</h3>';
   html += '<div class="spick">Digitaler Rückzug ist oft Identitätstraining, keine Ablehnung. Wenn Jugendliche online anders auftreten als offline, probieren sie meist nur aus, wer sie noch sein könnten — das ist ein normaler Teil des Erwachsenwerdens, kein Alarmsignal.</div>';
 
   html += '<h3>Hausaufgabe</h3>';
   html += '<div class="dchecklist-titel">Eine Sache, die ich morgen offline so mache wie online:</div>';
-  if (hausaufgabe) {
-    html += '<div class="dtext">' + hausaufgabe + '</div>';
+  if (hwListe.length) {
+    html += hwListe.map(function(t){ return '<div class="dtext">' + t + '</div>'; }).join('');
   } else {
     html += '<div class="hausaufgabe-linie"></div>';
   }
@@ -263,14 +326,16 @@ function handoutDrucken(){
   html += '<h3>Notizen</h3>';
   html += '<div class="hausaufgabe-linie"></div><div class="hausaufgabe-linie"></div><div class="hausaufgabe-linie"></div>';
 
-  html += '<div class="dfoot">KLARTEXT-Mentoring · Online-Identity-Lab · JD-30</div>';
+  html += '<div class="dfoot"><div class="dfoot-qr" id="qr-druck"></div><span>KLARTEXT-Mentoring · Online-Identity-Lab · JD-30<br>Digitale Version: klartext-app-8kl.pages.dev/KLARTEXT_Spiel_OnlineIdentityLab.html</span></div>';
 
   document.getElementById('druckansicht').innerHTML = html;
+  new QRCode(document.getElementById('qr-druck'), {text:'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_OnlineIdentityLab.html?guest=true', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
   window.print();
 }
 
 matrixRendern();
 mitnehmenRendern();
+frageRendern();
 </script>
 
 </body>

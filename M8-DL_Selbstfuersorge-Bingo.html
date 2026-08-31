@@ -5,10 +5,15 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 @media print{.no-print{display:none!important;}body{background:white;padding:0;}@page{margin:8mm;size:A4;}}
+#qr-footer-1 canvas,#qr-footer-1 img{width:100%;height:100%;display:block;}
 </style>
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script>(function(){try{
+  var gastZugang = new URLSearchParams(window.location.search).get('guest')==='true';
+  if(!gastZugang && sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B3A4B">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div style="max-width:920px;margin:0 auto 10px;display:flex;gap:8px;" class="no-print">
@@ -101,8 +106,15 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
     💡 Schon 4 Felder in einer Reihe sind ein Erfolg. Es geht nicht um Perfektion — sondern darum, dass du dich überhaupt erinnerst, an dich zu denken.
   </div>
 
-  <div style="text-align:center;font-size:10px;color:#999;margin-top:8px;">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;">
+    <div id="qr-footer-1" style="width:22px;height:22px;flex-shrink:0;"></div>
+    <div style="font-size:9px;color:#999;line-height:1.4;text-align:left;">Digitale Version &amp; mehr Freebies:<br>klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html</div>
+  </div>
+  <div style="text-align:center;font-size:10px;color:#999;margin-top:4px;">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
 
 </div>
+<script>
+new QRCode(document.getElementById('qr-footer-1'), {text:'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
+</script>
 </body>
 </html>

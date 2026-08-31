@@ -38,7 +38,11 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 .a4-footer{background:var(--l);border-top:1px solid var(--b);padding:3mm 10mm;display:flex;justify-content:space-between;align-items:center;}
 .a4f-left,.a4f-right{font-size:.5rem;color:var(--muted);}
 @media print{input::placeholder,textarea::placeholder{color:transparent!important;}body{background:white;padding:0;}.controls{display:none!important;}.a4{box-shadow:none;width:100%;}@page{size:A4;margin:0;}}
+.a4f-mid{display:flex;align-items:center;gap:2mm;font-size:.42rem;line-height:1.35;color:var(--muted);text-align:left;}
+.a4f-qr{width:10mm;height:10mm;flex-shrink:0;background:#fff;}
+.a4f-qr canvas,.a4f-qr img{width:100%;height:100%;display:block;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div class="controls">
@@ -108,6 +112,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
   </div>
   <div class="a4-footer">
     <span class="a4f-left">KLARTEXT Mentoring-System · © Anja Jolk</span>
+    <div class="a4f-mid"><div class="a4f-qr" id="qr-footer-1"></div><span>Digitale Version &amp; mehr Tools:<br>klartext-app-8kl.pages.dev/LK_DL_Reizfilter_Audit.html</span></div>
     <span class="a4f-right">info@klartext-mentoring.de</span>
   </div>
 </div>
@@ -124,6 +129,9 @@ window.addEventListener('afterprint',function(){
     el.removeAttribute('data-ph');
   });
 });
+</script>
+<script>
+new QRCode(document.getElementById('qr-footer-1'), {text:'https://klartext-app-8kl.pages.dev/LK_DL_Reizfilter_Audit.html', width:200, height:200, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
 </script>
 </body>
 </html>

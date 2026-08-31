@@ -36,8 +36,11 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
 .baro-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .check-item{display:flex;align-items:center;gap:2.2mm;font-size:.68rem;color:var(--ink);margin-bottom:2.4mm;}
 .check-box{width:12px;height:12px;border:1.5px solid #A89E8C;border-radius:2.5px;flex-shrink:0;}
-.a6-footer{background:var(--l);border-top:1px solid var(--b);padding:1.6mm 5mm;text-align:center;}
+.a6-footer{background:var(--l);border-top:1px solid var(--b);padding:1.6mm 5mm;display:flex;align-items:center;justify-content:center;gap:2mm;}
 .a6f{font-size:.4rem;color:var(--muted);}
+.a6f-qr{width:8mm;height:8mm;flex-shrink:0;background:#fff;}
+.a6f-qr canvas,.a6f-qr img{width:100%;height:100%;display:block;}
+.a6f-txt{font-size:.36rem;line-height:1.3;color:var(--muted);text-align:left;}
 @media print{input::placeholder,textarea::placeholder{color:transparent!important;}
   body{background:white;padding:0;}
   .controls{display:none!important;}
@@ -46,6 +49,7 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
   @page{size:A4;margin:0;}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <div class="controls">
@@ -97,13 +101,16 @@ body{font-family:"DM Sans",sans-serif;background:#E8E4DC;display:flex;flex-direc
         <input class="mf-input" type="text" placeholder="Platz für eine Zeile …" style="border-bottom:1px solid #E0D8CC;">
       </div>
     </div>
-    <div class="a6-footer"><span class="a6f">KLARTEXT Mentoring-System · info@klartext-mentoring.de</span></div>
+    <div class="a6-footer"><div class="a6f-qr qr-target"></div><span class="a6f-txt">Digital: klartext-app-8kl.pages.dev/LK_DL_OGS_Uebergabe.html</span></div>
   </div>
 </template>
 <script>
 const tpl = document.getElementById('card-template');
 const sheet = document.getElementById('sheet');
 for(let i=0;i<4;i++){ sheet.appendChild(tpl.content.cloneNode(true)); }
+document.querySelectorAll('.qr-target').forEach(function(el){
+  new QRCode(el, {text:'https://klartext-app-8kl.pages.dev/LK_DL_OGS_Uebergabe.html', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
+});
 </script>
 <script>
 window.addEventListener('beforeprint',function(){

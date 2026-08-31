@@ -29,7 +29,7 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
   <a href="KLARTEXT_Downloads.html" class="nbtn">← Downloads</a>
   <button class="nbtn dbtn" onclick="window.print()">🖨 Drucken / PDF</button>
 </div>
-<div class="info"><img src="brainy.png" alt="Brainy"><span>🃏 8 Joker-Karten auf einer DIN A4-Seite — ausschneiden, mit individuellem Signal ausfüllen, griffbereit aufbewahren. Der QR-Code auf jeder Karte führt direkt zum Reizfilter-Tool.</span></div>
+<div class="info"><img src="brainy.png" alt="Brainy"><span>🃏 8 Joker-Karten auf einer DIN A4-Seite — ausschneiden, mit individuellem Signal ausfüllen, griffbereit aufbewahren. Der QR-Code auf jeder Karte führt direkt zum Gefühls-Ampel-Memory.</span></div>
 
 <div class="print-page">
       <div class="joker-karte">
@@ -150,18 +150,20 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 <script>
 /* Erzeugt den QR-Code fuer alle 8 Joker-Karten einmalig und traegt das
    fertige SVG in jedes .jk-qr-Element ein. Alle 8 Karten verlinken auf
-   dieselbe Ziel-Seite (Reizfilter), daher genuegt eine Berechnung.
+   dieselbe Ziel-Seite (Gefuehls-Ampel-Memory), daher genuegt eine Berechnung.
    Absoluter Link (nicht relativ), weil ein Scan von einem fremden Geraet
-   (z. B. dem Handy einer Lehrkraft) sonst ins Leere liefe. */
+   (z. B. dem Handy einer Lehrkraft) sonst ins Leere liefe.
+   ?guest=true: macht das Memory fuer QR-Code-Zugriffe von der gedruckten
+   Karte nutzbar, ganz ohne Login (analog BAROMETER_KIND.html). */
 (function(){
-  var ZIEL = 'https://klartext-mentoring.de/KLARTEXT_Spiel_Reizfilter.html';
+  var ZIEL = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Gefuehls-Ampel-Memory.html?guest=true';
   if (!window.KLARTEXT_QRCode) return;
   var svg = window.KLARTEXT_QRCode.erzeugeSvg(ZIEL);
   if (!svg) return;
   var felder = document.querySelectorAll('.jk-qr');
   for (var i = 0; i < felder.length; i++) {
     felder[i].innerHTML = svg;
-    felder[i].setAttribute('title', 'QR-Code: Reizfilter-Tool öffnen');
+    felder[i].setAttribute('title', 'QR-Code: Gefühls-Ampel-Memory öffnen');
   }
 })();
 </script>

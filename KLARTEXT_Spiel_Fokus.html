@@ -47,6 +47,30 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .sterne-anzeige{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--m);margin-bottom:.6rem;}
 .sterne-reset-btn{background:none;border:none;color:var(--muted);font-size:.72rem;text-decoration:underline;cursor:pointer;font-family:inherit;}
 
+.dauer-waehler{margin-bottom:1.5rem;}
+.dauer-hinweis{font-size:.86rem;color:var(--muted);margin-bottom:1rem;}
+.dauer-grid{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;}
+.dauer-btn{display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.9rem 1.3rem;border:2px solid var(--border);border-radius:16px;background:var(--surface);cursor:pointer;font-family:inherit;transition:all .15s;}
+.dauer-btn:hover{border-color:var(--acc);transform:translateY(-1px);}
+.dauer-btn .dauer-zahl{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--m);}
+.dauer-btn .dauer-label{font-size:.68rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.dauer-btn .dauer-tipp{font-size:.62rem;color:var(--acc);font-weight:700;margin-top:.15rem;}
+
+.zeit-aendern-btn{background:none;border:none;color:var(--muted);font-size:.72rem;text-decoration:underline;cursor:pointer;font-family:inherit;margin-top:.6rem;}
+
+.pause-aktionen{display:none;margin-top:1.1rem;padding-top:1.1rem;border-top:1px dashed var(--border);}
+.pause-aktionen.aktiv{display:block;}
+.pause-aktionen-titel{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.7rem;}
+.pause-knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;}
+.pause-aktion-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.3rem;border:2px solid var(--acc);border-radius:22px;font-weight:700;font-size:.86rem;cursor:pointer;font-family:inherit;background:var(--surface);color:var(--m);text-decoration:none;transition:all .15s;}
+.pause-aktion-btn:hover{background:var(--acc);color:var(--m);transform:translateY(-1px);}
+
+.mini-fitness-karte{display:none;margin-top:1rem;background:var(--paper);border-radius:14px;padding:1rem 1.2rem;text-align:left;}
+.mini-fitness-karte.aktiv{display:flex;gap:.85rem;align-items:center;}
+.mini-fitness-icon{font-size:1.8rem;flex-shrink:0;}
+.mini-fitness-text{font-size:.86rem;color:var(--ink);line-height:1.5;}
+.mini-fitness-text b{color:var(--m);}
+
 .konfetti-stueck{position:fixed;top:-20px;font-size:1.2rem;pointer-events:none;z-index:9999;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(105vh) rotate(360deg);opacity:.2;}}
 </style>
@@ -70,24 +94,63 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 <div class="shell">
 
   <div class="timer-card">
-    <div class="timer-phase-label" id="phase-label">Fokus-Phase</div>
-    <div class="ring-wrap">
-      <svg width="240" height="240" viewBox="0 0 240 240">
-        <circle class="ring-bg" cx="120" cy="120" r="105"></circle>
-        <circle class="ring-fortschritt" id="ring-fortschritt" cx="120" cy="120" r="105"></circle>
-      </svg>
-      <div class="ring-zeit" id="ring-zeit">25:00</div>
+
+    <div class="dauer-waehler" id="dauer-waehler">
+      <div class="timer-phase-label">Wähle deine Fokuszeit</div>
+      <div class="dauer-hinweis">Wie lange möchtest du dich heute konzentrieren?</div>
+      <div class="dauer-grid">
+        <button class="dauer-btn" onclick="dauerWaehlen(5)">
+          <span class="dauer-zahl">5</span><span class="dauer-label">Minuten</span>
+          <span class="dauer-tipp">Kurzer Sprint</span>
+        </button>
+        <button class="dauer-btn" onclick="dauerWaehlen(10)">
+          <span class="dauer-zahl">10</span><span class="dauer-label">Minuten</span>
+        </button>
+        <button class="dauer-btn" onclick="dauerWaehlen(15)">
+          <span class="dauer-zahl">15</span><span class="dauer-label">Minuten</span>
+        </button>
+        <button class="dauer-btn" onclick="dauerWaehlen(25)">
+          <span class="dauer-zahl">25</span><span class="dauer-label">Minuten</span>
+          <span class="dauer-tipp">Für Große</span>
+        </button>
+      </div>
     </div>
 
-    <div class="brainy-box">
-      <span class="brainy-emoji">🧠</span>
-      <span class="brainy-msg" id="brainy-msg">Bereit? Ich bin dabei! 🧠</span>
-    </div>
+    <div id="timer-bereich" style="display:none;">
+      <div class="timer-phase-label" id="phase-label">Fokus-Phase</div>
+      <div class="ring-wrap">
+        <svg width="240" height="240" viewBox="0 0 240 240">
+          <circle class="ring-bg" cx="120" cy="120" r="105"></circle>
+          <circle class="ring-fortschritt" id="ring-fortschritt" cx="120" cy="120" r="105"></circle>
+        </svg>
+        <div class="ring-zeit" id="ring-zeit">25:00</div>
+      </div>
 
-    <div class="knopf-row">
-      <button class="timer-btn start" id="start-btn" onclick="startenKlick()">▶️ Start</button>
-      <button class="timer-btn pause-btn" id="pause-btn" onclick="pausierenKlick()" style="display:none;">⏸️ Pause</button>
-      <button class="timer-btn reset" onclick="zuruecksetzen()">↺ Reset</button>
+      <div class="brainy-box">
+        <span class="brainy-emoji">🧠</span>
+        <span class="brainy-msg" id="brainy-msg">Bereit? Ich bin dabei! 🧠</span>
+      </div>
+
+      <div class="knopf-row">
+        <button class="timer-btn start" id="start-btn" onclick="startenKlick()">▶️ Start</button>
+        <button class="timer-btn pause-btn" id="pause-btn" onclick="pausierenKlick()" style="display:none;">⏸️ Pause</button>
+        <button class="timer-btn reset" onclick="zuruecksetzen()">↺ Reset</button>
+      </div>
+      <div style="text-align:center;">
+        <button class="zeit-aendern-btn" onclick="zeitAendern()">⏱️ Fokuszeit ändern</button>
+      </div>
+
+      <div class="pause-aktionen" id="pause-aktionen">
+        <div class="pause-aktionen-titel">🎉 Super gemacht! Jetzt hast du dir eine Pause verdient — was möchtest du tun?</div>
+        <div class="pause-knopf-row">
+          <a class="pause-aktion-btn" href="KLARTEXT_Spiel_Ruheballon.html" target="_blank" rel="noopener">🎈 Atme mit Brainy</a>
+          <button class="pause-aktion-btn" onclick="miniFitnessZeigen()">🤸 Mini-Fitness</button>
+        </div>
+        <div class="mini-fitness-karte" id="mini-fitness-karte">
+          <span class="mini-fitness-icon">🤸</span>
+          <span class="mini-fitness-text" id="mini-fitness-text"></span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -102,6 +165,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 var FOKUS_DAUER = 25 * 60;
 var PAUSE_DAUER = 5 * 60;
 var UMFANG = 2 * Math.PI * 105;
+
+var MINI_FITNESS_UEBUNGEN = [
+  'Strecke beide Arme hoch zur Decke und halte 10 Sekunden — dann schüttle die Hände locker aus.',
+  '„Überkreuz-Marsch": Tippe abwechselnd mit dem rechten Ellbogen aufs linke Knie und umgekehrt — 10 Mal.',
+  'Kreise beide Schultern 5 Mal nach vorne, dann 5 Mal nach hinten.',
+  'Stell dich auf ein Bein und halte 10 Sekunden die Balance — dann das andere Bein.',
+  'Reibe deine Hände 10 Sekunden schnell aneinander, bis sie warm werden, dann leg sie auf die Augen.',
+  'Mach 5 langsame Kniebeugen — Arme dabei nach vorne strecken.'
+];
 
 var phase = 'fokus';
 var restSekunden = FOKUS_DAUER;
@@ -143,6 +215,47 @@ function anzeigeAktualisieren(){
 
 function brainySagen(text){
   document.getElementById('brainy-msg').textContent = text;
+}
+
+function heroAktualisieren(){
+  var icon = document.querySelector('.hero-icon');
+  var titel = document.querySelector('.hero-titel');
+  var sub = document.querySelector('.hero-sub');
+  if (phase === 'pause') {
+    icon.textContent = '🎉';
+    titel.textContent = 'Pause-Zeit!';
+    sub.textContent = 'Super gemacht! Jetzt hast du dir eine Pause verdient.';
+  } else {
+    icon.textContent = '🎯';
+    titel.textContent = 'Fokus-Trainer';
+    sub.textContent = 'Wähle deine Fokuszeit, dann geht\'s los — Brainy begleitet dich durch jede Runde.';
+  }
+}
+
+function dauerWaehlen(minuten){
+  FOKUS_DAUER = minuten * 60;
+  restSekunden = FOKUS_DAUER;
+  try { localStorage.setItem('fokus_dauer_min', String(minuten)); } catch(e) {}
+  document.getElementById('dauer-waehler').style.display = 'none';
+  document.getElementById('timer-bereich').style.display = 'block';
+  anzeigeAktualisieren();
+  knopfZustandAktualisieren();
+}
+
+function zeitAendern(){
+  anhalten();
+  phase = 'fokus';
+  document.getElementById('pause-aktionen').classList.remove('aktiv');
+  document.getElementById('mini-fitness-karte').classList.remove('aktiv');
+  document.getElementById('timer-bereich').style.display = 'none';
+  document.getElementById('dauer-waehler').style.display = 'block';
+  heroAktualisieren();
+}
+
+function miniFitnessZeigen(){
+  var uebung = MINI_FITNESS_UEBUNGEN[Math.floor(Math.random() * MINI_FITNESS_UEBUNGEN.length)];
+  document.getElementById('mini-fitness-text').innerHTML = '<b>Mini-Fitness:</b> ' + uebung;
+  document.getElementById('mini-fitness-karte').classList.add('aktiv');
 }
 
 function sicherstellenAudioCtx(){
@@ -249,6 +362,9 @@ function phasenEndeBehandeln(){
     brainySagen('Wow, super gemacht! ⭐ Kurze Pause verdient!');
     phase = 'pause';
     restSekunden = PAUSE_DAUER;
+    document.getElementById('mini-fitness-karte').classList.remove('aktiv');
+    document.getElementById('pause-aktionen').classList.add('aktiv');
+    heroAktualisieren();
     anzeigeAktualisieren();
     setTimeout(function(){
       starten();
@@ -257,6 +373,9 @@ function phasenEndeBehandeln(){
     brainySagen('Bereit für die nächste Runde? Los geht\'s!');
     phase = 'fokus';
     restSekunden = FOKUS_DAUER;
+    document.getElementById('pause-aktionen').classList.remove('aktiv');
+    document.getElementById('mini-fitness-karte').classList.remove('aktiv');
+    heroAktualisieren();
     anzeigeAktualisieren();
   }
 }
@@ -274,6 +393,9 @@ function zuruecksetzen(){
   anhalten();
   phase = 'fokus';
   restSekunden = FOKUS_DAUER;
+  document.getElementById('pause-aktionen').classList.remove('aktiv');
+  document.getElementById('mini-fitness-karte').classList.remove('aktiv');
+  heroAktualisieren();
   anzeigeAktualisieren();
   brainySagen('Bereit? Ich bin dabei! 🧠');
 }
@@ -281,6 +403,7 @@ function zuruecksetzen(){
 anzeigeAktualisieren();
 knopfZustandAktualisieren();
 sterneAnzeigen();
+heroAktualisieren();
 </script>
 
 </body>

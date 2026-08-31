@@ -6,13 +6,31 @@
 <title>KD-DL-02 · Joker-Gutscheine · KLARTEXT</title>
 <link rel="stylesheet" href="style-karten.css?v=20260615">
 <style>
-  :root { --joker: #7b5ea7; }
-  .joker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-  .joker-ticket { border: 2px solid var(--joker); border-radius: 10px; padding: 10px; position: relative; background: #f9f7fc; overflow: hidden; }
-  .joker-ticket::before { content: 'JOKER'; position: absolute; top: 10px; right: -20px; background: var(--joker); color: white; transform: rotate(45deg); width: 80px; text-align: center; font-size: 0.6rem; font-weight: bold; }
-  .joker-title { color: var(--joker); font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
-  .joker-text { font-size: 0.75rem; line-height: 1.2; }
+  :root { --joker: #7b5ea7; --salbei: #6EC6A0; --salbei-dark: #2E7D5F; --petrol: #2F6B6E; --petrol-dark: #1B3A4B; }
+  .joker-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin: 20px 0; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .joker-ticket { border: 2px solid var(--kt-border,#DDD8CE); border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 2px 10px rgba(27,58,75,.08); }
+  .joker-ticket.salbei { border-color: var(--salbei-dark); }
+  .joker-ticket.petrol { border-color: var(--petrol); }
+  .joker-kopf { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; color: #fff; }
+  .joker-ticket.salbei .joker-kopf { background: linear-gradient(135deg, var(--salbei-dark) 0%, var(--salbei) 100%); }
+  .joker-ticket.petrol .joker-kopf { background: linear-gradient(135deg, var(--petrol-dark) 0%, var(--petrol) 100%); }
+  .joker-icon { font-size: 1.4rem; }
+  .joker-title { font-weight: 800; font-size: 1rem; font-family: Georgia, serif; }
+  .joker-badge { font-size: .55rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: rgba(255,255,255,.22); padding: .2rem .5rem; border-radius: 20px; }
+  .joker-body { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+  .joker-ticket.salbei .joker-body { background: #EEF6F1; }
+  .joker-ticket.petrol .joker-body { background: #EAF3F3; }
+  .joker-text { font-size: 0.82rem; line-height: 1.4; flex: 1; color: #2D2D2D; }
+  .joker-qr { width: 60px; height: 60px; flex-shrink: 0; background: #fff; border-radius: 8px; padding: 4px; }
+  .joker-qr canvas, .joker-qr img { width: 100%; height: 100%; display: block; }
+  @media print {
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+    body{background:#fff;padding:0;}
+    .no-print{display:none!important;}
+    @page{size:A4;margin:12mm;}
+  }
 </style>
+<script src="KLARTEXT_QRCode.js"></script>
 <script>
 (function(){
   try{
@@ -40,30 +58,46 @@
 </header>
 <main>
   <h2 style="text-align: center; font-size: 1rem; margin-top: 1rem;" class="no-print">Deine Joker zum Ausschneiden</h2>
+  <p style="text-align:center;font-size:.75rem;color:#666;max-width:480px;margin:0 auto 1rem;" class="no-print">Jeder Joker hat einen eigenen QR-Code — scanne ihn mit dem Tablet oder Handy und komm direkt zur passenden Übung.</p>
   <div class="joker-grid">
-    <div class="joker-ticket">
-      <div class="joker-title">5 Min. Auszeit</div>
-      <div class="joker-text">Einmal tief durchatmen oder kurz rausgehen.</div>
-    </div>
-    <div class="joker-ticket">
-      <div class="joker-title">Hilfe-Ruf</div>
-      <div class="joker-text">Ich brauche dich jetzt sofort an meinem Platz.</div>
-    </div>
-    <div class="joker-ticket">
-      <div class="joker-ticket-inner">
-        <div class="joker-title">Ruhe-Insel</div>
-        <div class="joker-text">Ich möchte 10 Minuten mit Kopfhörern arbeiten.</div>
+    <div class="joker-ticket salbei">
+      <div class="joker-kopf">
+        <span class="joker-icon">🎈</span>
+        <span class="joker-title">Atem-Pause</span>
+        <span class="joker-badge">Joker 1</span>
+      </div>
+      <div class="joker-body">
+        <div class="joker-text">Ich brauche kurz Ruhe. Scanne mich für eine geführte Atemübung mit Brainy.</div>
+        <div class="joker-qr" id="qr-atem" aria-hidden="true"></div>
       </div>
     </div>
-    <div class="joker-ticket">
-      <div class="joker-title">Wunsch-Joker</div>
-      <div class="joker-text">Hier darfst du dir selbst etwas aussuchen: ________</div>
+    <div class="joker-ticket petrol">
+      <div class="joker-kopf">
+        <span class="joker-icon">🎯</span>
+        <span class="joker-title">Lern-Pause</span>
+        <span class="joker-badge">Joker 2</span>
+      </div>
+      <div class="joker-body">
+        <div class="joker-text">Ich möchte konzentriert weiterarbeiten. Scanne mich für den Fokus-Trainer.</div>
+        <div class="joker-qr" id="qr-lern" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="joker-ticket salbei">
+      <div class="joker-kopf">
+        <span class="joker-icon">🚦</span>
+        <span class="joker-title">Gefühls-Reflexion</span>
+        <span class="joker-badge">Joker 3</span>
+      </div>
+      <div class="joker-body">
+        <div class="joker-text">Ich möchte zeigen, wie es mir geht. Scanne mich für das Gefühls-Ampel-Memory.</div>
+        <div class="joker-qr" id="qr-gefuehl" aria-hidden="true"></div>
+      </div>
     </div>
   </div>
   <a href="javascript:window.print()" class="print-btn no-print" style="background: var(--joker);">🖨️ Gutscheine drucken</a>
 </main>
 
-<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+<div class="no-print" style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
   <a href="KLARTEXT_Downloads.html#kd" style="width:48px;height:48px;border-radius:50%;background:#1B3A4B;border:2px solid #4FC3C7;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4FC3C7" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
   </a>
@@ -71,11 +105,30 @@
     <svg viewBox="0 0 16 16" width="20" height="20" fill="#4FC3C7"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
   </a>
 </div>
-<div style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
+<div class="no-print" style="position:fixed;bottom:1.25rem;right:1rem;display:flex;flex-direction:column;gap:.55rem;z-index:9999;-webkit-transform:translateZ(0);transform:translateZ(0);">
   <a href="DASHBOARD-M3.html" title="Was tue ich jetzt?" style="width:44px;height:44px;border-radius:50%;background:#B07D2A;border:2px solid #E0C88A;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(176,125,42,.4);font-size:1rem;">🧰</a>
   <a href="DASHBOARD.html" title="Dashboard" style="width:44px;height:44px;border-radius:50%;background:#1B3A4B;border:2px solid #6EC6A0;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 16px rgba(27,58,75,.4);">
     <svg viewBox="0 0 16 16" width="20" height="20" fill="#6EC6A0"><path d="M8 1L1 7h2v7h4v-4h2v4h4V7h2L8 1z"/></svg>
   </a>
 </div>
+<script>
+/* QR-Codes fuer die 3 Joker-Karten — lokal erzeugt (KLARTEXT_QRCode.js),
+   ohne externe CDN-Abhaengigkeit, aus denselben Datenschutz-Gruenden wie
+   bei M3_DL_Joker-Karte.html (Kind-Formular, keine externen Aufrufe). */
+(function(){
+  if (!window.KLARTEXT_QRCode) return;
+  var ZIELE = {
+    'qr-atem': 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true',
+    'qr-lern': 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Fokus.html?guest=true',
+    'qr-gefuehl': 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Gefuehls-Ampel-Memory.html?guest=true'
+  };
+  Object.keys(ZIELE).forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ZIELE[id]);
+    if (svg) { el.innerHTML = svg; el.removeAttribute('aria-hidden'); }
+  });
+})();
+</script>
 </body>
 </html>

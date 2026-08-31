@@ -34,6 +34,12 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 .brainy-box{display:flex;gap:.85rem;align-items:center;background:var(--paper);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:1.4rem;text-align:left;}
 .brainy-emoji{font-size:1.8rem;flex-shrink:0;width:2.3rem;height:2.3rem;object-fit:contain;transition:opacity .2s;}
+@keyframes brainyBreathe{0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
+.brainy-hero{transition:transform .5s ease;}
+.brainy-breathing{animation:brainyBreathe 4s ease-in-out infinite;}
+.brainy-tipp{background:linear-gradient(135deg,#EEF6F1 0%,#EAF3F3 100%);border:1.5px solid #BFE3D1;border-radius:14px;padding:.8rem 1rem;margin-top:1rem;font-size:.78rem;line-height:1.55;color:#2D2D2D;text-align:left;}
+.brainy-tipp b{color:#2E7D5F;}
+
 .brainy-msg{font-size:.86rem;color:var(--ink);line-height:1.5;}
 
 .knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;}
@@ -136,7 +142,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       </div>
 
       <div class="brainy-box">
-        <img id="brainy-img" class="brainy-emoji" src="brainy.png" alt="Brainy">
+        <img id="brainy-img" class="brainy-emoji brainy-hero" src="brainy.png" alt="Brainy">
         <span class="brainy-msg" id="brainy-msg">Bereit? Ich bin dabei! 🧠</span>
       </div>
 
@@ -151,6 +157,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
       <div class="pause-aktionen" id="pause-aktionen">
         <div class="pause-aktionen-titel">🎉 Super gemacht! Jetzt hast du dir eine Pause verdient — was möchtest du tun?</div>
+        <div class="brainy-tipp">💡 <b>Brainys Wohlfühl-Tipp:</b> Alles ganz ohne Druck! Mach nur so weit mit, wie es sich für dich gut anfühlt. Wenn dir das Luftanhalten schwerfällt oder dir schwindelig wird, atme einfach ganz normal in deinem eigenen Wohlfühl-Rhythmus weiter. Du bestimmst dein Tempo!</div>
         <div class="pause-knopf-row">
           <a class="pause-aktion-btn" href="KLARTEXT_Spiel_Ruheballon.html" target="_blank" rel="noopener">🎈 Atme mit Brainy</a>
           <button class="pause-aktion-btn" onclick="miniFitnessZeigen()">🤸 Mini-Fitness</button>
@@ -229,7 +236,8 @@ function brainySagen(text){
 function brainyBildAktualisieren(){
   var img = document.getElementById('brainy-img');
   if (!img) return;
-  img.src = (laeuft && phase === 'fokus') ? 'brainy-gruen.png' : 'brainy.png';
+  if (laeuft) { img.classList.add('brainy-breathing'); }
+  else { img.classList.remove('brainy-breathing'); }
 }
 
 function heroAktualisieren(){

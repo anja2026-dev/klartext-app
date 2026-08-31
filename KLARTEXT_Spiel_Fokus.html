@@ -33,7 +33,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .ring-zeit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-size:2.6rem;font-weight:700;color:var(--m);}
 
 .brainy-box{display:flex;gap:.85rem;align-items:center;background:var(--paper);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:1.4rem;text-align:left;}
-.brainy-emoji{font-size:1.8rem;flex-shrink:0;}
+.brainy-emoji{font-size:1.8rem;flex-shrink:0;width:2.3rem;height:2.3rem;object-fit:contain;transition:opacity .2s;}
 .brainy-msg{font-size:.86rem;color:var(--ink);line-height:1.5;}
 
 .knopf-row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;}
@@ -99,15 +99,24 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       <div class="timer-phase-label">Wähle deine Fokuszeit</div>
       <div class="dauer-hinweis">Wie lange möchtest du dich heute konzentrieren?</div>
       <div class="dauer-grid">
+        <button class="dauer-btn" onclick="dauerWaehlen(1)">
+          <span class="dauer-zahl">1</span><span class="dauer-label">Minute</span>
+          <span class="dauer-tipp">Mini-Sprint</span>
+        </button>
+        <button class="dauer-btn" onclick="dauerWaehlen(3)">
+          <span class="dauer-zahl">3</span><span class="dauer-label">Minuten</span>
+        </button>
         <button class="dauer-btn" onclick="dauerWaehlen(5)">
           <span class="dauer-zahl">5</span><span class="dauer-label">Minuten</span>
-          <span class="dauer-tipp">Kurzer Sprint</span>
         </button>
         <button class="dauer-btn" onclick="dauerWaehlen(10)">
           <span class="dauer-zahl">10</span><span class="dauer-label">Minuten</span>
         </button>
         <button class="dauer-btn" onclick="dauerWaehlen(15)">
           <span class="dauer-zahl">15</span><span class="dauer-label">Minuten</span>
+        </button>
+        <button class="dauer-btn" onclick="dauerWaehlen(20)">
+          <span class="dauer-zahl">20</span><span class="dauer-label">Minuten</span>
         </button>
         <button class="dauer-btn" onclick="dauerWaehlen(25)">
           <span class="dauer-zahl">25</span><span class="dauer-label">Minuten</span>
@@ -127,7 +136,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       </div>
 
       <div class="brainy-box">
-        <span class="brainy-emoji">🧠</span>
+        <img id="brainy-img" class="brainy-emoji" src="brainy.png" alt="Brainy">
         <span class="brainy-msg" id="brainy-msg">Bereit? Ich bin dabei! 🧠</span>
       </div>
 
@@ -217,6 +226,12 @@ function brainySagen(text){
   document.getElementById('brainy-msg').textContent = text;
 }
 
+function brainyBildAktualisieren(){
+  var img = document.getElementById('brainy-img');
+  if (!img) return;
+  img.src = (laeuft && phase === 'fokus') ? 'brainy-gruen.png' : 'brainy.png';
+}
+
 function heroAktualisieren(){
   var icon = document.querySelector('.hero-icon');
   var titel = document.querySelector('.hero-titel');
@@ -250,6 +265,7 @@ function zeitAendern(){
   document.getElementById('timer-bereich').style.display = 'none';
   document.getElementById('dauer-waehler').style.display = 'block';
   heroAktualisieren();
+  brainyBildAktualisieren();
 }
 
 function miniFitnessZeigen(){
@@ -325,6 +341,7 @@ function starten(){
   sicherstellenAudioCtx();
   laeuft = true;
   knopfZustandAktualisieren();
+  brainyBildAktualisieren();
   if (phase === 'fokus') {
     brainySagen('Konzentriert bleiben — du schaffst das!');
   } else {
@@ -337,6 +354,7 @@ function anhalten(){
   laeuft = false;
   knopfZustandAktualisieren();
   clearInterval(intervallId);
+  brainyBildAktualisieren();
 }
 
 function tick(){
@@ -354,6 +372,7 @@ function phasenEndeBehandeln(){
   clearInterval(intervallId);
   laeuft = false;
   knopfZustandAktualisieren();
+  brainyBildAktualisieren();
   pieps();
 
   if (phase === 'fokus') {
@@ -397,11 +416,13 @@ function zuruecksetzen(){
   document.getElementById('mini-fitness-karte').classList.remove('aktiv');
   heroAktualisieren();
   anzeigeAktualisieren();
-  brainySagen('Bereit? Ich bin dabei! 🧠');
+  brainyBildAktualisieren();
+  brainySagen('Bereit? Ich bin dabei!');
 }
 
 anzeigeAktualisieren();
 knopfZustandAktualisieren();
+brainyBildAktualisieren();
 sterneAnzeigen();
 heroAktualisieren();
 </script>

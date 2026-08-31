@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LK-DL · Das 5-Minuten-Spiele-Kit · KLARTEXT</title>
+<link rel="stylesheet" href="style-karten.css?v=20260615">
+<style>
+  :root { --salbei:#6EC6A0; --salbei-dark:#2E7D5F; --petrol:#2F6B6E; --petrol-dark:#1B3A4B; --gold:#B07D2A; }
+  .bb-wrap { max-width: 720px; margin: 0 auto; padding: 0 1rem; }
+  .bb-intro { text-align:center; font-size:.82rem; color:#666; max-width:560px; margin:0 auto 1.4rem; }
+  .spiele-grid { display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:1.5rem; }
+  .spiel-box { border:2px solid var(--kt-border,#DDD8CE); border-radius:16px; overflow:hidden; background:#fff; box-shadow:0 2px 10px rgba(27,58,75,.08); display:flex; align-items:center; gap:14px; padding:14px 16px; }
+  .spiel-box.salbei { border-color:var(--salbei-dark); }
+  .spiel-box.petrol { border-color:var(--petrol-dark); }
+  .spiel-box.gold { border-color:var(--gold); }
+  .spiel-nr { flex-shrink:0; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:Georgia,serif; font-weight:800; font-size:1.05rem; color:#fff; }
+  .spiel-box.salbei .spiel-nr { background:var(--salbei-dark); }
+  .spiel-box.petrol .spiel-nr { background:var(--petrol-dark); }
+  .spiel-box.gold .spiel-nr { background:var(--gold); }
+  .spiel-info { flex:1; min-width:0; }
+  .spiel-titel { font-weight:800; font-size:.95rem; font-family:Georgia,serif; color:#1B3A4B; margin-bottom:.25rem; }
+  .spiel-text { font-size:.78rem; line-height:1.4; color:#2D2D2D; }
+  .spiel-qr { width:64px; height:64px; flex-shrink:0; background:#fff; border:1.5px solid #DDD8CE; border-radius:8px; padding:3px; }
+  .spiel-qr canvas, .spiel-qr img, .spiel-qr svg { width:100%; height:100%; display:block; }
+  .spickzettel { background:linear-gradient(135deg,#EEF6F1 0%,#EAF3F3 100%); border:1.5px solid #BFE3D1; border-radius:16px; padding:1.1rem 1.3rem; margin:0 auto 1.5rem; font-size:.85rem; line-height:1.6; color:#2D2D2D; font-style:italic; }
+  .spickzettel b { font-style:normal; color:#2E7D5F; }
+  @media print {
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+    body{background:#fff;padding:0;}
+    .no-print{display:none!important;}
+    @page{size:A4;margin:12mm;}
+  }
+</style>
+<script src="KLARTEXT_QRCode.js"></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+</head>
+<body>
+<header class="kt-header no-print" style="background: #1B3A4B;">
+  <div class="kt-header-inner" style="display:flex;justify-content:space-between;align-items:center;">
+    <span style="color: white; font-weight: bold;">DOWNLOAD</span>
+    <span style="color: white; font-size: 0.8rem;">Lehrkraft LK-DL Klassenspiele</span>
+    <a href="DASHBOARD.html" style="color:rgba(255,255,255,.8);font-size:.7rem;text-decoration:none;border:1px solid rgba(255,255,255,.4);padding:.2rem .6rem;border-radius:20px;">← Dashboard</a>
+  </div>
+</header>
+<main>
+  <h1 style="text-align:center;font-size:1.15rem;font-family:Georgia,serif;color:#1B3A4B;margin:1.2rem auto .3rem;">KLARTEXT · Das 5-Minuten-Spiele-Kit</h1>
+  <p style="text-align:center;font-size:.85rem;color:#666;margin-bottom:1rem;">Pädagogische Spiele zur Co-Regulation &amp; Fokussierung</p>
+  <p class="bb-intro no-print">Jeder QR-Code führt direkt und login-frei (Gast-Modus) zum passenden interaktiven Spiel auf dem Klassen-Tablet oder Handy.</p>
+
+  <div class="bb-wrap">
+    <div class="spiele-grid">
+      <div class="spiel-box salbei">
+        <div class="spiel-nr">1</div>
+        <div class="spiel-info">
+          <div class="spiel-titel">🌡️ Brainys Barometer-Rettung</div>
+          <div class="spiel-text">Kooperatives Klassenspiel gegen den Stress — die Klasse meistert gemeinsam eine 1-Minuten-Challenge und holt Brainy zurück ins Grün.</div>
+        </div>
+        <div class="spiel-qr" id="qr-barometer" aria-hidden="true"></div>
+      </div>
+      <div class="spiel-box petrol">
+        <div class="spiel-nr">2</div>
+        <div class="spiel-info">
+          <div class="spiel-titel">🤫 Der geheime Gedanken-Leser</div>
+          <div class="spiel-text">Achtsamkeit &amp; Empathie im Sitzkreis — ein Kind rät das stumm dargestellte Gefühl, dann folgt eine passende Co-Regulationsübung aus Brainys Zauberfächer.</div>
+        </div>
+        <div class="spiel-qr" id="qr-gedankenleser" aria-hidden="true"></div>
+      </div>
+      <div class="spiel-box gold">
+        <div class="spiel-nr">3</div>
+        <div class="spiel-info">
+          <div class="spiel-titel">🎲 Der verrückte Wort-Slalom</div>
+          <div class="spiel-text">Aktive Sprachförderung &amp; Motorik — Slalom laufen, auf den Würfel tippen, Wort lesen und in 5 Sprachen übersetzen (DaZ-geeignet).</div>
+        </div>
+        <div class="spiel-qr" id="qr-wortslalom" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div class="spickzettel">
+      „body'n'brain-Effekt: Bewegung integriert das Gelernte tiefer im Gehirn und baut Stresshormone ab.
+      Nutzen Sie diese 5-Minuten-Spiele gezielt nach der großen Pause oder bei beginnender Unruhe,
+      um die Klasse sanft und lautlos wieder zu fokussieren."
+    </div>
+  </div>
+
+  <a href="javascript:window.print()" class="print-btn no-print" style="background:#1B3A4B;">🖨️ Begleitblatt drucken / als PDF speichern</a>
+</main>
+
+<script>
+/* QR-Codes lokal erzeugt (KLARTEXT_QRCode.js) - gleiche Konvention wie bei
+   KD-DL-02.html: keine externe CDN-Abhaengigkeit, offline-faehig.
+   ?guest=true: macht die 3 Klassenspiele fuer QR-Scans nutzbar ohne Login,
+   analog BAROMETER_KIND.html / KD-DL-02.html. */
+(function(){
+  if (!window.KLARTEXT_QRCode) return;
+  var ZIELE = {
+    'qr-barometer':     'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_BarometerRettung.html?guest=true',
+    'qr-gedankenleser': 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Gedankenleser.html?guest=true',
+    'qr-wortslalom':    'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_WortSlalom.html?guest=true'
+  };
+  Object.keys(ZIELE).forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ZIELE[id]);
+    if (svg) { el.innerHTML = svg; el.removeAttribute('aria-hidden'); }
+  });
+})();
+</script>
+</body>
+</html>

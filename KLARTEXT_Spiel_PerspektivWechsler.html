@@ -6,7 +6,10 @@
 <title>KLARTEXT · Perspektiv-Wechsler</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script>(function(){try{
+  var gastZugang = new URLSearchParams(window.location.search).get('guest')==='true';
+  if(!gastZugang && sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B3A4B">
 <style>

@@ -6,7 +6,10 @@
 <title>KLARTEXT · Reizfilter-Regler</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<script>(function(){try{
+  var gastZugang = new URLSearchParams(window.location.search).get('guest')==='true';
+  if(!gastZugang && sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--m:#1B3A4B;--acc:#3B8A68;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}

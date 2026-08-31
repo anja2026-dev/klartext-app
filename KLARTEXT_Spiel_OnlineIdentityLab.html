@@ -68,25 +68,31 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 
 #druckansicht{display:none;}
 @media print{
-  html,body{background:#fff!important;}
+  html,body{background:#fff!important;height:auto!important;}
+  body>*:not(#druckansicht){display:none!important;}
   body *{visibility:hidden;}
   #druckansicht,#druckansicht *{visibility:visible;}
-  #druckansicht{display:block;position:absolute;top:0;left:0;width:100%;padding:14mm;color:#000;background:#fff;}
+  #druckansicht{display:block!important;position:static;width:100%;padding:0;color:#000;background:#fff;}
   @page{margin:12mm;size:A4;}
 }
-#druckansicht h1{font-family:Georgia,serif;font-size:20px;margin-bottom:2px;color:#1B3A4B;}
-#druckansicht .dsub{font-size:11px;color:#666;margin-bottom:18px;}
-#druckansicht h3{font-size:13px;margin:16px 0 6px;color:#1B3A4B;border-bottom:1px solid #ddd;padding-bottom:4px;}
-#druckansicht .dchecklist{margin-bottom:12px;}
-#druckansicht .dchecklist-titel{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#555;margin-bottom:5px;}
-#druckansicht .dchecklist-item{font-size:11.5px;color:#333;padding:2.5px 0;display:flex;gap:7px;align-items:flex-start;line-height:1.4;}
-#druckansicht .dchecklist-box{width:11px;height:11px;border:1.3px solid #999;border-radius:2px;flex-shrink:0;margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:#fff;}
+#druckansicht .dheader{background:linear-gradient(135deg,#1B3A4B 0%,#2A5570 100%);padding:5mm 6mm;margin:0 0 6mm 0;border-radius:6px;display:flex;align-items:center;gap:3mm;}
+#druckansicht .dheader-mark{width:24px;height:24px;border:1.5px solid #6EC6A0;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#druckansicht .dheader-mark span{font-family:Georgia,serif;font-size:12px;font-weight:700;color:#fff;}
+#druckansicht .dheader-name{font-family:Georgia,serif;font-size:12px;font-weight:700;color:#fff;line-height:1;}
+#druckansicht .dheader-sub{font-size:7px;color:#6EC6A0;letter-spacing:.1em;text-transform:uppercase;display:block;margin-top:1px;}
+#druckansicht h1{font-family:Georgia,serif;font-size:18px;margin-bottom:2px;color:#1B3A4B;}
+#druckansicht .dsub{font-size:10px;color:#666;margin-bottom:10px;}
+#druckansicht h3{font-size:12px;margin:9px 0 4px;color:#1B3A4B;border-bottom:1px solid #ddd;padding-bottom:3px;}
+#druckansicht .dchecklist{margin-bottom:7px;}
+#druckansicht .dchecklist-titel{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#555;margin-bottom:3px;}
+#druckansicht .dchecklist-item{font-size:10.5px;color:#333;padding:1.5px 0;display:flex;gap:6px;align-items:flex-start;line-height:1.3;}
+#druckansicht .dchecklist-box{width:10px;height:10px;border:1.3px solid #999;border-radius:2px;flex-shrink:0;margin-top:1px;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#fff;}
 #druckansicht .dchecklist-box.on{background:#1B3A4B;border-color:#1B3A4B;}
-#druckansicht .dtext{font-size:12px;color:#333;line-height:1.6;border:1px solid #eee;border-radius:6px;padding:8px;min-height:30px;margin-bottom:4px;}
-#druckansicht .spick{background:#F5F0E8;border-left:4px solid #C47A00;padding:10px 14px;font-size:12px;line-height:1.6;margin:8px 0;}
-#druckansicht .hausaufgabe-linie{border-bottom:1px solid #aaa;height:22px;margin-top:6px;}
-#druckansicht .dfoot{margin-top:26px;font-size:10px;color:#999;border-top:1px solid #ddd;padding-top:10px;display:flex;align-items:center;gap:8px;}
-#druckansicht .dfoot-qr{width:40px;height:40px;flex-shrink:0;}
+#druckansicht .dtext{font-size:11px;color:#333;line-height:1.4;border:1px solid #eee;border-radius:6px;padding:6px;min-height:20px;margin-bottom:3px;}
+#druckansicht .spick{background:#F5F0E8;border-left:4px solid #C47A00;padding:7px 12px;font-size:11px;line-height:1.4;margin:5px 0;}
+#druckansicht .hausaufgabe-linie{border-bottom:1px solid #aaa;height:15px;margin-top:4px;}
+#druckansicht .dfoot{margin-top:14px;font-size:9px;color:#999;border-top:1px solid #ddd;padding-top:7px;display:flex;align-items:center;gap:8px;}
+#druckansicht .dfoot-qr{width:32px;height:32px;flex-shrink:0;}
 #druckansicht .dfoot-qr canvas,#druckansicht .dfoot-qr img{width:100%;height:100%;display:block;}
 </style>
 </head>
@@ -300,7 +306,8 @@ function handoutDrucken(){
   var mitnehmenListe = NUR_ONLINE.filter(function(item){ return mitnehmen[item.id]; });
   var heute = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
 
-  var html = '<h1>Online-Identity-Lab — Mein Ergebnis</h1><div class="dsub">Erstellt am ' + heute + ' · KLARTEXT-Mentoring</div>';
+  var html = '<div class="dheader"><div class="dheader-mark"><span>K</span></div><div><div class="dheader-name">KLARTEXT</div><span class="dheader-sub">Mentoring-System</span></div></div>';
+  html += '<h1>Online-Identity-Lab — Mein Ergebnis</h1><div class="dsub">Erstellt am ' + heute + ' · KLARTEXT-Mentoring</div>';
 
   html += '<h3>Meine Eigenschaften</h3>';
   COLUMNS.forEach(function(col){ html += checklistHtml(col); });

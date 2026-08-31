@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLARTEXT · Großer A4-Brainy zum Ausdrucken</title>
+    <style>
+        /* Modernes, reizarmes KLARTEXT-Design für den Bildschirm */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #f4f6f8;
+            color: #1a3644;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .no-print {
+            background-color: white;
+            padding: 15px 25px;
+            border-bottom: 2px solid #e1e4e6;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1a3644;
+            text-decoration: none;
+            border: 1.5px solid #1a3644;
+            border-radius: 20px;
+            padding: 8px 14px;
+            white-space: nowrap;
+        }
+
+        select, button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: 1px solid #1a3644;
+            border-radius: 6px;
+            background: white;
+            color: #1a3644;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #1a3644;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        /* Exakte DIN A4-Druck-Simulation auf dem Bildschirm */
+        .print-container {
+            background: white;
+            width: 210mm;
+            height: 297mm;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            padding: 10mm;
+        }
+
+        .brainy-large {
+            max-width: 90%;
+            max-height: 90%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* 🖨️ Absolute CSS-Print-Kontrolle für fehlerfreien A4-Ausdruck */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-container {
+                box-shadow: none;
+                margin: 0;
+                width: 210mm;
+                height: 297mm;
+                padding: 15mm;
+                page-break-inside: avoid;
+            }
+            .brainy-large {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Auswahlleiste (wird beim Drucken automatisch ausgeblendet) -->
+    <div class="no-print">
+        <a href="KLARTEXT_Downloads.html" class="back-link">← Downloads</a>
+        <label for="brainySelect" style="font-weight: bold;">Wähle deinen Brainy-Zustand:</label>
+        <select id="brainySelect" onchange="changeBrainy(this.value)">
+            <option value="brainy.png">Standard-Brainy (Weiß/Grüner Hintergrund)</option>
+            <option value="brainy-gruen.png">Grüner Zustand (Stabil & Fokussiert)</option>
+            <option value="brainy-gelb.png">Gelber Zustand (Angespannt)</option>
+            <option value="brainy-orange.png">Oranger Zustand (Belastet)</option>
+            <option value="brainy-rot.png">Roter Zustand (Akute Krise)</option>
+            <option value="brainy-grau.png">Grauer Zustand (Erschöpft/Unklar)</option>
+            <option value="brainy-joker.png">Joker-Brainy (Pausensignal)</option>
+        </select>
+        <button onclick="window.print()">🖨️ Drucken / Als PDF speichern</button>
+    </div>
+
+    <!-- Das A4 Druck-Blatt -->
+    <div class="print-container">
+        <img id="brainyImage" src="brainy.png" alt="Großer Brainy" class="brainy-large">
+    </div>
+
+    <script>
+        function changeBrainy(val) {
+            const img = document.getElementById('brainyImage');
+            img.src = val;
+            img.alt = "Großer Brainy (" + val + ")";
+        }
+    </script>
+</body>
+</html>

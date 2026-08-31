@@ -68,9 +68,10 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 
 #druckansicht{display:none;}
 @media print{
+  html,body{background:#fff!important;}
   body *{visibility:hidden;}
   #druckansicht,#druckansicht *{visibility:visible;}
-  #druckansicht{display:block;position:absolute;top:0;left:0;width:100%;padding:14mm;color:#000;}
+  #druckansicht{display:block;position:absolute;top:0;left:0;width:100%;padding:14mm;color:#000;background:#fff;}
   @page{margin:12mm;size:A4;}
 }
 #druckansicht h1{font-family:Georgia,serif;font-size:20px;margin-bottom:2px;color:#1B3A4B;}

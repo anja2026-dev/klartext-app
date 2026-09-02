@@ -237,7 +237,7 @@ Jede Seite mit unserem echten KLARTEXT-Maskottchen Brainy, das aufmunternd begle
 
 **Format:** 4 Seiten, DIN A4, PDF zum Ausdrucken
 **Zielgruppe:** alle Altersgruppen, Grundschule bis Berufsvorbereitung, Klassenzimmer, Jobcoaching, zu Hause
-**Preis:** 2,90 € (Tiny Offer)
+**Preis:** 2,99 € (Tiny Offer)
 
 **Tags:** Schritt-Plan, Aufgabenplanung, Verweigerung, Selbstwirksamkeit, Struktur, Handlungsplanung, Exekutivfunktion, Berufsvorbereitung, Regulation
 
@@ -257,4 +257,4 @@ Jede Seite mit unserem echten KLARTEXT-Maskottchen Brainy, das aufmunternd begle
 | 8 | Krisenprotokoll & Beobachtungsbogen | 1,90–2,50 € | Regeln & Rituale / Dokumentation |
 | 9 | Selbstfürsorge-Bingo | 0,00 € | Freebie / Spiele & Rätsel |
 | 10 | Liegende Acht | 0,00 € | Freebie / Spiele & Rätsel |
-| 11 | Schritt-Plan | 2,90 € | Tiny Offer / Regeln & Rituale |
+| 11 | Schritt-Plan | 2,99 € | Tiny Offer / Regeln & Rituale |

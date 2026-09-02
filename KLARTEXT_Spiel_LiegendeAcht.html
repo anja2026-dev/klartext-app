@@ -65,8 +65,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   .druck-sub{font-size:.85rem;color:#555;margin-bottom:1.2rem;}
   .druck-svg{width:100%;height:auto;}
   .druck-svg path{stroke:#1B3A4B;stroke-width:16;fill:none;stroke-linecap:round;}
+  .druck-qr-box{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-top:2.5rem;}
+  .druck-qr-box .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+  .druck-qr-box .qr svg{width:100%;height:100%;display:block;}
+  .druck-qr-text{font-size:.7rem;color:#555;line-height:1.4;text-align:left;max-width:60mm;}
+  .druck-qr-text b{display:block;color:#1B3A4B;font-size:.75rem;}
 }
 </style>
+<script src="KLARTEXT_QRCode.js"></script>
 </head>
 <body>
 
@@ -131,6 +137,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <svg class="druck-svg" viewBox="0 0 300 160" role="img" aria-label="Liegende Acht zum Ausdrucken">
       <path d="M150,80 C110,20 20,20 20,80 C20,140 110,140 150,80 C190,20 280,20 280,80 C280,140 190,140 150,80 Z"/>
     </svg>
+    <div class="druck-qr-box">
+      <div class="qr" id="druck-qr"></div>
+      <div class="druck-qr-text"><b>Animierte Version zum Nachfahren</b>QR-Code scannen für die digitale Gast-Version mit beweglichem Punkt.</div>
+    </div>
   </div>
 </div>
 
@@ -149,6 +159,18 @@ function nochmal(){
     document.getElementById('acht-motion-halo').beginElement();
   }catch(e){}
 }
+
+/* QR-Code fuer die Druckvorlage: lokal erzeugt (KLARTEXT_QRCode.js), verlinkt
+   auf die animierte Gast-Version dieser selben Seite. */
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_LiegendeAcht.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
 </script>
 <script src="KLARTEXT_ContextMapper.js"></script>
 

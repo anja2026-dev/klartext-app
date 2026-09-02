@@ -199,6 +199,46 @@ Ein herzliches, undramatisches Geschenk für Kolleginnen und Kollegen – und ei
 
 ---
 
+## 10. Die Liegende Acht – Bewegungsübung für Konzentration & Übergänge
+
+**Titel:**
+Liegende Acht – Edu-Kinestetik-Übung für Konzentration & Übergänge (A4)
+
+**Beschreibung:**
+Eine einzige, groß und dick gedruckte liegende Acht (∞) auf einem DIN-A4-Blatt – zum Nachfahren mit Stift oder Finger, von der Mitte aus startend, erst groß, dann kleiner werdend, mit beiden Händen abwechselnd oder zusammen.
+
+Diese klassische Bewegungsübung aus der Edu-Kinestetik verbindet beide Gehirnhälften und hilft nachweislich bei Konzentrationsproblemen, nach Unterrichtsübergängen und in Momenten der Überforderung – 30 Sekunden reichen bereits. Funktioniert genauso gut in der Luft, ganz ohne Material.
+
+Inklusive QR-Code zur digitalen Gast-Version: Dort läuft ein animierter Punkt langsam und gleichmäßig die Acht entlang, dem die Kinder mit dem Finger auf dem Bildschirm folgen – ideal als Einstieg, bevor mit der Druckvorlage weitergeübt wird.
+
+**Format:** 1 Seite, DIN A4, PDF zum Ausdrucken
+**Zielgruppe:** Grundschule bis Mittelstufe, Klassenzimmer, Schulbegleitung, zu Hause
+**Preis:** 0,00 € (Freebie)
+
+**Tags:** Edu-Kinestetik, liegende Acht, Konzentration, Übergänge, Bewegungspause, Brain Gym, Grundschule, kostenlos, Freebie, Regulation
+
+---
+
+## 11. Der Schritt-Plan – Große Aufgaben in kleine Schritte zerlegen
+
+**Titel:**
+Schritt-Plan – Aufgaben in kleine Schritte zerlegen, gegen Verweigerung (A4)
+
+**Beschreibung:**
+Eine Druckvorlage zum Aufhängen oder Hinlegen am Arbeitsplatz: eine Zeile für die Aufgabe, darunter 6 leere Kästchen-Zeilen zum eigenen Ausfüllen der einzelnen Schritte.
+
+Der Schritt-Plan zerlegt eine überwältigende Aufgabe in kleine, machbare Schritte – der bewährteste Weg, um Verweigerung zu reduzieren und Selbstwirksamkeit zu stärken. Die Grundregel dabei: ein Schritt, nicht fünf. Der erste Schritt soll so klein sein, dass er unmöglich schiefgehen kann. Funktioniert für alle Altersgruppen, von der Grundschule bis zur Berufsvorbereitung.
+
+Inklusive QR-Code zur digitalen Gast-Version: Dort wird immer nur der aktuelle Schritt groß angezeigt (alle anderen sind klein und ausgegraut), mit Konfetti und einem aufmunternden Satz beim Abhaken – der Fortschritt bleibt auf dem Gerät gespeichert.
+
+**Format:** 1 Seite, DIN A4, PDF zum Ausdrucken
+**Zielgruppe:** alle Altersgruppen, Grundschule bis Berufsvorbereitung, Klassenzimmer, Jobcoaching, zu Hause
+**Preis:** 0,00 € (Freebie)
+
+**Tags:** Schritt-Plan, Aufgabenplanung, Verweigerung, Selbstwirksamkeit, Struktur, Handlungsplanung, Berufsvorbereitung, kostenlos, Freebie, Regulation
+
+---
+
 ## Übersichtstabelle
 
 | # | Produkt | Preis | Hauptkategorie |
@@ -212,3 +252,5 @@ Ein herzliches, undramatisches Geschenk für Kolleginnen und Kollegen – und ei
 | 7 | Reizfilter-Audit | 2,50 € | Inklusion / Regeln & Rituale |
 | 8 | Krisenprotokoll & Beobachtungsbogen | 1,90–2,50 € | Regeln & Rituale / Dokumentation |
 | 9 | Selbstfürsorge-Bingo | 0,00 € | Freebie / Spiele & Rätsel |
+| 10 | Liegende Acht | 0,00 € | Freebie / Spiele & Rätsel |
+| 11 | Schritt-Plan | 0,00 € | Freebie / Regeln & Rituale |

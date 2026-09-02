@@ -47,11 +47,11 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .buehne-wrap{position:relative;}
 .acht-buehne{width:100%;max-width:500px;margin:0 auto;touch-action:none;display:block;}
 .acht-pfad{fill:none;stroke:var(--border);stroke-width:14;stroke-linecap:round;}
-.acht-punkt{fill:var(--acc);}
-.acht-punkt-halo{fill:var(--acc);opacity:.18;}
-.acht-punkt2{fill:#C0392B;}
-.acht-punkt2-halo{fill:#C0392B;opacity:.18;}
+.acht-punkt-halo{fill:var(--acc);opacity:.2;}
+.acht-punkt2-halo{fill:#C0392B;opacity:.2;}
 .finger-spur{fill:none;stroke:#2E86AB;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;opacity:.85;}
+.brainy-laeufer{transform-box:fill-box;transform-origin:center;animation:brainyLauf 1s ease-in-out infinite;}
+@keyframes brainyLauf{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3%) scale(1.04);}}
 
 .runden-chip{position:absolute;top:0;right:0;background:var(--m);color:#fff;font-size:.68rem;font-weight:700;padding:.3rem .7rem;border-radius:20px;}
 
@@ -93,6 +93,18 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   .druck-qr-box .qr svg{width:100%;height:100%;display:block;}
   .druck-qr-text{font-size:.7rem;color:#555;line-height:1.4;text-align:left;max-width:60mm;}
   .druck-qr-text b{display:block;color:#1B3A4B;font-size:.75rem;}
+
+  .druck-ideen{max-width:150mm;margin:1.6rem auto 0;background:#F5F0E8;border-left:4px solid #3B8A68;border-radius:8px;padding:.9rem 1.2rem;text-align:left;}
+  .druck-ideen-titel{font-size:.85rem;font-weight:700;color:#1B3A4B;margin-bottom:.4rem;}
+  .druck-ideen-sub{font-size:.72rem;color:#555;margin-bottom:.6rem;line-height:1.5;}
+  .druck-ideen ul{margin:0;padding-left:1.1rem;}
+  .druck-ideen li{font-size:.74rem;color:#2D2D2D;line-height:1.55;margin-bottom:.15rem;}
+
+  .druck-ausschneiden{max-width:150mm;margin:1.4rem auto 0;display:flex;align-items:center;gap:.9rem;justify-content:center;}
+  .druck-ausschneiden-figur{width:26mm;height:26mm;border:1.5px dashed #999;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:2mm;}
+  .druck-ausschneiden-figur img{width:100%;height:100%;object-fit:contain;}
+  .druck-ausschneiden-text{font-size:.72rem;color:#555;line-height:1.5;text-align:left;max-width:75mm;}
+  .druck-ausschneiden-text b{display:block;color:#1B3A4B;font-size:.75rem;}
 }
 </style>
 <script src="KLARTEXT_QRCode.js"></script>
@@ -130,7 +142,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
     <div class="brainy-box">
       <img id="brainy-img" class="brainy-img" src="brainy.png" alt="Brainy">
-      <div class="brainy-msg" id="brainy-msg">Kopf still halten — nur die Augen folgen dem Punkt.</div>
+      <div class="brainy-msg" id="brainy-msg">Kopf still halten — nur die Augen folgen Brainy.</div>
     </div>
 
     <div class="buehne-wrap">
@@ -139,15 +151,16 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
         <path class="acht-pfad" id="acht-pfad" d="M150,80 C110,20 20,20 20,80 C20,140 110,140 150,80 C190,20 280,20 280,80 C280,140 190,140 150,80 Z"/>
         <polyline class="finger-spur" id="finger-spur" points=""/>
         <circle class="acht-punkt-halo" id="halo1" r="18" cx="150" cy="80"></circle>
-        <circle class="acht-punkt" id="dot1" r="10" cx="150" cy="80"></circle>
+        <image class="brainy-laeufer" id="dot1" href="brainy.png" width="26" height="26" x="137" y="67"></image>
         <circle class="acht-punkt2-halo" id="halo2" r="18" cx="150" cy="80" style="display:none"></circle>
-        <circle class="acht-punkt2" id="dot2" r="10" cx="150" cy="80" style="display:none"></circle>
+        <image class="brainy-laeufer" id="dot2" href="brainy.png" width="26" height="26" x="137" y="67" style="display:none"></image>
       </svg>
     </div>
 
     <div class="tempo-row">
       <button type="button" class="tempo-btn" id="tempo-langsam" onclick="tempoSetzen(10)">🐢 Langsam</button>
       <button type="button" class="tempo-btn aktiv" id="tempo-normal" onclick="tempoSetzen(6)">🙂 Normal</button>
+      <button type="button" class="tempo-btn" id="richtung-btn" onclick="richtungUmkehren()">↺ Rückwärts</button>
     </div>
 
     <div class="aktionen-row">
@@ -162,7 +175,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
     <div class="info-box">
       <div class="info-titel">▶️ Drei Stufen, eine Übung</div>
-      <div class="info-text">Im Original ist die liegende Acht vor allem eine Augen-Übung: der Kopf bleibt still, nur die Augen folgen dem Punkt über die Körpermitte hinweg. Finger-Nachfahren und die große Version mit beiden Händen bauen darauf auf.</div>
+      <div class="info-text">Im Original ist die liegende Acht vor allem eine Augen-Übung: der Kopf bleibt still, nur die Augen folgen Brainy über die Körpermitte hinweg. Finger-Nachfahren und die große Version mit beiden Händen bauen darauf auf. Auf der Druckvorlage findest du außerdem Ideen für eine große Boden-Acht zum Ablaufen — mit Vokabeln, Einmaleins oder Gedichten kombiniert.</div>
       <div style="display:flex;flex-wrap:wrap;">
         <span class="info-chip">Gelb</span><span class="info-chip">Konzentrationsprobleme</span><span class="info-chip">nach Übergängen</span><span class="info-chip">morgens</span>
       </div>
@@ -178,9 +191,27 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       <path d="M150,80 C110,20 20,20 20,80 C20,140 110,140 150,80 C190,20 280,20 280,80 C280,140 190,140 150,80 Z"/>
     </svg>
     <div class="druck-tipp">Tipp für die große Version: das Blatt an die Wand hängen und mit ausgestrecktem Arm im Stehen nachfahren — oder ganz ohne Stift, nur mit den Augen, Kopf dabei still halten.</div>
+
+    <div class="druck-ideen">
+      <div class="druck-ideen-titel">🚶 Idee für draußen: die große Boden-Acht</div>
+      <div class="druck-ideen-sub">Die Acht mit Kreide, Seil oder Klebeband groß auf den Boden legen — die Kinder laufen sie ab, erst vorwärts, dann rückwärts. Dabei zum Beispiel:</div>
+      <ul>
+        <li>Vokabeln aufsagen — ein Wort pro Schritt</li>
+        <li>ein Gedicht auswendig aufsagen</li>
+        <li>Einmaleins-Aufgaben lösen</li>
+        <li>Wörter rückwärts sagen oder lesen (von rechts nach links)</li>
+        <li>abwechselnd: eine Runde still, eine Runde laut</li>
+      </ul>
+    </div>
+
+    <div class="druck-ausschneiden">
+      <div class="druck-ausschneiden-figur"><img src="brainy.png" alt="Brainy zum Ausschneiden"></div>
+      <div class="druck-ausschneiden-text"><b>Brainy zum Ausschneiden</b>Ausschneiden und in die Mitte der Boden-Acht legen — als Wegweiser, oder zum Mitnehmen beim Laufen.</div>
+    </div>
+
     <div class="druck-qr-box">
       <div class="qr" id="druck-qr"></div>
-      <div class="druck-qr-text"><b>Digitale Version mit 3 Modi</b>QR-Code scannen: Augen folgen, Finger nachfahren oder beide Hände — mit Brainy als Begleiter.</div>
+      <div class="druck-qr-text"><b>Digitale Version mit 3 Modi</b>QR-Code scannen: Augen folgen, Finger nachfahren oder beide Hände — Brainy läuft die Acht mit.</div>
     </div>
   </div>
 </div>
@@ -196,6 +227,7 @@ var rundenChip = document.getElementById('runden-chip');
 
 var modusAktuell = 'augen';
 var tempoSekunden = 6;
+var richtung = 1;
 var startZeit = null;
 var letzteFraktion = 0;
 var rundenZahl = 0;
@@ -204,14 +236,18 @@ var zeichnetGerade = false;
 var spurPunkte = [];
 
 var BRAINY_TEXTE = {
-  augen: 'Kopf still halten — nur die Augen folgen dem Punkt.',
+  augen: 'Kopf still halten — nur die Augen folgen Brainy.',
   finger: 'Fahr mit dem Finger locker mit. Deine eigene Spur siehst du in Blau.',
   haende: 'Am besten im Stehen: beide Hände gleichzeitig, Arme ausgestreckt.'
 };
 
-function setzePunkt(dot, halo, fraktion){
-  var p = pfadElement.getPointAtLength(fraktion * pfadLaenge);
-  dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y);
+function setzePunkt(bild, halo, fraktion){
+  var f = ((fraktion % 1) + 1) % 1;
+  var p = pfadElement.getPointAtLength(f * pfadLaenge);
+  var breite = parseFloat(bild.getAttribute('width'));
+  var hoehe = parseFloat(bild.getAttribute('height'));
+  bild.setAttribute('x', p.x - breite / 2);
+  bild.setAttribute('y', p.y - hoehe / 2);
   halo.setAttribute('cx', p.x); halo.setAttribute('cy', p.y);
 }
 
@@ -222,8 +258,9 @@ function rundenAnzeigen(){
 function animationsSchritt(zeitstempel){
   if(startZeit === null) startZeit = zeitstempel;
   var verstrichen = (zeitstempel - startZeit) / 1000;
-  var fraktion = (verstrichen % tempoSekunden) / tempoSekunden;
-  if(fraktion < letzteFraktion){
+  var basis = (verstrichen % tempoSekunden) / tempoSekunden;
+  var fraktion = richtung >= 0 ? basis : 1 - basis;
+  if((richtung >= 0 && fraktion < letzteFraktion) || (richtung < 0 && fraktion > letzteFraktion)){
     rundenZahl++;
     rundenAnzeigen();
   }
@@ -231,7 +268,7 @@ function animationsSchritt(zeitstempel){
 
   setzePunkt(dot1, halo1, fraktion);
   if(modusAktuell === 'haende'){
-    setzePunkt(dot2, halo2, (fraktion + 0.5) % 1);
+    setzePunkt(dot2, halo2, fraktion + 0.5);
   }
   rafId = requestAnimationFrame(animationsSchritt);
 }
@@ -249,13 +286,21 @@ function modusSetzen(modus){
   document.getElementById('modus-finger-btn').classList.toggle('aktiv', modus === 'finger');
   document.getElementById('modus-haende-btn').classList.toggle('aktiv', modus === 'haende');
 
-  dot1.setAttribute('r', modus === 'augen' ? 12 : 10);
-  halo1.setAttribute('r', modus === 'augen' ? 20 : 18);
+  var groesse = modus === 'augen' ? 30 : 26;
+  dot1.setAttribute('width', groesse); dot1.setAttribute('height', groesse);
+  halo1.setAttribute('r', modus === 'augen' ? 21 : 18);
   var zweiterAktiv = modus === 'haende';
+  dot2.setAttribute('width', groesse); dot2.setAttribute('height', groesse);
+  halo2.setAttribute('r', modus === 'augen' ? 21 : 18);
   dot2.style.display = zweiterAktiv ? '' : 'none';
   halo2.style.display = zweiterAktiv ? '' : 'none';
 
   buehne.style.cursor = modus === 'finger' ? 'crosshair' : 'default';
+
+  richtung = 1;
+  var richtungBtn = document.getElementById('richtung-btn');
+  richtungBtn.innerHTML = '↺ Rückwärts';
+  richtungBtn.classList.remove('aktiv');
 
   brainySagen(BRAINY_TEXTE[modus]);
   brainyHopp();
@@ -267,6 +312,10 @@ function modusSetzen(modus){
 }
 
 function neuStarten(){
+  richtung = 1;
+  var richtungBtn = document.getElementById('richtung-btn');
+  richtungBtn.innerHTML = '↺ Rückwärts';
+  richtungBtn.classList.remove('aktiv');
   rundenZahl = 0;
   rundenAnzeigen();
   spurPunkte = [];
@@ -279,6 +328,15 @@ function tempoSetzen(sekunden){
   tempoSekunden = sekunden;
   document.getElementById('tempo-langsam').classList.toggle('aktiv', sekunden === 10);
   document.getElementById('tempo-normal').classList.toggle('aktiv', sekunden === 6);
+  animationStarten();
+}
+
+function richtungUmkehren(){
+  richtung = richtung >= 0 ? -1 : 1;
+  var btn = document.getElementById('richtung-btn');
+  btn.innerHTML = richtung >= 0 ? '↺ Rückwärts' : '↻ Vorwärts';
+  btn.classList.toggle('aktiv', richtung < 0);
+  brainySagen(richtung < 0 ? 'Jetzt rückwärts — schön langsam.' : BRAINY_TEXTE[modusAktuell]);
   animationStarten();
 }
 

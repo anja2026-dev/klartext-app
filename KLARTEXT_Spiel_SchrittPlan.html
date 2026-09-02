@@ -32,6 +32,14 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .aufgabe-input{width:100%;font-family:inherit;font-size:1rem;font-weight:700;color:var(--ink);border:1.5px solid var(--border);border-radius:12px;padding:.7rem .9rem;background:var(--surface);}
 .aufgabe-input:focus{outline:none;border-color:var(--acc);}
 
+/* ── Brainy-Begleiter ─────────────────────────────── */
+.brainy-box{display:flex;gap:.85rem;align-items:center;background:var(--paper);border-radius:14px;padding:.9rem 1.1rem;margin:1.2rem 0 0;}
+.brainy-img{width:2.6rem;height:2.6rem;flex-shrink:0;object-fit:contain;transition:transform .35s ease;}
+@keyframes brainyHopp{0%{transform:scale(1) rotate(0);}30%{transform:scale(1.18) rotate(-4deg);}60%{transform:scale(1.05) rotate(3deg);}100%{transform:scale(1) rotate(0);}}
+.brainy-img.hopp{animation:brainyHopp .6s ease;}
+.brainy-msg{font-size:.83rem;color:var(--ink);line-height:1.5;}
+.brainy-msg b{color:var(--m);}
+
 .schritte-liste{list-style:none;margin-top:1.4rem;display:flex;flex-direction:column;gap:.6rem;}
 .schritt-zeile{display:flex;align-items:center;gap:.6rem;border-radius:14px;transition:all .25s ease;}
 
@@ -90,7 +98,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .druck-vorlage{display:none;}
 
 @media print{
-  .header,.back-btn,.hero,.aufgabe-label,.aufgabe-input,.schritte-liste,.hinzufuegen-btn,.leer-hinweis,.fertig-box,.aktionen-row,.tipp-box{display:none!important;}
+  .header,.back-btn,.hero,.aufgabe-label,.aufgabe-input,.brainy-box,.schritte-liste,.hinzufuegen-btn,.leer-hinweis,.fertig-box,.aktionen-row,.tipp-box,.konfetti-lage,.lob-toast{display:none!important;}
   body{background:#fff;}
   .shell{padding:0;max-width:none;}
   .plan-card{border:none;box-shadow:none;padding:0;}
@@ -104,6 +112,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   .druck-qr-box .qr svg{width:100%;height:100%;display:block;}
   .druck-qr-text{font-size:.7rem;color:#555;line-height:1.4;text-align:left;max-width:60mm;}
   .druck-qr-text b{display:block;color:#1B3A4B;font-size:.75rem;}
+  .druck-brainy-box{display:flex;align-items:center;justify-content:center;gap:.6rem;margin:.3rem 0 1.6rem;}
+  .druck-brainy-box img{width:16mm;height:16mm;flex-shrink:0;object-fit:contain;}
+  .druck-brainy-text{font-size:.78rem;color:#2D2D2D;font-style:italic;max-width:110mm;text-align:left;}
+  .druck-brainy-text b{font-style:normal;color:#1B3A4B;}
 }
 </style>
 <script src="KLARTEXT_QRCode.js"></script>
@@ -130,6 +142,11 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <label class="aufgabe-label" for="aufgabe-input">Welche Aufgabe steht an?</label>
     <input type="text" id="aufgabe-input" class="aufgabe-input" placeholder="z. B. Zimmer aufräumen" maxlength="80">
 
+    <div class="brainy-box">
+      <img id="brainy-img" class="brainy-img" src="brainy.png" alt="Brainy">
+      <div class="brainy-msg" id="brainy-msg">Welche Aufgabe wollen wir heute zerlegen?</div>
+    </div>
+
     <ul class="schritte-liste" id="schritte-liste"></ul>
     <div class="leer-hinweis" id="leer-hinweis">Noch keine Schritte — leg mit dem ersten kleinen Schritt los.</div>
 
@@ -155,6 +172,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   <!-- Druckvorlage: nur beim Drucken sichtbar, leere Zeilen zum Selbst-Ausfüllen -->
   <div class="druck-vorlage" id="druck-vorlage">
     <div class="druck-titel">Schritt-Plan</div>
+    <div class="druck-brainy-box">
+      <img src="brainy.png" alt="Brainy">
+      <div class="druck-brainy-text"><b>Brainy:</b> Ein Schritt. Nicht fünf. Der erste soll so klein sein, dass er unmöglich schiefgehen kann.</div>
+    </div>
     <div class="druck-aufgabe-zeile">Meine Aufgabe: ________________________________________</div>
     <div class="druck-schritt-zeile"><div class="druck-kaestchen"></div><div>&nbsp;</div></div>
     <div class="druck-schritt-zeile"><div class="druck-kaestchen"></div><div>&nbsp;</div></div>
@@ -220,8 +241,10 @@ function schrittEntfernen(index){
 function schrittAbhaken(index){
   zustand.schritte[index].erledigt = true;
   speichern();
+  var alleErledigt = ersterOffenerIndex() === -1;
   rendern();
   konfettiZeigen();
+  brainyFeiern(alleErledigt);
 }
 
 function neueAufgabe(){
@@ -250,6 +273,8 @@ function rendern(){
   var aktuellIdx = ersterOffenerIndex();
   var alleErledigt = zustand.schritte.length > 0 && aktuellIdx === -1;
   fertigBox.classList.toggle('zeigen', alleErledigt);
+
+  brainyAktualisieren(aktuellIdx, alleErledigt);
 
   zustand.schritte.forEach(function(schritt, index){
     var klasse = schritt.erledigt ? 'erledigt' : (index === aktuellIdx ? 'aktuell' : 'kommend');
@@ -288,6 +313,45 @@ function rendern(){
 
     liste.appendChild(li);
   });
+}
+
+/* Brainy-Begleiter: spricht passend zum Zustand, hüpft kurz beim Abhaken. */
+function brainySagen(html){
+  var el = document.getElementById('brainy-msg');
+  if(el) el.innerHTML = html;
+}
+
+function brainyAktualisieren(aktuellIdx, alleErledigt){
+  if(alleErledigt){
+    brainySagen('Richtig stark — <b>alles geschafft!</b> 🎉');
+    return;
+  }
+  if(aktuellIdx === -1){
+    if(!zustand.aufgabe){
+      brainySagen('Welche Aufgabe wollen wir heute zerlegen?');
+    } else {
+      brainySagen('Gut! Jetzt brauchen wir den <b>allerersten kleinen Schritt</b>.');
+    }
+    return;
+  }
+  var text = zustand.schritte[aktuellIdx].text;
+  if(text){
+    brainySagen('Nur <b>diesen einen Schritt</b>: „' + text + '“ — du schaffst das!');
+  } else {
+    brainySagen('Schreib den <b>ersten kleinen Schritt</b> auf. So klein, dass er nicht schiefgehen kann.');
+  }
+}
+
+function brainyFeiern(alleErledigt){
+  var img = document.getElementById('brainy-img');
+  if(!img) return;
+  img.classList.remove('hopp');
+  void img.offsetWidth;
+  img.classList.add('hopp');
+  if(!alleErledigt){
+    brainySagen(LOB_SAETZE[Math.floor(Math.random() * LOB_SAETZE.length)]);
+  }
+  setTimeout(function(){ img.classList.remove('hopp'); }, 650);
 }
 
 function konfettiZeigen(){

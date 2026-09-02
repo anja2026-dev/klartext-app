@@ -219,23 +219,25 @@ Inklusive QR-Code zur digitalen Gast-Version: Dort läuft ein animierter Punkt l
 
 ---
 
-## 11. Der Schritt-Plan – Große Aufgaben in kleine Schritte zerlegen
+## 11. Mein Schritt-Plan – Große Aufgaben in kleine Schritte zerlegen (4-Seiter)
 
 **Titel:**
-Schritt-Plan – Aufgaben in kleine Schritte zerlegen, gegen Verweigerung (A4)
+Mein Schritt-Plan – Aufgaben in kleine Schritte zerlegen, gegen Verweigerung (A4)
 
 **Beschreibung:**
-Eine Druckvorlage zum Aufhängen oder Hinlegen am Arbeitsplatz: eine Zeile für die Aufgabe, darunter 6 leere Kästchen-Zeilen zum eigenen Ausfüllen der einzelnen Schritte.
+Eine visuelle Handlungsbrücke für Kinder & Jugendliche im Schulalltag – als vierseitige Druckvorlage mit pädagogischer Anleitung.
 
-Der Schritt-Plan zerlegt eine überwältigende Aufgabe in kleine, machbare Schritte – der bewährteste Weg, um Verweigerung zu reduzieren und Selbstwirksamkeit zu stärken. Die Grundregel dabei: ein Schritt, nicht fünf. Der erste Schritt soll so klein sein, dass er unmöglich schiefgehen kann. Funktioniert für alle Altersgruppen, von der Grundschule bis zur Berufsvorbereitung.
+Seite 1 erklärt kurz und fundiert, warum Schritt-Pläne wirken (Exekutivfunktion, Dopamin-Kick beim Abhaken) und nennt die 3 Goldenen Regeln für den Einsatz. Seite 2 und 3 zeigen je ein fertig ausgefülltes Beispiel zum direkten Einsatz – „Hausaufgaben & Lernen meistern" sowie „Wieder ruhig werden bei Gelb & Orange" – mit je 5 winzigen, machbaren Teilschritten und FERTIG-Ankreuzfeldern. Seite 4 ist der Blanko-Plan zum gemeinsamen Ausfüllen mit dem Kind, inklusive pädagogischem Tipp zum Befüllen.
 
-Inklusive QR-Code zur digitalen Gast-Version: Dort wird immer nur der aktuelle Schritt groß angezeigt (alle anderen sind klein und ausgegraut), mit Konfetti und einem aufmunternden Satz beim Abhaken – der Fortschritt bleibt auf dem Gerät gespeichert.
+Die Grundregel dabei: ein Schritt, nicht fünf. Der erste Schritt soll so klein sein, dass er unmöglich schiefgehen kann. Funktioniert für alle Altersgruppen, von der Grundschule bis zur Berufsvorbereitung.
 
-**Format:** 1 Seite, DIN A4, PDF zum Ausdrucken
+Jede Seite mit unserem echten KLARTEXT-Maskottchen Brainy, das aufmunternd begleitet. Inklusive QR-Code zur schlanken digitalen Version: Dort wird immer nur der aktuelle Schritt groß angezeigt (alle anderen sind klein und ausgegraut), mit Konfetti und einem aufmunternden Satz beim Abhaken – der Fortschritt bleibt auf dem Gerät gespeichert.
+
+**Format:** 4 Seiten, DIN A4, PDF zum Ausdrucken
 **Zielgruppe:** alle Altersgruppen, Grundschule bis Berufsvorbereitung, Klassenzimmer, Jobcoaching, zu Hause
 **Preis:** 0,00 € (Freebie)
 
-**Tags:** Schritt-Plan, Aufgabenplanung, Verweigerung, Selbstwirksamkeit, Struktur, Handlungsplanung, Berufsvorbereitung, kostenlos, Freebie, Regulation
+**Tags:** Schritt-Plan, Aufgabenplanung, Verweigerung, Selbstwirksamkeit, Struktur, Handlungsplanung, Exekutivfunktion, Berufsvorbereitung, kostenlos, Freebie, Regulation
 
 ---
 

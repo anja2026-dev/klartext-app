@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Mein Schritt-Plan (4 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#3B8A68;--warm:#B4482E;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--rose:#FBEEEA;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.9rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.haupttitel.klein{font-size:1.5rem;}
+.untertitel{font-size:.85rem;color:var(--warm);margin-bottom:1.1rem;}
+.thema-zeile{font-size:.8rem;color:var(--muted);margin-bottom:1rem;}
+.thema-zeile b{color:var(--ink);}
+
+.hinweis-box{background:var(--rose);border-left:4px solid var(--warm);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1.1rem;font-size:.78rem;line-height:1.65;color:var(--ink);}
+.hinweis-box p+p{margin-top:.6rem;}
+.hinweis-box b{color:var(--m);}
+
+.regeln-titel{font-size:.85rem;font-weight:700;color:var(--m);margin-bottom:.5rem;}
+.regel{font-size:.78rem;line-height:1.6;margin-bottom:.55rem;padding-left:1.1rem;position:relative;}
+.regel::before{content:"•";position:absolute;left:0;color:var(--warm);font-weight:700;}
+.regel b{color:var(--ink);}
+
+.ziel-box{background:var(--rose);border-radius:8px;padding:.7rem 1rem;margin-bottom:1rem;font-size:.78rem;}
+.ziel-box b{display:block;color:var(--m);margin-bottom:.4rem;}
+.ziel-linie{border-bottom:1px solid var(--muted);display:block;height:1.1rem;}
+.ziel-box.mit-text{font-size:.78rem;color:var(--ink);}
+
+.schritte{display:flex;flex-direction:column;gap:.65rem;flex:1;}
+.schritt{display:flex;align-items:flex-start;gap:.8rem;border-radius:12px;padding:.85rem 1rem;border:1.5px solid var(--border);}
+.schritt.gruen{background:#EEF6EF;border-color:#B9DCC1;}
+.schritt.warm{background:#FBECE8;border-color:#E9BDB0;}
+.schritt.leer{border:1.5px dashed var(--m);background:#fff;min-height:3.6rem;}
+.schritt-nr{width:1.9rem;height:1.9rem;border-radius:50%;color:#fff;font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.schritt.gruen .schritt-nr{background:var(--acc);}
+.schritt.warm .schritt-nr{background:var(--warm);}
+.schritt.leer .schritt-nr{background:var(--m);}
+.schritt-text{flex:1;font-size:.78rem;line-height:1.55;}
+.schritt-text b{color:var(--m);}
+.schritt-linie{border-bottom:1px dotted #B8B0A0;display:block;height:1.15rem;margin-top:.15rem;}
+.schritt-linie:last-child{margin-top:.5rem;}
+.fertig-box{flex-shrink:0;text-align:center;font-size:.55rem;font-weight:700;letter-spacing:.06em;color:var(--muted);}
+.fertig-kaestchen{width:1.5rem;height:1.5rem;border:2px solid var(--border);border-radius:5px;margin-bottom:.2rem;}
+.schritt.gruen .fertig-kaestchen{border-color:#8FC49E;}
+.schritt.warm .fertig-kaestchen{border-color:#D99A87;}
+.schritt.leer .fertig-kaestchen{border-color:var(--m);}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:15mm;height:15mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.75rem;line-height:1.6;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.tipp-zeile{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.75rem;line-height:1.6;color:var(--ink);}
+.tipp-zeile b{color:var(--m);}
+
+.fuss{margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 · Deckblatt ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">MEIN SCHRITT-PLAN</h1>
+  <div class="untertitel">Eine visuelle Handlungsbrücke für Kinder &amp; Jugendliche im Schulalltag</div>
+
+  <div class="hinweis-box">
+    <p><b>Warum Schritt-Pläne Wunder wirken:</b> Kinder und Jugendliche mit ADHS, ASS oder sozial-emotionalem Förderbedarf scheitern im Alltag oft an der Handlungsplanung (Exekutivfunktion). Eine komplexe Aufgabe wie „Schularbeit fertigstellen" oder „zur Ruhe kommen" wirkt wie ein unüberwindbarer Berg. Sie wissen schlicht nicht, wie sie anfangen sollen, und blockieren aus Überlastung.</p>
+    <p>Der KLARTEXT Schritt-Plan löst diese Blockade auf, indem er die Aufgabe in maximal <b>5 winzige, machbare Teilschritte</b> zerlegt. Jeder bewältigte Schritt gibt dem Gehirn einen physischen Dopamin-Kick durch das stolze, selbstständige Abhaken der Kachel!</p>
+  </div>
+
+  <div class="regeln-titel">3 Goldene Regeln für den erfolgreichen, systemischen Einsatz:</div>
+  <div class="regel"><b>1. Gemeinsam erarbeiten (Autonomie statt Zwang):</b> Befüllen Sie den Plan (insb. den Blanko-Plan) immer zusammen mit dem Schüler. Das Kind entscheidet, was als Erstes aufgeschrieben wird. Das erzeugt echte Motivation.</div>
+  <div class="regel"><b>2. Winzig klein portionieren (Erfolg garantieren):</b> Ein Teilschritt darf niemals überfordern. Wählen Sie die Schritte so klein, dass ein Scheitern fast unmöglich ist (z. B. „Arbeitsblatt aufschlagen" statt „Aufgabe 1 lösen").</div>
+  <div class="regel"><b>3. Das Gesetz des Hakens (Dopamin nutzen):</b> Nur das Kind darf den Haken in das Feld „FERTIG" eintragen! Loben Sie nicht die Intelligenz, sondern den Fleiß beim Lösen der kleinen Etappen.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, traumasensiblen Einsatz in Grundschulen, Förderschulen, Klassenzimmern und im Offenen Ganztag (OGS).</div>
+  </div>
+
+  <div class="fuss">
+    <span>© KLARTEXT-Mentoring · www.klartext-mentoring.de · Konzept &amp; Layout von Anja Jolk</span>
+    <span>Druckvorlage · DIN A4</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 · Beispiel Lernen (grün) ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel klein">MEIN SCHRITT-PLAN</h1>
+  <div class="thema-zeile"><b>Thema:</b> Hausaufgaben, Klassenarbeiten &amp; Lernen meistern</div>
+
+  <div class="ziel-box"><b>Mein großes Ziel für heute:</b><span class="ziel-linie"></span></div>
+
+  <div class="schritte">
+    <div class="schritt gruen"><div class="schritt-nr">1</div><div class="schritt-text"><b>Arbeitsplatz klären</b> — Müll wegwerfen. Alle Ablenkungen (wie Handy, Konsole oder Spielzeuge) weit weglegen.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt gruen"><div class="schritt-nr">2</div><div class="schritt-text"><b>Material bereitstellen</b> — Bücher, Hefte, den richtigen Stift und eventuell Lärmschutzkopfhörer auf dem Tisch platzieren.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt gruen"><div class="schritt-nr">3</div><div class="schritt-text"><b>Fokus-Timer stellen</b> — Einen Wecker oder Timer auf 15 oder 20 Minuten einstellen. In dieser Zeit arbeite ich vollkommen ungestört.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt gruen"><div class="schritt-nr">4</div><div class="schritt-text"><b>Erste Teilaufgabe lösen</b> — Ich fange ganz entspannt an: Ich lese nur die erste Frage oder löse nur die erste Zeile auf dem Blatt.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt gruen"><div class="schritt-nr">5</div><div class="schritt-text"><b>Kurze Pause feiern</b> — Geschafft! Der Timer klingelt. Jetzt trinke ich ein Glas Wasser, dehne mich oder atme 3-mal tief durch.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Mach dir keinen Stress. Eine lange Reise beginnt immer mit dem allerersten, winzigen Schritt. Setze deine Haken, du machst das großartig!</div>
+  </div>
+
+  <div class="fuss"><span>© KLARTEXT-Mentoring · www.klartext-mentoring.de</span><span>Seite 2 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 3 · Beispiel Regulation (warm) ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel klein">MEIN SCHRITT-PLAN</h1>
+  <div class="thema-zeile"><b>Thema:</b> Wieder ruhig werden &amp; Stress regulieren (Bei Gelb &amp; Orange)</div>
+
+  <div class="ziel-box mit-text"><b>Mein großes Ziel für heute:</b> Ich helfe meinem Nervensystem, wieder sicher und ruhig zu werden.</div>
+
+  <div class="schritte">
+    <div class="schritt warm"><div class="schritt-nr">1</div><div class="schritt-text"><b>Stopp-Signal setzen</b> — Ich lege meine Tisch-Jokerkarte sichtbar auf den Tisch oder gebe meiner Begleitperson lautlos ein Zeichen.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt warm"><div class="schritt-nr">2</div><div class="schritt-text"><b>Meinen Rückzugsort aufsuchen</b> — Ich gehe ohne Hektik und ohne Erklärungsdruck direkt zu meiner vereinbarten Ruhe-Insel oder Fokus-Zone.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt warm"><div class="schritt-nr">3</div><div class="schritt-text"><b>Atem beruhigen</b> — Ich nehme mir 1 Minute Zeit und fahre mit dem Zeigefinger ganz entspannt den Konturen von Brainys Atemballon nach.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt warm"><div class="schritt-nr">4</div><div class="schritt-text"><b>Zustand auf dem Barometer zeigen</b> — Ich zeige meiner INGRA lautlos, wie es mir gerade geht: Bin ich noch in Gelb, Orange, Rot oder schon in Grau?</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt warm"><div class="schritt-nr">5</div><div class="schritt-text"><b>Brücke bauen &amp; zurückkehren</b> — Ich bespreche mit meiner Begleitung, was mir jetzt beim Lernen hilft — dann gehe ich ruhig an meinen Tisch zurück.</div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Das goldene KLARTEXT-Gesetz:</b> Erst regulieren – dann reden. Wer im Alarm oder Stress ist, kann keine Erklärungen verarbeiten. Nimm dir die Zeit, um dich wieder sicher zu fühlen.</div>
+  </div>
+
+  <div class="fuss"><span>© KLARTEXT-Mentoring · www.klartext-mentoring.de</span><span>Seite 3 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 4 · Blanko ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel klein">MEIN SCHRITT-PLAN</h1>
+  <div class="thema-zeile"><b>Thema:</b> Mein ganz persönlicher Plan (Ausfüllen &amp; Abhaken)</div>
+
+  <div class="ziel-box"><b>Mein großes Ziel für heute:</b><span class="ziel-linie"></span></div>
+
+  <div class="schritte">
+    <div class="schritt leer"><div class="schritt-nr">1</div><div class="schritt-text"><span class="schritt-linie"></span><span class="schritt-linie"></span></div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt leer"><div class="schritt-nr">2</div><div class="schritt-text"><span class="schritt-linie"></span><span class="schritt-linie"></span></div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt leer"><div class="schritt-nr">3</div><div class="schritt-text"><span class="schritt-linie"></span><span class="schritt-linie"></span></div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt leer"><div class="schritt-nr">4</div><div class="schritt-text"><span class="schritt-linie"></span><span class="schritt-linie"></span></div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+    <div class="schritt leer"><div class="schritt-nr">5</div><div class="schritt-text"><span class="schritt-linie"></span><span class="schritt-linie"></span></div><div class="fertig-box"><div class="fertig-kaestchen"></div>FERTIG</div></div>
+  </div>
+
+  <div class="tipp-zeile"><b>■ Pädagogischer Tipp zum Befüllen:</b> Fragen Sie das Kind: „Was brauchst du für Schritt 1?" • „Wer kann dir helfen?" • „Wie sieht der allerkleinste erste Schritt aus?"</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Ihr entscheidet gemeinsam, was drinsteht — das ist euer Plan!</div>
+  </div>
+
+  <div class="fuss"><span>© KLARTEXT-Mentoring · www.klartext-mentoring.de</span><span>Seite 4 von 4</span></div>
+</div>
+
+</body>
+</html>

@@ -4420,3 +4420,238 @@ neue Dashboard-Panel als `lehrkraft24` und als `sb-ingra26` eingeloggt.
 - Rückfrage: sollen die 5 freigeschalteten Tools (Fokus/Mein Tag/Mutmach-Tier/Zauberfächer/
   Ruheballon) ebenfalls pro Kind getrennt speichern?
 - Alle offenen Punkte aus Strang 91–112 weiterhin gültig.
+
+## ⚠️ Hinweis: Nachtrag Stränge 114–120 (rekonstruiert am 02.09.2026)
+
+Zwischen Strang 113 (28.08., vormittags) und diesem Nachtrag wurde offenbar in mehreren
+Chat-Sessions weitergearbeitet, ohne dass die Merkliste geführt wurde — die Lücke umfasst
+~25 Commits über 6 Tage (28.08. nachmittags bis 02.09.). Die folgenden Einträge 114–119 sind
+**nachträglich aus der Commit-Historie rekonstruiert** (Commit-Nachrichten + geänderte Dateien),
+NICHT aus Live-Session-Notizen — Detailtiefe und Begründungen einzelner Entscheidungen sind
+daher geringer als bei den übrigen Strängen. Strang 120 (heute) ist wieder live dokumentiert.
+
+## Strang 114 (28.08.2026, Nachmittag) — Werte-Poker 2.0 fertiggestellt, Bericht-Trennung OGS/Jugend, OGS-Workspace verdrahtet
+
+Commits: `a90d765`, `c1f4a3c`.
+
+Werte-Poker komplett neu gebaut (4 Themenwelten, 6 Inspirations-Joker-Zusatzkarten, freier
+eigener Wert, 5-Phasen-Flow Kartenwahl → Werte-Treppe → Barometer-Brücke → Lückentext-Reflexion
+→ Speichern; neuer Key `klartext_werte_deepdive`). `KLARTEXT_Ressourcenbericht.html` aufgeteilt:
+neue `KLARTEXT_Ressourcenbericht_Jugendliche.html` (Werte-Poker-Ergebnisse) und
+`KLARTEXT_OGS-Entwicklungsbericht.html` (Brücken-Notiz statt riskanter Begleit-Dokumente-Karte
+mit Login-Redirect-Bug) — Details siehe `/areas/klartext-html-system.md`, dort bereits ausführlich
+festgehalten. Anschließend (`c1f4a3c`): Werte-Poker bekam das ursprünglich verworfene, dann auf
+Anjas Wunsch doch gewünschte dunkle Hintergrunddesign (Midnight-Petrol-Palette). DASHBOARD.html:
+neue OGS-Workspace-Sektion (`#sek-ogs`, `data-roles="ogs admin"`) mit Kacheln zu den beiden neuen
+Dateien `OGS_Klassen_Navi.html` und `OGS_Aufsichts_Spickzettel.html` (beide vorher ganz ohne
+Login-Guard) + Fail-closed-Fix, damit "Alle"-Filter/Suche rollengeschützte Sektionen nicht wieder
+sichtbar machen. `KLARTEXT_Zugangscodes.md` zu `.gitignore` hinzugefügt.
+
+### Noch offen (aus Rekonstruktion, ungeprüft ob inzwischen erledigt)
+- Ob die im Nachtrag vom 28.08. erwähnte Rückfrage zum dunklen Design beantwortet wurde, ist an
+  diesem Commit erkennbar (ja, dunkles Design wurde final umgesetzt) — als erledigt zu betrachten.
+
+---
+
+## Strang 115 (28.08.2026, Abend) — Digistore24-Starterset, erste Freebie-PDFs
+
+Commits: `5bf4fb7`, `ddc81bd`.
+
+Neue Landingpage + Dankeseite `alltagsretter.html`/`alltagsretter-danke.html` für ein
+Digistore24-"Starterset"-Produkt. Vier fertige Freebie-PDFs hinzugefügt (nur als Binärdatei,
+keine zugehörigen HTML-Quellen in diesem Commit): `KLARTEXT_Freebie_Atemballon.pdf`,
+`KLARTEXT_Freebie_Barometer.pdf`, `KLARTEXT_Freebie_Joker.pdf`,
+`KLARTEXT_Freebie_kLAR_Spickzettel.pdf`.
+
+---
+
+## Strang 116 (29.08.2026) — Freebie-Feinschliff, Alltagsretter zu klartext-shop verschoben, Insel-/Zonen-Set Digital-Zugang
+
+Commits: `86044b2`, `c002fec`, `9415db4`, `b088ca4`, `10f6d45`.
+
+Größter Einzel-Commit der Lücke (`86044b2`, 30 Dateien): HTML-Quellen zu den 4 Freebie-PDFs aus
+Strang 115 nachgereicht (`KLARTEXT_Freebie_Barometer.html`, `_Joker.html`, `_Wunschzettel.html`,
+`_kLAR_Spickzettel.html`); Rollen-Gate-Fixes an ADHS-Toolbox/WasHilftMir, alte Versionen als
+`.bak` nach `_to_delete/` verschoben (unbestätigt, ob je final gelöscht — siehe auch Strang
+112-Altlast dazu); diverse Planungs-/Spec-Markdown-Dateien im Repo-Root abgelegt
+(Digistore-Setup, eduki-Freebies-Spec, eduki-Master-Strategie, eduki-Sales-Prompt,
+Klassen-Upgrade-Prompts, System-Prompt-Upgrade-v4, Werte-Poker-Upgrade-Spec u. a. — Ursprung der
+in Strang 113/114 verarbeiteten Prompts); `generate_eduki_material.py`-Skript (513 Zeilen) neu;
+komplettes Supabase-Migrations-SQL (`KLARTEXT_ALLE_MIGRATIONEN_KOMBINIERT.sql`, 2628 Zeilen) als
+Archiv abgelegt — passt zur Offline-First-Entscheidung vom 21.08., d. h. vermutlich reines Backup,
+nicht mehr aktiv genutzt (unverifiziert). Danach (`c002fec`): Alltagsretter-Seiten aus Strang 115
+wieder aus `klartext-app` entfernt, weil sie eigentlich in `klartext-shop` gehören (dort vermutlich
+separat gepflegt); Wunschzettel-QR-Ziel auf ADHS-Toolbox-Gast-Link korrigiert. `9415db4`:
+Wunschzettel-PDF mit korrigiertem QR-Code neu erzeugt. `b088ca4`/`10f6d45`: Insel-Set/Zonen-Set
+Handbuch-PDFs (5 Booklets für Eltern/Schule/INGRA/LK) bekamen Digital-Zugang-QR-Codes (Deep-Links
+zu `karten.klartext-mentoring.de`) plus gedruckten Freischaltcode neben dem QR-Code; neue Codes
+`insel-eltern`/`zonen-eltern` registriert; Build-Skripte (`build_booklet_insel.py`,
+`build_booklet_zonen.py`, `build_pdf_insel.py`, `build_pdf_zonen.py`) dafür angepasst, hartkodierte
+Pfade auf Repo-relativ umgestellt.
+
+### Noch offen (aus Rekonstruktion)
+- Der große Sammel-Commit `86044b2` vermischt sehr viele unterschiedliche Themen (Freebies, Rollen-
+  Fixes, Planungsdokumente, SQL-Archiv, Python-Skript) — falls einzelne Teile (z. B. das
+  SQL-Archiv oder `generate_eduki_material.py`) nicht mehr gebraucht werden, wäre das ein Kandidat
+  für Aufräumen, aber nicht ungefragt anfassen.
+
+---
+
+## Strang 117 (30.08.2026) — Therapeuten-Ticket neu, Sammel-Update an ~25 Dokumentations-Druckvorlagen
+
+Commit: `8aa81b8`.
+
+Neue Druckvorlage `LK_DL_Therapeuten_Ticket.html` (+ PDF) für die Schnittstelle Schule↔Therapie.
+Breite, einheitliche Anpassung (je ~16–22 geänderte Zeilen pro Datei, vermutlich Styling-/Header-
+Update) an praktisch der gesamten Dokumentations-Vorlagenfamilie: `LK_DL_Tagesinfo.html`,
+`M2_DL_Esstoerung_Beobachtung.html`, `M2_DL_SB_Schutzprotokoll.html`, `M3_DL_Joker-Karte.html`,
+alle 7 `M5_DL_*`-Vorlagen (Beobachtungsbogen, Gesprächsnotiz, Monatsbericht, Tagesdokumentation,
+Übergabeprotokoll, Wochenreflexion, Zielvereinbarung), alle 4 `M6_DL_*`-Vorlagen, sowie alle 10
+`TK_DL_*`-Vorlagen (Dokumentationsprüfung, Fallabschluss, Fallbesprechung, Feedback,
+Konfliktmoderation, Laufende-Fall-Checkliste, Meldebogen 8a, Start-Checkliste, Supervision,
+Vertretungsorganisation).
+
+### Noch offen (aus Rekonstruktion)
+- Genauer Inhalt der einheitlichen Änderung an den ~25 Vorlagen nicht im Detail rekonstruiert
+  (nur Zeilenzahl bekannt) — bei Bedarf gezielt nachschauen, welches Muster übernommen wurde.
+
+---
+
+## Strang 118 (31.08.2026) — großer Arbeitstag: QR-Codes auf 8 eduki-PDFs, mehrere Gast-Zugang-Fixes, Fokus-Trainer-Ausbau, Joker-Karten-Fixes, Atmender Brainy, A4-Brainy, 5-Minuten-Spiele-Kit, Perspektiv-Wechsler-Ticket-Umbau, Atem-Ballon-QR-Fix
+
+Commits (chronologisch): `35ae7a5`, `b969cd0`, `8aef7f9`, `b6f2d32`, `59caef3`, `04ead44`,
+`8ef8210`, `2092a37`, `1a22847`, `a0c8b9a`, `cf11c56`.
+
+**08:50 `35ae7a5`:** QR-Codes zur jeweiligen digitalen App-Version auf 8 LK_DL/Spiel-PDFs
+eingebaut (Beobachtungsbogen, Krisenprotokoll, Nachteilsausgleich, OGS-Übergabe,
+Perspektiv-Wechsler-Ticket — hier größerer Umbau mit 144 geänderten Zeilen, Reizfilter-Audit,
+Therapeuten-Ticket, Selbstfürsorge-Bingo); Online-Identity-Lab umfangreich überarbeitet (91
+Zeilen). Gast-Zugang-Bypass (`?guest=true`) für 3 zuvor login-geschützte Dateien ergänzt
+(Online-Identity-Lab, Beobachtungsbogen, Krisenprotokoll) — sonst hätte ein QR-Scan direkt auf die
+Login-Seite umgeleitet. `eduki-pipeline/anleitung_pdf_upload.md` und
+`eduki-pipeline/eduki_anzeigentexte.md` als neue Dateien angelegt (dieselbe Datei, die heute für
+Liegende Acht/Schritt-Plan um die Einträge 10+11 erweitert wurde).
+
+**08:53 `b969cd0`:** Online-Identity-Lab Druckansicht: weißer Hintergrund statt dunklem App-Theme
+im PDF-Export.
+
+**09:22 `8aef7f9`:** QR-Ziele korrigiert — Perspektiv-Wechsler-Ticket/Reizfilter-Audit/
+OGS-Übergabe-Ticket verlinkten fälschlich auf sich selbst statt auf die jeweilige interaktive
+App-Seite. Gast-Zugang für 3 weitere App-Seiten ergänzt (OGS-Brücke, Perspektiv-Wechsler,
+Reizfilter). Online-Identity-Lab: Header ergänzt, Seitenumbruch-Bug (leere Seiten) behoben.
+
+**10:54 `b6f2d32`:** Fokus-Trainer bekam ein Stufen-Modell (5/10/15/25 Min) plus automatischen
+Pause-Screen mit Atem- und Mini-Fitness-Optionen. Joker-Gutscheine (`KD-DL-02`) neu gestaltet: 3
+thematische Karten (Atem-Pause, Lern-Pause, Gefühls-Reflexion), Print-Farbfix (fehlendes
+`print-color-adjust`), lokal erzeugte QR-Codes. M3-Joker-Karte: QR-Ziel auf allen 8 Karten
+korrigiert (zeigte vorher auf falsche Domain/falsches Tool). Gefühls-Ampel-Memory: Gast-Zugang
+ergänzt.
+
+**13:16 `59caef3`:** M3-Joker-Karte — Brainy-Bild-Bug beim PDF-Export behoben (fehlte im
+Render-Ordner), QR-Erklärung pro Karte ergänzt (jetzt druckbar sichtbar, nicht nur im
+ausgeblendeten Info-Banner); finale PDF erzeugt.
+
+**14:02 `04ead44`:** "Atmender Brainy" — einheitlich `brainy.png` verwendet (kein Farbwechsel
+mehr), sanfte CSS-Puls-Animation während aktiver Fokus-Phase/Atemübung; traumasensibler
+Wohlfühl-Tipp ("kein Druck beim Luftanhalten") in Fokus-Trainer-Pausenscreen und Ruheballon vor
+dem Start ergänzt.
+
+**14:44 `8ef8210`:** Neu — 5-Minuten-Spiele-Kit für die Grundschule: 3 interaktive Klassenspiele
+(`KLARTEXT_Spiel_BarometerRettung.html` "Brainys Barometer-Rettung",
+`KLARTEXT_Spiel_Gedankenleser.html` "Der geheime Gedanken-Leser",
+`KLARTEXT_Spiel_WortSlalom.html` "Der verrückte Wort-Slalom" mit 18 Wörtern in 5 Sprachen) plus
+druckfertiges A4-Begleitblatt `LK_DL_Klassenspiele_Begleitblatt.html` (+PDF) mit 3 lokal erzeugten
+QR-Codes (`KLARTEXT_QRCode.js`, `guest=true`) für eduki-Verkaufsmaterial. **Hinweis:** Diese 3
+Klassenspiele + das Begleitblatt-PDF sind bisher nicht in `KLARTEXT_Spiele.html` verlinkt und
+nicht in `eduki_anzeigentexte.md` gelistet — ob das schon anderswo (z. B. direkt bei eduki)
+passiert ist, konnte aus der Commit-Historie nicht festgestellt werden.
+
+**15:42 `2092a37`:** Fokus-Trainer — Dauer-Stufen erweitert auf 1/3/5/10/15/20/25 Min, echtes
+Brainy-Bild im Timer (statt Platzhalter).
+
+**15:57 `1a22847`:** Atem-Ballon-Freebie — QR-Code repariert: war als 240×240px-Canvas auf 12mm
+heruntergerechnet und dadurch beim Druck unscannbar (mit `zbarimg` verifiziert: 0 Treffer).
+Umgestellt auf das lokale, vektorbasierte `KLARTEXT_QRCode.js` (kein Qualitätsverlust beim
+Skalieren), QR-Box auf 17mm vergrößert. Scan-Test aus dem 300dpi-Druck-PDF danach erfolgreich —
+genau dieses QR-System wurde heute (Strang 120) für Liegende Acht/Schritt-Plan wiederverwendet.
+
+**16:25 `a0c8b9a`:** Neu — großer A4-Brainy zum Ausdrucken (`LK_DL_Brainy_A4.html`, 7 wählbare
+Zustände).
+
+**17:06 `cf11c56`:** Perspektiv-Wechsler-Ticket von 2 Seiten auf 1 Seite umgebaut, Falzlinie
+mittig; PDF neu erzeugt.
+
+### Noch offen (aus Rekonstruktion)
+- 5-Minuten-Spiele-Kit (3 Klassenspiele + Begleitblatt) scheint nicht in `KLARTEXT_Spiele.html`
+  verlinkt zu sein — bei Anja erfragen, ob das Absicht ist (reines eduki-Verkaufsmaterial) oder
+  noch nachgetragen werden soll.
+- Kein Playwright-/Verifikationsvermerk in den Commit-Nachrichten dieses Tages erkennbar — anders
+  als beim sonst üblichen Muster; ob manuell getestet wurde, ist unklar.
+
+---
+
+## Strang 119 (01.09.2026) — Kleine Druckformat-Fixes
+
+Commit: `611446c`.
+
+`AM_DL_Stoppschild.html`: Druckformat auf 1 Seite korrigiert. `AM_DL_Meine_Verbuendeten.html`:
+Sonnen-Labels geändert (Begleitperson statt Ingra).
+
+---
+
+## Strang 120 (02.09.2026) — Neue Spiele-Tools Liegende Acht + Schritt-Plan, PR/Merge-Workflow geklärt, eduki-PDFs
+
+Live dokumentiert in dieser Session (zur Vollständigkeit hier zusammengefasst).
+
+**Liegende Acht** (`KLARTEXT_Spiel_LiegendeAcht.html`, neu): Inhalt/Zweck aus `M3-10.html`
+übernommen, Stil/Struktur von `KLARTEXT_Spiel_Reizfilter.html`. Zwei Modi in einer Datei — Modus 1:
+animierter Punkt läuft per SVG `animateMotion` die liegende Acht ab, Finger folgt auf dem
+Bildschirm, Tempo langsam/normal umschaltbar (`tempoSetzen()`), "Nochmal"-Button, Hinweis "Auch in
+der Luft möglich". Modus 2: "🖨️ Als Vorlage drucken" zeigt beim Drucken nur eine grosse, dick
+gedruckte Acht auf A4 (`@media print`, Header/Buttons ausgeblendet). Kein localStorage nötig.
+Neue Kachel "∞ Liegende Acht" in `KLARTEXT_Spiele.html` (`data-roles="ingra lehrkraft eltern ogs
+admin"`).
+
+**Schritt-Plan** (`KLARTEXT_Spiel_SchrittPlan.html`, neu): Inhalt/Zweck aus `M3-15.html`
+übernommen, gleiche Stilvorlage. Modus 1: Aufgaben-Freitextfeld + "+ Schritt hinzufügen"
+(Eingabefeld + Checkbox pro Schritt); nur der jeweils erste offene Schritt ist gross/grün
+hervorgehoben, restliche Schritte klein/ausgegraut, erledigte durchgestrichen — Abhaken löst
+Konfetti-Animation + zufälligen Lob-Satz aus, danach rückt automatisch der nächste Schritt nach;
+"Neue Aufgabe"-Button setzt zurück; Aufgabe+Schritte+Fortschritt in `localStorage`
+(`klartext_schrittplan_v1`), Reload-Persistenz Playwright-getestet. Modus 2: Druckvorlage mit
+"Meine Aufgabe: ___" + 6 leeren Kästchen-Zeilen zum Ausfüllen mit Stift. Neue Kachel
+"📋 Schritt-Plan" in `KLARTEXT_Spiele.html` (`data-roles="ingra lehrkraft eltern jobcoach ogs
+admin"`).
+
+**Git/PR-Workflow-Klärung:** Beide Tools zunächst über Feature-Branches + GitHub-PRs
+(`feature/liegende-acht-spiel` → PR #110 gemergt, `feature/schritt-plan-spiel` → PR #111) gebaut.
+Dabei aufgefallen: Der von Claude fernsteuerbare Chrome-Browser ist mit einem fremden GitHub-Konto
+(`spdtp76dwz-cloud`, kein Repo-Collaborator) eingeloggt — Claude kann damit zwar Seiten lesen/Diffs
+ansehen, aber keine PRs erstellen/mergen ("must be a collaborator"). Ausserdem entstand ein
+Merge-Konflikt in `KLARTEXT_Spiele.html`, weil beide Branches unabhängig von main abzweigten und
+an derselben Stelle (nach der Reizfilter-Kachel) einfügten — lokal aufgelöst (beide Kacheln
+behalten, Liegende Acht zuerst). **Neuer Standard-Workflow ab jetzt:** Claude baut/testet/committet
+lokal in einem Feature-Branch, merged ihn dann selbst lokal in `main` (kein PR/Merge-Button mehr
+nötig) — Anja muss am Ende nur noch einmal `git push origin main` im Terminal ausführen. Kein
+Browser-Login-Zugriff auf GitHub mehr im Workflow nötig.
+
+**Eduki-PDFs:** Auf Anjas Hinweis, dass Liegende Acht + Schritt-Plan für eduki (nicht den Shop)
+gedacht sind, wurde in beide bestehenden Druckvorlagen ein QR-Code zur jeweiligen interaktiven
+Gast-Version ergänzt (lokal via `KLARTEXT_QRCode.js`, gleiches Muster wie beim
+Atem-Ballon-QR-Fix aus Strang 118) — Ziel-URLs mit `zbarimg`/`pyzbar` verifiziert. Fertige A4-PDFs
+per Playwright-Druckexport erzeugt, liegen in `eduki-pipeline/fertige-pdfs/`
+(`KLARTEXT_Spiel_LiegendeAcht.pdf`, `KLARTEXT_Spiel_SchrittPlan.pdf`). Zwei neue Einträge (10, 11)
+in `eduki_anzeigentexte.md` ergänzt, vorläufig als Freebie (0,00 €) eingepreist — Anja kann Preis
+noch anpassen.
+
+**Merkliste-Lücke geschlossen:** Stränge 114–119 (siehe oben) rückwirkend aus der Commit-Historie
+rekonstruiert, da seit Strang 113 offenbar über mehrere Chat-Sessions keine Merkliste-Einträge
+mehr angelegt wurden.
+
+### Noch offen
+- Preis für Liegende Acht/Schritt-Plan-PDFs bei eduki: aktuell als Freebie (0,00 €) vorgeschlagen,
+  Anja kann anpassen.
+- 5-Minuten-Spiele-Kit aus Strang 118 scheint nicht in `KLARTEXT_Spiele.html` verlinkt (siehe dort)
+  — offene Rückfrage.
+- Alle offenen Punkte aus Strang 91–119 weiterhin gültig, soweit nicht durch obige Rekonstruktion
+  erkennbar erledigt.

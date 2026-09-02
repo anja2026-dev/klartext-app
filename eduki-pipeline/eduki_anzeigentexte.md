@@ -209,7 +209,7 @@ Eine einzige, groß und dick gedruckte liegende Acht (∞) auf einem DIN-A4-Blat
 
 Diese klassische Bewegungsübung aus der Edu-Kinestetik verbindet beide Gehirnhälften und hilft nachweislich bei Konzentrationsproblemen, nach Unterrichtsübergängen und in Momenten der Überforderung – 30 Sekunden reichen bereits. Funktioniert genauso gut in der Luft, ganz ohne Material.
 
-Inklusive QR-Code zur digitalen Gast-Version: Dort läuft ein animierter Punkt langsam und gleichmäßig die Acht entlang, dem die Kinder mit dem Finger auf dem Bildschirm folgen – ideal als Einstieg, bevor mit der Druckvorlage weitergeübt wird.
+Inklusive QR-Code zur digitalen Gast-Version mit drei wählbaren Modi und Brainy als Begleiter: „Augen folgen" (Kopf still halten, nur die Augen folgen dem Punkt – die eigentliche Original-Übung aus der Edu-Kinestetik), „Finger nachfahren" (die eigene Spur erscheint live in Blau über dem Pfad) und „Beide Hände" (zwei Punkte gleichzeitig für die große, oft im Stehen ausgeführte Variante).
 
 **Format:** 1 Seite, DIN A4, PDF zum Ausdrucken
 **Zielgruppe:** Grundschule bis Mittelstufe, Klassenzimmer, Schulbegleitung, zu Hause

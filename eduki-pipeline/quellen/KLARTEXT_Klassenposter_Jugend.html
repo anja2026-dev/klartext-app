@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>KLARTEXT · Klassenposter Jugend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#3B8A68;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--stopp:#C0392B;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;height:297mm;background:#fff;margin:0 auto;position:relative;display:flex;flex-direction:column;}
+
+.emblem-block{background:var(--m);padding:16mm 16mm 12mm;display:flex;flex-direction:column;align-items:center;}
+.wortmarke{align-self:flex-start;font-size:.68rem;font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.55);margin-bottom:8mm;}
+.badge{width:62mm;height:62mm;border-radius:50%;border:2.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;position:relative;}
+.badge-ring-text{position:absolute;inset:-2px;width:100%;height:100%;}
+.badge-hand{font-size:5.2rem;filter:brightness(0) invert(1);}
+.badge-caption{color:rgba(255,255,255,.6);font-size:.68rem;letter-spacing:.1em;margin-top:6mm;text-align:center;max-width:70mm;}
+
+.inhalt{flex:1;padding:14mm 16mm 10mm;display:flex;flex-direction:column;}
+.headline{font-family:"DM Sans",sans-serif;font-weight:900;font-size:3.4rem;color:var(--m);letter-spacing:-.01em;line-height:1;}
+.headline span{color:var(--stopp);}
+.sub{font-size:1rem;color:var(--muted);margin-top:.6rem;margin-bottom:1.6rem;max-width:130mm;}
+
+.regeln{display:flex;flex-direction:column;gap:.9rem;}
+.regel{display:flex;align-items:baseline;gap:.9rem;border-bottom:1.5px solid var(--border);padding-bottom:.9rem;}
+.regel-nr{font-family:"Playfair Display",serif;font-weight:700;font-size:1.6rem;color:var(--stopp);flex-shrink:0;width:2rem;}
+.regel-text{font-size:1.25rem;font-weight:700;color:var(--ink);line-height:1.35;}
+
+.abmachung{margin-top:1.5rem;flex:1;background:var(--paper);border-radius:16px;padding:1.4rem 1.6rem;display:flex;flex-direction:column;}
+.abmachung-label{font-size:.9rem;font-weight:700;color:var(--m);margin-bottom:1.1rem;}
+.abmachung-zeilen{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:1.3rem;}
+.abmachung-reihe{display:flex;gap:2rem;}
+.abmachung-slot{flex:1;}
+.abmachung-linie{border-bottom:1.5px dashed #C7BDAE;height:1.8rem;}
+.abmachung-slot-label{font-size:.6rem;color:var(--muted);letter-spacing:.06em;margin-top:.2rem;}
+
+.fuss{margin-top:1rem;text-align:center;font-size:.65rem;color:var(--muted);padding-bottom:8mm;}
+</style>
+</head>
+<body>
+<div class="seite">
+
+  <div class="emblem-block">
+    <div class="wortmarke">K L A R T E X T</div>
+    <div class="badge">
+      <div class="badge-hand">✋</div>
+    </div>
+    <div class="badge-caption">EIN GESCHLOSSENER KREIS. KEINE LÜCKE.</div>
+  </div>
+
+  <div class="inhalt">
+    <h1 class="headline">STOPP<span>.</span></h1>
+    <div class="sub">Kein großes Drama. Keine Ausreden. Nur drei Regeln, die für uns alle gelten — ohne Ausnahme.</div>
+
+    <div class="regeln">
+      <div class="regel"><div class="regel-nr">01</div><div class="regel-text">Wir hören auf, wenn jemand Stopp sagt.</div></div>
+      <div class="regel"><div class="regel-nr">02</div><div class="regel-text">Wir schließen niemanden aus.</div></div>
+      <div class="regel"><div class="regel-nr">03</div><div class="regel-text">Wir holen Hilfe, wenn wir etwas sehen.</div></div>
+    </div>
+
+    <div class="abmachung">
+      <div class="abmachung-label">Diese Abmachung gilt für unsere Klasse / Gruppe — wir tragen sie mit:</div>
+      <div class="abmachung-zeilen">
+        <div class="abmachung-reihe">
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+        </div>
+        <div class="abmachung-reihe">
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+        </div>
+        <div class="abmachung-reihe">
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+          <div class="abmachung-slot"><div class="abmachung-linie"></div><div class="abmachung-slot-label">NAME</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fuss">© KLARTEXT-Mentoring · www.klartext-mentoring.de · Klassenposter DIN A4</div>
+</div>
+</body>
+</html>

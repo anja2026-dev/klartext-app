@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>KLARTEXT · A3 · Klassenposter Kinder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:22.6px;}
+:root{--m:#1B3A4B;--acc:#3B8A68;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--rose:#FBEEEA;--warm:#B4482E;--stopp:#C0392B;--stopp-hell:#FBDFDA;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:296.9mm;height:420.0mm;background:var(--paper);margin:0 auto;position:relative;display:flex;flex-direction:column;}
+
+.ribbon{background:var(--stopp);color:#fff;text-align:center;padding:.55rem 1rem;font-size:.85rem;font-weight:700;letter-spacing:.16em;}
+.innen{padding:14.1mm 22.6mm 11.3mm;display:flex;flex-direction:column;flex:1;}
+.titel{font-family:"Playfair Display",serif;font-size:2.4rem;font-weight:700;color:var(--m);text-align:center;line-height:1.15;margin-top:.6rem;}
+.untertitel{text-align:center;font-size:1rem;color:var(--muted);margin-top:.4rem;margin-bottom:.9rem;}
+
+.brainy-sprech{display:flex;flex-direction:column;align-items:center;margin:.2rem 0 1.1rem;}
+.brainy-sprech img{width:45.2mm;height:45.2mm;object-fit:contain;}
+.sprechblase{background:#fff;border:2px solid var(--acc);border-radius:20px;padding:.6rem 1.4rem;font-size:1.1rem;font-weight:700;color:var(--m);margin-top:-.5rem;position:relative;}
+
+.regeln{display:flex;flex-direction:column;gap:.9rem;}
+.regel{display:flex;align-items:center;gap:1.3rem;background:#fff;border-radius:20px;border-left:6px solid var(--border);padding:1.1rem 1.5rem;box-shadow:0 4px 18px rgba(27,58,75,.08);}
+.regel-icon{width:26.9mm;height:26.9mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;}
+.regel:nth-child(1){border-left-color:var(--stopp);}
+.regel:nth-child(1) .regel-icon{background:var(--stopp-hell);}
+.regel:nth-child(2){border-left-color:var(--acc);}
+.regel:nth-child(2) .regel-icon{background:#E8F5EE;}
+.regel:nth-child(3){border-left-color:#5B8DBF;}
+.regel:nth-child(3) .regel-icon{background:#E9F1FB;}
+.regel-text{font-size:1.4rem;font-weight:700;color:var(--ink);line-height:1.3;}
+
+.unterschrift{margin-top:1.2rem;flex:1;display:flex;flex-direction:column;}
+.unterschrift-label{text-align:center;font-size:.85rem;font-weight:700;color:var(--m);margin-bottom:.8rem;}
+.oval-feld{flex:1;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(3,1fr);gap:.6rem;}
+.oval{border:1.5px dashed #C9A99A;border-radius:50%;}
+
+.fuss{text-align:center;font-size:.65rem;color:var(--muted);padding:.6rem 0 11.3mm;}
+</style>
+</head>
+<body>
+<div class="seite">
+  <div class="ribbon">✋ UNSERE STOPP-REGELN</div>
+  <div class="innen">
+  <h1 class="titel">Unsere Klassen-Regeln</h1>
+  <div class="untertitel">Damit sich bei uns alle sicher fühlen</div>
+
+  <div class="brainy-sprech">
+    <div class="sprechblase">Bei uns gilt:</div>
+    <img src="brainy.png" alt="Brainy">
+  </div>
+
+  <div class="regeln">
+    <div class="regel"><div class="regel-icon">✋</div><div class="regel-text">Wir hören auf, wenn jemand Stopp sagt.</div></div>
+    <div class="regel"><div class="regel-icon">🤝</div><div class="regel-text">Wir schließen niemanden aus.</div></div>
+    <div class="regel"><div class="regel-icon">🙋</div><div class="regel-text">Wir holen Hilfe, wenn wir etwas sehen.</div></div>
+  </div>
+
+  <div class="unterschrift">
+    <div class="unterschrift-label">Das versprechen wir uns — hier malt jede:r ihren/seinen Namen rein:</div>
+    <div class="oval-feld">
+      <div class="oval"></div><div class="oval"></div><div class="oval"></div><div class="oval"></div><div class="oval"></div>
+      <div class="oval"></div><div class="oval"></div><div class="oval"></div><div class="oval"></div><div class="oval"></div>
+      <div class="oval"></div><div class="oval"></div><div class="oval"></div><div class="oval"></div><div class="oval"></div>
+    </div>
+  </div>
+
+  <div class="fuss">© KLARTEXT-Mentoring · www.klartext-mentoring.de · Klassenposter DIN A3</div>
+  </div>
+</div>
+</body>
+</html>

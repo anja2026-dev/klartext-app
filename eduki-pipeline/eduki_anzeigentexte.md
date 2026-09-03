@@ -258,3 +258,95 @@ Jede Seite mit unserem echten KLARTEXT-Maskottchen Brainy, das aufmunternd begle
 | 9 | Selbstfürsorge-Bingo | 0,00 € | Freebie / Spiele & Rätsel |
 | 10 | Liegende Acht | 0,00 € | Freebie / Spiele & Rätsel |
 | 11 | Schritt-Plan | 2,99 € | Tiny Offer / Regeln & Rituale |
+| 12 | DaZ-Impulskarten Sek I | 16,99 € | Premium / DaZ / Fachübergreifendes |
+| 13 | Geschichtenkarten-Deck | 19,99 € | Premium / Mobbing-Prävention |
+| 14 | Klassenposter Kinder | 0,00 € | Freebie / Klassenregeln |
+| 15 | Klassenposter Jugend | 0,00 € | Freebie / Klassenregeln |
+
+---
+
+## 12. DaZ-Impulskarten Sek I – Systemische Coaching-Impulskarten
+
+**Titel:**
+DaZ-Impulskarten — 25 Karten für (Sek I)
+
+**Kurzbeschreibung (eduki-Feld):**
+25 Impulskarten für Jugendliche mit Deutsch als Zweitsprache und/oder Migrations-/Fluchthintergrund in der Sek I — Ankommen im neuen Schulsystem, Sprache & Leistung, Identität zwischen zwei Welten.
+
+**Beschreibung (lang):**
+25 systemische Coaching-Impulskarten für Jugendliche mit Deutsch als Zweitsprache und/oder Migrations-/Fluchthintergrund in der Sekundarstufe I. Anders als beim Grundschul-Pendant (DaZ-GS-Deck) geht es hier um einen echten qualitativen Bruchpunkt: neues Schulsystem, komplexere soziale Dynamik, und Themen wie Identität und Diskriminierung, die im Jugendalter explizit zur Sprache kommen dürfen.
+
+7 Themenblöcke: Ankommen im neuen System, Sprache & Leistung, Übersetzen für die Eltern, Freundschaft & Zugehörigkeit, was vermisst wird, der eigene Fortschritt, und der Übergang von der DaZ-Klasse in die Regelklasse. Jede Karte: eine kurze Anleitung für die Einsatzsituation, 2 Impulsfragen, ein Tipp für die INGRA.
+
+Kein Trauma-Verarbeitungs-Deck: keine Karte fragt nach Fluchtdetails, der Fokus bleibt immer beim Gefühl in der Gegenwart. Bewusst ohne Brainy — wie bei den anderen Jugendlichen-Decks (AT, ADHS) wäre ein Maskottchen für diese Altersgruppe zu kindlich, im Kartenkopf steht nur das K-Logo.
+
+**Format:** 57 Seiten, PDF, 25 Handlichkeitskarten A6
+**Zielgruppe:** Sek I, DaZ-Klassen, INGRA, Lehrkräfte, Jobcoaching
+**Preis:** 16,99 € (Premium-Kartendeck)
+
+**Tags:** DaZ, Deutsch als Zweitsprache, Migration, Sek I, Systemisches Coaching, Impulskarten, Identität, Mehrsprachigkeit, Willkommenskultur
+
+---
+
+## 13. Geschichtenkarten-Deck – Brainy erlebt & lernt (Mobbing-Prävention)
+
+**Titel:**
+Geschichtenkarten — 31 Karten zu Mobbing & Zivilcourage (Grundschule)
+
+**Kurzbeschreibung (eduki-Feld):**
+31 illustrierte Geschichtenkarten mit Brainy zu Mobbing, Helfen und Strategien — zum gemeinsamen Anschauen und Besprechen mit Grundschulkindern.
+
+**Beschreibung (lang):**
+31 liebevoll illustrierte Geschichtenkarten mit unserem Maskottchen Brainy als Identifikationsfigur — zum gemeinsamen Anschauen und Besprechen mit Kindern im Grundschulalter. Jede Karte erzählt in einem Satz eine Situation, stellt 3 Gesprächsfragen und gibt ein Impuls-Zitat mit.
+
+3 Sets à 10 Karten: „Brainy erlebt Mobbing" (Opferperspektive), „Brainy hilft anderen" (Verteidiger-/Helferperspektive) und „Brainy lernt Strategien" (Übungskarten) — plus eine Stoppschild-Bonuskarte. So lässt sich das Thema aus allen drei Blickwinkeln behandeln, nicht nur aus der Opferrolle heraus.
+
+Jede Karte im gleichen Aquarell-Kinderbuch-Stil wie die anderen Brainy-Materialien, für Wiedererkennung über die ganze Kartenserie hinweg. Ideal für den Morgenkreis, die Klassenleitung oder als Einstieg in ein Mobbing-Präventionsprojekt.
+
+**Format:** 65 Seiten, PDF, 31 Karten A6
+**Zielgruppe:** Grundschule, INGRA, Lehrkräfte, OGS
+**Preis:** 19,99 € (Premium-Kartendeck)
+
+**Tags:** Mobbing, Zivilcourage, Prävention, Geschichtenkarten, Grundschule, Brainy, Soziales Lernen, Klassenrat, Gesprächsanlass
+
+---
+
+## 14. Klassenposter Kinder – Unsere Stopp-Regeln (A4 + A3)
+
+**Titel:**
+Klassenposter Kinder — Unsere Stopp-Regeln (A4 & A3)
+
+**Kurzbeschreibung (eduki-Feld):**
+Buntes Klassenposter mit Brainy und 3 einfachen Stopp-Regeln zum gemeinsamen Unterschreiben — für Grundschulkinder, in A4 und A3.
+
+**Beschreibung (lang):**
+Ein freundliches, farbiges Klassenposter mit Brainy in der Sprechblase und drei einfachen, sofort verständlichen Regeln: „Wir hören auf, wenn jemand Stopp sagt", „Wir schließen niemanden aus", „Wir holen Hilfe, wenn wir etwas sehen". Darunter ein Unterschriftenfeld, in das jedes Kind seinen Namen malen kann — ein kleines gemeinsames Versprechen, kein trockenes Regelwerk.
+
+Enthält beide Druckformate: DIN A4 fürs Klassenzimmer-Regal oder die Pinnwand, DIN A3 zum großformatigen Aushängen. Passt als Einstieg perfekt zu jedem Mobbing-Präventions- oder Klassenrat-Thema.
+
+**Format:** 2 PDFs (A4 + A3), je 1 Seite
+**Zielgruppe:** Grundschule, Klassenzimmer
+**Preis:** 0,00 € (Freebie)
+
+**Tags:** Klassenregeln, Stopp-Regel, Mobbing-Prävention, Klassenposter, Grundschule, Brainy, kostenlos, Freebie, Klassenrat
+
+---
+
+## 15. Klassenposter Jugend – KLARTEXT-Vereinbarung (A4 + A3)
+
+**Titel:**
+Klassenposter Jugend — KLARTEXT-Vereinbarung (A4 & A3)
+
+**Kurzbeschreibung (eduki-Feld):**
+Nüchtern gestaltetes Klassenposter für Jugendliche mit 3 klaren Regeln gegen Ausgrenzung — als KLARTEXT-Wortspiel, in A4 und A3.
+
+**Beschreibung (lang):**
+Das jugendliche Pendant zum Kinder-Klassenposter — bewusst ohne Maskottchen, dafür mit dem KLARTEXT-Wortspiel und einem klaren „STOPP." als Blickfang. „Ein geschlossener Kreis. Keine Lücke." — kein großes Drama, keine Ausreden, nur drei Regeln, die für alle gelten: aufhören, wenn jemand Stopp sagt; niemanden ausschließen; Hilfe holen, wenn man etwas sieht.
+
+Mit 9 Unterschriftenfeldern für die ganze Klasse oder Gruppe, damit die Abmachung sichtbar von allen mitgetragen wird — altersangemessen nüchtern statt kindlich, passend zur Sek I/II-Zielgruppe (gleiches Designprinzip wie beim Zonen-Set).
+
+**Format:** 2 PDFs (A4 + A3), je 2 Seiten
+**Zielgruppe:** Sek I/II, Klassenzimmer
+**Preis:** 0,00 € (Freebie)
+
+**Tags:** Klassenregeln, Stopp-Regel, Mobbing-Prävention, Klassenposter, Sek I, Sek II, kostenlos, Freebie, Klassenrat

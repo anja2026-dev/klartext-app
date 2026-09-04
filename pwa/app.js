@@ -165,7 +165,7 @@ const ROLLEN_DECKS = {
   ingra: null, tk: null, admin: null, // null = alle Decks erlaubt
   eltern: ['el', 'kd', 'at', 'fs', 'to', 'ds', 'lrs-sek1', 'insel-eltern', 'zonen-eltern', 'geschichtenkarten'],
   lehrkraft: ['lk', 'kd', 'at', 'fs', 'dazgs', 'dazsek1', 'ogs', 'to', 'ds', 'lrs-sek1', 'hb', 'insel-schule', 'zonen-schule', 'geschichtenkarten'],
-  jobcoach: ['jd', 'adhs', 'zonen-schule', 'zonen-eltern', 'geschichtenkarten', 'werkzeug', 'krisendeck', 'mb'],
+  jobcoach: ['jd', 'kd', 'adhs', 'fs', 'krisendeck', 'werkzeug', 'mb', 'smi'],
   mobbing: ['mb', 'smi', 'krisendeck', 'geschichtenkarten'],
 };
 

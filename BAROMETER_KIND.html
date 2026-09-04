@@ -347,6 +347,10 @@ function istJobcoachModus(){
     var urlModus = new URLSearchParams(window.location.search).get('modus');
     if (urlModus === 'jobcoach') { try{ localStorage.setItem(MODUS_STORAGE_KEY,'jobcoach'); }catch(e){} return true; }
     if (urlModus === 'schule') { try{ localStorage.removeItem(MODUS_STORAGE_KEY); }catch(e){} return false; }
+    // 04.09.2026: Login-Rolle "jobcoach" aktiviert den Jobcoach-Modus automatisch,
+    // auch ohne ?modus=jobcoach in der URL (z.B. bei normaler Dashboard-Navigation) -
+    // sonst bleibt die Teilnehmer-ID-Verwaltung fuer jobcoach-Logins unsichtbar.
+    try { if (sessionStorage.getItem('klartext_role') === 'jobcoach') return true; } catch(e2) {}
     return localStorage.getItem(MODUS_STORAGE_KEY) === 'jobcoach';
   } catch(e) { return false; }
 }

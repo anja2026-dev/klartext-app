@@ -1,0 +1,6 @@
+# Service Worker der Kartendecks-App darf nie von Cloudflare/Browser
+# gecacht werden - sonst bekommen Nutzer:innen SW-Updates (Bugfixes wie
+# den Redirect-Fix von heute) erst nach einem Hard-Refresh (Cmd+R) zu
+# sehen, statt bei normalem Neuladen automatisch.
+/pwa/service-worker.js
+  Cache-Control: no-cache, no-store, must-revalidate

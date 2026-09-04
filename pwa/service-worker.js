@@ -1,6 +1,6 @@
 // KLARTEXT-Mentoring Karten – Service Worker
 // Cache-Version erhöhen (v1 -> v2 ...), wenn App-Shell-Dateien sich ändern.
-const SHELL_CACHE = 'klartext-shell-v15';
+const SHELL_CACHE = 'klartext-shell-v16';
 const RUNTIME_CACHE = 'klartext-runtime-v1';
 
 const SHELL_FILES = [
@@ -55,10 +55,20 @@ self.addEventListener('fetch', (event) => {
             let safeResponse = response;
             if (response && response.redirected) {
               const body = await response.clone().blob();
+              // Content-Encoding/-Length nicht uebernehmen: der Blob ist
+              // bereits entpackt, mit den Original-Headern wuerde der
+              // Browser eine (nicht mehr vorhandene) Kompression erwarten
+              // und die Antwort mit ERR_FAILED verwerfen.
+              const safeHeaders = new Headers();
+              response.headers.forEach((value, key) => {
+                const k = key.toLowerCase();
+                if (k === 'content-encoding' || k === 'content-length' || k === 'transfer-encoding') return;
+                safeHeaders.append(key, value);
+              });
               safeResponse = new Response(body, {
                 status: response.status,
                 statusText: response.statusText,
-                headers: response.headers
+                headers: safeHeaders
               });
             }
             if (safeResponse && safeResponse.status === 200) cache.put(event.request, safeResponse.clone());

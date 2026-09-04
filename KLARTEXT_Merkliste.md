@@ -4655,3 +4655,65 @@ mehr angelegt wurden.
   — offene Rückfrage.
 - Alle offenen Punkte aus Strang 91–119 weiterhin gültig, soweit nicht durch obige Rekonstruktion
   erkennbar erledigt.
+
+## Strang 121 (04.09.2026) — Sonderzugang für Daniel Mann, Barometer-Jobcoach-Fix, Code-Personalisierung
+
+Malteser-Testphase mit der Voll-App wurde abgelehnt. Daniel Mann (Tester der ersten Stunde,
+Namensgeber des ADHS-Workbook-Konzepts, weiterhin aktiver Schulbegleiter) bekommt stattdessen
+einen persönlichen Sonderzugang.
+
+**Login:** Neuer personalisierter Einzelcode `dank26` (Rolle `jobcoach`) in `KLARTEXT_Login.html`,
+mit Name `Daniel Mann` im Hash-Eintrag hinterlegt (`login()` speichert diesen optional in
+`sessionStorage['klartext_login_name']`).
+
+**Freigeschaltet für Rolle `jobcoach`:**
+- Dashboard-Module: alle bis auf TK-Bereich und Trainer/Zertifikate (per Bulk-Edit an ~15
+  `data-roles`-Attributen in `DASHBOARD.html`, u. a. auch `sek-kd`/Kinderkarten für die kompletten
+  interaktiven Kinder-Tools inkl. Mutmach-Tier — live mit frischer Session verifiziert, 23 Kacheln
+  sichtbar).
+- Kartendecks-App (`pwa/app.js`, `ROLLEN_DECKS.jobcoach`): exakt `jd, kd, adhs, fs, krisendeck,
+  werkzeug, mb, smi`.
+
+**Bugfix Barometer/Tagesjournal:** `istJobcoachModus()` in `BAROMETER_KIND.html` erkannte den
+Jobcoach-Modus bisher nur über `?modus=jobcoach` in der URL, nicht über die Login-Rolle — dadurch
+konnte über normale Dashboard-Navigation keine Teilnehmer-ID angelegt werden (Tagesjournal blieb
+leer). Fix: `sessionStorage['klartext_role'] === 'jobcoach'` aktiviert den Modus jetzt zusätzlich
+automatisch. Live end-to-end verifiziert (Würfel-ID erzeugt, im Tagesjournal sichtbar).
+
+**Schutz gegen Code-Weitergabe:** Sichtbarer Personalisierungs-Banner auf dem Dashboard
+(`#personal-code-banner`), zeigt bei personalisierten Einzelcodes den hinterlegten Namen
+("Dieser Zugang gehört Daniel Mann — bitte nicht an Kolleg:innen weitergeben."). Rein sozialer
+Riegel, keine technische Sperre (offline-first PWA hat keine serverseitige Durchsetzung möglich).
+
+**Einverständniserklärung:** Fillable PDF (pdf-lib, echte AcroForm-Felder: Checkboxen für
+Nennungs-Umfang, Radio-Gruppe für Art der Nennung, Textfelder für digitale Unterschrift/Datum)
+erstellt und an Anja übergeben — von Daniel unterschrieben. **Noch offen:** In
+`KLARTEXT_Workbook.html` (~Zeile 1122) "Daniel M." zu "Daniel Mann" ändern und committen.
+
+**Architektur-Klärung Firebase/Supabase:** Im Zuge der Diagnose festgestellt, dass die App mehrfach
+zwischen Firebase und Supabase migriert wurde (aktuell zurück bei Firebase, DSGVO-Gründe).
+Barometer/Tagesjournal/Interessen-Check/Werte-Poker/Schritt-Plan/ADHS-Toolbox/Ressourcenbericht
+sind reines `localStorage`, davon nicht betroffen. `KLARTEXT_Weiterleitungen.html` sendet über
+Firebase, aber der TK-Inbox-Tab liest über Supabase (`weiterleitungen`-Tabelle) — dadurch kommen
+dort gesendete Nachrichten nie an. Für Einzel-User wie Daniel ohne Träger-Buchung nicht relevant,
+daher nicht priorisiert behoben — bleibt offener Punkt für später.
+
+### Neue Merkregel (ab sofort dauerhaft gültig)
+**Wenn neue Materialien für eduki erstellt werden, künftig immer parallel prüfen/ergänzen:**
+1. **Daniels persönlicher Sonderzugang** (Dashboard-`data-roles` + `ROLLEN_DECKS.jobcoach` in
+   `pwa/app.js`) — passendes neues Material für ihn mit freischalten.
+2. **Die reguläre Haupt-App** (Dashboard-Kacheln/Kartendecks für die betroffenen Rollen).
+3. **Der klartext-shop** (Website-Listing bzw. Freebie-Download-Sektion).
+
+Hintergrund: Bisher wurden eduki-Freebies vereinzelt nicht auf die Website/den Shop übertragen —
+das soll künftig nicht mehr passieren.
+
+### Noch offen
+- `KLARTEXT_Workbook.html`: "Daniel M." → "Daniel Mann" (nach Unterschrift, kann jetzt erfolgen).
+- `KLARTEXT_Weiterleitungen.html`: Firebase/Supabase-Split beheben (TK-Inbox liest falsche Quelle)
+  — nicht dringend, nur relevant sobald ein Träger die Supabase-Variante bucht.
+- Sie-Form-Rest in `KLARTEXT_Weiterleitungen.html`-Textarea-Placeholder ("Was möchten Sie
+  mitteilen?") auf Duzen umstellen.
+- eduki-Freebies (u. a. aktuelle Freebie-Sets) prüfen, ob sie schon auf der klartext-shop-Website
+  als Downloads verlinkt sind — laut Anja aktuell wohl nicht.
+- Alle offenen Punkte aus Strang 91–120 weiterhin gültig, soweit nicht oben erledigt.

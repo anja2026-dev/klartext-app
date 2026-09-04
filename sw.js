@@ -1,5 +1,5 @@
 // KLARTEXT Service Worker — Safari-kompatibel
-const CACHE = 'klartext-v3';
+const CACHE = 'klartext-v4';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
@@ -21,6 +21,14 @@ self.addEventListener('fetch', e => {
   if (e.request.mode === 'navigate') {
     // Bei Navigation: immer Netzwerk bevorzugen
     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    return;
+  }
+  // Service-Worker-Skripte (auch die der Kartendecks-App unter /pwa/) nie
+  // cachen - sonst bekommen Nutzer:innen SW-Bugfixes nie automatisch, weil
+  // dieser (seiten-weite) Service Worker eine alte Version fuer immer
+  // festhaelt. Betroffen war z.B. der Redirect-Fix vom 04.09.2026.
+  if (e.request.url.endsWith('/service-worker.js') || e.request.url.endsWith('/sw.js')) {
+    e.respondWith(fetch(e.request));
     return;
   }
   e.respondWith(

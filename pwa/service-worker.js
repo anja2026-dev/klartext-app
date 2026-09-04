@@ -1,10 +1,9 @@
 // KLARTEXT-Mentoring Karten – Service Worker
 // Cache-Version erhöhen (v1 -> v2 ...), wenn App-Shell-Dateien sich ändern.
-const SHELL_CACHE = 'klartext-shell-v14';
+const SHELL_CACHE = 'klartext-shell-v15';
 const RUNTIME_CACHE = 'klartext-runtime-v1';
 
 const SHELL_FILES = [
-  './',
   './index.html',
   './style.css',
   './app.js',
@@ -46,9 +45,24 @@ self.addEventListener('fetch', (event) => {
     caches.open(cacheName).then((cache) =>
       cache.match(event.request).then((cached) => {
         const network = fetch(event.request)
-          .then((response) => {
-            if (response && response.status === 200) cache.put(event.request, response.clone());
-            return response;
+          .then(async (response) => {
+            // Safari verweigert Navigations-Antworten, die vom Service Worker
+            // stammen und "redirected" sind (z.B. wenn Cloudflare Pages /pwa
+            // intern auf /pwa/ umleitet) - Fehler "Response served by service
+            // worker has redirections". Fix: Body in eine neue, nicht als
+            // redirected markierte Response verpacken, bevor sie gecacht/
+            // zurückgegeben wird.
+            let safeResponse = response;
+            if (response && response.redirected) {
+              const body = await response.clone().blob();
+              safeResponse = new Response(body, {
+                status: response.status,
+                statusText: response.statusText,
+                headers: response.headers
+              });
+            }
+            if (safeResponse && safeResponse.status === 200) cache.put(event.request, safeResponse.clone());
+            return safeResponse;
           })
           .catch(() => cached);
         return cached || network;

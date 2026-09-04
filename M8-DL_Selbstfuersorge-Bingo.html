@@ -116,5 +116,20 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 <script>
 new QRCode(document.getElementById('qr-footer-1'), {text:'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
 </script>
+<!-- KLARTEXT Funnel-Fussleiste (03.09.2026) -->
+<div id="klartext-funnel-footer" style="display:none;background:#1B3A4B;color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:.78rem;line-height:1.4;padding:.65rem 1rem;text-align:center;">
+  Mehr kostenlose &amp; Premium-Materialien von KLARTEXT-Mentoring:
+  <a href="https://klartext-mentoring.de" target="_blank" rel="noopener" style="color:#6ec6a0;font-weight:700;text-decoration:underline;">klartext-mentoring.de</a>
+</div>
+<script>
+(function(){
+  try {
+    if (new URLSearchParams(window.location.search).get('guest') === 'true') {
+      var f = document.getElementById('klartext-funnel-footer');
+      if (f) f.style.display = 'block';
+    }
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>

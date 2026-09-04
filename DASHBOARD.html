@@ -558,6 +558,27 @@ mobileBarometerStatusLaden();
   })();
   </script>
 
+  <!-- Persoenlicher-Zugang-Hinweis (04.09.2026): rein sozialer Riegel gegen
+       Weitergabe personenbezogener Einzelcodes (z.B. dank26) - zeigt den beim
+       Login hinterlegten Namen sichtbar an, technisch aber keine Sperre. -->
+  <div id="personal-code-banner" style="display:none;background:#FBF4E8;border:1.5px solid #B07D2A;border-radius:10px;padding:.7rem 1.1rem;margin:.75rem clamp(.75rem,3vw,1.5rem);align-items:center;gap:.65rem;">
+    <span style="font-size:1.1rem;">👤</span>
+    <span style="font-size:.78rem;color:#5A4A2A;" id="personal-code-banner-text"></span>
+  </div>
+  <script>
+  (function(){
+    try{
+      var name = sessionStorage.getItem('klartext_login_name');
+      if(name){
+        var banner = document.getElementById('personal-code-banner');
+        document.getElementById('personal-code-banner-text').textContent =
+          'Dieser Zugang gehört ' + name + ' — bitte nicht an Kolleg:innen weitergeben.';
+        banner.style.display = 'flex';
+      }
+    }catch(e){}
+  })();
+  </script>
+
 
   <!-- Installations-Hinweis -->
   <div id="install-banner" style="display:none;background:#EEF7F2;border:1.5px solid #3B8A68;border-radius:10px;padding:.7rem 1.1rem;margin:.75rem clamp(.75rem,3vw,1.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">

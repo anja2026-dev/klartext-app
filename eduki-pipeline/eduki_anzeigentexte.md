@@ -262,6 +262,7 @@ Jede Seite mit unserem echten KLARTEXT-Maskottchen Brainy, das aufmunternd begle
 | 13 | Geschichtenkarten-Deck | 19,99 € | Premium / Mobbing-Prävention |
 | 14 | Klassenposter Kinder | 0,00 € | Freebie / Klassenregeln |
 | 15 | Klassenposter Jugend | 0,00 € | Freebie / Klassenregeln |
+| 16 | Praktikums-Notfall-Kärtchen & Kühlschrank-Superpower | 1,99 € | Arbeitslehre / Praktikum |
 
 ---
 
@@ -350,3 +351,28 @@ Mit 9 Unterschriftenfeldern für die ganze Klasse oder Gruppe, damit die Abmachu
 **Preis:** 0,00 € (Freebie)
 
 **Tags:** Klassenregeln, Stopp-Regel, Mobbing-Prävention, Klassenposter, Sek I, Sek II, kostenlos, Freebie, Klassenrat
+
+---
+
+## 16. Praktikums-Notfall-Kärtchen & Kühlschrank-Superpower
+
+**Titel:**
+Praktikums-Notfall-Kärtchen & Kühlschrank-Superpower (Sek I)
+
+**Kurzbeschreibung (eduki-Feld):**
+Mitmach-Tool fürs Praktikum: Superpower-Card für den Kühlschrank + 2 Notfallkarten im Scheckkartenformat mit deeskalierenden Sätzen für stressige Praktikumstage.
+
+**Beschreibung (lang):**
+Ein DIN-A4-Mitmach-Tool für Jugendliche in der Berufsvorbereitung, bewusst ohne Maskottchen gestaltet — erwachsener und "cooler" für die Zielgruppe Sek I. Zum Ausschneiden in zwei Teile:
+
+Oben die Superpower-Card im A5-Querformat für den Kühlschrank: drei Felder zum Eintragen der eigenen Stärken, dazu ein echter, scannbarer QR-Code zum kostenlosen 2-Minuten-Interessen-Check der KLARTEXT-App (ohne Anmeldung).
+
+Unten zwei Notfallkarten im echten Scheckkartenformat zum Ausschneiden und Laminieren, fürs Portemonnaie: Karte 1 "Erste Hilfe bei Stress" mit drei deeskalierenden Mustersätzen für Unklarheit, Überforderung und Kritik im Praktikumsalltag. Karte 2 "Mein Sicherheitsnetz" mit einem Mutmacher-Satz und Feldern für Ansprechperson im Betrieb, INGRA-Begleitung und Notfallkontakt.
+
+Passendes Begleitmaterial zum Eltern-Set "Berufs-Dschungel" (gleiche Akzentfarbe Kupfer) — beide zusammen decken Eltern- und Jugendlichen-Perspektive der Berufsvorbereitung ab.
+
+**Format:** 1 Seite, PDF, zum Ausschneiden (A5-Karte + 2 Scheckkarten)
+**Zielgruppe:** Sek I, Berufsvorbereitung, Praktikum, INGRA, Jobcoaching
+**Preis:** 1,99 € (Tiny Offer / Arbeitslehre)
+
+**Tags:** Praktikum, Berufsvorbereitung, Sek I, Stressbewältigung, Kommunikation, Selbstwirksamkeit, Arbeitslehre, Notfallkarte, Deeskalation

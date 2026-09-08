@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Tischaufsteller</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#4FC3C7;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto;}
+.shell{max-width:640px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;}
+
+.hinweis{font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:1.25rem;}
+
+.impuls-karte{background:var(--surface);border:2px solid var(--border);border-radius:16px;margin-bottom:.9rem;overflow:hidden;box-shadow:0 3px 14px rgba(27,58,75,.06);}
+.impuls-kopf{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem;cursor:pointer;}
+.impuls-emoji{font-size:1.4rem;flex-shrink:0;}
+.impuls-titel{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:var(--m);flex:1;}
+.impuls-pfeil{color:var(--acc);font-size:.9rem;transition:transform .2s;flex-shrink:0;}
+.impuls-karte.offen .impuls-pfeil{transform:rotate(180deg);}
+
+.impuls-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.impuls-karte.offen .impuls-body{max-height:900px;}
+.impuls-inhalt{padding:0 1.1rem 1.1rem;}
+
+.block{margin-bottom:.9rem;}
+.block:last-child{margin-bottom:0;}
+.block-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.3rem;}
+.block-text{font-size:.88rem;line-height:1.5;}
+.block.perspektive .block-text{color:var(--ink);}
+.block.hebel{background:var(--paper);border-radius:10px;padding:.7rem .8rem;}
+.block.skript{background:#EEFBFB;border-left:3px solid var(--acc);border-radius:0 10px 10px 0;padding:.7rem .8rem;}
+.block.skript .block-text{font-style:italic;color:#1a5c5c;}
+
+#brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="KLARTEXT_Spiele.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Interaktive Tools</div>
+  </a>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Tools</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">🗂️</div>
+  <h1 class="hero-titel">Der digitale Tischaufsteller</h1>
+  <p class="hero-sub">Systemische Impulse & Deeskalations-Werkzeuge für dein Kollegium — tipp die Situation an, die gerade akut ist.</p>
+</div>
+
+<div class="shell">
+  <p class="hinweis">Kein Ranking, keine Reihenfolge — such dir einfach die Karte, die gerade passt.</p>
+  <div id="impuls-liste"></div>
+</div>
+
+<img id="brainy-anker" src="brainy.png" alt="">
+
+<script>
+var IMPULSE = [
+  {
+    emoji: '🌀',
+    titel: 'Das unruhige Klassenzimmer',
+    perspektive: 'Ständige Unruhe ist ein dysfunktionaler Lösungsversuch im System. Jedes Schimpfen wirkt wie ein Scheinwerfer, der das störende Verhalten belohnt.',
+    hebelLabel: 'Musterunterbrechung (2-Minuten-Spiel)',
+    hebel: 'Nutze das Spiel „Fehler-Detektiv“: Schreib eine Rechenaufgabe mit einem bewussten Fehler an die Tafel. Fordere die Klasse lautlos auf, den Fehler schweigend durch Handheben zu detektieren.',
+    skript: '„Ich sehe, dass euer Quatsch-Kopf heute viel Energie hat. Das ist okay. Aber jetzt gilt die kLAR-Formel: Wir atmen einmal tief durch und finden den Fehler.“'
+  },
+  {
+    emoji: '✋',
+    titel: 'Die Arbeitsverweigerung',
+    perspektive: 'Wenn Schüler blockieren oder den Stift wegwerfen, liegt oft eine akute Task-Paralyse (exekutive Dysfunktion) vor. Druck verschlimmert die Blockade.',
+    hebelLabel: 'Dopamin-Portionierer',
+    hebel: 'Zerschneide die Aufgabe in mikroskopische Teilschritte unter 2 Minuten (z. B. „Nur die erste Zahl aufschreiben“). Lass den Schüler jeden Schritt haptisch umknicken.',
+    skript: '„Du musst nicht das ganze Blatt machen. Lass uns mit einem Winz-Schritt starten. Knick das Papier um, wenn du bereit bist.“'
+  },
+  {
+    emoji: '🤐',
+    titel: 'Der schweigende Zuschauer',
+    perspektive: 'Mobbing gedeiht im Verborgenen. Zuschauer weichen aus Angst vor eigener Ausgrenzung zurück. Ihr Schweigen wirkt jedoch wie Zustimmung.',
+    hebelLabel: '10-Sekunden-Regel (Upstander-Aktivierung)',
+    hebel: 'Schul die Klasse präventiv: Wenn Mitschüler innerhalb von 10 Sekunden deeskalierend eingreifen (z. B. das Opfer ansprechen und wegführen), stoppt die Dynamik in vielen Fällen sofort.',
+    skript: '„Hilfe holen ist kein Petzen, sondern echte Bündnis-Stärke. Wir schauen nicht weg. Wer unterstützt mich dabei, den Schutzraum aufzubauen?“'
+  },
+  {
+    emoji: '🌡️',
+    titel: 'Der Sensory Overload',
+    perspektive: 'Bei ADHS, Autismus oder emotionaler Überflutung ist das Sprachzentrum blockiert. Verbale Diskussionen führen sofort zur Eskalation.',
+    hebelLabel: 'Das lautlose Reiz-Thermostat (Klassen-Barometer)',
+    hebel: 'Lass das Kind schweigend seine Wäscheklammer auf Orange oder Rot schieben. Reagier lautlos, indem du ihm den Atem-Ballon oder Kopfhörer reichst.',
+    skript: '„Ich sehe deine Klammer. Kein Reden nötig. Nimm dir deine Auszeit auf der Kissen-Insel, bis dein System wieder abkühlt.“'
+  },
+  {
+    emoji: '🔥',
+    titel: 'Das eskalierende Elterngespräch',
+    perspektive: 'Wenn Eltern oder Jugendliche hochkochen, greift das Prinzip „Schmiede das Eisen, wenn es kalt ist“. Niemals im Sturm diskutieren.',
+    hebelLabel: 'Die Ankündigung der Präsenz (Neue Autorität)',
+    hebel: 'Setz eine klare, liebevolle, aber unnachgiebige Grenze. Kündige an, selbstdestruktives Verhalten nicht länger mitzutragen — ohne Drohung, ohne Rückzug.',
+    skript: '„Ich lass dich nicht im Stich. Aber ich weigere mich, dabeizuzusehen, wie du dich zerstörst. Wir sprechen morgen weiter.“'
+  },
+  {
+    emoji: '🎭',
+    titel: 'Die systemische Teilearbeit',
+    perspektive: 'Jeder störende innere Anteil (wie der innere Kritiker, der Paniker oder der Schweinehund) verfolgt im System eine positive Absicht.',
+    hebelLabel: 'Die Externalisierung (Vogelperspektive)',
+    hebel: 'Gib dem inneren Anteil einen Namen (z. B. „Sorgen-Brainy“). Erfrag seine schützende Absicht, statt ihn zu bekämpfen. Wechsle aktiv in die Meta-Position.',
+    skript: '„Danke, Sorgen-Brainy, dass du mich vor Fehlern schützen willst. Aber ich hab mich gut vorbereitet. Du darfst jetzt schlafen gehen.“'
+  }
+];
+
+function karteRendern(impuls, index){
+  var karte = document.createElement('div');
+  karte.className = 'impuls-karte';
+  karte.innerHTML =
+    '<div class="impuls-kopf">' +
+      '<span class="impuls-emoji">' + impuls.emoji + '</span>' +
+      '<span class="impuls-titel">' + impuls.titel + '</span>' +
+      '<span class="impuls-pfeil">▾</span>' +
+    '</div>' +
+    '<div class="impuls-body"><div class="impuls-inhalt">' +
+      '<div class="block perspektive"><div class="block-label">Die systemische Perspektive</div><div class="block-text">' + impuls.perspektive + '</div></div>' +
+      '<div class="block hebel"><div class="block-label">' + impuls.hebelLabel + '</div><div class="block-text">' + impuls.hebel + '</div></div>' +
+      '<div class="block skript"><div class="block-label">Dein kLAR-Sofortskript</div><div class="block-text">' + impuls.skript + '</div></div>' +
+    '</div></div>';
+  karte.querySelector('.impuls-kopf').addEventListener('click', function(){
+    karte.classList.toggle('offen');
+  });
+  return karte;
+}
+
+var liste = document.getElementById('impuls-liste');
+IMPULSE.forEach(function(impuls, i){ liste.appendChild(karteRendern(impuls, i)); });
+</script>
+
+</body>
+</html>

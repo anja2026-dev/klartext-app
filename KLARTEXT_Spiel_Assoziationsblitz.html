@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Assoziationsblitz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#4FC3C7;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--gold:#D4A800;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto;}
+.shell{max-width:640px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;}
+
+.thema-karte{background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:1.1rem 1.25rem;margin-bottom:1.25rem;box-shadow:0 4px 18px rgba(27,58,75,.08);}
+.thema-label{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.5rem;}
+#thema-input{width:100%;font-family:"Playfair Display",serif;font-size:1.15rem;font-weight:700;color:var(--m);border:none;background:transparent;outline:none;}
+#thema-input::placeholder{color:var(--muted);font-weight:400;}
+
+.fortschritt-zeile{display:flex;align-items:center;gap:.75rem;margin-bottom:1.1rem;}
+.fortschritt-balken{flex:1;height:8px;background:var(--border);border-radius:5px;overflow:hidden;}
+#fortschritt-fuellung{height:100%;background:var(--acc);width:0%;transition:width .3s ease;}
+#fortschritt-text{font-size:.75rem;font-weight:700;color:var(--muted);white-space:nowrap;}
+
+.buchstaben-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;}
+.buchstabe-karte{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:.65rem .7rem;cursor:pointer;transition:border-color .15s, transform .1s;}
+.buchstabe-karte:active{transform:scale(.97);}
+.buchstabe-karte.gefuellt{border-color:var(--acc);background:#EEFBFB;}
+.buchstabe-kopf{display:flex;align-items:center;justify-content:space-between;}
+.buchstabe-letter{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:var(--m);}
+.buchstabe-haken{font-size:.9rem;color:var(--acc);opacity:0;transition:opacity .15s;}
+.buchstabe-karte.gefuellt .buchstabe-haken{opacity:1;}
+.buchstabe-text{font-size:.82rem;color:var(--ink);margin-top:.3rem;word-break:break-word;min-height:1.1rem;}
+.buchstabe-input{width:100%;font-family:"DM Sans",sans-serif;font-size:.85rem;border:none;border-bottom:1.5px solid var(--acc);background:transparent;outline:none;margin-top:.3rem;padding:.15rem 0;display:none;}
+.buchstabe-karte.aktiv .buchstabe-input{display:block;}
+.buchstabe-karte.aktiv .buchstabe-text{display:none;}
+
+.aktion-zeile{display:flex;justify-content:center;margin-top:2rem;}
+.reset-btn{background:none;border:1.5px solid var(--muted);color:var(--muted);padding:.6rem 1.4rem;border-radius:50px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;}
+
+#brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="KLARTEXT_Spiele.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Interaktive Tools</div>
+  </a>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Tools</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">⚡</div>
+  <h1 class="hero-titel">Assoziationsblitz</h1>
+  <p class="hero-sub">Wähl ein Thema und tipp frei zu beliebigen Buchstaben deine Ideen ein — reizarmes Wissens-Warm-up ganz ohne Reihenfolge.</p>
+</div>
+
+<div class="shell">
+
+  <div class="thema-karte">
+    <div class="thema-label">📌 Thema</div>
+    <input id="thema-input" type="text" placeholder="z.B. Tiere, Berufe, was mich stark macht …" maxlength="60">
+  </div>
+
+  <div class="fortschritt-zeile">
+    <div class="fortschritt-balken"><div id="fortschritt-fuellung"></div></div>
+    <div id="fortschritt-text">0 / 26</div>
+  </div>
+
+  <div class="buchstaben-grid" id="buchstaben-grid"></div>
+
+  <div class="aktion-zeile">
+    <button class="reset-btn" onclick="alphabetZuruecksetzen()">↺ Alles zurücksetzen</button>
+  </div>
+
+</div>
+
+<img id="brainy-anker" src="brainy.png" alt="">
+
+<script>
+var ALPHABET = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+var STORAGE_KEY = 'klartext_assoziationsblitz_v1';
+var audioCtx = null;
+
+function sicherstellenAudioCtx(){
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { audioCtx = null; }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
+}
+
+function chime(){
+  if (!audioCtx) return;
+  try {
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 660;
+    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.22, audioCtx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.45);
+  } catch(e) {}
+}
+
+function ladeState(){
+  try {
+    var roh = localStorage.getItem(STORAGE_KEY);
+    if (roh) return JSON.parse(roh);
+  } catch(e) {}
+  return { thema:'', eintraege:{} };
+}
+
+function speichereState(state){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+var state = ladeState();
+
+function fortschrittAktualisieren(){
+  var anzahl = Object.keys(state.eintraege).filter(function(k){ return state.eintraege[k] && state.eintraege[k].trim() !== ''; }).length;
+  document.getElementById('fortschritt-text').textContent = anzahl + ' / 26';
+  document.getElementById('fortschritt-fuellung').style.width = (anzahl / 26 * 100) + '%';
+}
+
+function karteRendern(buchstabe){
+  var karte = document.createElement('div');
+  karte.className = 'buchstabe-karte';
+  karte.dataset.buchstabe = buchstabe;
+  var eintrag = state.eintraege[buchstabe] || '';
+  if (eintrag.trim() !== '') karte.classList.add('gefuellt');
+
+  karte.innerHTML =
+    '<div class="buchstabe-kopf">' +
+      '<span class="buchstabe-letter">' + buchstabe + '</span>' +
+      '<span class="buchstabe-haken">✓</span>' +
+    '</div>' +
+    '<div class="buchstabe-text">' + (eintrag || 'Antippen …') + '</div>' +
+    '<input class="buchstabe-input" type="text" maxlength="40" placeholder="Deine Idee …">';
+
+  karte.addEventListener('click', function(e){
+    if (karte.classList.contains('aktiv')) return;
+    document.querySelectorAll('.buchstabe-karte.aktiv').forEach(function(k){ k.classList.remove('aktiv'); });
+    karte.classList.add('aktiv');
+    var input = karte.querySelector('.buchstabe-input');
+    input.value = state.eintraege[buchstabe] || '';
+    sicherstellenAudioCtx();
+    setTimeout(function(){ input.focus(); }, 10);
+  });
+
+  var input = karte.querySelector('.buchstabe-input');
+  function abschliessen(){
+    var wert = input.value.trim();
+    var warVorherLeer = !(state.eintraege[buchstabe] && state.eintraege[buchstabe].trim() !== '');
+    state.eintraege[buchstabe] = wert;
+    speichereState(state);
+    karte.classList.remove('aktiv');
+    karte.querySelector('.buchstabe-text').textContent = wert || 'Antippen …';
+    karte.classList.toggle('gefuellt', wert !== '');
+    if (wert !== '' && warVorherLeer) chime();
+    fortschrittAktualisieren();
+  }
+  input.addEventListener('blur', abschliessen);
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+  });
+  input.addEventListener('click', function(e){ e.stopPropagation(); });
+
+  return karte;
+}
+
+function gridRendern(){
+  var grid = document.getElementById('buchstaben-grid');
+  grid.innerHTML = '';
+  ALPHABET.forEach(function(b){ grid.appendChild(karteRendern(b)); });
+  fortschrittAktualisieren();
+}
+
+function alphabetZuruecksetzen(){
+  state = { thema: state.thema, eintraege: {} };
+  speichereState(state);
+  gridRendern();
+}
+
+document.getElementById('thema-input').value = state.thema || '';
+document.getElementById('thema-input').addEventListener('input', function(e){
+  state.thema = e.target.value;
+  speichereState(state);
+});
+
+gridRendern();
+</script>
+
+</body>
+</html>

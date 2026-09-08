@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Tischaufsteller (4 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2F6B6E;--warm:#B4482E;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--rose:#EAF3F3;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:297mm;min-height:210mm;background:#fff;margin:0 auto;
+  padding:12mm 14mm 10mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.6rem 1.3rem;text-align:center;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;}
+.kopf-titel{font-size:.68rem;font-weight:700;letter-spacing:.1em;}
+.kopf-sub{font-size:.6rem;letter-spacing:.08em;color:rgba(255,255,255,.7);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.8rem;color:var(--acc);margin-bottom:.9rem;}
+
+.hinweis-box{background:var(--rose);border-left:4px solid var(--acc);border-radius:8px;padding:.8rem 1.05rem;margin-bottom:.9rem;font-size:.74rem;line-height:1.55;color:var(--ink);}
+.hinweis-box p+p{margin-top:.5rem;}
+.hinweis-box b{color:var(--m);}
+
+.anleitung-titel{font-size:.78rem;font-weight:700;color:var(--m);margin-bottom:.4rem;}
+.schritt-anl{font-size:.72rem;line-height:1.5;margin-bottom:.4rem;padding-left:1rem;position:relative;}
+.schritt-anl::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.schritt-anl b{color:var(--ink);}
+
+.impuls-spalten{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;flex:1;}
+.impuls-spalte{border-right:1px solid var(--border);padding-right:1.4rem;}
+.impuls-spalte:last-child{border-right:none;padding-right:0;}
+.impuls-titel{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:700;color:var(--m);margin-bottom:.55rem;}
+.impuls-block{margin-bottom:.6rem;}
+.impuls-label{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.2rem;}
+.impuls-text{font-size:.72rem;line-height:1.5;}
+.impuls-block.hebel{background:var(--paper);border-radius:8px;padding:.55rem .7rem;}
+.impuls-block.skript{background:#EEFBFB;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:.55rem .7rem;}
+.impuls-block.skript .impuls-text{font-style:italic;color:#1a5c5c;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.8rem;margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:13mm;height:13mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.68rem;line-height:1.5;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
+
+.qr-zeile{display:flex;align-items:center;justify-content:center;gap:.6rem;margin:1rem 0 0;}
+.qr-zeile .qr{width:18mm;height:18mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.66rem;color:var(--muted);line-height:1.4;text-align:left;max-width:70mm;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.7rem;}
+
+.fold-hinweis{position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed var(--border);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+  @page{size:297mm 210mm;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 · Deckblatt ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT-TISCHAUFSTELLER</h1>
+  <div class="untertitel">Systemische Impulse &amp; Deeskalations-Werkzeuge für dein Kollegium</div>
+
+  <div class="hinweis-box">
+    <p><b>Liebe Kolleginnen, liebe Kollegen,</b></p>
+    <p>dieser Tischaufsteller ist dein täglicher, lautloser Begleiter für ein entspanntes und gelassenes Klassenzimmer. Er befreit dich aus der Rolle des „Problem-Reparierers" und bringt Leichtigkeit, Neugier und echten Spielspaß zurück in deinen Schulalltag. Verhalten ist eine Stimme ohne Worte — nutze die Impulse auf den folgenden Seiten, um verfahrene Dynamiken unaufgeregt zu deeskalieren, schweigende Zuschauer zu aktivieren und dein eigenes Nervensystem wirksam zu co-regulieren.</p>
+    <p>Entwickelt für Lehrerinnen, Lehrer, Schulbegleiter &amp; OGS-Kräfte.</p>
+  </div>
+
+  <div class="anleitung-titel">So baust du deinen Tischaufsteller:</div>
+  <div class="schritt-anl"><b>1. Ausdrucken</b> — alle vier Seiten quer (Querformat, DIN A4) auf festem Papier oder Karton.</div>
+  <div class="schritt-anl"><b>2. Laminieren</b> — schützt vor Kaffeeflecken im Lehrerzimmer und macht ihn abwischbar.</div>
+  <div class="schritt-anl"><b>3. In der Mitte falten</b> — jede Seite 2–4 in der Mitte knicken, sodass sie als Tischaufsteller aufrecht steht. Impuls links und Impuls rechts zeigen dann in verschiedene Richtungen.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Systemische Impulse für den reizarmen, entlastenden Schulalltag.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 4</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 · Impuls 1+2 ══════ -->
+<div class="seite">
+  <div class="kopf"><div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div><div class="kopf-sub">TISCHAUFSTELLER</div></div>
+  <div class="impuls-spalten">
+
+    <div class="impuls-spalte">
+      <div class="impuls-titel">Impuls 1: Das unruhige Klassenzimmer</div>
+      <div class="impuls-block"><div class="impuls-label">Die systemische Perspektive</div><div class="impuls-text">Ständige Unruhe ist ein dysfunktionaler Lösungsversuch im System. Jedes Schimpfen wirkt wie ein Scheinwerfer, der das störende Verhalten belohnt.</div></div>
+      <div class="impuls-block hebel"><div class="impuls-label">Musterunterbrechung (2-Minuten-Spiel)</div><div class="impuls-text">Nutze das Spiel „Fehler-Detektiv": Schreib eine Rechenaufgabe mit einem bewussten Fehler an die Tafel. Fordere die Klasse lautlos auf, den Fehler schweigend durch Handheben zu detektieren.</div></div>
+      <div class="impuls-block skript"><div class="impuls-label">Dein kLAR-Sofortskript</div><div class="impuls-text">„Ich sehe, dass euer Quatsch-Kopf heute viel Energie hat. Das ist okay. Aber jetzt gilt die kLAR-Formel: Wir atmen einmal tief durch und finden den Fehler."</div></div>
+    </div>
+
+    <div class="impuls-spalte">
+      <div class="impuls-titel">Impuls 2: Die Arbeitsverweigerung</div>
+      <div class="impuls-block"><div class="impuls-label">Die systemische Perspektive</div><div class="impuls-text">Wenn Schüler blockieren oder den Stift wegwerfen, liegt oft eine akute Task-Paralyse (exekutive Dysfunktion) vor. Druck verschlimmert die Blockade.</div></div>
+      <div class="impuls-block hebel"><div class="impuls-label">Dopamin-Portionierer (Haptischer Hebel)</div><div class="impuls-text">Zerschneide die Aufgabe in mikroskopische Teilschritte unter 2 Minuten (z. B. „Nur die erste Zahl aufschreiben"). Lass den Schüler jeden Schritt haptisch umknicken.</div></div>
+      <div class="impuls-block skript"><div class="impuls-label">Dein kLAR-Sofortskript</div><div class="impuls-text">„Du musst nicht das ganze Blatt machen. Lass uns mit einem Winz-Schritt starten. Knick das Papier um, wenn du bereit bist."</div></div>
+    </div>
+
+  </div>
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 3 · Impuls 3+4 ══════ -->
+<div class="seite">
+  <div class="kopf"><div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div><div class="kopf-sub">TISCHAUFSTELLER</div></div>
+  <div class="impuls-spalten">
+
+    <div class="impuls-spalte">
+      <div class="impuls-titel">Impuls 3: Der schweigende Zuschauer</div>
+      <div class="impuls-block"><div class="impuls-label">Die systemische Perspektive</div><div class="impuls-text">Mobbing gedeiht im Verborgenen. Zuschauer weichen aus Angst vor eigener Ausgrenzung zurück. Ihr Schweigen wirkt jedoch wie Zustimmung.</div></div>
+      <div class="impuls-block hebel"><div class="impuls-label">10-Sekunden-Regel (Upstander-Aktivierung)</div><div class="impuls-text">Schul die Klasse präventiv: Wenn Mitschüler innerhalb von 10 Sekunden deeskalierend eingreifen (z. B. das Opfer ansprechen und wegführen), stoppt die Dynamik in vielen Fällen sofort.</div></div>
+      <div class="impuls-block skript"><div class="impuls-label">Dein kLAR-Sofortskript</div><div class="impuls-text">„Hilfe holen ist kein Petzen, sondern echte Bündnis-Stärke. Wir schauen nicht weg. Wer unterstützt mich dabei, den Schutzraum aufzubauen?"</div></div>
+    </div>
+
+    <div class="impuls-spalte">
+      <div class="impuls-titel">Impuls 4: Der Sensory Overload</div>
+      <div class="impuls-block"><div class="impuls-label">Die systemische Perspektive</div><div class="impuls-text">Bei ADHS, Autismus oder emotionaler Überflutung ist das Sprachzentrum blockiert. Verbale Diskussionen führen sofort zur Eskalation.</div></div>
+      <div class="impuls-block hebel"><div class="impuls-label">Das lautlose Reiz-Thermostat (Klassen-Barometer)</div><div class="impuls-text">Lass das Kind schweigend seine Wäscheklammer auf Orange oder Rot schieben. Reagier lautlos, indem du ihm den Atem-Ballon oder Kopfhörer reichst.</div></div>
+      <div class="impuls-block skript"><div class="impuls-label">Dein kLAR-Sofortskript</div><div class="impuls-text">„Ich sehe deine Klammer. Kein Reden nötig. Nimm dir deine Auszeit auf der Kissen-Insel, bis dein System wieder abkühlt."</div></div>
+    </div>
+
+  </div>
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 4 · Impuls 5+6 + QR ══════ -->
+<div class="seite">
+  <div class="kopf"><div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div><div class="kopf-sub">TISCHAUFSTELLER</div></div>
+  <div class="impuls-spalten">
+
+    <div class="impuls-spalte">
+      <div class="impuls-titel">Impuls 5: Das eskalierende Elterngespräch</div>
+      <div class="impuls-block"><div class="impuls-label">Die systemische Perspektive</div><div class="impuls-text">Wenn Eltern oder Jugendliche hochkochen, greift das Prinzip „Schmiede das Eisen, wenn es kalt ist". Niemals im Sturm diskutieren.</div></div>
+      <div class="impuls-block hebel"><div class="impuls-label">Die Ankündigung der Präsenz (Neue Autorität)</div><div class="impuls-text">Setz eine klare, liebevolle, aber unnachgiebige Grenze. Kündige an, selbstdestruktives Verhalten nicht länger mitzutragen — ohne Drohung, ohne Rückzug.</div></div>
+      <div class="impuls-block skript"><div class="impuls-label">Dein kLAR-Sofortskript</div><div class="impuls-text">„Ich lass dich nicht im Stich. Aber ich weigere mich, dabeizuzusehen, wie du dich zerstörst. Wir sprechen morgen weiter."</div></div>
+    </div>
+
+    <div class="impuls-spalte">
+      <div class="impuls-titel">Impuls 6: Die systemische Teilearbeit</div>
+      <div class="impuls-block"><div class="impuls-label">Die systemische Perspektive</div><div class="impuls-text">Jeder störende innere Anteil (wie der innere Kritiker, der Paniker oder der Schweinehund) verfolgt im System eine positive Absicht.</div></div>
+      <div class="impuls-block hebel"><div class="impuls-label">Die Externalisierung (Vogelperspektive)</div><div class="impuls-text">Gib dem inneren Anteil einen Namen (z. B. „Sorgen-Brainy"). Erfrag seine schützende Absicht, statt ihn zu bekämpfen. Wechsle aktiv in die Meta-Position.</div></div>
+      <div class="impuls-block skript"><div class="impuls-label">Dein kLAR-Sofortskript</div><div class="impuls-text">„Danke, Sorgen-Brainy, dass du mich vor Fehlern schützen willst. Aber ich hab mich gut vorbereitet. Du darfst jetzt schlafen gehen."</div></div>
+    </div>
+
+  </div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr"></div>
+    <div class="qr-text"><b>Digitale Version zum Nachschlagen</b>QR-Code scannen: alle 6 Impulse zum Antippen und Aufklappen — direkt am Handy oder Tablet im Lehrerzimmer.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 4</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Tischaufsteller.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

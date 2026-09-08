@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Assoziationsblitz Freebie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#C77D2E;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:12mm 14mm 10mm;position:relative;
+  display:flex;flex-direction:column;
+}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.6rem 1.2rem;text-align:center;margin-bottom:.9rem;}
+.kopf-titel{font-size:.68rem;font-weight:700;letter-spacing:.12em;}
+.kopf-sub{font-size:.58rem;letter-spacing:.08em;color:rgba(255,255,255,.7);margin-top:.1rem;}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--m);margin-bottom:.15rem;text-align:center;}
+.untertitel{font-size:.75rem;color:var(--acc);text-align:center;margin-bottom:.7rem;font-weight:700;}
+
+.anleitung{background:var(--paper);border-radius:8px;padding:.55rem .8rem;font-size:.66rem;line-height:1.5;margin-bottom:.7rem;}
+.anleitung b{color:var(--m);}
+
+.kopfzeile{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem;font-size:.68rem;}
+.kopfzeile .feld{border-bottom:1px solid var(--muted);flex:1;margin-left:.4rem;height:1rem;}
+.kopfzeile-block{display:flex;align-items:baseline;flex:1;}
+
+.abc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 1.6rem;flex:1;}
+.buchstabe-zeile{display:flex;align-items:center;gap:.5rem;border-bottom:1px dotted var(--border);padding:.28rem 0;}
+.buchstabe-label{width:1.6rem;height:1.6rem;border-radius:50%;background:var(--m);color:#fff;font-weight:700;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:"Playfair Display",serif;}
+.buchstabe-linie{flex:1;height:1px;}
+
+.zitat{text-align:center;font-style:italic;font-size:.68rem;color:var(--muted);margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--border);}
+.zitat b{font-style:normal;color:var(--m);}
+
+.fuss{margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.58rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">BRAINYS ASSOZIATIONSBLITZ</h1>
+  <div class="untertitel">Deine freie ABC-Liste</div>
+
+  <div class="anleitung">
+    <b>So funktioniert's:</b> Trag oben dein Thema ein (z. B. Prüfungsstoff, Klassenklima, Gefühle). Füll die Buchstaben aus — du musst <b>nicht</b> bei A anfangen! Spring frei zu den Buchstaben, zu denen dir sofort ein Begriff einfällt. Mehrere Begriffe pro Buchstabe sind erlaubt. Lass leere Felder einfach frei.
+  </div>
+
+  <div class="kopfzeile">
+    <div class="kopfzeile-block"><b>Mein Thema:</b><span class="feld"></span></div>
+    <div class="kopfzeile-block" style="flex:.5;margin-left:1rem;"><b>Datum:</b><span class="feld"></span></div>
+  </div>
+
+  <div class="abc-grid">
+    <div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">A</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">B</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">C</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">D</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">E</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">F</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">G</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">H</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">I/J</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">K</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">L</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">M</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">N</div><div class="buchstabe-linie"></div></div>
+    </div>
+    <div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">O</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">P/Q</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">R</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">S</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">T</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">U</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">V</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">W</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">X/Y/Z</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">＋</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">＋</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">＋</div><div class="buchstabe-linie"></div></div>
+      <div class="buchstabe-zeile"><div class="buchstabe-label">＋</div><div class="buchstabe-linie"></div></div>
+    </div>
+  </div>
+
+  <div class="zitat">„Du musst nichts suchen. Kaum ist das Thema da, blitzt dein Wissen von ganz allein irgendwo auf." <b>— Brainy</b></div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 1</span>
+  </div>
+</div>
+
+</body>
+</html>

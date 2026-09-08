@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Assoziationsblitz Begleitheft (2 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#C77D2E;--warm:#B4482E;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--rose:#FBF1E6;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--rose);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+
+.zitat-box{background:var(--paper);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.1rem;display:flex;align-items:center;gap:.9rem;}
+.zitat-box img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.zitat-box .txt{font-style:italic;font-size:.85rem;color:var(--m);line-height:1.5;}
+.zitat-box .autor{display:block;margin-top:.25rem;font-style:normal;font-size:.68rem;font-weight:700;color:var(--muted);}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.zweispalt{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.mini-karte{background:var(--paper);border-radius:8px;padding:.7rem .85rem;}
+.mini-karte-titel{font-size:.72rem;font-weight:700;color:var(--m);margin-bottom:.3rem;}
+.mini-karte-text{font-size:.7rem;line-height:1.5;}
+
+table.varianten{width:100%;border-collapse:collapse;font-size:.68rem;margin-bottom:1rem;}
+table.varianten th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;}
+table.varianten td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+table.varianten b{color:var(--m);}
+
+.skript-zeile{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.skript-karte{background:#FFF7EE;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:.7rem .85rem;}
+.skript-karte-titel{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:.35rem;}
+.skript-karte-text{font-size:.72rem;font-style:italic;line-height:1.55;color:#6b4415;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
+.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT ASSOZIATIONSBLITZ</h1>
+  <div class="untertitel">Begleitheft für Schule &amp; Coaching</div>
+
+  <div class="hinweis-box">
+    <p>Im stressigen Schul- und Coachingalltag stoßen Lehrkräfte, Schulbegleiter und Eltern immer wieder auf dieselbe frustrierende Wand: die akute Verweigerung oder plötzliche Denk-Blockade. Ob vor Klassenarbeiten (Prüfungsangst) oder beim Beginn der Hausaufgaben (Task-Paralyse) — das Gehirn blockiert und schaltet auf stur.</p>
+    <p>Der <b>KLARTEXT-Assoziationsblitz</b> bricht diese Blockade spielerisch in wenigen Minuten auf: eine freie, gehirn-gerechte ABC-Liste ohne Reihenfolge und ohne Druck.</p>
+  </div>
+
+  <div class="zitat-box">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt">„Du musst nichts suchen. Kaum ist das Thema da, blitzt dein Wissen von ganz allein irgendwo auf."<span class="autor">— Brainy</span></div>
+  </div>
+
+  <div class="abschnitt-titel">1. Warum das Gehirn „einfriert"</div>
+  <div class="absatz">Bei neurodivergenten Kindern (ADHS/Autismus) sowie bei starker Prüfungsangst gerät das Gehirn in eine akute exekutive Blockade. Wenn Kinder vor einem leeren Arbeitsblatt sitzen, fehlt es in diesem Moment schlicht am Antrieb, loszulegen. Aufforderungen wie „Konzentrier dich jetzt!" erhöhen den Druck und verschlimmern die Blockade.</div>
+  <div class="absatz">Der Assoziationsblitz setzt genau hier an: Freies, ungezwungenes Springen durch die Buchstaben statt linearer Reihenfolge — das nimmt den Druck sofort raus und macht das Anfangen leicht.</div>
+
+  <div class="zweispalt">
+    <div class="mini-karte">
+      <div class="mini-karte-titel">Kleine Erfolge statt großer Aufgabe</div>
+      <div class="mini-karte-text">Jeder gefundene Begriff ist ein kleiner Erfolg für sich. Das weckt die Motivation und löst die Anfangsblockade unaufgeregt auf.</div>
+    </div>
+    <div class="mini-karte">
+      <div class="mini-karte-titel">Freies statt lineares Denken</div>
+      <div class="mini-karte-text">Traditionelles Schreiben verlangt eine feste Reihenfolge. Das überfordert blockierte Systeme. Beim Assoziationsblitz darf frei gesprungen werden — das entlastet sofort.</div>
+    </div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, entlastenden Einsatz in Schule, Coaching und zu Hause.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 2</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="abschnitt-titel">2. Drei Spielvarianten für den Alltag</div>
+  <div class="absatz" style="margin-bottom:.7rem;">Verwende im Coaching oder Unterricht ausschließlich neutrale Themen, um niemanden bloßzustellen.</div>
+
+  <table class="varianten">
+    <tr><th>Variante</th><th>Zielgruppe &amp; Hebel</th><th>Ablauf</th></tr>
+    <tr>
+      <td><b>Solo-Blitz</b><br>Der Einstiegs-Turbo</td>
+      <td>Kinder &amp; Jugendliche<br>Bricht die Anfangsblockade</td>
+      <td>Das Alphabet wird senkrecht notiert. Das Kind wählt ein neutrales Thema (z. B. „Dinosaurier" oder „Hobbys") und springt frei durch die Buchstaben. Dauer: max. 3 Minuten, kein linearer Druck.</td>
+    </tr>
+    <tr>
+      <td><b>Partner-Basar</b><br>Kumulativer Blitz</td>
+      <td>Klassen &amp; Peergroups<br>Musterunterbrechung, stärkt soziales Lernen</td>
+      <td>Jeder schreibt erst eine eigene Liste. Danach tauschen Sitznachbarn Begriffe: übernommen wird nur, was der Partner kurz erklärt hat.</td>
+    </tr>
+    <tr>
+      <td><b>Blitz-Tagebuch</b><br>Der ruhige Blitz</td>
+      <td>Jugendliche &amp; Erwachsene<br>Für längere Reflexion</td>
+      <td>An mehreren Tagen wird je eine kurze Liste zum selben Thema geschrieben und gesammelt. Nach einer Weile zusammen angeschaut: Welche Begriffe tauchen wieder auf, welche sind neu dazugekommen?</td>
+    </tr>
+  </table>
+
+  <div class="abschnitt-titel">3. Wortgenaue kLAR-Sofortskripte</div>
+  <div class="skript-zeile">
+    <div class="skript-karte">
+      <div class="skript-karte-titel">Für Eltern (bei Hausaufgaben-Wut)</div>
+      <div class="skript-karte-text">„Ich sehe, dass dein innerer Blockierer gerade den Stift weggeworfen hat. Das ist völlig okay. Wir machen jetzt kein Mathe. Lass uns für 2 Minuten einen Assoziationsblitz zum Thema 'Lieblingsessen' machen. Wir springen wild durch die Buchstaben! Bereit?"</div>
+    </div>
+    <div class="skript-karte">
+      <div class="skript-karte-titel">Für Lehrkräfte (Unterrichts-Musterunterbrechung)</div>
+      <div class="skript-karte-text">„Liebe Klasse, ich merke, die Luft ist gerade raus. Bevor wir weiterarbeiten, machen wir eine 3-Minuten-Pause. Jeder zieht sein ABC-Blatt heraus. Unser heutiger Basar-Blitz hat das Thema 'Sommerferien'. Auf die Plätze, fertig, blitzt los!"</div>
+    </div>
+  </div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr"></div>
+    <div class="qr-text"><b>Die digitale Brücke</b>QR-Code scannen für den KLARTEXT-Assoziationsblitz als Web-App (ohne Login, DSGVO-sicher): Begriffe eintippen, bei jedem Treffer ein beruhigender Sound-Chime, der Fortschritt bleibt auf dem Gerät gespeichert.</div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Es gibt kein falsches Tempo. Jeder gefundene Begriff zählt, auch wenn am Ende nicht jeder Buchstabe ausgefüllt ist.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Assoziationsblitz.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

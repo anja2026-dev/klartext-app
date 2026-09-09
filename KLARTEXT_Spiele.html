@@ -42,7 +42,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .sek-sub{font-size:.75rem;margin-top:1px;opacity:.75;}
 
 .spiel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;}
-.spiel-karte{background:var(--surface);border:2px solid var(--border);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(27,58,75,.08);transition:transform .18s,box-shadow .18s,border-color .18s;}
+.spiel-karte{background:var(--surface);border:2px solid var(--border);border-radius:18px;overflow:hidden;position:relative;text-decoration:none;color:inherit;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(27,58,75,.08);transition:transform .18s,box-shadow .18s,border-color .18s;}
 .spiel-karte:hover{transform:translateY(-4px);box-shadow:0 6px 22px rgba(27,58,75,.16);}
 .spiel-karte-stripe{height:6px;}
 .spiel-karte-inner{padding:1.3rem 1.4rem 1.5rem;display:flex;flex-direction:column;gap:.6rem;flex:1;}
@@ -88,6 +88,20 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .spiel-karte.pink .spiel-karte-titel,.spiel-karte.pink .spiel-karte-cta{color:#D9527A;}
 footer{background:var(--m);color:rgba(255,255,255,.55);text-align:center;padding:1.2rem 1rem;font-size:.72rem;line-height:1.9;}
 footer strong{color:var(--acc);}
+
+.neu-badge{position:absolute;top:10px;right:10px;background:#D9527A;color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.05em;padding:.28rem .6rem;border-radius:20px;text-transform:uppercase;z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.18);pointer-events:none;}
+.neu-overlay{position:fixed;inset:0;background:rgba(27,58,75,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1.2rem;}
+.neu-modal{background:#fff;border-radius:18px;max-width:480px;width:100%;max-height:82vh;overflow-y:auto;padding:1.6rem 1.7rem;box-shadow:0 16px 46px rgba(0,0,0,.28);}
+.neu-modal-kopf{display:flex;align-items:center;gap:.6rem;margin-bottom:.2rem;}
+.neu-modal-icon{font-size:1.5rem;}
+.neu-modal-titel{font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:700;color:var(--m);}
+.neu-modal-sub{font-size:.8rem;color:var(--muted);margin-bottom:1.1rem;}
+.neu-item{display:flex;align-items:flex-start;gap:.7rem;padding:.7rem 0;border-bottom:1px solid var(--border);text-decoration:none;color:inherit;}
+.neu-item:last-child{border-bottom:none;}
+.neu-item-emoji{font-size:1.4rem;flex-shrink:0;line-height:1.3;}
+.neu-item-titel{font-weight:700;color:var(--m);font-size:.88rem;}
+.neu-item-sub{font-size:.74rem;color:var(--muted);margin-top:.15rem;line-height:1.4;}
+.neu-schliessen-btn{width:100%;margin-top:1.1rem;background:var(--m);color:#fff;border:none;border-radius:10px;padding:.75rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -629,6 +643,96 @@ document.addEventListener('DOMContentLoaded', function(){
         el.style.display = 'none';
       }
     });
+  } catch(e) {}
+});
+</script>
+
+<script>
+// ═══════════════════════════════════════
+// "WAS IST NEU?" — offline-first, kein Backend:
+// Neue Tools stehen fest in RELEASES (bei jedem neuen Modul hier ergänzen).
+// NEU-Badge auf einer Kachel bleibt, bis das Tool einmal geöffnet wurde.
+// Popup beim Besuch zeigt alles, was seit dem letzten Schließen dazukam —
+// gefiltert auf das, was für die aktuelle Rolle überhaupt sichtbar ist.
+// ═══════════════════════════════════════
+var KLARTEXT_RELEASES = [
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_UmgebungsAnker.html', emoji:'🎧', titel:'Umgebungs-Anker', sub:'Rausch-Timer zum Lernen plus Anker-Manager für Duft-, Tast- und Geschmacks-Trigger.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_ZivilcourageTrainer.html', emoji:'🛡️', titel:'Zivilcourage-Trainer', sub:'Zufällige Szenarien, 10-Sekunden-Countdown, vier risikofreie Wege einzugreifen.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_HilfewegePlaner.html', emoji:'🕸️', titel:'Hilfewege-Planer', sub:'Vier Vertrauenspersonen als eigenes Netz sichtbar machen — herunterladbar.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_UebergangsTimer.html', emoji:'⏳', titel:'Übergangs-Timer', sub:'Lautloser Farbverlauf-Countdown von Rot zu Grün für sanfte Übergänge.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_TeileMischer.html', emoji:'🎭', titel:'Teile-Mischer', sub:'Innere Anteile sichtbar machen und aus der Meta-Position reflektieren.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_VokabelKino.html', emoji:'🎬', titel:'Vokabel-Kino', sub:'Neue Wörter über Klangbrücke und Kopfkino-Bild statt Auswendiglernen behalten.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_NachtSucher.html', emoji:'🌙', titel:'Nacht-Sucher', sub:'Eine knifflige Frage abends an Brainy übergeben, morgens die Idee festhalten.' },
+  { datum:'2026-09-09', href:'KLARTEXT_Spiel_StarthilfeZauber.html', emoji:'✨', titel:'Starthilfe-Zauber', sub:'3-Sekunden-Staun-Rätsel für einen sofortigen Aufmerksamkeits-Opener.' }
+];
+var NEU_KEY_GEOEFFNET = 'klartext_neu_geoeffnet';
+var NEU_KEY_ZULETZT = 'klartext_neu_zuletzt_geschlossen';
+
+function neuGeoeffneteLaden(){
+  try{ return JSON.parse(localStorage.getItem(NEU_KEY_GEOEFFNET) || '[]'); }catch(e){ return []; }
+}
+function neuAlsGeoeffnetMarkieren(href){
+  try{
+    var liste = neuGeoeffneteLaden();
+    if(liste.indexOf(href) === -1){ liste.push(href); localStorage.setItem(NEU_KEY_GEOEFFNET, JSON.stringify(liste)); }
+  }catch(e){}
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  try {
+    var geoeffnet = neuGeoeffneteLaden();
+    var zuletztGeschlossen = localStorage.getItem(NEU_KEY_ZULETZT) || '2000-01-01';
+    var badgeListe = [];
+    var popupListe = [];
+
+    KLARTEXT_RELEASES.forEach(function(r){
+      var el = document.querySelector('a[href="'+r.href+'"]');
+      if(!el || el.style.display === 'none') return; // für diese Rolle nicht sichtbar
+      var bereitsGeoeffnet = geoeffnet.indexOf(r.href) !== -1;
+      if(!bereitsGeoeffnet){
+        badgeListe.push({ r:r, el:el });
+        if(r.datum > zuletztGeschlossen) popupListe.push(r);
+      }
+    });
+
+    // NEU-Badges auf den Kacheln
+    badgeListe.forEach(function(item){
+      var badge = document.createElement('span');
+      badge.className = 'neu-badge';
+      badge.textContent = 'Neu';
+      item.el.appendChild(badge);
+      item.el.addEventListener('click', function(){ neuAlsGeoeffnetMarkieren(item.r.href); });
+    });
+
+    // "Was ist neu?"-Popup
+    if(popupListe.length > 0){
+      var overlay = document.createElement('div');
+      overlay.className = 'neu-overlay';
+      var itemsHtml = popupListe.map(function(r){
+        return '<a class="neu-item" href="'+r.href+'">' +
+          '<span class="neu-item-emoji">'+r.emoji+'</span>' +
+          '<span><span class="neu-item-titel">'+r.titel+'</span>' +
+          '<div class="neu-item-sub">'+r.sub+'</div></span></a>';
+      }).join('');
+      overlay.innerHTML =
+        '<div class="neu-modal">' +
+          '<div class="neu-modal-kopf"><span class="neu-modal-icon">🎉</span><span class="neu-modal-titel">Das ist neu für dich</span></div>' +
+          '<div class="neu-modal-sub">'+popupListe.length+' neue'+(popupListe.length===1?'s Tool':' Tools')+' seit deinem letzten Besuch.</div>' +
+          itemsHtml +
+          '<button class="neu-schliessen-btn" id="neu-schliessen">Los geht\'s</button>' +
+        '</div>';
+      document.body.appendChild(overlay);
+      document.getElementById('neu-schliessen').addEventListener('click', function(){
+        try{ localStorage.setItem(NEU_KEY_ZULETZT, new Date().toISOString().slice(0,10)); }catch(e){}
+        overlay.remove();
+      });
+      overlay.addEventListener('click', function(e){
+        if(e.target === overlay){
+          try{ localStorage.setItem(NEU_KEY_ZULETZT, new Date().toISOString().slice(0,10)); }catch(e2){}
+          overlay.remove();
+        }
+      });
+    }
   } catch(e) {}
 });
 </script>

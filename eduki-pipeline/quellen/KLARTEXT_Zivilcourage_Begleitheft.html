@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Zivilcourage-Trainer Begleitheft (2 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#8B3A48;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#F7EBEC;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.vierergrid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1rem;}
+.mini-karte{background:var(--paper);border-radius:8px;padding:.7rem .85rem;}
+.mini-karte-titel{font-size:.72rem;font-weight:700;color:var(--m);margin-bottom:.3rem;}
+.mini-karte-text{font-size:.7rem;line-height:1.5;}
+
+.rollen-tab{width:100%;border-collapse:collapse;font-size:.7rem;margin-bottom:1rem;}
+.rollen-tab th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;}
+.rollen-tab td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.rollen-tab b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
+.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT ZIVILCOURAGE-TRAINER</h1>
+  <div class="untertitel">Begleitheft für Schule &amp; Klassenrat</div>
+
+  <div class="hinweis-box">
+    <p>Mobbing gedeiht im Verborgenen — nicht, weil niemand es sieht, sondern weil Zuschauer aus Unsicherheit oder Angst vor eigener Ausgrenzung zurückweichen. Genau diese ersten Sekunden entscheiden oft.</p>
+    <div class="quelle">Wenn Zuschauer innerhalb von 10 Sekunden eingreifen, stoppt Mobbing in 57 % der Fälle sofort. Quelle: Espelage, Pigott &amp; Polanin (2012), "A Meta-Analysis of School-Based Bullying Prevention Programs' Effects on Bystander Intervention Behavior", School Psychology Review; siehe auch stopbullying.gov.</div>
+  </div>
+
+  <div class="abschnitt-titel">Vier risikofreie Wege einzugreifen</div>
+  <div class="absatz">Zivilcourage heißt nicht, sich selbst in Gefahr zu bringen. Der Zivilcourage-Trainer übt vier Handlungsoptionen, die jede für sich wirksam und ohne persönliches Risiko sind:</div>
+
+  <div class="vierergrid">
+    <div class="mini-karte">
+      <div class="mini-karte-titel">Ansprechen &amp; wegführen</div>
+      <div class="mini-karte-text">Direkt zur betroffenen Person gehen und sie aus der Situation herausholen.</div>
+    </div>
+    <div class="mini-karte">
+      <div class="mini-karte-titel">„Stopp" sagen</div>
+      <div class="mini-karte-text">Ein klares, ruhiges Wort unterbricht oft schon das Muster.</div>
+    </div>
+    <div class="mini-karte">
+      <div class="mini-karte-titel">Ablenken</div>
+      <div class="mini-karte-text">Das Thema wechseln, Aufmerksamkeit umlenken — ohne direkte Konfrontation.</div>
+    </div>
+    <div class="mini-karte">
+      <div class="mini-karte-titel">Hilfe holen</div>
+      <div class="mini-karte-text">Lehrkraft oder Aufsicht informieren — kein Petzen, sondern echte Bündnis-Stärke.</div>
+    </div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen Einsatz im Klassenrat, in Präventionsstunden und im Kollegium.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 2</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="abschnitt-titel">Die vier Zuschauer-Rollen</div>
+  <div class="absatz" style="margin-bottom:.7rem;">Nicht jede Person am Rand einer Mobbing-Situation verhält sich gleich. Diese Unterscheidung hilft im Klassenrat, eigenes Verhalten einzuordnen — ohne Schuldzuweisung.</div>
+
+  <table class="rollen-tab">
+    <tr><th>Rolle</th><th>Verhalten</th></tr>
+    <tr><td><b>Assistent:in</b></td><td>Macht aktiv mit, unterstützt die mobbende Person direkt.</td></tr>
+    <tr><td><b>Verstärker:in</b></td><td>Lacht mit, feuert an — ohne selbst anzugreifen.</td></tr>
+    <tr><td><b>Außenstehende:r</b></td><td>Schaut weg, tut nichts — aus Unsicherheit oder Angst.</td></tr>
+    <tr><td><b>Verteidiger:in</b></td><td>Greift ein, unterstützt die betroffene Person aktiv — genau das übt dieses Tool.</td></tr>
+  </table>
+
+  <div class="absatz"><b>Für den Klassenrat:</b> Jede Person kennt vermutlich alle vier Rollen aus eigener Erfahrung. Das Ziel ist nicht, sich als "guter" oder "schlechter" Mensch zu bewerten, sondern zu üben, in der nächsten Situation schneller in die Verteidiger-Rolle zu wechseln.</div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr"></div>
+    <div class="qr-text"><b>Die digitale Brücke</b>QR-Code scannen für den KLARTEXT-Zivilcourage-Trainer als Web-App (ohne Login, DSGVO-sicher): zufällige Szenarien, 10-Sekunden-Countdown, vier risikofreie Handlungsoptionen zum Üben.</div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Es gibt hier kein Falsch. Jede der vier Optionen zählt — wichtig ist nur, überhaupt etwas zu tun.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_ZivilcourageTrainer.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

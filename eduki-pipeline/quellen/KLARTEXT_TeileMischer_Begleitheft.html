@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Teile-Mischer Begleitheft (2 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#B8935C;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#F7EFE2;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box b{color:var(--m);}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.anteil-reihe{display:flex;gap:.6rem;margin-bottom:1rem;}
+.anteil-mini{flex:1;background:var(--paper);border-radius:10px;padding:.6rem .5rem;text-align:center;}
+.anteil-mini .emoji{font-size:1.5rem;}
+.anteil-mini .titel{font-size:.7rem;font-weight:700;color:var(--m);margin-top:.2rem;}
+.anteil-mini .zitat{font-size:.6rem;font-style:italic;color:var(--muted);margin-top:.1rem;}
+
+.ausfuell-tab{width:100%;border-collapse:collapse;font-size:.72rem;margin-bottom:1rem;}
+.ausfuell-tab th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;}
+.ausfuell-tab td{padding:.6rem .6rem;border-bottom:1px solid var(--border);height:1.6rem;}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
+.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT TEILE-MISCHER</h1>
+  <div class="untertitel">Begleitheft für Coaching, Schule &amp; zu Hause</div>
+
+  <div class="hinweis-box"><b>Jeder innere Anteil will eigentlich etwas Gutes für dich</b> — auch der, der am lautesten oder unangenehmsten wirkt. Der Teile-Mischer macht innere Stimmen wie Sorge, Bequemlichkeit oder Antrieb sichtbar und lädt dazu ein, sie aus sicherem Abstand zu betrachten, statt gegen sie anzukämpfen.</div>
+
+  <div class="abschnitt-titel">Drei Grundstimmen zum Kennenlernen</div>
+  <div class="anteil-reihe">
+    <div class="anteil-mini"><div class="emoji">😟</div><div class="titel">Sorgen-Brainy</div><div class="zitat">"Was, wenn das schiefgeht?"</div></div>
+    <div class="anteil-mini"><div class="emoji">🐶</div><div class="titel">Schweinehund</div><div class="zitat">"Später reicht auch."</div></div>
+    <div class="anteil-mini"><div class="emoji">⚡</div><div class="titel">Motivator</div><div class="zitat">"Los geht's!"</div></div>
+  </div>
+
+  <div class="absatz">In der App lässt sich für jeden Anteil ein Regler einstellen ("Wie laut meldet er sich gerade?") und eine kurze Reflexionsfrage aus der Meta-Position beantworten: <b>Was will dieser Anteil eigentlich Gutes für mich?</b> Weitere, ganz eigene Anteile lassen sich jederzeit ergänzen.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen Einsatz in Coaching, Schule und zu Hause.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 2</span></div>
+</div>
+
+<!-- ══════ SEITE 2 ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="abschnitt-titel">Meine Mischung — zum Ausfüllen</div>
+  <div class="absatz" style="margin-bottom:.9rem;">Für die Papierversion: Situation und drei Anteile eintragen. Für die digitale Version gibt's die App mit Reglern, Reflexionsfeldern und einem speicherbaren Teile-Tagebuch.</div>
+
+  <table class="ausfuell-tab">
+    <tr><th>Anteil</th><th>Was er sagt</th><th>Was er eigentlich für mich will</th></tr>
+    <tr><td>Sorgen-Brainy</td><td></td><td></td></tr>
+    <tr><td>Schweinehund</td><td></td><td></td></tr>
+    <tr><td>Motivator</td><td></td><td></td></tr>
+    <tr><td>Eigener Anteil</td><td></td><td></td></tr>
+  </table>
+
+  <div class="absatz"><b>Tipp für den Einsatz im Coaching:</b> Erst alle Anteile zu Wort kommen lassen, bevor gemeinsam überlegt wird, welcher Anteil gerade am meisten Raum braucht — und welcher gute Grund dahintersteckt.</div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr"></div>
+    <div class="qr-text"><b>Die digitale Brücke</b>QR-Code scannen für den KLARTEXT-Teile-Mischer als Web-App (ohne Login, DSGVO-sicher): Anteile mischen, Reflexionsfragen beantworten, im persönlichen Teile-Tagebuch speichern — alle Angaben bleiben nur auf dem Gerät.</div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Man muss einen Anteil nicht loswerden, um ihn zu verstehen.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_TeileMischer.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

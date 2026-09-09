@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Frau Jojos Resilienz-Jojo | KLARTEXT-Mentoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F0E8;
+    --m:#1B3A4B;
+    --sage:#4A7C59;
+    --terracotta:#D96B43;
+    --gold:#D4A373;
+    --aprikose:#E0954E;
+    --aprikose-dunkel:#C9793A;
+    --aprikose-hell:#F6D9B8;
+    --font-heading:'Playfair Display',Georgia,serif;
+    --font-body:'DM Sans',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--paper);color:var(--m);
+    font-family:var(--font-body);
+    min-height:100vh;
+    padding-bottom:2.5rem;
+  }
+  a{color:inherit;}
+  .zurueck{
+    display:inline-flex;align-items:center;gap:.4rem;
+    margin:1rem 0 0 1rem;font-size:.85rem;font-weight:600;
+    color:var(--m);text-decoration:none;opacity:.75;
+  }
+  .zurueck:hover{opacity:1;}
+  header.kopf{
+    text-align:center;padding:1.1rem 1.2rem .6rem;
+  }
+  .brainy-mini{width:56px;height:56px;border-radius:50%;object-fit:cover;box-shadow:0 4px 14px rgba(27,58,75,.18);margin-bottom:.5rem;}
+  h1{
+    font-family:var(--font-heading);font-size:1.5rem;margin:.2rem 0 .15rem;color:var(--m);
+  }
+  .unterzeile{font-size:.9rem;color:#5b6b73;max-width:420px;margin:0 auto;line-height:1.4;}
+
+  .modus-leiste{
+    display:flex;justify-content:center;gap:.5rem;margin:1rem auto;max-width:420px;padding:0 1rem;
+  }
+  .modus-btn{
+    flex:1;padding:.6rem .5rem;border-radius:14px;border:2px solid var(--aprikose);
+    background:#fff;color:var(--aprikose-dunkel);font-family:var(--font-body);font-weight:700;
+    font-size:.85rem;cursor:pointer;transition:.2s;
+  }
+  .modus-btn.aktiv{background:var(--aprikose);color:#fff;}
+
+  main{max-width:460px;margin:0 auto;padding:0 1.1rem;}
+
+  .buehne{
+    position:relative;height:340px;margin:.8rem auto 1rem;
+    background:linear-gradient(180deg,#fff 0%,var(--aprikose-hell) 100%);
+    border-radius:22px;box-shadow:0 8px 26px rgba(27,58,75,.12);overflow:hidden;
+  }
+  .peg{
+    position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    width:22px;height:10px;border-radius:6px;background:var(--m);
+  }
+  .schnur{
+    position:absolute;top:20px;left:50%;width:2px;background:var(--m);
+    transform:translateX(-50%);transform-origin:top;
+  }
+  .jojo-ball{
+    position:absolute;left:50%;top:38px;width:78px;height:78px;margin-left:-39px;
+    border-radius:50%;
+    background:radial-gradient(circle at 32% 28%, #fff 0%, var(--aprikose) 46%, var(--aprikose-dunkel) 100%);
+    box-shadow:0 6px 16px rgba(27,58,75,.25);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-heading);font-weight:700;color:#fff;font-size:.78rem;
+    cursor:grab;touch-action:none;user-select:none;
+    transition:top .05s linear;
+  }
+  .jojo-ball:active{cursor:grabbing;}
+  .jojo-ball.sanft{transition:top 3.6s cubic-bezier(.45,.05,.55,.95);}
+  .jojo-ball.bounce{animation:bounceFall 2.6s cubic-bezier(.36,0,.66,-0.02);}
+  @keyframes bounceFall{
+    0%{top:38px;}
+    58%{top:266px;}
+    74%{top:236px;}
+    88%{top:262px;}
+    96%{top:248px;}
+    100%{top:256px;}
+  }
+  .jojo-ball.spring{animation:springUp .9s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes springUp{
+    0%{top:var(--start-top,256px);}
+    60%{top:30px;}
+    80%{top:46px;}
+    100%{top:38px;}
+  }
+
+  .phasen-text{
+    position:absolute;bottom:12px;left:0;right:0;text-align:center;
+    font-family:var(--font-heading);font-size:1.15rem;font-weight:700;color:var(--m);
+    text-shadow:0 1px 0 rgba(255,255,255,.6);
+  }
+  .zaehler-badge{
+    position:absolute;top:12px;right:14px;background:rgba(255,255,255,.85);
+    border-radius:20px;padding:.28rem .7rem;font-size:.72rem;font-weight:700;color:var(--aprikose-dunkel);
+  }
+  .frei-hinweis{
+    position:absolute;top:12px;left:14px;background:rgba(255,255,255,.85);
+    border-radius:20px;padding:.28rem .7rem;font-size:.68rem;font-weight:600;color:#5b6b73;max-width:150px;
+  }
+
+  .steuerung{display:flex;gap:.6rem;justify-content:center;margin-bottom:1rem;}
+  .steuerung button{
+    padding:.7rem 1.3rem;border-radius:14px;border:none;font-family:var(--font-body);
+    font-weight:700;font-size:.9rem;cursor:pointer;
+  }
+  .btn-start{background:var(--aprikose);color:#fff;}
+  .btn-stop{background:#fff;color:var(--m);border:2px solid var(--m)!important;}
+
+  .ton-toggle{
+    display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1.2rem;font-size:.82rem;color:#5b6b73;
+  }
+  .ton-toggle input{transform:scale(1.15);}
+
+  /* Reflexions-Karte */
+  .reflex-overlay{
+    position:fixed;inset:0;background:rgba(27,58,75,.55);display:none;
+    align-items:center;justify-content:center;padding:1.2rem;z-index:400;
+  }
+  .reflex-overlay.zeigen{display:flex;}
+  .reflex-karte{
+    background:#fff;border-radius:20px;max-width:420px;width:100%;padding:1.6rem 1.5rem;
+    box-shadow:0 18px 46px rgba(0,0,0,.25);text-align:center;
+  }
+  .reflex-karte .emoji{font-size:2.1rem;margin-bottom:.4rem;}
+  .reflex-karte h3{font-family:var(--font-heading);font-size:1.15rem;margin:.2rem 0 .5rem;}
+  .reflex-karte p.frage{font-size:.95rem;color:var(--m);margin-bottom:.9rem;line-height:1.45;}
+  .reflex-karte textarea{
+    width:100%;min-height:80px;border-radius:12px;border:2px solid #e3dccd;padding:.7rem .8rem;
+    font-family:var(--font-body);font-size:.9rem;resize:vertical;margin-bottom:.9rem;
+  }
+  .reflex-karte textarea:focus{outline:none;border-color:var(--aprikose);}
+  .reflex-buttons{display:flex;gap:.6rem;}
+  .reflex-buttons button{flex:1;padding:.65rem;border-radius:12px;border:none;font-weight:700;font-family:var(--font-body);cursor:pointer;font-size:.88rem;}
+  .btn-speichern{background:var(--aprikose);color:#fff;}
+  .btn-ueberspringen{background:#f0ece2;color:#5b6b73;}
+
+  /* Sprungbrett-Sammlung */
+  .sammlung-tabs{display:flex;gap:.4rem;margin:1.6rem 0 .8rem;}
+  .tab-btn{
+    flex:1;padding:.55rem;border-radius:12px;border:2px solid #e3dccd;background:#fff;
+    font-family:var(--font-body);font-weight:700;font-size:.82rem;color:#5b6b73;cursor:pointer;
+  }
+  .tab-btn.aktiv{border-color:var(--aprikose);color:var(--aprikose-dunkel);background:var(--aprikose-hell);}
+  .sammlung-liste{display:none;}
+  .sammlung-liste.zeigen{display:block;}
+  .sprungbrett-item{
+    background:#fff;border-radius:14px;padding:.85rem 1rem;margin-bottom:.7rem;
+    box-shadow:0 3px 10px rgba(27,58,75,.08);position:relative;
+  }
+  .sprungbrett-item .datum{font-size:.68rem;color:#9aa5ab;margin-bottom:.25rem;}
+  .sprungbrett-item .text{font-size:.9rem;line-height:1.4;color:var(--m);}
+  .loesch-btn{
+    position:absolute;top:.6rem;right:.7rem;background:none;border:none;color:#c98a8a;
+    font-size:.95rem;cursor:pointer;line-height:1;
+  }
+  .leer-hinweis{text-align:center;color:#9aa5ab;font-size:.85rem;padding:1.5rem 0;font-style:italic;}
+
+  footer.info{
+    max-width:460px;margin:1.6rem auto 0;padding:0 1.1rem;font-size:.72rem;color:#9aa5ab;line-height:1.5;text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<a class="zurueck" href="KLARTEXT_Spiele.html">← Zurück zu allen Spielen</a>
+
+<header class="kopf">
+  <img class="brainy-mini" src="brainy.png" alt="Brainy" onerror="this.style.display='none'">
+  <h1>Frau Jojos Resilienz-Jojo</h1>
+  <p class="unterzeile">Ein Schwung- &amp; Atem-Taktgeber: Wieder hochkommen – im Atem-Rhythmus oder ganz frei mit der Hand.</p>
+</header>
+
+<div class="modus-leiste">
+  <button class="modus-btn aktiv" id="btn-modus-atem" onclick="modusWechseln('atem')">🌬️ Atem-Modus</button>
+  <button class="modus-btn" id="btn-modus-frei" onclick="modusWechseln('frei')">🖐️ Frei-Modus</button>
+</div>
+
+<main>
+  <div class="buehne" id="buehne">
+    <div class="zaehler-badge" id="zaehler-badge">Runden: 0</div>
+    <div class="frei-hinweis" id="frei-hinweis" style="display:none;">Zieh das Jojo nach unten und lass los ✨</div>
+    <div class="peg"></div>
+    <div class="schnur" id="schnur" style="height:38px;"></div>
+    <div class="jojo-ball" id="jojo-ball">Jojo</div>
+    <div class="phasen-text" id="phasen-text">Bereit?</div>
+  </div>
+
+  <div class="steuerung" id="steuerung-atem">
+    <button class="btn-start" id="btn-start" onclick="atemStarten()">Start</button>
+    <button class="btn-stop" id="btn-stop" onclick="atemAnhalten()" style="display:none;">Pause</button>
+  </div>
+
+  <div class="ton-toggle">
+    <input type="checkbox" id="ton-check" checked>
+    <label for="ton-check">Sanfte Töne &amp; Vibration</label>
+  </div>
+
+  <div class="sammlung-tabs">
+    <button class="tab-btn aktiv" id="tab-neu" onclick="tabWechseln('neu')">Neuer Impuls</button>
+    <button class="tab-btn" id="tab-sammlung" onclick="tabWechseln('sammlung')">Meine Sprungbrett-Sammlung</button>
+  </div>
+
+  <div class="sammlung-liste zeigen" id="liste-neu">
+    <p style="font-size:.85rem;color:#5b6b73;text-align:center;line-height:1.5;">
+      Nach ein paar Schwüngen fragt dich Frau Jojo, was dir schon einmal geholfen hat, wieder hochzukommen.
+      Deine Antworten sammeln sich hier als deine persönliche <strong>Sprungbrett-Sammlung</strong> – für Tage, an denen du sie brauchst.
+    </p>
+  </div>
+
+  <div class="sammlung-liste" id="liste-sammlung">
+    <div id="sprungbretter-container"></div>
+  </div>
+</main>
+
+<footer class="info">
+  Idee &amp; Konzept: KLARTEXT-Mentoring. Der Gedanke „Resilienz zeigt sich darin, nach einer schwierigen Phase wieder handlungsfähig zu werden" orientiert sich an: Masten, A. S. (2001). <em>Ordinary magic: Resilience processes in development.</em> American Psychologist, 56(3), 227–238.<br>
+  Alle Eingaben bleiben ausschließlich auf diesem Gerät gespeichert (localStorage) – kein Server, keine Übertragung.
+</footer>
+
+<div class="reflex-overlay" id="reflex-overlay">
+  <div class="reflex-karte">
+    <div class="emoji">🌟</div>
+    <h3>Frau Jojo fragt dich...</h3>
+    <p class="frage" id="reflex-frage">Was hat dir schon mal geholfen, wieder hochzukommen?</p>
+    <textarea id="reflex-eingabe" placeholder="Zum Beispiel: mit jemandem reden, eine Nacht drüber schlafen, kurz rausgehen..."></textarea>
+    <div class="reflex-buttons">
+      <button class="btn-ueberspringen" onclick="reflexUeberspringen()">Später</button>
+      <button class="btn-speichern" onclick="reflexSpeichern()">Ins Sprungbrett legen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- Login-Guard mit Gast-Bypass ----------
+  var urlParams = new URLSearchParams(window.location.search);
+  var gastZugang = urlParams.get('guest') === 'true';
+  if(!gastZugang && sessionStorage.getItem('klartext_login')!=='true'){
+    window.location.href = 'KLARTEXT_Login.html';
+  }
+
+  // ---------- Web Audio (100% synthetisch) ----------
+  var audioCtx = null;
+  function audioContextHolen(){
+    if(!audioCtx){
+      try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }catch(e){ return null; }
+    }
+    return audioCtx;
+  }
+  function tonSpielen(freq, dauerMs, typ, lautstaerke){
+    if(!document.getElementById('ton-check').checked) return;
+    var ctx = audioContextHolen();
+    if(!ctx) return;
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = typ || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(lautstaerke || 0.12, ctx.currentTime + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dauerMs/1000);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + dauerMs/1000 + 0.05);
+  }
+  function toneEinatmen(){ tonSpielen(440, 700, 'sine', 0.1); }
+  function toneAusatmen(){ tonSpielen(330, 700, 'sine', 0.08); }
+  function toneBounce(){
+    tonSpielen(523, 90, 'sine', 0.14);
+    setTimeout(function(){ tonSpielen(392, 140, 'sine', 0.1); }, 90);
+  }
+  function toneSpring(){
+    tonSpielen(392, 90, 'sine', 0.12);
+    setTimeout(function(){ tonSpielen(523, 110, 'sine', 0.1); }, 80);
+    setTimeout(function(){ tonSpielen(659, 160, 'sine', 0.09); }, 170);
+  }
+  function vibrieren(muster){
+    if(!document.getElementById('ton-check').checked) return;
+    if('vibrate' in navigator){ try{ navigator.vibrate(muster); }catch(e){} }
+  }
+
+  // ---------- Zustand ----------
+  var modus = 'atem';
+  var atemLaeuft = false;
+  var atemTimeoutId = null;
+  var rundenZaehler = 0;
+  var REFLEX_ALLE_N_RUNDEN = 3;
+
+  var jojo = document.getElementById('jojo-ball');
+  var schnur = document.getElementById('schnur');
+  var phasenText = document.getElementById('phasen-text');
+  var zaehlerBadge = document.getElementById('zaehler-badge');
+
+  var REFLEX_FRAGEN = [
+    'Was hat dir schon mal geholfen, wieder hochzukommen?',
+    'Wer war für dich da, als es schwer war?',
+    'Was hat dir Kraft gegeben, als etwas nicht geklappt hat?',
+    'Welcher kleine Schritt hat dir schon mal weitergeholfen?',
+    'Was sagst du dir selbst, wenn es gerade schwierig ist?'
+  ];
+
+  function schnurAnpassen(topPx){
+    schnur.style.height = Math.max(0, topPx - 20) + 'px';
+  }
+
+  // MutationObserver-freier Ansatz: Schnur per rAF an Ball-Position koppeln
+  function schnurSyncStarten(){
+    function schritt(){
+      var top = parseFloat(jojo.style.top || '38');
+      schnurAnpassen(top);
+      requestAnimationFrame(schritt);
+    }
+    requestAnimationFrame(schritt);
+  }
+  schnurSyncStarten();
+
+  // ---------- Modus-Wechsel ----------
+  function modusWechseln(neu){
+    modus = neu;
+    document.getElementById('btn-modus-atem').classList.toggle('aktiv', neu==='atem');
+    document.getElementById('btn-modus-frei').classList.toggle('aktiv', neu==='frei');
+    document.getElementById('steuerung-atem').style.display = neu==='atem' ? 'flex' : 'none';
+    document.getElementById('frei-hinweis').style.display = neu==='frei' ? 'block' : 'none';
+    atemAnhalten();
+    jojo.className = 'jojo-ball';
+    jojo.style.top = '38px';
+    phasenText.textContent = neu==='atem' ? 'Bereit?' : 'Zieh mich runter!';
+  }
+
+  // ---------- Atem-Modus ----------
+  function atemStarten(){
+    if(atemLaeuft) return;
+    atemLaeuft = true;
+    document.getElementById('btn-start').style.display = 'none';
+    document.getElementById('btn-stop').style.display = 'inline-block';
+    atemZyklus();
+  }
+  function atemAnhalten(){
+    atemLaeuft = false;
+    if(atemTimeoutId){ clearTimeout(atemTimeoutId); atemTimeoutId = null; }
+    document.getElementById('btn-start').style.display = 'inline-block';
+    document.getElementById('btn-stop').style.display = 'none';
+  }
+  function atemZyklus(){
+    if(!atemLaeuft) return;
+    // Einatmen: Jojo steigt
+    phasenText.textContent = 'Einatmen … Jojo steigt';
+    toneEinatmen();
+    jojo.className = 'jojo-ball sanft';
+    jojo.style.top = '38px';
+    atemTimeoutId = setTimeout(function(){
+      if(!atemLaeuft) return;
+      // kurzer Halt oben
+      phasenText.textContent = 'Halten …';
+      atemTimeoutId = setTimeout(function(){
+        if(!atemLaeuft) return;
+        // Ausatmen: Jojo sinkt + Bounce
+        phasenText.textContent = 'Ausatmen … Jojo sinkt';
+        toneAusatmen();
+        jojo.className = 'jojo-ball bounce';
+        jojo.style.top = '256px';
+        atemTimeoutId = setTimeout(function(){
+          toneBounce();
+          vibrieren([25]);
+        }, 1500);
+        atemTimeoutId = setTimeout(function(){
+          if(!atemLaeuft) return;
+          jojo.className = 'jojo-ball';
+          rundenZaehler++;
+          zaehlerBadge.textContent = 'Runden: ' + rundenZaehler;
+          phasenText.textContent = 'Kurze Pause …';
+          if(rundenZaehler % REFLEX_ALLE_N_RUNDEN === 0){
+            atemAnhalten();
+            reflexZeigen();
+          } else {
+            atemTimeoutId = setTimeout(atemZyklus, 1300);
+          }
+        }, 2700);
+      }, 900);
+    }, 3600);
+  }
+
+  // ---------- Frei-Modus: Ziehen & Loslassen ----------
+  var wirdGezogen = false;
+  var buehneRect = null;
+  var OBEN_PX = 38, UNTEN_PX = 262;
+
+  jojo.addEventListener('pointerdown', function(e){
+    if(modus !== 'frei') return;
+    wirdGezogen = true;
+    jojo.className = 'jojo-ball';
+    buehneRect = document.getElementById('buehne').getBoundingClientRect();
+    jojo.setPointerCapture(e.pointerId);
+    phasenText.textContent = 'Ziehen …';
+  });
+  jojo.addEventListener('pointermove', function(e){
+    if(!wirdGezogen || modus !== 'frei') return;
+    var y = e.clientY - buehneRect.top - 39;
+    y = Math.max(OBEN_PX, Math.min(UNTEN_PX, y));
+    jojo.style.top = y + 'px';
+  });
+  function freiLoslassen(e){
+    if(!wirdGezogen || modus !== 'frei') return;
+    wirdGezogen = false;
+    var aktuellerTop = parseFloat(jojo.style.top || OBEN_PX);
+    jojo.style.setProperty('--start-top', aktuellerTop + 'px');
+    if(aktuellerTop > OBEN_PX + 20){
+      jojo.className = 'jojo-ball spring';
+      toneSpring();
+      vibrieren([15,30,15]);
+      phasenText.textContent = 'Wieder hoch! ✨';
+      rundenZaehler++;
+      zaehlerBadge.textContent = 'Runden: ' + rundenZaehler;
+      setTimeout(function(){
+        jojo.className = 'jojo-ball';
+        jojo.style.top = '38px';
+        phasenText.textContent = 'Zieh mich runter!';
+        if(rundenZaehler % REFLEX_ALLE_N_RUNDEN === 0){
+          reflexZeigen();
+        }
+      }, 900);
+    } else {
+      jojo.className = 'jojo-ball';
+      jojo.style.top = '38px';
+    }
+  }
+  jojo.addEventListener('pointerup', freiLoslassen);
+  jojo.addEventListener('pointercancel', freiLoslassen);
+
+  // ---------- Reflexion & Sprungbrett-Sammlung ----------
+  var SPRUNGBRETT_KEY = 'klartext_jojo_sprungbretter';
+
+  function sprungbretterLaden(){
+    try{ return JSON.parse(localStorage.getItem(SPRUNGBRETT_KEY)) || []; }catch(e){ return []; }
+  }
+  function sprungbretterSpeichern(liste){
+    try{ localStorage.setItem(SPRUNGBRETT_KEY, JSON.stringify(liste)); }catch(e){}
+  }
+
+  function reflexZeigen(){
+    var frage = REFLEX_FRAGEN[Math.floor(Math.random()*REFLEX_FRAGEN.length)];
+    document.getElementById('reflex-frage').textContent = frage;
+    document.getElementById('reflex-eingabe').value = '';
+    document.getElementById('reflex-overlay').classList.add('zeigen');
+  }
+  function reflexUeberspringen(){
+    document.getElementById('reflex-overlay').classList.remove('zeigen');
+  }
+  function reflexSpeichern(){
+    var text = document.getElementById('reflex-eingabe').value.trim();
+    if(text.length > 0){
+      var liste = sprungbretterLaden();
+      liste.unshift({
+        text: text,
+        frage: document.getElementById('reflex-frage').textContent,
+        datum: new Date().toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric'})
+      });
+      sprungbretterSpeichern(liste);
+      sprungbrettListeRendern();
+    }
+    document.getElementById('reflex-overlay').classList.remove('zeigen');
+  }
+  function sprungbrettLoeschen(index){
+    var liste = sprungbretterLaden();
+    liste.splice(index, 1);
+    sprungbretterSpeichern(liste);
+    sprungbrettListeRendern();
+  }
+  function sprungbrettListeRendern(){
+    var liste = sprungbretterLaden();
+    var container = document.getElementById('sprungbretter-container');
+    if(liste.length === 0){
+      container.innerHTML = '<p class="leer-hinweis">Noch keine Einträge – nach ein paar Schwüngen fragt dich Frau Jojo etwas.</p>';
+      return;
+    }
+    var html = '';
+    for(var i=0; i<liste.length; i++){
+      var eintrag = liste[i];
+      html += '<div class="sprungbrett-item">'
+        + '<button class="loesch-btn" onclick="sprungbrettLoeschen(' + i + ')" aria-label="Löschen">✕</button>'
+        + '<div class="datum">' + eintrag.datum + ' · ' + eintrag.frage + '</div>'
+        + '<div class="text">' + eintrag.text.replace(/</g,'&lt;') + '</div>'
+        + '</div>';
+    }
+    container.innerHTML = html;
+  }
+  sprungbrettListeRendern();
+
+  // ---------- Tabs ----------
+  function tabWechseln(tab){
+    document.getElementById('tab-neu').classList.toggle('aktiv', tab==='neu');
+    document.getElementById('tab-sammlung').classList.toggle('aktiv', tab==='sammlung');
+    document.getElementById('liste-neu').classList.toggle('zeigen', tab==='neu');
+    document.getElementById('liste-sammlung').classList.toggle('zeigen', tab==='sammlung');
+  }
+</script>
+</body>
+</html>

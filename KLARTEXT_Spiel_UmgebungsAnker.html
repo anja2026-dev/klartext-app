@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Umgebungs-Anker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script>(function(){try{
+  var gastZugang = new URLSearchParams(window.location.search).get('guest')==='true';
+  if(!gastZugang && sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';
+}catch(e){}})();</script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B3A4B">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#6B4C7A;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#F1ECF3;}
+body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
+.header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+.logo-mark{width:32px;height:32px;border:2px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.logo-mark span{font-family:"Playfair Display",serif;font-size:12px;font-weight:700;color:#fff;}
+.logo-text{font-family:"Playfair Display",serif;font-size:1rem;font-weight:700;color:#fff;}
+.back-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .7rem;border:1.5px solid var(--acc);border-radius:20px;color:var(--acc);font-size:.7rem;font-weight:700;text-decoration:none;}
+.hero{background:linear-gradient(135deg,var(--m) 0%,#2A5570 100%);padding:1.75rem clamp(1rem,4vw,2rem);text-align:center;}
+.hero-icon{font-size:2.2rem;margin-bottom:.4rem;}
+.hero-titel{font-family:"Playfair Display",serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700;color:#fff;margin-bottom:.3rem;}
+.hero-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:580px;margin:0 auto;}
+.shell{max-width:640px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;}
+
+.tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;}
+.tab-btn{flex:1;padding:.6rem;border:2px solid var(--border);background:var(--surface);border-radius:10px;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s;}
+.tab-btn.aktiv{border-color:var(--acc);color:var(--acc);background:var(--tint);}
+.tab-inhalt{display:none;}
+.tab-inhalt.aktiv{display:block;}
+
+/* Rausch-Timer */
+.timer-karte{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.06);}
+.timer-anzeige{font-family:"Playfair Display",serif;font-size:2.8rem;font-weight:700;color:var(--m);margin:.5rem 0;}
+.ring-wrap{position:relative;width:140px;height:140px;margin:0 auto .5rem;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:8;}
+.ring-progress{fill:none;stroke:var(--acc);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .3s linear;}
+
+.rausch-wahl{display:flex;gap:.6rem;justify-content:center;margin-bottom:1rem;}
+.rausch-chip{padding:.4rem .9rem;border-radius:20px;border:2px solid var(--border);background:var(--surface);font-size:.72rem;font-weight:700;color:var(--muted);cursor:pointer;}
+.rausch-chip.aktiv{border-color:var(--acc);color:#fff;background:var(--acc);}
+
+.dauer-wahl{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem;}
+.dauer-chip{padding:.35rem .7rem;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);font-size:.68rem;font-weight:700;color:var(--muted);cursor:pointer;}
+.dauer-chip.aktiv{border-color:var(--acc);color:var(--acc);background:var(--tint);}
+
+.play-btn{background:var(--acc);color:#fff;border:none;border-radius:30px;padding:.75rem 2.2rem;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;}
+.play-btn:active{opacity:.85;}
+
+.hinweis{font-size:.74rem;color:var(--muted);text-align:center;margin-top:.6rem;line-height:1.5;}
+
+/* Anker-Manager */
+.anker-form{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.06);}
+.feld-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:.6rem 0 .3rem;}
+.feld-label:first-child{margin-top:0;}
+.feld-input{width:100%;padding:.6rem .7rem;border:2px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.82rem;color:var(--ink);}
+.feld-input:focus{outline:none;border-color:var(--acc);}
+.speichern-btn{width:100%;margin-top:1rem;background:var(--acc);color:#fff;border:none;border-radius:10px;padding:.7rem;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;}
+
+.anker-liste{display:flex;flex-direction:column;gap:.7rem;}
+.anker-karte{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:.9rem 1rem;position:relative;}
+.anker-karte .thema{font-family:"Playfair Display",serif;font-weight:700;color:var(--m);font-size:.92rem;margin-bottom:.4rem;}
+.anker-zeile{font-size:.76rem;color:var(--ink);margin-bottom:.15rem;}
+.anker-zeile b{color:var(--acc);}
+.loeschen-btn{position:absolute;top:.7rem;right:.8rem;background:none;border:none;color:var(--muted);font-size:.9rem;cursor:pointer;}
+.leer-hinweis{text-align:center;color:var(--muted);font-size:.78rem;padding:1.5rem 0;}
+
+#brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="logo" href="KLARTEXT_Spiele.html">
+    <div class="logo-mark"><span>K</span></div>
+    <div class="logo-text">KLARTEXT · Interaktive Tools</div>
+  </a>
+  <a class="back-btn" href="KLARTEXT_Spiele.html">← Tools</a>
+</header>
+
+<div class="hero">
+  <div class="hero-icon">🎧</div>
+  <h1 class="hero-titel">Der Umgebungs-Anker</h1>
+  <p class="hero-sub">Gleicher Klang, gleicher Duft, gleiches Gefühl — beim Lernen wie in der Prüfung. Das erleichtert dem Gedächtnis den Abruf.</p>
+</div>
+
+<div class="shell">
+  <div class="tabs">
+    <button class="tab-btn aktiv" data-tab="timer" onclick="tabWechseln('timer')">🎧 Rausch-Timer</button>
+    <button class="tab-btn" data-tab="anker" onclick="tabWechseln('anker')">🧷 Anker-Manager</button>
+  </div>
+
+  <!-- ═══ TAB: RAUSCH-TIMER ═══ -->
+  <div class="tab-inhalt aktiv" id="tab-timer">
+    <div class="timer-karte">
+      <div class="ring-wrap">
+        <svg width="140" height="140">
+          <circle class="ring-bg" cx="70" cy="70" r="60"></circle>
+          <circle class="ring-progress" id="ring" cx="70" cy="70" r="60" stroke-dasharray="377" stroke-dashoffset="0"></circle>
+        </svg>
+      </div>
+      <div class="timer-anzeige" id="timer-anzeige">25:00</div>
+
+      <div class="rausch-wahl">
+        <div class="rausch-chip aktiv" data-typ="weiss" onclick="rauschWahl('weiss')">Weißes Rauschen</div>
+        <div class="rausch-chip" data-typ="rosa" onclick="rauschWahl('rosa')">Rosa Rauschen</div>
+      </div>
+
+      <div class="dauer-wahl">
+        <div class="dauer-chip" data-min="10" onclick="dauerWahl(10)">10 Min.</div>
+        <div class="dauer-chip aktiv" data-min="25" onclick="dauerWahl(25)">25 Min.</div>
+        <div class="dauer-chip" data-min="45" onclick="dauerWahl(45)">45 Min.</div>
+      </div>
+
+      <button class="play-btn" id="play-btn" onclick="playPause()">▶ Starten</button>
+      <p class="hinweis">Nutze <b>immer denselben Rausch-Typ</b> für dasselbe Fach — beim Lernen und im Kopf noch einmal kurz vor der Prüfung. Das Gehirn verknüpft den Klang mit dem Wissen und findet es leichter wieder.</p>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: ANKER-MANAGER ═══ -->
+  <div class="tab-inhalt" id="tab-anker">
+    <div class="anker-form">
+      <div class="feld-label">Fach / Thema</div>
+      <input class="feld-input" id="in-thema" placeholder="z. B. Matheklausur Freitag">
+      <div class="feld-label">Duft-Anker</div>
+      <input class="feld-input" id="in-duft" placeholder="z. B. Pfefferminz-Kaugummi, ein bestimmtes Parfüm">
+      <div class="feld-label">Taktiler Anker</div>
+      <input class="feld-input" id="in-taktil" placeholder="z. B. ein glatter Stein in der Tasche, ein Armband">
+      <div class="feld-label">Geschmacks-Anker</div>
+      <input class="feld-input" id="in-geschmack" placeholder="z. B. dieselbe Sorte Bonbon">
+      <button class="speichern-btn" onclick="ankerSpeichern()">Anker speichern</button>
+    </div>
+
+    <div class="anker-liste" id="anker-liste"></div>
+  </div>
+</div>
+
+<img id="brainy-anker" src="brainy.png" alt="">
+
+<script>
+// ═══ RAUSCH-TIMER (Web Audio API, keine externen Dateien) ═══
+var audioCtx = null, rauschNode = null, gainNode = null;
+var rauschTyp = 'weiss', dauerMin = 25, restSek = 25*60, laeuft = false, timerId = null;
+var UMFANG = 2 * Math.PI * 60;
+
+function rauschWahl(typ){
+  rauschTyp = typ;
+  document.querySelectorAll('.rausch-chip').forEach(function(c){c.classList.toggle('aktiv', c.dataset.typ===typ);});
+  if(laeuft){ stopAudio(); startAudio(); }
+}
+function dauerWahl(min){
+  dauerMin = min; restSek = min*60;
+  document.querySelectorAll('.dauer-chip').forEach(function(c){c.classList.toggle('aktiv', Number(c.dataset.min)===min);});
+  anzeigeAktualisieren();
+}
+
+function erzeugeRauschBuffer(ctx, typ){
+  var bufferSize = 2 * ctx.sampleRate;
+  var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  var data = buffer.getChannelData(0);
+  if(typ === 'weiss'){
+    for(var i=0;i<bufferSize;i++){ data[i] = Math.random()*2-1; }
+  } else {
+    // Rosa Rauschen (Paul Kellet, economy method)
+    var b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for(var j=0;j<bufferSize;j++){
+      var white = Math.random()*2-1;
+      b0 = 0.99886*b0 + white*0.0555179;
+      b1 = 0.99332*b1 + white*0.0750759;
+      b2 = 0.96900*b2 + white*0.1538520;
+      b3 = 0.86650*b3 + white*0.3104856;
+      b4 = 0.55000*b4 + white*0.5329522;
+      b5 = -0.7616*b5 - white*0.0168980;
+      var pink = b0+b1+b2+b3+b4+b5+b6+white*0.5362;
+      b6 = white*0.115926;
+      data[j] = pink * 0.11;
+    }
+  }
+  return buffer;
+}
+
+function startAudio(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    var buffer = erzeugeRauschBuffer(audioCtx, rauschTyp);
+    rauschNode = audioCtx.createBufferSource();
+    rauschNode.buffer = buffer;
+    rauschNode.loop = true;
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0.18;
+    rauschNode.connect(gainNode).connect(audioCtx.destination);
+    rauschNode.start(0);
+  }catch(e){}
+}
+function stopAudio(){
+  try{ if(rauschNode){ rauschNode.stop(); rauschNode.disconnect(); rauschNode=null; } }catch(e){}
+}
+function abschlussChime(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    [440,528].forEach(function(freq,i){
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0.0001, audioCtx.currentTime+i*0.35);
+      g.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime+i*0.35+0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime+i*0.35+1.2);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(audioCtx.currentTime+i*0.35);
+      o.stop(audioCtx.currentTime+i*0.35+1.3);
+    });
+  }catch(e){}
+}
+
+function anzeigeAktualisieren(){
+  var m = Math.floor(restSek/60), s = restSek%60;
+  document.getElementById('timer-anzeige').textContent = (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+  var anteil = restSek/(dauerMin*60);
+  document.getElementById('ring').style.strokeDashoffset = UMFANG*(1-anteil);
+}
+
+function playPause(){
+  var btn = document.getElementById('play-btn');
+  if(!laeuft){
+    laeuft = true; btn.textContent = '⏸ Pause';
+    startAudio();
+    timerId = setInterval(function(){
+      restSek--;
+      anzeigeAktualisieren();
+      if(restSek<=0){
+        clearInterval(timerId); laeuft=false; btn.textContent='▶ Starten';
+        stopAudio(); abschlussChime();
+        restSek = dauerMin*60; anzeigeAktualisieren();
+        try{ if(navigator.vibrate) navigator.vibrate(200); }catch(e){}
+      }
+    }, 1000);
+  } else {
+    laeuft = false; btn.textContent = '▶ Starten';
+    clearInterval(timerId); stopAudio();
+  }
+}
+
+// ═══ ANKER-MANAGER ═══
+var ANKER_KEY = 'klartext_umgebungsanker_v1';
+function ankerLaden(){ try{ return JSON.parse(localStorage.getItem(ANKER_KEY)||'[]'); }catch(e){ return []; } }
+function ankerSchreiben(liste){ try{ localStorage.setItem(ANKER_KEY, JSON.stringify(liste)); }catch(e){} }
+
+function ankerSpeichern(){
+  var thema = document.getElementById('in-thema').value.trim();
+  if(!thema) return;
+  var eintrag = {
+    thema: thema,
+    duft: document.getElementById('in-duft').value.trim(),
+    taktil: document.getElementById('in-taktil').value.trim(),
+    geschmack: document.getElementById('in-geschmack').value.trim(),
+    id: Date.now()
+  };
+  var liste = ankerLaden();
+  liste.unshift(eintrag);
+  ankerSchreiben(liste);
+  ['in-thema','in-duft','in-taktil','in-geschmack'].forEach(function(id){ document.getElementById(id).value=''; });
+  ankerListeRendern();
+}
+function ankerLoeschen(id){
+  ankerSchreiben(ankerLaden().filter(function(a){ return a.id!==id; }));
+  ankerListeRendern();
+}
+function ankerListeRendern(){
+  var liste = ankerLaden();
+  var el = document.getElementById('anker-liste');
+  if(liste.length===0){ el.innerHTML = '<div class="leer-hinweis">Noch keine Anker gespeichert. Trag oben dein erstes Fach ein.</div>'; return; }
+  el.innerHTML = liste.map(function(a){
+    var zeilen = '';
+    if(a.duft) zeilen += '<div class="anker-zeile"><b>Duft:</b> '+a.duft+'</div>';
+    if(a.taktil) zeilen += '<div class="anker-zeile"><b>Taktil:</b> '+a.taktil+'</div>';
+    if(a.geschmack) zeilen += '<div class="anker-zeile"><b>Geschmack:</b> '+a.geschmack+'</div>';
+    return '<div class="anker-karte"><button class="loeschen-btn" onclick="ankerLoeschen('+a.id+')">✕</button><div class="thema">'+a.thema+'</div>'+zeilen+'</div>';
+  }).join('');
+}
+
+function tabWechseln(tab){
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('aktiv', b.dataset.tab===tab); });
+  document.querySelectorAll('.tab-inhalt').forEach(function(t){ t.classList.remove('aktiv'); });
+  document.getElementById('tab-'+tab).classList.add('aktiv');
+}
+
+anzeigeAktualisieren();
+ankerListeRendern();
+</script>
+
+</body>
+</html>

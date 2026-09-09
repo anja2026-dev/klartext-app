@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · DaZ-Starterset (2 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E8B8B;--gruen:#4A7C59;--rot:#C0392B;--blau:#3B5BA5;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF5F5;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.legende{display:flex;gap:1rem;margin-bottom:.9rem;flex-wrap:wrap;}
+.legende-item{display:flex;align-items:center;gap:.4rem;font-size:.68rem;}
+.legende-chip{width:.9rem;height:.9rem;border-radius:4px;flex-shrink:0;}
+
+.satz-zeile{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.9rem;padding:.6rem;background:var(--paper);border-radius:8px;}
+.satz-baustein{padding:.4rem .7rem;border-radius:6px;color:#fff;font-size:.78rem;font-weight:700;}
+.satz-baustein.subjekt{background:var(--gruen);}
+.satz-baustein.praedikat{background:var(--rot);}
+.satz-baustein.objekt{background:var(--blau);}
+
+.schneide-hinweis{font-size:.62rem;color:var(--muted);text-align:center;margin:.3rem 0 1rem;letter-spacing:.03em;}
+.schneide-hinweis:before,.schneide-hinweis:after{content:"✂ — — — — — — — — — — — — — — — — — — — — — — — — — — — — ✂";display:block;font-size:.6rem;letter-spacing:.1em;margin-bottom:.15rem;color:var(--border);}
+
+.streifen-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;}
+.streifen{border:2px dashed var(--border);border-radius:6px;padding:.5rem;text-align:center;font-size:.7rem;color:var(--muted);min-height:2.2rem;display:flex;align-items:center;justify-content:center;}
+.streifen.leer-g{border-color:var(--gruen);color:var(--gruen);}
+.streifen.leer-r{border-color:var(--rot);color:var(--rot);}
+.streifen.leer-b{border-color:var(--blau);color:var(--blau);}
+
+.piktogramm-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem;}
+.piktogramm-karte{background:var(--paper);border-radius:10px;padding:.9rem 1rem;display:flex;align-items:center;gap:.8rem;}
+.piktogramm-icon{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.piktogramm-text{font-size:.75rem;line-height:1.4;color:var(--ink);}
+.piktogramm-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.1rem;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT DAZ-STARTERSET</h1>
+  <div class="untertitel">Satz-Schieber &amp; Bild-Barometer für sprachfreie Verständigung</div>
+
+  <div class="hinweis-box">
+    <p>Deutsch als Zweitsprache heißt: Grammatik nicht pauken, sondern sichtbar und anfassbar machen. Der <b>Satz-Schieber</b> macht die deutsche Satzstellung durch Farben statt Regeln begreifbar — kein Vorwissen nötig, sofort einsetzbar.</p>
+    <div class="quelle">Laut PISA-Studie 2025 (OECD) liegt der Leistungsunterschied zwischen Jugendlichen ohne Zuwanderungsgeschichte und spät zugewanderten Jugendlichen bei bis zu 129 Punkten (Naturwissenschaften) — ein Großteil davon lässt sich durch den zu Hause gesprochenen Sprachhintergrund erklären. Quelle: OECD, PISA 2025 Results (Volume I): Germany.</div>
+  </div>
+
+  <div class="abschnitt-titel">Der Satz-Schieber</div>
+  <div class="absatz">Im Deutschen steht das Verb (Prädikat) immer an zweiter Stelle — egal, was davor steht. Diese Regel lässt sich schwer erklären, aber gut zeigen: Jeder Satzbaustein bekommt eine feste Farbe. Wer die Farben kennt, kann Sätze bauen, ohne die Regel in Worte fassen zu müssen.</div>
+
+  <div class="legende">
+    <div class="legende-item"><span class="legende-chip" style="background:var(--gruen);"></span> Subjekt (wer/was?)</div>
+    <div class="legende-item"><span class="legende-chip" style="background:var(--rot);"></span> Prädikat (Verb, Stelle 2)</div>
+    <div class="legende-item"><span class="legende-chip" style="background:var(--blau);"></span> Objekt (wen/was/wem?)</div>
+  </div>
+
+  <div class="absatz"><b>Beispiel 1:</b></div>
+  <div class="satz-zeile">
+    <span class="satz-baustein subjekt">Das Kind</span>
+    <span class="satz-baustein praedikat">isst</span>
+    <span class="satz-baustein objekt">einen Apfel</span>
+  </div>
+  <div class="absatz"><b>Beispiel 2 (umgestellt — das Verb bleibt an Stelle 2):</b></div>
+  <div class="satz-zeile">
+    <span class="satz-baustein objekt">Einen Apfel</span>
+    <span class="satz-baustein praedikat">isst</span>
+    <span class="satz-baustein subjekt">das Kind</span>
+  </div>
+
+  <div class="schneide-hinweis">Baustein-Streifen ausschneiden, in eigenen Worten beschriften, frei zu neuen Sätzen zusammenschieben</div>
+  <div class="streifen-grid">
+    <div class="streifen leer-g">Subjekt</div>
+    <div class="streifen leer-r">Prädikat</div>
+    <div class="streifen leer-b">Objekt</div>
+    <div class="streifen leer-g">Subjekt</div>
+    <div class="streifen leer-r">Prädikat</div>
+    <div class="streifen leer-b">Objekt</div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, sprachsensiblen Einsatz in Schule, DaZ-Förderung und zu Hause.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 2</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="abschnitt-titel">Das Bild-Symbol-Barometer</div>
+  <div class="absatz">Wenn Worte fehlen, blockiert oft nicht das Verständnis, sondern der fehlende Ausdruck. Das Bild-Symbol-Barometer gibt Kindern und Jugendlichen mit wenig Deutschkenntnissen vier feste Zeigekarten, um sich ohne ein einziges Wort verständlich zu machen.</div>
+
+  <div class="piktogramm-grid">
+    <div class="piktogramm-karte">
+      <div class="piktogramm-icon">✋</div>
+      <div class="piktogramm-text"><b>„Ich brauche eine Pause."</b>Kurz raus aus der Situation, ohne sich rechtfertigen zu müssen.</div>
+    </div>
+    <div class="piktogramm-karte">
+      <div class="piktogramm-icon">❓</div>
+      <div class="piktogramm-text"><b>„Ich verstehe die Aufgabe nicht."</b>Signal für Erklärung statt für Ablenkung oder Verweigerung.</div>
+    </div>
+    <div class="piktogramm-karte">
+      <div class="piktogramm-icon">🤝</div>
+      <div class="piktogramm-text"><b>„Ich brauche Hilfe."</b>Direkte Bitte um Unterstützung, sprachfrei und ohne Scham.</div>
+    </div>
+    <div class="piktogramm-karte">
+      <div class="piktogramm-icon">✓</div>
+      <div class="piktogramm-text"><b>„Alles klar, ich mache weiter."</b>Rückmeldung, dass es gerade gut läuft — auch das darf gezeigt werden.</div>
+    </div>
+  </div>
+
+  <div class="absatz"><b>So funktioniert's:</b> Die vier Karten ausschneiden, laminieren und griffbereit auf den Tisch legen. Statt zu sprechen, wird auf die passende Karte gezeigt oder getippt. Für die ganze Klasse geeignet — Kinder ohne Sprachbarriere nutzen die Karten oft ebenso gern.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Zeigen ist auch Sprechen. Wer eine Karte hochhält, hat sich klar und deutlich verständigt.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+</body>
+</html>

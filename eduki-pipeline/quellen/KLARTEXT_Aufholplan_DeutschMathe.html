@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Aufholplan Deutsch &amp; Mathe (2 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#4A5FA5;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#ECEEF7;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.technik-box{background:var(--paper);border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1rem;}
+.technik-titel{font-size:.82rem;font-weight:700;color:var(--m);margin-bottom:.4rem;font-family:"Playfair Display",serif;}
+.technik-schritte{font-size:.74rem;line-height:1.6;}
+.technik-schritte b{color:var(--acc);}
+
+.beispiel-zeile{display:flex;gap:.6rem;margin:.6rem 0;flex-wrap:wrap;}
+.buchstabe-tag{background:var(--acc);color:#fff;border-radius:6px;padding:.35rem .6rem;font-size:.72rem;font-weight:700;}
+
+.rechenbox{background:#FFF7EE;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin-bottom:1rem;}
+.rechenbox-titel{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:.4rem;}
+.rechenbeispiel{font-size:.9rem;font-family:"DM Sans",sans-serif;line-height:1.8;color:var(--m);font-weight:700;}
+.rechenbeispiel .schritt{font-size:.68rem;font-weight:400;color:var(--ink);display:block;margin-top:.15rem;}
+
+.fenster-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1rem;}
+.fenster-karte{background:var(--tint);border-radius:8px;padding:.7rem .8rem;text-align:center;}
+.fenster-karte b{display:block;font-size:.72rem;color:var(--m);margin-bottom:.3rem;}
+.fenster-karte span{font-size:.68rem;color:var(--ink);line-height:1.4;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1: DEUTSCH ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT AUFHOLPLAN</h1>
+  <div class="untertitel">Deutsch &amp; Mathe — zwei Blockaden, zwei Techniken</div>
+
+  <div class="hinweis-box">
+    <p>Aktuell verfehlt fast jede:r dritte Schüler:in in Deutschland die Mindeststandards in Lesen (32%) und Mathematik (34%) — der schwächste Wert seit Beginn der PISA-Erhebungen. An nicht-gymnasialen Schulen sind es bis zu 47%. Zahlen ändern nichts an einem einzelnen Kind vor einem leeren Blatt — zwei sofort einsetzbare Techniken schon.</p>
+    <div class="quelle">Quelle: OECD, PISA 2025 Results (Volume I): Germany; Deutsches Schulportal, „Die zehn wichtigsten Ergebnisse der PISA-Studie 2025".</div>
+  </div>
+
+  <div class="abschnitt-titel">Deutsch: Raus aus der Schreib-Blockade</div>
+  <div class="absatz">Ein leeres Blatt vor einem Aufsatz wirkt für viele Kinder wie eine Wand. Die <b>KaWa-Schreib-Turbine</b> (Kreatives Aufschreiben von Wortassoziationen) löst diese Blockade, indem sie das Thema in seine Buchstaben zerlegt — jeder Buchstabe wird zum kleinen Startpunkt statt der ganze Aufsatz auf einmal.</div>
+
+  <div class="technik-box">
+    <div class="technik-titel">Die KaWa-Schreib-Turbine</div>
+    <div class="technik-schritte">
+      <b>1.</b> Thema wählen, senkrecht in Buchstaben schreiben (z. B. „HERBST").<br>
+      <b>2.</b> Zu jedem Buchstaben ein Wort oder eine kurze Assoziation notieren, in beliebiger Reihenfolge.<br>
+      <b>3.</b> Aus den gesammelten Wörtern die ersten Sätze bauen — der Aufsatz beginnt sich von selbst zu füllen.
+    </div>
+    <div class="beispiel-zeile">
+      <span class="buchstabe-tag">H – Herbstwind</span>
+      <span class="buchstabe-tag">E – Eichel</span>
+      <span class="buchstabe-tag">R – rote Blätter</span>
+      <span class="buchstabe-tag">B – bunt</span>
+    </div>
+  </div>
+
+  <div class="abschnitt-titel">Der Kino-im-Kopf-Rechtschreib-Anker</div>
+  <div class="absatz">Schwierige Wörter bleiben nicht durch Wiederholen hängen, sondern durch ein inneres Bild. Das Kind schließt kurz die Augen und stellt sich das Wort wie in einem kleinen Film vor — übertrieben, bunt, in Bewegung. Beispiel: Bei „Fahrrad" das Wort in großen Buchstaben auf einem tatsächlich vorbeifahrenden Fahrrad sehen. Je ungewöhnlicher das innere Bild, desto besser bleibt die Schreibweise hängen.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, sofort einsetzbaren Einsatz in Schule, Förderunterricht und zu Hause.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 2</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2: MATHE ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="abschnitt-titel">Mathe: Kopfrechnen ohne Angst</div>
+  <div class="absatz">Rechenangst entsteht oft nicht durch fehlendes Können, sondern durch das Gefühl, in einem starren System zu versagen. Der <b>Kreuzmuster-Blitzrechner</b> macht das Multiplizieren über die 5×5-Reihe hinaus durch ein einfaches visuelles Muster greifbar — ganz ohne Auswendiglernen langer Reihen.</div>
+
+  <div class="rechenbox">
+    <div class="rechenbox-titel">Kreuzmuster-Blitzrechner — Beispiel 7 × 8</div>
+    <div class="rechenbeispiel">7 × 8 = 56
+      <span class="schritt">Abstand zu 10: 7→3, 8→2 · Über Kreuz subtrahieren: 7−2=5 (oder 8−3=5) → Zehnerstelle 5 · Abstände multiplizieren: 3×2=6 → Einerstelle 6 · Ergebnis: 56</span>
+    </div>
+  </div>
+  <div class="absatz">Funktioniert für alle Multiplikationen zwischen 6 und 10. Am Anfang mit aufgemalten Kreuzlinien zwischen den beiden Zahlen üben, bis das Muster im Kopf sitzt.</div>
+
+  <div class="abschnitt-titel">Der Textaufgaben-Entschlüsseler</div>
+  <div class="absatz">Textaufgaben überfordern oft nicht durch die Rechnung selbst, sondern durch die Menge an Information auf einmal. Die 3-Fenster-Schablone trennt die Aufgabe in drei überschaubare Fragen:</div>
+
+  <div class="fenster-grid">
+    <div class="fenster-karte"><b>Fenster 1</b><span>Was ist gegeben? (Zahlen unterstreichen)</span></div>
+    <div class="fenster-karte"><b>Fenster 2</b><span>Was ist gefragt? (Frage einkreisen)</span></div>
+    <div class="fenster-karte"><b>Fenster 3</b><span>Welche Rechenart passt? (+ − × ÷ ankreuzen)</span></div>
+  </div>
+  <div class="absatz">Ein Blatt Papier mit drei ausgeschnittenen Fenstern über die Aufgabe legen und Fenster für Fenster durchgehen, statt den ganzen Text auf einmal zu erfassen.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Eine Zahl auf einem Blatt macht noch keine Note. Jeder Schritt zählt, auch der kleinste.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+</body>
+</html>

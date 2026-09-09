@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Starthilfe-Zauber Begleitheft (2 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#D9527A;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#FBEAEF;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box b{color:var(--m);}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.beispiel-reihe{display:flex;gap:.8rem;justify-content:center;align-items:center;margin-bottom:1rem;background:var(--paper);border-radius:10px;padding:1rem;}
+.beispiel-reihe svg{width:180px;height:auto;}
+
+.raetsel-tab{width:100%;border-collapse:collapse;font-size:.72rem;margin-bottom:1rem;}
+.raetsel-tab th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;}
+.raetsel-tab td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
+.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT STARTHILFE-ZAUBER</h1>
+  <div class="untertitel">Begleitheft für Schule &amp; Kollegium</div>
+
+  <div class="hinweis-box"><b>3 Sekunden Staunen wecken die Aufmerksamkeit mehr als 3 Minuten Ansage.</b> Der Starthilfe-Zauber ist ein kurzer Aufmerksamkeits-Opener für den Stundenbeginn: eine optische Täuschung oder Knobelfrage, die in Sekunden aufgelöst wird — ein kleiner, verlässlicher Wow-Moment statt langer Anlaufzeit.</div>
+
+  <div class="abschnitt-titel">Beispiel: die Müller-Lyer-Täuschung</div>
+  <div class="beispiel-reihe">
+    <svg viewBox="0 0 260 120" xmlns="http://www.w3.org/2000/svg">
+      <line x1="40" y1="35" x2="220" y2="35" stroke="#1B3A4B" stroke-width="3"/>
+      <line x1="40" y1="35" x2="60" y2="20" stroke="#1B3A4B" stroke-width="3"/><line x1="40" y1="35" x2="60" y2="50" stroke="#1B3A4B" stroke-width="3"/>
+      <line x1="220" y1="35" x2="200" y2="20" stroke="#1B3A4B" stroke-width="3"/><line x1="220" y1="35" x2="200" y2="50" stroke="#1B3A4B" stroke-width="3"/>
+      <line x1="40" y1="85" x2="220" y2="85" stroke="#1B3A4B" stroke-width="3"/>
+      <line x1="40" y1="85" x2="20" y2="70" stroke="#1B3A4B" stroke-width="3"/><line x1="40" y1="85" x2="20" y2="100" stroke="#1B3A4B" stroke-width="3"/>
+      <line x1="220" y1="85" x2="240" y2="70" stroke="#1B3A4B" stroke-width="3"/><line x1="220" y1="85" x2="240" y2="100" stroke="#1B3A4B" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="absatz">Beide Linien sind exakt gleich lang — nur die Pfeilrichtung an den Enden lässt sie unterschiedlich wirken. Diese klassische Wahrnehmungstäuschung wurde 1889 vom deutschen Soziologen Franz Carl Müller-Lyer beschrieben und gehört zu den am besten untersuchten optischen Täuschungen überhaupt.</div>
+
+  <div class="absatz">In der App wechseln sich zwei optische Täuschungen (Müller-Lyer- und Ebbinghaus-Täuschung), vier Knobelfragen und zwei kurze Staun-Fakten in zufälliger Reihenfolge ab. Nach dem Vorlesen kurz raten lassen, dann mit einem Klick auflösen.</div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den schnellen, reizarmen Einsatz zu Stundenbeginn.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 2</span></div>
+</div>
+
+<!-- ══════ SEITE 2 ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="abschnitt-titel">Drei Knobelfragen zum sofortigen Einsatz</div>
+  <table class="raetsel-tab">
+    <tr><th>Frage</th><th>Auflösung</th></tr>
+    <tr><td>Was wird nasser, je mehr es trocknet?</td><td>Das Handtuch.</td></tr>
+    <tr><td>Ich habe Städte, aber keine Häuser, Berge, aber keine Bäume, Wasser, aber keine Fische. Was bin ich?</td><td>Eine Landkarte.</td></tr>
+    <tr><td>Zwei Mütter und zwei Töchter essen zusammen, jede bekommt ein Stück Kuchen — trotzdem werden nur drei Stücke gegessen. Wie geht das?</td><td>Es sind nur drei Personen: Großmutter, Mutter, Tochter.</td></tr>
+  </table>
+
+  <div class="absatz"><b>Tipp für den Einsatz im Kollegium:</b> Auch als Pausenraum-Impuls geeignet — die App merkt sich die zuletzt gezeigten Rätsel nicht, jede neue Runde mischt frisch.</div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr"></div>
+    <div class="qr-text"><b>Die digitale Brücke</b>QR-Code scannen für den KLARTEXT-Starthilfe-Zauber als Web-App (ohne Login, DSGVO-sicher): Rätsel zeigen, kurz raten lassen, mit einem Klick auflösen — ideal für Beamer oder Whiteboard.</div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Ein kurzes Staunen holt die Aufmerksamkeit schneller zurück als jede Ermahnung.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_StarthilfeZauber.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

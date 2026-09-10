@@ -1,11 +1,95 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Selbstfürsorge-Bingo zum Ausdrucken · KLARTEXT-Mentoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
-@media print{.no-print{display:none!important;}body{background:white;padding:0;}@page{margin:8mm;size:A4;}}
-#qr-footer-1 canvas,#qr-footer-1 img{width:100%;height:100%;display:block;}
+  :root{
+    --kt-primary:#1B3A4B; --kt-accent:#6EC6A0; --kt-paper:#F5F0E8; --kt-ink:#2D2D2D;
+    --kt-muted:#7A7060; --kt-surface:#FFFFFF; --kt-border:#DDD8CE;
+    --m8:#B97D8B; --m8-dark:#8C5763; --m8-light:#FBEFF1; --m8-border:#E3BFC6;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:#DCD5C6;color:var(--kt-ink);-webkit-font-smoothing:antialiased;padding:24px 0 48px;}
+
+  .toolbar{width:210mm;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:center;}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:9px 18px;border-radius:999px;background:#fff;border:1.5px solid var(--kt-primary);color:var(--kt-primary);text-decoration:none;}
+  .print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--kt-primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(27,58,75,.25);}
+  .print-btn:hover{background:#132a37;}
+
+  .sheet{
+    width:210mm;min-height:297mm;margin:0 auto;background:var(--kt-paper);
+    box-shadow:0 10px 40px rgba(0,0,0,.22);
+    padding:14mm 16mm 12mm;
+    display:flex;flex-direction:column;
+    position:relative;
+  }
+
+  .kop-band{
+    background:var(--kt-primary);border-radius:14px;padding:6mm 8mm;margin-bottom:6mm;
+    display:flex;align-items:center;gap:5mm;position:relative;overflow:hidden;
+  }
+  .kop-logo{
+    width:13mm;height:13mm;border:2px solid var(--kt-accent);border-radius:6px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-weight:800;font-size:16px;color:#fff;
+  }
+  .kop-band h1{font-family:'Playfair Display',serif;font-weight:800;font-size:20px;color:#fff;line-height:1.2;}
+  .kop-band .sub{font-size:10.5px;color:rgba(255,255,255,.62);margin-top:1mm;}
+  .kop-band .marke{font-family:'Playfair Display',serif;font-weight:700;font-size:8.5px;letter-spacing:.2em;color:var(--kt-accent);text-transform:uppercase;margin-bottom:.8mm;}
+  .kop-brainy{width:15mm;height:15mm;object-fit:contain;margin-left:auto;flex-shrink:0;}
+
+  .karte{
+    background:var(--kt-surface);border-radius:14px;overflow:hidden;
+    box-shadow:0 4px 16px rgba(27,58,75,.1);flex:1;display:flex;flex-direction:column;
+  }
+  .karte-titel{
+    background:var(--m8);padding:4mm 6mm;font-family:'Playfair Display',serif;
+    font-size:13.5px;font-weight:800;color:#fff;
+  }
+
+  .grid{padding:5mm;display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;flex:1;}
+  .feld{
+    background:var(--m8-light);border:1.6px solid var(--m8-border);border-radius:12px;
+    padding:3mm 2.6mm;text-align:center;font-size:9.6px;color:var(--kt-ink);line-height:1.35;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2mm;
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  .feld .box{width:4.4mm;height:4.4mm;border:1.8px solid var(--m8-dark);border-radius:4px;flex-shrink:0;}
+  .feld.frei{
+    background:var(--m8);color:#fff;font-weight:800;font-size:11px;border-color:var(--m8);
+  }
+
+  .tipp{
+    display:flex;align-items:center;gap:4mm;background:var(--kt-surface);border:1px solid var(--kt-border);
+    border-left:4px solid var(--kt-accent);border-radius:10px;padding:3.4mm 5mm;margin-top:5mm;
+    font-size:10.5px;line-height:1.55;color:var(--kt-muted);
+  }
+  .tipp .icon{font-size:18px;flex-shrink:0;}
+  .tipp b{color:var(--kt-primary);}
+
+  .fusszeile{display:flex;justify-content:space-between;align-items:center;gap:4mm;margin-top:6mm;}
+  .copyright{font-size:8.5px;color:var(--kt-muted);}
+  .gast-box{display:flex;align-items:center;gap:3mm;background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:12px;padding:2.6mm 4mm;max-width:92mm;}
+  .gast-box .qr{width:16mm;height:16mm;color:var(--kt-primary);flex-shrink:0;background:#fff;}
+  .gast-box .qr canvas,.gast-box .qr img{width:100%;height:100%;display:block;}
+  .gast-box .txt{font-size:7.6px;line-height:1.4;color:var(--kt-muted);}
+  .gast-box .txt b{display:block;color:var(--kt-primary);font-size:8.4px;font-weight:700;margin-bottom:.5mm;}
+  .gast-box .txt .lnk{display:block;margin-top:1mm;color:var(--kt-accent);font-weight:700;word-break:break-all;}
+
+  #klartext-funnel-footer{display:none;}
+
+  @media print{
+    body{background:#fff;padding:0;}
+    .toolbar{display:none;}
+    .sheet{width:auto;min-height:auto;margin:0;box-shadow:none;padding:0;}
+    @page{size:A4;margin:12mm 14mm;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+  }
 </style>
 <script>(function(){try{
   var gastZugang = new URLSearchParams(window.location.search).get('guest')==='true';
@@ -16,117 +100,82 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-<div style="max-width:920px;margin:0 auto 10px;display:flex;gap:8px;" class="no-print">
-  <a href="KLARTEXT_Downloads.html" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;background:white;border:1.5px solid #1a2e44;color:#1a2e44;text-decoration:none;">← Downloads</a>
-  <button onclick="window.print()" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:14px;background:#1d9e75;color:white;border:none;cursor:pointer;font-family:Arial;">🖨 Drucken / PDF</button>
-</div>
-<div style="max-width:920px;margin:0 auto;">
 
-  <div style="background:#1a2e44;border-radius:12px;padding:18px 24px;margin-bottom:16px;display:flex;align-items:center;gap:16px;">
-    <div style="width:44px;height:44px;border:2px solid #6EC6A0;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 7px;flex-shrink:0;">
-      <div style="font-family:Georgia,serif;font-size:16px;font-weight:900;color:#fff;line-height:1;">K</div>
-      <div style="display:flex;flex-direction:column;gap:2.5px;width:100%;"><span style="height:2px;border-radius:2px;background:#6EC6A0;"></span><span style="height:2px;border-radius:2px;background:#6EC6A0;"></span><span style="height:2px;border-radius:2px;background:#6EC6A0;"></span></div>
-    </div>
-    <img src="brainy.png" style="width:48px;height:48px;object-fit:contain;" alt="">
+<div class="toolbar">
+  <a href="KLARTEXT_Downloads.html" class="back-btn">← Downloads</a>
+  <button class="print-btn" onclick="window.print()">🖨️ Drucken / als PDF speichern</button>
+</div>
+
+<div class="sheet">
+
+  <div class="kop-band">
+    <div class="kop-logo">K</div>
     <div>
-      <div style="font-size:20px;font-weight:900;color:white;">🎯 Selbstfürsorge-Bingo</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;">Zum Ausdrucken · An den Kühlschrank · Eine Woche lang abhaken</div>
+      <div class="marke">KLARTEXT</div>
+      <h1>🎯 Selbstfürsorge-Bingo</h1>
+      <div class="sub">Zum Ausdrucken · An den Kühlschrank · Eine Woche lang abhaken</div>
     </div>
-    <div style="margin-left:auto;font-size:9px;color:rgba(255,255,255,0.4);text-align:right;">© 2026 Anja Jolk<br>KLARTEXT-Mentoring</div>
+    <img class="kop-brainy" src="brainy.png" alt="Brainy">
   </div>
 
-  <div style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 10px rgba(0,0,0,0.08);">
-    <div style="background:#6B3F6B;padding:12px 20px;font-size:14px;font-weight:800;color:white;">Meine Bingo-Woche — zum Abhaken mit Stift</div>
-    <div style="padding:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Einmal richtig durchatmen, bevor du aus dem Auto steigst</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Eine ganze Tasse Tee genießen, solange sie warm ist</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>"Ich brauche kurz Ruhe" sagen</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>5 Min. ohne Handy auf dem Sofa sitzen</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Ein Kompliment annehmen, ohne es abzuwehren</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Nein sagen — egal wozu</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Draußen spazieren, ohne Ziel</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#6B3F6B;color:#fff;font-weight:700;border:2px solid #6B3F6B;border-radius:10px;padding:14px 10px;text-align:center;font-size:11px;min-height:90px;display:flex;align-items:center;justify-content:center;">FREI<br>(zählt immer)</div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Einen Song laut mitsingen</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Früher schlafen gehen als geplant</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Dich selbst loben — laut, nicht nur im Kopf</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Ein Glas Wasser trinken, bevor du Kaffee trinkst</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Eine Pause machen, bevor du eigentlich müsstest</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Etwas Schönes anziehen — ohne Anlass</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Von einem guten Moment im Job erzählen</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
-      <div style="background:#F9F8F6;border:2px solid #C4A0C4;border-radius:10px;padding:10px 8px;text-align:center;font-size:10.5px;color:#444;line-height:1.4;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-        <div>Lachen — über irgendwas, auch über dich</div>
-        <div style="width:18px;height:18px;border:2px solid #6B3F6B;border-radius:4px;"></div>
-      </div>
+  <div class="karte">
+    <div class="karte-titel">Meine Bingo-Woche — zum Abhaken mit Stift</div>
+    <div class="grid">
+      <div class="feld"><div>Einmal richtig durchatmen, bevor du aus dem Auto steigst</div><div class="box"></div></div>
+      <div class="feld"><div>Eine ganze Tasse Tee genießen, solange sie warm ist</div><div class="box"></div></div>
+      <div class="feld"><div>„Ich brauche kurz Ruhe" sagen</div><div class="box"></div></div>
+      <div class="feld"><div>5 Min. ohne Handy auf dem Sofa sitzen</div><div class="box"></div></div>
+      <div class="feld"><div>Ein Kompliment annehmen, ohne es abzuwehren</div><div class="box"></div></div>
+      <div class="feld"><div>Nein sagen — egal wozu</div><div class="box"></div></div>
+      <div class="feld"><div>Draußen spazieren, ohne Ziel</div><div class="box"></div></div>
+      <div class="feld frei">FREI<br>(zählt immer)</div>
+      <div class="feld"><div>Einen Song laut mitsingen</div><div class="box"></div></div>
+      <div class="feld"><div>Früher schlafen gehen als geplant</div><div class="box"></div></div>
+      <div class="feld"><div>Dich selbst loben — laut, nicht nur im Kopf</div><div class="box"></div></div>
+      <div class="feld"><div>Ein Glas Wasser trinken, bevor du Kaffee trinkst</div><div class="box"></div></div>
+      <div class="feld"><div>Eine Pause machen, bevor du eigentlich müsstest</div><div class="box"></div></div>
+      <div class="feld"><div>Etwas Schönes anziehen — ohne Anlass</div><div class="box"></div></div>
+      <div class="feld"><div>Von einem guten Moment im Job erzählen</div><div class="box"></div></div>
+      <div class="feld"><div>Lachen — über irgendwas, auch über dich</div><div class="box"></div></div>
     </div>
   </div>
 
-  <div style="background:#EAF0F4;border-radius:10px;padding:12px 18px;margin-top:14px;font-size:11px;color:#1a2e44;line-height:1.6;">
-    💡 Schon 4 Felder in einer Reihe sind ein Erfolg. Es geht nicht um Perfektion — sondern darum, dass du dich überhaupt erinnerst, an dich zu denken.
+  <div class="tipp">
+    <div class="icon">💡</div>
+    <div>Schon 4 Felder in einer Reihe sind ein Erfolg. Es geht nicht um Perfektion — sondern darum, dass du dich überhaupt erinnerst, an dich zu denken.</div>
   </div>
 
-  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;">
-    <div id="qr-footer-1" style="width:22px;height:22px;flex-shrink:0;"></div>
-    <div style="font-size:9px;color:#999;line-height:1.4;text-align:left;">Digitale Version &amp; mehr Freebies:<br>klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html</div>
+  <div class="fusszeile">
+    <div class="copyright">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
+    <div class="gast-box">
+      <div class="qr" id="qr-footer-1"></div>
+      <div class="txt">
+        <b>Digitale Version &amp; mehr Freebies</b>
+        Scanne mich für weitere kostenlose Materialien.
+        <span class="lnk">klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html</span>
+      </div>
+    </div>
   </div>
-  <div style="text-align:center;font-size:10px;color:#999;margin-top:4px;">KLARTEXT-Mentoring · © 2026 Anja Jolk</div>
 
 </div>
-<script>
-new QRCode(document.getElementById('qr-footer-1'), {text:'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
-</script>
-<!-- KLARTEXT Funnel-Fussleiste (03.09.2026) -->
-<div id="klartext-funnel-footer" style="display:none;background:#1B3A4B;color:#fff;font-family:'DM Sans',Arial,sans-serif;font-size:.78rem;line-height:1.4;padding:.65rem 1rem;text-align:center;">
+
+<div id="klartext-funnel-footer">
   Mehr kostenlose &amp; Premium-Materialien von KLARTEXT-Mentoring:
   <a href="https://klartext-mentoring.de" target="_blank" rel="noopener" style="color:#6ec6a0;font-weight:700;text-decoration:underline;">klartext-mentoring.de</a>
 </div>
+
 <script>
+new QRCode(document.getElementById('qr-footer-1'), {
+  text: 'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true',
+  width: 300, height: 300,
+  colorDark: '#1B3A4B', colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
 (function(){
   try {
     if (new URLSearchParams(window.location.search).get('guest') === 'true') {
       var f = document.getElementById('klartext-funnel-footer');
-      if (f) f.style.display = 'block';
+      if (f) f.style.cssText = 'display:block;background:#1B3A4B;color:#fff;font-family:\'DM Sans\',Arial,sans-serif;font-size:.78rem;line-height:1.4;padding:.65rem 1rem;text-align:center;';
     }
   } catch(e) {}
 })();

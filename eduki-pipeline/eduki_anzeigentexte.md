@@ -376,3 +376,217 @@ Passendes Begleitmaterial zum Eltern-Set "Berufs-Dschungel" (gleiche Akzentfarbe
 **Preis:** 1,99 € (Tiny Offer / Arbeitslehre)
 
 **Tags:** Praktikum, Berufsvorbereitung, Sek I, Stressbewältigung, Kommunikation, Selbstwirksamkeit, Arbeitslehre, Notfallkarte, Deeskalation
+
+---
+
+## 17. Zivilcourage-Trainer
+
+**Titel:**
+Zivilcourage-Trainer – 10-Sekunden-Regel gegen Mobbing (Sek I/II)
+
+**Beschreibung:**
+Ein interaktives Training, das Schweigen im Ernstfall in konkretes Handeln übersetzt. Herzstück ist ein 10-Sekunden-Countdown: In dieser Zeit entscheiden sich Jugendliche für eine von vier realistischen Handlungsoptionen, statt aus Angst vor eigener Ausgrenzung wegzusehen.
+
+Fachlich fundiert: Die Wirksamkeit schneller Bystander-Interventionen ist durch die Meta-Analyse von Espelage, Pigott & Polanin (2012) belegt – Eingreifen innerhalb von Sekunden stoppt die Dynamik in der Mehrheit der Fälle sofort.
+
+Das begleitende Heft liefert die systemische Erklärung ("Schweigen wirkt wie Zustimmung"), ein wortgenaues kLAR-Sofortskript für Lehrkräfte und einen QR-Code zur digitalen Trainings-App.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Sek I & Sek II, Klassenrat, Schulsozialarbeit, INGRA-Integrationsassistenz, OGS
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Zivilcourage, Mobbing, Bystander, Klassenrat, Deeskalation, Sek I, Sek II, Schulsozialarbeit, Antimobbing, Sofortskript, Handlungskompetenz
+
+---
+
+## 18. Umgebungs-Anker
+
+**Titel:**
+Umgebungs-Anker – Rausch-Timer & Anker-Manager für Jugendliche (Sek I/II)
+
+**Beschreibung:**
+Ein digitales Werkzeug für Momente der Reizüberflutung oder emotionalen Aufwühlung: Ein sichtbarer "Rausch-Timer" macht spürbar, dass ein intensives Gefühl vorübergeht, während der Anker-Manager dabei hilft, persönliche Beruhigungs-Ankerpunkte (Orte, Gegenstände, Rituale) griffbereit zu speichern und im Ernstfall schnell abzurufen.
+
+Besonders geeignet für Übergänge und akute Belastungsmomente im Schulalltag, in denen Jugendliche selbst regulieren sollen, statt nur beruhigt zu werden.
+
+Das Begleitheft erklärt den systemischen Hintergrund und liefert einen QR-Code zur App.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Sek I & Sek II, Jugendhilfe, Schulbegleitung/INGRA, Jobcoaching
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Selbstregulation, Reizüberflutung, Emotionsregulation, Jugendliche, Anker-Technik, Sek I, Sek II, Schulbegleitung, Co-Regulation
+
+---
+
+## 19. Hilfewege-Planer
+
+**Titel:**
+Hilfewege-Planer – Mein Vertrauensnetz aus 4 Personen (Grundschule–Sek II)
+
+**Beschreibung:**
+"Hilfe holen ist kein Petzen!" – der Hilfewege-Planer macht das persönliche Schutznetz sichtbar, bevor es im Ernstfall gebraucht wird. Kinder und Jugendliche tragen vier feste Vertrauenspersonen ein, die sie in einer Krise ansprechen dürfen und sollen – die App erzeugt daraus live ein herunterladbares Netz-Bild.
+
+Ein einmal bewusst erstelltes, sichtbares Vertrauensnetz senkt die Hürde "wen frage ich?" deutlich, weil die Entscheidung schon getroffen ist, lange bevor sie gebraucht wird.
+
+Enthält Ausfüll-Tabelle für die Papierversion und QR-Code zur digitalen Web-App (DSGVO-sicher, ohne Login, Daten bleiben auf dem Gerät).
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Grundschule, Sek I, Sek II, Klassenrat, Schulsozialarbeit, Elternarbeit
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Vertrauensnetz, Hilfe holen, Krisenprävention, Klassenrat, Schulsozialarbeit, Kinderschutz, Selbstwirksamkeit, Grundschule, Sek I
+
+---
+
+## 20. Übergangs-Timer
+
+**Titel:**
+Übergangs-Timer – lautloser Farbverlauf statt "Jetzt aber!" (ADHS/Autismus)
+
+**Beschreibung:**
+Übergänge sind für viele autistische und ADHS-Kinder die schwierigste Stelle des Tages – nicht die Aufgabe selbst, sondern der plötzliche Wechsel von einer Tätigkeit zur nächsten. Der Übergangs-Timer macht diesen Moment sichtbar, bevor er kommt: ein durchgehend sichtbarer Farbverlauf (Terracotta → Salbeigrün) statt einer überraschenden akustischen Ansage.
+
+Der Timer läuft komplett lautlos; Ton und Vibration am Ende sind rein optional und einzeln abschaltbar. Voreinstellungen für die drei häufigsten Alltagssituationen (Spielzeit→Hausaufgaben, Pause→Unterricht, Bildschirmzeit→Abendroutine) sind im Begleitheft als Tabelle enthalten.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Grundschule, OGS, Förderschule, Zuhause, ADHS/Autismus-Förderung
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Übergänge, ADHS, Autismus, Visueller Timer, Reizarm, OGS, Grundschule, Struktur, Selbstregulation
+
+---
+
+## 21. Teile-Mischer
+
+**Titel:**
+Teile-Mischer – innere Anteile verstehen statt bekämpfen (Sek I/II)
+
+**Beschreibung:**
+Jeder innere Anteil will eigentlich etwas Gutes für dich – auch der, der am lautesten oder unangenehmsten wirkt. Der Teile-Mischer macht innere Stimmen wie Sorge, Bequemlichkeit oder Antrieb sichtbar (als "Sorgen-Brainy", "Schweinehund" und "Motivator") und lädt dazu ein, sie aus sicherem Abstand zu betrachten statt gegen sie anzukämpfen.
+
+In der App lässt sich für jeden Anteil einstellen, wie laut er sich gerade meldet, und eine kurze Reflexionsfrage aus der Meta-Position beantworten: "Was will dieser Anteil eigentlich Gutes für mich?" Weitere, eigene Anteile lassen sich jederzeit ergänzen und im persönlichen Teile-Tagebuch speichern.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Sek I & Sek II, Coaching, Schulsozialarbeit, INGRA-Integrationsassistenz
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Innere Anteile, Teilearbeit, Selbstreflexion, Coaching Jugendliche, Sek I, Sek II, Emotionsregulation, Meta-Perspektive
+
+---
+
+## 22. Vokabel-Kino
+
+**Titel:**
+Vokabel-Kino – Vokabeln lernen mit der Schlüsselwortmethode (DaZ/Schule)
+
+**Beschreibung:**
+Ein Wort, eine Klangbrücke, ein Bild – und es bleibt hängen. Statt neue Wörter stur auswendig zu lernen, verbindet das Vokabel-Kino jedes Fremdwort mit einem ähnlich klingenden deutschen "Brückenwort" und einem kleinen, möglichst verrückten inneren Bild, das beide Wörter zusammenbringt.
+
+Fachlich fundiert: Die Schlüsselwortmethode (engl. keyword method, Atkinson & Raugh 1975) gilt als eine der wirksamsten wissenschaftlich untersuchten Eselsbrücken-Techniken für neues Vokabular – Klang und Bild zusammen sind leichter abrufbar als ein isoliertes Fremdwort.
+
+In der App wird jede Karte zum Umdrehen angelegt (Fremdwort/Bedeutung samt Brückenwort und Bild), inklusive echter Sprachausgabe zum Vorlesen des Fremdworts.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** DaZ-Förderung, Regelunterricht, Grundschule, Sek I
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** DaZ, Vokabeln lernen, Schlüsselwortmethode, Fremdsprache, Wortschatz, Eselsbrücke, Grundschule, Sek I
+
+---
+
+## 23. Nacht-Sucher
+
+**Titel:**
+Nacht-Sucher – eine Frage abends übergeben, morgens die Idee ernten
+
+**Beschreibung:**
+Manchmal denkt es im Schlaf weiter. Der Nacht-Sucher ist ein reizarmes Abend-Ritual: Eine knifflige Frage wird bewusst an Brainy "übergeben" – und am nächsten Morgen wird festgehalten, was einem dazu eingefallen ist. Loslassen statt Grübeln.
+
+Fachlich fundiert: Schlaf spielt nachweislich eine Rolle für Gedächtniskonsolidierung und kreative Problemlösung (Wagner, Gais, Haider, Verleger & Born, 2004, Nature, "Sleep inspires insight").
+
+Die App bietet drei Tabs (Abend/Morgen/Tagebuch) mit dauerhafter Speicherung; das Begleitheft liefert den Forschungshintergrund plus Ausfüll-Tabelle für die Papierversion.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Zuhause, Abendroutine, Elternarbeit, Jugendliche
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Abendritual, Schlaf und Lernen, Grübeln loslassen, Achtsamkeit, Reflexion, Zuhause, Jugendliche
+
+---
+
+## 24. Starthilfe-Zauber
+
+**Titel:**
+Starthilfe-Zauber – Aufmerksamkeits-Opener für den Stundenbeginn (Kollegium)
+
+**Beschreibung:**
+3 Sekunden Staunen wecken die Aufmerksamkeit mehr als 3 Minuten Ansage. Der Starthilfe-Zauber ist ein kurzer Aufmerksamkeits-Opener für den Stundenbeginn: eine optische Täuschung oder Knobelfrage, die in Sekunden aufgelöst wird – ein kleiner, verlässlicher Wow-Moment statt langer Anlaufzeit.
+
+In der App wechseln sich zwei klassische, wissenschaftlich dokumentierte optische Täuschungen (Müller-Lyer- und Ebbinghaus-Täuschung), vier Knobelfragen und zwei kurze, faktengeprüfte Staun-Fakten zufällig ab.
+
+Das Begleitheft erklärt die Müller-Lyer-Täuschung (Franz Carl Müller-Lyer, 1889) mit eigener Grafik und liefert drei Knobelfragen samt Auflösung zum Sofort-Einsatz.
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Lehrkräfte & Kollegium, Sek I, Sek II, Pausenraum
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Unterrichtseinstieg, Aufmerksamkeit, Optische Täuschung, Rätsel, Kollegium, Stundenbeginn, Musterunterbrechung
+
+---
+
+## 25. Frau Jojos Resilienz-Jojo
+
+**Titel:**
+Frau Jojos Resilienz-Jojo – interaktiver Schwung- & Atem-Taktgeber
+
+**Beschreibung:**
+Für Momente, in denen etwas nicht geklappt hat, und für die Frage: Was hilft mir eigentlich, wieder hochzukommen? Ein Jojo an einer Schnur schwingt im Bild sanft auf und ab, synchron zum Atem – im Frei-Modus lässt es sich selbst ziehen und wieder hochschnappen.
+
+Nach ein paar Schwüngen stellt Frau Jojo eine kurze, offene Frage (z. B. "Was hat dir schon mal geholfen, wieder hochzukommen?"). Die Antworten sammeln sich in der persönlichen Sprungbrett-Sammlung, die jederzeit wieder aufgerufen werden kann.
+
+Fachlich fundiert: Resilienz wird in der Forschung nicht als "unverwundbar sein" verstanden, sondern als Prozess, nach einer schwierigen Phase mithilfe alltäglicher Ressourcen wieder handlungsfähig zu werden (Masten, A. S., 2001, American Psychologist, "Ordinary magic").
+
+**Format:** Begleitheft 2 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Sek I & Sek II, Coaching, Klassenrat, Jobcoaching
+**Preis:** 2,90 € (Vorschlag)
+
+**Tags:** Resilienz, Atemübung, Achtsamkeit, Coaching Jugendliche, Rückschläge, Sek I, Sek II, Selbstwirksamkeit
+
+---
+
+## 26. Assoziationsblitz – Komplettpaket
+
+**Titel:**
+Assoziationsblitz – ABC-Blitzliste gegen Denkblockaden (Komplettpaket)
+
+**Beschreibung:**
+Im stressigen Schul- und Coachingalltag stoßen Lehrkräfte, Schulbegleiter und Eltern immer wieder auf dieselbe frustrierende Wand: die akute Verweigerung oder plötzliche Denk-Blockade – ob vor Klassenarbeiten oder beim Beginn der Hausaufgaben. Der Assoziationsblitz bricht diese Blockade spielerisch in wenigen Minuten auf: eine freie, gehirn-gerechte ABC-Liste ohne Reihenfolge und ohne Druck.
+
+Das Komplettpaket enthält alles in einem: den fachlichen Hintergrund samt drei Spielvarianten (Solo-Blitz, Partner-Basar, Blitz-Tagebuch) und zwei wortgenauen kLAR-Sofortskripten für Eltern und Lehrkräfte, PLUS zwei fertige Arbeitsblätter – eines für Grundschulkinder mit Brainy, eines neutral für Jugendliche und Erwachsene.
+
+**Format:** 4 Seiten DIN A4, PDF, + Link/QR zur kostenlosen interaktiven Web-App
+**Zielgruppe:** Grundschule bis Sek II, Coaching, Elternarbeit, Lehrkräfte
+**Preis:** 3,99 € (Vorschlag, da 4-seitiges Bundle über dem 2-seitigen Einzelpreis)
+
+**Tags:** Denkblockade, Prüfungsangst, Task-Paralyse, ABC-Methode, Musterunterbrechung, Grundschule, Sek I, Elternarbeit, Brainstorming
+
+---
+
+## 27. Tischaufsteller – Systemische Impulse fürs Kollegium
+
+**Titel:**
+KLARTEXT-Tischaufsteller – 6 Sofort-Impulse für dein Klassenzimmer (A4-quer)
+
+**Beschreibung:**
+Der tägliche, lautlose Begleiter für ein entspanntes Klassenzimmer: Ein zum Aufstellen gefalteter Tischaufsteller mit 6 systemischen Impulsen für die häufigsten Alltagssituationen – vom unruhigen Klassenzimmer über Arbeitsverweigerung, schweigende Zuschauer und Sensory Overload bis zum eskalierenden Elterngespräch und systemischer Teilearbeit.
+
+Zu jedem Impuls gibt es die systemische Perspektive, einen konkreten Hebel (z. B. Musterunterbrechung, Dopamin-Portionierer, 10-Sekunden-Regel) und ein wortgenaues kLAR-Sofortskript zum direkten Nachsprechen.
+
+Zum Ausdrucken (4 Seiten quer, DIN A4), Laminieren und in der Mitte falten – steht dann griffbereit auf dem Lehrerpult.
+
+**Format:** 4 Seiten DIN A4-quer, PDF zum Ausdrucken/Laminieren/Falten
+**Zielgruppe:** Lehrkräfte, Schulbegleiter:innen, OGS-Kräfte, Kollegium
+**Preis:** 3,99 € (Vorschlag)
+
+**Tags:** Klassenmanagement, Deeskalation, Kollegium, Lehrerzimmer, Systemische Pädagogik, Sofortskript, Musterunterbrechung, Neue Autorität

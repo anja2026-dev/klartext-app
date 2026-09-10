@@ -60,6 +60,38 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 @media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
 @media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+/* ══ KLARTEXT Begleitheft · Design-Refresh-Layer (10.09.2026, Design-only, Text unveraendert) ══ */
+.kopf{position:relative;overflow:hidden;padding-left:2.7rem !important;}
+.kopf::before{
+  content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
+  width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;
+}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal{padding-left:0 !important;}
+
+.hinweis-box{position:relative;box-shadow:0 3px 14px rgba(27,58,75,.09);border-radius:12px;padding-left:1.5rem !important;}
+.hinweis-box::before{
+  content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;
+  background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+
+table{border-collapse:separate;border-spacing:0;box-shadow:0 3px 14px rgba(27,58,75,.08);border-radius:10px;overflow:hidden;}
+table tr:nth-child(even) td{background:var(--paper);}
+
+.qr-zeile{box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.brainy-zeile{background:var(--paper);border-radius:12px;padding:.7rem 1rem;border-top:none !important;margin-top:1rem !important;}
+.mini-karte{box-shadow:0 2px 10px rgba(27,58,75,.06);border-left:3px solid var(--acc);}
+.anteil-mini,.anleitung-titel,.impuls-block.hebel{box-shadow:0 2px 10px rgba(27,58,75,.06);}
+.zitat-box,.beispiel-karte,.beispiel-reihe,.netz-wrap,.verlauf-wrap{box-shadow:0 3px 14px rgba(27,58,75,.07);border-radius:12px;}
+
 </style>
 </head>
 <body>

@@ -50,6 +50,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .brainy-msg{font-size:.85rem;color:var(--ink);line-height:1.5;}
 .nochmal-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;background:var(--acc);color:var(--m);font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit;}
 .nochmal-btn:hover{opacity:.9;}
+.weiter-btn{margin-top:1.1rem;display:none;align-items:center;gap:.4rem;padding:.7rem 1.6rem;border:none;border-radius:22px;background:var(--acc);color:var(--m);font-weight:700;font-size:.9rem;cursor:pointer;font-family:inherit;}
+.weiter-btn.zeigen{display:inline-flex;}
+.weiter-btn:hover{opacity:.9;}
 </style>
 </head>
 <body>
@@ -82,6 +85,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
         <button class="antwort-grossbtn" id="btn-komisch" onclick="antwortWaehlen(false)"><span class="emoji">😄</span><span>Komisch/Falsch</span></button>
       </div>
       <div class="feedback-box" id="feedback-box"></div>
+      <button class="weiter-btn" id="weiter-btn" onclick="naechsteKarte()">Weiter ▶</button>
     </div>
   </div>
 
@@ -115,8 +119,10 @@ var SITUATIONEN = [
   { text: 'Ich bin neidisch auf jemanden — ich sage ihm das er blöd ist.', richtig: false }
 ];
 
-var FEEDBACK_RICHTIG = 'Genau! Das ist fair und respektvoll 👍';
-var FEEDBACK_KOMISCH = 'Hmm, das würde anderen wehtun. Aber du weißt es jetzt besser! 💡';
+var FEEDBACK_KORREKT_FAIR = 'Genau! Das ist fair und respektvoll 👍';
+var FEEDBACK_KORREKT_UNFAIR = 'Richtig erkannt — das würde anderen wehtun. Gut aufgepasst! 👍';
+var FEEDBACK_FALSCH_FAIR = 'Das ist eigentlich fair und respektvoll gemeint. Schau nochmal genau hin! 💡';
+var FEEDBACK_FALSCH_UNFAIR = 'Hmm, das würde anderen wehtun. Aber du weißt es jetzt besser! 💡';
 
 var aktuelleKarte = 0;
 var punkte = 0;
@@ -138,6 +144,7 @@ function karteAnzeigen(){
   var feedback = document.getElementById('feedback-box');
   feedback.classList.remove('zeigen', 'positiv', 'hinweis');
   feedback.textContent = '';
+  document.getElementById('weiter-btn').classList.remove('zeigen');
 
   wartenAufNaechste = false;
 }
@@ -151,20 +158,27 @@ function antwortWaehlen(nutzerSagtRichtig){
   document.getElementById('btn-komisch').disabled = true;
   (nutzerSagtRichtig ? document.getElementById('btn-richtig') : document.getElementById('btn-komisch')).classList.add('markiert');
 
-  if (nutzerSagtRichtig === situation.richtig) punkte++;
+  var userKorrekt = (nutzerSagtRichtig === situation.richtig);
+  if (userKorrekt) punkte++;
 
   var feedback = document.getElementById('feedback-box');
-  feedback.textContent = situation.richtig ? FEEDBACK_RICHTIG : FEEDBACK_KOMISCH;
-  feedback.classList.add('zeigen', situation.richtig ? 'positiv' : 'hinweis');
+  if (userKorrekt) {
+    feedback.textContent = situation.richtig ? FEEDBACK_KORREKT_FAIR : FEEDBACK_KORREKT_UNFAIR;
+  } else {
+    feedback.textContent = situation.richtig ? FEEDBACK_FALSCH_FAIR : FEEDBACK_FALSCH_UNFAIR;
+  }
+  feedback.classList.add('zeigen', userKorrekt ? 'positiv' : 'hinweis');
 
-  setTimeout(function(){
-    if (aktuelleKarte < SITUATIONEN.length - 1) {
-      aktuelleKarte++;
-      karteAnzeigen();
-    } else {
-      ergebnisAnzeigen();
-    }
-  }, 1500);
+  document.getElementById('weiter-btn').classList.add('zeigen');
+}
+
+function naechsteKarte(){
+  if (aktuelleKarte < SITUATIONEN.length - 1) {
+    aktuelleKarte++;
+    karteAnzeigen();
+  } else {
+    ergebnisAnzeigen();
+  }
 }
 
 function ergebnisAnzeigen(){

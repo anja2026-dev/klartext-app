@@ -40,6 +40,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .sprich-btn{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:2px solid var(--border);background:var(--paper);font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .sprich-btn:hover{border-color:var(--acc);background:#EAF7F1;}
 .sprich-btn.spricht{border-color:var(--acc);background:#EAF7F1;}
+.tts-hinweis{display:none;background:#FFF4E0;color:#8A5A00;border-radius:12px;padding:.65rem 1rem;font-size:.82rem;line-height:1.4;text-align:center;margin-bottom:.9rem;}
+.tts-hinweis.zeigen{display:block;}
 </style>
 </head>
 <body>
@@ -60,6 +62,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 <div class="shell">
   <div class="sprachen-row" id="sprachen-row"></div>
+  <div class="tts-hinweis" id="tts-hinweis"></div>
   <div class="woerter-liste" id="woerter-liste"></div>
 </div>
 
@@ -98,6 +101,39 @@ var WOERTER = [
 
 var aktuelleSprache = SPRACHEN[0];
 var ttsVerfuegbar = ('speechSynthesis' in window);
+var stimmenCache = [];
+
+function stimmenLaden(){
+  stimmenCache = window.speechSynthesis.getVoices();
+}
+if (ttsVerfuegbar) {
+  stimmenLaden();
+  if ('onvoiceschanged' in window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = stimmenLaden;
+  }
+}
+
+/* Sucht eine auf dem Gerät installierte Stimme für die Sprache — erst exakt
+   (z.B. "ar-SA"), dann per Sprachpräfix (z.B. irgendeine "ar-…"-Stimme).
+   Ohne Treffer wird NICHT gesprochen: sonst fällt der Browser lautlos auf
+   die Standardstimme (meist Deutsch) zurück und liest die Fremdsprache mit
+   deutscher Aussprache vor — genau der gemeldete Bug. */
+function stimmeFuerSprache(speechLang){
+  if (!stimmenCache.length) stimmenLaden();
+  var exakt = stimmenCache.filter(function(v){ return v.lang === speechLang; })[0];
+  if (exakt) return exakt;
+  var praefix = speechLang.split('-')[0];
+  return stimmenCache.filter(function(v){ return v.lang && v.lang.split('-')[0] === praefix; })[0] || null;
+}
+
+function hinweisZeigen(text){
+  var hinweis = document.getElementById('tts-hinweis');
+  if (!hinweis) return;
+  hinweis.textContent = text;
+  hinweis.classList.add('zeigen');
+  clearTimeout(hinweis._timer);
+  hinweis._timer = setTimeout(function(){ hinweis.classList.remove('zeigen'); }, 3500);
+}
 
 function sprachenRendern(){
   var row = document.getElementById('sprachen-row');
@@ -120,9 +156,15 @@ function spracheWaehlen(code){
 function vorlesen(text, sprache, btn){
   if (!ttsVerfuegbar) return;
   try {
+    var stimme = stimmeFuerSprache(sprache.speechLang);
+    if (!stimme) {
+      hinweisZeigen('🔇 Sprachausgabe für ' + sprache.label + ' ist auf diesem Gerät nicht installiert (Betriebssystem-Einstellungen prüfen).');
+      return;
+    }
     window.speechSynthesis.cancel();
     var utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = sprache.speechLang;
+    utterance.voice = stimme;
+    utterance.lang = stimme.lang;
     btn.classList.add('spricht');
     utterance.onend = function(){ btn.classList.remove('spricht'); };
     utterance.onerror = function(){ btn.classList.remove('spricht'); };

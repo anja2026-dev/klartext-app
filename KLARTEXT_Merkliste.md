@@ -4717,3 +4717,75 @@ das soll künftig nicht mehr passieren.
 - eduki-Freebies (u. a. aktuelle Freebie-Sets) prüfen, ob sie schon auf der klartext-shop-Website
   als Downloads verlinkt sind — laut Anja aktuell wohl nicht.
 - Alle offenen Punkte aus Strang 91–120 weiterhin gültig, soweit nicht oben erledigt.
+
+## Strang 122 (11.09.2026) — Großer Bug-Sammel-Check, Nacht-Sucher-Fix, Mutmach-Tier komplett neu (3 Anläufe), neues Tool Mandala
+
+Anja meldete eine große Sammlung selbst gefundener Bugs über fast alle Module (Grundschule- und
+Jugendliche-Tools, kompletter Download-Bereich). Alles nach Modul sortiert in
+`KLARTEXT_Bug_Tracker.md` (Repo-Root) festgehalten, inkl. Severity-Einschätzung (🔴/🟡/⚪) und
+eduki-Live-Status-Abgleich (32 Materialien geprüft — nur 3 live-Materialien mit gemeldeten Bugs,
+alle davon nur ⚪/vage).
+
+**Nacht-Sucher** (Commit 9ad4f6e) — "speichert nicht"-Bug per Playwright-Test untersucht: Kernlogik
+war korrekt, Daten blieben über Reload erhalten. Wahrscheinlichste Ursache: eingebetteter
+Browser/private Modus, wo `localStorage.setItem` scheitert, ohne dass die App es bemerkt. Fix:
+Read-back-Check nach jedem Speichern + sichtbare Warnung bei Fehlschlag statt stillem Verwerfen.
+
+**Mutmach-Tier** — 3 Anläufe nötig, wichtige Lektion für künftige Illustrationsaufgaben:
+1. Anlauf (9ad4f6e): nur Deko-Brainy-Bild ergänzt, Missverständnis (Anja wollte Brainy als eigene
+   Ausmal-Figur).
+2. Anlauf (df869cd): selbst handgezeichnete SVG-Tiere (6 überarbeitet + Bär/Fuchs/Eule/Adler neu +
+   Brainy) — von Anja zurecht als weiterhin unprofessionell/chaotisch zurückgewiesen. **Erkenntnis:
+   handgetippte SVG-Koordinaten erreichen grundsätzlich keine professionelle Illustrationsqualität**
+   — das ist eine Tool-Grenze, kein Übungsproblem.
+3. Anlauf (5822e09 + 85fcfb4, **fertig**): Anja hatte selbst mit Gemini Ausmalbilder erstellen
+   lassen (gleicher sauberer Stil, dicke Linien) — alle 11 als `mt_*.jpg` ins Repo übernommen
+   (Löwe, Elefant, Drache, Schildkröte, Schmetterling, Fuchs, Eule, Bär, Igel, Adler, Brainy).
+   Antipp-Mechanik von SVG-Klickbereichen auf echten **Fülleimer/Flood-Fill auf HTML-Canvas**
+   umgebaut (Klick in Fläche → Farbe läuft bis zur nächsten schwarzen Linie) — funktioniert mit
+   Rasterbildern statt Vektor-Regionen, pro Tier in localStorage gespeichert (übersteht Tier-Wechsel
+   und Reload).
+
+**Neues Tool: KD-16_Mandala.html** — Anja hatte zusätzlich 4 Mandala-Ausmalbilder generieren lassen
+(Blüte/Stern/Kreis/Wirbel, keine Tiere). Eigenständiges neues Tool statt Mutmach-Tier-Kacheln
+(konzeptionell sauberer getrennt: Kraftsymbol vs. Entspannung), gleiche Fülleimer-Mechanik, eigene
+Kachel "🌸 Mandala zum Ausmalen" in `KLARTEXT_Spiele.html` (Farbe himmelblau, data-roles wie
+Mutmach-Tier).
+
+**Ordner-Zugriff:** Zu Sessionbeginn aktiv um Freigabe gebeten (GitHub, Downloads) — funktioniert
+gut, sollte in jeder neuen Session so gemacht werden (Anjas Standing-Preference).
+
+### Noch offen (aus KLARTEXT_Bug_Tracker.md, nach Priorität)
+
+**🔴 noch nicht angefasst:**
+- Mutmachtier: interaktives Schreiben funktioniert nicht
+- Neue Schule: Fach Religion/Ethik lässt sich nicht einzeln aus dem Stundenplan entfernen
+- Schulalltag-Wörterbuch: Vorlesefunktion liest auf Deutsch statt Fremd-/Erstsprache
+- Brainy-Wort-Würfel: Druckvorlage ist falsch
+- Richtig oder Komisch: Antworten teilweise inhaltlich falsch
+- Bewerbungsgenerator: Zurück-Funktion funktioniert nicht
+- Was hilft mir gerade: leitet zum Login um (Root Cause bekannt — target="_blank"-Links verlieren
+  Session + 2 Zieltools ohne Gast-Ausnahme; Fix-Ansatz steht im Tracker, nur noch nicht umgesetzt)
+- Download-Bereich: `KLARTEXT_Downloads_Premium.html` hat 15 tote Links (vermutlich alte
+  Umbenennungs-Aktion nicht nachgezogen — Zielnamen-Vorschläge stehen im Tracker, Anja muss
+  `KLARTEXT_Urlaubsantrag.html`-Zuordnung entscheiden)
+
+**🟡 funktioniert, aber fehlerhaft/eingeschränkt (Auswahl, Details im Tracker):**
+Wochenplan (Aktivität löschen fehlt), Neue Schule (Stundenplan-Platzaufteilung, Fächer
+hinzufügen/löschen), Brainy-Zauberfächer (Zurücktaste), Reizfilter (falsche
+Rollen-/Altersgruppen-Zuordnung), Mini-Fitness (Start/Pause/Ende-Knopf), OGS-Brücke
+("Jugendlicher" muss raus), Assoziationsblitz (Worterkennung fehlerhaft), Richtig oder Komisch
+(Timer zu kurz), Perspektiv-Wechsler (Empfehlungs-Hervorhebung unvollständig), Teile-Mischer
+(keine Auswertung), Resilienz-Jojo (Text-Selektion im Frei-Modus)
+
+**⚪ kosmetisch/Verbesserungswunsch:** diverse, siehe Tracker (u. a. Liegende Acht
+Schnell-/Zeitlupe, Körperkompass generell überarbeiten, Werte-Poker Klicken-statt-Ziehen-Text,
+Vokabel-Kino Sprachbeispiele ausbauen)
+
+**Architektur-Baustelle (übergeordnet, nicht einzeln gefixt):** Firebase/Supabase-Migration
+unvollständig — 14 Dateien nur Supabase, 14 nur Firebase, 8 mit beiden gleichzeitig (Liste im
+Tracker). Empfehlung weiterhin: vor Einzel-Fixes klären, welches Backend aktuell aktiv ist.
+
+**Unser Buch:** kein Bug mehr, sondern klassifiziert als Träger-Feature ohne Rollen-Schutz —
+Anja-Entscheidung offen (Kachel auf Träger-Rolle beschränken vs. komplett neu auf
+Firebase/localStorage bauen).

@@ -127,7 +127,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   <div class="ub-card" style="text-align:center;">
     <div class="ub-card-titel">📄 Für ein Gespräch vorbereiten</div>
     <div class="ub-card-sub">Fasst dein Superpower-Profil, deinen Reizfilter-Verlauf und die als hilfreich markierten Zonen-Ideen in einem druckbaren Bericht zusammen.</div>
-    <a class="sorgen-btn" style="display:inline-flex;text-decoration:none;" href="KLARTEXT_Ressourcenbericht.html">Ressourcen-Bericht öffnen →</a>
+    <a class="sorgen-btn" style="display:inline-flex;text-decoration:none;" href="KLARTEXT_Ressourcenbericht_Jugendliche.html">Ressourcen-Bericht öffnen →</a>
   </div>
 
 </div>
@@ -272,8 +272,13 @@ function momentGridRendern(){
     if (offenerMoment === m.id) {
       var panel = document.createElement('div');
       panel.className = 'angebot-panel';
+      var istGast = new URLSearchParams(window.location.search).get('guest') === 'true';
       var linksHtml = m.angebote.map(function(a){
-        return '<a class="angebot-link" href="' + a.href + '" target="_blank">' +
+        var href = a.href;
+        if (a.typ === 'Tool' && istGast) {
+          href += (href.indexOf('?') === -1 ? '?' : '&') + 'guest=true';
+        }
+        return '<a class="angebot-link" href="' + href + '">' +
           '<span class="a-emoji">' + a.emoji + '</span>' +
           '<span class="a-label"><span class="a-typ">' + a.typ + '</span>' + a.label + '</span></a>';
       }).join('');

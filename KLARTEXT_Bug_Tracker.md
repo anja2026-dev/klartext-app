@@ -90,8 +90,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 - ⚪ Drucken der Startseite ist sinnlos (falscher Druckinhalt)
 
 **Richtig oder Komisch**
-- 🟡 Zeit nach Auswahl zu kurz zum Lesen — besser mit "Weiter"-Button statt Timer
-- 🔴 Antworten teilweise inhaltlich falsch
+- ✅ **Gefixt (11.09.2026, Folgesession):** Root Cause für "Antworten teilweise inhaltlich falsch" war nicht die Klassifizierung der 12 Situationen (die war korrekt), sondern die Feedback-Logik: Text/Farbe richteten sich bisher nur nach der tatsächlichen Einordnung, nicht nach der Antwort der Person — z.B. "Genau!" auch bei falscher Antwort. Jetzt 4 Feedback-Varianten je nach Nutzer-Antwort × echte Einordnung. Gleichzeitig den Timer-Bug mitgefixt: automatischer Kartenwechsel nach 1,5s ersetzt durch manuellen "Weiter"-Button. Commit 58e6584.
 
 **Bewerbungsgenerator**
 - 🔴 Zurück-Funktion funktioniert nicht

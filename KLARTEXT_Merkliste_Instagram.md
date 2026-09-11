@@ -96,3 +96,25 @@ Bio-Link-Funnel).
 Offenes Angebot (noch nicht angefragt, bei Bedarf ansprechen): einfache, unaufdringliche erste
 Follower-Aufbau-Wege aus dem eigenen Netzwerk (INGRA-Kolleg:innen, Lehrkräfte-Gruppen,
 Facebook-/WhatsApp-Netzwerke) — Anja hat noch nicht "ja" gesagt, nur als spätere Option im Raum.
+
+## Nachtrag (11.09.2026) — Design-Kritik: zu eintönig, "muss reinknallen"
+
+Anja wies das erste Eyecatcher-KW37-Paket zurecht zurück: alle 4 Hook-Folien nutzten dasselbe
+Layout (Badge + rote Schlagzeile + Fließtext), nur die Akzentfarbe wechselte — "die gleichen
+Bilder von gestern nur mit anderem Text...da bleibt keiner kleben". Fix: 4 komplett
+unterschiedliche Hook-Kompositionen gebaut, je nach Zielgruppe (Konzept bleibt fest, nicht nur
+Farbe):
+
+- **Kinder (mit Brainy):** echte Comic-Sprechblase mit Schweif, aus der Brainy (freigestelltes
+  Maskottchen-Bild, unten rechts, groß) die Schlagzeile "sagt".
+- **Jugendliche:** diagonaler Terracotta-Farbblock von unten rechts, davor ein riesiges,
+  transluzentes Ausrufezeichen, das über den Rand hinausläuft.
+- **Lehrkräfte/INGRAs:** dunkler "Akten/Memo"-Look (Navy, geschwärzte Balken oben wie ein
+  Redigier-Dokument) plus ein rotierter roter Stempel-Grafik "PRAXIS-ALARM" unten rechts.
+- **Eltern:** eine Chat-Bubble im Messenger-Stil (wie eine erhaltene SMS/WhatsApp-Nachricht) mit
+  Zeitstempel-Zeile, dahinter ein warmer Gold-Farbklecks.
+
+Standing Rule ab jetzt: JEDES neue Wochenpaket braucht pro Zielgruppen-Slot ein eigenständiges
+visuelles Hook-Konzept (nicht nur eine andere Akzentfarbe im selben Kasten-Layout) — sonst wirkt
+es "wie gestern nur mit anderem Text". Brainy-Cutout-Datei (freigestellt, ohne Kreis-Hintergrund)
+liegt jetzt bereit unter `eduki-pipeline/quellen/brainy.png` als Quelle für künftige Cutouts.

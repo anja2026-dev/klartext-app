@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--m:#1B3A4B;--acc:#6EC6A0;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+:root{--m:#1B3A4B;--acc:#6EC6A0;--warm:#B07D2A;--paper:#F5F0E8;--surface:#fff;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
 body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;}
 .header{background:var(--m);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,4vw,2rem);border-bottom:3px solid var(--acc);position:sticky;top:0;z-index:100;}
 .logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
@@ -48,12 +48,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:14px solid var(--border);
 }
 .ballon.laeuft{animation-play-state:running;}
+.ballon-brainy{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:58%;height:58%;object-fit:contain;pointer-events:none;
+  filter:drop-shadow(0 2px 6px rgba(27,58,75,.3));z-index:2;
+}
 @keyframes atmen{
   0%   { transform:scale(.55); background:var(--paper); }
   40%  { transform:scale(1);   background:var(--acc); }
   42%  { transform:scale(1);   background:var(--m); }
   58%  { transform:scale(1);   background:var(--m); }
-  60%  { transform:scale(1);   background:var(--acc); }
+  60%  { transform:scale(1);   background:var(--warm); }
   100% { transform:scale(.55); background:var(--paper); }
 }
 .phase-text{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:var(--m);min-height:1.7em;text-align:center;}
@@ -95,7 +100,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
   <div class="ballon-buehne">
     <div class="ballon-wrap">
-      <div class="ballon" id="ballon"></div>
+      <div class="ballon" id="ballon">
+        <img class="ballon-brainy" src="brainy_badge.png" alt="Brainy">
+      </div>
     </div>
     <div class="phase-text" id="phase-text">Bereit?</div>
 

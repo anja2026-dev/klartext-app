@@ -44,6 +44,12 @@ Entscheidungen/Historie; alles andere (App, eduki, Shop-Technik) bleibt in `KLAR
   komplett getrennt bestehen als Ziel für "warmen" Traffic, der über die eduki-Suche selbst kommt —
   dort darf/soll direkt verkauft werden. NICHT mehr direkt auf eduki von Social-Media-CTAs aus
   verlinken.
+- **Produkt-Bonus vs. Freebie nicht verwechseln** (geklärt 11.09.2026): Eine "Bonuskarte"/ein
+  "Extra" auf einer Lösungen-Folie ist Teil des GEKAUFTEN Produkts (z. B. Stoppschild im
+  Geschichtenkarten-Deck) — das ist etwas anderes als das Freebie hinter dem Bio-Link
+  (Brainys Atem-Ballon, siehe Bio-Link-Regel oben). Bewusst EIN einziges, themenunabhängiges
+  Freebie für alle Wochenposts (keine eigene Landingpage pro Wochenthema nötig). Kein Fehler,
+  aber beim Texten darauf achten, dass Produkt-Boni nicht wie ein Link-Versprechen klingen.
 - **Quellenpflicht:** Anja legt Wert auf wissenschaftliche Originalquellen/Zitate — jede
   Sachaussage in einem Post (nicht nur Produktbeschreibung) braucht eine echte, geprüfte Quelle
   (z. B. Salmivalli zu Bullying-Bystander-Rollen, Kuypers/Siegel/Deci&Ryan zu Selbstregulation,

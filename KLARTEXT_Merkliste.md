@@ -4789,3 +4789,19 @@ Tracker). Empfehlung weiterhin: vor Einzel-Fixes klären, welches Backend aktuel
 **Unser Buch:** kein Bug mehr, sondern klassifiziert als Träger-Feature ohne Rollen-Schutz —
 Anja-Entscheidung offen (Kachel auf Träger-Rolle beschränken vs. komplett neu auf
 Firebase/localStorage bauen).
+
+## Strang 123 (11.09.2026) — Instagram-Merkliste ausgelagert, KW37-Eyecatcher-Paket + Bio-Link geklärt
+
+Neue eigene Datei `KLARTEXT_Merkliste_Instagram.md` angelegt (Anjas Wunsch) — alle Social-Media-
+Standing-Rules (Rhythmus, 4-Slot-Struktur, Eyecatcher-Bildstil, Farbpalette, Hashtag-Limit,
+Bio-Link-Ziel, Quellenpflicht) plus der komplette Verlauf der Wochenpakete leben ab jetzt dort,
+nicht mehr hier. Details siehe dort.
+
+Kurzfassung des heutigen Ergebnisses: KW37-Paket (07.–13.09., 4 Karussells: Praktikums-Notfall-
+Kärtchen/Geschichtenkarten-Mobbing-Deck/Zonen-Set/Berufs-Dschungel-Leitfaden) im neuen Eyecatcher-
+Stil fertig ausgeliefert. Nach kurzer Verwirrung um die richtige Verlinkung (eduki vs. Website)
+geklärt: Instagram-CTA/Bio-Link zeigt immer auf **klartext-mentoring.de** (Startseite, dort läuft
+das MailerLite-Pop-up mit dem Atem-Ballon-Freebie automatisch) statt direkt auf eduki — Begründung:
+Social-Media-Traffic ist kalt und soll erst ins E-Mail-Funnel, bevor verkauft wird; eduki bleibt
+separat als Ziel für Leute, die dort selbst aktiv suchen. KW38/KW39-Pakete sind noch NICHT
+nachgezogen (weder Eyecatcher-Stil noch neuer Bio-Link).

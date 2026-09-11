@@ -38,7 +38,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 ## Grundschule
 
 **Mutmachtier**
-- 🔴 Interaktives Schreiben funktioniert nicht
+- ✅ **Gefixt (11.09.2026, Folgesession):** Die drei Schreibfelder waren bisher nur dekorative Linien ohne Funktion (kein input/textarea). Jetzt echte Formularfelder, die pro Tier gemeinsam mit dem Ausmalbild in localStorage gespeichert werden (mutmachtier_text_<tierId>). Zurücksetzen-Button löscht jetzt Text+Bild gemeinsam. Commit 928aec1.
 - ✅ **Gefixt (11.09.2026, 3. Anlauf):** Erste beide Anläufe (Deko-Brainy, dann selbst gezeichnete SVG-Tiere) waren beide nicht professionell genug — von Anja zurecht bemängelt. 3. Anlauf: komplett umgebaut auf Anjas eigene Gemini-generierte Ausmalbilder (mt_loewe.jpg, mt_elefant.jpg, mt_drache.jpg, mt_schildkroete.jpg, mt_schmetterling.jpg, mt_fuchs.jpg, mt_eule.jpg, mt_baer.jpg, mt_adler.jpg, mt_brainy.jpg — alle aus Downloads ins Repo kopiert, auf 700px Breite optimiert). Antipp-Mechanik von SVG-Bereichen auf echten Fülleimer/Flood-Fill auf Canvas umgestellt (Klick in eine Fläche → Farbe läuft bis zur nächsten schwarzen Linie), funktioniert mit echten Rasterbildern statt Vektor-Regionen. Speicherung pro Tier als Canvas-Snapshot in localStorage (übersteht Tier-Wechsel und Reload, per Playwright verifiziert), Zurücksetzen-Button lädt Originalbild neu. **Igel fehlt** — kein Gemini-Bild dafür vorhanden, aktuell 10 statt 11 Tiere; Anja gefragt ob sie eins nachliefert oder Igel raus bleibt (Antwort steht aus).
 - 🟡 Kein Zurück (Navigation)
 

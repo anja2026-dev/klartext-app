@@ -82,3 +82,17 @@ korrigiert und ausgeliefert.
   Unterseite karten.klartext-mentoring.de ist (Anja erwähnte den Namen, in bisherigen Notizen taucht
   nur Letzteres auf) — bei Gelegenheit einmal klären, ist aber für den Bio-Link nicht
   entscheidungsrelevant.
+
+## Nachtrag (11.09.2026) — Aktueller Konto-Stand: 1 Follower
+
+Account steht ganz am Anfang (aktuell 1 Follower). Einordnung: das ist für den Start völlig normal
+und kein Grund, mit dem Posten zu warten — im Gegenteil, jetzt ist der richtige Zeitpunkt, die
+Grundlagen (Farben/Struktur/Bio-Link/Funnel) sauber aufzusetzen, bevor größere Reichweite kommt.
+Empfehlung: einfach im 4er-Rhythmus weiterposten, Reichweite kommt über Zeit/Hashtags/Explore-Seite.
+Vor dem ersten Post-Batch trotzdem kurz gegenchecken, ob das MailerLite-Pop-up auf
+klartext-mentoring.de im Inkognito-Fenster noch sichtbar ist (Grundvoraussetzung für den neuen
+Bio-Link-Funnel).
+
+Offenes Angebot (noch nicht angefragt, bei Bedarf ansprechen): einfache, unaufdringliche erste
+Follower-Aufbau-Wege aus dem eigenen Netzwerk (INGRA-Kolleg:innen, Lehrkräfte-Gruppen,
+Facebook-/WhatsApp-Netzwerke) — Anja hat noch nicht "ja" gesagt, nur als spätere Option im Raum.

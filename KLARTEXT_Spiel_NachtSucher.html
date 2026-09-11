@@ -58,6 +58,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .leer-hinweis{font-size:.76rem;color:var(--muted);text-align:center;padding:1rem;}
 
 .hinweis{font-size:.72rem;color:var(--muted);text-align:center;margin-top:.5rem;line-height:1.5;}
+.speicher-warnung{display:none;background:#FBEAEA;border:2px solid #C0392B;border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;font-size:.78rem;color:#8B2E20;text-align:center;font-weight:700;}
+.speicher-warnung.zeigen{display:block;}
 
 #brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
 </style>
@@ -80,6 +82,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 <div class="shell">
   <div class="leitsatz">Manchmal denkt es im Schlaf weiter — man muss die Frage nur vorher loslassen.</div>
+  <div class="speicher-warnung" id="speicher-warnung">⚠️ Deine Antworten werden auf diesem Gerät gerade NICHT gespeichert (z. B. weil die Seite in einem eingebetteten Browser wie WhatsApp/Mail geöffnet wurde, oder wegen privater Browser-Einstellungen). Bitte die Seite direkt in Safari/Chrome öffnen und als Lesezeichen oder auf dem Homescreen speichern.</div>
 
   <div class="tabs">
     <button class="tab-btn aktiv" data-tab="abend" onclick="tabWechseln('abend')">🌙 Abend</button>
@@ -116,7 +119,28 @@ var SPEICHER_KEY = 'klartext_nachtsucher_v1';
 function datenLaden(){
   try{ return JSON.parse(localStorage.getItem(SPEICHER_KEY)||'[]'); }catch(e){ return []; }
 }
-function datenSchreiben(daten){ try{ localStorage.setItem(SPEICHER_KEY, JSON.stringify(daten)); }catch(e){} }
+function speicherFunktioniert(){
+  try{
+    localStorage.setItem(SPEICHER_KEY+'_test', '1');
+    var ok = localStorage.getItem(SPEICHER_KEY+'_test') === '1';
+    localStorage.removeItem(SPEICHER_KEY+'_test');
+    return ok;
+  }catch(e){ return false; }
+}
+function warnungAnzeigen(){
+  var el = document.getElementById('speicher-warnung');
+  if(el) el.classList.add('zeigen');
+}
+function datenSchreiben(daten){
+  try{
+    localStorage.setItem(SPEICHER_KEY, JSON.stringify(daten));
+    // Read-back-Check: manche eingebetteten Browser (WhatsApp/Mail-Vorschau, private Modi)
+    // erlauben setItem, verwerfen den Wert aber wieder oder isolieren ihn pro Seitenaufruf.
+    var kontrolle = localStorage.getItem(SPEICHER_KEY);
+    if(kontrolle !== JSON.stringify(daten)){ warnungAnzeigen(); return false; }
+    return true;
+  }catch(e){ warnungAnzeigen(); return false; }
+}
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function heute(){ return new Date().toLocaleDateString('de-DE', {day:'2-digit',month:'2-digit',year:'numeric'}); }
 
@@ -133,7 +157,8 @@ function frageUebergeben(){
   if(!frage) return;
   var alle = datenLaden();
   alle.unshift({ id: Date.now(), datum: heute(), frage: frage, antwort: '', beantwortet: false });
-  datenSchreiben(alle);
+  var ok = datenSchreiben(alle);
+  if(!ok) return;
   document.getElementById('in-frage').value = '';
   tabWechseln('morgen');
 }
@@ -199,6 +224,7 @@ function tagebuchRendern(){
 }
 
 // Init
+if(!speicherFunktioniert()) warnungAnzeigen();
 morgenRendern();
 tagebuchRendern();
 </script>

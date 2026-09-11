@@ -40,7 +40,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 **Mutmachtier**
 - 🔴 Interaktives Schreiben funktioniert nicht
 - ⚪ Alle Tiere überarbeiten
-- ⚪ Brainy dazutun
+- ✅ **Gefixt (11.09.2026):** Brainy dazutun — echtes brainy.png jetzt auch direkt auf der Ausmal-Karte ("Für dich zum Ausmalen"), nicht mehr nur im oberen Kopfbereich.
 - 🟡 Kein Zurück (Navigation)
 
 **Wochenplan & Mein Tag**
@@ -130,7 +130,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 - ⚪ Beispiele in den Sprachen und Ideen für Brückenwörter ausbauen
 
 **Nacht-Sucher**
-- 🔴 Speichert nicht
+- ✅ **Gefixt (11.09.2026):** Playwright-Test bestätigt, dass die eigentliche Speicherlogik (localStorage, Abend→Morgen→Tagebuch) korrekt funktioniert und Daten über Reloads hinweg erhalten bleiben — der Code selbst war nicht kaputt. Wahrscheinlichste reale Ursache des gemeldeten "speichert nicht": ein eingebetteter Browser (z. B. WhatsApp/Mail-Vorschau) oder private Browser-Einstellungen, in denen `localStorage.setItem` entweder wirft oder den Wert wieder verwirft, ohne dass die App das bisher bemerkt hat. Fix: `datenSchreiben()` prüft jetzt per Read-back, ob der Wert wirklich gespeichert wurde, und zeigt bei Fehlschlag eine sichtbare Warnung ("⚠️ Deine Antworten werden gerade NICHT gespeichert...") statt still zu scheitern; zusätzlicher Storage-Check direkt beim Laden der Seite. Falls das Problem weiterhin auftritt, bitte beim nächsten Mal notieren: welches Gerät/Browser, und ob der Link aus einer anderen App (WhatsApp/Notizen) heraus geöffnet wurde — das würde die Ursache endgültig bestätigen.
 
 **Resilienz-Jojo**
 - 🟡 Im Frei-Modus markiert sich die Seite (Text-Selektion statt Drag — CSS `user-select` fehlt vermutlich)

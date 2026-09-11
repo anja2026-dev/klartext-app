@@ -32,7 +32,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 
 ## Bereits verifiziert (Root Cause bekannt)
 
-- 🔴 **Übergangs-Timer** – kein Ton/keine Vibration: `AudioContext` wird erst beim Timer-Ende erzeugt (in der setInterval-Callback), nicht beim Start-Klick. Browser sperren neu erzeugte AudioContexts ohne direkte Nutzer-Interaktion → Ton bleibt stumm ohne Fehlermeldung. Fix: AudioContext beim Start-Klick erzeugen/aufwecken. Vibration ist korrekt implementiert, funktioniert aber grundsätzlich nicht auf iPhone/Safari (Plattform-Einschränkung, kein Bug).
+- ✅ **Gefixt (11.09.2026, Folgesession):** kein Ton/keine Vibration — Root Cause war `AudioContext`, der erst beim Timer-Ende erzeugt wurde (im setInterval-Callback), nicht beim Start-Klick; Browser sperren neu erzeugte AudioContexts ohne direkte Nutzer-Interaktion stumm, ohne Fehlermeldung. Fix: AudioContext wird jetzt beim Start-Klick erzeugt/aufgeweckt und am Timer-Ende wiederverwendet. Vibration bleibt wie zuvor korrekt implementiert, funktioniert aber grundsätzlich nicht auf iPhone/Safari (Plattform-Einschränkung, kein Bug). Commit a0b0596.
 - 🟡 **Hilfewege-Planer vs. "Meine Verbündeten"** (AM_DL_Meine_Verbuendeten.html, Anti-Mobbing-Training): inhaltliche Überschneidung (beide "Wer hilft mir?"-Vertrauensnetz), aber unterschiedliches Format/Zielgruppe — "Meine Verbündeten" ist reines Ausdruck-Arbeitsblatt, mobbing-spezifisch; Hilfewege-Planer ist die neue interaktive App, allgemein. Vor eduki-Launch des Hilfewege-Planers klären, wie beide voneinander abgegrenzt kommuniziert werden.
 
 ## Grundschule

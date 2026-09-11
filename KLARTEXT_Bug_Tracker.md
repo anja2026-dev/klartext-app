@@ -51,8 +51,8 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 - 🔴 Fach Religion/Ethik lässt sich nicht einzeln aus dem Stundenplan entfernen (Kreuz/Löschen fehlt)
 
 **Schulalltag-Wörterbuch**
-- 🔴 Vorlesefunktion liest auf Deutsch statt Fremd-/Erstsprache
-- 🟡 Sprachen inhaltlich gegenprüfen (Richtigkeit)
+- ✅ **Gefixt (11.09.2026, Folgesession):** Root Cause war kein falscher Sprachcode im Code (utterance.lang war korrekt gesetzt), sondern ein lautloser Browser-Fallback: fehlt auf dem Gerät eine installierte Stimme für die Zielsprache (z.B. Arabisch/Ukrainisch/Türkisch/Russisch), springt der Browser ohne Fehlermeldung auf die Standardstimme (meist Deutsch) und liest die Fremdsprache falsch aus. Fix sucht jetzt aktiv nach einer passenden installierten Stimme; ohne Treffer wird nicht gesprochen, sondern ein Hinweis eingeblendet statt falscher Aussprache. Behebt die falsche Sprache zuverlässig — ersetzt aber keine fehlende Stimme auf dem Gerät selbst (Betriebssystem-Einstellung). Commit 410efe4.
+- 🟡 Sprachen inhaltlich gegenprüfen (Richtigkeit) — weiterhin offen, braucht muttersprachliche Prüfung (nicht durch Code lösbar)
 
 **Brainy-Wort-Würfel**
 - ✅ **Gefixt (11.09.2026, Folgesession):** Druckvorlage (KLARTEXT_Spiel_Wortwuerfel_Basteln.html) hatte 4 von 7 Klebelaschen falsch positioniert — die seitlichen Laschen über/unter SIGNALE und NOMEN saßen eine volle Zeilenhöhe (5,5cm) zu weit oben/unten am Blattrand, komplett losgelöst vom Netz statt direkt an der Feldkante. Jetzt korrekt platziert. Commit 72da2d1.

@@ -58,10 +58,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
 /* ── STUNDENPLAN-SIMULATOR ─────────────────────────────── */
 .faecher-bank{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem;}
-.fach-kaertchen{display:flex;align-items:center;gap:.4rem;background:#fff;border:2.5px solid var(--border);border-radius:14px;padding:.5rem .85rem;font-size:.82rem;font-weight:700;color:var(--ink);cursor:grab;user-select:none;transition:all .15s;}
+.fach-kaertchen{display:flex;align-items:center;gap:.4rem;background:#fff;border:2.5px solid var(--border);border-radius:14px;padding:.5rem .6rem .5rem .85rem;font-size:.82rem;font-weight:700;color:var(--ink);cursor:grab;user-select:none;transition:all .15s;}
 .fach-kaertchen:hover{border-color:var(--acc);transform:translateY(-2px);}
 .fach-kaertchen.ausgewaehlt{border-color:var(--gold);background:#FFF4E0;box-shadow:0 0 0 3px rgba(196,122,0,.2);}
+.fach-entfernen{background:none;border:none;color:var(--muted);font-size:.85rem;cursor:pointer;line-height:1;padding:0 0 0 .15rem;flex-shrink:0;}
+.fach-entfernen:hover{color:#C62828;}
 .faecher-hinweis{font-size:.74rem;color:var(--muted);font-style:italic;margin-bottom:1rem;}
+.fach-hinzufuegen-row{display:flex;gap:.4rem;margin-bottom:1rem;}
+.fach-hinzufuegen-row input{flex:1;min-width:0;border:2px solid var(--border);border-radius:12px;padding:.45rem .7rem;font-size:.82rem;font-family:inherit;}
+.fach-hinzufuegen-row button{flex-shrink:0;border:none;border-radius:12px;padding:.45rem .9rem;font-size:.82rem;font-weight:700;background:var(--acc);color:#0F2A1E;cursor:pointer;font-family:inherit;}
 .stundenplan-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:1rem;}
 @media(max-width:600px){.stundenplan-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:420px){.stundenplan-grid{grid-template-columns:1fr;}}
@@ -156,6 +161,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <div class="ub-card-titel">📅 Stundenplan-Simulator</div>
     <div class="ub-card-sub">Übe schon mal, wie ein Stundenplan mit Fächerwechsel aussehen könnte. Fach antippen, dann ein Feld antippen — oder direkt hineinziehen.</div>
     <div class="faecher-bank" id="faecher-bank"></div>
+    <div class="fach-hinzufuegen-row">
+      <input type="text" id="eigenes-fach-input" placeholder="Eigenes Fach hinzufügen (z.B. Französisch)" maxlength="30" onkeydown="if(event.key==='Enter'){event.preventDefault();eigenesFachHinzufuegen();}">
+      <button onclick="eigenesFachHinzufuegen()">+ Hinzufügen</button>
+    </div>
     <div class="faecher-hinweis" id="faecher-hinweis" style="display:none;">👆 Fach ausgewählt — jetzt ein Feld im Stundenplan antippen.</div>
     <div class="stundenplan-grid" id="stundenplan-grid"></div>
     <div class="stundenplan-zuruecksetzen-row">
@@ -207,7 +216,7 @@ var FAECHER = [
 
 var SORGEN_EMOJIS = ['😟','😢','😰','😕','😠','🤔'];
 
-var zustand = { stichtag: null, wochenaufgabenErledigt: {}, stundenplan: {}, sorgen: [] };
+var zustand = { stichtag: null, wochenaufgabenErledigt: {}, stundenplan: {}, sorgen: [], entfernteFaecherIds: [], eigeneFaecher: [] };
 STUNDENPLAN_TAGE.forEach(function(tag){ zustand.stundenplan[tag] = new Array(STUNDEN_ANZAHL).fill(null); });
 
 var ausgewaehltesSorgenEmoji = null;
@@ -226,6 +235,8 @@ function laden(){
       zustand.stichtag = geladen.stichtag || null;
       zustand.wochenaufgabenErledigt = geladen.wochenaufgabenErledigt || {};
       zustand.sorgen = geladen.sorgen || [];
+      zustand.entfernteFaecherIds = geladen.entfernteFaecherIds || [];
+      zustand.eigeneFaecher = geladen.eigeneFaecher || [];
       if (geladen.stundenplan) {
         STUNDENPLAN_TAGE.forEach(function(tag){
           zustand.stundenplan[tag] = geladen.stundenplan[tag] || new Array(STUNDEN_ANZAHL).fill(null);
@@ -351,10 +362,15 @@ function fachAuswaehlen(fachId){
   faecherBankRendern();
 }
 
+function aktiveFaecher(){
+  return FAECHER.filter(function(f){ return zustand.entfernteFaecherIds.indexOf(f.id) === -1; })
+    .concat(zustand.eigeneFaecher);
+}
+
 function faecherBankRendern(){
   var bank = document.getElementById('faecher-bank');
   bank.innerHTML = '';
-  FAECHER.forEach(function(f){
+  aktiveFaecher().forEach(function(f){
     var el = document.createElement('div');
     el.className = 'fach-kaertchen' + (ausgewaehltesFachId === f.id ? ' ausgewaehlt' : '');
     el.draggable = true;
@@ -362,12 +378,41 @@ function faecherBankRendern(){
     el.innerHTML = '<span>' + f.icon + '</span><span>' + escapeHtml(f.text) + '</span>';
     el.addEventListener('dragstart', function(ev){ ev.dataTransfer.setData('text/plain', f.id); });
     el.addEventListener('click', function(){ fachAuswaehlen(f.id); });
+    var entfernen = document.createElement('button');
+    entfernen.className = 'fach-entfernen';
+    entfernen.setAttribute('aria-label', 'Fach aus der Auswahl entfernen');
+    entfernen.title = 'Fach aus der Auswahl entfernen (bereits eingetragene Stunden bleiben erhalten)';
+    entfernen.textContent = '✕';
+    entfernen.addEventListener('click', function(ev){ ev.stopPropagation(); fachAusBankEntfernen(f.id); });
+    el.appendChild(entfernen);
     bank.appendChild(el);
   });
 }
 
+function fachAusBankEntfernen(fachId){
+  var istEigenes = zustand.eigeneFaecher.some(function(f){ return f.id === fachId; });
+  if (istEigenes) {
+    zustand.eigeneFaecher = zustand.eigeneFaecher.filter(function(f){ return f.id !== fachId; });
+  } else if (zustand.entfernteFaecherIds.indexOf(fachId) === -1) {
+    zustand.entfernteFaecherIds.push(fachId);
+  }
+  if (ausgewaehltesFachId === fachId) ausgewaehltesFachId = null;
+  speichern();
+  faecherBankRendern();
+}
+
+function eigenesFachHinzufuegen(){
+  var input = document.getElementById('eigenes-fach-input');
+  var text = (input.value || '').trim();
+  if (!text) return;
+  zustand.eigeneFaecher.push({ id: 'eigen_' + Date.now(), icon: '📘', text: text });
+  input.value = '';
+  speichern();
+  faecherBankRendern();
+}
+
 function fachInSlotSetzen(fachId, tag, slotIndex){
-  var fach = FAECHER.filter(function(f){ return f.id === fachId; })[0];
+  var fach = aktiveFaecher().filter(function(f){ return f.id === fachId; })[0];
   if (!fach) return;
   zustand.stundenplan[tag][slotIndex] = { fachId: fach.id, icon: fach.icon, text: fach.text };
   speichern();

@@ -5,14 +5,14 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 @media print{.no-print{display:none!important;}body{background:white;padding:0;}@page{margin:8mm;size:A4;}}
-.region{cursor:pointer;stroke:#1a2e44;stroke-width:4;stroke-linejoin:round;}
-.region:active{opacity:0.75;}
 .color-swatch{width:30px;height:30px;border-radius:50%;border:2px solid #ddd;cursor:pointer;padding:0;transition:transform .12s ease;}
 .color-swatch:hover{transform:scale(1.1);}
 .color-swatch.active{border-color:#1a2e44;transform:scale(1.15);box-shadow:0 0 0 2px #1d9e75;}
 .tier-card{cursor:pointer;transition:box-shadow .15s ease,transform .1s ease;border:2.5px solid transparent;}
 .tier-card:hover{transform:translateY(-2px);}
 .tier-card.active{border-color:#5D3A7A;box-shadow:0 2px 10px rgba(93,58,122,0.25);}
+.tier-card img{width:40px;height:auto;margin-bottom:4px;}
+#tierCanvas{width:100%;max-width:340px;height:auto;cursor:pointer;touch-action:manipulation;}
 </style>
 <script>(function(){try{if(sessionStorage.getItem('klartext_login')!=='true')window.location.href='KLARTEXT_Login.html';}catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
@@ -39,7 +39,7 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 
   <!-- EINLEITUNG FÜR INGRA -->
   <div style="background:#EAF0F4;border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:12px;color:#1a2e44;line-height:1.6;">
-    <b>So nutzt du diese Karte:</b> Das Kind wählt ein Tier aus, das für Stärke, Mut oder Ruhe steht — egal ob Löwe, Schnecke oder Drache. Beim Ausmalen entsteht ein persönliches Kraftsymbol. In schwierigen Momenten kann das Kind sich an „sein" Tier erinnern: „Was würde mein Mutmach-Tier jetzt tun?" Unten kann das Kind ein Tier antippen und direkt digital ausmalen — durch Antippen der Bereiche, keine Zeichenfähigkeit nötig.
+    <b>So nutzt du diese Karte:</b> Das Kind wählt ein Tier aus, das für Stärke, Mut oder Ruhe steht — egal ob Löwe, Schnecke oder Drache. Beim Ausmalen entsteht ein persönliches Kraftsymbol. In schwierigen Momenten kann das Kind sich an „sein" Tier erinnern: „Was würde mein Mutmach-Tier jetzt tun?" Unten kann das Kind ein Tier antippen und direkt digital ausmalen — durch Antippen einer Fläche läuft die Farbe bis zur nächsten Linie, keine Zeichenfähigkeit nötig.
   </div>
 
   <!-- KARTE FÜR DAS KIND -->
@@ -65,6 +65,7 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
       </div>
 
       <div id="tierMalfeld" style="width:100%;max-width:380px;border:3px dashed #C4A0C4;border-radius:16px;padding:10px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;">
+        <canvas id="tierCanvas"></canvas>
       </div>
 
       <div style="width:100%;max-width:480px;text-align:left;">
@@ -88,57 +89,52 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
     <div id="tierGrid" style="padding:16px 18px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
 
       <div class="tier-card active" data-tier="loewe" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🦁</div>
+        <img src="mt_loewe.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Löwe</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">mutig &amp; stark</div>
       </div>
+      <div class="tier-card" data-tier="elefant" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
+        <img src="mt_elefant.jpg" alt="">
+        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Elefant</div>
+        <div style="font-size:9.5px;color:#888;margin-top:2px;">vergisst nie &amp; ist treu</div>
+      </div>
+      <div class="tier-card" data-tier="drache" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
+        <img src="mt_drache.jpg" alt="">
+        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Drache</div>
+        <div style="font-size:9.5px;color:#888;margin-top:2px;">kraftvoll &amp; besonders</div>
+      </div>
       <div class="tier-card" data-tier="schildkroete" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🐢</div>
+        <img src="mt_schildkroete.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Schildkröte</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">ruhig &amp; geduldig</div>
       </div>
       <div class="tier-card" data-tier="schmetterling" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🦋</div>
+        <img src="mt_schmetterling.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Schmetterling</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">frei &amp; leicht</div>
       </div>
-      <div class="tier-card" data-tier="drache" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🐉</div>
-        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Drache</div>
-        <div style="font-size:9.5px;color:#888;margin-top:2px;">kraftvoll &amp; besonders</div>
-      </div>
-      <div class="tier-card" data-tier="igel" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🦔</div>
-        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Igel</div>
-        <div style="font-size:9.5px;color:#888;margin-top:2px;">schützt sich gut</div>
-      </div>
-      <div class="tier-card" data-tier="elefant" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🐘</div>
-        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Elefant</div>
-        <div style="font-size:9.5px;color:#888;margin-top:2px;">vergisst nie &amp; ist treu</div>
-      </div>
-      <div class="tier-card" data-tier="baer" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🐻</div>
-        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Bär</div>
-        <div style="font-size:9.5px;color:#888;margin-top:2px;">stark &amp; beschützend</div>
-      </div>
       <div class="tier-card" data-tier="fuchs" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🦊</div>
+        <img src="mt_fuchs.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Fuchs</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">schlau &amp; clever</div>
       </div>
       <div class="tier-card" data-tier="eule" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🦉</div>
+        <img src="mt_eule.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Eule</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">weise &amp; aufmerksam</div>
       </div>
+      <div class="tier-card" data-tier="baer" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
+        <img src="mt_baer.jpg" alt="">
+        <div style="font-size:11px;font-weight:700;color:#1a2e44;">Bär</div>
+        <div style="font-size:9.5px;color:#888;margin-top:2px;">stark &amp; beschützend</div>
+      </div>
       <div class="tier-card" data-tier="adler" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <div style="font-size:24px;margin-bottom:4px;">🦅</div>
+        <img src="mt_adler.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Adler</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">mutig &amp; weitsichtig</div>
       </div>
       <div class="tier-card" data-tier="brainy" style="background:#F9F8F6;border-radius:10px;padding:12px;text-align:center;">
-        <img src="brainy.png" alt="" style="width:24px;height:24px;object-fit:contain;margin-bottom:4px;">
+        <img src="mt_brainy.jpg" alt="">
         <div style="font-size:11px;font-weight:700;color:#1a2e44;">Brainy</div>
         <div style="font-size:9.5px;color:#888;margin-top:2px;">immer an deiner Seite</div>
       </div>
@@ -153,228 +149,101 @@ body{font-family:Arial,sans-serif;background:#F0EDE8;padding:14px;}
 <script>
 /* ============ Tier-Definitionen ============ */
 const tiere = {
-  loewe: {
-    spruch: "Der Löwe zeigt dir: Du darfst mutig und stark sein.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="maehne" d="M 256.8,166.1 L 212.3,177.2 L 234.4,217.4 L 190.4,204.7 L 189.4,250.6 L 157.6,217.6 L 133.9,256.8 L 122.8,212.3 L 82.6,234.4 L 95.3,190.4 L 49.4,189.4 L 82.4,157.6 L 43.2,133.9 L 87.7,122.8 L 65.6,82.6 L 109.6,95.3 L 110.6,49.4 L 142.4,82.4 L 166.1,43.2 L 177.2,87.7 L 217.4,65.6 L 204.7,109.6 L 250.6,110.6 L 217.6,142.4 Z" />
-  <circle class="region" fill="#ffffff" data-name="gesicht" cx="150" cy="150" r="60" />
-  <path class="region" fill="#ffffff" data-name="schwanz" d="M214,262 C238,255 252,235 248,212 C258,222 264,246 246,266 C238,272 224,270 214,262 Z" />
-  <circle class="region" fill="#ffffff" data-name="schwanzquaste" cx="250" cy="208" r="15" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="256" rx="68" ry="38" />
-  <ellipse class="region" fill="#ffffff" data-name="pfote-links" cx="112" cy="285" rx="18" ry="12" />
-  <ellipse class="region" fill="#ffffff" data-name="pfote-rechts" cx="188" cy="285" rx="18" ry="12" />
-  <g pointer-events="none">
-    <ellipse cx="128" cy="145" rx="6" ry="8" fill="#1a2e44"/>
-    <ellipse cx="172" cy="145" rx="6" ry="8" fill="#1a2e44"/>
-    <path d="M150,160 l-9,11 h18 Z" fill="#1a2e44"/>
-    <path d="M144,175 q6,7 12,0" stroke="#1a2e44" stroke-width="3" fill="none" stroke-linecap="round"/>
-  </g>
-</svg>`
-  },
-  schildkroete: {
-    spruch: "Die Schildkröte zeigt dir: Du darfst dir Zeit nehmen – Schritt für Schritt.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <ellipse class="region" fill="#ffffff" data-name="panzer" cx="150" cy="185" rx="92" ry="78" />
-  <path class="region" fill="#ffffff" data-name="kopf" d="M150,62 C168,62 180,80 179,100 C179,112 165,116 150,116 C135,116 121,112 121,100 C120,80 132,62 150,62 Z" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-vl" cx="55" cy="138" rx="26" ry="17" transform="rotate(-25 55 138)" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-vr" cx="245" cy="138" rx="26" ry="17" transform="rotate(25 245 138)" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-hl" cx="60" cy="238" rx="26" ry="17" transform="rotate(25 60 238)" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-hr" cx="240" cy="238" rx="26" ry="17" transform="rotate(-25 240 238)" />
-  <path class="region" fill="#ffffff" data-name="schwanz" d="M150,261 L165,285 L135,285 Z" />
-  <circle class="region" fill="#ffffff" data-name="fleck1" cx="150" cy="150" r="26" />
-  <circle class="region" fill="#ffffff" data-name="fleck2" cx="108" cy="205" r="24" />
-  <circle class="region" fill="#ffffff" data-name="fleck3" cx="192" cy="205" r="24" />
-  <g pointer-events="none">
-    <circle cx="138" cy="92" r="5" fill="#1a2e44"/>
-    <circle cx="162" cy="92" r="5" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  schmetterling: {
-    spruch: "Der Schmetterling zeigt dir: Du darfst frei und leicht sein.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="fluegel-oben-links" d="M150,145 C95,90 45,75 38,115 C32,155 95,168 150,152 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-oben-rechts" d="M150,145 C205,90 255,75 262,115 C268,155 205,168 150,152 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-unten-links" d="M150,158 C112,180 78,215 100,245 C120,265 148,235 150,168 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-unten-rechts" d="M150,158 C188,180 222,215 200,245 C180,265 152,235 150,168 Z" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="152" rx="9" ry="68" />
-  <g pointer-events="none">
-    <path d="M147,88 C140,68 125,58 116,60" stroke="#1a2e44" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <path d="M153,88 C160,68 175,58 184,60" stroke="#1a2e44" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <circle cx="116" cy="60" r="4" fill="#1a2e44"/>
-    <circle cx="184" cy="60" r="4" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  drache: {
-    spruch: "Der Drache zeigt dir: Du darfst kraftvoll und besonders sein.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="fluegel-links" d="M98,205 C60,190 25,175 15,190 C25,215 65,235 100,232 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-rechts" d="M202,205 C240,190 275,175 285,190 C275,215 235,235 200,232 Z" />
-  <path class="region" fill="#ffffff" data-name="horn-links" d="M118,80 L102,42 L142,86 Z" />
-  <path class="region" fill="#ffffff" data-name="horn-rechts" d="M182,80 L198,42 L158,86 Z" />
-  <path class="region" fill="#ffffff" data-name="stacheln" d="M136,158 L144,136 L150,158 L156,136 L164,158 L157,184 L143,184 Z" />
-  <circle class="region" fill="#ffffff" data-name="kopf" cx="150" cy="118" r="50" />
-  <ellipse class="region" fill="#ffffff" data-name="schnauze" cx="150" cy="146" rx="28" ry="19" />
-  <path class="region" fill="#ffffff" data-name="schwanz" d="M212,270 C234,278 250,268 248,250 C260,258 260,282 236,290 C225,292 214,282 212,270 Z" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="238" rx="75" ry="56" />
-  <ellipse class="region" fill="#ffffff" data-name="fuss-links" cx="118" cy="288" rx="18" ry="13" />
-  <ellipse class="region" fill="#ffffff" data-name="fuss-rechts" cx="182" cy="288" rx="18" ry="13" />
-  <g pointer-events="none">
-    <ellipse cx="130" cy="112" rx="6" ry="8" fill="#1a2e44"/>
-    <ellipse cx="170" cy="112" rx="6" ry="8" fill="#1a2e44"/>
-    <path d="M138,146 q12,10 24,0" stroke="#1a2e44" stroke-width="3" fill="none" stroke-linecap="round"/>
-  </g>
-</svg>`
-  },
-  igel: {
-    spruch: "Der Igel zeigt dir: Du darfst dich gut schützen, wenn du das brauchst.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="stacheln" d="M55,195 L66,148 L82,178 L92,135 L108,172 L120,130 L136,170 L150,125 L164,170 L180,130 L192,172 L208,135 L218,178 L234,148 L245,195 C245,232 202,252 150,252 C98,252 55,232 55,195 Z" />
-  <ellipse class="region" fill="#ffffff" data-name="gesicht" cx="80" cy="212" rx="34" ry="27" />
-  <path class="region" fill="#ffffff" data-name="fuesse" d="M100,248 q6,16 16,16 q10,0 15,-16 Z M148,250 q6,15 16,15 q10,0 15,-15 Z M196,248 q6,16 16,16 q10,0 15,-16 Z" />
-  <g pointer-events="none">
-    <circle cx="62" cy="208" r="5" fill="#1a2e44"/>
-    <circle cx="96" cy="202" r="4" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  elefant: {
-    spruch: "Der Elefant zeigt dir: Du vergisst nie, wie stark du bist – und bist treu.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <ellipse class="region" fill="#ffffff" data-name="ohr-links" cx="78" cy="145" rx="52" ry="66" />
-  <ellipse class="region" fill="#ffffff" data-name="ohr-rechts" cx="222" cy="145" rx="52" ry="66" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-1" cx="108" cy="285" rx="16" ry="26" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-2" cx="138" cy="292" rx="16" ry="26" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-3" cx="168" cy="292" rx="16" ry="26" />
-  <ellipse class="region" fill="#ffffff" data-name="bein-4" cx="198" cy="285" rx="16" ry="26" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="248" rx="76" ry="44" />
-  <ellipse class="region" fill="#ffffff" data-name="kopf" cx="150" cy="132" rx="60" ry="54" />
-  <path class="region" fill="#ffffff" data-name="ruessel" d="M136,178 C126,210 116,232 126,256 C130,272 150,274 156,260 C160,250 148,240 146,222 C144,205 152,190 160,178 Z" />
-  <g pointer-events="none">
-    <circle cx="128" cy="122" r="6" fill="#1a2e44"/>
-    <circle cx="172" cy="122" r="6" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  baer: {
-    spruch: "Der Bär zeigt dir: Du darfst stark sein und andere beschützen.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <circle class="region" fill="#ffffff" data-name="ohr-links" cx="103" cy="92" r="24" />
-  <circle class="region" fill="#ffffff" data-name="ohr-rechts" cx="197" cy="92" r="24" />
-  <circle class="region" fill="#ffffff" data-name="kopf" cx="150" cy="142" r="62" />
-  <ellipse class="region" fill="#ffffff" data-name="schnauze" cx="150" cy="166" rx="30" ry="22" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="253" rx="78" ry="46" />
-  <ellipse class="region" fill="#ffffff" data-name="pfote-links" cx="112" cy="290" rx="20" ry="14" />
-  <ellipse class="region" fill="#ffffff" data-name="pfote-rechts" cx="188" cy="290" rx="20" ry="14" />
-  <g pointer-events="none">
-    <circle cx="130" cy="130" r="6" fill="#1a2e44"/>
-    <circle cx="170" cy="130" r="6" fill="#1a2e44"/>
-    <circle cx="150" cy="162" r="5" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  fuchs: {
-    spruch: "Der Fuchs zeigt dir: Du darfst schlau und clever sein.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="ohr-links" d="M100,105 L78,45 L135,92 Z" />
-  <path class="region" fill="#ffffff" data-name="ohr-rechts" d="M200,105 L222,45 L165,92 Z" />
-  <circle class="region" fill="#ffffff" data-name="kopf" cx="150" cy="148" r="56" />
-  <path class="region" fill="#ffffff" data-name="schnauze" d="M126,178 C126,200 138,218 150,220 C162,218 174,200 174,178 C160,190 140,190 126,178 Z" />
-  <path class="region" fill="#ffffff" data-name="schwanz" d="M210,255 C255,248 278,215 268,178 C288,190 296,235 260,268 C238,282 216,272 210,255 Z" />
-  <circle class="region" fill="#ffffff" data-name="schwanzspitze" cx="272" cy="182" r="16" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="252" rx="62" ry="42" />
-  <g pointer-events="none">
-    <ellipse cx="130" cy="140" rx="5" ry="7" fill="#1a2e44"/>
-    <ellipse cx="170" cy="140" rx="5" ry="7" fill="#1a2e44"/>
-    <circle cx="150" cy="196" r="4" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  eule: {
-    spruch: "Die Eule zeigt dir: Du darfst genau hinschauen und weise sein.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="federohr-links" d="M112,78 L95,30 L138,68 Z" />
-  <path class="region" fill="#ffffff" data-name="federohr-rechts" d="M188,78 L205,30 L162,68 Z" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="185" rx="78" ry="95" />
-  <circle class="region" fill="#ffffff" data-name="augenfeld-links" cx="120" cy="140" r="34" />
-  <circle class="region" fill="#ffffff" data-name="augenfeld-rechts" cx="180" cy="140" r="34" />
-  <path class="region" fill="#ffffff" data-name="schnabel" d="M150,158 L138,178 L162,178 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-links" d="M75,150 C55,180 55,230 78,262 C90,250 96,200 96,160 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-rechts" d="M225,150 C245,180 245,230 222,262 C210,250 204,200 204,160 Z" />
-  <rect class="region" fill="#ffffff" data-name="fuss-links" x="122" y="276" width="10" height="20" rx="4" />
-  <rect class="region" fill="#ffffff" data-name="fuss-mitte" x="145" y="280" width="10" height="20" rx="4" />
-  <rect class="region" fill="#ffffff" data-name="fuss-rechts" x="168" y="276" width="10" height="20" rx="4" />
-  <g pointer-events="none">
-    <circle cx="120" cy="140" r="12" fill="#1a2e44"/>
-    <circle cx="180" cy="140" r="12" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  adler: {
-    spruch: "Der Adler zeigt dir: Du darfst mutig hoch hinauswollen.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="fluegel-links" d="M120,175 C70,158 25,168 12,200 C8,220 30,232 55,222 C40,235 20,238 15,255 C40,262 85,245 118,208 Z" />
-  <path class="region" fill="#ffffff" data-name="fluegel-rechts" d="M180,175 C230,158 275,168 288,200 C292,220 270,232 245,222 C260,235 280,238 285,255 C260,262 215,245 182,208 Z" />
-  <ellipse class="region" fill="#ffffff" data-name="koerper" cx="150" cy="205" rx="42" ry="65" />
-  <circle class="region" fill="#ffffff" data-name="kopf" cx="150" cy="108" r="38" />
-  <path class="region" fill="#ffffff" data-name="schnabel" d="M132,128 L150,150 L168,128 Z" />
-  <path class="region" fill="#ffffff" data-name="klauen" d="M120,270 L135,290 L150,272 L165,290 L180,270 L150,300 Z" />
-  <g pointer-events="none">
-    <circle cx="136" cy="100" r="6" fill="#1a2e44"/>
-    <circle cx="164" cy="100" r="6" fill="#1a2e44"/>
-  </g>
-</svg>`
-  },
-  brainy: {
-    spruch: "Brainy zeigt dir: Du bist nie allein — ich bin immer an deiner Seite.",
-    svg: `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-  <path class="region" fill="#ffffff" data-name="koerper" d="M150,160 C108,160 82,188 82,224 C82,258 110,274 150,274 C190,274 218,258 218,224 C218,188 192,160 150,160 Z" />
-  <circle class="region" fill="#ffffff" data-name="kopf" cx="150" cy="112" r="50" />
-  <path class="region" fill="#ffffff" data-name="herz" d="M150,196 C143,185 124,186 124,202 C124,216 150,236 150,236 C150,236 176,216 176,202 C176,186 157,185 150,196 Z" />
-  <g pointer-events="none">
-    <circle cx="150" cy="112" r="46" fill="none" stroke="#1a2e44" stroke-width="0"/>
-    <circle cx="128" cy="112" r="15" fill="none" stroke="#1a2e44" stroke-width="4"/>
-    <circle cx="172" cy="112" r="15" fill="none" stroke="#1a2e44" stroke-width="4"/>
-    <line x1="143" y1="112" x2="157" y2="112" stroke="#1a2e44" stroke-width="4"/>
-    <path d="M140,132 q10,8 20,0" stroke="#1a2e44" stroke-width="3" fill="none" stroke-linecap="round"/>
-  </g>
-</svg>`
-  }
+  loewe: { spruch: "Der Löwe zeigt dir: Du darfst mutig und stark sein.", img: "mt_loewe.jpg" },
+  elefant: { spruch: "Der Elefant zeigt dir: Du vergisst nie, wie stark du bist – und bist treu.", img: "mt_elefant.jpg" },
+  drache: { spruch: "Der Drache zeigt dir: Du darfst kraftvoll und besonders sein.", img: "mt_drache.jpg" },
+  schildkroete: { spruch: "Die Schildkröte zeigt dir: Du darfst dir Zeit nehmen – Schritt für Schritt.", img: "mt_schildkroete.jpg" },
+  schmetterling: { spruch: "Der Schmetterling zeigt dir: Du darfst frei und leicht sein.", img: "mt_schmetterling.jpg" },
+  fuchs: { spruch: "Der Fuchs zeigt dir: Du darfst schlau und clever sein.", img: "mt_fuchs.jpg" },
+  eule: { spruch: "Die Eule zeigt dir: Du darfst genau hinschauen und weise sein.", img: "mt_eule.jpg" },
+  baer: { spruch: "Der Bär zeigt dir: Du darfst stark sein und andere beschützen.", img: "mt_baer.jpg" },
+  adler: { spruch: "Der Adler zeigt dir: Du darfst mutig hoch hinauswollen.", img: "mt_adler.jpg" },
+  brainy: { spruch: "Brainy zeigt dir: Du bist nie allein — ich bin immer an deiner Seite.", img: "mt_brainy.jpg" }
 };
 
 let currentColor = "#E74C3C";
 let currentTier = "loewe";
 
-function storageKey(tierId){ return "mutmachtier_" + tierId; }
-function loadState(tierId){
-  try{ const raw = localStorage.getItem(storageKey(tierId)); return raw ? JSON.parse(raw) : {}; }
-  catch(e){ return {}; }
+function storageKey(tierId){ return "mutmachtier_bild_" + tierId; }
+function saveCanvasState(tierId, dataUrl){
+  try{ localStorage.setItem(storageKey(tierId), dataUrl); }catch(e){}
 }
-function saveState(tierId, state){ localStorage.setItem(storageKey(tierId), JSON.stringify(state)); }
+function loadCanvasState(tierId){
+  try{ return localStorage.getItem(storageKey(tierId)); }catch(e){ return null; }
+}
+
+const canvas = document.getElementById("tierCanvas");
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+function drawImageToCanvas(src, onDone){
+  const img = new Image();
+  img.onload = function(){
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    ctx.drawImage(img, 0, 0);
+    if (onDone) onDone();
+  };
+  img.src = src;
+}
 
 function renderTier(){
   const tier = tiere[currentTier];
   document.getElementById("tierSpruch").textContent = tier.spruch;
-  const malfeld = document.getElementById("tierMalfeld");
-  malfeld.innerHTML = tier.svg;
-  const svgEl = malfeld.querySelector("svg");
-  svgEl.style.width = "100%";
-  svgEl.style.maxWidth = "340px";
-  svgEl.style.height = "auto";
-
-  const state = loadState(currentTier);
-  svgEl.querySelectorAll(".region").forEach(region => {
-    const name = region.dataset.name;
-    if (state[name]) region.setAttribute("fill", state[name]);
-    region.addEventListener("click", () => {
-      region.setAttribute("fill", currentColor);
-      const s = loadState(currentTier);
-      s[name] = currentColor;
-      saveState(currentTier, s);
-    });
-  });
+  const saved = loadCanvasState(currentTier);
+  drawImageToCanvas(saved || tier.img);
 }
+
+/* ---- Fülleimer / Flood-Fill ---- */
+function hexToRgb(hex){
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+}
+
+function floodFill(startX, startY, fillHex){
+  const w = canvas.width, h = canvas.height;
+  if (startX < 0 || startX >= w || startY < 0 || startY >= h) return;
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+  const idx = (x,y) => (y*w + x) * 4;
+
+  const si = idx(startX, startY);
+  const startR = data[si], startG = data[si+1], startB = data[si+2];
+
+  // Nicht füllen, wenn direkt auf eine dunkle Linie getippt wurde
+  if (startR < 90 && startG < 90 && startB < 90) return;
+
+  const [fr, fg, fb] = hexToRgb(fillHex);
+  // Nicht neu füllen, wenn die Fläche schon exakt diese Farbe hat
+  if (Math.abs(startR-fr) < 6 && Math.abs(startG-fg) < 6 && Math.abs(startB-fb) < 6) return;
+
+  const tol = 42;
+  const visited = new Uint8Array(w*h);
+  const stack = [[startX, startY]];
+
+  while (stack.length){
+    const [x,y] = stack.pop();
+    if (x < 0 || x >= w || y < 0 || y >= h) continue;
+    const vi = y*w + x;
+    if (visited[vi]) continue;
+    const i = idx(x,y);
+    const r = data[i], g = data[i+1], b = data[i+2];
+    if (r < 90 && g < 90 && b < 90) continue; // dunkle Linie = Grenze
+    if (Math.abs(r-startR) > tol || Math.abs(g-startG) > tol || Math.abs(b-startB) > tol) continue;
+    visited[vi] = 1;
+    data[i] = fr; data[i+1] = fg; data[i+2] = fb; data[i+3] = 255;
+    stack.push([x+1,y],[x-1,y],[x,y+1],[x,y-1]);
+  }
+  ctx.putImageData(imgData, 0, 0);
+}
+
+canvas.addEventListener("click", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const x = Math.floor((e.clientX - rect.left) * scaleX);
+  const y = Math.floor((e.clientY - rect.top) * scaleY);
+  floodFill(x, y, currentColor);
+  saveCanvasState(currentTier, canvas.toDataURL("image/jpeg", 0.85));
+});
 
 document.querySelectorAll(".color-swatch").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -385,8 +254,8 @@ document.querySelectorAll(".color-swatch").forEach(btn => {
 });
 
 document.getElementById("mtResetBtn").addEventListener("click", () => {
-  localStorage.removeItem(storageKey(currentTier));
-  renderTier();
+  try{ localStorage.removeItem(storageKey(currentTier)); }catch(e){}
+  drawImageToCanvas(tiere[currentTier].img);
 });
 
 document.querySelectorAll(".tier-card").forEach(card => {

@@ -16,14 +16,23 @@ Entscheidungen/Historie; alles andere (App, eduki, Shop-Technik) bleibt in `KLAR
   CTA) + 1 Pinterest-Zusammenfassungsbild (1000×1500), NIEMALS ein zugeschnittenes eduki-Produktcover
   als Einzelgrafik posten (das wurde 05.09.2026 explizit als "kein Content, sieht aus wie ein
   Infoblatt" zurückgewiesen).
-- **Bildstil "Eyecatcher/Boulevard"** (seit 09.09.2026 verbindlich, ersetzt den vorherigen ruhigen
-  Stil): reißerischer Hook mit Zeitungsausriss-Grafik + Schlagzeile statt nackter Zahl, klare
-  Fakten-Boxen, nummerierte Ursachen, Lösungs-Karten, kräftiger CTA. Referenz-Template: das
-  "PISA-Befreiungspaket"-Karussell (`KLARTEXT_PISA_Befreiungspaket_Karussell.zip`).
-- **Farbpalette — STRIKT nur:** Navy #1B3A4B, Terracotta #D96B43, Salbeigrün #4A7C59,
-  Gold/Muted Gold #D4A373, Knallrot #D00000 (NUR als Schock-Akzent, nie als Flächenfarbe). Keine
-  neue/fremde Palette (ein Zeitungs-Creme/reines Rot-Schwarz-Konzept wurde 09.09.2026 abgelehnt).
-  Innerhalb eines Wochenpakets ruhig unterschiedliche Akzent-Betonung je Post für Abwechslung.
+- **Bildstil "Eyecatcher/Boulevard"** — WICHTIG, korrigiert 11.09.2026: Das reißerische
+  Zeitungsausriss-/Knallrot-Konzept vom 09.09.2026 war NUR für den PISA-Post gedacht, NICHT als
+  generelles Standard-Template für alle Wochenpakete ("die Regel von gestern war nur für gestern
+  gedacht, wegen der PISA-Studie"). Was tatsächlich verbindlich ist: klare, aufmerksamkeitsstarke
+  Hook-Folie + Fakten-Box + nummerierte Ursachen + Lösungs-Karten + CTA als Struktur — aber JEDER
+  der 4 Zielgruppen-Slots braucht eine eigenständige, visuell unterscheidbare Hook-Komposition
+  (nicht nur die gleiche Vorlage mit neuem Text/neuer Farbe). Etablierte Varianten: Brainy-Sprechblase
+  (Kinder), Diagonal-Split (Jugendliche), Stempel/Memo (Lehrkräfte), Chat-Bubble (Eltern).
+- **Farbpalette — Knallrot #D00000 ist AUSSCHLIESSLICH PISA-Content vorbehalten**, niemals
+  ein generischer Social-Media-Schock-Akzent ("rot gehörte nur ausschließlich zu PISA"). Jedes
+  Thema/Produkt nutzt stattdessen seine eigene, bereits etablierte KLARTEXT-Akzentfarbe, konsequent
+  von der Hook-Folie bis zur CTA durchgezogen (nicht nur auf einer Folie):
+  Mobbing/Zivilcourage-Trainer → Bordeaux #8B3A48; Praktikums-Notfall-Kärtchen/Berufs-Dschungel-
+  Leitfaden → Kupfer #A6643A; Zonen-Set → die 4 etablierten Zonen-Farben (Basis: Navy, Akzent
+  Zone-Rost #8D553A). Basis-Palette bleibt Navy #1B3A4B, Terracotta #D96B43, Salbeigrün #4A7C59,
+  Gold #D4A373 für alles, das keine eigene Produktfarbe hat — aber innerhalb eines einzelnen Posts
+  nicht wahllos mischen, sondern eine klare Leitfarbe pro Post durchziehen.
 - **Keine Preise** auf Social-Media-Grafiken — nur Ideen-/Motivations-Anregung.
 - **Hashtags:** maximal 5 pro Instagram-Post (Konto-Limit).
 - **Bio-Link/CTA-Ziel (geklärt 11.09.2026, nach Hin und Her):** IMMER
@@ -69,6 +78,15 @@ neue Texte, mit echten Quellen unterfüttert). Danach CTA-Diskussion: ursprüngl
 Verwirrung um die richtige Domain (klartext-mentoring.de vs. klartext-karten.de vs. eduki) →
 geklärt: Bio-Link = klartext-mentoring.de (siehe Standing Rule oben). KW37-Paket entsprechend final
 korrigiert und ausgeliefert.
+
+**11.09.2026 (Korrektur)** — Anja stellte klar: Der Knallrot/Zeitungsausriss-Stil vom PISA-Post
+war nur für PISA gedacht, kein generelles Standard-Template. Zusätzlich kritisiert: die 4 KW37-Hook-
+Folien sahen trotz neuer Texte optisch identisch aus ("die gleichen Bilder von gestern nur mit
+anderem Text"). Beides behoben: 4 strukturell unterschiedliche Hook-Kompositionen gebaut
+(Brainy-Sprechblase/Kinder, Diagonal-Split/Jugendliche, Stempel-Memo/Lehrkräfte, Chat-Bubble/Eltern,
+inkl. freigestelltem Brainy-Maskottchen), UND jeder Post durchgängig (Hook bis CTA) auf seine eigene
+etablierte Produktfarbe umgestellt statt Knallrot: Mobbing → Bordeaux, Praktikum/Berufs-Dschungel →
+Kupfer, Zonen-Set → Navy/Zone-Rost. KW37-Paket entsprechend final korrigiert und erneut ausgeliefert.
 
 ## Offene Punkte
 

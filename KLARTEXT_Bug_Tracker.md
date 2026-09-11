@@ -93,7 +93,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 - ✅ **Gefixt (11.09.2026, Folgesession):** Root Cause für "Antworten teilweise inhaltlich falsch" war nicht die Klassifizierung der 12 Situationen (die war korrekt), sondern die Feedback-Logik: Text/Farbe richteten sich bisher nur nach der tatsächlichen Einordnung, nicht nach der Antwort der Person — z.B. "Genau!" auch bei falscher Antwort. Jetzt 4 Feedback-Varianten je nach Nutzer-Antwort × echte Einordnung. Gleichzeitig den Timer-Bug mitgefixt: automatischer Kartenwechsel nach 1,5s ersetzt durch manuellen "Weiter"-Button. Commit 58e6584.
 
 **Bewerbungsgenerator**
-- 🔴 Zurück-Funktion funktioniert nicht
+- ✅ **Gefixt (11.09.2026, Folgesession):** Root Cause: der Zurück-Button war fest auf KLARTEXT_Downloads.html verdrahtet. Das Tool wird aber auch von Spiele-Übersicht, Interessen-Check und Skill-Matrix aus verlinkt — von dort kam man beim Zurück-Klick an der falschen Stelle an statt dort, wo man hergekommen ist. Jetzt echte Browser-Historie (history.back()) mit Fallback auf Downloads. Commit 61651af.
 
 **Werte-Poker**
 - ⚪ Beschreibung ändern: Klicken statt Ziehen (Interaktionsart)

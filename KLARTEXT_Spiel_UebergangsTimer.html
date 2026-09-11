@@ -130,6 +130,20 @@ var gesamtSekunden = 120;
 var restSekunden = 120;
 var laeuft = false;
 var intervallId = null;
+var audioCtx = null;
+
+/* AudioContext MUSS innerhalb eines direkten Nutzer-Klicks erzeugt/aufgeweckt
+   werden — sonst sperren Browser ihn stumm (Autoplay-Schutz), ohne Fehler.
+   Bisher wurde er erst beim Timer-Ende (im setInterval-Callback) erzeugt,
+   also NICHT als direkte Reaktion auf einen Klick → blieb stumm. Fix: hier
+   beim Start-Klick erzeugen/aufwecken, in uebergangErreicht() nur noch
+   wiederverwenden. */
+function audioAufwecken(){
+  try{
+    if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(function(){});
+  }catch(e){}
+}
 
 function hexZuRgb(hex){
   var v = parseInt(hex.slice(1),16);
@@ -177,6 +191,7 @@ function starten(){
     return;
   }
   if(restSekunden<=0) return;
+  audioAufwecken();
   laeuft = true;
   btn.textContent = 'Pause';
   btn.classList.remove('start');
@@ -213,7 +228,8 @@ function zuruecksetzen(){
 function uebergangErreicht(){
   if(document.getElementById('opt-ton').checked){
     try{
-      var ctx = new (window.AudioContext||window.webkitAudioContext)();
+      audioAufwecken();
+      var ctx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
       [528,660].forEach(function(freq,i){
         var osc = ctx.createOscillator(), gain = ctx.createGain();
         osc.type = 'sine'; osc.frequency.value = freq;

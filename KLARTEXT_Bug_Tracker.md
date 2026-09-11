@@ -55,8 +55,8 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 - 🟡 Sprachen inhaltlich gegenprüfen (Richtigkeit)
 
 **Brainy-Wort-Würfel**
-- 🔴 Druckvorlage ist falsch
-- ⚪ Klären: gehören Wortkarten & Aktionsset zur Bastelvorlage oder ist das eine separate Verwechslung?
+- ✅ **Gefixt (11.09.2026, Folgesession):** Druckvorlage (KLARTEXT_Spiel_Wortwuerfel_Basteln.html) hatte 4 von 7 Klebelaschen falsch positioniert — die seitlichen Laschen über/unter SIGNALE und NOMEN saßen eine volle Zeilenhöhe (5,5cm) zu weit oben/unten am Blattrand, komplett losgelöst vom Netz statt direkt an der Feldkante. Jetzt korrekt platziert. Commit 72da2d1.
+- ✅ **Geklärt:** Wortkarten & Aktions-Set (KLARTEXT_Spiel_Wortwuerfel_Karten.html) ist keine Verwechslung, sondern ein eigenständiges, separates Druckprodukt (18 Karten: Aktions- + Wortkarten) zusätzlich zur Bastelvorlage — keine Änderung nötig.
 
 **Brainy-Zauberfächer**
 - ⚪ Rechtschreibfehler: "liegende AchtER" (Gelb), "der Affe" Knie DICH hin (Gelb)

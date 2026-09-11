@@ -56,6 +56,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .rueckmeldung.aktiv{display:block;}
 .rueckmeldung b{color:var(--acc);}
 
+.zeit-hinweis{display:none;text-align:center;font-size:.76rem;font-weight:700;color:var(--acc);margin-bottom:.6rem;}
+.zeit-hinweis.aktiv{display:block;}
+
 .weiter-btn{width:100%;margin-top:1rem;background:var(--m);color:#fff;border:none;border-radius:10px;padding:.7rem;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;display:none;}
 .weiter-btn.aktiv{display:block;}
 
@@ -102,7 +105,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       <div class="ring-zahl" id="ring-zahl">10</div>
     </div>
 
-    <div class="aktion-grid" id="aktion-grid">
+    <div class="zeit-hinweis" id="zeit-hinweis">⏱️ Die 10 Sekunden sind um! Was hättest du getan?</div>
+    <div class="aktion-grid frei" id="aktion-grid">
       <div class="aktion-chip" data-aktion="ansprechen" onclick="aktionWaehlen(this)">Die betroffene Person ansprechen und wegführen</div>
       <div class="aktion-chip" data-aktion="stopp" onclick="aktionWaehlen(this)">Laut und ruhig „Stopp" sagen</div>
       <div class="aktion-chip" data-aktion="ablenken" onclick="aktionWaehlen(this)">Thema wechseln, ablenken</div>
@@ -156,7 +160,8 @@ function neuesSzenario(){
   document.getElementById('szenario-karte').classList.add('aktiv');
   document.getElementById('rueckmeldung').classList.remove('aktiv');
   document.getElementById('weiter-btn').classList.remove('aktiv');
-  document.getElementById('aktion-grid').classList.remove('frei');
+  document.getElementById('zeit-hinweis').classList.remove('aktiv');
+  document.getElementById('aktion-grid').classList.add('frei');
   document.querySelectorAll('.aktion-chip').forEach(function(c){ c.classList.remove('gewaehlt'); });
   gewaehlteAktion = null;
 
@@ -175,14 +180,18 @@ function neuesSzenario(){
     document.getElementById('ring').style.strokeDashoffset = UMFANG*(1-rest/10);
     if(rest<=0){
       clearInterval(countdownId);
-      document.getElementById('aktion-grid').classList.add('frei');
-      try{ if(navigator.vibrate) navigator.vibrate(150); }catch(e){}
+      if(!gewaehlteAktion){
+        document.getElementById('zeit-hinweis').classList.add('aktiv');
+        try{ if(navigator.vibrate) navigator.vibrate(150); }catch(e){}
+      }
     }
   }, 1000);
 }
 
 function aktionWaehlen(el){
   if(gewaehlteAktion) return;
+  clearInterval(countdownId);
+  document.getElementById('zeit-hinweis').classList.remove('aktiv');
   gewaehlteAktion = el.dataset.aktion;
   el.classList.add('gewaehlt');
   pieptonSpielen(true);

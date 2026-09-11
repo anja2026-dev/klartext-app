@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Das 5-Minuten-Spiele-Kit Begleitheft (1 Seite)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2F6B6E;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3F3;
+  --salbei:#2E7D5F;--petrol:#1B3A4B;--gold:#B07D2A;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;height:297mm;background:#fff;margin:0 auto;
+  padding:12mm 16mm 10mm;position:relative;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem !important;}
+.kopf::before{
+  content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
+  width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;
+}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:1rem;color:var(--muted);}
+
+.spiele-grid{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.3rem;}
+.spiel-box{border:1.5px solid var(--border);border-radius:16px;background:#fff;box-shadow:0 3px 14px rgba(27,58,75,.08);display:flex;align-items:center;gap:18px;padding:1.2rem 1.4rem;}
+.spiel-box.salbei{border-left:5px solid var(--salbei);}
+.spiel-box.petrol{border-left:5px solid var(--petrol);}
+.spiel-box.gold{border-left:5px solid var(--gold);}
+.spiel-nr{flex-shrink:0;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:1.1rem;color:#fff;}
+.spiel-box.salbei .spiel-nr{background:var(--salbei);}
+.spiel-box.petrol .spiel-nr{background:var(--petrol);}
+.spiel-box.gold .spiel-nr{background:var(--gold);}
+.spiel-info{flex:1;min-width:0;}
+.spiel-titel{font-weight:700;font-size:.92rem;color:var(--m);margin-bottom:.3rem;}
+.spiel-text{font-size:.78rem;line-height:1.55;color:var(--ink);}
+.spiel-qr{width:24mm;height:24mm;flex-shrink:0;background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:3px;}
+.spiel-qr svg{width:100%;height:100%;display:block;}
+
+.spickzettel{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.9rem 1.2rem;margin-bottom:1rem;font-size:.78rem;line-height:1.6;color:var(--ink);font-style:italic;box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.spickzettel b{font-style:normal;color:var(--m);}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:1.4rem;background:var(--paper);border-radius:12px;padding:.9rem 1.1rem;}
+.brainy-zeile img{width:15mm;height:15mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.76rem;line-height:1.6;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">DAS 5-MINUTEN-SPIELE-KIT</h1>
+  <div class="untertitel">Pädagogische Spiele zur Co-Regulation &amp; Fokussierung</div>
+  <div class="absatz">Jeder QR-Code führt direkt und login-frei (Gast-Modus) zum passenden interaktiven Spiel auf dem Klassen-Tablet oder Handy.</div>
+
+  <div class="spiele-grid">
+    <div class="spiel-box salbei">
+      <div class="spiel-nr">1</div>
+      <div class="spiel-info">
+        <div class="spiel-titel">🌡️ Brainys Barometer-Rettung</div>
+        <div class="spiel-text">Kooperatives Klassenspiel gegen den Stress — die Klasse meistert gemeinsam eine 1-Minuten-Challenge und holt Brainy zurück ins Grün.</div>
+      </div>
+      <div class="spiel-qr" id="qr-barometer"></div>
+    </div>
+    <div class="spiel-box petrol">
+      <div class="spiel-nr">2</div>
+      <div class="spiel-info">
+        <div class="spiel-titel">🤫 Der geheime Gedanken-Leser</div>
+        <div class="spiel-text">Achtsamkeit &amp; Empathie im Sitzkreis — ein Kind rät das stumm dargestellte Gefühl, dann folgt eine passende Co-Regulationsübung aus Brainys Zauberfächer.</div>
+      </div>
+      <div class="spiel-qr" id="qr-gedankenleser"></div>
+    </div>
+    <div class="spiel-box gold">
+      <div class="spiel-nr">3</div>
+      <div class="spiel-info">
+        <div class="spiel-titel">🎲 Der verrückte Wort-Slalom</div>
+        <div class="spiel-text">Aktive Sprachförderung &amp; Motorik — Slalom laufen, auf den Würfel tippen, Wort lesen und in 5 Sprachen übersetzen (DaZ-geeignet).</div>
+      </div>
+      <div class="spiel-qr" id="qr-wortslalom"></div>
+    </div>
+  </div>
+
+  <div class="spickzettel">
+    „body'n'brain-Effekt: Bewegung integriert das Gelernte tiefer im Gehirn und baut Stresshormone ab. <b>Nutzt</b> diese 5-Minuten-Spiele gezielt nach der großen Pause oder bei beginnender Unruhe, um die Klasse sanft und lautlos wieder zu fokussieren."
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b> Entwickelt für den reizarmen Einsatz nach der großen Pause oder bei beginnender Unruhe in der Klasse.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 1</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ZIELE = {
+      'qr-barometer':     'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_BarometerRettung.html?guest=true',
+      'qr-gedankenleser': 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Gedankenleser.html?guest=true',
+      'qr-wortslalom':    'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_WortSlalom.html?guest=true'
+    };
+    Object.keys(ZIELE).forEach(function(id){
+      var el = document.getElementById(id);
+      if (!el) return;
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(ZIELE[id]);
+      if (svg) el.innerHTML = svg;
+    });
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

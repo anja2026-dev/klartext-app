@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Liegende Acht Begleitheft (1 Seite)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#3B8A68;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EDF4EF;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;height:297mm;background:#fff;margin:0 auto;
+  padding:12mm 16mm 10mm;position:relative;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem !important;}
+.kopf::before{
+  content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
+  width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;
+}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem 1.05rem 1.5rem;margin-bottom:1.1rem;font-size:.76rem;line-height:1.6;color:var(--ink);position:relative;box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{
+  content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;
+  background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;position:relative;padding-bottom:.3rem;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.acht-buehne{width:100%;max-width:95mm;margin:.15rem auto .6rem;display:block;}
+.acht-buehne path{stroke:var(--m);stroke-width:16;fill:none;stroke-linecap:round;}
+.acht-tipp{font-size:.72rem;color:var(--muted);text-align:center;max-width:130mm;margin:-.2rem auto .8rem;line-height:1.5;}
+
+.ideen-box{background:var(--paper);border-radius:12px;padding:.9rem 1.2rem;margin-bottom:1rem;box-shadow:0 2px 10px rgba(27,58,75,.06);border-left:3px solid var(--acc);}
+.ideen-titel{font-size:.85rem;font-weight:700;color:var(--m);margin-bottom:.35rem;}
+.ideen-sub{font-size:.72rem;color:var(--muted);margin-bottom:.55rem;line-height:1.5;}
+.ideen-box ul{margin:0;padding-left:1.1rem;}
+.ideen-box li{font-size:.74rem;color:var(--ink);line-height:1.55;margin-bottom:.15rem;}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;}
+}
+@media screen{
+  body{padding:10mm 0;}
+  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">LIEGENDE ACHT</h1>
+  <div class="untertitel">Edu-Kinestetik-Übung für Konzentration &amp; Übergänge</div>
+
+  <div class="hinweis-box">
+    <p>Die liegende Acht ("Lazy Eight") ist eine der bekanntesten Übungen aus der Edu-Kinestetik (Brain Gym®) nach Paul E. Dennison. Die Augen folgen der Form über die Körpermitte hinweg — das soll beide Gehirnhälften ansprechen und wird häufig für kurze Konzentrations- und Übergangsmomente im Schulalltag eingesetzt.</p>
+    <div class="quelle">Quelle: Dennison, P. E. &amp; Dennison, G. E., "Brain Gym: Simple Activities for Whole Brain Learning".</div>
+  </div>
+
+  <div class="abschnitt-titel">Mit dem Stift oder Finger nachfahren</div>
+  <div class="absatz">Von der Mitte aus starten, die Form einmal ruhig nachfahren — mit dem Stift, dem Finger oder nur mit den Augen.</div>
+
+  <svg class="acht-buehne" viewBox="0 0 300 160" role="img" aria-label="Liegende Acht zum Nachfahren">
+    <path d="M150,80 C110,20 20,20 20,80 C20,140 110,140 150,80 C190,20 280,20 280,80 C280,140 190,140 150,80 Z"/>
+  </svg>
+  <div class="acht-tipp">Tipp für die große Version: das Blatt an die Wand hängen und mit ausgestrecktem Arm im Stehen nachfahren — oder ganz ohne Stift, nur mit den Augen, Kopf dabei still halten.</div>
+
+  <div class="ideen-box">
+    <div class="ideen-titel">🚶 Idee für draußen: die große Boden-Acht</div>
+    <div class="ideen-sub">Die Acht mit Kreide, Seil oder Klebeband groß auf den Boden legen — die Kinder laufen sie ab, erst vorwärts, dann rückwärts. Dabei zum Beispiel:</div>
+    <ul>
+      <li>Vokabeln aufsagen — ein Wort pro Schritt</li>
+      <li>ein Gedicht auswendig aufsagen</li>
+      <li>Einmaleins-Aufgaben lösen</li>
+      <li>Wörter rückwärts sagen oder lesen (von rechts nach links)</li>
+      <li>abwechselnd: eine Runde still, eine Runde laut</li>
+    </ul>
+  </div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr"></div>
+    <div class="qr-text"><b>Digitale Version mit 3 Modi</b>QR-Code scannen: Augen folgen, Finger nachfahren oder beide Hände — Brainy läuft die Acht mit, in wählbarem Tempo, auch rückwärts.</div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy zum Ausschneiden:</b> Ausschneiden und in die Mitte der Boden-Acht legen — als Wegweiser, oder zum Mitnehmen beim Laufen.</div>
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 1</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_LiegendeAcht.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
+    var ziel_el = document.getElementById('druck-qr');
+    if(svg && ziel_el) ziel_el.innerHTML = svg;
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

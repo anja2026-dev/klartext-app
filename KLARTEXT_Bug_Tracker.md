@@ -47,8 +47,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 
 **Neue Schule**
 - 🟡 Stundenplan-Simulator: Platzaufteilung nicht realistisch
-- 🟡 Funktion Fächer hinzufügen/löschen fehlt
-- 🔴 Fach Religion/Ethik lässt sich nicht einzeln aus dem Stundenplan entfernen (Kreuz/Löschen fehlt)
+- ✅ **Gefixt (11.09.2026, Folgesession):** Fächer hinzufügen/löschen + Religion/Ethik einzeln entfernen — beides dieselbe fehlende Funktion (FAECHER-Liste war fest im Code, keine Möglichkeit zum Entfernen/Hinzufügen). Jede Fach-Karte in der Bank hat jetzt einen ✕-Button, plus Eingabefeld für eigene Fächer. Bereits eingetragene Stunden bleiben beim Entfernen unverändert. Commit 45a18be.
 
 **Schulalltag-Wörterbuch**
 - ✅ **Gefixt (11.09.2026, Folgesession):** Root Cause war kein falscher Sprachcode im Code (utterance.lang war korrekt gesetzt), sondern ein lautloser Browser-Fallback: fehlt auf dem Gerät eine installierte Stimme für die Zielsprache (z.B. Arabisch/Ukrainisch/Türkisch/Russisch), springt der Browser ohne Fehlermeldung auf die Standardstimme (meist Deutsch) und liest die Fremdsprache falsch aus. Fix sucht jetzt aktiv nach einer passenden installierten Stimme; ohne Treffer wird nicht gesprochen, sondern ein Hinweis eingeblendet statt falscher Aussprache. Behebt die falsche Sprache zuverlässig — ersetzt aber keine fehlende Stimme auf dem Gerät selbst (Betriebssystem-Einstellung). Commit 410efe4.

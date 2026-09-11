@@ -122,7 +122,7 @@ textarea.f{resize:vertical;border:1px dotted #C7BFAE;border-radius:3px;padding:.
     <div class="logo-mark"><span>K</span></div>
     <div class="logo-text">KLARTEXT · Interaktive Tools</div>
   </a>
-  <a class="back-btn" href="KLARTEXT_Downloads.html">← Zurück</a>
+  <a class="back-btn" href="KLARTEXT_Downloads.html" onclick="return zurueckNavigieren(event);">← Zurück</a>
 </header>
 
 <div class="hero">
@@ -242,6 +242,23 @@ textarea.f{resize:vertical;border:1px dotted #C7BFAE;border-radius:3px;padding:.
 </div>
 
 <script>
+/* Zurück-Button: das Tool wird von mehreren Stellen aus verlinkt (Spiele-
+   Übersicht, Downloads, Interessen-Check, Skill-Matrix). Ein fest verdrahtetes
+   Ziel (Downloads) würde Nutzer:innen, die z.B. vom Interessen-Check kommen,
+   an die falsche Stelle zurückschicken. Deshalb: echte Browser-Historie
+   nutzen, wenn eine vorhanden ist (kommt man von einer KLARTEXT-Seite),
+   sonst Fallback auf den Downloads-Link (z.B. bei direkt geöffnetem Link/Tab). */
+function zurueckNavigieren(e){
+  try{
+    if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.origin) === 0) {
+      e.preventDefault();
+      window.history.back();
+      return false;
+    }
+  }catch(err){}
+  return true;
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    DATENMODELL + PERSISTENZ (Entwurf wird laufend gespeichert, damit man
    über mehrere Sitzungen weiterschreiben kann — gleiches Muster wie

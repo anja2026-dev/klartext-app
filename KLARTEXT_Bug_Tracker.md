@@ -39,8 +39,7 @@ Kontext (von Anja): App startete mit Firebase, wechselte während der Malteser-T
 
 **Mutmachtier**
 - 🔴 Interaktives Schreiben funktioniert nicht
-- ⚪ Alle Tiere überarbeiten
-- ✅ **Gefixt (11.09.2026):** Brainy dazutun — echtes brainy.png jetzt auch direkt auf der Ausmal-Karte ("Für dich zum Ausmalen"), nicht mehr nur im oberen Kopfbereich.
+- ✅ **Gefixt (11.09.2026, 2. Anlauf):** Alle 6 Tier-Zeichnungen waren tatsächlich fehlerhaft (Elefant: Rüssel/Hinterteil vertauscht wirkend, Löwe: Hinterteil/Schwanz überlappend, Drache: kaum erkennbar) — alle 6 komplett neu als saubere, klar getrennte antippbare Ausmal-Flächen gezeichnet und einzeln visuell per Screenshot geprüft. Zusätzlich 4 neue Tiere ergänzt (Bär, Fuchs, Eule, Adler) sowie **Brainy selbst als 11. antippbare Ausmal-Figur** (nicht nur als Deko-Bild wie im 1. Anlauf — das war mein Missverständnis). Jede Figur einzeln gerendert+geprüft, volle Interaktion (Tier wählen → Bereich antippen → Farbe → Speichern pro Tier → Zurücksetzen) per Playwright über alle 11 Tiere getestet, keine JS-Fehler.
 - 🟡 Kein Zurück (Navigation)
 
 **Wochenplan & Mein Tag**

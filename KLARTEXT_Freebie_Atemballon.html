@@ -40,14 +40,25 @@
   }
   .trennlinie span{position:absolute;background:var(--kt-paper);padding:0 3mm;font-size:11px;color:var(--kt-muted);transform:translateY(-50%);}
 
-  .kop{text-align:center;margin-bottom:2mm;}
-  .kop .marke{font-family:'Playfair Display',serif;font-weight:700;font-size:9px;letter-spacing:.2em;color:var(--kt-accent);text-transform:uppercase;}
-  .kop h1{font-family:'Playfair Display',serif;font-weight:800;font-size:18px;color:var(--kt-primary);margin-top:1mm;}
-  .kop .sub{font-size:9.5px;color:var(--kt-muted);margin-top:.5mm;}
+  .kop-band{
+    background:var(--kt-primary);border-radius:10px;padding:3mm 5mm;margin-bottom:3mm;
+    display:flex;align-items:center;gap:3.5mm;
+  }
+  .kop-logo{
+    width:9mm;height:9mm;border:1.6px solid var(--kt-accent);border-radius:5px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',serif;font-weight:800;font-size:12px;color:#fff;
+  }
+  .kop-band .marke{font-family:'Playfair Display',serif;font-weight:700;font-size:7.5px;letter-spacing:.2em;color:var(--kt-accent);text-transform:uppercase;}
+  .kop-band h1{font-family:'Playfair Display',serif;font-weight:800;font-size:15px;color:#fff;margin-top:.5mm;}
+  .kop-band .sub{font-size:8px;color:rgba(255,255,255,.65);margin-top:.5mm;}
+  .kop-brainy{width:11mm;height:11mm;object-fit:contain;margin-left:auto;flex-shrink:0;}
 
   .inhalt{flex:1;display:flex;align-items:center;gap:6mm;}
-  .ballon-wrap{flex:0 0 62mm;position:relative;}
+  .ballon-col{flex:0 0 62mm;display:flex;flex-direction:column;align-items:center;}
+  .ballon-wrap{width:100%;position:relative;}
   .ballon-wrap svg{width:100%;height:auto;display:block;}
+  .brainy-haelt{width:40mm;height:40mm;object-fit:contain;margin-top:-20mm;transform:translateX(4mm);position:relative;z-index:2;filter:drop-shadow(0 2px 4px rgba(27,58,75,.18));}
 
   .schritte{flex:1;display:flex;flex-direction:column;gap:2.6mm;}
   .schritt{
@@ -64,7 +75,8 @@
   .schritt .txt{font-size:10px;line-height:1.35;}
   .schritt .txt b{color:var(--kt-primary);display:block;font-size:10.5px;}
 
-  .fusszeile{display:flex;justify-content:flex-end;align-items:center;margin-top:2mm;}
+  .fusszeile{display:flex;justify-content:space-between;align-items:center;gap:3mm;margin-top:2mm;}
+  .copyright{font-size:6.4px;color:var(--kt-muted);max-width:38mm;line-height:1.4;}
   .gast-box{display:flex;align-items:center;gap:2.4mm;background:var(--kt-surface);border:1px solid var(--kt-border);border-radius:10px;padding:1.8mm 3mm;max-width:78mm;}
   .gast-box .qr{width:17mm;height:17mm;color:var(--kt-primary);flex-shrink:0;background:#fff;}
   .gast-box .qr canvas,.gast-box .qr img,.gast-box .qr svg{width:100%;height:100%;display:block;}
@@ -90,12 +102,17 @@
 
   <!-- Karte 1 -->
   <div class="karte-a5">
-    <div class="kop">
-      <div class="marke">KLARTEXT</div>
-      <h1>Brainys Atem-Ballon</h1>
-      <div class="sub">Mit dem Finger die Kontur nachfahren — und ruhig weiteratmen</div>
+    <div class="kop-band">
+      <div class="kop-logo">K</div>
+      <div>
+        <div class="marke">KLARTEXT</div>
+        <h1>Brainys Atem-Ballon</h1>
+        <div class="sub">Mit dem Finger die Kontur nachfahren — und ruhig weiteratmen</div>
+      </div>
+      <img class="kop-brainy" src="brainy-transparent.png" alt="Brainy">
     </div>
     <div class="inhalt">
+      <div class="ballon-col">
       <div class="ballon-wrap">
         <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
           <path d="M100,16 C150,16 176,58 176,108 C176,158 148,192 120,204 C114,206.5 108,208 104,214 L108,220 C110,223 108,226 104,226 C100,226 98,223 100,220 L96,214 C92,208 86,206.5 80,204 C52,192 24,158 24,108 C24,58 50,16 100,16 Z" fill="#FFF" stroke="#1B3A4B" stroke-width="2.5"/>
@@ -114,13 +131,17 @@
           <path d="M24,108 C24,58 50,16 100,16 C150,16 176,58 176,108 C176,158 148,192 120,204 C114,206.5 108,208 104,214 L108,220 C110,223 108,226 104,226 C100,226 98,223 100,220 L96,214 C92,208 86,206.5 80,204 C52,192 24,158 24,108 Z"
                 fill="none" stroke="#1B3A4B" stroke-width="2" stroke-dasharray="5 5" opacity=".8"/>
           <circle cx="24" cy="108" r="5" fill="#3B8A68"/>
+          <g transform="translate(6,100) scale(1,-1)"><text x="0" y="0" font-size="14" text-anchor="middle">👆</text></g>
           <circle cx="100" cy="16" r="5" fill="#B07D2A"/>
           <circle cx="176" cy="108" r="5" fill="#B7500A"/>
+          <g transform="translate(194,100) scale(1,-1)"><text x="0" y="0" font-size="14" text-anchor="middle">👆</text></g>
           <text x="2" y="137" font-family="DM Sans, sans-serif" font-size="13" font-weight="800" fill="#3B8A68">EIN</text>
           <text x="100" y="8" font-family="DM Sans, sans-serif" font-size="12" font-weight="800" fill="#B07D2A" text-anchor="middle">HALTEN</text>
           <line x1="84" y1="12" x2="116" y2="12" stroke="#B07D2A" stroke-width="2"/>
           <text x="177" y="137" font-family="DM Sans, sans-serif" font-size="13" font-weight="800" fill="#B7500A">AUS</text>
         </svg>
+      </div>
+      <img class="brainy-haelt" src="brainy-transparent.png" alt="Brainy haelt den Atem-Ballon fest">
       </div>
       <div class="schritte">
         <div class="schritt s1"><div class="num">1</div><div class="txt"><b>Aufsteigen · Einatmen</b>Beim Hochsteigen der Kontur tief durch die Nase einatmen.</div></div>
@@ -129,6 +150,7 @@
       </div>
     </div>
     <div class="fusszeile">
+      <div class="copyright">© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</div>
       <div class="gast-box">
         <div class="qr" id="qr-code-1"></div>
         <div class="txt"><b>Animierte Version mit Sound</b>Scanne mich für die interaktive Gast-Version.<a class="lnk" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true" style="text-decoration:underline;">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true</a></div>
@@ -140,12 +162,17 @@
 
   <!-- Karte 2 (identisch, für 2 Karten pro A4-Seite) -->
   <div class="karte-a5">
-    <div class="kop">
-      <div class="marke">KLARTEXT</div>
-      <h1>Brainys Atem-Ballon</h1>
-      <div class="sub">Mit dem Finger die Kontur nachfahren — und ruhig weiteratmen</div>
+    <div class="kop-band">
+      <div class="kop-logo">K</div>
+      <div>
+        <div class="marke">KLARTEXT</div>
+        <h1>Brainys Atem-Ballon</h1>
+        <div class="sub">Mit dem Finger die Kontur nachfahren — und ruhig weiteratmen</div>
+      </div>
+      <img class="kop-brainy" src="brainy-transparent.png" alt="Brainy">
     </div>
     <div class="inhalt">
+      <div class="ballon-col">
       <div class="ballon-wrap">
         <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
           <path d="M100,16 C150,16 176,58 176,108 C176,158 148,192 120,204 C114,206.5 108,208 104,214 L108,220 C110,223 108,226 104,226 C100,226 98,223 100,220 L96,214 C92,208 86,206.5 80,204 C52,192 24,158 24,108 C24,58 50,16 100,16 Z" fill="#FFF" stroke="#1B3A4B" stroke-width="2.5"/>
@@ -164,13 +191,17 @@
           <path d="M24,108 C24,58 50,16 100,16 C150,16 176,58 176,108 C176,158 148,192 120,204 C114,206.5 108,208 104,214 L108,220 C110,223 108,226 104,226 C100,226 98,223 100,220 L96,214 C92,208 86,206.5 80,204 C52,192 24,158 24,108 Z"
                 fill="none" stroke="#1B3A4B" stroke-width="2" stroke-dasharray="5 5" opacity=".8"/>
           <circle cx="24" cy="108" r="5" fill="#3B8A68"/>
+          <g transform="translate(6,100) scale(1,-1)"><text x="0" y="0" font-size="14" text-anchor="middle">👆</text></g>
           <circle cx="100" cy="16" r="5" fill="#B07D2A"/>
           <circle cx="176" cy="108" r="5" fill="#B7500A"/>
+          <g transform="translate(194,100) scale(1,-1)"><text x="0" y="0" font-size="14" text-anchor="middle">👆</text></g>
           <text x="2" y="137" font-family="DM Sans, sans-serif" font-size="13" font-weight="800" fill="#3B8A68">EIN</text>
           <text x="100" y="8" font-family="DM Sans, sans-serif" font-size="12" font-weight="800" fill="#B07D2A" text-anchor="middle">HALTEN</text>
           <line x1="84" y1="12" x2="116" y2="12" stroke="#B07D2A" stroke-width="2"/>
           <text x="177" y="137" font-family="DM Sans, sans-serif" font-size="13" font-weight="800" fill="#B7500A">AUS</text>
         </svg>
+      </div>
+      <img class="brainy-haelt" src="brainy-transparent.png" alt="Brainy haelt den Atem-Ballon fest">
       </div>
       <div class="schritte">
         <div class="schritt s1"><div class="num">1</div><div class="txt"><b>Aufsteigen · Einatmen</b>Beim Hochsteigen der Kontur tief durch die Nase einatmen.</div></div>
@@ -179,6 +210,7 @@
       </div>
     </div>
     <div class="fusszeile">
+      <div class="copyright">© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</div>
       <div class="gast-box">
         <div class="qr" id="qr-code-2"></div>
         <div class="txt"><b>Animierte Version mit Sound</b>Scanne mich für die interaktive Gast-Version.<a class="lnk" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true" style="text-decoration:underline;">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true</a></div>

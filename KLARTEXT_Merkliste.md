@@ -4847,3 +4847,58 @@ Instagram-Änderung nötig — die Bio-Links bleiben wie sie sind).
 
 **Offen:** Falls später doch ein MailerLite-Upgrade infrage kommt, sollte die Bestätigungs-E-Mail
 selbst noch auf Deutsch/Branding umgestellt werden.
+
+
+## Strang 125 (12.09.2026) — CAPTCHA-Recherche + Atemballon-PDF komplett neu gestaltet (Brainy haelt den Ballon)
+
+**1) Bild-Sicherheitsabfrage beim Pop-up-Formular geprueft.** In MailerLite gibt es fuer dieses
+Formular keinen Ein-/Ausschalter fuer reCAPTCHA (Content-Editor, Formular-Einstellungen/Behaviour
+und Konto-Abonnementeinstellungen wurden geprueft — nirgends ein Toggle vorhanden, vermutlich weil
+das Formular mit dem neueren "Nebula"-Pop-up-Builder erstellt wurde). Laut MailerLite-Doku laeuft
+reCAPTCHA auf Pop-ups standardmaessig unsichtbar im Hintergrund; das sichtbare Bilder-Raetsel
+erscheint nur, wenn Google die Anfrage als verdaechtig einstuft — typischerweise bei mehrfachem
+Testen vom selben Geraet/IP kurz hintereinander (genau das, was Anja beim eigenen Testen macht).
+Fuer echte Erstbesucher ueber Instagram sollte es die Ausnahme bleiben. Kein Fix moeglich (keine
+Einstellung vorhanden) — offen, falls es sie weiter stoert: MailerLite-Support fragen, ob sich
+reCAPTCHA fuer dieses Formular gezielt abschalten laesst.
+
+**2) Atemballon-Freebie (KLARTEXT_Freebie_Atemballon.html) mehrfach ueberarbeitet, in mehreren
+Schritten:**
+- Ausgangsfixes (bereits committed, Commit d283b99): Link im PDF war nur Text (span), jetzt echter
+  klickbarer `<a href>` (per URI-Annotation im PDF bestaetigt). Atemrichtungs-Pfeile ergaenzt (gruen
+  rauf = Einatmen, orange runter = Ausatmen, goldene Mittellinie ohne Pfeil = Halten-Referenz).
+  Winzige Emoji-Labels ersetzt durch EIN / HALTEN (mit Strich darunter) / AUS in groesserer Schrift.
+- Auf Anjas Nachfrage zu einem NotebookLM-Redesign-Vorschlag: Navy-Kopfband mit K-Logo-Mark und
+  Pflicht-Footer ergaenzt (fehlte vorher komplett — echte Luecke gegen die eigene Branding-Regel).
+  Vorschlag zur neuen Akzentfarbe "Himmelblau #5C8AA6" bewusst NICHT uebernommen, da keine der
+  etablierten KLARTEXT-Marken-/Akzentfarben und Ersatz fuer das bereits funktionierende Gruen/Orange-
+  Atemschema gewesen waere — Navy/Gruen/Orange beibehalten.
+- Auf Anjas Wunsch "Brainy soll den Ballon halten": Brainy-Bild unterhalb der Ballonschnur platziert.
+  Mehrere Bild-Iterationen noetig: erstes brainy.png hatte weissen Quadrat-Hintergrund (kein
+  Transparenz-Cutout ausserhalb des tuerkisen Kreises) → durch Anjas eigenes freigestelltes Bild
+  ersetzt (erst eine Version noch mit Kreis-Hintergrund, dann eine zweite, komplett transparente
+  Version "brainy-canva_ohne_hintergrund-removebg-preview.png" aus ihrem Downloads-Ordner — diese
+  finale Version liegt jetzt als brainy-transparent.png im Repo und wird sowohl im Kopfband-Logo als
+  auch unter dem Ballon verwendet).
+- Finger-Icon (👆) am Startpunkt der Kontur ergaenzt, spaeter auf Anjas Wunsch auch auf der AUS-Seite
+  gespiegelt hinzugefuegt (symmetrisch links/rechts) und zusaetzlich vertikal gespiegelt, sodass die
+  Finger jetzt nach unten auf die Start-Punkte zeigen (vorher zeigten sie nach oben/weg).
+- Groesse und Position von Brainy mehrfach angepasst: zuerst 26mm mit kleinem Ueberlappungs-Abstand
+  zur Schnur, dann auf Anjas Feedback ("es muss aussehen, dass Brainy den Ballon am Seil festhaelt")
+  auf 40mm vergroessert und mit -20mm Overlap so positioniert, dass die Ballonschnur optisch direkt
+  in Brainys Kopf/Hand-Bereich uebergeht.
+- Zwischendurch hat Anja die (aeltere) PDF-Version selbst in Canva importiert und gezeigt — dabei
+ist aufgefallen: Canva entfernt beim PDF-Import an mehreren Stellen die Leerzeichen aus dem Text
+  (kein Bug unserer Original-Datei, sondern ein bekanntes Canva-Import-Verhalten) und ihre Canva-
+  Kopie hatte versehentlich ein doppeltes Finger-Icon auf einer der beiden Karten. Deshalb wurde
+  ab da wieder ausschliesslich auf Basis der Original-HTML-Datei weitergearbeitet, nicht der
+  Canva-Version.
+
+**Aktueller Stand / OFFEN:** Die neueste Fassung (Brainy gross + haelt die Schnur, Finger-Icons
+symmetrisch nach unten zeigend) liegt als aktualisierte KLARTEXT_Freebie_Atemballon.html + neues
+brainy-transparent.png bereits im Repo-Arbeitsverzeichnis auf Anjas Mac, ABER NOCH NICHT committed
+und nicht als PDF neu gerendert — Anjas visuelles OK zur allerletzten Version stand beim Handover
+noch aus ("So besser?" wurde gestellt, aber ihre Antwort war der Wunsch nach diesem Chat-Wechsel).
+Naechster Schritt fuer den neuen Chat: aktuellen Stand der HTML-Datei anschauen/rendern, mit Anja
+kurz gegenchecken ob sie passt, dann PDF final rendern (Chromium --print-to-pdf, Link-Klickbarkeit
+per URI-Check bestaetigen wie zuvor), committen und Anja die git push origin main-Zeile geben.

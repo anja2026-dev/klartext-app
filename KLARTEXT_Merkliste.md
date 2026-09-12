@@ -4805,3 +4805,45 @@ das MailerLite-Pop-up mit dem Atem-Ballon-Freebie automatisch) statt direkt auf 
 Social-Media-Traffic ist kalt und soll erst ins E-Mail-Funnel, bevor verkauft wird; eduki bleibt
 separat als Ziel für Leute, die dort selbst aktiv suchen. KW38/KW39-Pakete sind noch NICHT
 nachgezogen (weder Eyecatcher-Stil noch neuer Bio-Link).
+
+## Strang 124 (12.09.2026) — Mut-O-Mat-Tool gefunden (Scroll-Problem), Newsletter-Freebie-Flow korrigiert
+
+Zwei parallele Themen aus derselben Session.
+
+**1) Mut-O-Mat nicht sichtbar → kein Bug, nur Scroll-Position.** Anja fand die neue Mut-O-Mat-
+Kachel unter "Interaktive Tools" nicht, obwohl Code und Deployment (Cloudflare Pages, Commit
+abe132f) nachweislich korrekt waren — Deployment-Historie, Rollen-Filter-JS und Datei-Inhalt
+wurden einzeln durchgeprüft und waren alle in Ordnung. Ursache war banal: die Kachel steht an
+Position 7/8 im Kinder-Grundschule-Raster (nach Mutmach-Tier, Mandala, Wochenplan-Baukasten,
+Gefühls-Ampel-Memory, Mein Tag, Fokus-Trainer), Anja hatte nur bis Reihe 2 gescrollt/geschaut.
+Lehre: bei "Kachel/Feature fehlt"-Meldungen künftig zuerst die tatsächliche Position im Raster
+gegenprüfen, bevor Deployment/Cache/Rollen durchsucht werden.
+
+**2) Newsletter-Anmeldung lief nur über den einen Freebie-Pop-up, kein separates Formular.**
+Geprüft direkt in MailerLite: exakt 1 Formular existiert insgesamt (Pop-ups: 1, Eingebettete
+Formulare: 0, Werbeaktionen: 0) — "Atem-Ballon Anmeldung Pop-up". Die 3-teilige
+Willkommens-Automation ("Atem-Ballon-Anmeldung-Popup-Workflow") existiert und ist aktiv, aber
+bisher 0 Abonnenten/0 Durchläufe — seit Erstellung am 03.09.2026 noch nie genutzt.
+
+Gefundene und behobene Lücken im Pop-up-Flow:
+- **Success-Screen des Pop-ups** war die unbearbeitete MailerLite-Standardvorlage (Englisch,
+  "Welcome to our community", zufälliges Stockfoto von Wanderern, unverlinkte
+  Facebook/X/Instagram-Icons). Korrigiert: Text jetzt Deutsch ("Fast geschafft! 🎈" + klarer
+  Hinweis auf nötige E-Mail-Bestätigung), Stockfoto ersetzt durch echtes Brainy-Bild (von Anja
+  hochgeladen), Facebook/X-Icons entfernt, Instagram-Icon korrekt auf
+  instagram.com/klartextmentoring verlinkt.
+- **Bestätigungs-E-Mail (Double-Opt-in)** ist im kostenlosen MailerLite-Tarif nicht bearbeitbar
+  (403-Fehler "Im kostenlosen Tarif nicht verfügbar") — bleibt vorerst Englisch/generisch
+  ("Confirm your email address"). Anja hat sich bewusst gegen ein Upgrade entschieden ("keine
+  Bezahlung erstmal") — Punkt bleibt offen für später.
+- **Bestätigungs-Dankesseite** (nach Klick auf den Bestätigungslink) war ebenfalls nicht direkt
+  bearbeitbar, ABER über "Oder verwenden Sie Ihre eigene Landingpage" ließ sich eine eigene
+  Weiterleitungs-URL setzen: zeigt jetzt direkt auf
+  `https://klartext-app-8kl.pages.dev/KLARTEXT_Freebie_Atemballon.pdf` — Nutzer bekommen die
+  Atemkarte nach der Bestätigung jetzt sofort angezeigt, kein Scrollen/Suchen mehr nötig.
+
+Alle Änderungen wurden direkt im MailerLite-Dashboard gespeichert (kein Git-Push nötig, keine
+Instagram-Änderung nötig — die Bio-Links bleiben wie sie sind).
+
+**Offen:** Falls später doch ein MailerLite-Upgrade infrage kommt, sollte die Bestätigungs-E-Mail
+selbst noch auf Deutsch/Branding umgestellt werden.

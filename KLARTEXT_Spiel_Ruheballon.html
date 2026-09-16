@@ -165,6 +165,10 @@ function audioSicherstellen(){
   }
   try {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // iOS/iPadOS Safari legt den AudioContext oft im Status "suspended" an,
+    // auch innerhalb einer Nutzer-Interaktion — ohne explizites resume()
+    // bleibt er stumm, ohne dass ein Fehler auftritt.
+    if (audioCtx.state === 'suspended') { try { audioCtx.resume(); } catch(e2){} }
     oscillator = audioCtx.createBufferSource();
     oscillator.buffer = erzeugeRauschPuffer(audioCtx, 2);
     oscillator.loop = true;

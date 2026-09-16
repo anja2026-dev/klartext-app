@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Klassenposter Jugend · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#B4482E;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#F9E7DF;--stopp:#C0392B;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.regel-zeile{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.6rem;}
+.regel-mini{background:var(--paper);border-radius:8px;padding:.5rem .8rem;display:flex;align-items:baseline;gap:.7rem;}
+.regel-mini .nr{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;color:var(--stopp);flex-shrink:0;width:1.4rem;}
+.regel-mini .txt{font-size:.76rem;font-weight:700;color:var(--ink);}
+.regel-mini .ziel{font-size:.66rem;font-weight:400;color:var(--muted);display:block;margin-top:.15rem;}
+
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.rollenkarte .satzanfang{background:var(--paper);border-radius:6px;padding:.35rem .5rem;font-size:.64rem;font-style:italic;color:var(--m);margin-top:.3rem;}
+
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+.quiz-option{font-size:.66rem;line-height:1.6;display:flex;align-items:flex-start;gap:.35rem;margin-bottom:.2rem;}
+.quiz-option .box{width:.75em;height:.75em;border:1px solid var(--muted);border-radius:2px;flex-shrink:0;margin-top:.15em;}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+
+.zuordnung-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem;margin-bottom:.6rem;}
+.zuordnung-item{font-size:.68rem;line-height:1.5;background:var(--paper);border-radius:6px;padding:.4rem .6rem;}
+.zuordnung-item b{color:var(--m);}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLASSENPOSTER JUGEND — STOPP.</h1>
+  <div class="untertitel">Begleitheft &amp; Unterrichtseinheit zur KLARTEXT-Vereinbarung (A4 &amp; A3)</div>
+
+  <div class="hinweis-box">
+    <p>Das Poster „STOPP." bringt drei einfache Regeln als <b>verbindliche Klassen-Vereinbarung</b> auf den Punkt — mit Unterschriftenliste zum gemeinsamen Tragen. Dieses Begleitheft macht daraus eine vollständige Unterrichtseinheit: von der ersten Vorstellung bis zur Unterzeichnung, mit Arbeitsblättern, Diskussionskarten und einem Reflexionsbogen für die Lehrkraft.</p>
+    <div class="quelle">Für Klassenrat, Klassenleitung oder Schulbegleitung in der 7./8. Klasse.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.4rem;">Die drei Regeln — und was ihr könnt, wenn ihr sie verstanden habt</div>
+  <div class="regel-zeile">
+    <div class="regel-mini"><div class="nr">01</div><div class="txt">Wir hören auf, wenn jemand Stopp sagt.<span class="ziel">Ich-kann-Ziel: Du kannst erklären, warum „Stopp" sofort gilt — ohne Nachfragen oder Diskussion.</span></div></div>
+    <div class="regel-mini"><div class="nr">02</div><div class="txt">Wir schließen niemanden aus.<span class="ziel">Ich-kann-Ziel: Du kannst ein Beispiel nennen, wie Ausgrenzung im Alltag aussieht — auch unabsichtlich.</span></div></div>
+    <div class="regel-mini"><div class="nr">03</div><div class="txt">Wir holen Hilfe, wenn wir etwas sehen.<span class="ziel">Ich-kann-Ziel: Du kannst benennen, wen du ansprichst, wenn du eine Grenzüberschreitung beobachtest.</span></div></div>
+  </div>
+
+  <div class="abschnitt-titel">Warum das für die Klasse wichtig ist</div>
+  <div class="absatz">Die drei Regeln sind nicht nur Wandschmuck — sie sind ein gemeinsames Werkzeug für den Alltag: in der Pause, im Sportunterricht, in Gruppenarbeiten. Fächerübergreifend eingesetzt (z. B. in Deutsch als Textgrundlage, in Sozialkunde als Diskussionsthema) wird sichtbar, was die Regeln konkret für den Zusammenhalt der Klasse bedeuten.</div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Struktur ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Von der Einführung im Klassenrat bis zur individuellen Begleitung.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Einführung im Klassenrat <span class="szenario-wer">(Klasse oder Kurs)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Das Poster gemeinsam lesen, jede Regel kurz besprechen, dann in die Gruppenarbeit übergehen (Formular 1, Seite 5).</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">👥 Szenario 2: Gruppenarbeit mit festen Rollen <span class="szenario-wer">(Kleingruppen à 3–4)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Jede Gruppe erarbeitet mit festen Rollen (Moderation, Zeit, Protokoll), was eine Regel im Alltag konkret bedeutet.</div>
+    <div class="szenario-zeile"><b>Ergänzung:</b> Die Gruppen entscheiden zusätzlich gemeinsam, welche Konsequenzen bei einem Regelverstoß fürs Miteinander sinnvoll wären — nicht als Strafenkatalog, sondern als eigene Verabredung.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🔁 Szenario 3: Peer-Feedback-Runde <span class="szenario-wer">(nach einigen Wochen)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Klasse gibt sich gegenseitig kurzes Feedback: Wo hat die Vereinbarung im Alltag gewirkt, wo noch nicht? (Formular 3, Seite 7)</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz 1:1 <span class="szenario-wer">(1:1-Begleitung)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Begleitperson bespricht die drei Regeln einzeln mit dem/der Jugendlichen und übersetzt sie in die eigene Alltagssprache.</div>
+  </div>
+
+  <div class="info-kasten">
+    <b>Differenzierung nach Niveau</b>
+    Nicht jede Gruppe braucht dieselbe Komplexität: eine vereinfachte Version mit nur den drei Kernsätzen eignet sich für schnellere Bearbeitung, eine vertiefte Version mit den Diskussionsfragen aus Formular 1 für Gruppen, die tiefer einsteigen wollen. Bildkarten und ein kurzes Glossar (Seite 3) erleichtern zusätzlich sprachlich schwächeren Schüler:innen den Zugang.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Von der Vorstellung zur Unterschrift</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten zur unterschriebenen Vereinbarung</div>
+  <ol class="schritt-liste">
+    <li><b>Vorstellen:</b> Poster aufhängen oder projizieren, die drei Regeln laut vorlesen.</li>
+    <li><b>Verstehen:</b> Gemeinsam die Ich-kann-Ziele von Seite 1 durchgehen — jede:r erklärt eine Regel in eigenen Worten.</li>
+    <li><b>Erarbeiten:</b> In Gruppenarbeit mit festen Rollen vertiefen (Formular 1, Seite 5).</li>
+    <li><b>Überprüfen:</b> Kurzes Quiz zur Verständnissicherung (Formular 3, Seite 7).</li>
+    <li><b>Unterzeichnen:</b> Jede:r trägt sich in die Namensfelder auf dem Poster ein — als sichtbare, gemeinsame Verpflichtung.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Mehrere Zugänge zur gleichen Idee</div>
+  <div class="absatz">Nicht jede:r versteht die Regeln über den reinen Text gleich gut — deshalb lohnen sich zusätzliche Zugänge:</div>
+  <ul class="liste">
+    <li><b>Bildkarten:</b> Kleine Symbole zu jeder Regel ergänzen (Hand für Stopp, Kreis für Einschluss, Sprechblase für Hilfe holen), für schnelleres Wiedererkennen.</li>
+    <li><b>Glossar:</b> Kurze Erläuterungen zu Begriffen wie „Grenzüberschreitung" oder „Zivilcourage" bereitstellen, damit auch sprachlich schwächere Schüler:innen mitreden können.</li>
+    <li><b>Rollenspiel:</b> Eine kurze Konfliktszene nachspielen und gemeinsam analysieren, welche Regel hier gegriffen hätte (Formular 1, Seite 5).</li>
+    <li><b>Fächerübergreifend:</b> Die Regeln in Deutsch als Textgrundlage oder in Sozialkunde als Diskussionsthema aufgreifen.</li>
+  </ul>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Eine Regel, die man selbst erklären kann, hält länger als eine, die man nur unterschrieben hat.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Verstetigung über das Schuljahr ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Verstetigung über das Schuljahr</h1>
+  <div class="absatz">Das Klassenposter Jugend ist ein <b>kostenloses KLARTEXT-Freebie</b>. Eine unterschriebene Vereinbarung wirkt am längsten, wenn sie im Schulalltag immer wieder aufgegriffen wird — nicht nur am ersten Tag.</div>
+
+  <div class="abschnitt-titel" style="margin-top:.4rem;">Drei einfache Booster-Rituale</div>
+  <ul class="liste">
+    <li><b>Monatlicher Regel-Check:</b> Einmal im Monat kurz im Klassenrat fragen: Welche Regel war diesen Monat am wichtigsten?</li>
+    <li><b>Peer-Feedback-Runde:</b> Alle paar Wochen kurz Formular 3 (Seite 7) nutzen, um Rückmeldung zur Einhaltung zu sammeln.</li>
+    <li><b>Neuzugänge einbinden:</b> Neue Schüler:innen bekommen die Vereinbarung von einem Peer erklärt statt nur von der Lehrkraft.</li>
+  </ul>
+
+  <div class="info-kasten">
+    <b>Handreichung für den Klassenrat</b>
+    Für die Moderation der Einführung lohnt sich eine feste Gesprächsstruktur: erst die Regel vorlesen lassen, dann ein konkretes Beispiel aus dem Schulalltag sammeln, erst danach über mögliche Konsequenzen bei Regelverstößen sprechen. So bleibt der Fokus auf Verstehen statt auf Bestrafung. Ausführliche Impulse dazu im Reflexionsbogen auf Seite 6.
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.6rem;">Für fortgeschrittene Gruppen: eine Erweiterung</div>
+  <div class="absatz">Wer mit den drei Regeln schon sicher umgehen kann, profitiert von der vertieften Rollenspiel-Karte (Formular 1, Seite 5): eine reale oder erfundene Konfliktsituation gemeinsam analysieren und begründen, welche der drei Regeln dort gegriffen hätte — und warum.</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, systemischen Einsatz in Schule, Klassenrat und Schulbegleitung — konsequent auf Augenhöhe, ohne Bewertung.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Gruppenrollenkarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Gruppen- &amp; Rollenspielkarten</h1>
+  <div class="formular-hinweis">Für die Gruppenarbeit (Szenario 2, Seite 2) — ausschneiden, laminieren, bei Bedarf verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🗣️ Moderator:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich sorge dafür, dass jede:r in der Gruppe zu Wort kommt.</li>
+        <li>Ich stelle am Ende das Ergebnis der Gruppe vor.</li>
+      </ul>
+      <div class="satzanfang">Satzanfang: „Was denkst du dazu, …?"</div>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⏱️ Zeitwächter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich behalte die vereinbarte Zeit im Blick.</li>
+        <li>Ich erinnere die Gruppe, wenn noch eine Regel offen ist.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">📝 Protokollant:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich schreibe auf, was die Gruppe zu jeder Regel überlegt hat.</li>
+        <li>Ich notiere, welche Konsequenzen die Gruppe bei einem Regelverstoß für sinnvoll hält.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🎭 Rollenspiel: Konflikt analysieren</div>
+      <div class="rollenkarte-label">GEMEINSAME AUFGABE:</div>
+      <ul>
+        <li>Spielt eine kurze Konfliktszene aus dem Schulalltag nach.</li>
+        <li>Besprecht danach: Welche der drei Regeln hätte hier gegriffen — und wie genau?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Am Ende der Gruppenarbeit trägt jede Gruppe ihr Ergebnis zusammen — so entsteht aus vier Einzelmeinungen eine gemeinsame Klassen-Interpretation der drei Regeln, bevor unterschrieben wird.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Reflexionsbogen für Lehrkräfte</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Wirkungs-Evaluation nach einem festgelegten Zeitraum (z. B. 4 Wochen).</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Klasse/Gruppe:</b> ______________</span>
+    <span><b>Zeitraum seit Einführung:</b> ______________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie präsent sind die drei Regeln im Klassenalltag?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie sicher konnten Schüler:innen die Regeln in eigenen Worten erklären?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>Bei welcher Regel gab es die meisten Rückfragen oder Missverständnisse?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Wer hätte zusätzliche Unterstützung (Bildkarten, Glossar) gebraucht?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Impulse für den Klassenrat</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li><b>Zeitbedarf:</b> ca. 20 Minuten Einführung + 20 Minuten Gruppenarbeit, verteilt über eine Doppelstunde.</li>
+      <li><b>Moderation:</b> Bei der Konsequenzen-Diskussion nicht vorgeben, sondern die Gruppe selbst entscheiden lassen — das erhöht die Verbindlichkeit.</li>
+      <li><b>Wiederholung:</b> Regel-Check monatlich im Klassenrat verankern, statt nur einmalig einzuführen (siehe Seite 4).</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund</b>
+    Eine sichtbar unterschriebene Klassenvereinbarung wirkt über das reine Aufstellen von Regeln hinaus: Das eigene Unterschreiben macht aus einer von außen vorgegebenen Regel eine selbst mitgetragene Verpflichtung. Diese Selbstverpflichtung wirkt umso stärker, je mehr die Klasse an der Erarbeitung der Bedeutung und der Konsequenzen selbst beteiligt war — nicht nur an der Unterschrift.
+    <div class="hinweis">Allgemeiner fachlicher Hintergrund, ohne Bezug auf eine einzelne Studie — bewusst so gehalten, um keine unbelegte Einzelquelle zu zitieren.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Quiz, Zuordnung & Peer-Feedback ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Mein Regel-Check</h1>
+  <div class="formular-hinweis">Verständnisfragen, Zuordnungsspiel und Peer-Feedback-Kärtchen — zum Ausfüllen nach der Einführung oder als spätere Wiederholung.</div>
+
+  <div class="abschnitt-titel" style="margin-top:.2rem;">Zuordnung: Welche Regel passt?</div>
+  <div class="absatz" style="margin-bottom:.4rem;">Ordne jedes Beispiel der passenden Regel zu (01, 02 oder 03):</div>
+  <div class="zuordnung-grid">
+    <div class="zuordnung-item"><b>___</b> Jemand ruft „Stopp!" beim Toben — alle hören sofort auf.</div>
+    <div class="zuordnung-item"><b>___</b> Eine Person wird beim Gruppenspiel nicht mitgenommen.</div>
+    <div class="zuordnung-item"><b>___</b> Jemand sieht einen Streit eskalieren und holt eine Lehrkraft.</div>
+    <div class="zuordnung-item"><b>___</b> Ein neues Klassenmitglied wird direkt in die Pausengruppe eingeladen.</div>
+  </div>
+
+  <div class="check-karte-grid" style="margin-top:.4rem;">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Regel-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="quiz-option"><span class="box"></span>Ich kann alle drei Regeln in eigenen Worten erklären.</div>
+      <div class="quiz-option"><span class="box"></span>Ich weiß, wen ich anspreche, wenn ich eine Grenzüberschreitung sehe.</div>
+      <div style="font-size:.66rem;margin-top:.3rem;">Peer-Feedback: Diese Regel hat unsere Klasse zuletzt besonders gut eingehalten:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Regel-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="quiz-option"><span class="box"></span>Ich kann alle drei Regeln in eigenen Worten erklären.</div>
+      <div class="quiz-option"><span class="box"></span>Ich weiß, wen ich anspreche, wenn ich eine Grenzüberschreitung sehe.</div>
+      <div style="font-size:.66rem;margin-top:.3rem;">Peer-Feedback: Diese Regel hat unsere Klasse zuletzt besonders gut eingehalten:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Regel-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="quiz-option"><span class="box"></span>Ich kann alle drei Regeln in eigenen Worten erklären.</div>
+      <div class="quiz-option"><span class="box"></span>Ich weiß, wen ich anspreche, wenn ich eine Grenzüberschreitung sehe.</div>
+      <div style="font-size:.66rem;margin-top:.3rem;">Peer-Feedback: Diese Regel hat unsere Klasse zuletzt besonders gut eingehalten:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Regel-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="quiz-option"><span class="box"></span>Ich kann alle drei Regeln in eigenen Worten erklären.</div>
+      <div class="quiz-option"><span class="box"></span>Ich weiß, wen ich anspreche, wenn ich eine Grenzüberschreitung sehe.</div>
+      <div style="font-size:.66rem;margin-top:.3rem;">Peer-Feedback: Diese Regel hat unsere Klasse zuletzt besonders gut eingehalten:</div>
+      <div class="antwortlinie"></div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+</body>
+</html>

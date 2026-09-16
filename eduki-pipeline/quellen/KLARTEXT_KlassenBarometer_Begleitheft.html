@@ -64,14 +64,14 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .qr-zeile .qr svg{width:100%;height:100%;display:block;}
 .qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
 .qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
-.qr-zeile .qr-text .link{font-size:.66rem;color:var(--muted);word-break:break-all;}
+.qr-zeile .qr-text .link{display:block;font-size:.66rem;color:var(--acc);word-break:break-all;text-decoration:underline;margin-top:.2rem;}
 
 .mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
 .mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
 .mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
 .mini-qr .qr svg{width:100%;height:100%;display:block;}
 .mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
-.mini-qr .lnk{font-size:.5rem;color:var(--muted);word-break:break-all;line-height:1.3;}
+.mini-qr .lnk{display:block;font-size:.5rem;color:var(--acc);word-break:break-all;line-height:1.3;text-decoration:underline;}
 .mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
 
 .brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
@@ -137,6 +137,13 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
 .klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
 .klar-kasten b{color:var(--m);}
+
+.geraet-mockup{display:flex;align-items:center;gap:1rem;background:var(--paper);border-radius:12px;padding:.8rem 1rem;margin:.5rem 0 .7rem;border:1px solid var(--border);}
+.geraet-bildschirm{position:relative;width:34mm;height:24mm;flex-shrink:0;background:linear-gradient(135deg,#2E9E5A,#D4A800,#D4651A,#C0392B);border-radius:6px;border:2px solid var(--m);overflow:visible;}
+.geraet-bildschirm .kreis-btn{position:absolute;bottom:-.5rem;right:-.5rem;width:9mm;height:9mm;border-radius:50%;background:var(--m);border:1.5px solid #6EC6A0;display:flex;align-items:center;justify-content:center;font-size:.72rem;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.geraet-pfeil{font-size:1.3rem;color:var(--acc);flex-shrink:0;}
+.geraet-text{font-size:.7rem;line-height:1.5;color:var(--ink);}
+.geraet-text b{color:var(--m);display:block;font-size:.74rem;margin-bottom:.2rem;}
 </style>
 </head>
 <body>
@@ -242,7 +249,7 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
   <div class="qr-zeile">
     <div class="qr" id="druck-qr-app"></div>
-    <div class="qr-text"><b>Interaktiv aufs Tablet</b>QR-Code scannen — führt zur reizarmen Gast-Version des Stimmungs-Checks, direkt im Browser, ohne Login.<div class="link">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</div></div>
+    <div class="qr-text"><b>Interaktiv aufs Tablet</b>QR-Code scannen — führt zur reizarmen Gast-Version des Stimmungs-Checks, direkt im Browser, ohne Login.<a class="link" href="https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</a></div>
   </div>
 
   <div class="brainy-zeile">
@@ -264,25 +271,37 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
     <div class="mini-qr">
       <div class="qr" id="qr-mein-set"></div>
       <div class="lbl">Gast-Version (ohne Login)</div>
-      <div class="lnk">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</a>
       <div class="frei">kostenlos · kein Code nötig</div>
     </div>
     <div class="mini-qr">
       <div class="qr" id="qr-dashboard"></div>
       <div class="lbl">Dashboard-Version (mit Login)</div>
-      <div class="lnk">klartext-app-8kl.pages.dev/DASHBOARD.html</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/DASHBOARD.html">klartext-app-8kl.pages.dev/DASHBOARD.html</a>
       <div class="frei">Login erforderlich</div>
     </div>
   </div>
 
   <div class="info-kasten" style="margin-top:.8rem;">
-    <b>Das Besondere an der Dashboard-Version</b>
-    Wählt ein Kind hier seine Farbe und klickt auf „Speichern", bleibt das nicht bei der Einzelauskunft: Direkt darunter kann die Schulbegleitung/INGRA ihre eigene Einschätzung abgeben — der Vergleich zeigt, ob Kind und Begleitung den Zustand ähnlich oder unterschiedlich wahrnehmen. Alle Einträge der Woche sammeln sich automatisch in einer Wochenbilanz, die sich am Ende der Woche mit einem Klick als PDF ausdrucken lässt — praktisch für die Übergabe an Eltern, Klassenteam oder Therapeut:innen.
+    <b>Wichtig: Die Gast-Version speichert wirklich nichts</b>
+    Auch auf demselben Gerät bleibt kein Eintrag erhalten — nach dem Antippen einer Farbe gibt es nur eine kurze Bestätigung, danach setzt sich alles zurück. Das ist bewusst so gebaut (Datenschutz, keine Anmeldung nötig) und bedeutet: Eine Auswertung über mehrere Tage ist mit der Gast-Version nicht möglich. Dafür braucht es die Dashboard-Version rechts.
   </div>
 
-  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Für den Login-Bereich (Dashboard, Wochenbilanz, PDF-Export) wende dich an deine KLARTEXT-Ansprechperson. Die Gast-Version links braucht keinen Login, speichert aber auch nichts (datenschutzkonform für den spontanen Klassenraum-Einsatz).</div>
+  <div class="abschnitt-titel" style="margin-top:.7rem;">So kommt die Schulbegleitung zur Wochenbilanz</div>
+  <div class="geraet-mockup">
+    <div class="geraet-bildschirm"><div class="kreis-btn">🌡️</div></div>
+    <div class="geraet-pfeil">←</div>
+    <div class="geraet-text"><b>Kleines Barometer-Symbol unten rechts antippen</b>Auf der Barometer-Seite (Dashboard-Version) sitzt unten rechts ein kleiner runder Button mit dem 🌡️-Symbol. Ein Klick darauf führt zur INGRA-Ansicht: Dort trägt die Schulbegleitung ihre eigene Einschätzung ein und gelangt zur Wochenbilanz mit dem Button „🖨️ PDF" zum Ausdrucken.</div>
+  </div>
 
-  <div class="absatz" style="margin-top:.8rem;">Weitere kostenlose KLARTEXT-Materialien zu Classroom Management, Achtsamkeit und sozial-emotionalem Lernen findest du im KLARTEXT-Mentoring-Profil auf eduki.</div>
+  <div class="info-kasten">
+    <b>Das Besondere an der Dashboard-Version</b>
+    Wählt ein Kind hier seine Farbe und klickt auf „Speichern", wird der Eintrag gespeichert und in der eigenen Wochenübersicht sichtbar. Über das 🌡️-Symbol unten rechts gelangt die Schulbegleitung/INGRA zu ihrer eigenen Einschätzung — der Vergleich zeigt, ob Kind und Begleitung den Zustand ähnlich oder unterschiedlich wahrnehmen. Am Ende der Woche lässt sich die Wochenbilanz dort mit einem Klick als PDF ausdrucken — praktisch für die Übergabe an Eltern, Klassenteam oder Therapeut:innen.
+  </div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Für den Login-Bereich (Dashboard, Wochenbilanz, PDF-Export) wende dich an deine KLARTEXT-Ansprechperson.</div>
+
+  <div class="absatz" style="margin-top:.5rem;">Weitere kostenlose KLARTEXT-Materialien zu Classroom Management, Achtsamkeit und sozial-emotionalem Lernen findest du im KLARTEXT-Mentoring-Profil auf eduki.</div>
 
   <div class="absatz" style="font-size:.66rem;color:var(--muted);">Einen Reflexionsbogen für Lehrkräfte findest du zum Kopieren auf Seite 6, eine Schüler-Selbstreflexionskarte auf Seite 7, Austausch- und Erweiterungskarten auf Seite 5.</div>
 

@@ -236,7 +236,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
     <li><b>Sprachlich:</b> Satzanfänge zum Erklären der eigenen Wahl (Formular 1, Seite 5).</li>
     <li><b>Alternativ:</b> statt der Klammer auch ein Symbol, eine Zeichnung oder ein kurzes Wort — für Kinder, die (noch) keine Klammer setzen möchten.</li>
     <li><b>Gebärden-Symbole:</b> für Kinder mit Hör- oder Sprachbeeinträchtigung können passende Gebärden-Bildkarten ergänzend neben das Poster gehängt werden.</li>
-    <li><b>Digital:</b> die interaktive Gast-Version für Tablet oder Whiteboard (QR-Code unten).</li>
+    <li><b>Digital, spontan:</b> die reizarme Gast-Version für Tablet oder Whiteboard (QR-Code unten) — ganz ohne Login, für den schnellen Stimmungs-Check zwischendurch.</li>
+    <li><b>Digital, mit Verlauf:</b> die Dashboard-Version mit Login (mehr dazu auf Seite 4) — dort wird die Wahl gespeichert, über die Woche verfolgt und kann gemeinsam mit der Einschätzung der Schulbegleitung verglichen werden.</li>
   </ul>
 
   <div class="qr-zeile">
@@ -256,23 +257,36 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 <div class="seite">
   <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
 
-  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang zur digitalen Version</h1>
-  <div class="absatz">Das Klassen-Barometer ist ein <b>kostenloses KLARTEXT-Freebie</b> — die interaktive Gast-Version steht frei zugänglich zur Verfügung, ganz ohne Zugangscode oder Anmeldung.</div>
+  <h1 class="haupttitel" style="font-size:1.35rem;">Zwei digitale Zugänge — für zwei verschiedene Zwecke</h1>
+  <div class="absatz">Das Klassen-Barometer gibt es digital in zwei Ausbaustufen: eine schnelle Gast-Version ohne Login für den spontanen Einsatz, und eine Dashboard-Version mit Login für die Begleitung über die ganze Woche.</div>
 
-  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+  <div class="mini-qr-grid" style="grid-template-columns:1fr 1fr;">
     <div class="mini-qr">
       <div class="qr" id="qr-mein-set"></div>
-      <div class="lbl">Klassen-Barometer (Gast-Version)</div>
+      <div class="lbl">Gast-Version (ohne Login)</div>
       <div class="lnk">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</div>
       <div class="frei">kostenlos · kein Code nötig</div>
     </div>
+    <div class="mini-qr">
+      <div class="qr" id="qr-dashboard"></div>
+      <div class="lbl">Dashboard-Version (mit Login)</div>
+      <div class="lnk">klartext-app-8kl.pages.dev/DASHBOARD.html</div>
+      <div class="frei">Login erforderlich</div>
+    </div>
   </div>
 
-  <div class="absatz" style="margin-top:1rem;">Weitere kostenlose KLARTEXT-Materialien zu Classroom Management, Achtsamkeit und sozial-emotionalem Lernen findest du im KLARTEXT-Mentoring-Profil auf eduki.</div>
+  <div class="info-kasten" style="margin-top:.8rem;">
+    <b>Das Besondere an der Dashboard-Version</b>
+    Wählt ein Kind hier seine Farbe und klickt auf „Speichern", bleibt das nicht bei der Einzelauskunft: Direkt darunter kann die Schulbegleitung/INGRA ihre eigene Einschätzung abgeben — der Vergleich zeigt, ob Kind und Begleitung den Zustand ähnlich oder unterschiedlich wahrnehmen. Alle Einträge der Woche sammeln sich automatisch in einer Wochenbilanz, die sich am Ende der Woche mit einem Klick als PDF ausdrucken lässt — praktisch für die Übergabe an Eltern, Klassenteam oder Therapeut:innen.
+  </div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Für den Login-Bereich (Dashboard, Wochenbilanz, PDF-Export) wende dich an deine KLARTEXT-Ansprechperson. Die Gast-Version links braucht keinen Login, speichert aber auch nichts (datenschutzkonform für den spontanen Klassenraum-Einsatz).</div>
+
+  <div class="absatz" style="margin-top:.8rem;">Weitere kostenlose KLARTEXT-Materialien zu Classroom Management, Achtsamkeit und sozial-emotionalem Lernen findest du im KLARTEXT-Mentoring-Profil auf eduki.</div>
 
   <div class="absatz" style="font-size:.66rem;color:var(--muted);">Einen Reflexionsbogen für Lehrkräfte findest du zum Kopieren auf Seite 6, eine Schüler-Selbstreflexionskarte auf Seite 7, Austausch- und Erweiterungskarten auf Seite 5.</div>
 
-  <div class="brainy-zeile" style="margin-top:1.4rem;">
+  <div class="brainy-zeile" style="margin-top:1rem;">
     <img src="brainy.png" alt="Brainy">
     <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, systemischen Einsatz in Schule, Berufsvorbereitung und Elternarbeit — konsequent auf Augenhöhe, ohne Bewertung.</div>
   </div>
@@ -438,8 +452,10 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
       if(svg && el) el.innerHTML = svg;
     }
     var appUrl = 'https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true';
+    var dashboardUrl = 'https://klartext-app-8kl.pages.dev/DASHBOARD.html';
     setQr('druck-qr-app', appUrl);
     setQr('qr-mein-set', appUrl);
+    setQr('qr-dashboard', dashboardUrl);
   }catch(e){}
 })();
 </script>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Joker-Signal Tischkarten · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#B4482E;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#F9E7DF;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.zweierkarten{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.6rem;}
+.pol-karte{border-radius:10px;padding:.75rem .9rem;box-shadow:0 2px 10px rgba(27,58,75,.07);}
+.pol-karte.rot{background:var(--tint);border-left:3px solid var(--acc);}
+.pol-karte.gruen{background:#E5F5EE;border-left:3px solid var(--gruen);}
+.pol-karte-titel{font-size:.72rem;font-weight:700;margin-bottom:.3rem;}
+.pol-karte.rot .pol-karte-titel{color:var(--acc);}
+.pol-karte.gruen .pol-karte-titel{color:var(--gruen);}
+.pol-karte-text{font-size:.7rem;line-height:1.5;}
+
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text a.link{display:block;font-size:.66rem;color:var(--acc);word-break:break-all;text-decoration:underline;margin-top:.2rem;}
+
+.mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
+.mini-qr a.lnk{display:block;font-size:.5rem;color:var(--acc);word-break:break-all;line-height:1.3;text-decoration:underline;}
+.mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.rollenkarte .satzanfang{background:var(--paper);border-radius:6px;padding:.35rem .5rem;font-size:.64rem;font-style:italic;color:var(--m);margin-top:.3rem;}
+
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+.klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
+.klar-kasten b{color:var(--m);}
+
+.joker-karten-schau{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem;}
+.joker-mini{border:1.5px dashed var(--muted);border-radius:10px;padding:.6rem .8rem;text-align:center;}
+.joker-mini .lbl{font-size:.6rem;font-weight:700;color:var(--acc);letter-spacing:.05em;margin-bottom:.3rem;}
+.joker-mini .titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);}
+.joker-mini .sub{font-size:.66rem;color:var(--muted);margin-top:.2rem;}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">MEIN JOKER-SIGNAL</h1>
+  <div class="untertitel">Begleitheft &amp; Leitfaden zu den 6 Tisch-Karten (1.–2. Klasse)</div>
+
+  <div class="hinweis-box">
+    <p>Die Joker-Karten sind eine <b>lautlose Abgrenzung am Tisch</b>: Ein Kind zeigt eine der beiden Karten — „Mein Joker-Signal, ich brauche kurz eine Pause" oder „Ich bin in meiner Rückzugs-Insel" — und signalisiert damit, ohne ein Wort zu sagen, dass es gerade Abstand braucht.</p>
+    <div class="quelle">Ausgeschnitten, laminiert und griffbereit auf den Tisch gelegt, funktioniert der Joker ohne Erklären-Müssen — besonders hilfreich für Kinder mit ADHS, Autismus oder emotionalem Förderbedarf.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.4rem;">Die Regel dahinter</div>
+  <div class="info-kasten">
+    „Nach dem Joker gilt: Kein Druck, keine Fragen, kein Erklären müssen. Erst regulieren — dann besprechen."
+  </div>
+
+  <div class="abschnitt-titel">Ich-kann-Ziel dieser Karten</div>
+  <div class="absatz" style="margin-bottom:.4rem;"><b>„Ich kann mitteilen, dass ich gerade eine Pause oder Rückzug brauche — auch ohne Worte — und weiß, dass das respektiert wird."</b></div>
+
+  <div class="abschnitt-titel">Wann helfen mir die Joker-Karten?</div>
+  <div class="absatz">Die Karten eignen sich für Momente, in denen Sprechen selbst schon zu viel ist: bei aufkommender Reizüberflutung, nach einem Streit, vor einer lauten Gruppenphase oder einfach, wenn die Konzentration kurz nachlässt. Auf Seite 7 findest du eine Karte, mit der Kinder festhalten können, was ihnen nach dem Joker geholfen hat.</div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Struktur ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien &amp; eine Steigerung</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom Klassenplenum bis zur 1:1-Schulbegleitung.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Klassenplenum / Einführungsritual <span class="szenario-wer">(ganze Klasse)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Zu Beginn der Nutzung, damit alle Kinder die Bedeutung der Karten kennen.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Beide Kartentypen zeigen, die Regel gemeinsam besprechen (siehe Seite 1) — danach bekommt jedes Kind sein eigenes Kartenset.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🧍 Szenario 2: Einzelanwendung am Platz <span class="szenario-wer">(individuell)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Karten liegen griffbereit auf dem Tisch. Das Kind legt bei Bedarf eine Karte sichtbar hin — ohne weitere Erklärung.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Partnerarbeit / Austausch <span class="szenario-wer">(siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> In ruhigen Momenten tauschen sich zwei Kinder darüber aus, wann sie den Joker schon genutzt haben und was dabei geholfen hat.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz <span class="szenario-wer">(1:1-Begleitung)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Begleitperson erinnert nicht an den Joker, sondern reagiert nur, wenn das Kind ihn selbst zeigt — Eigeninitiative wird bewusst nicht übernommen.</div>
+    <div class="klar-kasten"><b>Verbindung zum KLARTEXT-System:</b> Der Joker ist ein niedrigschwelliger Einstieg in die KLAR-Formel: Wird die Karte gezeigt, folgt in der Regel „Reizreduktion &amp; Rückzug" — oft reicht schon der Ruheballon (QR-Code auf Seite 3) als nächster Schritt. Mehr dazu im KLARTEXT-Kernsystem.</div>
+  </div>
+
+  <div class="info-kasten">
+    <b>Vom Signal zur eigenen Steuerung</b>
+    Damit der Joker mehr wird als eine einmalige Geste, lohnt sich eine kleine Steigerung über die Zeit: (1) Karte zeigen und Pause bekommen, (2) die Ruheballon-App als Werkzeug für die Pause selbst nutzen (QR-Code auf Seite 3), (3) irgendwann benennen können, warum die Karte gerade nötig war (Formular 3, Seite 7).
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So führst du die Joker-Karten ein</h1>
+
+  <div class="abschnitt-titel">In 4 Schritten zum eigenen Joker-Signal</div>
+  <ol class="schritt-liste">
+    <li><b>Vorbereiten (einmalig):</b> Karten ausdrucken, ausschneiden, laminieren — jedes Kind bekommt ein eigenes kleines Set.</li>
+    <li><b>Regel gemeinsam einführen:</b> Klar besprechen: Wer den Joker zeigt, bekommt Pause — ohne Fragen, ohne Erklären-Müssen (siehe Seite 1).</li>
+    <li><b>Ausprobieren lassen:</b> Den Kindern erlauben, den Joker auch „zur Probe" einmal zu zeigen, damit der Ablauf vertraut wird.</li>
+    <li><b>In den Alltag einbauen:</b> Karten dauerhaft griffbereit lassen — siehe Szenarien auf Seite 2.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Zwei Kartentypen — und eine Symbolvariante</div>
+  <div class="joker-karten-schau">
+    <div class="joker-mini"><div class="lbl">KARTE A</div><div class="titel">Mein Joker-Signal</div><div class="sub">Ich brauche kurz eine Pause.</div></div>
+    <div class="joker-mini"><div class="lbl">KARTE B</div><div class="titel">Ich bin in meiner</div><div class="sub">Rückzugs-Insel.</div></div>
+  </div>
+  <div class="absatz">Für jüngere Kinder oder Kinder mit geringen Lesekenntnissen eignet sich zusätzlich eine reine Symbolvariante: Statt des Textes reichen eine Hand-Geste (✋) für „Pause" und ein Insel-Symbol (🏝️) für „Rückzug" — beide Bedeutungen bleiben über das Piktogramm auch ohne Lesen verständlich (Formular 1, Seite 5).</div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Nächster Schritt: der Ruheballon</b>QR-Code scannen — führt zur reizarmen Gast-Version von Brainys Atem-Ballon, direkt im Browser, ohne Login.<a class="link" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true</a></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Der Joker ist kein Ausweis für „schwierig" — er ist ein Werkzeug, das zeigt: Ich kenne meinen Zustand und kümmere mich selbst darum.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang &amp; Verknüpfung mit dem Unterricht</h1>
+  <div class="absatz">Die Joker-Karten sind ein <b>kostenloses KLARTEXT-Freebie</b> — auch die verlinkte Ruheballon-App steht frei zugänglich zur Verfügung, ganz ohne Zugangscode oder Anmeldung.</div>
+
+  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+    <div class="mini-qr">
+      <div class="qr" id="qr-mein-set"></div>
+      <div class="lbl">Ruheballon (Gast-Version)</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true</a>
+      <div class="frei">kostenlos · kein Code nötig</div>
+    </div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">Mehr als nur Organisation</div>
+  <div class="absatz">Damit der Joker nicht nur ein organisatorisches Hilfsmittel bleibt, lässt er sich mit echten Unterrichtsinhalten verknüpfen: zum Beispiel im Rahmen einer kleinen Einheit zu Kommunikation oder Gefühlen — „Wie sage ich, dass ich eine Pause brauche, ohne ein Wort zu sagen?" ist selbst schon ein Gesprächsthema für den Deutsch- oder Sachunterricht.</div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Einen Reflexionsbogen für Lehrkräfte findest du zum Kopieren auf Seite 6, eine Schüler-Selbstreflexionskarte auf Seite 7, Austausch- und Erweiterungskarten auf Seite 5.</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, systemischen Einsatz in Schule, Berufsvorbereitung und Elternarbeit — konsequent auf Augenhöhe, ohne Bewertung.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Austausch- & Erweiterungskarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Austausch- &amp; Erweiterungskarten</h1>
+  <div class="formular-hinweis">Für die Partnerarbeit (Szenario 3, Seite 2) — ausschneiden, laminieren, bei Bedarf verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">💬 Austausch-Partner:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich erzähle, wann ich meinen Joker schon einmal genutzt habe.</li>
+        <li>Ich höre ruhig zu, ohne nachzufragen, wenn mein Partner/meine Partnerin nicht mehr sagen möchte.</li>
+      </ul>
+      <div class="satzanfang">Satzanfang: „Ich habe meinen Joker genutzt, als …"</div>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⭐ Erweiterung für Fortgeschrittene</div>
+      <div class="rollenkarte-label">ZUSATZAUFGABE:</div>
+      <ul>
+        <li>Überlege: Was genau hilft dir während der Joker-Pause am meisten?</li>
+        <li>Welche Wirkung hat dein Joker-Signal auf die Klasse um dich herum?</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🖐️ Symbolkarte statt Text</div>
+      <div class="bild-icon" style="font-size:2rem;text-align:center;margin:.2rem 0 .4rem;">✋ &nbsp; 🏝️</div>
+      <div class="rollenkarte-label">FÜR KINDER, DIE NOCH NICHT SICHER LESEN:</div>
+      <ul>
+        <li>✋ bedeutet „Ich brauche eine Pause".</li>
+        <li>🏝️ bedeutet „Ich bin in meiner Rückzugs-Insel".</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🗳️ Unsere Signal-Vereinbarung</div>
+      <div class="rollenkarte-label">GRUPPENAUFGABE:</div>
+      <ul>
+        <li>Besprecht als Klasse: Was tun wir, wenn jemand den Joker zeigt — und was tun wir bewusst nicht?</li>
+        <li>Haltet die Vereinbarung gemeinsam schriftlich oder als Plakat fest.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Der Joker ist eine individuelle Karte — aber die Klasse trägt ihn gemeinsam mit: Als Ziel verfolgen wir, dass jede gezeigte Karte respektiert wird, ohne dass daraus Getuschel oder Ausgrenzung entsteht.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Lehrkräfte-Reflexionsbogen &amp; methodische Hinweise</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Selbstevaluation des Einsatzes.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Klasse/Lerngruppe:</b> ______________</span>
+    <span><b>Zeitraum:</b> _____________________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Nutzung: Wie selbstständig wurde der Joker eingesetzt?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Respekt: Wie gut wurde die Regel „keine Fragen" von der Klasse eingehalten?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>Wer hat den Joker diesen Monat genutzt — und in welchen Situationen?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Gab es Momente, in denen ein Kind den Joker gebraucht hätte, ihn aber nicht gezeigt hat?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Methodische Tipps zur Einführung im Klassenverband</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li>Den Joker als Stärke einführen, nicht als „Sonderregel für einzelne Kinder" — im besten Fall dürfen alle Kinder ihn nutzen.</li>
+      <li>Vorleben: Die Lehrkraft respektiert eine gezeigte Karte konsequent und ohne Nachfragen, damit das Vertrauen entsteht.</li>
+      <li>Bei häufiger Nutzung durch ein Kind: nicht die Karte hinterfragen, sondern in einem ruhigen Moment abseits der Klasse das Gespräch suchen.</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund</b>
+    Ein vorab vereinbartes, nonverbales Signal zur Selbstregulation senkt die Hürde, sich frühzeitig — statt erst bei einer Eskalation — Unterstützung zu holen. Das entlastet sowohl das Kind, das nicht erst erklären muss, warum es gerade überfordert ist, als auch die Klassengemeinschaft, die weiß, wie sie reagieren soll. Solche Deeskalationssignale sind ein verbreitetes Element in der Arbeit mit Kindern mit erhöhtem Regulationsbedarf.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Schüler-Selbstreflexionskarte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren fürs Lerntagebuch</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Schüler-Selbstreflexionskarte „Mein Joker-Check"</h1>
+  <div class="formular-hinweis">Kompakter Rückmeldebogen — 4 Karten pro Blatt, einzeln ausschneiden.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Joker-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Diese Karte habe ich gezeigt:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">✋ Pause &nbsp; / &nbsp; 🏝️ Rückzugs-Insel</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">2. Das hat mir während der Pause geholfen:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">3. So fühlte ich mich danach:</div>
+      <div style="font-size:.68rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Joker-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Diese Karte habe ich gezeigt:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">✋ Pause &nbsp; / &nbsp; 🏝️ Rückzugs-Insel</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">2. Das hat mir während der Pause geholfen:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">3. So fühlte ich mich danach:</div>
+      <div style="font-size:.68rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Joker-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Diese Karte habe ich gezeigt:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">✋ Pause &nbsp; / &nbsp; 🏝️ Rückzugs-Insel</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">2. Das hat mir während der Pause geholfen:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">3. So fühlte ich mich danach:</div>
+      <div style="font-size:.68rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Joker-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Diese Karte habe ich gezeigt:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">✋ Pause &nbsp; / &nbsp; 🏝️ Rückzugs-Insel</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">2. Das hat mir während der Pause geholfen:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">3. So fühlte ich mich danach:</div>
+      <div style="font-size:.68rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

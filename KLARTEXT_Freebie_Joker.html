@@ -63,8 +63,9 @@
 
   .karte-fuss{display:flex;align-items:center;justify-content:space-between;margin-top:2.5mm;}
   .karte-qr{width:10mm;height:10mm;color:var(--kt-primary);background:#fff;}
-  .karte-qr canvas,.karte-qr img{width:100%;height:100%;display:block;}
+  .karte-qr svg,.karte-qr canvas,.karte-qr img{width:100%;height:100%;display:block;}
   .karte-linkinfo{font-size:5.6px;color:var(--kt-muted);text-align:right;max-width:26mm;line-height:1.3;}
+  .karte-linkinfo a{color:var(--m3-dark);font-weight:700;text-decoration:underline;word-break:break-all;}
 
   .karte.v-a .karte-marke,.karte.v-a .karte-titel{color:var(--m3);}
   .karte.v-b{border-color:#B8CFC4;}
@@ -83,7 +84,7 @@
     *{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
   }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="KLARTEXT_QRCode.js"></script>
 </head>
 <body>
 
@@ -122,19 +123,20 @@ reihenfolge.forEach((v,i)=>{
     <div class="karte-regel">${regel}</div>
     <div class="karte-fuss">
       <div class="karte-qr"></div>
-      <div class="karte-linkinfo">Scan → Ruhe-Ballon<br>als Gast-Version</div>
+      <div class="karte-linkinfo">Scan → Ruhe-Ballon als Gast-Version<br><a href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html</a></div>
     </div>
   </div>`;
 });
 document.getElementById('grid').innerHTML = html;
-document.querySelectorAll('.karte-qr').forEach(function(el){
-  new QRCode(el, {
-    text: 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true',
-    width: 160, height: 160,
-    colorDark: '#1B3A4B', colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
+(function(){
+  var url = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Ruheballon.html?guest=true';
+  document.querySelectorAll('.karte-qr').forEach(function(el){
+    try{
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      if(svg) el.innerHTML = svg;
+    }catch(e){}
   });
-});
+})();
 </script>
 
 </body>

@@ -109,6 +109,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
     <div class="knopf-row">
       <button class="timer-btn start" id="start-btn" onclick="starten()">▶️ Start</button>
       <button class="timer-btn stop-btn" id="stop-btn" onclick="anhalten()" style="display:none;">⏸️ Stop</button>
+      <button class="timer-btn reset" id="sound-btn" onclick="soundUmschalten()">🔊 Ton</button>
     </div>
     <div class="brainy-tipp">💡 <b>Brainys Wohlfühl-Tipp:</b> Alles ganz ohne Druck! Mach nur so weit mit, wie es sich für dich gut anfühlt. Wenn dir das Luftanhalten schwerfällt oder dir schwindelig wird, atme einfach ganz normal in deinem eigenen Wohlfühl-Rhythmus weiter. Du bestimmst dein Tempo!</div>
   </div>
@@ -135,9 +136,74 @@ var ZYKLUS_MS = PHASE_MS.einatmen + PHASE_MS.halten + PHASE_MS.ausatmen;
 var laeuft = false;
 var timeoutId = null;
 var atemzuege = 0;
+var soundOn = true;
+var audioCtx = null;
+var oscillator = null;
+var gainNode = null;
 
 var ballon = document.getElementById('ballon');
 var phaseText = document.getElementById('phase-text');
+
+// Sanfter Atem-Ton (Web Audio API): ein durchgehender, leiser Sinuston,
+// dessen Tonhoehe beim Einatmen steigt, beim Halten gleich bleibt und beim
+// Ausatmen wieder faellt. Braucht eine Nutzer-Interaktion zum Start (starten()),
+// das erfuellt die Autoplay-Regeln der Browser automatisch.
+function audioSicherstellen(){
+  if (audioCtx) {
+    if (audioCtx.state === 'suspended') { try { audioCtx.resume(); } catch(e){} }
+    return;
+  }
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    oscillator = audioCtx.createOscillator();
+    oscillator.type = 'sine';
+    oscillator.frequency.value = 220;
+    gainNode = audioCtx.createGain();
+    gainNode.gain.value = 0;
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start();
+  } catch(e) { audioCtx = null; }
+}
+
+function toneEin(){
+  if (!soundOn || !audioCtx) return;
+  var now = audioCtx.currentTime;
+  gainNode.gain.cancelScheduledValues(now);
+  gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+  gainNode.gain.linearRampToValueAtTime(0.05, now + 0.4);
+}
+
+function toneAus(){
+  if (!audioCtx) return;
+  var now = audioCtx.currentTime;
+  gainNode.gain.cancelScheduledValues(now);
+  gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+  gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
+}
+
+function toneRamp(von, bis, dauerMs){
+  if (!soundOn || !audioCtx) return;
+  var now = audioCtx.currentTime;
+  oscillator.frequency.cancelScheduledValues(now);
+  oscillator.frequency.setValueAtTime(von, now);
+  oscillator.frequency.linearRampToValueAtTime(bis, now + dauerMs / 1000);
+}
+
+function toneHalten(freq){
+  if (!soundOn || !audioCtx) return;
+  var now = audioCtx.currentTime;
+  oscillator.frequency.cancelScheduledValues(now);
+  oscillator.frequency.setValueAtTime(freq, now);
+}
+
+function soundUmschalten(){
+  soundOn = !soundOn;
+  var btn = document.getElementById('sound-btn');
+  if (btn) btn.textContent = soundOn ? '🔊 Ton' : '🔇 Ton aus';
+  if (!soundOn) { toneAus(); }
+  else if (laeuft) { toneEin(); }
+}
 
 function atemzuegeAnzeigen(){
   document.getElementById('atemzuege-zahl').textContent = atemzuege;
@@ -175,12 +241,15 @@ function meilensteinPruefen(){
 function zyklusSchritt(){
   if (!laeuft) return;
   phaseText.textContent = 'Einatmen …';
+  toneRamp(220, 330, PHASE_MS.einatmen);
   timeoutId = setTimeout(function(){
     if (!laeuft) return;
     phaseText.textContent = 'Halten …';
+    toneHalten(330);
     timeoutId = setTimeout(function(){
       if (!laeuft) return;
       phaseText.textContent = 'Ausatmen …';
+      toneRamp(330, 220, PHASE_MS.ausatmen);
       timeoutId = setTimeout(function(){
         if (!laeuft) return;
         atemzuege++;
@@ -198,6 +267,9 @@ function starten(){
   document.getElementById('start-btn').style.display = 'none';
   document.getElementById('stop-btn').style.display = 'inline-flex';
 
+  audioSicherstellen();
+  toneEin();
+
   ballon.classList.remove('laeuft');
   void ballon.offsetWidth;
   ballon.classList.add('laeuft');
@@ -211,6 +283,7 @@ function starten(){
 function anhalten(){
   laeuft = false;
   clearTimeout(timeoutId);
+  toneAus();
   document.getElementById('start-btn').style.display = 'inline-flex';
   document.getElementById('stop-btn').style.display = 'none';
   ballon.classList.remove('laeuft');

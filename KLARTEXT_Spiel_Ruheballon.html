@@ -144,10 +144,20 @@ var gainNode = null;
 var ballon = document.getElementById('ballon');
 var phaseText = document.getElementById('phase-text');
 
-// Sanfter Atem-Ton (Web Audio API): ein durchgehender, leiser Sinuston,
-// dessen Tonhoehe beim Einatmen steigt, beim Halten gleich bleibt und beim
-// Ausatmen wieder faellt. Braucht eine Nutzer-Interaktion zum Start (starten()),
-// das erfuellt die Autoplay-Regeln der Browser automatisch.
+// Sanftes Atem-Rauschen (Web Audio API): kein Ton/Sinuston mehr (klang wie
+// eine Sirene), sondern gefiltertes Rauschen, das wie echtes Ein-/Ausatmen
+// "whoosht" — die Filter-Grenzfrequenz oeffnet sich beim Einatmen, bleibt
+// beim Halten stehen und schliesst sich beim Ausatmen wieder. Braucht eine
+// Nutzer-Interaktion zum Start (starten()), das erfuellt die Autoplay-Regeln
+// der Browser automatisch.
+function erzeugeRauschPuffer(ctx, sekunden){
+  var laenge = Math.round(ctx.sampleRate * sekunden);
+  var puffer = ctx.createBuffer(1, laenge, ctx.sampleRate);
+  var daten = puffer.getChannelData(0);
+  for (var i = 0; i < laenge; i++) { daten[i] = Math.random() * 2 - 1; }
+  return puffer;
+}
+
 function audioSicherstellen(){
   if (audioCtx) {
     if (audioCtx.state === 'suspended') { try { audioCtx.resume(); } catch(e){} }
@@ -155,13 +165,19 @@ function audioSicherstellen(){
   }
   try {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    oscillator = audioCtx.createOscillator();
-    oscillator.type = 'sine';
-    oscillator.frequency.value = 220;
+    oscillator = audioCtx.createBufferSource();
+    oscillator.buffer = erzeugeRauschPuffer(audioCtx, 2);
+    oscillator.loop = true;
+    var filterNode = audioCtx.createBiquadFilter();
+    filterNode.type = 'lowpass';
+    filterNode.frequency.value = 250;
+    filterNode.Q.value = 0.6;
     gainNode = audioCtx.createGain();
     gainNode.gain.value = 0;
-    oscillator.connect(gainNode);
+    oscillator.connect(filterNode);
+    filterNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
+    oscillator.filterNode = filterNode;
     oscillator.start();
   } catch(e) { audioCtx = null; }
 }
@@ -171,7 +187,7 @@ function toneEin(){
   var now = audioCtx.currentTime;
   gainNode.gain.cancelScheduledValues(now);
   gainNode.gain.setValueAtTime(gainNode.gain.value, now);
-  gainNode.gain.linearRampToValueAtTime(0.05, now + 0.4);
+  gainNode.gain.linearRampToValueAtTime(0.16, now + 0.5);
 }
 
 function toneAus(){
@@ -179,22 +195,24 @@ function toneAus(){
   var now = audioCtx.currentTime;
   gainNode.gain.cancelScheduledValues(now);
   gainNode.gain.setValueAtTime(gainNode.gain.value, now);
-  gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
+  gainNode.gain.linearRampToValueAtTime(0, now + 0.5);
 }
 
 function toneRamp(von, bis, dauerMs){
   if (!soundOn || !audioCtx) return;
+  var filterNode = oscillator.filterNode;
   var now = audioCtx.currentTime;
-  oscillator.frequency.cancelScheduledValues(now);
-  oscillator.frequency.setValueAtTime(von, now);
-  oscillator.frequency.linearRampToValueAtTime(bis, now + dauerMs / 1000);
+  filterNode.frequency.cancelScheduledValues(now);
+  filterNode.frequency.setValueAtTime(von, now);
+  filterNode.frequency.linearRampToValueAtTime(bis, now + dauerMs / 1000);
 }
 
 function toneHalten(freq){
   if (!soundOn || !audioCtx) return;
+  var filterNode = oscillator.filterNode;
   var now = audioCtx.currentTime;
-  oscillator.frequency.cancelScheduledValues(now);
-  oscillator.frequency.setValueAtTime(freq, now);
+  filterNode.frequency.cancelScheduledValues(now);
+  filterNode.frequency.setValueAtTime(freq, now);
 }
 
 function soundUmschalten(){
@@ -241,15 +259,15 @@ function meilensteinPruefen(){
 function zyklusSchritt(){
   if (!laeuft) return;
   phaseText.textContent = 'Einatmen …';
-  toneRamp(220, 330, PHASE_MS.einatmen);
+  toneRamp(250, 700, PHASE_MS.einatmen);
   timeoutId = setTimeout(function(){
     if (!laeuft) return;
     phaseText.textContent = 'Halten …';
-    toneHalten(330);
+    toneHalten(700);
     timeoutId = setTimeout(function(){
       if (!laeuft) return;
       phaseText.textContent = 'Ausatmen …';
-      toneRamp(330, 220, PHASE_MS.ausatmen);
+      toneRamp(700, 250, PHASE_MS.ausatmen);
       timeoutId = setTimeout(function(){
         if (!laeuft) return;
         atemzuege++;

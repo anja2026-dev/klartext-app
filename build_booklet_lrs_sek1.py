@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Anleitung + Quellen fürs LRS/Dyskalkulie-Sek1-Deck – kompakte 3-Seiten-Variante."""
 from PIL import Image, ImageDraw, ImageFont
+import qrcode
 Image.init()
 
 DPI = 300
@@ -13,6 +14,7 @@ LRS_BORDER = (224, 203, 168)
 KT_INK = (45, 45, 45)
 KT_MUTED = (122, 112, 96)
 GOLD = (150, 120, 50)
+KT_PRIMARY = (27, 58, 75)
 
 F_SERIF_BOLD = "/usr/share/fonts/truetype/crosextra/Caladea-Bold.ttf"
 F_SANS_REG = "/usr/share/fonts/truetype/lato/Lato-Regular.ttf"
@@ -79,6 +81,34 @@ def draw_numbered(d, y, num, titel, text, size=4.8):
         ty += lh
     return max(ty, y + mm(11)) + mm(4)
 
+def draw_digitalzugang(img, d, y, url, code):
+    f_h2 = ImageFont.truetype(F_SERIF_BOLD, mm(6))
+    d.text((MARGIN, y), "Digitaler Zugang", font=f_h2, fill=(140, 100, 60))
+    y += mm(7.5)
+    qr_px = mm(20)
+    qr = qrcode.QRCode(border=1, box_size=10, error_correction=qrcode.constants.ERROR_CORRECT_M)
+    qr.add_data(url)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color=KT_PRIMARY, back_color="white").convert("RGB").resize((qr_px, qr_px))
+    img.paste(qr_img, (MARGIN, y))
+    tx = MARGIN + qr_px + mm(6)
+    f1 = ImageFont.truetype(F_SANS_REG, mm(4.4))
+    ty = y
+    for ln in wrap(d, "QR-Code scannen = digitale Flip-Card-Version dieses Decks. Freischaltcode:", f1, W - tx - MARGIN):
+        d.text((tx, ty), ln, font=f1, fill=KT_INK)
+        ty += mm(6.2)
+    f_code = ImageFont.truetype(F_SERIF_BOLD, mm(5.8))
+    d.text((tx, ty), code, font=f_code, fill=KT_PRIMARY)
+    ty += mm(7.6)
+    f_link = ImageFont.truetype(F_SANS_BOLD, mm(3.9))
+    d.text((tx, ty), url.replace("https://", ""), font=f_link, fill=KT_PRIMARY)
+    ty += mm(5.8)
+    f2 = ImageFont.truetype(F_SANS_REG, mm(3.7))
+    for ln in wrap(d, "Kein Login nötig – Code beim ersten Öffnen des Decks einmalig eingeben.", f2, W - tx - MARGIN):
+        d.text((tx, ty), ln, font=f2, fill=KT_MUTED)
+        ty += mm(4.9)
+    return max(ty, y + qr_px) + mm(3)
+
 def anleitung_seite1():
     img, d, y = new_page("GEBRAUCHSANWEISUNG", "Anleitung: LRS/Dyskalkulie-Deck Sek I")
     y = draw_h2(d, y, "Was ist dieses Deck?")
@@ -105,6 +135,8 @@ def anleitung_seite1():
     y = draw_numbered(d, y, 3, "Lehrkraft-Strategie umsetzen",
         "Der zweite Teil der Hinweis-Box gibt eine konkrete didaktische Anpassung für den Fachunterricht "
         "vor, oft mit Verweis auf ein passendes M3-Werkzeug.")
+    y += mm(3)
+    y = draw_digitalzugang(img, d, y, "https://karten.klartext-mentoring.de/?deck=lrs-sek1", "xnfnwj")
     footer(d, "Anleitung")
     return img
 

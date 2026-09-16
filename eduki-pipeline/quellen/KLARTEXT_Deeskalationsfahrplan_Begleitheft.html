@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · kLAR-Deeskalations-Fahrplan · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#B4482E;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#F9E7DF;
+  --gelb:#D4A800;--orange:#D4651A;--rot:#C0392B;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.klar-zeile{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;margin-bottom:.6rem;}
+.klar-mini{background:var(--paper);border-radius:8px;padding:.5rem .35rem;text-align:center;}
+.klar-mini .buchst{width:1.7rem;height:1.7rem;border-radius:50%;color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.95rem;display:flex;align-items:center;justify-content:center;margin:0 auto .25rem;}
+.klar-mini.k .buchst{background:#2E5E8A;}
+.klar-mini.l .buchst{background:#3B8A68;}
+.klar-mini.a .buchst{background:#B07D2A;}
+.klar-mini.r .buchst{background:#B7500A;}
+.klar-mini .lbl{font-size:.56rem;font-weight:700;color:var(--m);line-height:1.2;}
+
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text a.link{display:block;font-size:.66rem;color:var(--acc);word-break:break-all;text-decoration:underline;margin-top:.2rem;}
+
+.mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
+.mini-qr a.lnk{display:block;font-size:.5rem;color:var(--acc);word-break:break-all;line-height:1.3;text-decoration:underline;}
+.mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.rollenkarte .satzanfang{background:var(--paper);border-radius:6px;padding:.35rem .5rem;font-size:.64rem;font-style:italic;color:var(--m);margin-top:.3rem;}
+
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+.ampel-reihe{display:flex;gap:.35rem;margin:.4rem 0;}
+.ampel-punkt{flex:1;height:1.3rem;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#fff;}
+.ampel-punkt.gelb{background:var(--gelb);}
+.ampel-punkt.orange{background:var(--orange);}
+.ampel-punkt.rot{background:var(--rot);}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+.klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
+.klar-kasten b{color:var(--m);}
+.warn-mini{background:#FBEAE7;border:1.4px solid var(--rot);border-radius:8px;padding:.5rem .7rem;font-size:.68rem;line-height:1.5;color:#7A241C;margin-bottom:.6rem;}
+.warn-mini b{color:#7A241C;}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">MEIN kLAR-DEESKALATIONS-FAHRPLAN</h1>
+  <div class="untertitel">Begleitheft &amp; Leitfaden zum Spickzettel fürs Lehrertagebuch</div>
+
+  <div class="hinweis-box">
+    <p>Der kLAR-Spickzettel ist eine kompakte Erinnerungshilfe für Lehrkräfte und Integrationsassistenz: <b>vier Schritte, um bei Anspannung (Gelb) und Belastung (Orange) ruhig und wirksam zu deeskalieren</b> — zum Ausschneiden, Laminieren und Einkleben ins Lehrertagebuch.</p>
+    <div class="quelle">Für den akuten Moment im Klassenraum, nicht für die Krise ab Rot — dafür gilt das Feuerwehr-Protokoll.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.4rem;">Die vier Schritte im Überblick</div>
+  <div class="klar-zeile">
+    <div class="klar-mini k"><div class="buchst">k</div><div class="lbl">Kontakt &amp; körperliche Sicherheit</div></div>
+    <div class="klar-mini l"><div class="buchst">L</div><div class="lbl">Leise &amp; Langsam</div></div>
+    <div class="klar-mini a"><div class="buchst">A</div><div class="lbl">Anerkennung &amp; Atmen</div></div>
+    <div class="klar-mini r"><div class="buchst">R</div><div class="lbl">Reizreduktion &amp; Rückzug</div></div>
+  </div>
+
+  <div class="abschnitt-titel">Ich-kann-Ziel dieses Begleithefts</div>
+  <div class="absatz" style="margin-bottom:.4rem;"><b>„Ich kann die vier Phasen des kLAR-Modells benennen und in einer Gelb- oder Orange-Situation der Reihe nach anwenden."</b></div>
+
+  <div class="abschnitt-titel">Warum das wichtig ist</div>
+  <div class="absatz">Wer in einer angespannten Situation weiß, was als Nächstes kommt, bleibt selbst ruhiger — und das überträgt sich aufs Kind. Der Spickzettel macht aus einer intuitiven Reaktion eine wiederholbare, besprechbare Strategie, die im Team reflektiert und weiterentwickelt werden kann (Formular 2, Seite 6).</div>
+
+  <div class="warn-mini"><b>Achtung:</b> kLAR gilt nur für Gelb und Orange. Ab Rot (akute Krise) greift ausschließlich das Feuerwehr-Protokoll.</div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom Akutmoment im Klassenraum bis zur Nachbereitung im Team.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🧍 Szenario 1: Akutsituation im Klassenraum <span class="szenario-wer">(Einzeleinsatz durch die Lehrkraft)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Ein Kind wird laut, zieht sich zurück oder wirkt zunehmend gereizt — noch bevor es eskaliert.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Den Spickzettel im Lehrertagebuch griffbereit haben und die vier Schritte der Reihe nach durchgehen.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🎭 Szenario 2: Vorbereitung im Rollenspiel <span class="szenario-wer">(Kleingruppe, siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Kolleg:innen üben die vier Schritte anhand eines Fallbeispiels, bevor der Ernstfall eintritt.</div>
+    <div class="szenario-zeile"><b>Wirkung:</b> Die Reihenfolge sitzt schneller, wenn sie schon einmal laut ausgesprochen wurde.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">📓 Szenario 3: Nachbesprechung im Team <span class="szenario-wer">(Kollegium oder Klassenteam)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Nach dem Einsatz gemeinsam den Reflexionsbogen (Seite 6) ausfüllen: Was hat gewirkt, was nicht?</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz 1:1 <span class="szenario-wer">(1:1-Begleitung)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Integrationsassistenz wendet kLAR direkt am Kind an und dokumentiert die Situation anschließend im Lehrertagebuch.</div>
+    <div class="klar-kasten"><b>Hinweis:</b> Dieser Spickzettel bildet bereits den Kern der KLAR-Formel des KLARTEXT-Systems selbst ab — die vier Buchstaben K-L-A-R sind hier die eigentliche Methode, nicht nur ein Verweis darauf.</div>
+  </div>
+
+  <div class="info-kasten">
+    <b>Passend zum Alter differenzieren</b>
+    Für jüngere Schüler:innen (1. Klasse) reichen die vier Kernsätze — für ältere (2. Klasse) lohnt sich die Symbolkarten-Variante auf Seite 3, mit der auch Kinder mit geringeren Sprachkenntnissen die Schritte selbst erkennen können.
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.3rem;">Vom Lesen zum Können: die Progression</div>
+  <div class="absatz">Der Fahrplan entfaltet seine Wirkung über drei Phasen: zuerst <b>lesen</b> die Erwachsenen die vier Schritte im Akutfall ab, dann <b>wenden</b> sie den Ablauf routiniert an, ohne nachzuschauen, und schließlich kann auch das Kind selbst lernen, seine eigene Ampel-Phase (Gelb/Orange/Rot) zu benennen (Formular 3, Seite 7).</div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So setzt du den Fahrplan ein</h1>
+
+  <div class="abschnitt-titel">Im Akutfall: kLAR der Reihe nach</div>
+  <ol class="schritt-liste">
+    <li><b>K — Kontakt &amp; körperliche Sicherheit:</b> Auf Augenhöhe gehen, ruhige Stimme, räumliche Sicherheit herstellen.</li>
+    <li><b>L — Leise &amp; Langsam:</b> Stimme senken, Tempo rausnehmen, Pausen aushalten.</li>
+    <li><b>A — Anerkennung &amp; Atmen:</b> Das Erleben des Kindes verbal anerkennen — „Ich sehe, dass es dir gerade schwerfällt."</li>
+    <li><b>R — Reizreduktion &amp; Rückzug:</b> Reize minimieren, Ruhe-Zone anbieten, keinen Erklärungsdruck erzeugen.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Mehrere Zugänge zur gleichen Idee</div>
+  <div class="absatz">Nicht jede Situation und nicht jede Lehrkraft braucht denselben Zugang zum Modell — deshalb lohnen sich zusätzliche Varianten:</div>
+  <ul class="liste">
+    <li><b>Vereinfacht:</b> Für die 1. Klasse reichen die vier Kernbegriffe (K-L-A-R) ohne die ausführlichen Erklärsätze.</li>
+    <li><b>Vertieft:</b> Für die 2. Klasse und erfahrene Kolleg:innen mit den vollständigen Beispielsätzen aus dem Spickzettel arbeiten.</li>
+    <li><b>Symbolgestützt:</b> Kleine Piktogramme neben jedem Buchstaben ergänzen (Hand für Kontakt, Ohr für Leise, Herz für Anerkennung, Tür für Rückzug), damit auch Kinder mit geringeren Sprachkenntnissen die Phase wiedererkennen.</li>
+    <li><b>Digital, vertiefend:</b> Das Barometer als Gast-Version — dort lässt sich die eigene Gefühlslage (Grün bis Rot) direkt visualisieren (QR-Code unten).</li>
+  </ul>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Mehr Werkzeuge: das Barometer</b>QR-Code scannen — führt zur Gast-Version des KLARTEXT-Barometers, direkt im Browser, ohne Login.<a class="link" href="https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</a></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Ruhig zu bleiben ist keine Frage von Talent — es ist eine Reihenfolge, die man wie jede andere üben kann.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang &amp; weitere Vertiefung</h1>
+  <div class="absatz">Der kLAR-Deeskalations-Fahrplan ist ein <b>kostenloses KLARTEXT-Freebie</b> — auch das verlinkte Barometer steht als Gast-Version frei zugänglich zur Verfügung, ganz ohne Zugangscode oder Anmeldung.</div>
+
+  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+    <div class="mini-qr">
+      <div class="qr" id="qr-mein-set"></div>
+      <div class="lbl">Barometer (Gast-Version)</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true">klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true</a>
+      <div class="frei">kostenlos · kein Code nötig</div>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:1rem;">
+    <b>Was das Barometer zusätzlich bringt</b>
+    Der Spickzettel sagt, wie man bei Gelb/Orange reagiert. Das Barometer zeigt, wie das Kind selbst seine aktuelle Gefühlslage einordnet (Grün bis Grau) — beide Werkzeuge ergänzen sich: das eine für die Lehrkraft im Akutmoment, das andere für die Selbsteinschätzung des Kindes. Ein eigenes Begleitheft zum Barometer mit allen Funktionen (auch der Dashboard-Version für Schulbegleitung) ist separat verfügbar.
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">Für erfahrene Anwender:innen: eine Erweiterung</div>
+  <div class="absatz">Wer die vier Schritte schon sicher beherrscht, kann die Wirkung vertiefen: nach jedem Einsatz kurz notieren, welcher der vier Schritte am schwersten fiel — und warum (Formular 2, Seite 6).</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, systemischen Einsatz in Schule, Schulbegleitung und Elternarbeit — konsequent auf Augenhöhe, ohne Bewertung.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Rollenkarten für die Übung ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Übungs- &amp; Rollenspielkarten</h1>
+  <div class="formular-hinweis">Für die Vorbereitung im Team (Szenario 2, Seite 2) — ausschneiden, laminieren, bei Bedarf verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🗣️ Die Lehrkraft</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich übe die vier kLAR-Schritte laut vor — in der richtigen Reihenfolge, ohne auf den Spickzettel zu schauen.</li>
+        <li>Ich spreche die Anerkennungs-Phrase aus eigenen Worten.</li>
+      </ul>
+      <div class="satzanfang">Satzanfang: „Ich sehe, dass …"</div>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🧒 Das Kind</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich spiele eine Anspannungs- oder Belastungssituation aus einem echten Fallbeispiel nach.</li>
+        <li>Ich reagiere ehrlich darauf, wie die vier Schritte bei mir wirken.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">👀 Beobachter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich beobachte: Welcher kLAR-Schritt wurde gerade durchgeführt?</li>
+        <li>Ich gebe danach Rückmeldung, ob die Reihenfolge eingehalten wurde.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⭐ Erweiterung: Warum wirkt das?</div>
+      <div class="rollenkarte-label">ZUSATZAUFGABE:</div>
+      <ul>
+        <li>Erkläre in eigenen Worten, warum gerade die Reihenfolge K-L-A-R wichtig ist und nicht z. B. erst reden, dann beruhigen.</li>
+        <li>Was würde passieren, wenn man direkt mit Erklären statt mit Kontakt beginnt?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Aus den geübten Fallbeispielen entsteht ein gemeinsames Klassen- oder Team-Produkt: ein Deeskalations-Poster mit den vier Schritten in eigenen Worten, das im Lehrerzimmer oder Klassenraum aushängt.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Reflexionsbogen für Lehrkräfte &amp; Team</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur systematischen Nachbereitung nach jedem Einsatz.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Kind/Situation:</b> ______________</span>
+    <span><b>Ampel-Phase:</b> Gelb / Orange</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie gut griff kLAR in dieser Situation insgesamt?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie ruhig blieb ich selbst während der vier Schritte?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>Welcher der vier Schritte fiel am schwersten — und warum?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Was würde ich beim nächsten Mal anders machen?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Musterantworten als Orientierung</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li><b>Häufigste Antwort auf Frage 1:</b> „L — Leise &amp; Langsam", weil es der eigenen Aufregung entgegenläuft.</li>
+      <li><b>Zeitbedarf:</b> Der Bogen braucht ca. 5 Minuten direkt nach dem Vorfall, am besten noch am selben Tag.</li>
+      <li><b>Moderation im Team:</b> Beim gemeinsamen Besprechen nicht bewerten, sondern nur die Beobachtung teilen.</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund</b>
+    Das kLAR-Modell unterscheidet bewusst zwischen Anpassungsphasen (Gelb/Orange), in denen ein Kind noch erreichbar ist und auf Kontakt, Tempo und Anerkennung reagiert, und einer akuten Krise (Rot), in der diese Strategien nicht mehr greifen und ein anderes Vorgehen — das Feuerwehr-Protokoll — nötig ist. Diese Unterscheidung hilft Fachkräften, in der Situation schnell einzuschätzen, welches Werkzeug gerade das richtige ist.
+    <div class="hinweis">Allgemeiner fachlicher Hintergrund, ohne Bezug auf eine einzelne Studie — bewusst so gehalten, um keine unbelegte Einzelquelle zu zitieren.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Selbsteinschätzungskarte für Kinder ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Meine Ampel gerade</h1>
+  <div class="formular-hinweis">Kompakte Selbsteinschätzung für Kinder — 4 Karten pro Blatt, einzeln ausschneiden. Für jüngere Kinder auch mit den Farben allein nutzbar.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Meine Ampel gerade</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="ampel-reihe">
+        <div class="ampel-punkt gelb">Gelb</div>
+        <div class="ampel-punkt orange">Orange</div>
+        <div class="ampel-punkt rot">Rot</div>
+      </div>
+      <div style="font-size:.66rem;margin-top:.3rem;">So fühle ich mich gerade (ankreuzen oder zeigen):</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Meine Ampel gerade</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="ampel-reihe">
+        <div class="ampel-punkt gelb">Gelb</div>
+        <div class="ampel-punkt orange">Orange</div>
+        <div class="ampel-punkt rot">Rot</div>
+      </div>
+      <div style="font-size:.66rem;margin-top:.3rem;">So fühle ich mich gerade (ankreuzen oder zeigen):</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Meine Ampel gerade</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="ampel-reihe">
+        <div class="ampel-punkt gelb">Gelb</div>
+        <div class="ampel-punkt orange">Orange</div>
+        <div class="ampel-punkt rot">Rot</div>
+      </div>
+      <div style="font-size:.66rem;margin-top:.3rem;">So fühle ich mich gerade (ankreuzen oder zeigen):</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Meine Ampel gerade</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="ampel-reihe">
+        <div class="ampel-punkt gelb">Gelb</div>
+        <div class="ampel-punkt orange">Orange</div>
+        <div class="ampel-punkt rot">Rot</div>
+      </div>
+      <div style="font-size:.66rem;margin-top:.3rem;">So fühle ich mich gerade (ankreuzen oder zeigen):</div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/BAROMETER_KIND.html?guest=true';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

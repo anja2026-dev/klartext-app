@@ -20,12 +20,11 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .seite:last-of-type{page-break-after:auto;}
 .seite.zeigen{display:flex;}
 
-.kopf{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--m);padding-bottom:.6rem;margin-bottom:1rem;}
-.kopf-marke{display:flex;align-items:center;gap:.6rem;}
-.kopf-badge{width:32px;height:32px;border:1.5px solid var(--m);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.9rem;color:var(--m);flex-shrink:0;}
-.kopf-marke h1{font-family:"Playfair Display",serif;font-weight:800;color:var(--m);font-size:1.05rem;}
-.kopf-marke p{font-size:.66rem;color:var(--muted);letter-spacing:.04em;}
-.kopf-zielgruppe{font-size:.62rem;color:var(--acc);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:right;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.75);margin-top:.15rem;text-transform:uppercase;}
 
 .meta-zeile{display:flex;gap:1.5rem;margin-bottom:1.1rem;}
 .meta-feld{flex:1;display:flex;align-items:baseline;gap:.4rem;}
@@ -67,8 +66,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite liniert zeigen">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche linien-flaeche" id="linien-1"></div>
@@ -77,8 +76,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite liniert">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche linien-flaeche" id="linien-2"></div>
@@ -87,8 +86,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite liniert">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche linien-flaeche" id="linien-3"></div>
@@ -97,8 +96,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite liniert">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche linien-flaeche" id="linien-4"></div>
@@ -109,8 +108,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite blanko">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche blanko-flaeche"></div>
@@ -119,8 +118,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite blanko">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche blanko-flaeche"></div>
@@ -129,8 +128,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite blanko">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche blanko-flaeche"></div>
@@ -139,8 +138,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 
 <div class="seite blanko">
   <div class="kopf">
-    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
-    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">Notizen · Sek · Trainer:innen · Erwachsene</div>
   </div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche blanko-flaeche"></div>

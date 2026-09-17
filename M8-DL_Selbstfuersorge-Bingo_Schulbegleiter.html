@@ -79,7 +79,7 @@
   .gast-box .qr canvas,.gast-box .qr img{width:100%;height:100%;display:block;}
   .gast-box .txt{font-size:7.6px;line-height:1.4;color:var(--kt-muted);}
   .gast-box .txt b{display:block;color:var(--kt-primary);font-size:8.4px;font-weight:700;margin-bottom:.5mm;}
-  .gast-box .txt .lnk{display:block;margin-top:1mm;color:var(--kt-accent);font-weight:700;word-break:break-all;}
+  .gast-box .txt a.lnk{display:block;margin-top:1mm;color:var(--kt-accent);font-weight:700;word-break:break-all;text-decoration:underline;}
 
   #klartext-funnel-footer{display:none;}
 
@@ -97,7 +97,7 @@
 }catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B3A4B">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="KLARTEXT_QRCode.js"></script>
 </head>
 <body>
 
@@ -152,7 +152,7 @@
       <div class="txt">
         <b>Digitale Version &amp; mehr Freebies</b>
         Scanne mich für weitere kostenlose Materialien.
-        <span class="lnk">klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo_Schulbegleiter.html</span>
+        <a class="lnk" href="https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo_Schulbegleiter.html?guest=true">klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo_Schulbegleiter.html</a>
       </div>
     </div>
   </div>
@@ -165,12 +165,14 @@
 </div>
 
 <script>
-new QRCode(document.getElementById('qr-footer-1'), {
-  text: 'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo_Schulbegleiter.html?guest=true',
-  width: 300, height: 300,
-  colorDark: '#1B3A4B', colorLight: '#ffffff',
-  correctLevel: QRCode.CorrectLevel.M
-});
+(function(){
+  try{
+    var url = 'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo_Schulbegleiter.html?guest=true';
+    var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+    var el = document.getElementById('qr-footer-1');
+    if(svg && el) el.innerHTML = svg;
+  }catch(e){}
+})();
 (function(){
   try {
     if (new URLSearchParams(window.location.search).get('guest') === 'true') {

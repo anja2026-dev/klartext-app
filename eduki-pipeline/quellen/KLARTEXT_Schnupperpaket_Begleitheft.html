@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Schnupperpaket · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#4A866C;--acc-dark:#33604D;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc-dark);margin-bottom:1rem;}
+
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text .link{font-size:.66rem;color:var(--muted);word-break:break-all;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc-dark);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc-dark);font-weight:700;}
+
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc-dark);}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc-dark);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+
+.decks-tabelle{width:100%;border-collapse:collapse;margin:.3rem 0 .8rem;font-size:.68rem;}
+.decks-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.4rem .6rem;font-weight:700;font-size:.62rem;letter-spacing:.03em;}
+.decks-tabelle td{padding:.4rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;}
+.decks-tabelle tr:nth-child(even) td{background:var(--paper);}
+.decks-tabelle td b{color:var(--m);}
+.decks-tabelle .klein{font-size:.6rem;color:var(--muted);}
+
+.reihenfolge{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .7rem;}
+.reihenfolge span{background:var(--tint);border:1px solid var(--acc);border-radius:20px;padding:.25rem .7rem;font-size:.66rem;font-weight:700;color:var(--acc-dark);}
+.reihenfolge .pfeil{background:none;border:none;color:var(--muted);padding:.25rem 0;}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">SCHNUPPERPAKET</h1>
+  <div class="untertitel">Begleitheft — 8 Gratis-Karten aus 3 Kartendecks</div>
+
+  <div class="hinweis-box">
+    <p>Das Schnupperpaket zeigt <b>8 ausgewählte Karten aus drei von 20 KLARTEXT-Kartendecks</b>: Impulskarten für die Grundschule (KD), Impulskarten für Jugendliche (JD) und Werkzeugkarten mit Mini-Interventionen für den Alltag. Jede Karte hat eine Vorderseite mit dem Impuls und eine Rückseite mit konkreter Anleitung — bewusst getrennt, damit die Begleitperson die Rückseite vorher lesen kann, ohne dass das Kind sie sieht.</p>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.3rem;">Ich-kann-Ziele der 8 Karten</div>
+  <div class="absatz" style="margin-bottom:.4rem;">Jede Karte verfolgt ein konkretes, aus Kindersicht formuliertes Ziel — zum Beispiel: <b>„Ich kann beschreiben, wie es mir gerade geht."</b> (KD-01) oder <b>„Ich kann merken, wann mir Nein-sagen schwerfällt, und es trotzdem versuchen."</b> (JD-13). Die genauen Ziele stehen auf der Selbstreflexionskarte auf Seite 7.</div>
+
+  <div class="abschnitt-titel">Die 3 Decks &amp; 8 Karten im Überblick</div>
+  <table class="decks-tabelle">
+    <tr><th>Deck</th><th>Enthaltene Karten</th><th>Gesamtumfang</th></tr>
+    <tr><td><b>KD-Deck</b><br><span class="klein">Impulskarten Grundschule</span></td><td>KD-01 „Wie geht es mir heute?"<br>KD-21 „Was ist ein guter Freund?"</td><td class="klein">35 Karten insgesamt</td></tr>
+    <tr><td><b>JD-Deck</b><br><span class="klein">Impulskarten Jugendliche</span></td><td>JD-03 „Meine Stärken sehen"<br>JD-13 „Nein sagen können"</td><td class="klein">52 Karten insgesamt</td></tr>
+    <tr><td><b>Werkzeugkarten</b><br><span class="klein">Mini-Interventionen Alltag</span></td><td>WZ-01, WZ-05, WZ-14, WZ-18</td><td class="klein">26 Karten insgesamt</td></tr>
+  </table>
+
+  <div class="absatz" style="font-size:.7rem;color:var(--muted);">Alle 20 Kartendecks des KLARTEXT-Systems findest du auf klartext-mentoring.de.</div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien &amp; eine empfohlene Reihenfolge</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom Klassenrat bis zur 1:1-Schulbegleitung — plus ein Vorschlag, in welcher Reihenfolge die 8 Karten aufeinander aufbauen.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Klassenrat / Plenum <span class="szenario-wer">(ganze Klasse)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Eine Karte (z. B. KD-21 „Was ist ein guter Freund?") wird vorgelesen, die Klasse sammelt gemeinsam Antworten an der Tafel.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">👥 Szenario 2: Kleingruppe / Teamarbeit <span class="szenario-wer">(3-5 Kinder, siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Gruppe bearbeitet eine Karte gemeinsam, mit verteilten Rollen — siehe Rollenkarten auf Seite 5.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Schüler-zu-Schüler 1:1 / Peer-Buddy <span class="szenario-wer">(Tandem)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Ein Kind stellt die Frage von der Vorderseite, das andere antwortet — danach wird getauscht.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz 1:1 <span class="szenario-wer">(1:1-Inklusionsbegleitung)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Begleitperson liest die Rückseite vorher, wählt die passende Karte für den aktuellen Moment und nutzt die Frage als sanften Gesprächseinstieg.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.4rem;">Empfohlene Reihenfolge für den ersten Durchlauf</div>
+  <div class="absatz" style="margin-bottom:.3rem;">Die 8 Karten sind einzeln nutzbar, bauen in dieser Reihenfolge aber sanft aufeinander auf — von der eigenen Wahrnehmung über die Beziehung zu anderen bis zur konkreten Handlungssituation:</div>
+  <div class="reihenfolge">
+    <span>KD-01</span><span class="pfeil">→</span><span>KD-21</span><span class="pfeil">→</span><span>JD-03</span><span class="pfeil">→</span><span>JD-13</span><span class="pfeil">→</span><span>WZ-14</span><span class="pfeil">→</span><span>WZ-01</span><span class="pfeil">→</span><span>WZ-05</span><span class="pfeil">→</span><span>WZ-18</span>
+  </div>
+  <div class="info-kasten">
+    <b>Differenzierung</b>
+    Nicht jedes Kind braucht jede Karte. Bei jüngeren oder unsicheren Kindern reichen KD-01 und KD-21; bei älteren oder bereits reflektierten Jugendlichen lohnt sich der direkte Einstieg über JD-03 und JD-13 mit der Erweiterungsfrage auf Seite 5.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So setzt du die Karten im Alltag ein</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten zur ersten Karte</div>
+  <ol class="schritt-liste">
+    <li><b>Karte auswählen:</b> Nach Situation oder empfohlener Reihenfolge (Seite 2) eine passende Karte wählen.</li>
+    <li><b>Rückseite vorher lesen:</b> Anleitung, Fragen und Hinweis durchgehen, bevor die Karte gezeigt wird.</li>
+    <li><b>Vorderseite zeigen:</b> Bild und Titel wirken lassen, bevor die Frage gestellt wird.</li>
+    <li><b>Frage stellen, Zeit lassen:</b> Kein Druck auf eine "richtige" Antwort — auch Schweigen ist eine Antwort.</li>
+    <li><b>Kurz nachspüren:</b> Bei Bedarf die Selbstreflexionskarte auf Seite 7 nutzen.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Ein zusätzlicher Blick: die Illustrationen nutzen</div>
+  <div class="absatz">Die Bilder auf den Karten sind mehr als Dekoration — sie lassen sich als eigenes Gesprächsobjekt nutzen: <i>„Was siehst du auf dem Bild? Was, glaubst du, fühlt die Person gerade?"</i> Das funktioniert besonders gut bei KD- und JD-Karten mit Personenabbildungen und vertieft die Auseinandersetzung über die reine Textfrage hinaus.</div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Digitale Flip-Card-Ansicht</b>QR-Code scannen — alle 8 Karten zum Antippen und Umdrehen, direkt im Browser, ohne Login.<div class="link">klartext-app-8kl.pages.dev/KLARTEXT_Schnupperpaket_Flipcards.html</div></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Es gibt keine falsche Antwort auf eine Karten-Frage — nur ehrliche und noch nicht gefundene.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang &amp; referenzierte Werkzeuge</h1>
+  <div class="absatz">Das Schnupperpaket ist <b>kostenlos</b> — die interaktive Flip-Card-Ansicht steht frei zugänglich zur Verfügung, ganz ohne Zugangscode oder Anmeldung.</div>
+
+  <div class="qr-zeile" style="margin-top:.6rem;">
+    <div class="qr" id="qr-mein-set"></div>
+    <div class="qr-text"><b>Schnupperpaket — Flip-Cards</b>Alle 8 Karten zum Ausprobieren.<div class="link">klartext-app-8kl.pages.dev/KLARTEXT_Schnupperpaket_Flipcards.html</div></div>
+  </div>
+
+  <div class="abschnitt-titel">Kurz erklärt: die referenzierten Basis-Werkzeuge</div>
+  <div class="absatz" style="margin-bottom:.3rem;">Zwei Werkzeugkarten verweisen auf weitere KLARTEXT-Werkzeuge, die nicht Teil dieses Schnupperpakets sind. Damit du sie trotzdem sofort einordnen kannst, hier kurz erklärt:</div>
+  <div class="info-kasten">
+    <b>Atemanker (M3-09)</b>
+    Eine kurze, geführte Atemübung (3-4 bewusste Atemzüge) zur schnellen Beruhigung — einsetzbar direkt am Platz, ohne Hilfsmittel.
+  </div>
+  <div class="info-kasten">
+    <b>Visualisierung (M3-17)</b>
+    Der nächste Schritt wird sichtbar gemacht (Tagesplan, Bildkarte, Geste) statt nur gesagt — hilft besonders bei Übergängen zwischen Situationen.
+  </div>
+  <div class="absatz" style="font-size:.7rem;color:var(--muted);">Beide vollständigen Werkzeugkarten sind Teil des 26-teiligen Werkzeugkarten-Decks auf klartext-mentoring.de.</div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Rollenkarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Rollenkarten für die Kleingruppe</h1>
+  <div class="formular-hinweis">Für Szenario 2 (Seite 2) — ausschneiden, verteilen, bei der nächsten Karte rollierend tauschen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🗣️ Fragende Person</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich lese die Frage von der Karte laut und deutlich vor.</li>
+        <li>Ich gebe allen Zeit zum Nachdenken, bevor jemand antwortet.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">👂 Zuhörer:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich höre allen Antworten zu, ohne zu unterbrechen oder zu bewerten.</li>
+        <li>Ich fasse am Ende in einem Satz zusammen, was ich gehört habe.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">💡 Ideensammler:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich schreibe oder male die wichtigsten Antworten der Gruppe auf.</li>
+        <li>Ich frage nach, wenn eine Antwort noch unklar ist.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⭐ Erweiterung für Fortgeschrittene</div>
+      <div class="rollenkarte-label">ZUSATZAUFGABE:</div>
+      <ul>
+        <li>Findet gemeinsam eine echte Situation aus der letzten Woche, auf die die Karte gepasst hätte.</li>
+        <li>Überlegt: Was würde die Person auf dem Kartenbild wohl gerade sagen?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Am Ende der Kleingruppen-Runde hat jede:r einmal jede Rolle ausprobiert — und die Gruppe hat gemeinsam mindestens eine Antwort gefunden, mit der alle einverstanden sind.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Reflexionsbogen für Begleitpersonen</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Selbstevaluation des Karteneinsatzes — pro Karte oder am Ende der Woche ausfüllen.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Karte(n):</b> ______________</span>
+    <span><b>Kind/Gruppe:</b> _____________________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Ich-kann-Ziel erreicht: Konnte das Kind/die Gruppe das Ziel der Karte für sich formulieren?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie offen und ehrlich fiel die Antwort aus?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>Welche Karte hat heute am meisten bewegt — woran hast du das gemerkt?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Welches Ich-kann-Ziel braucht noch eine weitere Runde, bevor es sitzt?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Pädagogischer Hintergrund</b>
+    Techniken wie das Lob-Sandwich (WZ-18) oder ein fester Ritual-Einstieg (KD-01) funktionieren, weil sie Wiedererkennung schaffen: Kinder und Jugendliche reagieren entspannter auf Formate, die sie schon kennen, als auf spontane, unvorhersehbare Ansprache. Bewusst ohne erfundene Einzelstudie gehalten — die Wirkung ist in der pädagogischen Praxis breit anerkannt, nicht auf eine einzelne Quelle zurückgeführt.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Kinder-Selbstreflexionskarte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren fürs Lerntagebuch</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Mein Karten-Check</h1>
+  <div class="formular-hinweis">Kompakter Rückmeldebogen mit dem Ich-kann-Ziel der Karte — 4 Karten pro Blatt, einzeln ausschneiden.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Karten-Check</div>
+      <div class="check-karte-feld"><b>Karte:</b> _______ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">Mein Ich-kann-Ziel heute war:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Das habe ich dabei gemerkt:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Geschafft? 😣 &nbsp; 😐 &nbsp; 🙂 &nbsp; 😄</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Karten-Check</div>
+      <div class="check-karte-feld"><b>Karte:</b> _______ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">Mein Ich-kann-Ziel heute war:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Das habe ich dabei gemerkt:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Geschafft? 😣 &nbsp; 😐 &nbsp; 🙂 &nbsp; 😄</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Karten-Check</div>
+      <div class="check-karte-feld"><b>Karte:</b> _______ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">Mein Ich-kann-Ziel heute war:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Das habe ich dabei gemerkt:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Geschafft? 😣 &nbsp; 😐 &nbsp; 🙂 &nbsp; 😄</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Karten-Check</div>
+      <div class="check-karte-feld"><b>Karte:</b> _______ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">Mein Ich-kann-Ziel heute war:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Das habe ich dabei gemerkt:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">Geschafft? 😣 &nbsp; 😐 &nbsp; 🙂 &nbsp; 😄</div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Schnupperpaket_Flipcards.html';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

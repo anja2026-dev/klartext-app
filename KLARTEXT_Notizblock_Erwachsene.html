@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Notizblock Sek/Trainer/Erwachsene (blanko)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#2E7D5F;--paper:#F5F0E8;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+
+.toolbar{position:sticky;top:0;z-index:10;background:var(--m);padding:.7rem 1rem;display:flex;gap:.6rem;align-items:center;justify-content:center;flex-wrap:wrap;}
+.toolbar button{font-family:"DM Sans",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.03em;padding:.5rem 1.1rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.5);background:transparent;color:#fff;cursor:pointer;}
+.toolbar button.aktiv{background:var(--acc);border-color:var(--acc);}
+.toolbar .drucken{background:#fff;color:var(--m);}
+
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm;position:relative;page-break-after:always;display:none;flex-direction:column;}
+.seite:last-of-type{page-break-after:auto;}
+.seite.zeigen{display:flex;}
+
+.kopf{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--m);padding-bottom:.6rem;margin-bottom:1rem;}
+.kopf-marke{display:flex;align-items:center;gap:.6rem;}
+.kopf-badge{width:32px;height:32px;border:1.5px solid var(--m);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.9rem;color:var(--m);flex-shrink:0;}
+.kopf-marke h1{font-family:"Playfair Display",serif;font-weight:800;color:var(--m);font-size:1.05rem;}
+.kopf-marke p{font-size:.66rem;color:var(--muted);letter-spacing:.04em;}
+.kopf-zielgruppe{font-size:.62rem;color:var(--acc);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:right;}
+
+.meta-zeile{display:flex;gap:1.5rem;margin-bottom:1.1rem;}
+.meta-feld{flex:1;display:flex;align-items:baseline;gap:.4rem;}
+.meta-feld span{font-size:.66rem;color:var(--muted);white-space:nowrap;}
+.meta-feld .linie-kurz{flex:1;border-bottom:1px solid var(--border);height:1em;}
+
+.flaeche{flex:1;position:relative;}
+
+/* Liniert: schlichte Einzellinie, erwachsenengerecht */
+.linien-flaeche{display:flex;flex-direction:column;}
+.linien-flaeche .zeile-einzel{flex:1;border-bottom:1px solid var(--border);}
+
+/* Blanko: keine Linien, nur die freie Fläche */
+.blanko-flaeche{}
+
+.fuss{margin-top:.7rem;padding-top:.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.58rem;color:var(--muted);}
+
+@media print{
+  .toolbar{display:none;}
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;display:none;}
+  .seite.zeigen{display:flex;}
+}
+@media screen{
+  body{padding-bottom:10mm;}
+  .seite.zeigen{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="btn-liniert" class="aktiv" onclick="zeigeModus('liniert')">Liniert</button>
+  <button id="btn-blanko" onclick="zeigeModus('blanko')">Blanko (ohne Linien)</button>
+  <button class="drucken" onclick="window.print()">🖨 Drucken</button>
+</div>
+
+<!-- ═══════════ LINIERT — 4 Seiten ═══════════ -->
+
+<div class="seite liniert zeigen">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-1"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1</span></div>
+</div>
+
+<div class="seite liniert">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-2"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2</span></div>
+</div>
+
+<div class="seite liniert">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-3"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3</span></div>
+</div>
+
+<div class="seite liniert">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-4"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4</span></div>
+</div>
+
+<!-- ═══════════ BLANKO — 4 Seiten ═══════════ -->
+
+<div class="seite blanko">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche blanko-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1</span></div>
+</div>
+
+<div class="seite blanko">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche blanko-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2</span></div>
+</div>
+
+<div class="seite blanko">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche blanko-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3</span></div>
+</div>
+
+<div class="seite blanko">
+  <div class="kopf">
+    <div class="kopf-marke"><div class="kopf-badge">K</div><div><h1>KLARTEXT-Mentoring</h1><p>Notizen</p></div></div>
+    <div class="kopf-zielgruppe">Sek · Trainer:innen · Erwachsene</div>
+  </div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche blanko-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4</span></div>
+</div>
+
+<script>
+function zeigeModus(modus){
+  document.querySelectorAll('.seite').forEach(function(s){ s.classList.remove('zeigen'); });
+  document.querySelectorAll('.seite.'+modus).forEach(function(s){ s.classList.add('zeigen'); });
+  document.getElementById('btn-liniert').classList.toggle('aktiv', modus==='liniert');
+  document.getElementById('btn-blanko').classList.toggle('aktiv', modus==='blanko');
+}
+// Einzellinien erzeugen (erwachsenengerecht, flex-verteilt über die ganze Fläche)
+document.querySelectorAll('.linien-flaeche').forEach(function(flaeche){
+  for(var i=0;i<26;i++){
+    var zeile=document.createElement('div');
+    zeile.className='zeile-einzel';
+    flaeche.appendChild(zeile);
+  }
+});
+</script>
+
+</body>
+</html>

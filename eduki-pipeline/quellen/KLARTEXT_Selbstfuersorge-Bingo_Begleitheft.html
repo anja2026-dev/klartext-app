@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Selbstfürsorge-Bingo · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#B97D8B;--acc-dark:#8C5763;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#FBEFF1;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc-dark);margin-bottom:1rem;}
+
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+.zweierkarten{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.6rem;}
+.pol-karte{border-radius:10px;padding:.75rem .9rem;box-shadow:0 2px 10px rgba(27,58,75,.07);}
+.pol-karte.rot{background:var(--tint);border-left:3px solid var(--acc);}
+.pol-karte.gruen{background:#E5F5EE;border-left:3px solid var(--gruen);}
+.pol-karte-titel{font-size:.72rem;font-weight:700;margin-bottom:.3rem;}
+.pol-karte.rot .pol-karte-titel{color:var(--acc-dark);}
+.pol-karte.gruen .pol-karte-titel{color:var(--gruen);}
+.pol-karte-text{font-size:.7rem;line-height:1.5;}
+
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text .link{font-size:.66rem;color:var(--muted);word-break:break-all;}
+
+.mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
+.mini-qr .lnk{font-size:.5rem;color:var(--muted);word-break:break-all;line-height:1.3;}
+.mini-qr .code{font-size:.5rem;color:var(--acc-dark);word-break:break-all;line-height:1.3;}
+.mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc-dark);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc-dark);font-weight:700;}
+
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc-dark);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc-dark);}
+
+.progression-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.progression-phase{background:#E5F5EE;border-left:3px solid var(--gruen);border-radius:8px;padding:.5rem .7rem;font-size:.66rem;line-height:1.45;}
+.progression-phase b{color:var(--m);font-size:.68rem;}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc-dark);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+
+.varianten-tabelle{width:100%;border-collapse:collapse;margin:.3rem 0 .8rem;font-size:.68rem;}
+.varianten-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.4rem .6rem;font-weight:700;font-size:.62rem;letter-spacing:.03em;}
+.varianten-tabelle td{padding:.4rem .6rem;border-bottom:1px solid var(--border);}
+.varianten-tabelle tr:nth-child(even) td{background:var(--paper);}
+.varianten-tabelle td b{color:var(--m);}
+.varianten-tabelle .datei{font-size:.6rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">SELBSTFÜRSORGE-BINGO</h1>
+  <div class="untertitel">Begleitheft &amp; Leitfaden — mit 7 Zielgruppen-Versionen</div>
+
+  <div class="hinweis-box">
+    <p>Das Selbstfürsorge-Bingo ist eine <b>Wochen-Challenge zum Abhaken</b>: 15 kleine, alltagstaugliche Selbstfürsorge-Handlungen plus ein Freifeld — ausgedruckt an einem sichtbaren Ort, zum Abhaken mit Stift. Es geht nicht um Vollständigkeit, sondern darum, sich überhaupt an sich selbst zu erinnern.</p>
+    <div class="quelle">Neu ab dieser Auflage: statt einer einzigen, allgemeinen Karte gibt es das Bingo jetzt in <b>7 auf den Berufsalltag zugeschnittenen Versionen</b> — damit die Felder wirklich zur eigenen Realität passen.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.3rem;">Ich-kann-Ziel dieser Übung</div>
+  <div class="absatz" style="margin-bottom:.4rem;"><b>„Ich kann kleine Selbstfürsorge-Momente bewusst in meinen Berufsalltag einbauen, ohne dass es zusätzlichen Aufwand oder Zeit bedeutet."</b></div>
+
+  <div class="abschnitt-titel">Alle Versionen auf einen Blick</div>
+  <table class="varianten-tabelle">
+    <tr><th>Zielgruppe</th><th>Datei</th></tr>
+    <tr><td><b>Eltern &amp; Erwachsene allgemein</b><br><span class="datei">(Grundversion, bereits in diesem Paket enthalten)</span></td><td class="datei">M8-DL_Selbstfuersorge-Bingo.html</td></tr>
+    <tr><td><b>Grundschullehrer:innen</b></td><td class="datei">M8-DL_Selbstfuersorge-Bingo_Grundschullehrer.html</td></tr>
+    <tr><td><b>Sek-Lehrer:innen</b></td><td class="datei">M8-DL_Selbstfuersorge-Bingo_Sek-Lehrer.html</td></tr>
+    <tr><td><b>Berufsschule &amp; Werkstattleitung (BVB)</b></td><td class="datei">M8-DL_Selbstfuersorge-Bingo_Berufsschule-BVB.html</td></tr>
+    <tr><td><b>Förderlehrer:innen</b></td><td class="datei">M8-DL_Selbstfuersorge-Bingo_Foerderlehrer.html</td></tr>
+    <tr><td><b>OGS- &amp; Ganztagskräfte</b></td><td class="datei">M8-DL_Selbstfuersorge-Bingo_OGS.html</td></tr>
+    <tr><td><b>Schulbegleiter:innen</b></td><td class="datei">M8-DL_Selbstfuersorge-Bingo_Schulbegleiter.html</td></tr>
+  </table>
+
+  <div class="absatz" style="font-size:.7rem;color:var(--muted);">Wähle einfach die Version, die zu deiner Rolle passt — oder gib mehrere an ein ganzes Kollegium weiter, jede:r wählt sich selbst aus.</div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien &amp; eine Wochen-Progression</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom stillen Moment für dich allein bis zur gemeinsamen Team-Challenge im Kollegium.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🙋 Szenario 1: Allein für dich <span class="szenario-wer">(individuell)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Im Auto vor Dienstbeginn, am Nachttisch oder am Küchentisch — dort, wo du täglich vorbeikommst.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Karte ausdrucken, an einen sichtbaren Ort legen oder hängen, Felder im Laufe der Woche abhaken, wie sie sich ergeben.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">☕ Szenario 2: Im Kollegium / Team <span class="szenario-wer">(ganzes Team, siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Jede:r bekommt die passende Version, alle hängen ihr Blatt am selben Ort auf (z. B. Pinnwand im Lehrerzimmer) — ein sichtbares gemeinsames Ritual statt einer stillen Einzelaktion.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Mit einer Kolleg:in als Buddy <span class="szenario-wer">(Tandem)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Zwei Personen erinnern sich gegenseitig ans Abhaken und tauschen sich kurz über die Erfahrung aus — siehe Erweiterungskarten auf Seite 5.</div>
+    <div class="szenario-zeile"><b>Wirkung:</b> Aus einer Einzelübung wird ein gegenseitiges Unterstützungsangebot, das schwerer im Alltag untergeht als eine reine Selbstverpflichtung.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz <span class="szenario-wer">(1:1-Inklusionsbegleitung)</span></div>
+    <div class="szenario-zeile"><b>Grundhaltung:</b> Die eigene Fürsorge ist kein Luxus, sondern Voraussetzung für eine tragfähige Begleitung — nicht erst, wenn schon nichts mehr geht.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die eigene Bingo-Karte bewusst parallel zum begleiteten Kind führen — z. B. während das Kind an einer Aufgabe selbstständig arbeitet.</div>
+    <div class="klar-kasten" style="background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);"><b style="color:var(--m);">Verbindung zum KLARTEXT-System:</b> Wer selbst regelmäßig innehält, kann auch beim begleiteten Kind glaubwürdiger für Regulation und Pausen einstehen — die eigene Selbstfürsorge ist damit indirekt Teil der KLAR-Formel.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.4rem;">Progression über eine 4-Wochen-Runde</div>
+  <div class="progression-grid">
+    <div class="progression-phase"><b>Woche 1 · Beobachten</b><br>Welche Felder fallen dir leicht, welche schwer? Kein Anspruch, alle zu schaffen.</div>
+    <div class="progression-phase"><b>Woche 2 · Bewusst einbauen</b><br>Gezielt 1–2 der leichteren Felder fest in den Tagesablauf einplanen.</div>
+    <div class="progression-phase"><b>Woche 3 · Ausweiten</b><br>Auch ein schwierigeres Feld ausprobieren, z. B. eine Grenze setzen oder Nein sagen.</div>
+    <div class="progression-phase"><b>Woche 4 · Reflektieren &amp; neu starten</b><br>Reflexionsbogen (Seite 6) ausfüllen, neue Karte oder neue Zielgruppen-Version wählen.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So setzt du dein Bingo im Alltag ein</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten zur eigenen Bingo-Woche</div>
+  <ol class="schritt-liste">
+    <li><b>Version wählen:</b> Die zur eigenen Rolle passende Karte aus der Tabelle auf Seite 1 aussuchen.</li>
+    <li><b>Ausdrucken &amp; aufhängen:</b> An einem Ort platzieren, an dem man täglich vorbeikommt — Kühlschrank, Lehrerzimmer-Pinnwand, Werkstatt-Brett.</li>
+    <li><b>Abhaken, wenn es passiert:</b> Kein Muss, kein Zwang — jedes abgehakte Feld zählt, auch wenn es nur eins pro Tag ist.</li>
+    <li><b>Am Ende der Woche kurz innehalten:</b> Reflexionsbogen auf Seite 6 nutzen — allein oder im Team.</li>
+    <li><b>Neu starten:</b> Neue Karte derselben Version oder eine andere Zielgruppen-Variante ausprobieren.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Digitale Version zum Ansehen</div>
+  <div class="absatz">Jede Version ist auch als Online-Ansicht verfügbar — praktisch, um sie sich vor dem Ausdrucken kurz anzuschauen oder unterwegs auf dem Smartphone durchzugehen.</div>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Digitale Ansicht &amp; weitere Freebies</b>QR-Code scannen — führt zur Gast-Version im Browser, ohne Login.<div class="link">klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true</div></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Es gibt kein „richtiges" Tempo beim Abhaken — manche Wochen sind zwei Felder schon ein Erfolg.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang zu allen Versionen</h1>
+  <div class="absatz">Das Selbstfürsorge-Bingo ist ein <b>kostenloses KLARTEXT-Freebie</b> — alle 7 Zielgruppen-Versionen sind Teil desselben Downloads, ganz ohne Zugangscode oder Anmeldung.</div>
+
+  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+    <div class="mini-qr">
+      <div class="qr" id="qr-mein-set"></div>
+      <div class="lbl">Selbstfürsorge-Bingo (Gast-Version)</div>
+      <div class="lnk">klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true</div>
+      <div class="frei">kostenlos · kein Code nötig</div>
+    </div>
+  </div>
+
+  <div class="absatz" style="margin-top:1rem;">Weitere kostenlose KLARTEXT-Materialien zu Selbstfürsorge, Classroom Management und Inklusion findest du auf eduki im KLARTEXT-Mentoring-Profil.</div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Ein Reflexionsbogen findest du zum Kopieren auf Seite 6, eine persönliche Erinnerungskarte auf Seite 7, Team-Rollenkarten auf Seite 5.</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, systemischen Einsatz in Schule, Berufsvorbereitung und Elternarbeit — konsequent auf Augenhöhe, ohne Bewertung.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Team-Rollenkarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Team-Rollenkarten für die gemeinsame Bingo-Woche</h1>
+  <div class="formular-hinweis">Für Kollegium/Team (Szenario 2, Seite 2) — ausschneiden, verteilen, rollierend wechseln.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">📌 Wochen-Erinnerer:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich erinnere das Team kurz an die Bingo-Woche — z. B. mit einem Post-it am Montag.</li>
+        <li>Ich achte darauf, dass die Karten sichtbar bleiben, nicht in Schubladen verschwinden.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🎉 Erfolgs-Sammler:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich frage am Ende der Woche kurz in die Runde: „Was hat wem gutgetan?"</li>
+        <li>Ich sammle 2–3 Antworten auf einer kleinen Pinnwand oder im Gruppenchat.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">💬 Ermutiger:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich spreche im Laufe der Woche mindestens einer Person ein ehrliches Kompliment aus.</li>
+        <li>Ich nehme selbst ein Kompliment an, ohne es abzuwehren.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⏱️ Zeitwächter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte in der gemeinsamen Pause darauf, dass sie wirklich Pause bleibt — kein „schnell noch".</li>
+        <li>Ich erinnere freundlich, wenn jemand die eigene Pause selbst streicht.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Am Ende der Woche hat jede:r im Team mindestens vier Felder abgehakt — das feiern wir gemeinsam, z. B. mit einer kurzen, bewusst genommenen Pause zu zweit oder in der Gruppe.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Mein Wochenrückblick &amp; methodische Hinweise</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur eigenen Reflexion — allein oder im Team ausfüllen.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Zielgruppen-Version:</b> ______________</span>
+    <span><b>Team/allein:</b> ______________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Woche (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie oft konnte ich diese Woche bewusst innehalten?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie hat sich das auf meinen Stresslevel ausgewirkt?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Reflexionsfragen</div>
+  <div class="reflexions-frage"><b>Welches Feld hat mir diese Woche am meisten gutgetan — und warum?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Welches Feld war am schwersten umzusetzen — was hat gefehlt?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Was nehme ich mir für die nächste Woche vor?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Methodische Tipps für die Moderation im Team</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li>Die Reflexion bewusst kurz halten — 5 Minuten reichen, mehr wirkt schnell wie eine weitere Pflichtaufgabe.</li>
+      <li>Nicht bewerten, wer „mehr" abgehakt hat — es geht nicht um Wettbewerb zwischen Kolleg:innen.</li>
+      <li>Formulierungshilfe für die Runde: „Ein Feld, das mir diese Woche gutgetan hat, war …"</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund</b>
+    Ein wertschätzender, nicht wertender Umgang mit sich selbst — Selbstmitgefühl statt Selbstkritik — hängt nachweislich mit geringerem Stresserleben und mehr emotionaler Widerstandsfähigkeit zusammen (Neff, 2003). Für pädagogisches Personal zeigt sich zudem, dass die eigene soziale und emotionale Kompetenz mit dem Klassenklima und dem Wohlbefinden der Kinder in Zusammenhang steht — Selbstfürsorge des Personals ist damit kein rein privates Thema, sondern wirkt in die pädagogische Arbeit hinein (Jennings &amp; Greenberg, 2009).
+    <br><br>
+    <b style="display:inline;font-size:.62rem;">Quellen:</b> Neff, K. D. (2003). Self-compassion: An alternative conceptualization of a healthy attitude toward oneself. <i>Self and Identity, 2</i>(2), 85–101. · Jennings, P. A., &amp; Greenberg, M. T. (2009). The prosocial classroom: Teacher social and emotional competence in relation to student and classroom outcomes. <i>Review of Educational Research, 79</i>(1), 491–525.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Persönliche Erinnerungskarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Ausschneiden &amp; Mitnehmen</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Meine Selbstfürsorge-Versprechen</h1>
+  <div class="formular-hinweis">4 kleine Erinnerungskarten pro Blatt — ausschneiden, in den Geldbeutel, ans Board oder auf den Schreibtisch.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Diese Woche erlaube ich mir:</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:.4rem;">Es ist genug, wenn ich es mir erlaube — nicht erst, wenn ich es perfekt schaffe.</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Diese Woche erlaube ich mir:</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:.4rem;">Es ist genug, wenn ich es mir erlaube — nicht erst, wenn ich es perfekt schaffe.</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Diese Woche erlaube ich mir:</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:.4rem;">Es ist genug, wenn ich es mir erlaube — nicht erst, wenn ich es perfekt schaffe.</div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Diese Woche erlaube ich mir:</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div class="check-karte-feld">_______________________________</div>
+      <div style="font-size:.62rem;color:var(--muted);margin-top:.4rem;">Es ist genug, wenn ich es mir erlaube — nicht erst, wenn ich es perfekt schaffe.</div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/M8-DL_Selbstfuersorge-Bingo.html?guest=true';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

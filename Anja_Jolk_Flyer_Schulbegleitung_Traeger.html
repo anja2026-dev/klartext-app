@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Fachliche Vertiefung für INGRA-Teams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E7D5F;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;display:flex;flex-direction:column;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--m);margin-bottom:.15rem;}
+.untertitel{font-size:.82rem;color:var(--acc);font-style:italic;margin-bottom:.3rem;}
+.meta{font-size:.68rem;color:var(--muted);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:1rem;font-size:.78rem;line-height:1.6;color:var(--ink);}
+.abschnitt-titel{font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--acc);margin-bottom:.6rem;}
+.baustein{border-left:3px solid var(--acc);padding:.2rem 0 .2rem 1rem;margin-bottom:.9rem;}
+.baustein .num{font-size:.62rem;color:var(--muted);letter-spacing:.08em;margin-bottom:.15rem;}
+.baustein .titel{font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;color:var(--m);margin-bottom:.3rem;}
+.baustein .hinweis{font-size:.68rem;color:var(--acc);font-style:italic;margin-bottom:.3rem;}
+.baustein p{font-size:.78rem;line-height:1.55;}
+.honorar-box{background:var(--m);color:#fff;border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;}
+.honorar-box .titel{font-size:.66rem;font-weight:700;letter-spacing:.12em;color:var(--acc);margin-bottom:.6rem;}
+.honorar-zeile{display:flex;justify-content:space-between;align-items:baseline;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.15);}
+.honorar-zeile:last-of-type{border-bottom:none;}
+.honorar-zeile .bez{font-size:.78rem;font-weight:700;}
+.honorar-zeile .det{font-size:.66rem;color:rgba(255,255,255,.7);}
+.honorar-zeile .preis{font-family:"Playfair Display",serif;font-weight:700;color:var(--acc);font-size:.95rem;white-space:nowrap;}
+.honorar-fuss{font-size:.62rem;color:rgba(255,255,255,.65);margin-top:.6rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.15);line-height:1.5;}
+.warum{border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1rem;}
+.warum .titel{font-size:.66rem;font-weight:700;letter-spacing:.1em;color:var(--m);margin-bottom:.6rem;}
+.warum ul{list-style:none;}
+.warum li{font-size:.76rem;line-height:1.55;padding-left:1.3em;position:relative;margin-bottom:.5rem;}
+.warum li::before{content:"✓";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.warum li b{color:var(--m);}
+.fuss{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;font-size:.66rem;color:var(--muted);}
+.fuss .marke{font-style:italic;color:var(--acc);}
+</style>
+</head>
+<body>
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">Fachliche Vertiefung &amp; Begleitung für Ihr INGRA-Team</h1>
+  <div class="untertitel">Praxiswissen, das über die Einarbeitung hinausgeht.</div>
+  <div class="meta">Honorartätigkeit für Schulbegleitungs-Träger · Schwerte / NRW · auf Anfrage auch überregional</div>
+
+  <div class="hinweis-box">Ihre Einarbeitung deckt Organisatorisches ab — Dienstplan, Abläufe, Datenschutz. Was im Alltag oft fehlt, ist das fachliche Handwerkszeug für den Ernstfall. Aus über 15 Jahren Praxis mit Kindern mit besonderem Förderbedarf habe ich das KLARTEXT-System entwickelt: Barometer, kLAR-Modell und Krisenintervention, neurobiologisch fundiert. Ich ersetze Ihre Einarbeitung nicht — ich ergänze sie um die fachliche Tiefe, die im Alltag zählt.</div>
+
+  <div class="abschnitt-titel">ANGEBOT</div>
+
+  <div class="baustein">
+    <div class="num">BAUSTEIN 1</div>
+    <div class="titel">Fachlicher Vertiefungs-Workshop</div>
+    <p>Kompakte Ergänzung zur bestehenden Einarbeitung: das Barometer (5 Zustände sicher erkennen), das kLAR-Modell (4 Schritte bei Dysregulation) und Krisenintervention anhand der KLARTEXT-Feuerwehrkarten. Praxisnah und sofort im Alltag einsetzbar, kein trockener Theorieblock.</p>
+  </div>
+
+  <div class="baustein">
+    <div class="num">BAUSTEIN 2</div>
+    <div class="titel">Begleitung &amp; erste Ansprechpartnerin</div>
+    <div class="hinweis">keine Supervision im formalen Sinn</div>
+    <p>Für die Momente zwischen den offiziellen Terminen: ein fester Termin oder eine Ansprechpartnerin bei Redebedarf, schwierigen Situationen oder Unsicherheit im Alltag — kollegiale fachliche Begleitung, kein klinisches Setting.</p>
+  </div>
+
+  <div class="honorar-box">
+    <div class="titel">HONORAR</div>
+    <div class="honorar-zeile">
+      <div><div class="bez">Fachlicher Vertiefungs-Workshop</div><div class="det">Halbtag, ca. 3–4 Std., bis 10 Teilnehmende</div></div>
+      <div class="preis">600 € Pauschale</div>
+    </div>
+    <div class="honorar-zeile">
+      <div><div class="bez">Begleitung / Ansprechpartnerin</div><div class="det">Monatspauschale (bis 2 Termine): 150 €</div></div>
+      <div class="preis">80 € / Termin</div>
+    </div>
+    <div class="honorar-fuss">Termine à 60 Minuten, vor Ort oder online. Fahrtkosten: 0,30 €/km ab Schwerte (im Nahbereich Dortmund/Hagen ab 500 € Honorar inklusive, sonst pauschal 15 €). Alle Preise sind Endpreise — gemäß § 19 UStG (Kleinunternehmerregelung) wird keine Umsatzsteuer erhoben.</div>
+  </div>
+
+  <div class="warum">
+    <div class="titel">WARUM DAS FÜR IHREN TRÄGER WERTVOLL IST</div>
+    <ul>
+      <li><b>Ergänzend, nicht konkurrierend:</b> Sie leisten weiterhin die organisatorische Einarbeitung, ich liefere die fachliche Vertiefung obendrauf.</li>
+      <li><b>Weniger Fluktuation:</b> Regelmäßige fachliche Begleitung gilt als einer der wirksamsten Hebel gegen Überforderung und Kündigung bei Schulbegleitungen.</li>
+      <li><b>Wissenschaftlich fundiert:</b> Neurobiologie, Entwicklungspsychologie und Traumapädagogik statt Bauchgefühl.</li>
+      <li><b>Sofort einsetzbar:</b> Praxiserprobtes System (Barometer, kLAR-Modell, Krisenkarten), kein trockener Theoriekurs.</li>
+    </ul>
+  </div>
+
+  <div class="fuss">
+    <div>Anja Jolk · KLARTEXT-Mentoring<br>info@klartext-mentoring.de · Schwerte, NRW</div>
+    <div class="marke">Klar. Warm. Menschlich.</div>
+  </div>
+</div>
+</body>
+</html>

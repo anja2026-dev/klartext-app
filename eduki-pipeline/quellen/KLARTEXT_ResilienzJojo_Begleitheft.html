@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLARTEXT · Frau Jojos Resilienz-Jojo Begleitheft (2 Seiten)</title>
+<title>KLARTEXT · Frau Jojos Resilienz-Jojo · Begleitheft (7 Seiten)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="KLARTEXT_QRCode.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --m:#1B3A4B;--acc:#C9793A;--paper:#F5F0E8;--surface:#fff;
+  --m:#1B3A4B;--acc:#C9793A;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
   --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#FBEEE1;
 }
 body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
@@ -21,166 +21,433 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 }
 .seite:last-child{page-break-after:auto;}
 
-.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
 .kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
 .kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
-.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
 .kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
 
-.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
 .untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
 
-.hinweis-box{background:var(--tint);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
 .hinweis-box b{color:var(--m);}
 
-.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.zitat-eng{font-style:italic;font-size:.72rem;line-height:1.6;color:var(--muted);border-left:3px solid var(--acc);background:var(--paper);border-radius:0 8px 8px 0;padding:.7rem .9rem;margin-bottom:.35rem;box-shadow:0 2px 10px rgba(27,58,75,.06);}
+.quelle{font-size:.62rem;color:var(--muted);margin-bottom:.9rem;}
+.quelle i{font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
 .absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
 .absatz b{color:var(--m);}
 
-.mini-karte{background:var(--paper);border-radius:8px;padding:.7rem .85rem;margin-bottom:1rem;}
-.mini-karte-titel{font-size:.72rem;font-weight:700;color:var(--m);margin-bottom:.3rem;}
-.mini-karte-text{font-size:.7rem;line-height:1.5;}
+table{width:100%;border-collapse:separate;border-spacing:0;box-shadow:0 3px 14px rgba(27,58,75,.08);border-radius:10px;overflow:hidden;margin-bottom:.7rem;}
+table th,table td{padding:.45rem .6rem;font-size:.68rem;text-align:left;line-height:1.5;vertical-align:top;}
+table th{background:var(--m);color:#fff;font-weight:700;letter-spacing:.03em;font-size:.6rem;text-transform:uppercase;}
+table tr:nth-child(even) td{background:var(--paper);}
+table td{border-bottom:1px solid var(--border);}
+table b{color:var(--m);}
 
-.zitat-eng{font-style:italic;font-size:.72rem;line-height:1.6;color:var(--muted);border-left:3px solid var(--acc);background:var(--paper);border-radius:0 8px 8px 0;padding:.7rem .9rem;margin-bottom:.4rem;}
-.quelle{font-size:.62rem;color:var(--muted);margin-bottom:1rem;}
-.quelle i{font-style:italic;}
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
 
-.modi-tab{width:100%;border-collapse:collapse;font-size:.72rem;margin-bottom:1rem;}
-.modi-tab th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;}
-.modi-tab td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;}
-.modi-tab b{color:var(--m);}
-
-.impuls-liste{font-size:.76rem;line-height:1.65;margin:0 0 1rem 1.1rem;}
-.impuls-liste li::marker{color:var(--acc);font-weight:700;}
-
-.ausfuell-tab{width:100%;border-collapse:collapse;font-size:.72rem;margin-bottom:1rem;}
-.ausfuell-tab th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;}
-.ausfuell-tab td{padding:.6rem .6rem;border-bottom:1px solid var(--border);height:1.6rem;}
-
-.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
-.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
 .qr-zeile .qr svg{width:100%;height:100%;display:block;}
-.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
-.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text .link{font-size:.66rem;color:var(--muted);word-break:break-all;}
 
-.fuss{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+.mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
+.mini-qr .lnk{font-size:.5rem;color:var(--muted);word-break:break-all;line-height:1.3;}
+.mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
 
 @media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
 @media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
 
-/* ══ KLARTEXT Begleitheft · Design-Refresh-Layer (10.09.2026, Design-only, Text unveraendert) ══ */
-.kopf{position:relative;overflow:hidden;padding-left:2.7rem !important;}
-.kopf::before{
-  content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
-  width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;
-}
-.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
-.kopf-schmal::before,.kopf-schmal::after{display:none;}
-.kopf-schmal{padding-left:0 !important;}
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
 
-.hinweis-box{position:relative;box-shadow:0 3px 14px rgba(27,58,75,.09);border-radius:12px;padding-left:1.5rem !important;}
-.hinweis-box::before{
-  content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;
-  background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;
-  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);
-}
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
 
-.abschnitt-titel{position:relative;padding-bottom:.3rem;}
-.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
 
-table{border-collapse:separate;border-spacing:0;box-shadow:0 3px 14px rgba(27,58,75,.08);border-radius:10px;overflow:hidden;}
-table tr:nth-child(even) td{background:var(--paper);}
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
 
-.qr-zeile{box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
-.mini-karte{box-shadow:0 2px 10px rgba(27,58,75,.06);border-left:3px solid var(--acc);}
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+
+.progression-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.progression-phase{background:#E5F5EE;border-left:3px solid var(--gruen);border-radius:8px;padding:.5rem .7rem;font-size:.64rem;line-height:1.42;}
+.progression-phase b{color:var(--m);font-size:.66rem;}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+.klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
+.klar-kasten b{color:var(--m);}
+.diff-zeile{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.6rem;}
+.diff-karte{border-radius:10px;padding:.6rem .8rem;font-size:.68rem;line-height:1.5;}
+.diff-karte.leicht{background:#EAF3F3;border-left:3px solid var(--m);}
+.diff-karte.schwer{background:var(--tint);border-left:3px solid var(--acc);}
+.diff-karte b{display:block;font-size:.7rem;margin-bottom:.25rem;}
 </style>
 </head>
 <body>
 
-<!-- ══════ SEITE 1 ══════ -->
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
 <div class="seite">
   <div class="kopf">
     <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
     <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
   </div>
 
-  <h1 class="haupttitel">Frau Jojos Resilienz-Jojo</h1>
+  <h1 class="haupttitel">FRAU JOJOS RESILIENZ-JOJO</h1>
+  <div class="untertitel">Begleitheft — interaktiver Schwung- &amp; Atem-Taktgeber</div>
 
-  <div class="hinweis-box"><b>Interaktiver Schwung- &amp; Atem-Taktgeber</b> — für Momente, in denen etwas nicht geklappt hat, und für die Frage: Was hilft mir eigentlich, wieder hochzukommen?</div>
-
-  <div class="abschnitt-titel">Worum geht's?</div>
-  <div class="absatz">Ein Jojo an einer Schnur schwingt im Bild sanft auf und ab — synchron zum Atem: Beim Einatmen steigt es, beim Ausatmen sinkt es mit einer weichen Bounce-Bewegung am tiefsten Punkt. Wer lieber selbst Hand anlegen möchte, wechselt in den Frei-Modus und zieht das Jojo mit der Maus oder dem Finger nach unten, um es dann wieder hochschnappen zu lassen.</div>
-  <div class="absatz">Nach ein paar Schwüngen stellt Frau Jojo eine kurze, offene Frage — zum Beispiel: <em>„Was hat dir schon mal geholfen, wieder hochzukommen?"</em> Die Antworten sammeln sich in der persönlichen <b>Sprungbrett-Sammlung</b>, die jederzeit wieder aufgerufen werden kann.</div>
-
-  <div class="mini-karte">
-    <div class="mini-karte-titel">Warum das Bild vom Jojo?</div>
-    <div class="mini-karte-text">Resilienz wird in der Forschung oft nicht als „unverwundbar sein" verstanden, sondern als der Prozess, nach einer schwierigen Phase wieder handlungsfähig zu werden — mithilfe von Fähigkeiten, Beziehungen und Ressourcen, die im Alltag ganz normal vorhanden sind. Genau dieses „Wieder-hoch-Kommen" macht das Jojo sichtbar und erlebbar, statt es nur zu erklären.</div>
+  <div class="hinweis-box">
+    <p>Ein Jojo an einer Schnur schwingt im Bild sanft auf und ab — synchron zum Atem: Beim Einatmen steigt es, beim Ausatmen sinkt es mit einer weichen Bounce-Bewegung am tiefsten Punkt. Wer lieber selbst Hand anlegen möchte, wechselt in den Frei-Modus und zieht das Jojo nach unten, um es dann wieder hochschnappen zu lassen.</p>
+    <p>Nach ein paar Schwüngen stellt Frau Jojo eine kurze, offene Frage — z. B. <em>„Was hat dir schon mal geholfen, wieder hochzukommen?"</em> Die Antworten sammeln sich in der persönlichen <b>Sprungbrett-Sammlung</b>, jederzeit wieder aufrufbar.</p>
   </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.3rem;">Ich-kann-Ziel dieser Übung</div>
+  <div class="absatz" style="margin-bottom:.4rem;"><b>„Ich kann nach einem Rückschlag benennen, welche eigenen Ressourcen und Beziehungen mir schon einmal geholfen haben, wieder handlungsfähig zu werden."</b></div>
 
   <div class="zitat-eng">„Resilience does not come from rare and special qualities in people, but from the operation of basic human adaptational systems." — sinngemäß nach Ann S. Masten</div>
   <div class="quelle">Quelle: Masten, A. S. (2001). Ordinary magic: Resilience processes in development. <i>American Psychologist, 56</i>(3), 227–238.</div>
 
+  <div class="abschnitt-titel">Warum das Bild vom Jojo?</div>
+  <div class="absatz">Resilienz wird in der Forschung nicht als „unverwundbar sein" verstanden, sondern als Prozess, nach einer schwierigen Phase mithilfe alltäglicher Ressourcen wieder handlungsfähig zu werden. Genau dieses „Wieder-hoch-Kommen" macht das Jojo sichtbar und erlebbar, statt es nur zu erklären.</div>
+
   <div class="abschnitt-titel">Die beiden Modi</div>
-  <table class="modi-tab">
+  <table>
     <tr><th>Modus</th><th>Ablauf</th></tr>
     <tr><td><b>Atem-Modus</b></td><td>Automatischer Rhythmus (ca. 4 Sek. ein, kurz halten, ca. 4 Sek. aus mit Bounce) — gut für die Gruppe oder als ruhiger Einstieg.</td></tr>
-    <tr><td><b>Frei-Modus</b></td><td>Das Jojo wird selbst gezogen und losgelassen — eher für Kinder, die gern aktiv mit den Händen arbeiten, oder für einen spielerischen Break zwischendurch.</td></tr>
+    <tr><td><b>Frei-Modus</b></td><td>Das Jojo wird selbst gezogen und losgelassen — für einen spielerischen, aktiveren Break zwischendurch.</td></tr>
   </table>
+
+  <div class="info-kasten">
+    <b>Praxisbeispiel</b>
+    Leo hat eine schlechte Mathearbeit zurückbekommen und will nicht mehr mitmachen. Statt sofort über die Note zu sprechen, öffnet die Lehrkraft gemeinsam mit ihm kurz den Atem-Modus. Nach drei, vier Schwüngen kommt die Frage „Was hat dir schon mal geholfen, wieder hochzukommen?" — Leo erinnert sich an eine Situation im Sport, in der er nach einem Fehlstart trotzdem noch gut gelaufen ist. Erst danach folgt das Gespräch über die Mathearbeit.
+  </div>
 
   <div class="fuss">
     <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
-    <span>Seite 1 von 2</span>
+    <span>Seite 1 von 7</span>
   </div>
 </div>
 
-<!-- ══════ SEITE 2 ══════ -->
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
 <div class="seite">
   <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
 
-  <div class="abschnitt-titel">Meine Sprungbrett-Sammlung — zum Ausfüllen auf Papier</div>
-  <div class="absatz" style="margin-bottom:.9rem;">Auch offline nutzbar: Diese Tabelle kann einzeln oder in der Gruppe (z. B. Klassenrat, Mentoring-Stunde) besprochen und ausgefüllt werden — als Vorstufe oder Ergänzung zur App.</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien &amp; die Praxis-Progression</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom Klassenrat bis zur 1:1-Schulbegleitung — und vom angeleiteten zum selbstständigen Nutzen.</div>
 
-  <table class="ausfuell-tab">
-    <tr><th style="width:30%;">Situation</th><th>Was hat geholfen, wieder hochzukommen?</th></tr>
-    <tr><td></td><td></td></tr>
-    <tr><td></td><td></td></tr>
-    <tr><td></td><td></td></tr>
-    <tr><td></td><td></td></tr>
-  </table>
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Klassenrat / Plenum <span class="szenario-wer">(ganze Klasse oder Gruppe)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Nach einer schwierigen Phase (Klassenarbeit, Streit, verlorenes Spiel) als gemeinsamer Reset.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Der Atem-Modus läuft über den Beamer, alle schwingen gemeinsam mit, danach eine der Impulsfragen im Kreis.</div>
+  </div>
 
-  <div class="abschnitt-titel">Impulsfragen für Gespräche</div>
-  <div class="absatz" style="margin-bottom:.6rem;">Diese Fragen entsprechen den Fragen, die Frau Jojo in der App nach ein paar Schwüngen zufällig stellt:</div>
-  <ul class="impuls-liste">
-    <li>Was hat dir schon mal geholfen, wieder hochzukommen?</li>
-    <li>Wer war für dich da, als es schwer war?</li>
-    <li>Was hat dir Kraft gegeben, als etwas nicht geklappt hat?</li>
-    <li>Welcher kleine Schritt hat dir schon mal weitergeholfen?</li>
-    <li>Was sagst du dir selbst, wenn es gerade schwierig ist?</li>
-  </ul>
+  <div class="szenario">
+    <div class="szenario-titel">🧩 Szenario 2: Kleingruppe / Teamarbeit <span class="szenario-wer">(siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Drei bis vier Jugendliche tragen gemeinsam Sprungbrett-Momente zusammen und halten sie auf den Rollenkärtchen fest.</div>
+    <div class="szenario-zeile"><b>Wirkung:</b> Aus einer stillen Einzelfrage wird ein geteiltes Erfahrungswissen — andere haben oft schon ähnliche Sprungbretter gefunden.</div>
+  </div>
 
-  <div class="hinweis-box"><b>Hinweis für Lehrkräfte, Jobcoaches &amp; Eltern:</b> Frau Jojos Resilienz-Jojo ersetzt kein therapeutisches Gespräch. Bei anhaltenden Belastungen bitte weiterhin an schulpsychologische Beratung, Schulsozialarbeit oder andere Fachstellen verweisen.</div>
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Peer-Buddy 1:1 <span class="szenario-wer">(Jugendliche:r zu Jugendliche:r)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Ein:e ältere:r Jugendliche:r zeigt einer/einem jüngeren den Frei-Modus einmal, dann probiert diese:r es selbst — Vormachen statt Erklären.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz <span class="szenario-wer">(1:1-Inklusionsbegleitung)</span></div>
+    <div class="szenario-zeile"><b>Grundhaltung:</b> Erst regulieren, dann sprechen. Das Jojo wird angeboten, nicht angeordnet.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Nach einem Rückschlag zieht die Integrationsassistenz mit dem Jugendlichen gemeinsam den Atem-Modus, bevor das eigentliche Gespräch beginnt.</div>
+    <div class="klar-kasten"><b>Verbindung zum KLARTEXT-System:</b> Das Resilienz-Jojo eignet sich als ruhiger erster Schritt nach einer Eskalation, bevor mit dem Barometer die aktuelle Anspannung neu eingeschätzt wird — beide sind eigenständige KLARTEXT-Materialien im Mentoring-System.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.4rem;">Kognitives Progressionsmodell über das Schuljahr</div>
+  <div class="progression-grid">
+    <div class="progression-phase"><b>Phase 1 · Angeleitet</b><br>Eine Begleitperson startet den Atem-Modus gemeinsam und stellt die erste Impulsfrage.</div>
+    <div class="progression-phase"><b>Phase 2 · Begleitet</b><br>Der/die Jugendliche startet selbst, die Begleitperson bleibt für das Nachgespräch da.</div>
+    <div class="progression-phase"><b>Phase 3 · Selbstständig</b><br>Das Jojo wird nach einem Rückschlag eigenständig als Werkzeug gezogen.</div>
+    <div class="progression-phase"><b>Phase 4 · Weitergetragen</b><br>Eigene Sprungbrett-Erfahrungen werden an andere weitergegeben (Peer-Buddy, Szenario 3).</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf, Zugänge & Differenzierung ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">So setzt du das Resilienz-Jojo im Alltag ein</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten zum Sprungbrett-Moment</div>
+  <ol class="schritt-liste">
+    <li><b>Moment erkennen:</b> Ein Rückschlag ist gerade passiert — eine schlechte Note, ein verlorenes Spiel, ein Streit.</li>
+    <li><b>App öffnen:</b> Gemeinsam oder allein den Atem- oder Frei-Modus starten (QR-Code auf Seite 4).</li>
+    <li><b>Ein paar Schwünge:</b> 3–5 Atemzüge mitschwingen lassen, ohne sofort über das eigentliche Thema zu sprechen.</li>
+    <li><b>Impulsfrage beantworten:</b> Die App stellt eine offene Frage — Antwort in die Sprungbrett-Sammlung eintragen.</li>
+    <li><b>Erst danach weitersprechen:</b> Über das eigentliche Thema erst reden, wenn die akute Anspannung spürbar runter ist.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Differenzierung: leichter und schwerer Einstieg</div>
+  <div class="diff-zeile">
+    <div class="diff-karte leicht"><b>Leichter Einstieg — Satzanfänge</b>„Mir hat schon mal geholfen, dass …" / „Als ich mich schwer gefühlt habe, war für mich da: …" — als Formulierungshilfe für alle, denen eine offene Frage zu unbestimmt ist.</div>
+    <div class="diff-karte schwer"><b>Erweiterung — für Fortgeschrittene</b>Überlege: Welches deiner Sprungbretter aus der Sammlung könntest du auch jemand anderem anbieten, der gerade feststeckt?</div>
+  </div>
 
   <div class="qr-zeile">
-    <div class="qr" id="druck-qr"></div>
-    <div class="qr-text"><b>Direkt zur App:</b>KLARTEXT_Spiel_ResilienzJojo.html</div>
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Direkt zur App</b>QR-Code scannen: Atem- und Frei-Modus, persönliche Sprungbrett-Sammlung — direkt im Browser, ohne Login.<div class="link">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_ResilienzJojo.html?guest=true</div></div>
   </div>
 
-  <div class="fuss">
-    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
-    <span>Seite 2 von 2</span>
+  <div class="hinweis-box" style="margin-top:auto;"><b>Hinweis für Lehrkräfte, Jobcoaches &amp; Eltern:</b> Frau Jojos Resilienz-Jojo ersetzt kein therapeutisches Gespräch. Bei anhaltenden Belastungen bitte weiterhin an schulpsychologische Beratung, Schulsozialarbeit oder andere Fachstellen verweisen.</div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang zur digitalen Version</h1>
+  <div class="absatz">Frau Jojos Resilienz-Jojo ist eine <b>kostenlose Web-App</b> — frei zugänglich, ganz ohne Anmeldung oder Zugangscode.</div>
+
+  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+    <div class="mini-qr">
+      <div class="qr" id="qr-mein-set"></div>
+      <div class="lbl">Resilienz-Jojo (Web-App)</div>
+      <div class="lnk">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_ResilienzJojo.html?guest=true</div>
+      <div class="frei">kostenlos nutzbar · kein Code nötig</div>
+    </div>
   </div>
+
+  <div class="absatz" style="margin-top:1rem;">Weitere kostenlose und kostenpflichtige KLARTEXT-Materialien zu Resilienz, Achtsamkeit und Co-Regulation findest du auf eduki im KLARTEXT-Mentoring-Profil.</div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Rollenkärtchen für die Kleingruppe findest du auf Seite 5, einen Reflexionsbogen für Lehrkräfte auf Seite 6, eine Selbstreflexionskarte auf Seite 7.</div>
+
+  <div class="info-kasten" style="margin-top:1.4rem;">
+    <b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b>
+    Entwickelt für den reizarmen, systemischen Einsatz in Schule, Coaching und Jobcoaching — konsequent auf Augenhöhe, ohne Bewertung.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Sprungbrett-Rollenkärtchen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Rollenkärtchen für die Sprungbrett-Kleingruppe</h1>
+  <div class="formular-hinweis">Für die Kleingruppe (Szenario 2, Seite 2) — ausschneiden, laminieren, im Team verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🎈 Sprungbrett-Erzähler:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich erzähle kurz von einer Situation, in der ich schon mal wieder hochgekommen bin.</li>
+        <li>Ich sage auch, was mir dabei konkret geholfen hat.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">✍️ Sammler:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich schreibe die genannten Sprungbretter kurz für die Gruppe mit.</li>
+        <li>Ich frage nach, wenn etwas unklar war.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">👀 Rückmelder:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich sage, welches erzählte Sprungbrett mich selbst am meisten anspricht — und warum.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⏱️ Zeitwächter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte darauf, dass jede:r maximal 2 Minuten erzählt.</li>
+        <li>Ich sorge dafür, dass alle einmal an der Reihe sind.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Am Ende der Runde hat die Gruppe ein gemeinsames Sprungbrett-Plakat mit den Lieblings-Sprungbrettern aller — als sichtbare Erinnerung im Klassenraum oder Teamraum.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Lehrkräfte-Reflexionsbogen &amp; Wirkungs-Evaluation</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Selbstevaluation des Einsatzes.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Klasse/Gruppe:</b> ______________</span>
+    <span><b>Situation/Anlass:</b> _____________________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Beruhigung: Wie gut hat das Jojo die Anspannung spürbar heruntergefahren?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Selbstständigkeit: Konnte die Sprungbrett-Frage ohne viel Anleitung beantwortet werden?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>In welcher Situation hat das Resilienz-Jojo heute am besten funktioniert?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Welches Sprungbrett hat der/die Jugendliche genannt — und war das neu für dich?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Methodische Tipps für die Moderation</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li>Erst schwingen lassen, dann fragen — nicht umgekehrt. Das Nachfragen vor der Beruhigung verstärkt oft den Druck.</li>
+      <li>Formulierungshilfe: „Wir müssen jetzt nicht über die Note reden. Lass uns kurz das Jojo schwingen lassen."</li>
+      <li>Bei sehr zurückhaltenden Jugendlichen die Satzanfänge von Seite 3 anbieten, statt die offene Frage direkt zu stellen.</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund &amp; eigene Weiterentwicklung</b>
+    Masten, A. S. (2001). Ordinary magic: Resilience processes in development. <i>American Psychologist, 56</i>(3), 227–238 — Mastens Kernbefund, dass Resilienz aus gewöhnlichen, alltäglich verfügbaren Anpassungssystemen entsteht statt aus seltenen Sondereigenschaften, lohnt sich als eigener Lernanlass: Wo begegnen dir in deinem Berufsalltag „gewöhnliche" Ressourcen bei den Jugendlichen, die du bisher übersehen hast?
+    <div class="hinweis">Für die Impulsfragen selbst wurde bewusst keine externe Einzelstudie angeführt — sie beruhen auf allgemeiner Praxis des KLARTEXT-Mentoring-Systems.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Schüler-Selbstreflexionskarte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren fürs Lerntagebuch</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Selbstreflexionskarte „Mein Sprungbrett-Check"</h1>
+  <div class="formular-hinweis">Kompakter Rückmeldebogen — 4 Karten pro Blatt, einzeln ausschneiden.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Sprungbrett-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Das war mein Rückschlag heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Mein Sprungbrett war:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Sprungbrett-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Das war mein Rückschlag heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Mein Sprungbrett war:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Sprungbrett-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Das war mein Rückschlag heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Mein Sprungbrett war:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Sprungbrett-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Das war mein Rückschlag heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Mein Sprungbrett war:</div>
+      <div class="antwortlinie"></div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
 </div>
 
 <script>
 (function(){
   try{
     if(!window.KLARTEXT_QRCode) return;
-    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_ResilienzJojo.html?guest=true';
-    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
-    var ziel_el = document.getElementById('druck-qr');
-    if(svg && ziel_el) ziel_el.innerHTML = svg;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_ResilienzJojo.html?guest=true';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
   }catch(e){}
 })();
 </script>

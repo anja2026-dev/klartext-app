@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KLARTEXT · Assoziationsblitz Begleitheft (2 Seiten)</title>
+<title>KLARTEXT · Assoziationsblitz · Begleitheft (9 Seiten)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="KLARTEXT_QRCode.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --m:#1B3A4B;--acc:#C77D2E;--warm:#B4482E;--paper:#F5F0E8;--surface:#fff;
-  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--rose:#FBF1E6;
+  --m:#1B3A4B;--acc:#C77D2E;--warm:#B4482E;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#FBF1E6;--kid:#3B8A68;--kidbg:#EAF5EF;
 }
 body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .seite{
@@ -21,101 +21,155 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 }
 .seite:last-child{page-break-after:auto;}
 
-.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
 .kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
 .kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
-.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
 .kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.kopf-kid{background:var(--kid);}
+.kopf-kid::before{border-color:#fff;}
+.kopf-kid::after{background:#fff;}
 
 .haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
 .untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
 
-.hinweis-box{background:var(--rose);border-left:4px solid var(--acc);border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.76rem;line-height:1.6;color:var(--ink);}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
 .hinweis-box p+p{margin-top:.55rem;}
 .hinweis-box b{color:var(--m);}
 
-.zitat-box{background:var(--paper);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.1rem;display:flex;align-items:center;gap:.9rem;}
+.zitat-box{background:var(--paper);border-radius:10px;padding:.85rem 1.15rem;margin-bottom:1rem;display:flex;align-items:center;gap:.9rem;box-shadow:0 3px 14px rgba(27,58,75,.07);}
 .zitat-box img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
-.zitat-box .txt{font-style:italic;font-size:.85rem;color:var(--m);line-height:1.5;}
-.zitat-box .autor{display:block;margin-top:.25rem;font-style:normal;font-size:.68rem;font-weight:700;color:var(--muted);}
+.zitat-box .txt{font-style:italic;font-size:.82rem;color:var(--m);line-height:1.5;}
+.zitat-box .autor{display:block;margin-top:.25rem;font-style:normal;font-size:.66rem;font-weight:700;color:var(--muted);}
 
-.abschnitt-titel{font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
 .absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
 .absatz b{color:var(--m);}
 
-.zweispalt{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
-.mini-karte{background:var(--paper);border-radius:8px;padding:.7rem .85rem;}
-.mini-karte-titel{font-size:.72rem;font-weight:700;color:var(--m);margin-bottom:.3rem;}
-.mini-karte-text{font-size:.7rem;line-height:1.5;}
+table{width:100%;border-collapse:separate;border-spacing:0;box-shadow:0 3px 14px rgba(27,58,75,.08);border-radius:10px;overflow:hidden;margin-bottom:.7rem;}
+table th,table td{padding:.45rem .6rem;font-size:.66rem;text-align:left;line-height:1.45;vertical-align:top;}
+table th{background:var(--m);color:#fff;font-weight:700;letter-spacing:.03em;font-size:.6rem;text-transform:uppercase;}
+table tr:nth-child(even) td{background:var(--paper);}
+table td{border-bottom:1px solid var(--border);}
+table b{color:var(--m);}
 
-table.varianten{width:100%;border-collapse:collapse;font-size:.68rem;margin-bottom:1rem;}
-table.varianten th{background:var(--m);color:#fff;text-align:left;padding:.5rem .6rem;font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;}
-table.varianten td{padding:.55rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
-table.varianten b{color:var(--m);}
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
 
-.skript-zeile{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
-.skript-karte{background:#FFF7EE;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:.7rem .85rem;}
-.skript-karte-titel{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:.35rem;}
-.skript-karte-text{font-size:.72rem;font-style:italic;line-height:1.55;color:#6b4415;}
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text .link{font-size:.66rem;color:var(--muted);word-break:break-all;}
 
-.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);}
+.mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
+.mini-qr .lnk{font-size:.5rem;color:var(--muted);word-break:break-all;line-height:1.3;}
+.mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
 .brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
 .brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
 .brainy-zeile .txt b{color:var(--m);}
 
-.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;}
-.qr-zeile .qr{width:20mm;height:20mm;flex-shrink:0;background:#fff;}
-.qr-zeile .qr svg{width:100%;height:100%;display:block;}
-.qr-zeile .qr-text{font-size:.72rem;color:var(--ink);line-height:1.5;}
-.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.78rem;margin-bottom:.15rem;}
-
 .fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
 
-@media print{
-  body{background:#fff;}
-  .seite{box-shadow:none;margin:0;}
-}
-@media screen{
-  body{padding:10mm 0;}
-  .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
-}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
 
-/* ══ KLARTEXT Begleitheft · Design-Refresh-Layer (10.09.2026, Design-only, Text unveraendert) ══ */
-.kopf{position:relative;overflow:hidden;padding-left:2.7rem !important;}
-.kopf::before{
-  content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);
-  width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;
-}
-.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
-.kopf-schmal::before,.kopf-schmal::after{display:none;}
-.kopf-schmal{padding-left:0 !important;}
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
 
-.hinweis-box{position:relative;box-shadow:0 3px 14px rgba(27,58,75,.09);border-radius:12px;padding-left:1.5rem !important;}
-.hinweis-box::before{
-  content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;
-  background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;
-  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);
-}
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
 
-.abschnitt-titel{position:relative;padding-bottom:.3rem;}
-.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
 
-table{border-collapse:separate;border-spacing:0;box-shadow:0 3px 14px rgba(27,58,75,.08);border-radius:10px;overflow:hidden;}
-table tr:nth-child(even) td{background:var(--paper);}
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
 
-.qr-zeile{box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
-.brainy-zeile{background:var(--paper);border-radius:12px;padding:.7rem 1rem;border-top:none !important;margin-top:1rem !important;}
-.mini-karte{box-shadow:0 2px 10px rgba(27,58,75,.06);border-left:3px solid var(--acc);}
-.anteil-mini,.anleitung-titel,.impuls-block.hebel{box-shadow:0 2px 10px rgba(27,58,75,.06);}
-.zitat-box,.beispiel-karte,.beispiel-reihe,.netz-wrap,.verlauf-wrap{box-shadow:0 3px 14px rgba(27,58,75,.07);border-radius:12px;}
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
 
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+
+.progression-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.progression-phase{background:#FFF3E6;border-left:3px solid var(--acc);border-radius:8px;padding:.5rem .7rem;font-size:.64rem;line-height:1.42;}
+.progression-phase b{color:var(--m);font-size:.66rem;}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+.klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
+.klar-kasten b{color:var(--m);}
+
+/* ── Arbeitsblätter (Seite 8+9, Bestandsvorlage) ── */
+.wb-anleitung{border-radius:10px;padding:.7rem 1rem;font-size:.72rem;line-height:1.55;margin-bottom:.9rem;}
+.wb-anleitung b{color:var(--m);}
+.wb-kopfzeile{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.7rem;font-size:.72rem;}
+.wb-kopfzeile .feld{border-bottom:1px solid var(--muted);flex:1;margin-left:.4rem;height:1rem;}
+.wb-kopfzeile-block{display:flex;align-items:baseline;flex:1;}
+.wb-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 1.6rem;flex:1;}
+.wb-zeile{display:flex;align-items:center;gap:.5rem;border-bottom:1px dotted var(--border);padding:.28rem 0;}
+.wb-label{width:1.6rem;height:1.6rem;border-radius:50%;color:#fff;font-weight:700;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:"Playfair Display",serif;}
+.wb-linie{flex:1;height:1px;}
+.wb-zitat{text-align:center;font-style:italic;font-size:.68rem;color:var(--muted);margin-top:.8rem;padding-top:.6rem;border-top:1px solid var(--border);}
+.wb-zitat b{font-style:normal;color:var(--m);}
+.kid-hero{display:flex;align-items:center;gap:1.1rem;margin-bottom:.9rem;}
+.kid-hero img{width:26mm;height:26mm;flex-shrink:0;object-fit:contain;}
+.kid-hero .haupttitel{color:var(--kid);}
+.kid-sprechblase{background:var(--kidbg);border-radius:14px;border:2px solid #C7E4D3;padding:.7rem 1rem;font-size:.8rem;line-height:1.5;position:relative;}
+.kid-sprechblase b{color:var(--kid);}
+.wb-label.kid{background:var(--kid);width:1.9rem;height:1.9rem;font-size:.82rem;}
+.wb-grid.kid{gap:0 2rem;}
+.wb-grid.kid .wb-zeile{padding:.4rem 0;}
+.wb-zeile.kid{border-bottom-width:1.5px;}
 </style>
 </head>
 <body>
 
-<!-- ══════ SEITE 1 ══════ -->
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
 <div class="seite">
   <div class="kopf">
     <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
@@ -123,11 +177,11 @@ table tr:nth-child(even) td{background:var(--paper);}
   </div>
 
   <h1 class="haupttitel">KLARTEXT ASSOZIATIONSBLITZ</h1>
-  <div class="untertitel">Begleitheft für Schule &amp; Coaching</div>
+  <div class="untertitel">Begleitheft — ABC-Blitzliste gegen Denkblockaden</div>
 
   <div class="hinweis-box">
-    <p>Im stressigen Schul- und Coachingalltag stoßen Lehrkräfte, Schulbegleiter und Eltern immer wieder auf dieselbe frustrierende Wand: die akute Verweigerung oder plötzliche Denk-Blockade. Ob vor Klassenarbeiten (Prüfungsangst) oder beim Beginn der Hausaufgaben (Task-Paralyse) — das Gehirn blockiert und schaltet auf stur.</p>
-    <p>Der <b>KLARTEXT-Assoziationsblitz</b> bricht diese Blockade spielerisch in wenigen Minuten auf: eine freie, gehirn-gerechte ABC-Liste ohne Reihenfolge und ohne Druck.</p>
+    <p>Im Schul- und Coachingalltag taucht immer wieder dieselbe Wand auf: die akute Verweigerung oder plötzliche Denk-Blockade — vor Klassenarbeiten (Prüfungsangst) oder beim Beginn der Hausaufgaben (Task-Paralyse). Der <b>Assoziationsblitz</b> bricht diese Blockade spielerisch in wenigen Minuten auf: eine freie, gehirn-gerechte ABC-Liste ohne feste Reihenfolge und ohne Druck.</p>
+    <p>Frei durch die Buchstaben springen statt linear von A bis Z abarbeiten — das nimmt den Druck sofort raus und macht das Anfangen leicht.</p>
   </div>
 
   <div class="zitat-box">
@@ -135,73 +189,93 @@ table tr:nth-child(even) td{background:var(--paper);}
     <div class="txt">„Du musst nichts suchen. Kaum ist das Thema da, blitzt dein Wissen von ganz allein irgendwo auf."<span class="autor">— Brainy</span></div>
   </div>
 
-  <div class="abschnitt-titel">1. Warum das Gehirn „einfriert"</div>
-  <div class="absatz">Bei neurodivergenten Kindern (ADHS/Autismus) sowie bei starker Prüfungsangst gerät das Gehirn in eine akute exekutive Blockade. Wenn Kinder vor einem leeren Arbeitsblatt sitzen, fehlt es in diesem Moment schlicht am Antrieb, loszulegen. Aufforderungen wie „Konzentrier dich jetzt!" erhöhen den Druck und verschlimmern die Blockade.</div>
-  <div class="absatz">Der Assoziationsblitz setzt genau hier an: Freies, ungezwungenes Springen durch die Buchstaben statt linearer Reihenfolge — das nimmt den Druck sofort raus und macht das Anfangen leicht.</div>
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.3rem;">Ich-kann-Ziel dieses Materials</div>
+  <div class="absatz" style="margin-bottom:.4rem;"><b>„Ich kann bei einer Denkblockade selbstständig eine Methode anwenden, um leicht und ohne Druck ins Arbeiten zu kommen."</b></div>
 
-  <div class="zweispalt">
-    <div class="mini-karte">
-      <div class="mini-karte-titel">Kleine Erfolge statt großer Aufgabe</div>
-      <div class="mini-karte-text">Jeder gefundene Begriff ist ein kleiner Erfolg für sich. Das weckt die Motivation und löst die Anfangsblockade unaufgeregt auf.</div>
-    </div>
-    <div class="mini-karte">
-      <div class="mini-karte-titel">Freies statt lineares Denken</div>
-      <div class="mini-karte-text">Traditionelles Schreiben verlangt eine feste Reihenfolge. Das überfordert blockierte Systeme. Beim Assoziationsblitz darf frei gesprungen werden — das entlastet sofort.</div>
-    </div>
-  </div>
+  <div class="abschnitt-titel">Drei Spielvarianten auf einen Blick</div>
+  <table>
+    <tr><th>Variante</th><th>Zielgruppe &amp; Hebel</th><th>Ablauf kurz</th></tr>
+    <tr><td><b>Solo-Blitz</b><br>Der Einstiegs-Turbo</td><td>Kinder &amp; Jugendliche · bricht die Anfangsblockade</td><td>Alphabet senkrecht notieren, neutrales Thema wählen, frei durch die Buchstaben springen. Max. 3 Minuten, kein linearer Druck.</td></tr>
+    <tr><td><b>Partner-Basar</b><br>Kumulativer Blitz</td><td>Klassen &amp; Peergroups · Musterunterbrechung, soziales Lernen</td><td>Erst eigene Liste, dann Begriffe mit Sitznachbarn tauschen — übernommen wird nur, was kurz erklärt wurde.</td></tr>
+    <tr><td><b>Blitz-Tagebuch</b><br>Der ruhige Blitz</td><td>Jugendliche &amp; Erwachsene · für längere Reflexion</td><td>An mehreren Tagen je eine kurze Liste zum selben Thema, danach gemeinsam anschauen: Was taucht wieder auf, was ist neu?</td></tr>
+  </table>
 
-  <div class="brainy-zeile">
-    <img src="brainy.png" alt="Brainy">
-    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, entlastenden Einsatz in Schule, Coaching und zu Hause.</div>
-  </div>
+  <div class="absatz">Auf Seite 6 findest du einen Reflexionsbogen, auf Seite 7 eine kompakte Selbstreflexionskarte, auf Seite 8/9 die fertigen Arbeitsblätter für Kinder bzw. Jugendliche &amp; Erwachsene.</div>
 
   <div class="fuss">
     <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
-    <span>Seite 1 von 2</span>
+    <span>Seite 1 von 9</span>
   </div>
 </div>
 
-<!-- ══════ SEITE 2 ══════ -->
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
 <div class="seite">
   <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
 
-  <div class="abschnitt-titel">2. Drei Spielvarianten für den Alltag</div>
-  <div class="absatz" style="margin-bottom:.7rem;">Verwende im Coaching oder Unterricht ausschließlich neutrale Themen, um niemanden bloßzustellen.</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien &amp; die Praxis-Progression</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom Klassenplenum bis zur 1:1-Schulbegleitung — mit den drei Spielvarianten von Seite 1 unterlegt.</div>
 
-  <table class="varianten">
-    <tr><th>Variante</th><th>Zielgruppe &amp; Hebel</th><th>Ablauf</th></tr>
-    <tr>
-      <td><b>Solo-Blitz</b><br>Der Einstiegs-Turbo</td>
-      <td>Kinder &amp; Jugendliche<br>Bricht die Anfangsblockade</td>
-      <td>Das Alphabet wird senkrecht notiert. Das Kind wählt ein neutrales Thema (z. B. „Dinosaurier" oder „Hobbys") und springt frei durch die Buchstaben. Dauer: max. 3 Minuten, kein linearer Druck.</td>
-    </tr>
-    <tr>
-      <td><b>Partner-Basar</b><br>Kumulativer Blitz</td>
-      <td>Klassen &amp; Peergroups<br>Musterunterbrechung, stärkt soziales Lernen</td>
-      <td>Jeder schreibt erst eine eigene Liste. Danach tauschen Sitznachbarn Begriffe: übernommen wird nur, was der Partner kurz erklärt hat.</td>
-    </tr>
-    <tr>
-      <td><b>Blitz-Tagebuch</b><br>Der ruhige Blitz</td>
-      <td>Jugendliche &amp; Erwachsene<br>Für längere Reflexion</td>
-      <td>An mehreren Tagen wird je eine kurze Liste zum selben Thema geschrieben und gesammelt. Nach einer Weile zusammen angeschaut: Welche Begriffe tauchen wieder auf, welche sind neu dazugekommen?</td>
-    </tr>
-  </table>
-
-  <div class="abschnitt-titel">3. Wortgenaue kLAR-Sofortskripte</div>
-  <div class="skript-zeile">
-    <div class="skript-karte">
-      <div class="skript-karte-titel">Für Eltern (bei Hausaufgaben-Wut)</div>
-      <div class="skript-karte-text">„Ich sehe, dass dein innerer Blockierer gerade den Stift weggeworfen hat. Das ist völlig okay. Wir machen jetzt kein Mathe. Lass uns für 2 Minuten einen Assoziationsblitz zum Thema 'Lieblingsessen' machen. Wir springen wild durch die Buchstaben! Bereit?"</div>
-    </div>
-    <div class="skript-karte">
-      <div class="skript-karte-titel">Für Lehrkräfte (Unterrichts-Musterunterbrechung)</div>
-      <div class="skript-karte-text">„Liebe Klasse, ich merke, die Luft ist gerade raus. Bevor wir weiterarbeiten, machen wir eine 3-Minuten-Pause. Jeder zieht sein ABC-Blatt heraus. Unser heutiger Basar-Blitz hat das Thema 'Sommerferien'. Auf die Plätze, fertig, blitzt los!"</div>
-    </div>
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Klassenrat / Plenum <span class="szenario-wer">(ganze Klasse, Basar-Blitz)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Wenn spürbar „die Luft raus ist" — vor einer Klassenarbeit oder nach einer anstrengenden Stunde.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Jede:r zieht das eigene ABC-Blatt (Seite 8 oder 9), 3 Minuten Solo-Blitz zu einem gemeinsamen neutralen Thema, danach kurzer Austausch mit dem Sitznachbarn.</div>
   </div>
 
+  <div class="szenario">
+    <div class="szenario-titel">🧩 Szenario 2: Kleingruppe / Partner-Basar <span class="szenario-wer">(siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Zwei bis vier Kinder tauschen nach der eigenen Liste Begriffe — übernommen wird nur, was kurz erklärt wurde. Die Rollenkärtchen auf Seite 5 geben dabei Struktur.</div>
+    <div class="szenario-zeile"><b>Wirkung:</b> Aus stiller Einzelarbeit wird ein soziales, spielerisches Format ohne Bewertungsdruck.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Peer-Buddy 1:1 <span class="szenario-wer">(Schüler:in zu Schüler:in)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Ein älteres oder erfahrenes Kind macht einem jüngeren den Solo-Blitz einmal vor, dann probiert dieses es selbst — ohne Zeitdruck, mit Vormachen statt Erklären.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz <span class="szenario-wer">(1:1-Inklusionsbegleitung)</span></div>
+    <div class="szenario-zeile"><b>Grundhaltung:</b> Der Assoziationsblitz wird angeboten, nicht angeordnet — er ersetzt keine Aufgabe, sondern öffnet die Tür zu ihr.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Bei akuter Arbeitsverweigerung oder Task-Paralyse zieht die Integrationsassistenz gemeinsam mit dem Kind das ABC-Blatt und wählt ein neutrales, entlastendes Thema.</div>
+    <div class="klar-kasten"><b>Verbindung zum KLARTEXT-System:</b> Der Assoziationsblitz eignet sich als niedrigschwelliger erster Schritt, bevor mit dem Barometer die aktuelle Anspannung eingeschätzt wird — beide sind eigenständige KLARTEXT-Materialien im Mentoring-System.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.4rem;">Kognitives Progressionsmodell über das Schuljahr</div>
+  <div class="progression-grid">
+    <div class="progression-phase"><b>Phase 1 · Angeleitet</b><br>Erwachsene wählen Thema und starten den Blitz gemeinsam mit dem Kind.</div>
+    <div class="progression-phase"><b>Phase 2 · Begleitet</b><br>Das Kind startet selbst, holt sich bei Bedarf noch Unterstützung beim Thema.</div>
+    <div class="progression-phase"><b>Phase 3 · Selbstständig</b><br>Der Assoziationsblitz wird bei spürbarer Blockade eigenständig als Werkzeug gezogen.</div>
+    <div class="progression-phase"><b>Phase 4 · Weitergetragen</b><br>Das Kind zeigt die Technik selbst einem anderen Kind (Peer-Buddy, Szenario 3).</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So setzt du den Assoziationsblitz im Alltag ein</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten zur gelösten Blockade</div>
+  <ol class="schritt-liste">
+    <li><b>Arbeitsblatt bereitlegen:</b> Kinder-Version (Seite 8) oder neutrale Version (Seite 9) ausdrucken oder kopieren.</li>
+    <li><b>Blockade erkennen:</b> Verweigerung, Stift weglegen oder starres Sitzen vor dem leeren Blatt.</li>
+    <li><b>Neutrales Thema wählen:</b> z. B. Tiere, Hobbys, Sommerferien — nie das eigentliche blockierte Thema selbst.</li>
+    <li><b>Frei springen lassen:</b> Nicht bei A anfangen müssen, leere Felder sind ausdrücklich erlaubt.</li>
+    <li><b>Danach weitermachen:</b> Nach 2–3 Minuten ist die Blockade meist gelöst — erst dann zur eigentlichen Aufgabe zurückkehren.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Mehrere Zugänge zur gleichen Methode</div>
+  <ul class="liste">
+    <li><b>Analog:</b> die gedruckten ABC-Arbeitsblätter (Seite 8/9).</li>
+    <li><b>Digital:</b> die Web-App mit beruhigendem Sound-Chime bei jedem Treffer, Fortschritt bleibt lokal auf dem Gerät gespeichert (DSGVO-sicher, kein Login).</li>
+    <li><b>Kollegial/sozial:</b> der Partner-Basar mit den Rollenkärtchen auf Seite 5.</li>
+    <li><b>Dokumentiert:</b> das Blitz-Tagebuch über mehrere Tage (siehe Seite 1).</li>
+  </ul>
+
   <div class="qr-zeile">
-    <div class="qr" id="druck-qr"></div>
-    <div class="qr-text"><b>Die digitale Brücke</b>QR-Code scannen für den KLARTEXT-Assoziationsblitz als Web-App (ohne Login, DSGVO-sicher): Begriffe eintippen, bei jedem Treffer ein beruhigender Sound-Chime, der Fortschritt bleibt auf dem Gerät gespeichert.</div>
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Die digitale Brücke</b>QR-Code scannen: Begriffe eintippen, bei jedem Treffer ein beruhigender Sound-Chime — direkt im Browser, ohne Login.<div class="link">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Assoziationsblitz.html?guest=true</div></div>
   </div>
 
   <div class="brainy-zeile">
@@ -209,17 +283,320 @@ table tr:nth-child(even) td{background:var(--paper);}
     <div class="txt"><b>Brainy sagt:</b> Es gibt kein falsches Tempo. Jeder gefundene Begriff zählt, auch wenn am Ende nicht jeder Buchstabe ausgefüllt ist.</div>
   </div>
 
-  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang zur digitalen Version</h1>
+  <div class="absatz">Die digitale Assoziationsblitz-Version ist eine <b>kostenlose Web-App</b> — frei zugänglich, ganz ohne Anmeldung oder Zugangscode.</div>
+
+  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+    <div class="mini-qr">
+      <div class="qr" id="qr-mein-set"></div>
+      <div class="lbl">Assoziationsblitz (Web-App)</div>
+      <div class="lnk">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Assoziationsblitz.html?guest=true</div>
+      <div class="frei">kostenlos nutzbar · kein Code nötig</div>
+    </div>
+  </div>
+
+  <div class="absatz" style="margin-top:1rem;">Weitere kostenlose und kostenpflichtige KLARTEXT-Materialien zu Denkblockaden, Classroom Management und systemischer Pädagogik findest du auf eduki im KLARTEXT-Mentoring-Profil.</div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Rollenkärtchen für den Partner-Basar findest du auf Seite 5, einen Reflexionsbogen für Lehrkräfte auf Seite 6, eine Selbstreflexionskarte auf Seite 7, die fertigen Arbeitsblätter auf Seite 8/9.</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, entlastenden Einsatz in Schule, Coaching und zu Hause.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Partner-Basar-Rollenkärtchen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Rollenkärtchen für den Partner-Basar</h1>
+  <div class="formular-hinweis">Für die Kleingruppe (Szenario 2, Seite 2) — ausschneiden, laminieren, im Team verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🎯 Themen-Wähler:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich schlage ein neutrales Thema für die Runde vor (z. B. Tiere, Ferien, Hobbys).</li>
+        <li>Ich sorge dafür, dass niemand ein heikles Thema wählt.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">💡 Ideen-Geber:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich lese meine eigenen Begriffe laut vor, wenn ich am Zug bin.</li>
+        <li>Ich erkläre kurz, warum mir der Begriff eingefallen ist.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">✅ Ideen-Prüfer:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich entscheide, ob ich den gehörten Begriff für meine eigene Liste übernehme.</li>
+        <li>Ich übernehme nur, was wirklich kurz erklärt wurde.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⏱️ Zeitwächter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte darauf, dass die Runde maximal 3 Minuten dauert.</li>
+        <li>Ich sorge dafür, dass jede:r einmal an der Reihe ist.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Am Ende der Runde hat jede:r im Team mindestens einen Begriff von einem Partnerkind übernommen — Ideen tauschen statt allein grübeln.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Lehrkräfte-Reflexionsbogen &amp; Wirkungs-Evaluation</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Selbstevaluation des Einsatzes.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Klasse/Gruppe:</b> ______________</span>
+    <span><b>Genutzte Variante:</b> _____________________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Lösung der Blockade: Wie gut hat der Assoziationsblitz das Anfangen erleichtert?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Selbstständigkeit: Konnte die Methode ohne viel Anleitung genutzt werden?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>In welcher Situation hat der Assoziationsblitz heute am besten funktioniert?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Welches Kind hat die Methode schon selbstständig eingesetzt, ohne Aufforderung?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Methodische Tipps für die Moderation</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li>Immer ein neutrales Thema wählen — nie das eigentlich blockierte Thema selbst als Einstieg nutzen.</li>
+      <li>Leere Felder ausdrücklich erlauben: „Auch wenn nicht jeder Buchstabe passt, ist das völlig okay."</li>
+      <li>Formulierungshilfe: „Wir machen jetzt kein Mathe. Lass uns für 2 Minuten einen Assoziationsblitz machen."</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund &amp; Quellen</b>
+    Die akute Anfangsblockade vor einer Aufgabe (Task-Paralyse) lässt sich fachlich auf Defizite in exekutiven Funktionen zurückführen, wie sie insbesondere bei ADHS gut belegt sind: Barkley, R. A. (1997). ADHD and the nature of self-control. New York: Guilford Press. Freies, unlineares Assoziieren senkt dabei nachweislich den Einstiegsdruck gegenüber starrer, linearer Aufgabenbearbeitung — ein Grundprinzip klassischer Brainstorming-Verfahren.
+    <div class="hinweis">Für die drei Spielvarianten selbst wurde bewusst keine externe Einzelstudie angeführt — sie beruhen auf allgemeiner Praxis des KLARTEXT-Mentoring-Systems.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Schüler-Selbstreflexionskarte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren fürs Lerntagebuch</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Schüler-Selbstreflexionskarte „Mein Blitz-Check"</h1>
+  <div class="formular-hinweis">Kompakter Rückmeldebogen — 4 Karten pro Blatt, einzeln ausschneiden.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Blitz-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Mein Thema heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. So viele Buchstaben habe ich geschafft:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Blitz-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Mein Thema heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. So viele Buchstaben habe ich geschafft:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Blitz-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Mein Thema heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. So viele Buchstaben habe ich geschafft:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Blitz-Check</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Mein Thema heute:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .2rem;">2. So fühlte ich mich vorher / nachher:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. So viele Buchstaben habe ich geschafft:</div>
+      <div class="antwortlinie"></div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 8 · Arbeitsblatt für die Kleinen (mit Brainy) ══════ -->
+<div class="seite">
+  <div class="kopf kopf-kid">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">FÜR DIE KLEINEN</div>
+  </div>
+
+  <div class="kid-hero">
+    <img src="brainy.png" alt="Brainy">
+    <div>
+      <h1 class="haupttitel">Brainys Assoziationsblitz</h1>
+      <div class="untertitel" style="color:var(--kid);">Für Grundschulkinder</div>
+    </div>
+  </div>
+
+  <div class="kid-sprechblase">
+    <b>Hallo, ich bin Brainy!</b> Schreib oben dein Thema hin — zum Beispiel Tiere, Ferien oder dein Lieblingsspiel. Dann such dir einen Buchstaben aus, zu dem dir sofort etwas einfällt. Du musst <b>nicht</b> bei A anfangen, du darfst überall hin springen! Leere Felder sind okay.
+  </div>
+
+  <div class="wb-kopfzeile" style="margin-top:.9rem;">
+    <div class="wb-kopfzeile-block"><b>Mein Thema:</b><span class="feld"></span></div>
+    <div class="wb-kopfzeile-block" style="flex:.5;margin-left:1rem;"><b>Name:</b><span class="feld"></span></div>
+  </div>
+
+  <div class="wb-grid kid" style="margin-top:.5rem;">
+    <div>
+      <div class="wb-zeile kid"><div class="wb-label kid">A</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">B</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">C</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">D</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">E</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">F</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">G</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">H</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">I/J</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">K</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">L</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">M</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">N</div><div class="wb-linie"></div></div>
+    </div>
+    <div>
+      <div class="wb-zeile kid"><div class="wb-label kid">O</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">P/Q</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">R</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">S</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">T</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">U</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">V</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">W</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">X/Y/Z</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">☺</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">☺</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile kid"><div class="wb-label kid">☺</div><div class="wb-linie"></div></div>
+    </div>
+  </div>
+
+  <div class="wb-zitat" style="color:var(--kid);">„Kaum ist das Thema da, blitzt dein Wissen von ganz allein irgendwo auf!" <b>— Brainy</b></div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 8 von 9</span></div>
+</div>
+
+<!-- ══════ SEITE 9 · Arbeitsblatt neutral (Jugendliche/Erwachsene) ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">FÜR JUGENDLICHE &amp; ERWACHSENE</div>
+  </div>
+
+  <h1 class="haupttitel" style="text-align:center;">ASSOZIATIONSBLITZ</h1>
+  <div class="untertitel" style="text-align:center;">Deine freie ABC-Liste</div>
+
+  <div class="wb-anleitung" style="background:var(--paper);">
+    <b>So funktioniert's:</b> Trag oben dein Thema ein (z. B. Prüfungsstoff, Klassenklima, Gefühle). Füll die Buchstaben aus — du musst <b>nicht</b> bei A anfangen! Spring frei zu den Buchstaben, zu denen dir sofort ein Begriff einfällt. Mehrere Begriffe pro Buchstabe sind erlaubt. Lass leere Felder einfach frei.
+  </div>
+
+  <div class="wb-kopfzeile">
+    <div class="wb-kopfzeile-block"><b>Mein Thema:</b><span class="feld"></span></div>
+    <div class="wb-kopfzeile-block" style="flex:.5;margin-left:1rem;"><b>Datum:</b><span class="feld"></span></div>
+  </div>
+
+  <div class="wb-grid">
+    <div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">A</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">B</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">C</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">D</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">E</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">F</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">G</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">H</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">I/J</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">K</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">L</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">M</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">N</div><div class="wb-linie"></div></div>
+    </div>
+    <div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">O</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">P/Q</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">R</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">S</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">T</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">U</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">V</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">W</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">X/Y/Z</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">＋</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">＋</div><div class="wb-linie"></div></div>
+      <div class="wb-zeile"><div class="wb-label" style="background:var(--m);">＋</div><div class="wb-linie"></div></div>
+    </div>
+  </div>
+
+  <div class="wb-zitat">„Du musst nichts suchen. Kaum ist das Thema da, blitzt dein Wissen von ganz allein irgendwo auf." <b>— Brainy</b></div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 9 von 9</span>
+  </div>
 </div>
 
 <script>
 (function(){
   try{
     if(!window.KLARTEXT_QRCode) return;
-    var ziel = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Assoziationsblitz.html?guest=true';
-    var svg = window.KLARTEXT_QRCode.erzeugeSvg(ziel);
-    var ziel_el = document.getElementById('druck-qr');
-    if(svg && ziel_el) ziel_el.innerHTML = svg;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Assoziationsblitz.html?guest=true';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
   }catch(e){}
 })();
 </script>

@@ -64,6 +64,15 @@
     background:var(--m8);color:#fff;font-weight:800;font-size:11px;border-color:var(--m8);
   }
 
+  .feld:not(.frei){cursor:pointer;transition:background .15s,border-color .15s;}
+  .feld:not(.frei):hover{border-color:var(--m8-dark);}
+  .feld.checked{background:var(--m8);border-color:var(--m8-dark);}
+  .feld.checked div{color:#fff;}
+  .feld.checked .box{background:var(--m8-dark);border-color:#fff;position:relative;}
+  .feld.checked .box::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:3.2mm;font-weight:800;}
+  @media print{ .feld{cursor:default;} .feld.checked{background:var(--m8-light)!important;border-color:var(--m8-border)!important;} .feld.checked div{color:var(--kt-ink)!important;} .feld.checked .box{background:#fff!important;border-color:var(--m8-dark)!important;} .feld.checked .box::after{display:none;} }
+
+
   .tipp{
     display:flex;align-items:center;gap:4mm;background:var(--kt-surface);border:1px solid var(--kt-border);
     border-left:4px solid var(--kt-accent);border-radius:10px;padding:3.4mm 5mm;margin-top:5mm;
@@ -180,6 +189,15 @@
       if (f) f.style.cssText = 'display:block;background:#1B3A4B;color:#fff;font-family:\'DM Sans\',Arial,sans-serif;font-size:.78rem;line-height:1.4;padding:.65rem 1rem;text-align:center;';
     }
   } catch(e) {}
+})();
+</script>
+<script>
+(function(){
+  try{
+    document.querySelectorAll('.feld:not(.frei)').forEach(function(el){
+      el.addEventListener('click', function(){ el.classList.toggle('checked'); });
+    });
+  }catch(e){}
 })();
 </script>
 </body>

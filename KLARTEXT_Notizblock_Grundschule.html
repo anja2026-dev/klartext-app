@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Notizblock Grundschule (blanko)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#2E7D5F;--paper:#F5F0E8;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+
+.toolbar{position:sticky;top:0;z-index:10;background:var(--m);padding:.7rem 1rem;display:flex;gap:.6rem;align-items:center;justify-content:center;flex-wrap:wrap;}
+.toolbar button{font-family:"DM Sans",sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.03em;padding:.5rem 1.1rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.5);background:transparent;color:#fff;cursor:pointer;}
+.toolbar button.aktiv{background:var(--acc);border-color:var(--acc);}
+.toolbar a{font-size:.72rem;color:#fff;opacity:.8;text-decoration:none;margin-left:.5rem;}
+.toolbar .drucken{background:#fff;color:var(--m);}
+
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm;position:relative;page-break-after:always;display:none;flex-direction:column;}
+.seite:last-of-type{page-break-after:auto;}
+.seite.zeigen{display:flex;}
+
+.kopf{display:flex;align-items:center;gap:.7rem;border-bottom:2px solid var(--acc);padding-bottom:.6rem;margin-bottom:.7rem;}
+.kopf img{width:38px;height:38px;flex-shrink:0;}
+.kopf-text h1{font-family:"Playfair Display",serif;font-weight:800;color:var(--m);font-size:1.15rem;}
+.kopf-text p{font-size:.68rem;color:var(--muted);}
+
+.sprechblase{display:flex;align-items:center;gap:.5rem;background:var(--paper);border-radius:10px;padding:.5rem .8rem;margin-bottom:.9rem;}
+.sprechblase img{width:26px;height:26px;flex-shrink:0;}
+.sprechblase p{font-style:italic;color:var(--m);font-size:.72rem;}
+
+.meta-zeile{display:flex;gap:1.5rem;margin-bottom:1rem;}
+.meta-feld{flex:1;display:flex;align-items:baseline;gap:.4rem;}
+.meta-feld span{font-size:.66rem;color:var(--muted);white-space:nowrap;}
+.meta-feld .linie-kurz{flex:1;border-bottom:1px solid var(--border);height:1em;}
+
+.flaeche{flex:1;position:relative;}
+
+/* Grundschullinien: 3er-Lineatur (Ansatzlinie gestrichelt, Grundlinie durchgezogen), Bandhöhe 10mm, Zeilenabstand 4mm */
+.linien-flaeche{display:flex;flex-direction:column;}
+.zeile-band{position:relative;height:10mm;margin-bottom:4mm;}
+.zeile-band .oben{position:absolute;top:0;left:0;right:0;border-top:.75px solid #C9C2B4;}
+.zeile-band .mitte{position:absolute;top:5mm;left:0;right:0;border-top:1px dashed #B7AE9C;}
+.zeile-band .unten{position:absolute;bottom:0;left:0;right:0;border-top:1.5px solid #6B6354;}
+
+/* Grundschul-Mathekästchen: 10mm-Karo-Raster */
+.kaestchen-flaeche{background-image:
+  linear-gradient(to right, #D9D2C4 1px, transparent 1px),
+  linear-gradient(to bottom, #D9D2C4 1px, transparent 1px);
+  background-size:10mm 10mm;
+  background-position:0 0;
+}
+
+.fuss{margin-top:.7rem;padding-top:.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.58rem;color:var(--muted);}
+
+@media print{
+  .toolbar{display:none;}
+  body{background:#fff;}
+  .seite{box-shadow:none;margin:0;display:none;}
+  .seite.zeigen{display:flex;}
+}
+@media screen{
+  body{padding-bottom:10mm;}
+  .seite.zeigen{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="btn-linien" class="aktiv" onclick="zeigeModus('linien')">Grundschullinien</button>
+  <button id="btn-kaestchen" onclick="zeigeModus('kaestchen')">Mathe-Kästchen</button>
+  <button class="drucken" onclick="window.print()">🖨 Drucken</button>
+  <a href="KLARTEXT_Notizblock.html">← zurück zum digitalen Notizblock</a>
+</div>
+
+<!-- ═══════════ GRUNDSCHULLINIEN — 4 Seiten ═══════════ -->
+
+<div class="seite linien zeigen">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Grundschullinien</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Du machst das richtig gut.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-1"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1</span></div>
+</div>
+
+<div class="seite linien">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Grundschullinien</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Ein klarer Kopf fängt hier an.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-2"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2</span></div>
+</div>
+
+<div class="seite linien">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Grundschullinien</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Manchmal hilft schon, es aufzuschreiben.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-3"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3</span></div>
+</div>
+
+<div class="seite linien">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Grundschullinien</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Notiert ist halb erledigt.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche linien-flaeche" id="linien-4"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4</span></div>
+</div>
+
+<!-- ═══════════ MATHE-KÄSTCHEN — 4 Seiten ═══════════ -->
+
+<div class="seite kaestchen">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Mathe-Kästchen</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Du schaffst mehr, als du denkst.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche kaestchen-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de · 10mm-Raster</span><span>Seite 1</span></div>
+</div>
+
+<div class="seite kaestchen">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Mathe-Kästchen</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Kleine Notizen, große Wirkung.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche kaestchen-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de · 10mm-Raster</span><span>Seite 2</span></div>
+</div>
+
+<div class="seite kaestchen">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Mathe-Kästchen</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Du musst nicht alles im Kopf behalten.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche kaestchen-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de · 10mm-Raster</span><span>Seite 3</span></div>
+</div>
+
+<div class="seite kaestchen">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · Mathe-Kästchen</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Auch kleine Erfolge zählen.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche kaestchen-flaeche"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de · 10mm-Raster</span><span>Seite 4</span></div>
+</div>
+
+<script>
+function zeigeModus(modus){
+  document.querySelectorAll('.seite').forEach(function(s){ s.classList.remove('zeigen'); });
+  document.querySelectorAll('.seite.'+modus).forEach(function(s){ s.classList.add('zeigen'); });
+  document.getElementById('btn-linien').classList.toggle('aktiv', modus==='linien');
+  document.getElementById('btn-kaestchen').classList.toggle('aktiv', modus==='kaestchen');
+}
+// Grundschullinien-Bänder per JS erzeugen (Anzahl passend zur verfügbaren Höhe)
+document.querySelectorAll('.linien-flaeche').forEach(function(flaeche){
+  for(var i=0;i<15;i++){
+    var band=document.createElement('div');
+    band.className='zeile-band';
+    band.innerHTML='<div class="oben"></div><div class="mitte"></div><div class="unten"></div>';
+    flaeche.appendChild(band);
+  }
+});
+</script>
+
+</body>
+</html>

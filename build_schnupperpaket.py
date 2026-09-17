@@ -114,7 +114,8 @@ def build_cover():
 
     f_foot = ImageFont.truetype(F_SANS_REG, mm(4.4))
     d.text((mm(20), H - mm(15)), "KLARTEXT-Mentoring · © 2026 Anja Jolk", font=f_foot, fill=KT_MUTED)
-    return img
+    link_rect = (mm(20), box_y, W - mm(20), box_y + box_h)
+    return img, link_rect, FLIPCARDS_URL
 
 # ═══════════════════════ SCHLUSS-/CROSS-SELL-SEITE ═══════════════════════
 def build_schluss():
@@ -182,10 +183,13 @@ def build_schluss():
 
     f_foot = ImageFont.truetype(F_SANS_REG, mm(4.2))
     d.text((MARGIN, H - mm(15)), "KLARTEXT-Mentoring · © 2026 Anja Jolk", font=f_foot, fill=KT_MUTED)
-    return img
+    link_rect = (MARGIN, y, W - MARGIN, y + box_h)
+    return img, link_rect, SHOP_URL
 
 def run():
-    pages = [build_cover()]
+    cover_img, cover_rect, cover_url = build_cover()
+    pages = [cover_img]
+    link_annotations = [(0, cover_rect, cover_url)]
 
     # ── KD ──
     kd_cards = {
@@ -303,11 +307,35 @@ def run():
         pages.append(Image.open(hinten).convert("RGB"))
         print("M3", card["id_text"], "ok")
 
-    pages.append(build_schluss())
+    schluss_img, schluss_rect, schluss_url = build_schluss()
+    pages.append(schluss_img)
+    link_annotations.append((len(pages) - 1, schluss_rect, schluss_url))
 
     first, rest = pages[0], pages[1:]
     first.save(OUT_PDF, save_all=True, append_images=rest, resolution=DPI)
     print(f"PDF fertig: {OUT_PDF} ({len(pages)} Seiten)")
+
+    # Klickbare Link-Annotationen ueber den QR-/CTA-Boxen ergaenzen (PIL kennt keine PDF-Links)
+    from pypdf import PdfReader, PdfWriter
+    from pypdf.generic import RectangleObject
+    reader = PdfReader(OUT_PDF)
+    writer = PdfWriter()
+    writer.append(reader)
+    pdf_w_pt = float(writer.pages[0].mediabox.width)
+    pdf_h_pt = float(writer.pages[0].mediabox.height)
+    scale = pdf_w_pt / mm(210)  # Seitenbreite in Pixel bei DPI -> PDF-Punkte
+    for page_idx, rect_px, url in link_annotations:
+        x0, y0, x1, y1 = rect_px
+        rect_pt = RectangleObject((
+            x0 * scale,
+            pdf_h_pt - y1 * scale,
+            x1 * scale,
+            pdf_h_pt - y0 * scale,
+        ))
+        writer.add_uri(page_idx, url, rect_pt)
+    with open(OUT_PDF, "wb") as f:
+        writer.write(f)
+    print(f"Link-Annotationen ergaenzt: {len(link_annotations)}")
 
 if __name__ == "__main__":
     run()

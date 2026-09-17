@@ -12,9 +12,11 @@
 body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
 .seite:last-child{page-break-after:auto;}
-.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;padding-right:3.4rem;}
 .kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
 .kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf .brainy-maskottchen{position:absolute;right:.9rem;top:50%;transform:translateY(-70%);width:2.2rem;height:2.2rem;border-radius:50%;background:#fff;padding:2px;}
+.kopf-schmal .brainy-klein{width:1.05rem;height:1.05rem;border-radius:50%;vertical-align:middle;margin-right:.35rem;}
 .kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
 .kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
 .kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
@@ -77,6 +79,7 @@ table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
   <div class="kopf">
     <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
     <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+    <img class="brainy-maskottchen" src="brainy.png" alt="Brainy">
   </div>
   <h1 class="haupttitel">Begleitheft: Pausenhof-Code</h1>
   <div class="untertitel">Zum Einsatz mit Pausenhof-Code-Karte &amp; Hosentaschenkarten</div>
@@ -154,7 +157,7 @@ table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
 
 <!-- ══════ SEITE 5 — Formular 1: Rollenkarten ══════ -->
 <div class="seite">
-  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 1</div></div>
+  <div class="kopf kopf-schmal"><div class="kopf-titel"><img class="brainy-klein" src="brainy.png" alt="Brainy">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 1</div></div>
   <h2 class="abschnitt-titel">Rollenkarten für die Pausenhof-Werkstatt</h2>
   <p class="absatz">Zum Ausschneiden — 4 feste Rollen für die gemeinsame Einführung oder eine Kleingruppen-Übung:</p>
   <div class="rollen-grid">
@@ -193,7 +196,7 @@ table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
 
 <!-- ══════ SEITE 7 — Formular 3: Schüler-Selbstreflexionskarte ══════ -->
 <div class="seite">
-  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 3</div></div>
+  <div class="kopf kopf-schmal"><div class="kopf-titel"><img class="brainy-klein" src="brainy.png" alt="Brainy">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 3</div></div>
   <h2 class="abschnitt-titel">Mein Pausen-Check (4 Karten zum Ausschneiden)</h2>
   <div class="selbstreflex-grid">
     <div class="selbstreflex-karte"><div class="titel">Mein Pausen-Check</div><div class="zeile">Heute war meine Pause: 🙂 / 😐 / 🙁</div><div class="zeile">Das hat gut geklappt: ___________</div></div>

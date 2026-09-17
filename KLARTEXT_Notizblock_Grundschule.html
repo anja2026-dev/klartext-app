@@ -44,6 +44,10 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .zeile-band .mitte{position:absolute;top:5mm;left:0;right:0;border-top:1px dashed #B7AE9C;}
 .zeile-band .unten{position:absolute;bottom:0;left:0;right:0;border-top:1.5px solid #6B6354;}
 
+/* 4. Klasse: Einzellinie (nur Grundlinie, kein Mittelband) */
+.einzellinie-flaeche{display:flex;flex-direction:column;}
+.einzellinie-flaeche .zeile-einzel{flex:1;border-bottom:1px solid #D8D0C0;}
+
 /* Grundschul-Mathekästchen: 10mm-Karo-Raster */
 .kaestchen-flaeche{background-image:
   linear-gradient(to right, #D9D2C4 1px, transparent 1px),
@@ -69,7 +73,8 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 <body>
 
 <div class="toolbar">
-  <button id="btn-linien" class="aktiv" onclick="zeigeModus('linien')">Grundschullinien</button>
+  <button id="btn-linien" class="aktiv" onclick="zeigeModus('linien')">Grundschullinien (1.–3. Klasse)</button>
+  <button id="btn-klasse4" onclick="zeigeModus('klasse4')">Einzellinie (4. Klasse)</button>
   <button id="btn-kaestchen" onclick="zeigeModus('kaestchen')">Mathe-Kästchen</button>
   <button class="drucken" onclick="window.print()">🖨 Drucken</button>
   <a href="KLARTEXT_Notizblock.html">← zurück zum digitalen Notizblock</a>
@@ -106,6 +111,40 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
   <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Notiert ist halb erledigt.“</p></div>
   <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
   <div class="flaeche linien-flaeche" id="linien-4"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4</span></div>
+</div>
+
+<!-- ═══════════ 4. KLASSE — EINZELLINIE — 4 Seiten ═══════════ -->
+
+<div class="seite klasse4">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · 4. Klasse · Einzellinie</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Du machst das richtig gut.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche einzellinie-flaeche" id="einzellinie-1"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1</span></div>
+</div>
+
+<div class="seite klasse4">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · 4. Klasse · Einzellinie</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Ein klarer Kopf fängt hier an.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche einzellinie-flaeche" id="einzellinie-2"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2</span></div>
+</div>
+
+<div class="seite klasse4">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · 4. Klasse · Einzellinie</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Manchmal hilft schon, es aufzuschreiben.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche einzellinie-flaeche" id="einzellinie-3"></div>
+  <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3</span></div>
+</div>
+
+<div class="seite klasse4">
+  <div class="kopf"><img src="brainy.png" alt="Brainy"><div class="kopf-text"><h1>Mein Notizblock</h1><p>KLARTEXT-Mentoring · 4. Klasse · Einzellinie</p></div></div>
+  <div class="sprechblase"><img src="brainy.png" alt="Brainy"><p>„Notiert ist halb erledigt.“</p></div>
+  <div class="meta-zeile"><div class="meta-feld"><span>Datum:</span><div class="linie-kurz"></div></div><div class="meta-feld"><span>Thema:</span><div class="linie-kurz"></div></div></div>
+  <div class="flaeche einzellinie-flaeche" id="einzellinie-4"></div>
   <div class="fuss"><span>KLARTEXT-Mentoring · © 2026 Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4</span></div>
 </div>
 
@@ -148,6 +187,7 @@ function zeigeModus(modus){
   document.querySelectorAll('.seite').forEach(function(s){ s.classList.remove('zeigen'); });
   document.querySelectorAll('.seite.'+modus).forEach(function(s){ s.classList.add('zeigen'); });
   document.getElementById('btn-linien').classList.toggle('aktiv', modus==='linien');
+  document.getElementById('btn-klasse4').classList.toggle('aktiv', modus==='klasse4');
   document.getElementById('btn-kaestchen').classList.toggle('aktiv', modus==='kaestchen');
 }
 // Grundschullinien-Bänder per JS erzeugen (Anzahl passend zur verfügbaren Höhe)
@@ -157,6 +197,14 @@ document.querySelectorAll('.linien-flaeche').forEach(function(flaeche){
     band.className='zeile-band';
     band.innerHTML='<div class="oben"></div><div class="mitte"></div><div class="unten"></div>';
     flaeche.appendChild(band);
+  }
+});
+// Einzellinien für 4. Klasse per JS erzeugen (mehr Zeilen möglich, da kein Zeilenband)
+document.querySelectorAll('.einzellinie-flaeche').forEach(function(flaeche){
+  for(var i=0;i<24;i++){
+    var zeile=document.createElement('div');
+    zeile.className='zeile-einzel';
+    flaeche.appendChild(zeile);
   }
 });
 </script>

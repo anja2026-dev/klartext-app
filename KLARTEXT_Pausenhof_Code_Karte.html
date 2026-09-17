@@ -13,9 +13,12 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
 .seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:12mm 14mm 10mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
 .seite:last-child{page-break-after:auto;}
 .kopf{color:#fff;border-radius:10px;padding:.8rem 1.3rem;text-align:center;margin-bottom:1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
-.kopf.blau{background:var(--m);}
+.kopf.blau{background:var(--m);padding-right:3.5rem;}
 .kopf.terra{background:var(--warm);}
 .kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid #fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf .brainy-maskottchen{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);width:2.3rem;height:2.3rem;border-radius:50%;background:#fff;padding:2px;}
+.titel-mit-brainy{display:flex;align-items:center;gap:.4rem;}
+.titel-mit-brainy img{width:1.15rem;height:1.15rem;border-radius:50%;flex-shrink:0;}
 .kopf-titel{font-size:.75rem;font-weight:700;letter-spacing:.12em;}
 .kopf-sub{font-size:.6rem;letter-spacing:.08em;color:rgba(255,255,255,.75);margin-top:.15rem;}
 .haupttitel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:800;color:var(--m);margin-bottom:.2rem;}
@@ -64,12 +67,13 @@ body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
   <div class="kopf blau">
     <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
     <div class="kopf-sub">PAUSENHOF-CODE-KARTE · VORDERSEITE</div>
+    <img class="brainy-maskottchen" src="brainy.png" alt="Brainy">
   </div>
   <h1 class="haupttitel">Für Kinder &amp; die Spieleausgabe</h1>
   <div class="untertitel">Was ist der kleinste Schritt für eine faire Pause?</div>
 
   <div class="baustein gruen">
-    <div class="titel">🔴🦊 Die paradoxe Pausen-Methode</div>
+    <div class="titel titel-mit-brainy"><img src="brainy.png" alt="Brainy"> Die paradoxe Pausen-Methode</div>
     <ol class="ordn-liste">
       <li><b>Brainys Kopfstand:</b> „Wie sorgen wir für maximalen Hof-Streit?“ — 60 Sekunden lang darf man ganz frech Sabotage-Ideen sammeln, das macht den Kopf frei.</li>
       <li><b>Schlaufuchs-Lösung:</b> „Was ist der kleinste Schritt für eine faire Pause?“ — jetzt wird gedreht: aus jeder Sabotage-Idee wird das Gegenteil.</li>

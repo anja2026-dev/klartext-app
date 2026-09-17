@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Trainerhandbuch FGZ-Modul 3 · Hausaufgaben ohne Kampf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E7D5F;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.8rem;color:var(--acc);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.9rem;font-size:.74rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.5rem;}
+.hinweis-box b{color:var(--m);}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.9rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.74rem;line-height:1.58;margin-bottom:.55rem;}
+.absatz b{color:var(--m);}
+table.kt-tabelle{width:100%;border-collapse:collapse;margin-bottom:.9rem;font-size:.68rem;}
+table.kt-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.4rem .55rem;font-weight:700;font-size:.62rem;letter-spacing:.03em;}
+table.kt-tabelle td{padding:.45rem .55rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
+.liste{list-style:none;margin:.2rem 0 .8rem;}
+.liste li{font-size:.74rem;line-height:1.58;padding-left:1.1em;position:relative;margin-bottom:.35rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.ordn-liste{list-style:none;counter-reset:schritt;margin:.2rem 0 .8rem;}
+.ordn-liste li{counter-increment:schritt;position:relative;padding:.35rem 0 .35rem 1.8rem;font-size:.74rem;line-height:1.5;}
+.ordn-liste li::before{content:counter(schritt);position:absolute;left:0;top:.3rem;width:1.25rem;height:1.25rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.62rem;display:flex;align-items:center;justify-content:center;}
+.ordn-liste li b{color:var(--m);}
+.skript-box{background:var(--paper);border-left:3px solid var(--acc);border-radius:8px;padding:.6rem .9rem;margin-bottom:.7rem;font-size:.72rem;line-height:1.55;}
+.skript-box .label{font-weight:700;color:var(--m);display:block;margin-bottom:.25rem;font-size:.68rem;letter-spacing:.02em;}
+.skript-box .zitat{font-style:italic;color:var(--ink);}
+.stolper-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .9rem;margin-bottom:.6rem;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.stolper-box .titel{font-weight:700;color:var(--m);font-size:.74rem;margin-bottom:.25rem;}
+.stolper-box .txt{font-size:.7rem;line-height:1.5;}
+.fuss{margin-top:auto;padding-top:.7rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
+.handout-rahmen{border:1.5px dashed var(--muted);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.8rem;}
+.handout-rahmen::before{content:"✂ Handout zum Mitgeben";display:block;font-size:.6rem;color:var(--muted);margin-bottom:.5rem;letter-spacing:.05em;}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Überblick & Vorbereitung ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">TRAINERHANDBUCH</h1>
+  <div class="untertitel">FGZ-Modul 3 · Hausaufgaben ohne Kampf (Eltern-Kind-Werkstatt)</div>
+
+  <div class="hinweis-box">
+    <p><b>Ziel:</b> Eltern erleben mit ihrem Kind gemeinsam, wie eine große, überfordernde Aufgabe in kleine, machbare Mikroschritte zerlegt wird — nach der Methode "Ein Schritt. Nicht fünf."</p>
+  </div>
+
+  <h2 class="abschnitt-titel">Auf einen Blick</h2>
+  <table class="kt-tabelle">
+    <tr><td style="width:28%"><b>Zielgruppe</b></td><td>Eltern-Kind-Tandems (Kind bringt eine echte, aktuelle Hausaufgabe mit) — Mitmach-Werkstatt, kein reiner Vortrag</td></tr>
+    <tr><td><b>Dauer</b></td><td>90 Minuten (Standard) · 60 Minuten (Kompaktversion)</td></tr>
+    <tr><td><b>Lernziele</b></td><td>Eltern erleben die Methode live; jedes Tandem geht mit einem ausgefüllten Schritt-Plan für eine echte Hausaufgabe nach Hause</td></tr>
+    <tr><td><b>Material</b></td><td>Schritt-Planer-Vorlagen (Ausdruck der App KLARTEXT_Spiel_SchrittPlan.html), Beispiel-Aufgaben-Set für Tandems ohne mitgebrachte Hausaufgabe, Stifte</td></tr>
+  </table>
+
+  <h2 class="abschnitt-titel">Vorbereitung (Checkliste)</h2>
+  <ul class="liste">
+    <li>Einladung so formulieren, dass Eltern EIN Kind UND eine echte, aktuell anstehende Hausaufgabe mitbringen</li>
+    <li>Schritt-Planer-Vorlagen ausdrucken, ein Exemplar pro Tandem plus Reserve</li>
+    <li>Beispiel-Aufgaben-Set vorbereiten für Familien ohne mitgebrachte Hausaufgabe (z. B. "Zimmer aufräumen")</li>
+    <li>Tische in Tandem-Grüppchen (2–3 Familien pro Tisch) statt Café-Kreis — hier wird geschrieben</li>
+    <li>Stifte in ausreichender Zahl (Kinder und Eltern schreiben oft parallel)</li>
+    <li>Vorabinfo: "Bringt eine Hausaufgabe mit, an der es gerade hakt — wir zerlegen sie gemeinsam in kleine Schritte"</li>
+    <li>Bei mehrsprachiger Elternschaft: FGZ vorab nach Sprachmittler:in/Elternlots:in fragen (siehe Seite 2)</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 2 — Ablauf & Zugänglichkeit ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FGZ-MODUL 3 · HAUSAUFGABEN OHNE KAMPF</div></div>
+
+  <h2 class="abschnitt-titel">Ablaufplan (90 Minuten, Kompaktversion 60 Minuten möglich)</h2>
+  <table class="kt-tabelle">
+    <tr><th>Zeit</th><th>Block</th><th>Inhalt</th></tr>
+    <tr><td>0:00–0:10</td><td>Ankommen</td><td>Begrüßung von Eltern UND Kindern, Warm-up: "Welche Hausaufgabe nervt gerade am meisten?"</td></tr>
+    <tr><td>0:10–0:20</td><td>Einstieg</td><td>Methode erklären: "Ein Schritt. Nicht fünf." — Beispiel im Plenum durchspielen</td></tr>
+    <tr><td>0:20–0:55</td><td>Hauptteil — Werkstatt</td><td>Jedes Tandem zerlegt die mitgebrachte Aufgabe mit dem Schritt-Planer — Trainerin geht von Tisch zu Tisch</td></tr>
+    <tr><td>0:55–0:70</td><td>Erster Schritt live</td><td>Jedes Tandem probiert den allerersten, kleinsten Schritt direkt im Raum aus</td></tr>
+    <tr><td>0:70–0:80</td><td>Vertiefung (nur bei 90 Min.)</td><td>Austausch im Plenum: Was war leichter als gedacht?</td></tr>
+    <tr><td>0:80–0:90</td><td>Abschluss</td><td>Rückblick, Hinweis auf digitale Version mit Fortschrittsanzeige, offene Fragen</td></tr>
+  </table>
+  <p class="absatz">Bei 60 Minuten entfällt der Vertiefungsblock — direkt vom ersten Schritt in den Abschluss.</p>
+
+  <h2 class="abschnitt-titel">Sprachliche &amp; kulturelle Zugänglichkeit</h2>
+  <ul class="liste">
+    <li>Die Methode ist sprachlich niedrigschwellig — sie funktioniert auch mit wenig Text, da das Kind aktiv mitmacht</li>
+    <li>Beispiel-Aufgaben-Set auf Bildsymbole statt Fließtext umstellen bei geringen Deutschkenntnissen</li>
+    <li>Bei Bedarf FGZ vorab nach Sprachmittler:in/Elternlots:in fragen — besonders wichtig, da Eltern UND Kind gleichzeitig verstehen müssen</li>
+    <li>Offen ansprechen, dass Hausaufgabenkultur je nach Herkunftsland/Schulsystem unterschiedlich ist — die Methode bewertet das nicht, sie bietet nur ein Werkzeug an</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Moderationsskript & Handout ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FGZ-MODUL 3 · HAUSAUFGABEN OHNE KAMPF</div></div>
+
+  <h2 class="abschnitt-titel">Moderationsskript</h2>
+  <div class="skript-box"><span class="label">Einstieg (0:10–0:20)</span><span class="zitat">"Kennt ihr das — eine Aufgabe steht an, und schon beim Hinschauen ist man fertig damit? 'Ein Schritt. Nicht fünf.' Der erste Schritt soll so klein sein, dass er unmöglich schiefgehen kann."</span></div>
+  <div class="skript-box"><span class="label">Hauptteil — Werkstatt (0:20–0:55)</span><span class="zitat">"Schreibt gemeinsam — Kind und Elternteil — auf, was der allererste, kleinste Schritt wäre. Nicht der zweite oder dritte, nur der erste." (Bei zu großen Schritten:) "Kann der Schritt noch kleiner sein?"</span></div>
+  <div class="skript-box"><span class="label">Erster Schritt live (0:55–0:70)</span><span class="zitat">"Jetzt probieren wir den allerersten Schritt direkt aus — hier, im Raum. Wenn er geschafft ist: kurz abhaken, kurz loben — erst DANN überlegen, was als Nächstes kommt."</span></div>
+  <div class="skript-box"><span class="label">Abschluss (0:80–0:90)</span><span class="zitat">"Nehmt den Schritt-Plan mit nach Hause. Die Regel bleibt: immer nur der nächste Schritt, nicht die ganze Liste auf einmal anschauen."</span></div>
+
+  <h2 class="abschnitt-titel">Teilnehmer-Handout</h2>
+  <div class="handout-rahmen">
+    <ol class="ordn-liste">
+      <li><b>Schritt-Plan-Vorlage</b> — mit dem in der Werkstatt ausgefüllten ersten Schritt</li>
+      <li><b>Die drei Regeln der Methode:</b> (1) Ein Schritt. Nicht fünf. (2) Der erste Schritt muss so klein sein, dass er nicht schiefgehen kann. (3) Abhaken — kurz loben — erst dann der nächste Schritt.</li>
+      <li><b>QR-Code zur digitalen Version</b> — zeigt jeweils nur den aktuellen Schritt groß an, mit kleiner Konfetti-Animation beim Abhaken</li>
+    </ol>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Stolpersteine, Varianten, FAQ ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FGZ-MODUL 3 · HAUSAUFGABEN OHNE KAMPF</div></div>
+
+  <h2 class="abschnitt-titel">Stolpersteine für Erstdurchführende</h2>
+  <div class="stolper-box"><div class="titel">Eltern zerlegen die Aufgabe statt des Kindes</div><div class="txt">Aktiv nachfragen, ob das Kind mitschreiben/mitentscheiden darf.</div></div>
+  <div class="stolper-box"><div class="titel">Erster Schritt bleibt zu groß</div><div class="txt">Häufigster Fehler — immer nachfragen: "Und wenn du das noch kleiner machst?"</div></div>
+  <div class="stolper-box"><div class="titel">Kinder ohne mitgebrachte Hausaufgabe fühlen sich außen vor</div><div class="txt">Beispiel-Aufgaben-Set bereithalten.</div></div>
+
+  <h2 class="abschnitt-titel">Varianten je nach Gruppe</h2>
+  <ul class="liste">
+    <li><b>Jüngere Kinder:</b> Alltagsaufgaben statt Hausaufgaben zerlegen (z. B. "sich alleine anziehen")</li>
+    <li><b>Ältere Kinder:</b> komplexere Aufgaben, zweiter Durchgang möglich (zweiten Schritt grob skizzieren)</li>
+    <li><b>Geschwister-Tandems statt Eltern-Kind:</b> funktioniert genauso, wenn kein Elternteil teilnehmen kann</li>
+  </ul>
+
+  <h2 class="abschnitt-titel">Häufige Elternfragen (FAQ)</h2>
+  <div class="skript-box"><span class="label">"Und wenn mein Kind auch beim kleinsten Schritt schon blockiert?"</span><span class="zitat">Dann war der Schritt noch nicht klein genug — gemeinsam noch eine Nummer kleiner denken.</span></div>
+  <div class="skript-box"><span class="label">"Muss ich dabei sitzen bleiben, bis alles fertig ist?"</span><span class="zitat">Nein — Ziel ist, dass das Kind nach dem ersten Schritt allein weitermachen kann.</span></div>
+  <div class="skript-box"><span class="label">"Funktioniert das auch bei langfristigen Aufgaben wie einem Referat?"</span><span class="zitat">Ja, sogar besonders gut — die Schritte werden einfach auf mehrere Tage verteilt.</span></div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 4</span></div>
+</div>
+
+</body>
+</html>

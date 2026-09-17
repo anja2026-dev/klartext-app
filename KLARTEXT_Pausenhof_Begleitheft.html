@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Begleitheft Pausenhof-Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#2E7D5F;--warm:#B4482E;--paper:#F5F0E8;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:800;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.8rem;color:var(--acc);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.9rem;font-size:.74rem;line-height:1.55;box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box b{color:var(--m);}
+.ziel-box{background:var(--m);color:#fff;border-radius:12px;padding:.8rem 1.1rem;margin-bottom:.9rem;}
+.ziel-box .label{font-size:.62rem;letter-spacing:.1em;color:var(--acc);font-weight:700;margin-bottom:.3rem;}
+.ziel-box .txt{font-size:.85rem;font-family:"Playfair Display",serif;font-weight:700;}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.9rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.74rem;line-height:1.58;margin-bottom:.55rem;}
+.absatz b{color:var(--m);}
+table.kt-tabelle{width:100%;border-collapse:collapse;margin-bottom:.9rem;font-size:.68rem;}
+table.kt-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.4rem .55rem;font-weight:700;font-size:.62rem;}
+table.kt-tabelle td{padding:.45rem .55rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
+.liste{list-style:none;margin:.2rem 0 .8rem;}
+.liste li{font-size:.74rem;line-height:1.58;padding-left:1.1em;position:relative;margin-bottom:.35rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.ordn-liste{list-style:none;counter-reset:schritt;margin:.2rem 0 .8rem;}
+.ordn-liste li{counter-increment:schritt;position:relative;padding:.35rem 0 .35rem 1.8rem;font-size:.74rem;line-height:1.5;}
+.ordn-liste li::before{content:counter(schritt);position:absolute;left:0;top:.3rem;width:1.25rem;height:1.25rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.62rem;display:flex;align-items:center;justify-content:center;}
+.ordn-liste li b{color:var(--m);}
+.szenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.9rem;}
+.szenario{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.szenario .titel{font-weight:700;color:var(--m);font-size:.72rem;margin-bottom:.25rem;}
+.szenario .txt{font-size:.68rem;line-height:1.45;}
+.progression{display:flex;gap:.5rem;margin-bottom:.5rem;}
+.progression .phase{flex:1;background:var(--paper);border-radius:8px;padding:.5rem .6rem;text-align:center;}
+.progression .phase .tage{font-family:"Playfair Display",serif;font-weight:800;color:var(--acc);font-size:.78rem;}
+.progression .phase .naam{font-size:.62rem;color:var(--m);font-weight:700;margin-top:.15rem;}
+.rollen-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:5mm;flex:1;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:10px;padding:.8rem;display:flex;flex-direction:column;}
+.rollenkarte .icon{font-size:1.6rem;margin-bottom:.3rem;}
+.rollenkarte .titel{font-family:"Playfair Display",serif;font-weight:700;color:var(--m);font-size:.85rem;margin-bottom:.3rem;}
+.rollenkarte .txt{font-size:.68rem;line-height:1.5;}
+.formular-feld{border:1px solid var(--border);border-radius:6px;padding:.4rem .6rem;margin-bottom:.5rem;font-size:.7rem;color:var(--muted);}
+.skala{display:flex;gap:.3rem;margin:.3rem 0 .6rem;}
+.skala span{flex:1;text-align:center;border:1px solid var(--border);border-radius:4px;padding:.2rem 0;font-size:.62rem;}
+.quellen-box{background:var(--paper);border-radius:10px;padding:.7rem .9rem;margin-top:.6rem;font-size:.62rem;line-height:1.5;color:var(--muted);}
+.quellen-box .titel{font-weight:700;color:var(--m);font-size:.64rem;margin-bottom:.3rem;}
+.selbstreflex-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;flex:1;}
+.selbstreflex-karte{border:1.5px dashed var(--muted);border-radius:10px;padding:.7rem;display:flex;flex-direction:column;}
+.selbstreflex-karte .titel{font-family:"Playfair Display",serif;font-weight:700;color:var(--m);font-size:.78rem;margin-bottom:.4rem;}
+.selbstreflex-karte .zeile{font-size:.68rem;margin-bottom:.4rem;color:var(--ink);}
+.fuss{margin-top:auto;padding-top:.7rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+  <h1 class="haupttitel">Begleitheft: Pausenhof-Code</h1>
+  <div class="untertitel">Zum Einsatz mit Pausenhof-Code-Karte &amp; Hosentaschenkarten</div>
+
+  <div class="hinweis-box"><b>Prinzip:</b> Der Pausenhof-Code nutzt die paradoxe Kopfstand-Technik — erst wird 60 Sekunden lang "Sabotage" gesammelt ("Wie sorgen wir für maximalen Hof-Streit?"), dann gedreht: "Was ist der kleinste Schritt für eine faire Pause?" So entstehen die Hof-Regeln nicht als Verbotsliste von oben, sondern als eigene Erkenntnis der Kinder.</div>
+
+  <div class="ziel-box">
+    <div class="label">ICH-KANN-ZIEL</div>
+    <div class="txt">Ich kenne die 3 Hof-Regeln, weiß, was ich bei Streit sofort tun kann, und erkenne, wann ich Hilfe holen muss.</div>
+  </div>
+
+  <h2 class="abschnitt-titel">Die zwei Materialien im Set</h2>
+  <table class="kt-tabelle">
+    <tr><th>Material</th><th>Format</th><th>Einsatz</th></tr>
+    <tr><td>Pausenhof-Code-Karte</td><td>A4/A5, laminierbar, 2 Seiten</td><td>Aushang bei der Spieleausgabe/im OGS-Raum — Vorderseite Kinder, Rückseite Aufsicht</td></tr>
+    <tr><td>Hosentaschenkarten</td><td>Scheckkarten-Format 88×56 mm, 3 Paare/A4</td><td>Ausschneiden, falten, laminieren, ans Schlüsselband der Pausenaufsicht</td></tr>
+  </table>
+  <p class="absatz">Beide Materialien tragen denselben Code — die Hosentaschenkarte ist die kompakte Merkversion für unterwegs, die große Karte die ausführliche Aushangversion.</p>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE</div></div>
+  <h2 class="abschnitt-titel">Einsatz-Szenarien</h2>
+  <div class="szenario-grid">
+    <div class="szenario"><div class="titel">Klassenrat/Plenum</div><div class="txt">Gemeinsame Einführung der Kopfstand-Übung, die 3 Hof-Regeln als Klassenbeschluss verabschieden.</div></div>
+    <div class="szenario"><div class="titel">Kleingruppe/Teamarbeit</div><div class="txt">OGS-Team bespricht die Rückseite (kLAR + Feuerwehr-Protokoll) im Dienstbesprechungs-Kurzformat.</div></div>
+    <div class="szenario"><div class="titel">Schüler-zu-Schüler 1:1/Peer-Buddy</div><div class="txt">Ältere Kinder übernehmen die Pausen-Detektiv-Rolle für jüngere (siehe Rollenkarten, Seite 5).</div></div>
+    <div class="szenario"><div class="titel">Schulbegleitung/Integrationsassistenz 1:1</div><div class="txt">Kurzerklärung des kLAR-Modells als Brücke zum größeren KLARTEXT-System, falls das Kind bereits mit Barometer/kLAR arbeitet.</div></div>
+  </div>
+
+  <h2 class="abschnitt-titel">Kognitives Progressionsmodell (66-Tage-Rhythmus)</h2>
+  <div class="progression">
+    <div class="phase"><div class="tage">Tag 1–10</div><div class="naam">Einführung</div></div>
+    <div class="phase"><div class="tage">Tag 11–44</div><div class="naam">Übung</div></div>
+    <div class="phase"><div class="tage">Tag 45–66</div><div class="naam">Automatisierung</div></div>
+  </div>
+  <p class="absatz">Nach durchschnittlich 66 Tagen kontinuierlicher Wiederholung ist eine neue Verhaltensweise als Gewohnheit verankert (Lally et al., 2010) — der Code muss dafür nicht jeden Tag neu erklärt, sondern nur regelmäßig in Erinnerung gerufen werden (siehe Seite 4, Verstetigung).</p>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE</div></div>
+  <h2 class="abschnitt-titel">Ablauf der Einführung (ca. 15 Minuten)</h2>
+  <ol class="ordn-liste">
+    <li><b>Kopfstand-Frage stellen (60 Sek.):</b> "Wie sorgen wir für maximalen Hof-Streit?" — Sabotage-Ideen dürfen laut und frech sein, das ist gewollt.</li>
+    <li><b>Umdrehen:</b> "Und jetzt das Gegenteil — was ist der kleinste Schritt für eine faire Pause?" Aus jeder Sabotage-Idee wird eine Regel.</li>
+    <li><b>Die 3 Hof-Regeln vorstellen:</b> Stopp heißt Stopp, niemanden ausschließen, Hilfe holen — im Abgleich mit den gerade selbst gefundenen Ideen.</li>
+    <li><b>Die 3 Sofort-Tricks üben:</b> Schnick-Schnack-Schnuck, Atem-Ballon-Signal, Pausen-Detektiv — kurz alle drei einmal gemeinsam durchspielen.</li>
+    <li><b>Karten aushängen/verteilen:</b> Pausenhof-Code-Karte an der Spieleausgabe, Hosentaschenkarten an die Aufsichten.</li>
+  </ol>
+  <p class="absatz">Die Pausenaufsichten sollten die Rückseite (kLAR + Feuerwehr-Protokoll) separat in einer kurzen Teambesprechung durchgehen — sie ist nicht für die Kinder gedacht.</p>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Verstetigung über das Schuljahr (Ersatzseite, kein digitaler Zwilling) ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE</div></div>
+  <h2 class="abschnitt-titel">Verstetigung über das Schuljahr</h2>
+  <p class="absatz">Der Pausenhof-Code hat kein eigenes digitales Tool — er lebt von Wiederholung im Alltag. Drei einfache Booster-Rituale halten ihn über die vollen 66 Tage lebendig:</p>
+  <ul class="liste">
+    <li><b>Wochen-Erinnerung:</b> einmal pro Woche kurz vor der großen Pause die 3 Hof-Regeln laut wiederholen (30 Sekunden reichen)</li>
+    <li><b>Reflexions-Dates:</b> an Tag 22, 44 und 66 kurz im Team/Klassenrat fragen: "Was klappt schon gut, wo hakt es noch?"</li>
+    <li><b>Sichtbarkeit halten:</b> Karte an der Spieleausgabe nicht nur aufhängen, sondern nach den Sommer-/Herbstferien aktiv neu vorstellen — neue Kinder kennen den Code noch nicht</li>
+  </ul>
+  <p class="absatz">Wer den Code mit der KLARTEXT-Jahreskarten-Serie kombiniert, kann die tägliche 60-Sekunden-Routine direkt an den Pausenhof-Code anknüpfen (z. B. Wochenkarte 4 "Pausenhof-Start").</p>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — Formular 1: Rollenkarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 1</div></div>
+  <h2 class="abschnitt-titel">Rollenkarten für die Pausenhof-Werkstatt</h2>
+  <p class="absatz">Zum Ausschneiden — 4 feste Rollen für die gemeinsame Einführung oder eine Kleingruppen-Übung:</p>
+  <div class="rollen-grid">
+    <div class="rollenkarte"><div class="icon">🕵️</div><div class="titel">Pausen-Detektiv:in</div><div class="txt">Fragt bei Streit immer zuerst: "Was ist genau passiert?" — bevor irgendjemand beschuldigt wird.</div></div>
+    <div class="rollenkarte"><div class="icon">🦊</div><div class="titel">Schlaufuchs</div><div class="txt">Dreht jede Sabotage-Idee ins Gegenteil um: "Was wäre der kleinste faire Schritt?"</div></div>
+    <div class="rollenkarte"><div class="icon">🛑</div><div class="titel">Stopp-Wächter:in</div><div class="txt">Achtet darauf, dass "Stopp" wirklich sofort ernst genommen wird — für alle, ausnahmslos.</div></div>
+    <div class="rollenkarte"><div class="icon">🤝</div><div class="titel">Hof-Guide</div><div class="txt">Fragt neue oder allein spielende Kinder: "Darf ich mitspielen?" stellvertretend mit an.</div></div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — Formular 2: Reflexionsbogen & Evaluation ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 2</div></div>
+  <h2 class="abschnitt-titel">Reflexionsbogen &amp; Wirkungs-Evaluation (für Pädagog:innen)</h2>
+  <div class="formular-feld">Datum: ______________ Gruppe/Klasse: ______________ Eingesetztes Material: ☐ Code-Karte ☐ Hosentaschenkarten ☐ beide</div>
+
+  <p class="absatz"><b>Wie sicher fühlen sich die Kinder im Umgang mit den 3 Hof-Regeln?</b></p>
+  <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+
+  <p class="absatz"><b>Wie oft greifen die Pausenaufsichten auf die kLAR-Rückseite zurück?</b></p>
+  <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+
+  <p class="absatz"><b>Offene Fragen:</b></p>
+  <div class="formular-feld">Welche der 3 Sofort-Tricks wird am häufigsten genutzt? ___________________________________</div>
+  <div class="formular-feld">Wo hakt es trotz Code noch regelmäßig? ___________________________________</div>
+
+  <div class="quellen-box">
+    <div class="titel">Quellen</div>
+    Lally, P., van Jaarsveld, C. H. M., Potts, H. W. W., &amp; Wardle, J. (2010). How are habits formed: Modelling habit formation in the real world. <i>European Journal of Social Psychology</i>, 40(6), 998–1009.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — Formular 3: Schüler-Selbstreflexionskarte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">BEGLEITHEFT · PAUSENHOF-CODE · FORMULAR 3</div></div>
+  <h2 class="abschnitt-titel">Mein Pausen-Check (4 Karten zum Ausschneiden)</h2>
+  <div class="selbstreflex-grid">
+    <div class="selbstreflex-karte"><div class="titel">Mein Pausen-Check</div><div class="zeile">Heute war meine Pause: 🙂 / 😐 / 🙁</div><div class="zeile">Das hat gut geklappt: ___________</div></div>
+    <div class="selbstreflex-karte"><div class="titel">Mein Pausen-Check</div><div class="zeile">Ich habe heute gefragt: "Darf ich mitspielen?" ☐ ja ☐ nein</div><div class="zeile">Mit wem habe ich gespielt: ___________</div></div>
+    <div class="selbstreflex-karte"><div class="titel">Mein Pausen-Check</div><div class="zeile">Gab es heute ein "Stopp"? ☐ ja ☐ nein</div><div class="zeile">Wurde es sofort ernst genommen? ☐ ja ☐ nein</div></div>
+    <div class="selbstreflex-karte"><div class="titel">Mein Pausen-Check</div><div class="zeile">Mein kleinster fairer Schritt heute war: ___________</div><div class="zeile">Das nehme ich mir für morgen vor: ___________</div></div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Pausenhof-Hosentaschenkarten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#2E7D5F;--warm:#B4482E;--paper:#F5F0E8;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;--tint-warm:#F7E7E0;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:10mm 12mm;position:relative;display:flex;flex-direction:column;}
+.kopf-zeile{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem;}
+.kopf-zeile .titel{font-family:"Playfair Display",serif;font-weight:800;color:var(--m);font-size:1rem;}
+.kopf-zeile .hinweis{font-size:.62rem;color:var(--muted);}
+.karten-set{display:flex;flex-direction:column;gap:6mm;flex:1;justify-content:center;}
+.paar{display:flex;width:176mm;height:56mm;border:1px dashed var(--muted);border-radius:4mm;overflow:hidden;position:relative;margin:0 auto;}
+.paar::after{content:"";position:absolute;left:88mm;top:0;bottom:0;border-left:1px dashed var(--muted);}
+.karte{width:88mm;height:56mm;padding:3mm 4mm;display:flex;flex-direction:column;color:#fff;}
+.karte.blau{background:var(--m);}
+.karte.terra{background:var(--warm);}
+.karte .kt-titel{font-size:.6rem;font-weight:700;letter-spacing:.08em;margin-bottom:1mm;opacity:.85;}
+.karte .kt-haupt{font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;margin-bottom:1.5mm;}
+.karte ol,.karte ul{list-style:none;font-size:.56rem;line-height:1.35;}
+.karte li{margin-bottom:.9mm;padding-left:3mm;position:relative;}
+.karte li::before{content:"•";position:absolute;left:0;color:var(--acc);}
+.karte.terra li::before{color:#F0C9BA;}
+.karte li b{font-weight:700;}
+.karte .fuss-k{margin-top:auto;font-size:.48rem;opacity:.75;}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);} }
+</style>
+</head>
+<body>
+
+<div class="seite">
+  <div class="kopf-zeile">
+    <div class="titel">KLARTEXT · Pausenhof-Hosentaschenkarten</div>
+    <div class="hinweis">Scheckkarten-Format 88 × 56 mm · 3 Paare · ✂ ausschneiden, in der Mitte falten, laminieren, ans Schlüsselband</div>
+  </div>
+
+  <div class="karten-set">
+
+    <div class="paar">
+      <div class="karte blau">
+        <div class="kt-titel">FÜR KINDER</div>
+        <div class="kt-haupt">Die 3 goldenen Hof-Regeln</div>
+        <ol>
+          <li><b>1.</b> Stopp heißt STOPP!</li>
+          <li><b>2.</b> Niemanden ausschließen!</li>
+          <li><b>3.</b> Hilfe holen!</li>
+        </ol>
+        <div class="fuss-k">KLARTEXT-Mentoring</div>
+      </div>
+      <div class="karte terra">
+        <div class="kt-titel">FÜR DIE PAUSENAUFSICHT</div>
+        <div class="kt-haupt">kLAR bei Gelb/Orange</div>
+        <ol>
+          <li><b>k</b> Kontakt: Augenhöhe, ruhige Blick-Sicherheit</li>
+          <li><b>L</b> Leise &amp; Langsam: Stimme absenken, Tempo drosseln</li>
+          <li><b>A</b> Anerkennung &amp; Atmen: Erleben validieren + Atem-Ballon</li>
+          <li><b>R</b> Reizreduktion &amp; Rückzug: ruhige Hofecke ansteuern</li>
+        </ol>
+        <div class="fuss-k">© 2026 KLARTEXT-Mentoring</div>
+      </div>
+    </div>
+
+    <div class="paar">
+      <div class="karte blau">
+        <div class="kt-titel">FÜR KINDER</div>
+        <div class="kt-haupt">3 Sofort-Trick-Codes</div>
+        <ol>
+          <li><b>🎲 Schnick-Schnack-Schnuck:</b> neutraler Fänger-/Spielstart</li>
+          <li><b>🗣️ Atem-Ballon:</b> 3x tief atmen + „Ich möchte das nicht!“</li>
+          <li><b>🕵️ Pausen-Detektiv:</b> erst fragen „Was ist passiert?“</li>
+        </ol>
+        <div class="fuss-k">KLARTEXT-Mentoring</div>
+      </div>
+      <div class="karte terra">
+        <div class="kt-titel">FÜR DIE PAUSENAUFSICHT</div>
+        <div class="kt-haupt">Feuerwehr-Protokoll (Rot)</div>
+        <ol>
+          <li><b>Wichtig:</b> kLAR gilt ab Rot nicht mehr!</li>
+          <li><b>1.</b> Sicherheit herstellen</li>
+          <li><b>2.</b> Leitung/Team informieren</li>
+          <li><b>3.</b> Erst regulieren — dann reden!</li>
+        </ol>
+        <div class="fuss-k">© 2026 KLARTEXT-Mentoring</div>
+      </div>
+    </div>
+
+    <div class="paar">
+      <div class="karte blau">
+        <div class="kt-titel">FÜR KINDER</div>
+        <div class="kt-haupt">Alltags-Motto</div>
+        <ol>
+          <li>„Zusammen spielen macht mehr Spaß als Streit!“</li>
+          <li>„Stopp heißt Stopp — für alle!“</li>
+          <li>Frag: „Darf ich mitspielen?“</li>
+        </ol>
+        <div class="fuss-k">KLARTEXT-Mentoring</div>
+      </div>
+      <div class="karte terra">
+        <div class="kt-titel">FÜR DIE PAUSENAUFSICHT</div>
+        <div class="kt-haupt">Übergang 12:30 Uhr</div>
+        <ol>
+          <li>Reizfreies Signal statt Rufen (Gong/Handzeichen)</li>
+          <li>Einerreihe, ohne Schubsen</li>
+          <li>Garderoben-Regel für Matschschuhe</li>
+        </ol>
+        <div class="fuss-k">© 2026 KLARTEXT-Mentoring</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

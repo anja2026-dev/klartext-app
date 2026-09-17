@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Trainerhandbuch FGZ-Modul 2 · Starker Schulstart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E7D5F;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.8rem;color:var(--acc);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.9rem;font-size:.74rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.5rem;}
+.hinweis-box b{color:var(--m);}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.9rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.74rem;line-height:1.58;margin-bottom:.55rem;}
+.absatz b{color:var(--m);}
+table.kt-tabelle{width:100%;border-collapse:collapse;margin-bottom:.9rem;font-size:.68rem;}
+table.kt-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.4rem .55rem;font-weight:700;font-size:.62rem;letter-spacing:.03em;}
+table.kt-tabelle td{padding:.45rem .55rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
+.liste{list-style:none;margin:.2rem 0 .8rem;}
+.liste li{font-size:.74rem;line-height:1.58;padding-left:1.1em;position:relative;margin-bottom:.35rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.ordn-liste{list-style:none;counter-reset:schritt;margin:.2rem 0 .8rem;}
+.ordn-liste li{counter-increment:schritt;position:relative;padding:.35rem 0 .35rem 1.8rem;font-size:.74rem;line-height:1.5;}
+.ordn-liste li::before{content:counter(schritt);position:absolute;left:0;top:.3rem;width:1.25rem;height:1.25rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.62rem;display:flex;align-items:center;justify-content:center;}
+.ordn-liste li b{color:var(--m);}
+.skript-box{background:var(--paper);border-left:3px solid var(--acc);border-radius:8px;padding:.6rem .9rem;margin-bottom:.7rem;font-size:.72rem;line-height:1.55;}
+.skript-box .label{font-weight:700;color:var(--m);display:block;margin-bottom:.25rem;font-size:.68rem;letter-spacing:.02em;}
+.skript-box .zitat{font-style:italic;color:var(--ink);}
+.stolper-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .9rem;margin-bottom:.6rem;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.stolper-box .titel{font-weight:700;color:var(--m);font-size:.74rem;margin-bottom:.25rem;}
+.stolper-box .txt{font-size:.7rem;line-height:1.5;}
+.fuss{margin-top:auto;padding-top:.7rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
+.handout-rahmen{border:1.5px dashed var(--muted);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.8rem;}
+.handout-rahmen::before{content:"✂ Handout zum Mitgeben";display:block;font-size:.6rem;color:var(--muted);margin-bottom:.5rem;letter-spacing:.05em;}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Überblick & Vorbereitung ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">TRAINERHANDBUCH</h1>
+  <div class="untertitel">FGZ-Modul 2 · Starker Schulstart (Eltern-Café)</div>
+
+  <div class="hinweis-box">
+    <p><b>Ziel:</b> Eltern entwickeln ein eigenes Ankommensritual für den Schulmorgen, lernen das 1-Minuten-Postmappen-Ticket als Kommunikationsweg mit der Schule kennen und machen ihr eigenes Hilfewege-Netz sichtbar.</p>
+  </div>
+
+  <h2 class="abschnitt-titel">Auf einen Blick</h2>
+  <table class="kt-tabelle">
+    <tr><td style="width:28%"><b>Zielgruppe</b></td><td>Eltern im FGZ, die bereits am Familien-Kompass (Modul 1) teilgenommen haben oder sich mit dem Schulstart/Schulwechsel ihres Kindes beschäftigen</td></tr>
+    <tr><td><b>Dauer</b></td><td>90 Minuten (Standard) · 60 Minuten (Kompaktversion)</td></tr>
+    <tr><td><b>Lernziele</b></td><td>Ankommensritual entwickeln, Postmappen-Ticket kennen, eigenes Hilfewege-Netz (4 Vertrauenspersonen) sichtbar machen</td></tr>
+    <tr><td><b>Material</b></td><td>Ritual-Ideenkarten (Handout, Seite 3), 1-Minuten-Postmappen-Ticket (Abtrenn-Bögen, Seite 3), Hilfewege-Planer-Formular (Ausdruck der App KLARTEXT_Spiel_HilfewegePlaner.html), Café-Setting</td></tr>
+  </table>
+
+  <h2 class="abschnitt-titel">Vorbereitung (Checkliste)</h2>
+  <ul class="liste">
+    <li>Raum im Café-Stil wie bei Modul 1 (Sitzkreis/Kleintische, keine Frontalbestühlung)</li>
+    <li>Ritual-Ideenkarten in ausreichender Anzahl ausdrucken</li>
+    <li>1-Minuten-Postmappen-Ticket als Abtrenn-Bogen ausdrucken (ein Bogen pro Familie)</li>
+    <li>Hilfewege-Planer-Formular ausdrucken (ein Exemplar pro Familie) — alternativ auf die digitale Version hinweisen (QR-Code, läuft komplett lokal im Browser, DSGVO-sicher)</li>
+    <li>Stifte für das Ausfüllen des Hilfewege-Planers bereitlegen</li>
+    <li>Getränke/kleiner Imbiss (Café-Charakter bleibt wie bei Modul 1)</li>
+    <li>Vorabinfo ohne Fachjargon: "Ein entspannter Abend zum Thema: Wie starten wir gut in den Schulalltag?"</li>
+    <li>Bei mehrsprachiger Elternschaft: FGZ vorab nach Sprachmittler:in/Elternlots:in fragen (siehe Seite 2)</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 2 — Ablauf & Zugänglichkeit ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FGZ-MODUL 2 · STARKER SCHULSTART</div></div>
+
+  <h2 class="abschnitt-titel">Ablaufplan (90 Minuten, Kompaktversion 60 Minuten möglich)</h2>
+  <table class="kt-tabelle">
+    <tr><th>Zeit</th><th>Block</th><th>Inhalt</th></tr>
+    <tr><td>0:00–0:10</td><td>Ankommen</td><td>Begrüßung, Getränke, Warm-up: "Wie sieht ein guter Schulmorgen bei euch aus?"</td></tr>
+    <tr><td>0:10–0:25</td><td>Baustein 1 — Rituale</td><td>Ritual-Ideenkarten in Kleingruppen durchgehen, jede Familie wählt 1–2 Ideen fürs eigene Morgenritual</td></tr>
+    <tr><td>0:25–0:45</td><td>Baustein 2 — Postmappen-Ticket</td><td>Konzept erklären, gemeinsam ein Beispiel ausfüllen, offene Fragen zum Schul-Alltagskontakt klären</td></tr>
+    <tr><td>0:45–0:70</td><td>Baustein 3 — Hilfewege-Planer</td><td>Jede Familie füllt in Ruhe die 4 Personen des eigenen Vertrauensnetzes aus (Formular oder digitale Version)</td></tr>
+    <tr><td>0:70–0:80</td><td>Vertiefung (nur bei 90 Min.)</td><td>Austausch im Plenum: Was nehme ich mir konkret mit?</td></tr>
+    <tr><td>0:80–0:90</td><td>Abschluss</td><td>Rückblick, Handout verteilen, offene Fragen</td></tr>
+  </table>
+  <p class="absatz">Bei 60 Minuten entfällt der Vertiefungsblock — direkt von Baustein 3 in den Abschluss.</p>
+
+  <h2 class="abschnitt-titel">Sprachliche &amp; kulturelle Zugänglichkeit</h2>
+  <ul class="liste">
+    <li>Postmappen-Ticket bewusst kurz und formelarm halten — wenige feste Felder statt Freitext, erleichtert das Ausfüllen bei geringen Deutschkenntnissen</li>
+    <li>Beim Hilfewege-Planer offen ansprechen, dass "Vertrauensperson" auch Verwandte im Herkunftsland oder eine Community außerhalb der Nachbarschaft meinen kann</li>
+    <li>Bei Bedarf FGZ vorab nach Sprachmittler:in/Elternlots:in fragen, besonders für Baustein 3 (persönliches Thema, hoher Verständnisbedarf)</li>
+    <li>Ritual-Ideenkarten offen formulieren, nicht von einem bestimmten Familienmodell ausgehen (z. B. "die Bezugsperson" statt "Mama"/"Papa")</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Moderationsskript & Handout ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FGZ-MODUL 2 · STARKER SCHULSTART</div></div>
+
+  <h2 class="abschnitt-titel">Moderationsskript</h2>
+  <div class="skript-box"><span class="label">Einstieg (0:00–0:10)</span><span class="zitat">"Schön, dass ihr da seid. Heute geht's nicht um große Theorie, sondern ganz praktisch um den Schulmorgen — und darum, wer euch hilft, wenn's zuhause mal eng wird."</span></div>
+  <div class="skript-box"><span class="label">Baustein 1 — Rituale (0:10–0:25)</span><span class="zitat">"Rituale nehmen dem Morgen den Kampf — nicht weil sie alles perfekt machen, sondern weil das Kind weiß, was kommt. Pickt euch 1–2 Ideen raus, die zu eurem Alltag passen könnten."</span></div>
+  <div class="skript-box"><span class="label">Baustein 2 — Postmappen-Ticket (0:25–0:45)</span><span class="zitat">"Das Postmappen-Ticket ist ein Abtrenn-Zettel — eine Minute ausfüllen, abtrennen, ab in die Mappe. Keine langen Sätze, nur das Wichtigste."</span></div>
+  <div class="skript-box"><span class="label">Baustein 3 — Hilfewege-Planer (0:45–0:70)</span><span class="zitat">"Jetzt wird's persönlich, und das ist in Ordnung — jede:r füllt das für sich aus. Es geht um vier Menschen, die euch im Ernstfall wirklich helfen würden. Hilfe holen ist kein Petzen."</span></div>
+  <div class="skript-box"><span class="label">Abschluss (0:80–0:90)</span><span class="zitat">"Was nehmt ihr euch mit? Ihr müsst nicht alles auf einmal umsetzen. Ein Baustein, der wirklich bleibt, ist mehr wert als drei, die nach einer Woche wieder einschlafen."</span></div>
+
+  <h2 class="abschnitt-titel">Teilnehmer-Handout</h2>
+  <div class="handout-rahmen">
+    <ol class="ordn-liste">
+      <li><b>Ritual-Ideenkarten</b> — z. B. fester Abschiedssatz an der Tür, gemeinsamer Blick auf den Stundenplan am Vorabend, ein kleines "Ankommens-Wort"</li>
+      <li><b>1-Minuten-Postmappen-Ticket</b> — Abtrenn-Bogen mit festen Feldern (Datum, kurze Nachricht, Unterschrift) für den schnellen Austausch mit der Schule</li>
+      <li><b>Hilfewege-Planer</b> — die eigenen vier Vertrauenspersonen, plus QR-Code zur kostenlosen digitalen Version (läuft nur im eigenen Browser, nichts wird gespeichert)</li>
+    </ol>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 4</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Stolpersteine, Varianten, FAQ ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FGZ-MODUL 2 · STARKER SCHULSTART</div></div>
+
+  <h2 class="abschnitt-titel">Stolpersteine für Erstdurchführende</h2>
+  <div class="stolper-box"><div class="titel">Hilfewege-Planer wird zu persönlich genommen</div><div class="txt">Vorher klarstellen: Das Formular bleibt bei der Familie, es wird nicht eingesammelt.</div></div>
+  <div class="stolper-box"><div class="titel">Postmappen-Ticket wird als zusätzliche Pflicht verstanden</div><div class="txt">Betonen: es ist ein Angebot, keine neue Aufgabe.</div></div>
+  <div class="stolper-box"><div class="titel">Familien ohne festen Vertrauenskreis</div><div class="txt">Kein Versagen — auch Nachbar:in, FGZ-Mitarbeitende oder eine andere Familie aus der Gruppe können eine der vier Positionen sein.</div></div>
+
+  <h2 class="abschnitt-titel">Varianten je nach Gruppe</h2>
+  <ul class="liste">
+    <li><b>Kleine Runde (4–6 Familien):</b> Hilfewege-Planer im Plenum mit gegenseitiger Unterstützung statt in Stille ausfüllen</li>
+    <li><b>Wiederholungsgruppe:</b> kurz nachfragen, ob aus Modul 1 schon ein Ritual hält — daran anknüpfen</li>
+    <li><b>Sehr zeitknappe Gruppe:</b> Postmappen-Ticket als reines Mitnahme-Material, Hilfewege-Planer nicht kürzen</li>
+  </ul>
+
+  <h2 class="abschnitt-titel">Häufige Elternfragen (FAQ)</h2>
+  <div class="skript-box"><span class="label">"Muss ich das Postmappen-Ticket jedes Mal nutzen?"</span><span class="zitat">Nein — es ist ein Angebot für den kurzen Austausch, kein Ersatz für längere Elterngespräche.</span></div>
+  <div class="skript-box"><span class="label">"Sieht die Schule, wen ich in den Hilfewege-Planer eintrage?"</span><span class="zitat">Nein, das Formular bleibt bei der Familie — weder auf Papier noch digital wird etwas gespeichert oder übertragen.</span></div>
+  <div class="skript-box"><span class="label">"Was, wenn mir auf Anhieb keine vier Personen einfallen?"</span><span class="zitat">Auch zwei oder drei sind ein Anfang — wichtig ist der Impuls, sich damit zu beschäftigen.</span></div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 4</span></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Pausenhof-Code-Karte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--m:#1B3A4B;--acc:#2E7D5F;--warm:#B4482E;--paper:#F5F0E8;--border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;--tint-warm:#F7E7E0;}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:12mm 14mm 10mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{color:#fff;border-radius:10px;padding:.8rem 1.3rem;text-align:center;margin-bottom:1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf.blau{background:var(--m);}
+.kopf.terra{background:var(--warm);}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid #fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf-titel{font-size:.75rem;font-weight:700;letter-spacing:.12em;}
+.kopf-sub{font-size:.6rem;letter-spacing:.08em;color:rgba(255,255,255,.75);margin-top:.15rem;}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.4rem;font-weight:800;color:var(--m);margin-bottom:.2rem;}
+.haupttitel.terra{color:var(--warm);}
+.untertitel{font-size:.78rem;color:var(--acc);margin-bottom:.9rem;}
+.untertitel.terra{color:var(--warm);}
+.baustein{border-radius:14px;padding:.85rem 1.1rem;margin-bottom:.8rem;box-shadow:0 3px 14px rgba(27,58,75,.08);}
+.baustein.gruen{background:var(--tint);border-left:4px solid var(--acc);}
+.baustein.terra{background:var(--tint-warm);border-left:4px solid var(--warm);}
+.baustein .titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.95rem;color:var(--m);margin-bottom:.4rem;}
+.baustein.terra .titel{color:var(--warm);}
+.baustein p{font-size:.75rem;line-height:1.55;margin-bottom:.3rem;}
+.baustein p b{color:var(--m);}
+.baustein.terra p b{color:var(--warm);}
+.ordn-liste{list-style:none;counter-reset:schritt;margin:.2rem 0 .3rem;}
+.ordn-liste li{counter-increment:schritt;position:relative;padding:.3rem 0 .3rem 1.7rem;font-size:.75rem;line-height:1.5;}
+.ordn-liste li::before{content:counter(schritt);position:absolute;left:0;top:.28rem;width:1.15rem;height:1.15rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.6rem;display:flex;align-items:center;justify-content:center;}
+.terra .ordn-liste li::before{background:var(--warm);}
+.regel-box{background:var(--m);color:#fff;border-radius:12px;padding:.8rem 1.1rem;margin-bottom:.8rem;}
+.regel-box .titel{font-size:.68rem;font-weight:700;letter-spacing:.08em;color:#fff;margin-bottom:.5rem;}
+.regel-box ol{list-style:none;counter-reset:r;}
+.regel-box li{counter-increment:r;font-size:.78rem;line-height:1.6;padding-left:1.6rem;position:relative;margin-bottom:.25rem;}
+.regel-box li::before{content:counter(r);position:absolute;left:0;top:0;width:1.1rem;height:1.1rem;border-radius:50%;background:var(--acc);color:#fff;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.trick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:.8rem;}
+.trick{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .7rem;text-align:center;}
+.trick .icon{font-size:1.3rem;}
+.trick .naam{font-weight:700;color:var(--m);font-size:.68rem;margin:.25rem 0;}
+.trick .txt{font-size:.64rem;line-height:1.4;color:var(--ink);}
+.klar-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.8rem;}
+.klar-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;}
+.klar-item .buchstabe{font-family:"Playfair Display",serif;font-weight:800;color:var(--warm);font-size:1.1rem;}
+.klar-item .naam{font-weight:700;color:var(--m);font-size:.72rem;}
+.klar-item .txt{font-size:.68rem;line-height:1.45;margin-top:.2rem;}
+.feuerwehr-box{background:#fff;border:2px solid var(--warm);border-radius:12px;padding:.8rem 1rem;margin-bottom:.8rem;}
+.feuerwehr-box .titel{font-weight:700;color:var(--warm);font-size:.8rem;margin-bottom:.3rem;}
+.feuerwehr-box .abgrenzung{font-size:.72rem;font-style:italic;color:var(--warm);margin-bottom:.4rem;}
+.fuss{margin-top:auto;padding-top:.6rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.58rem;color:var(--muted);}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ VORDERSEITE — für Kinder & OGS-Spieleausgabe ══════ -->
+<div class="seite">
+  <div class="kopf blau">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">PAUSENHOF-CODE-KARTE · VORDERSEITE</div>
+  </div>
+  <h1 class="haupttitel">Für Kinder &amp; die Spieleausgabe</h1>
+  <div class="untertitel">Was ist der kleinste Schritt für eine faire Pause?</div>
+
+  <div class="baustein gruen">
+    <div class="titel">🔴🦊 Die paradoxe Pausen-Methode</div>
+    <ol class="ordn-liste">
+      <li><b>Brainys Kopfstand:</b> „Wie sorgen wir für maximalen Hof-Streit?“ — 60 Sekunden lang darf man ganz frech Sabotage-Ideen sammeln, das macht den Kopf frei.</li>
+      <li><b>Schlaufuchs-Lösung:</b> „Was ist der kleinste Schritt für eine faire Pause?“ — jetzt wird gedreht: aus jeder Sabotage-Idee wird das Gegenteil.</li>
+      <li><b>Alltags-Motto:</b> „Zusammen spielen macht mehr Spaß als Streit!“ &amp; „Stopp heißt Stopp — für alle!“</li>
+    </ol>
+  </div>
+
+  <div class="regel-box">
+    <div class="titel">DIE 3 UNUMSTÖSSLICHEN HOF-REGELN</div>
+    <ol>
+      <li>Wir hören sofort auf, wenn jemand STOPP sagt!</li>
+      <li>Wir schließen niemanden aus!</li>
+      <li>Wir holen Hilfe, wenn wir etwas sehen!</li>
+    </ol>
+  </div>
+
+  <div class="baustein gruen">
+    <div class="titel">3 Sofort-Tricks für Freispiel &amp; Konflikte</div>
+    <div class="trick-grid">
+      <div class="trick"><div class="icon">🎲</div><div class="naam">Schnick-Schnack-Schnuck</div><div class="txt">Neutraler Spielstart ohne Fänger-Streit</div></div>
+      <div class="trick"><div class="icon">🗣️</div><div class="naam">Stopp-Signal</div><div class="txt">Atem-Ballon + „Ich möchte das nicht!“</div></div>
+      <div class="trick"><div class="icon">🕵️</div><div class="naam">Pausen-Detektiv</div><div class="txt">Erst fragen „Was ist passiert?“, bevor beschuldigt wird</div></div>
+    </div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 2</span></div>
+</div>
+
+<!-- ══════ RÜCKSEITE — für Pausenaufsichten & OGS-Teams ══════ -->
+<div class="seite">
+  <div class="kopf terra">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">PAUSENHOF-CODE-KARTE · RÜCKSEITE</div>
+  </div>
+  <h1 class="haupttitel terra">Für Pausenaufsichten &amp; OGS-Teams</h1>
+  <div class="untertitel terra">Deeskalation auf dem Hof mit dem kLAR-Modell</div>
+
+  <div class="baustein terra">
+    <div class="titel">kLAR bei Barometer Gelb &amp; Orange</div>
+    <div class="klar-grid">
+      <div class="klar-item"><span class="buchstabe">k</span> <span class="naam">Kontakt</span><div class="txt">Auf Augenhöhe gehen, ruhigen Blickkontakt anbieten, räumliche Sicherheit herstellen.</div></div>
+      <div class="klar-item"><span class="buchstabe">L</span> <span class="naam">Leise &amp; Langsam</span><div class="txt">Stimme im Hoflärm bewusst senken, Tempo drosseln, keine langen Predigten.</div></div>
+      <div class="klar-item"><span class="buchstabe">A</span> <span class="naam">Anerkennung &amp; Atmen</span><div class="txt">Erleben validieren („Ich sehe, dass du wütend bist“) + 3x tief durchatmen.</div></div>
+      <div class="klar-item"><span class="buchstabe">R</span> <span class="naam">Reizreduktion &amp; Rückzug</span><div class="txt">Aus der Zuschauertraube herausgehen, ruhige Hofecke ansteuern.</div></div>
+    </div>
+  </div>
+
+  <div class="feuerwehr-box">
+    <div class="titel">Feuerwehr-Protokoll bei Barometer ROT (Akutkrise)</div>
+    <div class="abgrenzung">Wichtige Abgrenzung: Ab Rot gilt kLAR nicht mehr!</div>
+    <ol class="ordn-liste">
+      <li>Sicherheit herstellen (körperlich trennen/sichern)</li>
+      <li>Teamkoordination/OGS-Leitung informieren</li>
+      <li>Erst regulieren — viel später reden!</li>
+    </ol>
+  </div>
+
+  <div class="baustein terra">
+    <div class="titel">Transition Pausenende → OGS/Klassenzimmer (12:30 Uhr)</div>
+    <p>Reizfreie Signale (Gong/Handzeichen) statt Rufen nutzen, geordnetes Anstellen in Einerreihe ohne Schubsen, saubere Garderoben-Regel für Matschschuhe.</p>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 2</span></div>
+</div>
+
+</body>
+</html>

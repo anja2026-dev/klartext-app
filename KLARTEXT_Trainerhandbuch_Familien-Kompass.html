@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Trainerhandbuch Familien-Kompass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E7D5F;--petrol:#1B3A4B;--gold:#B07D2A;--frei:#1B8FA0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.5rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.8rem;color:var(--acc);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.9rem;font-size:.74rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.5rem;}
+.hinweis-box b{color:var(--m);}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.9rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.74rem;line-height:1.58;margin-bottom:.55rem;}
+.absatz b{color:var(--m);}
+table.kt-tabelle{width:100%;border-collapse:collapse;margin-bottom:.9rem;font-size:.68rem;}
+table.kt-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.4rem .55rem;font-weight:700;font-size:.62rem;letter-spacing:.03em;}
+table.kt-tabelle td{padding:.45rem .55rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45;}
+table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
+.liste{list-style:none;margin:.2rem 0 .8rem;}
+.liste li{font-size:.74rem;line-height:1.58;padding-left:1.1em;position:relative;margin-bottom:.35rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.ordn-liste{list-style:none;counter-reset:schritt;margin:.2rem 0 .8rem;}
+.ordn-liste li{counter-increment:schritt;position:relative;padding:.35rem 0 .35rem 1.8rem;font-size:.74rem;line-height:1.5;}
+.ordn-liste li::before{content:counter(schritt);position:absolute;left:0;top:.3rem;width:1.25rem;height:1.25rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.62rem;display:flex;align-items:center;justify-content:center;}
+.ordn-liste li b{color:var(--m);}
+.skript-box{background:var(--paper);border-left:3px solid var(--acc);border-radius:8px;padding:.6rem .9rem;margin-bottom:.7rem;font-size:.72rem;line-height:1.55;}
+.skript-box .label{font-weight:700;color:var(--m);display:block;margin-bottom:.25rem;font-size:.68rem;letter-spacing:.02em;}
+.skript-box .zitat{font-style:italic;color:var(--ink);}
+.stolper-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .9rem;margin-bottom:.6rem;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.stolper-box .titel{font-weight:700;color:var(--m);font-size:.74rem;margin-bottom:.25rem;}
+.stolper-box .txt{font-size:.7rem;line-height:1.5;}
+.fuss{margin-top:auto;padding-top:.7rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.6rem;color:var(--muted);}
+.handout-rahmen{border:1.5px dashed var(--muted);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.8rem;}
+.handout-rahmen::before{content:"✂ Handout zum Mitgeben";display:block;font-size:.6rem;color:var(--muted);margin-bottom:.5rem;letter-spacing:.05em;}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Überblick ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">TRAINERHANDBUCH</h1>
+  <div class="untertitel">FGZ-Modul 1 · Familien-Kompass (Eltern-Café)</div>
+
+  <div class="hinweis-box">
+    <p><b>Ziel:</b> Eltern im Familiengrundschulzentrum lernen die kLAR-Formel als einfaches Werkzeug für angespannte Momente zuhause kennen — systemisch, ohne Bewertung, mit sofort anwendbaren Mini-Interventionen.</p>
+  </div>
+
+  <h2 class="abschnitt-titel">Auf einen Blick</h2>
+  <table class="kt-tabelle">
+    <tr><td style="width:28%"><b>Zielgruppe</b></td><td>Eltern im FGZ, kleine Runde (ideal 6–12 Personen), freiwillige Teilnahme in Café-Atmosphäre</td></tr>
+    <tr><td><b>Dauer</b></td><td>60–90 Minuten</td></tr>
+    <tr><td><b>Lernziele</b></td><td>Barometer als Sprache für Stimmung kennen, kLAR-Formel als Ablauf bei Anspannung anwenden können, eigene Situation mit der Kopfstand-Technik durchgespielt haben</td></tr>
+    <tr><td><b>Material</b></td><td>Barometer-Poster, kLAR-Deeskalations-Fahrplan (Handout, Seite 3), Elternkompass-Beispielkarten, Atem-Ballon, Café-Setting (Getränke)</td></tr>
+  </table>
+
+  <h2 class="abschnitt-titel">Vorbereitung (Checkliste)</h2>
+  <ul class="liste">
+    <li>Raum: kleiner, gemütlicher Raum mit Sitzkreis oder Café-Tischen (keine Frontalbestühlung) — signalisiert von Anfang an: keine Vorlesung, sondern Austausch</li>
+    <li>Barometer-Poster gut sichtbar aufhängen oder als Mini-Version auf jeden Tisch legen</li>
+    <li>kLAR-Deeskalations-Fahrplan (Handout, Seite 3) in ausreichender Anzahl ausdrucken</li>
+    <li>Elternkompass-Beispielkarten bereitlegen (2–3 pro Kleintisch)</li>
+    <li>Getränke/kleiner Imbiss vorbereiten — Café-Charakter ist Teil des Konzepts</li>
+    <li>Vorabinfo ohne Fachjargon: "Ein entspannter Abend zum Thema: Was tun, wenn zuhause die Stimmung kippt?"</li>
+    <li>Bei mehrsprachiger Elternschaft: FGZ vorab nach Sprachmittler:in/Elternlots:in fragen (siehe Seite 2)</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 5</span></div>
+</div>
+
+<!-- ══════ SEITE 2 — Ablauf & Zugänglichkeit ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FAMILIEN-KOMPASS</div></div>
+
+  <h2 class="abschnitt-titel">Ablaufplan (60–90 Minuten)</h2>
+  <table class="kt-tabelle">
+    <tr><th>Zeit</th><th>Block</th><th>Inhalt</th></tr>
+    <tr><td>0:00–0:10</td><td>Ankommen</td><td>Begrüßung, Getränke, Warm-up: jede:r nennt ein Wort für "So war mein Tag"</td></tr>
+    <tr><td>0:10–0:20</td><td>Einstieg</td><td>Barometer (Grün–Gelb–Orange–Rot–Grau) als gemeinsame Sprache für Stimmung</td></tr>
+    <tr><td>0:20–0:40</td><td>Hauptteil 1</td><td>kLAR-Formel Schritt für Schritt: Kontakt &amp; Sicherheit → Leise &amp; Langsam → Anerkennung &amp; Atmen → Reizreduktion &amp; Rückzug</td></tr>
+    <tr><td>0:40–0:60</td><td>Hauptteil 2</td><td>Kopfstand-Technik in Kleingruppen: eigene Situation durchspielen (Skript Seite 3)</td></tr>
+    <tr><td>0:60–0:75</td><td>Vertiefung (nur bei 90 Min.)</td><td>Austausch im Plenum: Was nehme ich mir konkret mit?</td></tr>
+    <tr><td>0:75–0:90</td><td>Abschluss</td><td>Rückblick, Handout verteilen, offene Fragen</td></tr>
+  </table>
+  <p class="absatz">Bei 60 Minuten entfällt der Vertiefungsblock — direkt von Hauptteil 2 in den Abschluss.</p>
+
+  <h2 class="abschnitt-titel">Sprachliche &amp; kulturelle Zugänglichkeit</h2>
+  <p class="absatz">In vielen FGZ-Einzugsgebieten — auch in Dortmund und Hagen — ist ein großer Teil der Eltern mehrsprachig oder noch nicht sicher im Deutschen. Familien-Kompass eignet sich dafür gut, weil das Kernmaterial bereits bild- statt textbasiert ist:</p>
+  <ul class="liste">
+    <li><b>Das Barometer ist visuell</b> — fünf Farben lassen sich zeigen, ganz ohne präzises Deutsch</li>
+    <li><b>Die Kopfstand-Übung funktioniert auch zeichnend</b> — wer unsicher ist, darf skizzieren statt formulieren</li>
+    <li><b>In der Moderation:</b> kurze Sätze, keine Redewendungen, Kernbegriffe langsam und wiederholt einführen</li>
+    <li><b>Beispiele divers wählen</b> — nicht nur die klassische Kernfamilie als Bezugsrahmen</li>
+    <li><b>Sprachmittler:innen einbeziehen:</b> viele FGZ haben Elternlots:innen im Haus — aktiv danach fragen</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 5</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Moderationsskript & Handout ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FAMILIEN-KOMPASS</div></div>
+
+  <h2 class="abschnitt-titel">Moderationsskript</h2>
+  <div class="skript-box"><span class="label">Begrüßung (0:00)</span><span class="zitat">"Schön, dass ihr da seid. Heute geht es nicht um Vorträge oder Erziehungstipps von oben herab — sondern um ein einfaches Werkzeug, das ihr ab heute Abend zuhause ausprobieren könnt. Verstehen statt verurteilen."</span></div>
+  <div class="skript-box"><span class="label">Überleitung zum Barometer (0:10)</span><span class="zitat">"Kennt ihr das: Euer Kind ist plötzlich ganz anders, und ihr wisst nicht, wo es gerade steht? Das Barometer gibt dem eine Sprache — fünf Farben, keine Diagnose, nur eine Momentaufnahme."</span></div>
+  <div class="skript-box"><span class="label">Überleitung zur kLAR-Formel (0:20)</span><span class="zitat">"Wenn die Ampel auf Gelb oder Orange steht, hilft die kLAR-Formel: Kontakt &amp; Sicherheit, Leise &amp; Langsam, Anerkennung &amp; Atmen, Reizreduktion &amp; Rückzug."</span></div>
+  <div class="skript-box"><span class="label">Kopfstand-Frage konkret (0:40)</span><span class="zitat">"Stellt euch vor, ihr wollt es zuhause richtig eskalieren lassen — was müsstet ihr tun, damit der Streit garantiert schlimmer wird? Schreibt zu zweit drei Dinge auf." (nach 3–4 Min.) "Und jetzt dreht das Blatt um — was ist das Gegenteil? Das ist eure kLAR-Eselsbrücke für zuhause."</span></div>
+  <div class="skript-box"><span class="label">Abschluss</span><span class="zitat">"Ihr nehmt kein Patentrezept mit, sondern ein Werkzeug zum Anpassen. Hängt das Handout gerne sichtbar in der Küche auf. Danke, dass ihr heute so offen mitgemacht habt."</span></div>
+
+  <h2 class="abschnitt-titel">Teilnehmer-Handout: Die kLAR-Formel am Küchentisch</h2>
+  <div class="handout-rahmen">
+    <ol class="ordn-liste">
+      <li><b>K</b>ontakt &amp; Sicherheit — auf Augenhöhe gehen, Blickkontakt anbieten (nicht erzwingen)</li>
+      <li><b>L</b>eise &amp; Langsam — eigene Lautstärke und Tempo senken</li>
+      <li><b>A</b>nerkennung &amp; Atmen — benennen, was das Kind fühlt, gemeinsam atmen</li>
+      <li><b>R</b>eizreduktion &amp; Rückzug — Reize reduzieren, Rückzugsmöglichkeit anbieten</li>
+    </ol>
+    <p class="absatz"><b>Reflexionsfragen für zuhause:</b> In welcher Barometer-Farbe war mein Kind heute meistens? Welcher kLAR-Schritt fällt mir leicht, welcher schwer? Was war meine "Kopfstand-Erkenntnis" von heute?</p>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 5</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Stolpersteine, FAQ, Varianten, Folien ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FAMILIEN-KOMPASS</div></div>
+
+  <h2 class="abschnitt-titel">Stolpersteine für Erstdurchführende</h2>
+  <div class="stolper-box"><div class="titel">Die Runde bleibt still</div><div class="txt">Nicht nachbohren — selbst ein kleines, ehrliches Beispiel aus dem Alltag geben.</div></div>
+  <div class="stolper-box"><div class="titel">Kritische Nachfrage ("bei uns eskaliert das trotzdem")</div><div class="txt">Anerkennen, nicht rechtfertigen — zur Kopfstand-Technik überleiten.</div></div>
+  <div class="stolper-box"><div class="titel">Die Zeit läuft davon</div><div class="txt">Lieber den Einstieg kürzen als die Kopfstand-Übung streichen.</div></div>
+  <div class="stolper-box"><div class="titel">Sehr belastende eigene Geschichte</div><div class="txt">Kurz würdigen, sanft ins Plenum zurückholen: "Lass uns das gern im Anschluss unter vier Augen weiter besprechen."</div></div>
+  <div class="stolper-box"><div class="titel">Eigene Unsicherheit als Erstdurchführende</div><div class="txt">Offen ansprechen ist erlaubt: "Das ist mein erster Eltern-Café-Abend — wir entdecken das heute gemeinsam."</div></div>
+
+  <h2 class="abschnitt-titel">Varianten je nach Gruppe</h2>
+  <ul class="liste">
+    <li><b>Größere Gruppe (&gt;12):</b> Kopfstand-Übung in Kleingruppen zu 3–4, nur 2–3 stellen im Plenum vor</li>
+    <li><b>Sprachlich gemischt:</b> Kleingruppen mit gemeinsamer Sprache mischen; Sprachmittler:in vorab einplanen</li>
+    <li><b>Sehr kleine Runde (&lt;6):</b> Kopfstand-Übung direkt im Plenum</li>
+    <li><b>Zusatzoption:</b> separat buchbarer Vertiefungstermin mit Rollenspiel und Elternkompass-Karten</li>
+  </ul>
+
+  <h2 class="abschnitt-titel">Präsentationsfolien-Outline</h2>
+  <table class="kt-tabelle">
+    <tr><th>#</th><th>Titel</th><th>Regieanweisung</th></tr>
+    <tr><td>1</td><td>Familien-Kompass — Titel</td><td>Warmes Bild, kaum Text, läuft beim Ankommen</td></tr>
+    <tr><td>2</td><td>Willkommen</td><td>Laut vorlesen, Blickkontakt, nicht ablesen</td></tr>
+    <tr><td>3</td><td>Das Barometer</td><td>Auf das Poster im Raum verweisen, nicht die Folie vorlesen</td></tr>
+    <tr><td>4</td><td>Die kLAR-Formel</td><td>Jeden Schritt einzeln aufdecken</td></tr>
+    <tr><td>5</td><td>Kopfstand-Übung</td><td>Folie nur als Gedächtnisstütze, Arbeit passiert auf Papier</td></tr>
+    <tr><td>6</td><td>Danke &amp; Handout</td><td>Ruhiger Abschluss, Handout erst jetzt austeilen</td></tr>
+  </table>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 5</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — Häufige Elternfragen (FAQ) ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">TRAINERHANDBUCH · FAMILIEN-KOMPASS</div></div>
+
+  <h2 class="abschnitt-titel">Häufige Elternfragen (FAQ)</h2>
+  <div class="skript-box"><span class="label">"Ich spreche nicht so gut Deutsch — kann ich trotzdem mitmachen?"</span><span class="zitat">Ja, unbedingt. Barometer und Kopfstand-Technik funktionieren größtenteils mit Bildern und Zeigen. Du darfst mit Händen und Füßen mitmachen oder in deiner Sprache mit deinem Kind sprechen — wichtig ist die Haltung, nicht die Formulierung.</span></div>
+  <div class="skript-box"><span class="label">"Ist das eine Therapie oder Diagnose für mein Kind?"</span><span class="zitat">Nein. Das Barometer ist kein diagnostisches Werkzeug, sondern eine gemeinsame Sprache für Stimmung — vergleichbar mit einer Ampel. Es ersetzt keine fachliche Abklärung.</span></div>
+  <div class="skript-box"><span class="label">"Was, wenn die kLAR-Formel bei uns nicht funktioniert?"</span><span class="zitat">Das ist normal, kein persönliches Versagen. Jede Familie ist anders — die Formel ist ein Ausgangspunkt zum Anpassen, kein Patentrezept.</span></div>
+  <div class="skript-box"><span class="label">"Muss ich immer alle vier Schritte machen?"</span><span class="zitat">Nein. Schon ein einzelner Schritt kann etwas verändern. Die Formel ist ein Baukasten, kein starres Protokoll.</span></div>
+  <div class="skript-box"><span class="label">"Was mache ich bei einer akuten Krise (Rot)?"</span><span class="zitat">Die kLAR-Formel gilt für Gelb/Orange, also aufkommende Anspannung. Bei akuter Krise geht es zuerst um Sicherheit herstellen und Kontakt halten — ein eigenes Thema, das den Rahmen dieses Abends sprengt.</span></div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 5</span></div>
+</div>
+
+</body>
+</html>

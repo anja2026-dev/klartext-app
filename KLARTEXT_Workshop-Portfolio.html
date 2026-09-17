@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT-Mentoring · Workshop-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E7D5F;--petrol:#1B3A4B;--gold:#B07D2A;--frei:#1B8FA0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.9rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+table.kt-tabelle{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:.72rem;}
+table.kt-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.45rem .6rem;font-weight:700;font-size:.66rem;letter-spacing:.03em;}
+table.kt-tabelle td{padding:.5rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+table.kt-tabelle tr:nth-child(odd) td{background:var(--paper);}
+.liste{list-style:none;margin:.2rem 0 .9rem;}
+.liste li{font-size:.76rem;line-height:1.6;padding-left:1.1em;position:relative;margin-bottom:.4rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.7rem 1rem;margin:.4rem 0 .9rem;font-size:.72rem;line-height:1.6;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.76rem;margin-bottom:.35rem;}
+.fuss{margin-top:auto;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+.kontakt-box{background:var(--m);color:#fff;border-radius:12px;padding:1.1rem 1.3rem;margin-top:.4rem;}
+.kontakt-box .haupttitel{color:#fff;font-size:1.2rem;margin-bottom:.4rem;}
+.kontakt-box .absatz{color:rgba(255,255,255,.92);}
+.kontakt-box .name{font-weight:700;margin-top:.6rem;font-size:.82rem;}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Titel, Intro, Qualifikationen ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">WORKSHOP-PORTFOLIO</h1>
+  <div class="untertitel">Fortbildungen &amp; Impulse für Familiengrundschulzentren, OGS-Teams und Schulträger</div>
+
+  <div class="hinweis-box">
+    <p>Klar. Warm. Menschlich. — das ist die Haltung, mit der KLARTEXT-Mentoring Schulen, OGS-Teams und Familiengrundschulzentren in Dortmund, Hagen und Umgebung begleitet.</p>
+    <p>Anja Jolk bringt 11 Jahre operative Feldpraxis aus Schulbegleitung, Inklusion und Förderschule mit und hat daraus das KLARTEXT-System entwickelt: ein praxiserprobtes, kartenbasiertes Interaktions- und Co-Regulationssystem für den Grundschul- und Ganztagsalltag. Die Workshops sind direkt aus diesem System abgeleitet — sofort einsetzbar, ressourcenorientiert und ohne Bewertung ("Verstehen statt verurteilen").</p>
+  </div>
+
+  <h2 class="abschnitt-titel">Qualifikationen</h2>
+  <ul class="liste">
+    <li>Zertifizierte Systemische Beraterin &amp; Coachin (IHK/BSG) — Lösungsorientierte Beratung, Konfliktmanagement, Systemdynamiken</li>
+    <li>Fachkraft für Integrationspädagogik (FAPS)</li>
+    <li>Goethe-Institut Zertifikat DaZ in der Grundschule (Note 1,00)</li>
+    <li>Integrative Lerntherapeutin (IFLW) — LRS, Dyskalkulie, ADHS, Lernmotivation</li>
+    <li>Zertifizierte body'n'brain-Trainerin — neurologisches Bewegungstraining zur Gehirnentwicklung</li>
+    <li>Erwachsenenbildung &amp; Weiterbildung (IU Internationale Hochschule)</li>
+    <li>Kinderschutz-Zertifikat (Universitätsklinikum Ulm, § 8a SGB VIII)</li>
+    <li>11 Jahre Feldpraxis in Schulbegleitung, Inklusion und Vertretung an Förderschulen (Sprache &amp; Sehen)</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 1 von 3</span></div>
+</div>
+
+<!-- ══════ SEITE 2 — Formate & Rahmenbedingungen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal">
+    <div class="kopf-titel">KLARTEXT-MENTORING · WORKSHOP-PORTFOLIO</div>
+  </div>
+
+  <h2 class="abschnitt-titel">Die drei Kernformate</h2>
+  <table class="kt-tabelle">
+    <tr><th>Format</th><th>Dauer / Umfang</th><th>Zielgruppe</th><th>Richtpreis</th><th>Preisrahmen</th></tr>
+    <tr><td>Eltern-Café / Kurz-Impuls</td><td>60–90 Minuten</td><td>Eltern im FGZ, Abendveranstaltung</td><td>300 €</td><td>250–350 €</td></tr>
+    <tr><td>Halbtags-Workshop</td><td>3–4 Std. (4 UE)</td><td>OGS-Teams, INGRAs, Lehrkräfte</td><td>600 €</td><td>500–700 €</td></tr>
+    <tr><td>Ganztags-Workshop</td><td>6–8 Std. (8 UE)</td><td>Pädagogische Tage, Inhouse-Schulung</td><td>1.100 €</td><td>950–1.300 €</td></tr>
+  </table>
+  <p class="absatz">Jedes Format kann mit einem oder mehreren Themen-Modulen (siehe nächste Seite) gefüllt werden — die Inhalte richten sich nach dem Bedarf der Einrichtung.</p>
+
+  <h2 class="abschnitt-titel">Rahmenbedingungen</h2>
+  <ul class="liste">
+    <li>Einzugsgebiet: Schwerte und Umgebung, inkl. lokaler Service in Dortmund und Hagen</li>
+    <li>Fahrtkosten: 0,30 €/km ab Schwerte (im Nahbereich Dortmund/Hagen ab 500 € Honorar inklusive, sonst pauschal 15 €)</li>
+    <li>Material-Sets: optional pro Person buchbar, 10 €/Set</li>
+    <li>Rechnungsstellung: umsatzsteuerfrei gemäß § 19 UStG (Kleinunternehmerregelung)</li>
+    <li>Förderung: Kosten sind häufig über das NRW-Förderprogramm für Familiengrundschulzentren oder das Startchancen-Programm (Säule II – Chancenbudget) refinanzierbar — bitte bei der jeweiligen Schule/dem Schulträger erfragen, ob das Chancenbudget für externe Fortbildungen genutzt werden darf</li>
+  </ul>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 3</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Module & Kontakt ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal">
+    <div class="kopf-titel">KLARTEXT-MENTORING · WORKSHOP-PORTFOLIO</div>
+  </div>
+
+  <h2 class="abschnitt-titel">Themen-Module (Baukasten)</h2>
+  <p class="absatz">Die Kernformate lassen sich mit folgenden Schwerpunkten füllen — einzeln oder kombiniert, je nach Bedarf der Einrichtung. Alle Module bauen auf demselben KLARTEXT-Kernsystem auf (Barometer, kLAR-Formel, Feuerwehr-Protokoll, Joker-Signal) — einmal gelernt, in jedem weiteren Modul wiedererkennbar.</p>
+  <table class="kt-tabelle">
+    <tr><th>Modul</th><th>Schwerpunkt</th><th>Passendes Format</th></tr>
+    <tr><td>Familien-Kompass</td><td>Niedrigschwellige Elternarbeit im FGZ, systemische Haltung, Eltern-Café ohne Schuldzuweisungen</td><td>Eltern-Café</td></tr>
+    <tr><td>Deeskalation &amp; Krisenfestigkeit</td><td>5-stufiges Barometer, kLAR-Formel, Feuerwehr-Protokoll, rechtssichere Dokumentation</td><td>Ganztags</td></tr>
+    <tr><td>Transitionen &amp; Ankommen</td><td>Übergänge im OGS-Alltag, Ankommens-Rituale</td><td>Halbtags</td></tr>
+    <tr><td>Team-Alignment</td><td>Abstimmung zwischen multiprofessionellen Teams (Schule/OGS)</td><td>Ganztags</td></tr>
+    <tr><td>Gruppendynamik &amp; Partizipation</td><td>Gruppenprozesse, Mitbestimmung, Team- und Klassendynamik</td><td>Halbtags</td></tr>
+    <tr><td>Neurodiversität &amp; Co-Regulation</td><td>ADHS, Autismus, FASD — Zonen-Set, Reizfilterung, Pausenmanagement</td><td>Halbtags</td></tr>
+    <tr><td>Sprachförderung &amp; DaZ</td><td>Sprachsensibler Unterricht nach Goethe-Standards, Vokabel-Kino</td><td>Halbtags</td></tr>
+    <tr><td>Rollenklarheit &amp; Selbstfürsorge</td><td>Abgrenzung, Burnout-Prävention, 3-Minuten-Gelassenheitsrituale</td><td>Halbtags / Eltern-Café</td></tr>
+  </table>
+
+  <div class="kontakt-box">
+    <div class="haupttitel">Kontakt &amp; Anfrage</div>
+    <p class="absatz">Interesse an einem Workshop, einem Eltern-Café oder einer Inhouse-Schulung? Meldet euch gerne unverbindlich — gemeinsam finden wir das passende Format und Modul für euer Team oder eure Einrichtung.</p>
+    <div class="name">Anja Jolk · KLARTEXT-Mentoring · Schwerte<br>info@klartext-mentoring.de</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 3</span></div>
+</div>
+
+</body>
+</html>

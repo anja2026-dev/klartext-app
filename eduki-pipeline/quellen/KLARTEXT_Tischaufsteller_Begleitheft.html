@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Tischaufsteller · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2F6B6E;--warm:#B4482E;--gruen:#1D9E75;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3F3;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{
+  width:210mm;min-height:297mm;background:#fff;margin:0 auto;
+  padding:14mm 16mm 12mm;position:relative;page-break-after:always;
+  display:flex;flex-direction:column;
+}
+.seite:last-child{page-break-after:auto;}
+
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.7rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+
+table{width:100%;border-collapse:separate;border-spacing:0;box-shadow:0 3px 14px rgba(27,58,75,.08);border-radius:10px;overflow:hidden;margin-bottom:.7rem;}
+table th,table td{padding:.4rem .6rem;font-size:.66rem;text-align:left;line-height:1.4;}
+table th{background:var(--m);color:#fff;font-weight:700;letter-spacing:.03em;font-size:.6rem;text-transform:uppercase;}
+table tr:nth-child(even) td{background:var(--paper);}
+table td{border-bottom:1px solid var(--border);}
+
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.qr-zeile .qr-text .link{font-size:.66rem;color:var(--muted);word-break:break-all;}
+
+.mini-qr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.5rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.mini-qr .qr{width:18mm;height:18mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.6rem;font-weight:700;color:var(--m);margin-bottom:.1rem;}
+.mini-qr .lnk{font-size:.5rem;color:var(--muted);word-break:break-all;line-height:1.3;}
+.mini-qr .frei{font-size:.5rem;color:var(--gruen);font-weight:700;word-break:break-all;line-height:1.3;}
+
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+
+/* ---- Formular-Seiten ---- */
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.8rem;color:var(--m);margin-bottom:.5rem;}
+.check-karte-feld{font-size:.62rem;color:var(--muted);margin-bottom:.5rem;}
+.check-karte-feld b{color:var(--ink);}
+.check-option{font-size:.68rem;line-height:1.6;display:flex;align-items:flex-start;gap:.4rem;margin-bottom:.25rem;}
+.check-option .box{width:.8em;height:.8em;border:1px solid var(--muted);border-radius:2px;flex-shrink:0;margin-top:.15em;}
+
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+
+.progression-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.progression-phase{background:#E5F5EE;border-left:3px solid var(--gruen);border-radius:8px;padding:.5rem .7rem;font-size:.64rem;line-height:1.42;}
+.progression-phase b{color:var(--m);font-size:.66rem;}
+
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+.klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
+.klar-kasten b{color:var(--m);}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">KLARTEXT-TISCHAUFSTELLER</h1>
+  <div class="untertitel">Begleitheft &amp; Praxis-Leitfaden fürs Kollegium</div>
+
+  <div class="hinweis-box">
+    <p>Der Tischaufsteller bündelt <b>6 systemische Sofort-Impulse</b> für die häufigsten Alltagssituationen im Klassenzimmer — jeder Impuls in drei festen Schritten: die <b>systemische Perspektive</b> auf das Verhalten, ein konkreter <b>Hebel</b> zur Musterunterbrechung und ein wortgenaues <b>kLAR-Sofortskript</b> zum direkten Nachsprechen.</p>
+    <p>Gedacht als griffbereiter, lautloser Begleiter auf dem Lehrerpult — nicht als weiteres Regelwerk, sondern als schnelle Gedächtnisstütze im Moment selbst.</p>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.1rem;margin-bottom:.3rem;">Ich-kann-Ziel dieses Materials</div>
+  <div class="absatz" style="margin-bottom:.4rem;"><b>„Ich kann in einer akuten Unterrichtssituation schnell den passenden Impuls erkennen und das zugehörige kLAR-Sofortskript souverän anwenden."</b></div>
+
+  <div class="abschnitt-titel">Die 6 Impulse auf einen Blick</div>
+  <table>
+    <tr><th>Impuls</th><th>Situation</th><th>Kernhebel</th></tr>
+    <tr><td><b>1</b> Das unruhige Klassenzimmer</td><td>Ganze Klasse</td><td>Musterunterbrechung (Fehler-Detektiv)</td></tr>
+    <tr><td><b>2</b> Die Arbeitsverweigerung</td><td>Einzelnes Kind</td><td>Dopamin-Portionierer (Mikroschritte)</td></tr>
+    <tr><td><b>3</b> Der schweigende Zuschauer</td><td>Klassengemeinschaft</td><td>10-Sekunden-Regel (Upstander-Aktivierung)</td></tr>
+    <tr><td><b>4</b> Der Sensory Overload</td><td>Einzelnes Kind</td><td>Lautloses Reiz-Thermostat (Barometer)</td></tr>
+    <tr><td><b>5</b> Das eskalierende Elterngespräch</td><td>Erwachsene / Jugendliche</td><td>Ankündigung der Präsenz (Neue Autorität)</td></tr>
+    <tr><td><b>6</b> Die systemische Teilearbeit</td><td>Sich selbst / Kollegium</td><td>Externalisierung (Vogelperspektive)</td></tr>
+  </table>
+
+  <div class="absatz">Auf Seite 6 findest du einen Reflexionsbogen, um die Wirkung einzelner Impulse für dich festzuhalten, auf Seite 7 eine kompakte Praxis-Karte fürs schnelle Notieren zwischendurch.</div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien &amp; die Praxis-Progression</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom spontanen Griff zum Aufsteller bis zur kollegialen Weitergabe im Team.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Klassenrat / Plenum <span class="szenario-wer">(ganze Klasse)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Bei wiederkehrender Unruhe oder als vorbereiteter Einstieg in eine bekannte Reizsituation (z. B. vor einer Klassenarbeit).</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Impuls 1 oder 3 wird vorab durchdacht, das Sofortskript sitzt griffbereit — die Klasse erlebt eine ruhige, konsistente Reaktion statt spontaner Schimpfe.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🧩 Szenario 2: Kollegiale Impuls-Werkstatt <span class="szenario-wer">(Kleingruppe/Teamarbeit, siehe Formular 1 auf Seite 5)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Ein kleines Team (z. B. im Rahmen einer Teamsitzung oder eines Studientags) arbeitet die 6 Impulse gemeinsam durch — liest, spricht die Skripte laut, gibt sich gegenseitig Rückmeldung.</div>
+    <div class="szenario-zeile"><b>Wirkung:</b> Aus stillem Lesen wird eingeübte Praxis — ein Sofortskript wirkt im echten Moment nur, wenn es vorher schon einmal laut ausgesprochen wurde.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Kollegiale Hospitation / Peer-Austausch <span class="szenario-wer">(Kolleg:in zu Kolleg:in, 1:1)</span></div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Zwei Kolleg:innen verabreden sich, sich gegenseitig bei der Anwendung eines Impulses zu beobachten und danach kurz Rückmeldung zu geben — welche Wirkung, welcher Tonfall.</div>
+    <div class="szenario-zeile"><b>Wirkung:</b> Erfahrungsaustausch auf Augenhöhe statt Einzelkämpfertum im Klassenzimmer.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung &amp; Integrationsassistenz <span class="szenario-wer">(1:1-Inklusionsbegleitung)</span></div>
+    <div class="szenario-zeile"><b>Grundhaltung:</b> Der Tischaufsteller ersetzt keine Einzelfalleinschätzung — er liefert die erste, schnelle Orientierung im akuten Moment.</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Bei Sensory Overload oder aufkeimender Eskalation greift die Integrationsassistenz auf Impuls 4 zurück und leitet passend zum Barometer bzw. Atem-Ballon über.</div>
+    <div class="klar-kasten"><b>Verbindung zum KLARTEXT-System:</b> Impuls 4 verweist direkt auf das Klassen-Barometer (5-stufige Ampel) als nächsten Diagnoseschritt und auf Brainys Atem-Ballon als anschließende Co-Regulationsübung — beide sind eigene KLARTEXT-Materialien im Mentoring-System.</div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:.4rem;">Kognitives Progressionsmodell über das Schuljahr</div>
+  <div class="progression-grid">
+    <div class="progression-phase"><b>Phase 1 · Nachschlagen (erste Wochen)</b><br>Der Aufsteller steht griffbereit auf dem Pult, das Sofortskript wird noch abgelesen.</div>
+    <div class="progression-phase"><b>Phase 2 · Wiedererkennen</b><br>Die Situation wird schneller erkannt, nur noch ein kurzer Blick auf den Hebel nötig.</div>
+    <div class="progression-phase"><b>Phase 3 · Verinnerlicht</b><br>Das kLAR-Sofortskript ist automatisch abrufbar, ohne draufzuschauen.</div>
+    <div class="progression-phase"><b>Phase 4 · Weitergeben</b><br>Eigene Erfahrungen werden an Kolleg:innen weitergegeben (siehe Szenario 2+3).</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So setzt du den Tischaufsteller im Alltag ein</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten einsatzbereit</div>
+  <ol class="schritt-liste">
+    <li><b>Ausdrucken:</b> Alle vier Druckvorlage-Seiten quer (DIN A4) auf festem Papier oder Karton.</li>
+    <li><b>Laminieren:</b> Schützt vor Kaffeeflecken im Lehrerzimmer und macht ihn abwischbar.</li>
+    <li><b>In der Mitte falten:</b> Jede Seite in der Mitte knicken, sodass sie als Tischaufsteller aufrecht steht — Impuls links und rechts zeigen dann in verschiedene Richtungen.</li>
+    <li><b>Griffbereit aufstellen:</b> Auf dem Pult, im Lehrerzimmer oder im Differenzierungsraum — dort, wo die Entscheidung im Moment fällt.</li>
+    <li><b>Bei Bedarf kurz nachschlagen:</b> Situation erkennen, passenden Impuls aufschlagen, Sofortskript nutzen.</li>
+  </ol>
+
+  <div class="abschnitt-titel">Mehrere Zugänge zu denselben Impulsen</div>
+  <div class="absatz">Nicht jede Situation lässt Zeit, den Papieraufsteller griffbereit zu haben — deshalb gibt es dieselben 6 Impulse auch digital:</div>
+  <ul class="liste">
+    <li><b>Analog:</b> der gefaltete Tischaufsteller auf dem Pult.</li>
+    <li><b>Digital:</b> die Gast-Version zum Antippen und Aufklappen — direkt am Handy oder Tablet im Lehrerzimmer, QR-Code unten.</li>
+    <li><b>Kollegial:</b> gemeinsames Durcharbeiten im Team (Formular 1, Seite 5).</li>
+    <li><b>Dokumentiert:</b> die eigene Praxis über den Reflexionsbogen (Seite 6) und die Praxis-Karte (Seite 7) festhalten.</li>
+  </ul>
+
+  <div class="qr-zeile">
+    <div class="qr" id="druck-qr-app"></div>
+    <div class="qr-text"><b>Digitale Version zum Nachschlagen</b>QR-Code scannen: alle 6 Impulse zum Antippen und Aufklappen — direkt am Handy oder Tablet im Lehrerzimmer.<div class="link">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Tischaufsteller.html?guest=true</div></div>
+  </div>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Kein Impuls funktioniert auf Knopfdruck bei jedem Kind gleich — probier aus, welches Sofortskript zu deinem eigenen Ton passt, und passe die Formulierung ruhig an dich an.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang zur digitalen Version</h1>
+  <div class="absatz">Die digitale Tischaufsteller-Version im Gast-Modus ist <b>frei zugänglich</b> — ganz ohne Anmeldung oder Zugangscode, direkt im Browser.</div>
+
+  <div class="mini-qr-grid" style="grid-template-columns:1fr;max-width:60mm;">
+    <div class="mini-qr">
+      <div class="qr" id="qr-mein-set"></div>
+      <div class="lbl">Tischaufsteller (Gast-Version)</div>
+      <div class="lnk">klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Tischaufsteller.html?guest=true</div>
+      <div class="frei">kostenlos nutzbar · kein Code nötig</div>
+    </div>
+  </div>
+
+  <div class="absatz" style="margin-top:1rem;">Weitere kostenlose und kostenpflichtige KLARTEXT-Materialien zu Classroom Management, Deeskalation und systemischer Pädagogik findest du auf eduki im KLARTEXT-Mentoring-Profil.</div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Rollenkarten für die kollegiale Impuls-Werkstatt findest du auf Seite 5, einen Reflexionsbogen für Lehrkräfte auf Seite 6, eine kompakte Praxis-Karte auf Seite 7.</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Systemische Impulse für den reizarmen, entlastenden Schulalltag — konsequent auf Augenhöhe, ohne Bewertung.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Kollegiale Impuls-Werkstatt ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Rollenkarten für die kollegiale Impuls-Werkstatt</h1>
+  <div class="formular-hinweis">Für die Teamsitzung oder den Studientag (Szenario 2, Seite 2) — ausschneiden, laminieren, im Team verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">📖 Impuls-Vorleser:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich lese die systemische Perspektive zum aktuellen Impuls laut vor.</li>
+        <li>Ich fasse in einem Satz zusammen, worum es geht.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🎭 Praxis-Tester:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich spreche das kLAR-Sofortskript laut nach — in meinem eigenen Tonfall.</li>
+        <li>Ich probiere es zweimal aus: einmal ruhig, einmal bestimmt.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">👀 Beobachter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte auf Tonfall und Wirkung und gebe eine ehrliche, kurze Rückmeldung.</li>
+        <li>Ich frage nach: „Würde das bei dir im Klassenzimmer funktionieren?"</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⏱️ Zeitwächter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte darauf, dass pro Impuls maximal 3–4 Minuten vergehen.</li>
+        <li>Ich sorge dafür, dass alle 6 Impulse in der Sitzung drankommen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Team-Ziel</b>
+    Am Ende der Werkstatt hat jede:r im Team mindestens zwei Sofortskripte einmal laut ausgesprochen — und weiß, welche zwei Impulse sie/er als Erstes im eigenen Alltag ausprobieren will.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Lehrkräfte-Reflexionsbogen &amp; Wirkungs-Evaluation</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Selbstevaluation des Einsatzes.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Klasse/Gruppe:</b> ______________</span>
+    <span><b>Eingesetzter Impuls (1–6):</b> _______</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Deeskalation: Wie gut hat der Impuls die Situation spürbar entschärft?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Sicherheit im Sofortskript: Wie sicher fühlte sich die Formulierung im Sprechen an?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Übertragbarkeit: Ließe sich der Impuls auch auf eine andere Situation übertragen?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>In welcher Situation hat der Impuls heute am besten funktioniert?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Welchen Impuls würdest du künftig öfter nutzen — und welchen eher seltener?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Methodische Tipps für die Moderation</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li>Sofortskripte wirken am besten, wenn sie vorher schon einmal laut geübt wurden (siehe Formular 1, Seite 5) — nicht erst im akuten Moment zum ersten Mal aussprechen.</li>
+      <li>Bei Impuls 5 (Elterngespräch): die Ankündigung der Präsenz ruhig, ohne Drohung und ohne Rückzug formulieren — Ton entscheidet mehr als Wortlaut.</li>
+      <li>Bei Impuls 4 (Sensory Overload): erst reduzieren, dann sprechen — verbale Erklärungen im akuten Moment eher vermeiden.</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund &amp; Quellen</b>
+    Die „Ankündigung der Präsenz" (Impuls 5) stammt aus dem Konzept der Neuen Autorität: Omer, H. &amp; von Schlippe, A. (2010). <i>Stärke statt Macht: Neue Autorität in Familie, Schule und Gemeinde.</i> Göttingen: Vandenhoeck &amp; Ruprecht. Die „10-Sekunden-Regel" (Impuls 3) stützt sich auf die Wirksamkeit von Bystander-/Upstander-Interventionsprogrammen: Polanin, J. R., Espelage, D. L., &amp; Pigott, T. D. (2012). A Meta-Analysis of School-Based Bullying Prevention Programs' Effects on Bystander Intervention Behavior. <i>School Psychology Review, 41</i>(1), 47–65.
+    <div class="hinweis">Für Impuls 1, 2, 4 und 6 wurden bewusst keine Einzelstudien angeführt — die Hebel beruhen auf allgemeiner systemischer Praxis des KLARTEXT-Mentoring-Systems, nicht auf einer spezifischen externen Quelle.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Praxis-Karte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Praxis-Karte „Mein Impuls-Check"</h1>
+  <div class="formular-hinweis">Kompaktes Notizformat für zwischendurch — 4 Karten pro Blatt, einzeln ausschneiden.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Impuls-Check</div>
+      <div class="check-karte-feld"><b>Datum:</b> _______ &nbsp; <b>Impuls-Nr.:</b> ____</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Situation kurz:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .3rem;">2. Wirkung:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Notiz fürs nächste Mal:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Impuls-Check</div>
+      <div class="check-karte-feld"><b>Datum:</b> _______ &nbsp; <b>Impuls-Nr.:</b> ____</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Situation kurz:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .3rem;">2. Wirkung:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Notiz fürs nächste Mal:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Impuls-Check</div>
+      <div class="check-karte-feld"><b>Datum:</b> _______ &nbsp; <b>Impuls-Nr.:</b> ____</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Situation kurz:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .3rem;">2. Wirkung:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Notiz fürs nächste Mal:</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Impuls-Check</div>
+      <div class="check-karte-feld"><b>Datum:</b> _______ &nbsp; <b>Impuls-Nr.:</b> ____</div>
+      <div style="font-size:.68rem;margin-bottom:.3rem;">1. Situation kurz:</div>
+      <div class="antwortlinie"></div>
+      <div style="font-size:.68rem;margin:.4rem 0 .3rem;">2. Wirkung:</div>
+      <div style="font-size:.68rem;margin-bottom:.4rem;">😣 → 🙂 &nbsp; 😠 → 😌 &nbsp; 😵 → 🙂</div>
+      <div style="font-size:.68rem;margin:.2rem 0 .2rem;">3. Notiz fürs nächste Mal:</div>
+      <div class="antwortlinie"></div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    var appUrl = 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Tischaufsteller.html?guest=true';
+    setQr('druck-qr-app', appUrl);
+    setQr('qr-mein-set', appUrl);
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

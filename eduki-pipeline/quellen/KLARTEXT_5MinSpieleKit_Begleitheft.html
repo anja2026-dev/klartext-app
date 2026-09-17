@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLARTEXT · Das 5-Minuten-Spiele-Kit · Begleitheft (7 Seiten)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="KLARTEXT_QRCode.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --m:#1B3A4B;--acc:#2E7D5F;--petrol:#1B3A4B;--gold:#B07D2A;--frei:#1B8FA0;--paper:#F5F0E8;--surface:#fff;
+  --border:#DDD8CE;--ink:#2D2D2D;--muted:#7A7060;--tint:#EAF3EE;
+}
+body{font-family:"DM Sans",sans-serif;color:var(--ink);background:#e9e5dc;}
+.seite{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:14mm 16mm 12mm;position:relative;page-break-after:always;display:flex;flex-direction:column;}
+.seite:last-child{page-break-after:auto;}
+.kopf{background:var(--m);color:#fff;border-radius:10px;padding:.7rem 1.3rem;text-align:center;margin-bottom:1.1rem;position:relative;overflow:hidden;padding-left:2.7rem;}
+.kopf::before{content:"K";position:absolute;left:.85rem;top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border:1.5px solid var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:800;font-size:.85rem;color:#fff;}
+.kopf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--acc);}
+.kopf-titel{font-size:.72rem;font-weight:700;letter-spacing:.14em;}
+.kopf-sub{font-size:.62rem;letter-spacing:.1em;color:rgba(255,255,255,.7);margin-top:.15rem;}
+.kopf-schmal{background:transparent;color:var(--m);text-align:left;border-bottom:2px solid var(--m);border-radius:0;padding:0 0 .4rem;margin-bottom:1rem;padding-left:0;}
+.kopf-schmal::before,.kopf-schmal::after{display:none;}
+.kopf-schmal .kopf-titel{font-size:.66rem;letter-spacing:.1em;color:var(--m);}
+.haupttitel{font-family:"Playfair Display",serif;font-size:1.7rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.untertitel{font-size:.82rem;color:var(--acc);margin-bottom:1rem;}
+.hinweis-box{position:relative;background:var(--tint);border-left:4px solid var(--acc);border-radius:12px;padding:.65rem 1.1rem .65rem 1.5rem;margin-bottom:.9rem;font-size:.76rem;line-height:1.55;color:var(--ink);box-shadow:0 3px 14px rgba(27,58,75,.09);}
+.hinweis-box::before{content:"i";position:absolute;left:-.55rem;top:-.55rem;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--acc);color:#fff;font-family:"Playfair Display",serif;font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18);}
+.hinweis-box p+p{margin-top:.55rem;}
+.hinweis-box b{color:var(--m);}
+.quelle{font-size:.6rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+.abschnitt-titel{position:relative;padding-bottom:.3rem;font-size:.95rem;font-weight:700;color:var(--m);margin:0 0 .5rem;font-family:"Playfair Display",serif;}
+.abschnitt-titel::after{content:"";display:block;width:26px;height:3px;border-radius:2px;background:var(--acc);margin-top:.3rem;}
+.absatz{font-size:.76rem;line-height:1.6;margin-bottom:.6rem;}
+.absatz b{color:var(--m);}
+.spiele-tabelle{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:.72rem;}
+.spiele-tabelle th{background:var(--m);color:#fff;text-align:left;padding:.45rem .6rem;font-weight:700;font-size:.66rem;letter-spacing:.03em;}
+.spiele-tabelle td{padding:.5rem .6rem;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.spiele-tabelle tr:nth-child(2) td{border-left:4px solid var(--acc);}
+.spiele-tabelle tr:nth-child(3) td{border-left:4px solid var(--petrol);}
+.spiele-tabelle tr:nth-child(4) td{border-left:4px solid var(--gold);}
+.fachbegriffe-box{background:var(--paper);border-radius:10px;padding:.7rem 1rem;margin-bottom:.6rem;font-size:.7rem;line-height:1.6;}
+.fachbegriffe-box b{color:var(--m);}
+.schritt-liste{list-style:none;counter-reset:schritt;margin-bottom:1rem;}
+.schritt-liste li{counter-increment:schritt;position:relative;padding:.5rem 0 .5rem 2.1rem;font-size:.76rem;line-height:1.55;border-bottom:1px solid var(--border);}
+.schritt-liste li:last-child{border-bottom:none;}
+.schritt-liste li::before{content:counter(schritt);position:absolute;left:0;top:.45rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;}
+.schritt-liste b{color:var(--m);}
+.qr-zeile{display:flex;align-items:center;gap:.8rem;background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-bottom:1rem;box-shadow:0 3px 14px rgba(27,58,75,.08);border:1px solid var(--border);}
+.qr-zeile .qr{width:22mm;height:22mm;flex-shrink:0;background:#fff;}
+.qr-zeile .qr svg{width:100%;height:100%;display:block;}
+.qr-zeile .qr-text{font-size:.74rem;color:var(--ink);line-height:1.55;}
+.qr-zeile .qr-text b{display:block;color:var(--m);font-size:.82rem;margin-bottom:.15rem;}
+.mini-qr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem;}
+.mini-qr{background:var(--paper);border-radius:8px;padding:.6rem;text-align:center;box-shadow:0 2px 8px rgba(27,58,75,.06);border-top:4px solid var(--acc);}
+.mini-qr.petrol{border-top-color:var(--petrol);}
+.mini-qr.gold{border-top-color:var(--gold);}
+.mini-qr .qr{width:22mm;height:22mm;margin:0 auto .3rem;background:#fff;}
+.mini-qr .qr svg{width:100%;height:100%;display:block;}
+.mini-qr .lbl{font-size:.66rem;font-weight:700;color:var(--m);margin-bottom:.2rem;}
+.mini-qr a.lnk{display:block;font-size:.5rem;color:var(--muted);word-break:break-all;line-height:1.3;text-decoration:underline;}
+.mini-qr .frei{font-size:.58rem;color:var(--frei);font-weight:700;margin-top:.2rem;}
+.brainy-zeile{display:flex;align-items:flex-start;gap:.9rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--border);background:var(--paper);border-radius:12px;padding:.7rem 1rem;}
+.brainy-zeile img{width:14mm;height:14mm;flex-shrink:0;object-fit:contain;}
+.brainy-zeile .txt{font-size:.72rem;line-height:1.55;color:var(--ink);}
+.brainy-zeile .txt b{color:var(--m);}
+.fuss{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);}
+@media print{ body{background:#fff;} .seite{box-shadow:none;margin:0;} }
+@media screen{ body{padding:10mm 0;} .seite{box-shadow:0 6px 30px rgba(27,58,75,.18);margin-bottom:10mm;} }
+.formular-label{display:inline-block;background:var(--m);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.06em;padding:.25rem .7rem;border-radius:20px;margin-bottom:.5rem;}
+.formular-hinweis{font-size:.68rem;color:var(--muted);margin-bottom:1rem;font-style:italic;}
+.rollenkarten-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;flex:1;align-content:start;}
+.rollenkarte{border:1.5px dashed var(--muted);border-radius:8px;padding:.9rem 1rem 1rem;position:relative;}
+.rollenkarte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.75rem;}
+.rollenkarte-kopf{font-family:"Playfair Display",serif;font-weight:700;font-size:.86rem;color:var(--m);border-bottom:2px solid var(--acc);padding-bottom:.4rem;margin-bottom:.5rem;}
+.rollenkarte-label{font-size:.6rem;font-weight:700;letter-spacing:.05em;color:var(--acc);margin-bottom:.3rem;}
+.rollenkarte ul{list-style:none;font-size:.74rem;line-height:1.55;}
+.rollenkarte ul li{padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.rollenkarte ul li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.rollenkarte .satzanfang{background:var(--paper);border-radius:6px;padding:.35rem .5rem;font-size:.64rem;font-style:italic;color:var(--m);margin-top:.3rem;}
+.eval-feld{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.eval-feld:last-child{border-bottom:none;}
+.eval-feld-label{font-size:.76rem;}
+.skala{display:flex;gap:.25rem;font-size:.6rem;color:var(--muted);white-space:nowrap;}
+.skala span{width:1.15em;height:1.15em;border:1px solid var(--border);border-radius:3px;display:inline-flex;align-items:center;justify-content:center;}
+.reflexions-frage{font-size:.76rem;line-height:1.7;margin-bottom:.7rem;}
+.reflexions-frage b{color:var(--m);display:block;margin-bottom:.15rem;}
+.antwortlinie{border-bottom:1px solid var(--border);height:1.4rem;}
+.kopffeld-zeile{display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
+.kopffeld-zeile b{color:var(--ink);}
+.quellen-box{background:var(--paper);border-radius:10px;padding:.8rem 1rem;margin-top:auto;font-size:.62rem;line-height:1.6;color:var(--muted);}
+.quellen-box b{color:var(--m);display:block;font-size:.68rem;margin-bottom:.3rem;}
+.quellen-box .hinweis{color:var(--acc);font-style:italic;margin-top:.4rem;}
+.check-karte-grid{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+.check-karte{border:1.5px dashed var(--muted);border-radius:8px;padding:.8rem .9rem;position:relative;}
+.check-karte::before{content:"✂";position:absolute;top:-.6rem;left:.7rem;background:#fff;padding:0 .3rem;color:var(--muted);font-size:.7rem;}
+.check-karte-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.78rem;color:var(--m);margin-bottom:.4rem;}
+.check-karte-feld{font-size:.6rem;color:var(--muted);margin-bottom:.4rem;}
+.check-karte-feld b{color:var(--ink);}
+.barometer-zeile{display:flex;gap:.25rem;margin-bottom:.4rem;}
+.barometer-zeile span{flex:1;text-align:center;font-size:.55rem;padding:.25rem 0;border-radius:4px;border:1px solid var(--border);}
+.quiz-option{font-size:.62rem;line-height:1.5;display:flex;align-items:flex-start;gap:.35rem;margin-bottom:.15rem;}
+.quiz-option .box{width:.7em;height:.7em;border:1px solid var(--muted);border-radius:2px;flex-shrink:0;margin-top:.15em;}
+.szenario{background:var(--paper);border-radius:10px;padding:.65rem .9rem;margin-bottom:.55rem;border-left:3px solid var(--acc);}
+.szenario-titel{font-family:"Playfair Display",serif;font-weight:700;font-size:.82rem;color:var(--m);margin-bottom:.3rem;}
+.szenario-wer{font-family:"DM Sans",sans-serif;font-weight:400;font-size:.66rem;color:var(--muted);}
+.szenario-zeile{font-size:.68rem;line-height:1.5;margin-bottom:.15rem;}
+.szenario-zeile b{color:var(--acc);}
+.liste{list-style:none;margin:.2rem 0 .7rem;}
+.liste li{font-size:.74rem;line-height:1.55;padding-left:1.1em;position:relative;margin-bottom:.3rem;}
+.liste li::before{content:"•";position:absolute;left:0;color:var(--acc);font-weight:700;}
+.info-kasten{background:var(--paper);border-radius:10px;padding:.55rem .9rem;margin:.35rem 0 .55rem;font-size:.68rem;line-height:1.5;color:var(--ink);}
+.info-kasten b{color:var(--m);display:block;font-size:.72rem;margin-bottom:.3rem;}
+.klar-kasten{background:#EDEFF2;border:1px dashed var(--m);border-radius:8px;padding:.55rem .8rem;margin-top:.4rem;font-size:.66rem;line-height:1.5;color:var(--ink);}
+.klar-kasten b{color:var(--m);}
+.progress-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:.6rem;}
+.progress-phase{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.6rem .7rem;box-shadow:0 2px 8px rgba(27,58,75,.06);}
+.progress-phase .nr{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.7rem;display:flex;align-items:center;justify-content:center;margin-bottom:.35rem;}
+.progress-phase .titel{font-weight:700;font-size:.72rem;color:var(--m);margin-bottom:.25rem;}
+.progress-phase .txt{font-size:.64rem;line-height:1.5;color:var(--ink);}
+</style>
+</head>
+<body>
+
+<!-- ══════ SEITE 1 — Übersicht ══════ -->
+<div class="seite">
+  <div class="kopf">
+    <div class="kopf-titel">K L A R T E X T &nbsp; M E N T O R I N G · S Y S T E M</div>
+    <div class="kopf-sub">KLAR · WARM · MENSCHLICH</div>
+  </div>
+
+  <h1 class="haupttitel">DAS 5-MINUTEN-SPIELE-KIT</h1>
+  <div class="untertitel">Begleitheft — Drei kurze Klassenspiele gegen den Lautstärke-Teufelskreis</div>
+
+  <div class="hinweis-box">
+    <p>Alle drei Spiele sind <b>sofort einsetzbar</b>: sie kommen ohne aufwendige Vorbereitung aus, brauchen nur leicht verfügbare Alltagsgegenstände und führen die Kinder über kurze, eindeutige Anweisungen sicher durch die Übung.</p>
+    <div class="quelle">Für den Einsatz direkt nach der großen Pause oder bei beginnender Unruhe im Klassenzimmer.</div>
+  </div>
+
+  <div class="abschnitt-titel">Die drei Spiele im Überblick</div>
+  <table class="spiele-tabelle">
+    <tr><th>Spiel</th><th>Fokus</th><th>Ich-kann-Ziel</th></tr>
+    <tr><td>🌡️ Brainys Barometer-Rettung</td><td>Kooperative Stress-Regulation</td><td>„Ich kann mithelfen, dass unsere Klasse gemeinsam wieder ruhiger wird."</td></tr>
+    <tr><td>🤫 Der geheime Gedanken-Leser</td><td>Achtsamkeit &amp; Empathie</td><td>„Ich kann ein Gefühl bei einem anderen Kind erkennen und richtig benennen."</td></tr>
+    <tr><td>🎲 Der verrückte Wort-Slalom</td><td>Bewegung &amp; Sprachförderung</td><td>„Ich kann mich bewegen, mich konzentrieren und dabei ein Wort lesen."</td></tr>
+  </table>
+
+  <div class="abschnitt-titel">Kurz erklärt: drei Fachbegriffe</div>
+  <div class="fachbegriffe-box">
+    <b>Co-Regulation:</b> Ein Erwachsener oder die Gruppe hilft einem Kind dabei, sich zu beruhigen — bevor es das allein schaffen muss.<br>
+    <b>body'n'brain-Effekt:</b> Bewegung hilft dem Gehirn, Gelerntes besser zu speichern, und baut nebenbei Stress ab.<br>
+    <b>Barometer:</b> Das 5-stufige KLARTEXT-Ampelsystem (Grün–Gelb–Orange–Rot–Grau), mit dem Kinder zeigen können, wie angespannt sie gerade sind.
+  </div>
+
+  <div class="fuss">
+    <span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span>
+    <span>Seite 1 von 7</span>
+  </div>
+</div>
+
+<!-- ══════ SEITE 2 — Einsatz-Szenarien & Progression ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.3rem;">Vier Einsatz-Szenarien</h1>
+  <div class="formular-hinweis" style="margin-bottom:.9rem;">Vom Klassenrat bis zur 1:1-Begleitung.</div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🏛️ Szenario 1: Klassenrat / Plenum <span class="szenario-wer">(ganze Klasse)</span></div>
+    <div class="szenario-zeile"><b>Wann:</b> Nach der großen Pause oder bei beginnender Unruhe.</div>
+    <div class="szenario-zeile"><b>Spiel:</b> Brainys Barometer-Rettung — die Klasse löst die 1-Minuten-Challenge gemeinsam.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">👥 Szenario 2: Kleingruppe / Teamarbeit <span class="szenario-wer">(3–4 Kinder)</span></div>
+    <div class="szenario-zeile"><b>Spiel:</b> Der verrückte Wort-Slalom im Stationsbetrieb — Rollen aus Formular 1 (Seite 5) verteilen.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🤝 Szenario 3: Schüler-zu-Schüler 1:1 / Peer-Buddy <span class="szenario-wer">(zwei Kinder)</span></div>
+    <div class="szenario-zeile"><b>Spiel:</b> Der geheime Gedanken-Leser als Zweierspiel im Sitzkreis oder als festes Pause-Ritual mit einem Peer-Buddy.</div>
+  </div>
+
+  <div class="szenario">
+    <div class="szenario-titel">🛡️ Szenario 4: Schulbegleitung / Integrationsassistenz 1:1</div>
+    <div class="szenario-zeile"><b>Ablauf:</b> Die Barometer-Rettung einzeln mit einem Kind als kurzes Ritual vor oder nach einer belastenden Situation nutzen.</div>
+    <div class="klar-kasten"><b>Verbindung zum KLARTEXT-System:</b> Das Barometer aus Spiel 1 ist dasselbe 5-stufige Regulations-Ampelsystem wie im größeren KLARTEXT-Kernsystem — eine kurze Barometer-Runde kann so auch außerhalb des Spiels als schnelle Einschätzung genutzt werden.</div>
+  </div>
+
+  <div class="abschnitt-titel">Kognitives Progressionsmodell</div>
+  <div class="progress-grid">
+    <div class="progress-phase"><div class="nr">1</div><div class="titel">Kennenlernen</div><div class="txt">Du leitest an, die Klasse probiert alle drei Spiele einmal gemeinsam aus.</div></div>
+    <div class="progress-phase"><div class="nr">2</div><div class="titel">Rollen übernehmen</div><div class="txt">Kinder übernehmen feste Rollen aus Formular 1 (Zeitwächter:in, Leise-Chef:in u. a.).</div></div>
+    <div class="progress-phase"><div class="nr">3</div><div class="titel">Eigenständig einsetzen</div><div class="txt">Kinder erkennen selbst, welches Spiel gerade passt, und moderieren zunehmend selbst.</div></div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 2 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 3 — Ablauf & differenzierte Zugänge ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">So setzt du das Spiele-Kit ein</h1>
+
+  <div class="abschnitt-titel">In 5 Schritten zum passenden Spiel</div>
+  <ol class="schritt-liste">
+    <li><b>Situation einschätzen:</b> Unruhe/Stress → Barometer-Rettung, Konflikt/Gefühl → Gedankenleser, Konzentrationsflaute → Wort-Slalom.</li>
+    <li><b>QR-Code scannen:</b> Tablet oder Handy reicht, kein Login nötig (Seite 4).</li>
+    <li><b>Kurz erklären:</b> In maximal 30 Sekunden — die Kinder kennen die Spiele meist schnell.</li>
+    <li><b>Durchführen:</b> 5 Minuten, lautlos und ohne Bewertung.</li>
+    <li><b>Barometer-Check:</b> Kurzer Abschluss-Check zur eigenen Verfassung (Formular 3, Seite 7).</li>
+  </ol>
+
+  <div class="abschnitt-titel">Differenzierte Zugänge</div>
+  <ul class="liste">
+    <li><b>Gestuft, leichter:</b> Beim Wort-Slalom nur eine Sprache statt fünf, kürzere Wörter.</li>
+    <li><b>Gestuft, anspruchsvoller:</b> Mehr Sprachen, schnelleres Lauf-Tempo für leistungsstärkere Kinder.</li>
+    <li><b>Sprachhilfen:</b> Satzanfang für den Gedankenleser: „Ich glaube, du fühlst dich ___, weil ___."</li>
+    <li><b>Visuell:</b> Kleine Piktogramm-Karten mit den drei Spiel-Symbolen zur schnellen Wiedererkennung.</li>
+  </ul>
+
+  <div class="brainy-zeile">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Brainy sagt:</b> Nach dem Spiel lohnt sich immer ein kurzer Moment: Wie fühlt sich mein Körper jetzt an?</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 3 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 4 — Direktzugang ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <h1 class="haupttitel" style="font-size:1.35rem;">Direktzugang zu den drei Spielen</h1>
+  <div class="absatz">Jedes der drei Spiele ist als <b>Gast-Version frei zugänglich</b> — ganz ohne Zugangscode oder Anmeldung, unabhängig vom Preis dieses Begleithefts.</div>
+
+  <div class="mini-qr-grid">
+    <div class="mini-qr">
+      <div class="qr" id="qr-barometer"></div>
+      <div class="lbl">🌡️ Barometer-Rettung</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_BarometerRettung.html?guest=true">klartext-app-8kl.pages.dev/…BarometerRettung</a>
+      <div class="frei">kostenlos · kein Code</div>
+    </div>
+    <div class="mini-qr petrol">
+      <div class="qr" id="qr-gedankenleser"></div>
+      <div class="lbl">🤫 Gedanken-Leser</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Gedankenleser.html?guest=true">klartext-app-8kl.pages.dev/…Gedankenleser</a>
+      <div class="frei">kostenlos · kein Code</div>
+    </div>
+    <div class="mini-qr gold">
+      <div class="qr" id="qr-wortslalom"></div>
+      <div class="lbl">🎲 Wort-Slalom</div>
+      <a class="lnk" href="https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_WortSlalom.html?guest=true">klartext-app-8kl.pages.dev/…WortSlalom</a>
+      <div class="frei">kostenlos · kein Code</div>
+    </div>
+  </div>
+
+  <div class="absatz" style="font-size:.66rem;color:var(--muted);">Rollenkarten für die Kleingruppe findest du auf Seite 5, einen Reflexionsbogen für dich auf Seite 6, die Selbstreflexionskarte für die Kinder auf Seite 7.</div>
+
+  <div class="brainy-zeile" style="margin-top:1.4rem;">
+    <img src="brainy.png" alt="Brainy">
+    <div class="txt"><b>Dieses Material ist Teil des KLARTEXT Mentoring-Systems.</b><br>Entwickelt für den reizarmen, lautlosen Einsatz im Klassenalltag.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 4 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 5 — FORMULAR 1: Rollenkarten ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">✂️ FORMULAR 1 · Druckvorlage zum Ausschneiden</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Rollenkarten für die Kleingruppe</h1>
+  <div class="formular-hinweis">Für Szenario 2 (Seite 2) — ausschneiden, laminieren, pro Kleingruppe verteilen.</div>
+
+  <div class="rollenkarten-grid">
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">⏱️ Zeitwächter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte auf die 5 Minuten Spielzeit.</li>
+        <li>Ich gebe ein leises Zeichen, wenn die Zeit fast um ist.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🤫 Leise-Chef:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich achte darauf, dass unsere Gruppe leise und ruhig bleibt.</li>
+        <li>Ich gebe unser vereinbartes Stopp-Zeichen, wenn es zu laut wird.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">👀 Beobachter:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich beobachte, ob wirklich alle mitmachen.</li>
+        <li>Ich gebe am Ende eine kurze, freundliche Rückmeldung.</li>
+      </ul>
+    </div>
+    <div class="rollenkarte">
+      <div class="rollenkarte-kopf">🎉 Ermutiger:in</div>
+      <div class="rollenkarte-label">MEINE AUFGABE:</div>
+      <ul>
+        <li>Ich mache anderen leise Mut, wenn etwas schwerfällt.</li>
+        <li>Ich bleibe dabei selbst ruhig und leise.</li>
+      </ul>
+      <div class="satzanfang">Satzanfang: „Das schaffst du gleich!"</div>
+    </div>
+  </div>
+
+  <div class="info-kasten" style="margin-top:.6rem;">
+    <b>Unser gemeinsames Ziel</b>
+    Formuliere für jedes Spiel ein sichtbares gemeinsames Ziel, das nur erreicht wird, wenn wirklich alle mitmachen — z. B. bei der Barometer-Rettung: „Wir holen Brainy gemeinsam in unter einer Minute zurück ins Grün." So wird aus der Einzelübung eine echte Gruppenleistung.
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 5 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 6 — FORMULAR 2: Lehrkräfte-Reflexionsbogen ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📋 FORMULAR 2 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Reflexionsbogen für Lehrkräfte</h1>
+  <div class="formular-hinweis">Druckfertiger Bogen zur Selbstevaluation des Einsatzes.</div>
+
+  <div class="kopffeld-zeile">
+    <span><b>Datum:</b> ______________</span>
+    <span><b>Klasse:</b> ______________</span>
+    <span><b>Eingesetztes Spiel:</b> _____________</span>
+  </div>
+
+  <div class="abschnitt-titel">1. Einschätzung der Wirkung (Skala 1–10)</div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie schnell hat sich die Lautstärke nach dem Spiel reguliert?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie sicher haben die Kinder ihre Rollen (Formular 1) ausgefüllt?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+  <div class="eval-feld">
+    <div class="eval-feld-label">Wie gut hat die Klasse als Gruppe zusammengearbeitet?</div>
+    <div class="skala"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+  </div>
+
+  <div class="abschnitt-titel" style="margin-top:1rem;">2. Beobachtungsfragen</div>
+  <div class="reflexions-frage"><b>Welches der drei Spiele hat bei dieser Klasse am besten gewirkt — und warum?</b><div class="antwortlinie"></div></div>
+  <div class="reflexions-frage"><b>Gab es eine Situation mit unterschiedlichen Bedürfnissen (z. B. ein Kind wollte weitermachen, ein anderes war fertig)? Wie wurde das gelöst?</b><div class="antwortlinie"></div></div>
+
+  <div class="info-kasten">
+    <b>Methodische Hinweise: zwei Beispieldialoge</b>
+    <ul class="liste" style="margin:.2rem 0 0;">
+      <li><b>Bei Streit ums Gewinnen:</b> Kind: „Das ist unfair, du warst zu schnell!" — Du: „Ich sehe, dass dich das ärgert. Lass uns kurz auf unser Barometer schauen — wo stehst du gerade?"</li>
+      <li><b>Wenn ein Kind nicht mitspielen will:</b> „Du musst nicht mitspielen, aber du darfst gerne als Beobachter:in dabei sein und uns danach sagen, was dir aufgefallen ist."</li>
+    </ul>
+  </div>
+
+  <div class="quellen-box">
+    <b>Pädagogischer Hintergrund</b>
+    Bewegung wirkt nachweislich auf Gehirn und Kognition: Hillman, Erickson &amp; Kramer (2008) fassen in ihrer viel zitierten Übersichtsarbeit zusammen, wie körperliche Aktivität kognitive Funktionen unterstützt und zum Stressabbau beiträgt — eine gute fachliche Grundlage dafür, warum kurze Bewegungsspiele wie der Wort-Slalom mehr sind als reine Auflockerung.
+    <div class="hinweis">Quelle: Hillman, C. H., Erickson, K. I., &amp; Kramer, A. F. (2008). Be smart, exercise your heart: exercise effects on brain and cognition. Nature Reviews Neuroscience, 9(1), 58–65.</div>
+  </div>
+
+  <div class="fuss"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 6 von 7</span></div>
+</div>
+
+<!-- ══════ SEITE 7 — FORMULAR 3: Schüler-Selbstreflexionskarte ══════ -->
+<div class="seite">
+  <div class="kopf kopf-schmal"><div class="kopf-titel">KLARTEXT · SYSTEMISCHES INTERAKTIONS- UND CO-REGULATIONSSYSTEM</div></div>
+
+  <div class="formular-label">📝 FORMULAR 3 · Zum Kopieren</div>
+  <h1 class="haupttitel" style="font-size:1.3rem;">Mein Bewegungs-Barometer</h1>
+  <div class="formular-hinweis">Kompakte Selbsteinschätzung nach dem Spiel — 4 Karten pro Blatt, einzeln ausschneiden.</div>
+
+  <div class="check-karte-grid">
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Bewegungs-Barometer</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="barometer-zeile"><span>Grün</span><span>Gelb</span><span>Orange</span><span>Rot</span><span>Grau</span></div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt ruhiger an.</div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt wacher an.</div>
+      <div style="font-size:.6rem;margin-top:.25rem;">Was hat mir gerade geholfen?</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Bewegungs-Barometer</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="barometer-zeile"><span>Grün</span><span>Gelb</span><span>Orange</span><span>Rot</span><span>Grau</span></div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt ruhiger an.</div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt wacher an.</div>
+      <div style="font-size:.6rem;margin-top:.25rem;">Was hat mir gerade geholfen?</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Bewegungs-Barometer</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="barometer-zeile"><span>Grün</span><span>Gelb</span><span>Orange</span><span>Rot</span><span>Grau</span></div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt ruhiger an.</div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt wacher an.</div>
+      <div style="font-size:.6rem;margin-top:.25rem;">Was hat mir gerade geholfen?</div>
+      <div class="antwortlinie"></div>
+    </div>
+    <div class="check-karte">
+      <div class="check-karte-titel">Mein Bewegungs-Barometer</div>
+      <div class="check-karte-feld"><b>Name:</b> _______________ &nbsp; <b>Datum:</b> _______</div>
+      <div class="barometer-zeile"><span>Grün</span><span>Gelb</span><span>Orange</span><span>Rot</span><span>Grau</span></div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt ruhiger an.</div>
+      <div class="quiz-option"><span class="box"></span>Mein Körper fühlt sich jetzt wacher an.</div>
+      <div style="font-size:.6rem;margin-top:.25rem;">Was hat mir gerade geholfen?</div>
+      <div class="antwortlinie"></div>
+    </div>
+  </div>
+
+  <div class="fuss" style="margin-top:1rem;"><span>© 2026 KLARTEXT-Mentoring · Anja Jolk · info@klartext-mentoring.de</span><span>Seite 7 von 7</span></div>
+</div>
+
+<script>
+(function(){
+  try{
+    if(!window.KLARTEXT_QRCode) return;
+    function setQr(id, url){
+      var svg = window.KLARTEXT_QRCode.erzeugeSvg(url);
+      var el = document.getElementById(id);
+      if(svg && el) el.innerHTML = svg;
+    }
+    setQr('qr-barometer', 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_BarometerRettung.html?guest=true');
+    setQr('qr-gedankenleser', 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_Gedankenleser.html?guest=true');
+    setQr('qr-wortslalom', 'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_WortSlalom.html?guest=true');
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>

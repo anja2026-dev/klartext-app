@@ -1,5 +1,5 @@
 # KLARTEXT – Merkliste
-Stand: 20.08.2026 (Strang 101 ergänzt)
+Stand: 17.09.2026 (Strang 126 ergänzt)
 
 **Hinweis:** Abgeschlossene Stränge 1–31 (23.07.–02.08.2026) liegen jetzt in
 `KLARTEXT_Merkliste_Archiv.md`, um diese Datei schlank zu halten. Diese Datei enthält alles ab
@@ -4902,3 +4902,62 @@ noch aus ("So besser?" wurde gestellt, aber ihre Antwort war der Wunsch nach die
 Naechster Schritt fuer den neuen Chat: aktuellen Stand der HTML-Datei anschauen/rendern, mit Anja
 kurz gegenchecken ob sie passt, dann PDF final rendern (Chromium --print-to-pdf, Link-Klickbarkeit
 per URI-Check bestaetigen wie zuvor), committen und Anja die git push origin main-Zeile geben.
+
+
+## Strang 126 (17.09.2026) — Bingo-Varianten + Begleithefte, Schnupperpaket komplett, Tischaufsteller-Link-Fix
+
+**1) Selbstfürsorge-Bingo: 7 zielgruppenspezifische Varianten + Begleitheft.** Auf Wunsch
+7 neue HTML-Varianten neben dem Original erstellt (Grundschullehrer, Sek-Lehrer, Berufsschule/BVB,
+Förderlehrer, OGS, Schulbegleiter, Eltern), je 15 zielgruppenspezifische Selbstfürsorge-Felder.
+7-seitiges Begleitheft nach eduki-Qualitätsstandard erstellt (Quellen: Neff 2003, Jennings &
+Greenberg 2009, beide WebSearch-verifiziert). CDN-QR-Bug gefunden und in allen 8 Dateien gefixt
+(cdnjs-Script → lokales KLARTEXT_QRCode.js, `<span class="lnk">` → echter `<a href>`).
+Digitale Gast-Version zusätzlich klickbar/interaktiv gemacht (Felder abhakbar per Klick, bewusst
+ohne localStorage/Persistenz). Neuer eduki-Qualitätsbericht mit 5 Verbesserungsvorschlägen kam
+rein — nur analysiert, NICHT umgesetzt: Anja hat sich bewusst dagegen entschieden ("nein, wir
+lassen es so").
+
+**2) KLARTEXT-Schnupperpaket (8 Gratis-Karten aus 3 Decks) komplett neu aufgesetzt.** Live-Datei
+war auf dem Mac nicht mehr auffindbar, Original-Skripte (`build_schnupperpaket.py` +
+`build_card_kd/jd/werkzeug.py`) aber noch vorhanden und genutzt. Gebaut: 7-seitiges Begleitheft
+nach eduki-Qualitätsstandard + interaktive Flip-Card-Seite für die 8 Karten
+(`KLARTEXT_Schnupperpaket_Flipcards.html`). Mehrere Nachbesserungsrunden:
+- Druck-PDF (`KLARTEXT_Schnupperpaket.pdf`) hatte weder auf Cover noch auf Schluss-Seite einen
+  QR-Code (nur Text-CTA) — `qrcode`-Lib installiert, echte QR-Codes in beide CTA-Boxen eingebaut.
+  Dabei auch hartcodierte Pfade einer alten Session im Skript durch dynamische `~/mnt/klartext-app`-
+  Pfade ersetzt (Skript lief sonst nur noch zufällig).
+- QR-Code allein war noch nicht klickbar (nur Bild) — `build_schnupperpaket.py` ergänzt jetzt nach
+  dem PIL-Render einen zweiten Schritt mit `pypdf.add_uri()`, der echte klickbare Link-Annotationen
+  über beiden CTA-Boxen setzt (Cover → Flip-Cards, Schluss → Shop).
+- Flip-Cards-Seite war beim ersten Wurf ein eigenes CSS-Nachbau-Design (Kartenfoto bei 55% Opacity
+  auf Decksfarbe → sichtbarer Grünstich, wich außerdem inhaltlich/strukturell vom Original ab).
+  Komplett neu gebaut: nutzt jetzt die echten, mit den Original-Skripten gerenderten Karten-PNGs
+  (Vorder-/Rückseite) als Bilder — 1:1 wie im Druck-PDF, kein Nachbau mehr.
+- Cloudflare-Pages-Deploy hängte längere Zeit in der Warteschlange (kein Code-Problem) — Anja hat
+  selbst über Retry/Dashboard gelöst.
+- **Begleitheft lag nur als HTML vor, nicht als PDF** — Anja hat das zu Recht bemängelt ("das muss
+  immer als PDF vorhanden sein"). Dabei aufgefallen: das Bingo-Begleitheft aus Punkt 1 hatte
+  denselben Lücke. Beide jetzt mit Playwright (Print-CSS, A4, 7 Seiten je Heft) als PDF exportiert
+  und in `eduki-pipeline/fertige-pdfs/` ergänzt. **Lehre für künftige Begleithefte: Standard-Pfad ist
+  HTML-Quelle (`quellen/`) UND gerendertes PDF (`fertige-pdfs/`) — PDF-Export nie vergessen, auch
+  wenn die HTML-Version schon fertig aussieht.**
+
+**3) Tischaufsteller (KLARTEXT_Tischaufsteller_Druckvorlage) proaktiv geprüft — gleicher
+Link-Bug gefunden und gefixt.** Beim Übergang zum nächsten Material direkt auf denselben Fehler
+geprüft, der bei Schnupperpaket/Atemballon schon zweimal auftrat: QR-Code auf Seite 4 (Impulse
+5+6) war vorhanden, aber kein klickbarer Link (weder als Text im HTML noch als PDF-Annotation).
+Gefixt: echter `<a href>` unter dem QR-Text ergänzt, PDF neu gerendert (4 Seiten, A4 quer) und mit
+URI-Link-Annotation über der QR-Zeile versehen. **Noch NICHT geprüft:** ob es beim Tischaufsteller
+darüber hinaus weitere offene Punkte gibt (z. B. eduki-Qualitätsbericht, Begleitheft-Bedarf,
+inhaltliche Wünsche von Anja) — das war noch nicht Thema, nur der akute Link-Bug wurde behoben.
+
+Alle Fixes committed (Commits dcc73e7, 0ffd4b5, 853ee66, 67849d9) und von Anja selbst gepusht.
+
+**ÜBERGABE AN NäCHSTEN CHAT:** Anja hat direkt im Anschluss "weiter mit tischaufsteller" gesagt,
+das war aber noch unspezifisch — im nächsten Chat zuerst nachfragen, was genau am Tischaufsteller
+noch gemacht werden soll (der akute Link-Bug ist bereits gefixt, s. o.). Außerdem generell im Blick
+behalten: bei JEDEM Material, das als Nächstes angefasst wird, vorsorglich auf das immer gleiche
+Muster prüfen (CDN-QR-Bug / fehlender klickbarer Link / fehlendes PDF neben der HTML-Quelle) — das
+ist jetzt dreimal in Folge bei unterschiedlichen Materialien aufgetreten (Bingo, Schnupperpaket,
+Tischaufsteller), es lohnt sich also, das bei neuen/älteren Materialien künftig direkt mitzuprüfen,
+statt es Anja jedes Mal einzeln melden zu lassen.

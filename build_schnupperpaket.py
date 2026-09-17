@@ -6,15 +6,15 @@ from PIL import Image, ImageDraw, ImageFont
 import os, sys
 Image.init()
 
-APP_DIR = "/sessions/tender-trusting-franklin/mnt/klartext-app"
+APP_DIR = os.path.expanduser("~/mnt/klartext-app")
 sys.path.insert(0, APP_DIR)
 
-# Bild-/Font-Pfade der bestehenden Skripte zeigen auf eine alte Session -> patchen wir hier
 import build_card_kd, build_card_jd, build_card_werkzeug
+import qrcode
 
-OUT_DIR = "/sessions/tender-trusting-franklin/mnt/outputs/schnupper_karten/"
+OUT_DIR = os.path.expanduser("~/mnt/klartext-app/_schnupper_build/schnupper_karten/")
 os.makedirs(OUT_DIR, exist_ok=True)
-OUT_PDF = "/sessions/tender-trusting-franklin/mnt/outputs/KLARTEXT_Schnupperpaket.pdf"
+OUT_PDF = os.path.expanduser("~/mnt/klartext-app/KLARTEXT_Schnupperpaket.pdf")
 
 DPI = 300
 MM = DPI / 25.4
@@ -91,13 +91,26 @@ def build_cover():
             y += mm(6.6)
         y += mm(3)
 
-    box_y = mm(258)
-    box_h = mm(22)
+    box_y = mm(250)
+    box_h = mm(32)
     d.rounded_rectangle((mm(20), box_y, W - mm(20), box_y + box_h), radius=mm(3), fill=(232, 245, 238))
+    FLIPCARDS_URL = "https://klartext-app-8kl.pages.dev/KLARTEXT_Schnupperpaket_Flipcards.html"
+    qr_px = mm(24)
+    qr_x = mm(28)
+    qr_y = box_y + (box_h - qr_px) // 2
+    qr = qrcode.QRCode(border=1, box_size=10, error_correction=qrcode.constants.ERROR_CORRECT_M)
+    qr.add_data(FLIPCARDS_URL)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color=KT_PRIMARY, back_color=(232, 245, 238)).convert("RGB").resize((qr_px, qr_px))
+    img.paste(qr_img, (qr_x, qr_y))
+    tx = qr_x + qr_px + mm(7)
     f_status_l = ImageFont.truetype(F_SANS_BOLD, mm(5.5))
-    f_status = ImageFont.truetype(F_SANS_REG, mm(5.0))
-    d.text((mm(28), box_y + mm(5.5)), "ALLE 20 KARTENDECKS", font=f_status_l, fill=(74, 134, 108))
-    d.text((mm(28), box_y + mm(12.5)), "klartext-mentoring.de", font=f_status, fill=KT_INK)
+    f_status = ImageFont.truetype(F_SANS_REG, mm(4.4))
+    d.text((tx, box_y + mm(6)), "Digitaler Zugang zu diesen 8 Karten", font=f_status_l, fill=(74, 134, 108))
+    ty = box_y + mm(13.5)
+    for ln in wrap(d, "QR-Code scannen oder eintippen: klartext-app-8kl.pages.dev/KLARTEXT_Schnupperpaket_Flipcards.html", f_status, W - tx - mm(20)):
+        d.text((tx, ty), ln, font=f_status, fill=KT_INK)
+        ty += mm(5.8)
 
     f_foot = ImageFont.truetype(F_SANS_REG, mm(4.4))
     d.text((mm(20), H - mm(15)), "KLARTEXT-Mentoring · © 2026 Anja Jolk", font=f_foot, fill=KT_MUTED)
@@ -150,12 +163,22 @@ def build_schluss():
         y += mm(4)
 
     y += mm(6)
-    box_h = mm(30)
+    box_h = mm(32)
     d.rounded_rectangle((MARGIN, y, W - MARGIN, y + box_h), radius=mm(3), fill=(232, 245, 238))
+    SHOP_URL = "https://klartext-mentoring.de"
+    qr_px2 = mm(24)
+    qr_x2 = MARGIN + mm(8)
+    qr_y2 = y + (box_h - qr_px2) // 2
+    qr2 = qrcode.QRCode(border=1, box_size=10, error_correction=qrcode.constants.ERROR_CORRECT_M)
+    qr2.add_data(SHOP_URL)
+    qr2.make(fit=True)
+    qr2_img = qr2.make_image(fill_color=KT_PRIMARY, back_color=(232, 245, 238)).convert("RGB").resize((qr_px2, qr_px2))
+    img.paste(qr2_img, (qr_x2, qr_y2))
+    tx2 = qr_x2 + qr_px2 + mm(7)
     f_cta_l = ImageFont.truetype(F_SANS_BOLD, mm(5.6))
     f_cta = ImageFont.truetype(F_SANS_REG, mm(4.8))
-    d.text((MARGIN + mm(8), y + mm(7)), "Alle 20 Kartendecks entdecken", font=f_cta_l, fill=(74, 134, 108))
-    d.text((MARGIN + mm(8), y + mm(16)), "klartext-mentoring.de", font=f_cta, fill=KT_INK)
+    d.text((tx2, y + mm(8)), "Alle 20 Kartendecks entdecken", font=f_cta_l, fill=(74, 134, 108))
+    d.text((tx2, y + mm(17)), "klartext-mentoring.de", font=f_cta, fill=KT_INK)
 
     f_foot = ImageFont.truetype(F_SANS_REG, mm(4.2))
     d.text((MARGIN, H - mm(15)), "KLARTEXT-Mentoring · © 2026 Anja Jolk", font=f_foot, fill=KT_MUTED)

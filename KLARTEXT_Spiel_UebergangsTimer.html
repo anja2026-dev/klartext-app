@@ -60,6 +60,10 @@ input:checked+.slider-toggle{background:var(--gruen);}
 input:checked+.slider-toggle:before{transform:translateX(18px);}
 
 .hinweis{font-size:.72rem;color:var(--muted);text-align:center;line-height:1.5;}
+.anleitung{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:.75rem .9rem;font-size:.76rem;color:var(--muted);line-height:1.5;margin-bottom:1.2rem;}
+.anleitung b{color:var(--m);}
+.zaehler{text-align:center;font-size:.74rem;color:var(--muted);margin-top:.6rem;}
+.zaehler b{color:var(--gruen);}
 
 #brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
 </style>
@@ -82,6 +86,7 @@ input:checked+.slider-toggle:before{transform:translateX(18px);}
 
 <div class="shell">
   <div class="leitsatz">Von Rot zu Grün — der Übergang wird sichtbar, bevor er passiert.</div>
+  <div class="anleitung"><b>So geht’s:</b> Dauer wählen, auf „Start“ tippen. Der Ring färbt sich langsam von Rot nach Grün — wenn er ganz grün ist, ist der Übergang da. Ton/Vibration sind optional zuschaltbar.</div>
 
   <div class="timer-karte">
     <div class="ring-wrap">
@@ -106,6 +111,7 @@ input:checked+.slider-toggle:before{transform:translateX(18px);}
       <button class="steuer-btn start" id="btn-start" onclick="starten()">Start</button>
       <button class="steuer-btn reset" onclick="zuruecksetzen()">Zurücksetzen</button>
     </div>
+    <div class="zaehler" id="zaehler-anzeige"></div>
   </div>
 
   <div class="optionen">
@@ -175,6 +181,7 @@ function presetWaehlen(el, sekunden){
   el.classList.add('aktiv');
   gesamtSekunden = sekunden;
   restSekunden = sekunden;
+  try{ localStorage.setItem('klartext_uebergangstimer_preset', sekunden); }catch(e){}
   anzeigeAktualisieren();
 }
 
@@ -226,6 +233,11 @@ function zuruecksetzen(){
 }
 
 function uebergangErreicht(){
+  try{
+    var n = parseInt(localStorage.getItem('klartext_uebergangstimer_nutzungen')||'0',10);
+    localStorage.setItem('klartext_uebergangstimer_nutzungen', n+1);
+    zaehlerAnzeigen();
+  }catch(e){}
   if(document.getElementById('opt-ton').checked){
     try{
       audioAufwecken();
@@ -245,6 +257,25 @@ function uebergangErreicht(){
   if(document.getElementById('opt-vibration').checked){
     try{ navigator.vibrate && navigator.vibrate([120,60,120]); }catch(e){}
   }
+}
+
+// Letzten Preset merken + Nutzungszähler (rein lokal, DSGVO-sicher)
+(function(){
+  try{
+    var gespeicherterPreset = localStorage.getItem('klartext_uebergangstimer_preset');
+    if(gespeicherterPreset){
+      var btn = document.querySelector('.preset-btn[data-sek="'+gespeicherterPreset+'"]');
+      if(btn) presetWaehlen(btn, parseInt(gespeicherterPreset,10));
+    }
+  }catch(e){}
+  zaehlerAnzeigen();
+})();
+
+function zaehlerAnzeigen(){
+  try{
+    var n = parseInt(localStorage.getItem('klartext_uebergangstimer_nutzungen')||'0',10);
+    document.getElementById('zaehler-anzeige').innerHTML = n>0 ? 'Schon <b>'+n+'</b>x geschafft' : '';
+  }catch(e){}
 }
 
 anzeigeAktualisieren();

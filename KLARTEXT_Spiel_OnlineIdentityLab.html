@@ -12,7 +12,7 @@
 }catch(e){}})();</script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1B3A4B">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="KLARTEXT_QRCode.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{--jd:#2F6B6E; --jd-light:#EAF3F3; --m:#1B3A4B; --acc:#6EC6A0; --real:#8FD0FF; --beide:#F2B84B;}
@@ -108,6 +108,9 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
   <p class="hero-sub">Wer bist du online — und wer bist du im echten Leben? Kreuz einfach an, was zu dir passt.</p>
 </div>
 
+<div class="abschnitt" style="margin-bottom:1.2rem;">
+  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:rgba(255,255,255,.75);line-height:1.6;"><b style="color:#fff;">So geht’s:</b> Erst ankreuzen, was zu dir passt (Schritt 1), dann bei Bedarf Schritt 2/3 ausfüllen. Deine Auswahl bleibt automatisch auf diesem Gerät gespeichert. Am Ende kannst du dir alles als Handout ausdrucken.</div>
+</div>
 <div class="abschnitt">
   <div class="abschnitt-titel">Schritt 1 — Kreuz an, was zu dir passt</div>
   <div class="matrix-grid">
@@ -226,6 +229,22 @@ var COLUMNS = [
 var ausgewaehlt = {};
 var mitnehmen = {};
 
+function zustandSpeichern(){
+  try{
+    localStorage.setItem('klartext_identitylab_stand', JSON.stringify({ausgewaehlt:ausgewaehlt, mitnehmen:mitnehmen, frageState:frageState}));
+  }catch(e){}
+}
+function zustandLaden(){
+  try{
+    var roh = localStorage.getItem('klartext_identitylab_stand');
+    if(!roh) return;
+    var d = JSON.parse(roh);
+    if(d.ausgewaehlt) ausgewaehlt = d.ausgewaehlt;
+    if(d.mitnehmen) mitnehmen = d.mitnehmen;
+    if(d.frageState) frageState = d.frageState;
+  }catch(e){}
+}
+
 function matrixRendern(){
   COLUMNS.forEach(function(col){
     var el = document.getElementById('matrix-' + col.id);
@@ -243,6 +262,7 @@ function toggleAuswahl(id){
   if (!ausgewaehlt[id]) delete mitnehmen[id];
   matrixRendern();
   mitnehmenRendern();
+  zustandSpeichern();
 }
 
 function mitnehmenRendern(){
@@ -264,6 +284,7 @@ function mitnehmenRendern(){
 function mitnehmenToggeln(id){
   if (mitnehmen[id]) delete mitnehmen[id];
   else mitnehmen[id] = true;
+  zustandSpeichern();
 }
 
 function frageRendern(){
@@ -283,6 +304,7 @@ function frageRendern(){
 function toggleFrage(g, id){
   frageState[g][id] = !frageState[g][id];
   frageRendern();
+  zustandSpeichern();
 }
 
 function ausgewaehlteFrageTexte(g){
@@ -337,10 +359,15 @@ function handoutDrucken(){
   html += '<div class="dfoot"><div class="dfoot-qr" id="qr-druck"></div><span>KLARTEXT-Mentoring · Online-Identity-Lab · JD-30<br>Digitale Version: klartext-app-8kl.pages.dev/KLARTEXT_Spiel_OnlineIdentityLab.html</span></div>';
 
   document.getElementById('druckansicht').innerHTML = html;
-  new QRCode(document.getElementById('qr-druck'), {text:'https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_OnlineIdentityLab.html?guest=true', width:150, height:150, colorDark:'#1B3A4B', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M});
+  try{
+    if(window.KLARTEXT_QRCode){
+      document.getElementById('qr-druck').innerHTML = window.KLARTEXT_QRCode.erzeugeSvg('https://klartext-app-8kl.pages.dev/KLARTEXT_Spiel_OnlineIdentityLab.html?guest=true');
+    }
+  }catch(e){}
   window.print();
 }
 
+zustandLaden();
 matrixRendern();
 mitnehmenRendern();
 frageRendern();

@@ -54,6 +54,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 @keyframes brainyLauf{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-3%) scale(1.04);}}
 
 .runden-chip{position:absolute;top:0;right:0;background:var(--m);color:#fff;font-size:.68rem;font-weight:700;padding:.3rem .7rem;border-radius:20px;}
+.gesamt-zaehler{text-align:center;font-size:.74rem;color:var(--muted);margin-top:.6rem;}
+.gesamt-zaehler b{color:var(--acc);}
 
 .tempo-row{display:flex;justify-content:center;gap:.6rem;margin-top:1rem;flex-wrap:wrap;}
 .tempo-btn{padding:.5rem 1.1rem;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;}
@@ -168,13 +170,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
       <button class="print-btn" onclick="window.print()">🖨️ Als Vorlage drucken</button>
     </div>
 
+    <div class="gesamt-zaehler" id="gesamt-zaehler"></div>
+
     <div class="tipp-box">
       <div class="tipp-icon">💡</div>
       <div class="tipp-text" id="tipp-text">Auch in der Luft möglich — kein Material nötig. 30 Sekunden reichen.</div>
     </div>
 
     <div class="info-box">
-      <div class="info-titel">▶️ Drei Stufen, eine Übung</div>
+      <div class="info-titel">▶️ So geht’s: drei Stufen, eine Übung</div>
       <div class="info-text">Im Original ist die liegende Acht vor allem eine Augen-Übung: der Kopf bleibt still, nur die Augen folgen Brainy über die Körpermitte hinweg. Finger-Nachfahren und die große Version mit beiden Händen bauen darauf auf. Auf der Druckvorlage findest du außerdem Ideen für eine große Boden-Acht zum Ablaufen — mit Vokabeln, Einmaleins oder Gedichten kombiniert.</div>
       <div style="display:flex;flex-wrap:wrap;">
         <span class="info-chip">Gelb</span><span class="info-chip">Konzentrationsprobleme</span><span class="info-chip">nach Übergängen</span><span class="info-chip">morgens</span>
@@ -255,6 +259,22 @@ function rundenAnzeigen(){
   rundenChip.textContent = 'Runde ' + rundenZahl;
 }
 
+function gesamtZaehlerHochzaehlen(){
+  try{
+    var n = parseInt(localStorage.getItem('klartext_liegendeacht_gesamt')||'0',10) + 1;
+    localStorage.setItem('klartext_liegendeacht_gesamt', n);
+    gesamtZaehlerAnzeigen(n);
+  }catch(e){}
+}
+function gesamtZaehlerAnzeigen(n){
+  try{
+    n = n===undefined ? parseInt(localStorage.getItem('klartext_liegendeacht_gesamt')||'0',10) : n;
+    var el = document.getElementById('gesamt-zaehler');
+    if(el) el.innerHTML = n>0 ? 'Insgesamt schon <b>'+n+'</b> Runden geübt' : '';
+  }catch(e){}
+}
+gesamtZaehlerAnzeigen();
+
 function animationsSchritt(zeitstempel){
   if(startZeit === null) startZeit = zeitstempel;
   var verstrichen = (zeitstempel - startZeit) / 1000;
@@ -263,6 +283,7 @@ function animationsSchritt(zeitstempel){
   if((richtung >= 0 && fraktion < letzteFraktion) || (richtung < 0 && fraktion > letzteFraktion)){
     rundenZahl++;
     rundenAnzeigen();
+    gesamtZaehlerHochzaehlen();
   }
   letzteFraktion = fraktion;
 

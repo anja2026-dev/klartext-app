@@ -29,6 +29,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .shell{max-width:640px;margin:0 auto;padding:1.5rem clamp(.75rem,3vw,2rem) 5rem;}
 
 .hinweis{font-size:.78rem;color:var(--muted);text-align:center;margin-bottom:1.25rem;}
+.anleitung{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:.75rem .9rem;font-size:.76rem;color:var(--muted);line-height:1.5;margin-bottom:1rem;}
+.anleitung b{color:var(--m);}
+.zuletzt-badge{display:inline-block;background:var(--acc);color:#fff;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:.15rem .5rem;border-radius:10px;margin-left:.5rem;}
 
 .impuls-karte{background:var(--surface);border:2px solid var(--border);border-radius:16px;margin-bottom:.9rem;overflow:hidden;box-shadow:0 3px 14px rgba(27,58,75,.06);}
 .impuls-kopf{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem;cursor:pointer;}
@@ -70,6 +73,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 </div>
 
 <div class="shell">
+  <div class="anleitung"><b>So geht’s:</b> Tipp auf eine Karte, um sie aufzuklappen — du bekommst die systemische Einordnung, einen konkreten Hebel und ein Sofortskript zum direkten Sagen. Die zuletzt genutzte Karte wird markiert, damit du in einer akuten Situation schneller wieder hinfindest.</div>
   <p class="hinweis">Kein Ranking, keine Reihenfolge — such dir einfach die Karte, die gerade passt.</p>
   <div id="impuls-liste"></div>
 </div>
@@ -144,7 +148,15 @@ function karteRendern(impuls, index){
     '</div></div>';
   karte.querySelector('.impuls-kopf').addEventListener('click', function(){
     karte.classList.toggle('offen');
+    if(karte.classList.contains('offen')){
+      try{ localStorage.setItem('klartext_tischaufsteller_zuletzt', impuls.titel); }catch(e){}
+    }
   });
+  try{
+    if(localStorage.getItem('klartext_tischaufsteller_zuletzt') === impuls.titel){
+      karte.querySelector('.impuls-titel').innerHTML = impuls.titel + '<span class="zuletzt-badge">zuletzt genutzt</span>';
+    }
+  }catch(e){}
   return karte;
 }
 

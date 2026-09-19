@@ -109,7 +109,7 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
 </div>
 
 <div class="abschnitt" style="margin-bottom:1.2rem;">
-  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:rgba(255,255,255,.75);line-height:1.6;"><b style="color:#fff;">So geht’s:</b> Erst ankreuzen, was zu dir passt (Schritt 1), dann bei Bedarf Schritt 2/3 ausfüllen. Deine Auswahl bleibt automatisch auf diesem Gerät gespeichert. Am Ende kannst du dir alles als Handout ausdrucken.</div>
+  <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:rgba(255,255,255,.75);line-height:1.6;"><b style="color:#fff;">So geht’s:</b> Erst ankreuzen, was zu dir passt (Schritt 1), dann bei Bedarf Schritt 2/3 ausfüllen. Deine Auswahl bleibt automatisch auf diesem Gerät gespeichert. Am Ende kannst du dir alles als Handout ausdrucken. Nutzt ihr ein gemeinsames Gerät/Tablet: unten mit „Für nächste Person leeren“ zurücksetzen.</div>
 </div>
 <div class="abschnitt">
   <div class="abschnitt-titel">Schritt 1 — Kreuz an, was zu dir passt</div>
@@ -156,8 +156,9 @@ body{font-family:"DM Sans",sans-serif;background:linear-gradient(160deg,#0F2027 
   </div>
 </div>
 
-<div class="aktionsleiste">
+<div class="aktionsleiste" style="gap:.6rem;">
   <button class="print-btn" onclick="handoutDrucken()">Handout drucken</button>
+  <button class="print-btn" style="background:transparent;border:1.5px solid rgba(255,255,255,.35);color:#fff;" onclick="neuStartenIdentityLab()">↺ Für nächste Person leeren</button>
 </div>
 
 <div id="druckansicht"></div>
@@ -365,6 +366,17 @@ function handoutDrucken(){
     }
   }catch(e){}
   window.print();
+}
+
+function neuStartenIdentityLab(){
+  if(!confirm('Aktuelle Auswahl wirklich löschen und für die nächste Person leeren?')) return;
+  try{ localStorage.removeItem('klartext_identitylab_stand'); }catch(e){}
+  ausgewaehlt = {};
+  mitnehmen = {};
+  frageState = { f1:{}, f2:{}, hw:{} };
+  matrixRendern();
+  mitnehmenRendern();
+  frageRendern();
 }
 
 zustandLaden();

@@ -56,6 +56,13 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .runden-chip{position:absolute;top:0;right:0;background:var(--m);color:#fff;font-size:.68rem;font-weight:700;padding:.3rem .7rem;border-radius:20px;}
 .gesamt-zaehler{text-align:center;font-size:.74rem;color:var(--muted);margin-top:.6rem;}
 .gesamt-zaehler b{color:var(--acc);}
+.reflexion-box{background:var(--paper);border-radius:16px;padding:1rem 1.1rem;margin-top:1.2rem;text-align:center;}
+.reflexion-frage{font-size:.82rem;font-weight:700;color:var(--m);margin-bottom:.7rem;}
+.reflexion-reihe{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
+.reflexion-btn{flex:1;min-width:90px;max-width:120px;padding:.6rem .4rem;border:2px solid var(--border);background:#fff;border-radius:12px;font-family:inherit;font-size:.72rem;font-weight:700;color:var(--muted);cursor:pointer;}
+.reflexion-btn .em{display:block;font-size:1.3rem;margin-bottom:.2rem;}
+.reflexion-btn:hover{border-color:var(--acc);}
+.reflexion-dank{font-size:.8rem;color:var(--acc);font-weight:700;}
 
 .tempo-row{display:flex;justify-content:center;gap:.6rem;margin-top:1rem;flex-wrap:wrap;}
 .tempo-btn{padding:.5rem 1.1rem;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;}
@@ -167,6 +174,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 
     <div class="aktionen-row">
       <button class="nochmal-btn" onclick="neuStarten()">↺ Neu starten</button>
+      <button class="print-btn" onclick="reflexionZeigen()">✓ Fertig für heute</button>
       <button class="print-btn" onclick="window.print()">🖨️ Als Vorlage drucken</button>
     </div>
 
@@ -184,6 +192,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
         <span class="info-chip">Gelb</span><span class="info-chip">Konzentrationsprobleme</span><span class="info-chip">nach Übergängen</span><span class="info-chip">morgens</span>
       </div>
     </div>
+
+    <div id="reflexion-box" class="reflexion-box" style="display:none;"></div>
 
   </div>
 
@@ -274,6 +284,34 @@ function gesamtZaehlerAnzeigen(n){
   }catch(e){}
 }
 gesamtZaehlerAnzeigen();
+
+var REFLEXION_OPTIONEN_ACHT = [
+  { id:'klarer', em:'😌', label:'Kopf ist klarer' },
+  { id:'gleich', em:'😐', label:'Fühlt sich gleich an' },
+  { id:'unruhig', em:'😣', label:'Noch unruhig' }
+];
+
+function reflexionZeigen(){
+  var box = document.getElementById('reflexion-box');
+  box.style.display = 'block';
+  box.innerHTML = '<div class="reflexion-frage">Wie fühlt sich dein Kopf jetzt an?</div><div class="reflexion-reihe">' +
+    REFLEXION_OPTIONEN_ACHT.map(function(o){
+      return '<button type="button" class="reflexion-btn" onclick="reflexionSpeichern(\''+o.id+'\')"><span class="em">'+o.em+'</span>'+o.label+'</button>';
+    }).join('') + '</div>';
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function reflexionSpeichern(id){
+  try{
+    var roh = localStorage.getItem('klartext_liegendeacht_reflexion');
+    var stand = roh ? JSON.parse(roh) : {klarer:0, gleich:0, unruhig:0};
+    stand[id] = (stand[id]||0) + 1;
+    localStorage.setItem('klartext_liegendeacht_reflexion', JSON.stringify(stand));
+  }catch(e){}
+  var box = document.getElementById('reflexion-box');
+  box.innerHTML = '<div class="reflexion-dank">Danke dir! ✓</div>';
+  setTimeout(function(){ box.style.display = 'none'; }, 1500);
+}
 
 function animationsSchritt(zeitstempel){
   if(startZeit === null) startZeit = zeitstempel;

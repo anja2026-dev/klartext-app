@@ -50,6 +50,13 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .anleitung b{color:var(--m);}
 .gesamt-zaehler{text-align:center;font-size:.72rem;color:var(--muted);margin-top:.7rem;}
 .gesamt-zaehler b{color:var(--acc);}
+.reaktion-box{margin-top:.7rem;text-align:center;display:none;}
+.reaktion-box.sichtbar{display:block;}
+.reaktion-frage{font-size:.74rem;color:var(--muted);margin-bottom:.5rem;}
+.reaktion-reihe{display:flex;gap:.5rem;justify-content:center;}
+.reaktion-btn{padding:.4rem .8rem;border:1.5px solid var(--border);background:#fff;border-radius:20px;font-family:inherit;font-size:.85rem;cursor:pointer;}
+.reaktion-btn:hover{border-color:var(--acc);}
+.reaktion-dank{font-size:.74rem;color:var(--acc);font-weight:700;}
 
 #brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
 
@@ -85,6 +92,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
   <div class="raetsel-karte" id="raetsel-karte">
     <!-- wird per JS gefüllt -->
   </div>
+  <div class="reaktion-box" id="reaktion-box"></div>
 
   <div class="aktion-reihe">
     <button class="aktion-btn aufdecken" id="aufdecken-btn" onclick="aufdecken()">Auflösen</button>
@@ -190,9 +198,39 @@ function raetselRendern(){
 function aufdecken(){
   var el = document.getElementById('raetsel-antwort');
   if(el) el.classList.add('sichtbar');
+  reaktionZeigen();
+}
+
+var REAKTIONEN = [
+  { id:'ueberrascht', em:'😲', label:'Überrascht' },
+  { id:'kannten', em:'🙂', label:'Kannten es schon' },
+  { id:'neutral', em:'😐', label:'Kaum Reaktion' }
+];
+
+function reaktionZeigen(){
+  var box = document.getElementById('reaktion-box');
+  box.classList.add('sichtbar');
+  box.innerHTML = '<div class="reaktion-frage">Wie kam’s bei der Klasse an?</div><div class="reaktion-reihe">' +
+    REAKTIONEN.map(function(r){
+      return '<button type="button" class="reaktion-btn" onclick="reaktionSpeichern(\''+r.id+'\')" title="'+r.label+'">'+r.em+'</button>';
+    }).join('') + '</div>';
+}
+
+function reaktionSpeichern(id){
+  try{
+    var roh = localStorage.getItem('klartext_starthilfezauber_reaktionen');
+    var stand = roh ? JSON.parse(roh) : {ueberrascht:0, kannten:0, neutral:0};
+    stand[id] = (stand[id]||0) + 1;
+    localStorage.setItem('klartext_starthilfezauber_reaktionen', JSON.stringify(stand));
+  }catch(e){}
+  var box = document.getElementById('reaktion-box');
+  box.innerHTML = '<div class="reaktion-dank">Notiert ✓</div>';
+  setTimeout(function(){ box.classList.remove('sichtbar'); box.innerHTML=''; }, 1200);
 }
 
 function naechstesRaetsel(){
+  var rb = document.getElementById('reaktion-box');
+  if(rb){ rb.classList.remove('sichtbar'); rb.innerHTML=''; }
   position++;
   if(position >= reihenfolge.length){
     reihenfolge = mischen(RAETSEL.map(function(_, i){ return i; }));

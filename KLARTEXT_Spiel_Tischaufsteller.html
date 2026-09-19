@@ -32,6 +32,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--paper);color:var(--ink);m
 .anleitung{background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:.75rem .9rem;font-size:.76rem;color:var(--muted);line-height:1.5;margin-bottom:1rem;}
 .anleitung b{color:var(--m);}
 .zuletzt-badge{display:inline-block;background:var(--acc);color:#fff;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:.15rem .5rem;border-radius:10px;margin-left:.5rem;}
+.nutzung-badge{display:inline-block;color:var(--muted);font-size:.68rem;font-weight:600;margin-left:.4rem;}
+.stern-btn{background:none;border:none;font-size:1.1rem;cursor:pointer;flex-shrink:0;opacity:.4;padding:.1rem .2rem;}
+.stern-btn.aktiv{opacity:1;}
 
 .impuls-karte{background:var(--surface);border:2px solid var(--border);border-radius:16px;margin-bottom:.9rem;overflow:hidden;box-shadow:0 3px 14px rgba(27,58,75,.06);}
 .impuls-kopf{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem;cursor:pointer;}
@@ -139,6 +142,7 @@ function karteRendern(impuls, index){
     '<div class="impuls-kopf">' +
       '<span class="impuls-emoji">' + impuls.emoji + '</span>' +
       '<span class="impuls-titel">' + impuls.titel + '</span>' +
+      '<button type="button" class="stern-btn" data-titel="' + impuls.titel + '" title="Als Favorit merken">⭐</button>' +
       '<span class="impuls-pfeil">▾</span>' +
     '</div>' +
     '<div class="impuls-body"><div class="impuls-inhalt">' +
@@ -146,22 +150,53 @@ function karteRendern(impuls, index){
       '<div class="block hebel"><div class="block-label">' + impuls.hebelLabel + '</div><div class="block-text">' + impuls.hebel + '</div></div>' +
       '<div class="block skript"><div class="block-label">Dein kLAR-Sofortskript</div><div class="block-text">' + impuls.skript + '</div></div>' +
     '</div></div>';
-  karte.querySelector('.impuls-kopf').addEventListener('click', function(){
+  karte.querySelector('.impuls-kopf').addEventListener('click', function(e){
+    if(e.target.closest('.stern-btn')) return;
     karte.classList.toggle('offen');
     if(karte.classList.contains('offen')){
-      try{ localStorage.setItem('klartext_tischaufsteller_zuletzt', impuls.titel); }catch(e){}
+      try{
+        localStorage.setItem('klartext_tischaufsteller_zuletzt', impuls.titel);
+        var stand = JSON.parse(localStorage.getItem('klartext_tischaufsteller_nutzung')||'{}');
+        stand[impuls.titel] = (stand[impuls.titel]||0) + 1;
+        localStorage.setItem('klartext_tischaufsteller_nutzung', JSON.stringify(stand));
+      }catch(e){}
     }
   });
+  var sternBtn = karte.querySelector('.stern-btn');
+  sternBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    try{
+      var favoriten = JSON.parse(localStorage.getItem('klartext_tischaufsteller_favoriten')||'[]');
+      var i = favoriten.indexOf(impuls.titel);
+      if(i >= 0){ favoriten.splice(i,1); sternBtn.classList.remove('aktiv'); }
+      else { favoriten.push(impuls.titel); sternBtn.classList.add('aktiv'); }
+      localStorage.setItem('klartext_tischaufsteller_favoriten', JSON.stringify(favoriten));
+    }catch(e){}
+  });
   try{
+    var favoriten2 = JSON.parse(localStorage.getItem('klartext_tischaufsteller_favoriten')||'[]');
+    if(favoriten2.indexOf(impuls.titel) >= 0) sternBtn.classList.add('aktiv');
+
+    var titelHtml = impuls.titel;
+    var nutzungStand = JSON.parse(localStorage.getItem('klartext_tischaufsteller_nutzung')||'{}');
+    if(nutzungStand[impuls.titel]) titelHtml += '<span class="nutzung-badge">' + nutzungStand[impuls.titel] + 'x genutzt</span>';
     if(localStorage.getItem('klartext_tischaufsteller_zuletzt') === impuls.titel){
-      karte.querySelector('.impuls-titel').innerHTML = impuls.titel + '<span class="zuletzt-badge">zuletzt genutzt</span>';
+      titelHtml += '<span class="zuletzt-badge">zuletzt genutzt</span>';
     }
+    karte.querySelector('.impuls-titel').innerHTML = titelHtml;
   }catch(e){}
   return karte;
 }
 
 var liste = document.getElementById('impuls-liste');
-IMPULSE.forEach(function(impuls, i){ liste.appendChild(karteRendern(impuls, i)); });
+var favoritenSortierung = [];
+try{ favoritenSortierung = JSON.parse(localStorage.getItem('klartext_tischaufsteller_favoriten')||'[]'); }catch(e){}
+var IMPULSE_SORTIERT = IMPULSE.slice().sort(function(a,b){
+  var aFav = favoritenSortierung.indexOf(a.titel) >= 0, bFav = favoritenSortierung.indexOf(b.titel) >= 0;
+  if(aFav === bFav) return 0;
+  return aFav ? -1 : 1;
+});
+IMPULSE_SORTIERT.forEach(function(impuls, i){ liste.appendChild(karteRendern(impuls, i)); });
 </script>
 
 </body>

@@ -65,7 +65,21 @@ input:checked+.slider-toggle:before{transform:translateX(18px);}
 .zaehler{text-align:center;font-size:.74rem;color:var(--muted);margin-top:.6rem;}
 .zaehler b{color:var(--gruen);}
 
-#brainy-anker{position:fixed;bottom:1rem;right:1rem;width:64px;height:64px;opacity:.45;pointer-events:none;}
+.ankuendigung-zeile{display:flex;flex-direction:column;gap:.4rem;}
+.ankuendigung-zeile input{width:100%;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.82rem;color:var(--ink);}
+.ankuendigung-anzeige{font-size:.88rem;font-weight:700;color:var(--m);text-align:center;margin-top:.6rem;min-height:1.3em;}
+
+.brainy-mitzaehler{width:44px;height:44px;object-fit:contain;margin:0 auto .3rem;display:block;transition:transform .3s ease;}
+@keyframes brainyHopp{0%{transform:scale(1) rotate(0);}30%{transform:scale(1.22) rotate(-5deg);}60%{transform:scale(1.06) rotate(4deg);}100%{transform:scale(1) rotate(0);}}
+.brainy-mitzaehler.hopp{animation:brainyHopp .6s ease;}
+
+.reflexion-box{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:1rem 1.1rem;margin-top:1rem;text-align:center;box-shadow:0 3px 14px rgba(27,58,75,.06);}
+.reflexion-frage{font-size:.82rem;font-weight:700;color:var(--m);margin-bottom:.7rem;}
+.reflexion-reihe{display:flex;gap:.5rem;justify-content:center;}
+.reflexion-btn{flex:1;max-width:110px;padding:.6rem .4rem;border:2px solid var(--border);background:#fff;border-radius:12px;font-family:"DM Sans",sans-serif;font-size:.72rem;font-weight:700;color:var(--muted);cursor:pointer;}
+.reflexion-btn .em{display:block;font-size:1.3rem;margin-bottom:.2rem;}
+.reflexion-btn:hover{border-color:var(--gruen);}
+.reflexion-dank{font-size:.8rem;color:var(--gruen);font-weight:700;}
 </style>
 </head>
 <body>
@@ -95,6 +109,7 @@ input:checked+.slider-toggle:before{transform:translateX(18px);}
         <circle id="ring-fortschritt" cx="130" cy="130" r="112" fill="none" stroke="#D96B43" stroke-width="16" stroke-linecap="round" stroke-dasharray="703.7" stroke-dashoffset="0"/>
       </svg>
       <div class="ring-zeit">
+        <img id="brainy-mitzaehler" class="brainy-mitzaehler" src="brainy.png" alt="Brainy">
         <div class="ring-zeit-zahl" id="zeit-anzeige">02:00</div>
         <div class="ring-zeit-label" id="zeit-status">bereit</div>
       </div>
@@ -111,10 +126,17 @@ input:checked+.slider-toggle:before{transform:translateX(18px);}
       <button class="steuer-btn start" id="btn-start" onclick="starten()">Start</button>
       <button class="steuer-btn reset" onclick="zuruecksetzen()">Zurücksetzen</button>
     </div>
+    <div class="ankuendigung-anzeige" id="ankuendigung-anzeige"></div>
     <div class="zaehler" id="zaehler-anzeige"></div>
   </div>
 
+  <div id="reflexion-box" class="reflexion-box" style="display:none;"></div>
+
   <div class="optionen">
+    <div class="opt-zeile ankuendigung-zeile">
+      <div class="opt-text"><b>Eigener Ankündigungssatz</b><br>Wird angezeigt, während der Timer läuft (z. B. „Gleich ist Pause vorbei“).</div>
+      <input type="text" id="ankuendigung-input" placeholder="z. B. Gleich ist Pause vorbei" maxlength="60">
+    </div>
     <div class="opt-zeile">
       <div class="opt-text"><b>Sanfter Ton am Ende</b><br>Ein einzelner leiser Ton, wenn der Übergang erreicht ist (Timer bleibt sonst lautlos).</div>
       <label class="switch"><input type="checkbox" id="opt-ton"><span class="slider-toggle"></span></label>
@@ -127,8 +149,6 @@ input:checked+.slider-toggle:before{transform:translateX(18px);}
 
   <p class="hinweis">Der Timer läuft komplett lautlos mit — Farbe statt Lärm. Alle Einstellungen bleiben nur auf diesem Gerät (DSGVO-sicher).</p>
 </div>
-
-<img id="brainy-anker" src="brainy.png" alt="">
 
 <script>
 var GESAMT_UMFANG = 703.7; // 2*PI*112
@@ -185,6 +205,22 @@ function presetWaehlen(el, sekunden){
   anzeigeAktualisieren();
 }
 
+function ankuendigungAnzeigen(){
+  try{
+    var text = (document.getElementById('ankuendigung-input').value || '').trim();
+    document.getElementById('ankuendigung-anzeige').textContent = (laeuft && text) ? text : '';
+  }catch(e){}
+}
+
+function brainyHoppen(){
+  try{
+    var b = document.getElementById('brainy-mitzaehler');
+    b.classList.remove('hopp');
+    void b.offsetWidth; // Reflow erzwingen, damit die Animation erneut startet
+    b.classList.add('hopp');
+  }catch(e){}
+}
+
 function starten(){
   var btn = document.getElementById('btn-start');
   if(laeuft){
@@ -195,6 +231,7 @@ function starten(){
     btn.classList.remove('pause');
     btn.classList.add('start');
     anzeigeAktualisieren();
+    ankuendigungAnzeigen();
     return;
   }
   if(restSekunden<=0) return;
@@ -204,6 +241,8 @@ function starten(){
   btn.classList.remove('start');
   btn.classList.add('pause');
   anzeigeAktualisieren();
+  ankuendigungAnzeigen();
+  brainyHoppen();
   intervallId = setInterval(function(){
     restSekunden--;
     if(restSekunden<=0){
@@ -230,9 +269,14 @@ function zuruecksetzen(){
   btn.classList.remove('pause');
   btn.classList.add('start');
   anzeigeAktualisieren();
+  ankuendigungAnzeigen();
+  document.getElementById('reflexion-box').style.display = 'none';
 }
 
 function uebergangErreicht(){
+  ankuendigungAnzeigen();
+  brainyHoppen();
+  reflexionZeigen();
   try{
     var n = parseInt(localStorage.getItem('klartext_uebergangstimer_nutzungen')||'0',10);
     localStorage.setItem('klartext_uebergangstimer_nutzungen', n+1);
@@ -259,7 +303,34 @@ function uebergangErreicht(){
   }
 }
 
-// Letzten Preset merken + Nutzungszähler (rein lokal, DSGVO-sicher)
+var REFLEXION_OPTIONEN = [
+  { id:'leicht', em:'😌', label:'Ging leicht' },
+  { id:'okay', em:'😐', label:'Ging so' },
+  { id:'schwer', em:'😣', label:'War schwer' }
+];
+
+function reflexionZeigen(){
+  var box = document.getElementById('reflexion-box');
+  box.style.display = 'block';
+  box.innerHTML = '<div class="reflexion-frage">Wie war dieser Übergang?</div><div class="reflexion-reihe">' +
+    REFLEXION_OPTIONEN.map(function(o){
+      return '<button type="button" class="reflexion-btn" onclick="reflexionSpeichern(\''+o.id+'\')"><span class="em">'+o.em+'</span>'+o.label+'</button>';
+    }).join('') + '</div>';
+}
+
+function reflexionSpeichern(id){
+  try{
+    var roh = localStorage.getItem('klartext_uebergangstimer_reflexion');
+    var stand = roh ? JSON.parse(roh) : {leicht:0, okay:0, schwer:0};
+    stand[id] = (stand[id]||0) + 1;
+    localStorage.setItem('klartext_uebergangstimer_reflexion', JSON.stringify(stand));
+  }catch(e){}
+  var box = document.getElementById('reflexion-box');
+  box.innerHTML = '<div class="reflexion-dank">Danke dir! ✓</div>';
+  setTimeout(function(){ box.style.display = 'none'; }, 1500);
+}
+
+// Letzten Preset, Ankündigungssatz + Nutzungszähler merken (rein lokal, DSGVO-sicher)
 (function(){
   try{
     var gespeicherterPreset = localStorage.getItem('klartext_uebergangstimer_preset');
@@ -267,6 +338,13 @@ function uebergangErreicht(){
       var btn = document.querySelector('.preset-btn[data-sek="'+gespeicherterPreset+'"]');
       if(btn) presetWaehlen(btn, parseInt(gespeicherterPreset,10));
     }
+  }catch(e){}
+  try{
+    var gespeicherteAnkuendigung = localStorage.getItem('klartext_uebergangstimer_ankuendigung');
+    if(gespeicherteAnkuendigung) document.getElementById('ankuendigung-input').value = gespeicherteAnkuendigung;
+    document.getElementById('ankuendigung-input').addEventListener('input', function(){
+      try{ localStorage.setItem('klartext_uebergangstimer_ankuendigung', this.value); }catch(e){}
+    });
   }catch(e){}
   zaehlerAnzeigen();
 })();
